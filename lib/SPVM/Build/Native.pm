@@ -9,6 +9,7 @@ use base 'SPVM::Build::Base';
 
 use Carp 'croak', 'confess';
 
+use SPVM::Build;
 use SPVM::Build::Util;
 use SPVM::Build::SPVMInfo;
 
@@ -28,16 +29,15 @@ sub new {
   return $self;
 }
 
-sub get_sub_names_from_module_file {
-  my ($self, $module_file) = @_;
-  
-  return SPVM::Build::Util::get_native_sub_names_from_module_file($module_file);
-}
-
 sub get_subs_from_package_name {
   my ($self, $package_name) = @_;
   
-  return SPVM::Build::SPVMInfo::get_native_subs_from_package_name($package_name);;
+  my $compiler = $self->{compiler};
+  
+  my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($compiler, $package_name);
+  $subs = [grep { $_->{have_native_desc} } @$subs];
+  
+  return $subs;
 }
 
 sub create_cfunc_name {
@@ -49,14 +49,13 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub build_shared_lib_dist {
+sub create_shared_lib_dist {
   my ($self, $package_name) = @_;
   
   my $input_dir = 'lib';
   my $output_dir = 'blib/lib';
   
-  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
+  my $sub_names = $self->get_sub_names_dist($package_name);
   
   my $work_dir = "spvm_build/work";
   mkpath $work_dir;
@@ -66,7 +65,7 @@ sub build_shared_lib_dist {
   my $config_file = "$input_dir/$module_base_name.config";
 
   # Build shared library
-  my $shared_lib_file = $self->build_shared_lib(
+  my $shared_lib_file = $self->create_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
@@ -78,14 +77,14 @@ sub build_shared_lib_dist {
   return $shared_lib_file;
 }
 
-sub build_shared_lib_runtime {
+sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
   
-  my $package_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $package_load_path = SPVM::Build::SPVMInfo::get_package_load_path($self->{compiler}, $package_name);
   my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory
-  my $build_dir = $SPVM::BUILD_DIR;
+  my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
@@ -103,7 +102,7 @@ sub build_shared_lib_runtime {
   $module_base_name =~ s/^.+:://;
   my $config_file = "$input_dir/$module_base_name.config";
 
-  my $shared_lib_file = $self->build_shared_lib(
+  my $shared_lib_file = $self->create_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,

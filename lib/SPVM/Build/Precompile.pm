@@ -7,6 +7,7 @@ use base 'SPVM::Build::Base';
 use Carp 'croak', 'confess';
 use File::Spec;
 
+use SPVM::Build;
 use SPVM::Build::Util;
 
 use ExtUtils::CBuilder;
@@ -27,16 +28,34 @@ sub new {
   return $self;
 }
 
-sub get_sub_names_from_module_file {
-  my ($self, $module_file) = @_;
+sub get_sub_names_dist {
+  my ($self, $package_name) = @_;
   
-  return SPVM::Build::Util::get_precompile_sub_names_from_module_file($module_file);
+  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  
+  open my $module_fh, '<', $package_load_path
+    or croak "Can't open $package_load_path: $!";
+  
+  my $src = do { local $/; <$module_fh> };
+  
+  my $precompile_sub_names = [];
+  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
+    my $sub_name = $1;
+    push @$precompile_sub_names, $sub_name;
+  }
+  
+  return $precompile_sub_names;
 }
 
 sub get_subs_from_package_name {
   my ($self, $package_name) = @_;
   
-  return SPVM::Build::SPVMInfo::get_precompile_subs_from_package_name($package_name);
+  my $compiler = $self->{compiler};
+  
+  my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($compiler, $package_name);
+  $subs = [grep { $_->{have_compile_desc} } @$subs];
+  
+  return $subs;
 }
 
 sub create_cfunc_name {
@@ -50,11 +69,11 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub build_shared_lib_runtime {
+sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
 
   # Output directory
-  my $build_dir = $SPVM::BUILD_DIR;
+  my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
@@ -97,7 +116,7 @@ sub build_shared_lib_runtime {
   close $fh;
   
   if ($package_csource ne $old_package_csource) {
-    $self->build_shared_lib(
+    $self->create_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
       work_dir => $work_dir,

@@ -16,72 +16,51 @@ use lib "$FindBin::Bin/default/lib";
 
 my $ok;
 
-BEGIN { $ENV{SPVM_NO_COMPILE} = 1 }
-
-sub init_spvm {
-  @SPVM::PACKAGE_INFOS = ();
-  %SPVM::PACKAGE_INFO_SYMTABLE = ();
+{
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::InvalidType');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::InvalidType';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndef');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndef';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndefDefault';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::AssignIncompatibleType::DifferentObject');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::AssignIncompatibleType::DifferentObject';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::AssignIncompatibleType::ConstToNoConst');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::AssignIncompatibleType::ConstToNoConst';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::Field::Private');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::Field::Private';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
-}
-
-{
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::New::Private';
-  BEGIN {
-    my $success = SPVM::Build->new->compile_spvm();
-    ok($success == 0);
-  }
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::New::Private');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
 }

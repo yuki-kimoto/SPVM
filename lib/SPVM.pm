@@ -18,12 +18,7 @@ use Carp 'confess';
 
 our $VERSION = '0.0344';
 
-our $COMPILER;
-our $API;
-our @PACKAGE_INFOS;
-our %PACKAGE_INFO_SYMTABLE;
-our $BUILD_DIR;
-our $INITIALIZED;
+our $ENV;
 our $BUILD;
 
 require XSLoader;
@@ -32,43 +27,31 @@ XSLoader::load('SPVM', $VERSION);
 sub import {
   my ($class, $package_name) = @_;
   
-  unless ($INITIALIZED) {
-    $BUILD = SPVM::Build->new;
-    $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
-    if (defined $BUILD_DIR) {
+  unless ($BUILD) {
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    if (defined $build_dir) {
       # Remove traling slash
-      $BUILD_DIR = File::Spec->catdir(File::Spec->splitdir($BUILD_DIR));
+      $build_dir = File::Spec->catdir(File::Spec->splitdir($build_dir));
     }
-    
-    $INITIALIZED = 1;
+    $BUILD = SPVM::Build->new(build_dir => $build_dir);
   }
 
   # Add package informations
   if (defined $package_name) {
-    unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
-      my ($file, $line) = (caller)[1, 2];
-
-      my $package_info = {
-        name => $package_name,
-        file => $file,
-        line => $line
-      };
-      push @SPVM::PACKAGE_INFOS, $package_info;
-      
-      $SPVM::PACKAGE_INFO_SYMTABLE{$package_name} = 1;
-      
-      return $package_info;
-    }
+    my ($file, $line) = (caller)[1, 2];
+    my $package_info = {
+      name => $package_name,
+      file => $file,
+      line => $line
+    };
+    push @{$BUILD->{package_infos}}, $package_info;
   }
-  
-  return;
 }
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  
-  unless ($ENV{SPVM_NO_COMPILE}) {
-    my $compile_success = $BUILD->compile_spvm();
+  if ($BUILD) {
+    my $compile_success = $BUILD->build_spvm();
     unless ($compile_success) {
       croak("SPVM compile error");
     }

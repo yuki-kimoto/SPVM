@@ -9,16 +9,6 @@ use File::Basename 'dirname', 'basename';
 # SPVM::Build::tUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
-sub create_package_load_path {
-  my ($top_dir, $package_name) = @_;
-  
-  my $package_load_path = $package_name;
-  $package_load_path =~ s/::/\//g;
-  $package_load_path = "$top_dir/$package_load_path.spvm";
-  
-  return $package_load_path;
-}
-
 sub get_shared_lib_func_address {
   my ($shared_lib_file, $shared_lib_func_name) = @_;
   
@@ -52,40 +42,6 @@ sub convert_module_path_to_shared_lib_path {
   return $shared_lib_path;
 }
 
-sub get_native_sub_names_from_module_file {
-  my ($module_file) = @_;
-  
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
-  
-  my $src = do { local $/; <$module_fh> };
-  
-  my $native_sub_names = [];
-  while ($src =~ /native\b(.*?)\bsub\s+([^\s]+)\s/g) {
-    my $sub_name = $1;
-    push @$native_sub_names, $sub_name;
-  }
-  
-  return $native_sub_names;
-}
-
-sub get_precompile_sub_names_from_module_file {
-  my ($module_file) = @_;
-  
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
-  
-  my $src = do { local $/; <$module_fh> };
-  
-  my $native_sub_names = [];
-  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
-    my $sub_name = $1;
-    push @$native_sub_names, $sub_name;
-  }
-  
-  return $native_sub_names;
-}
-
 sub remove_package_part_from_path {
   my ($path, $package_name) = @_;
   
@@ -97,7 +53,19 @@ sub remove_package_part_from_path {
   return $path;
 }
 
-sub create_build_shared_lib_make_rule {
+sub create_make_rule_native {
+  my $package_name = shift;
+  
+  create_package_make_rule($package_name, 'native');
+}
+
+sub create_make_rule_precompile {
+  my $package_name = shift;
+  
+  create_package_make_rule($package_name, 'precompile');
+}
+
+sub create_package_make_rule {
   my ($package_name, $category) = @_;
   
   my $make_rule;
@@ -135,7 +103,7 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Mblib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
+    .= "\tperl -Mblib -MSPVM::Build -e \"SPVM::Build->new->create_shared_lib_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }

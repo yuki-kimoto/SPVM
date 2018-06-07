@@ -37,7 +37,7 @@
 
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
-  SV* sv_env = get_sv("SPVM::API", 0);
+  SV* sv_env = get_sv("SPVM::ENV", 0);
   
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
@@ -56,9 +56,7 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
 }
 
 SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
@@ -100,7 +98,6 @@ DESTROY(...)
   
   assert(SvOK(sv_object));
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -131,7 +128,6 @@ set_elements(...)
   
   AV* av_values = (AV*)SvRV(sv_values);
   
-    // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -242,7 +238,6 @@ set_bin(...)
   SV* sv_array = ST(0);
   SV* sv_bin = ST(1);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -333,7 +328,6 @@ set_element(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
@@ -447,8 +441,9 @@ get_element(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -525,9 +520,6 @@ get_element(...)
   }
   
   if (is_object) {
-    SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-    SPVM_COMPILER* compiler = runtime->compiler;
-    
     // Element dimension
     int32_t element_dimension = array->dimension - 1;
     
@@ -562,7 +554,6 @@ to_elements(...)
   
   SV* sv_array = ST(0);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -674,7 +665,6 @@ to_bin(...)
   
   SV* sv_array = ST(0);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -739,43 +729,13 @@ to_bin(...)
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
 SV*
-get_sub_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_sub_id = ST(0);
-  
-  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-
-  const char* sub_name = sub->abs_name;
-  
-  SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-  
-  XPUSHs(sv_sub_name);
-  XSRETURN(1);
-}
-
-SV*
 get_sub_names(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   
@@ -803,15 +763,12 @@ get_subs_from_package_name(...)
   PPCODE:
 {
   (void)RETVAL;
+
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SV* sv_package_name = ST(0);
+  SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
-  
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
@@ -870,11 +827,8 @@ get_packages(...)
 {
   (void)RETVAL;
   
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   AV* av_packages = (AV*)sv_2mortal((SV*)newAV());
   
@@ -916,57 +870,18 @@ get_packages(...)
 }
 
 SV*
-get_native_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
-  
-  SPVM_LIST* op_subs = compiler->op_subs;
-  
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      if (sub->have_native_desc) {
-        const char* sub_name = sub->abs_name;
-        SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
-      }
-    }
-  }
-  
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
-  
-  XPUSHs(sv_sub_names);
-  XSRETURN(1);
-}
-
-SV*
 get_package_load_path(...)
   PPCODE:
 {
   (void)RETVAL;
+
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SV* sv_package_name = ST(0);
+  SV* sv_package_name = ST(1);
   
-  // API
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
-
-
   const char* package_name = SvPV_nolen(sv_package_name);
   
-
   // Subroutine information
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
   SPVM_PACKAGE* package = op_package->uv.package;
@@ -983,19 +898,42 @@ get_package_load_path(...)
 MODULE = SPVM::Build		PACKAGE = SPVM::Build
 
 SV*
-compile(...)
+create_compiler(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // Create compiler
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  
+  // Set compiler
+  size_t iv_compiler = PTR2IV(compiler);
+  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  
+  XPUSHs(sv_compiler);
+  XSRETURN(1);
+}
+
+SV*
+compile_spvm(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
+  SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
+  AV* av_package_infos = (AV*)SvRV(sv_package_infos);
   
-  // Add package
-  AV* av_package_infos = get_av("SPVM::PACKAGE_INFOS", 0);
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
+  
   {
     int32_t i;
     for (i = 0; i < av_package_infos_length; i++) {
@@ -1027,6 +965,7 @@ compile(...)
     }
   }
   
+  
   // Add include paths
   AV* av_include_paths = get_av("main::INC", 0);;
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
@@ -1039,12 +978,6 @@ compile(...)
       SPVM_LIST_push(compiler->module_include_pathes, include_path);
     }
   }
-
-  // Set compiler
-  size_t iv_compiler = PTR2IV(compiler);
-  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
 
   // Compile SPVM
   SPVM_COMPILER_compile(compiler);
@@ -1069,9 +1002,11 @@ build_opcode(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Build opcode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
@@ -1086,20 +1021,22 @@ build_runtime(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
   compiler->runtime = runtime;
   
-  // Set API
+  // Set ENV
   SPVM_ENV* env = runtime->env;
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  sv_setsv(get_sv("SPVM::API", 0), sv_env);
+  sv_setsv(get_sv("SPVM::ENV", 0), sv_env);
   
   XSRETURN(0);
 }
@@ -1111,15 +1048,14 @@ free_compiler(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
-  
-  // Set undef to compiler
-  sv_setsv(get_sv("SPVM::COMPILER", 0), &PL_sv_undef);
   
   XSRETURN(0);
 }
@@ -1136,12 +1072,9 @@ bind_sub(...)
   SV* sv_native_sub_name = ST(1);
   SV* sv_native_address = ST(2);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
-  
   
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
@@ -1202,14 +1135,12 @@ bind_sub(...)
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
+  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
+
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -1247,14 +1178,13 @@ call_sub(...)
   SV* sv_sub_abs_name = ST(0);
   stack_arg_start++;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
 
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = env->get_sub_id(env, sub_abs_name);
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
@@ -1464,7 +1394,6 @@ new_byte_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1490,7 +1419,6 @@ new_short_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1516,7 +1444,6 @@ new_int_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1542,7 +1469,6 @@ new_long_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1568,7 +1494,6 @@ new_float_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1594,7 +1519,6 @@ new_double_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1619,13 +1543,12 @@ new_object_array_len(...)
   SV* sv_basic_type_name = ST(0);
   SV* sv_length = ST(1);
   
-  // API
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+
+  int32_t length = (int32_t)SvIV(sv_length);
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1656,15 +1579,14 @@ new_multi_array_len(...)
   SV* sv_element_dimension = ST(1);
   SV* sv_length = ST(2);
   
-  // API
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   int32_t length = (int32_t)SvIV(sv_length);
 
   int32_t element_dimension = (int32_t)SvIV(sv_element_dimension);
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);

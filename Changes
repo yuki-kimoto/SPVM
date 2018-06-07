@@ -1,6 +1,7 @@
 0.0344 2018-06-06
   - Change native function return value.
     native function return value must be set args[0], and return croak_flag.
+  - SPVM::Build can parse distribution module and get subrutine names from it
 0.0343 2018-06-05
   - do inline expasion in subroutien of same precompile package
   - SPVM module loading path become same as Perl. You don't need to create SPVM/ directory.
