@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 #endif
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
   SPVM_ENV* env = runtime->env;
 
   // Entry point subroutine address

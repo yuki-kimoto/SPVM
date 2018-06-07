@@ -31,6 +31,21 @@
 #include "spvm_hash.h"
 #include "spvm_basic_type.h"
 
+SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_new_runtime();
+  
+  runtime->compiler = compiler;
+  
+  // Set global runtime
+  SPVM_RUNTIME_API_set_runtime(runtime->env, runtime);
+  
+  // Initialize Package Variables
+  runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));
+  
+  return runtime;
+}
+
 int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   (void)env;
   
