@@ -91,11 +91,11 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_weaken_object_field,
   SPVM_RUNTIME_API_create_exception_stack_trace,
   SPVM_RUNTIME_API_check_cast,
-  NULL, // object_header_byte_size
-  NULL, // object_ref_count_byte_offset
-  NULL, // object_basic_type_id_byte_offset
-  NULL, // object_dimension_byte_offset
-  NULL, // object_units_length_byte_offset
+  (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
+  (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
+  (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
+  (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension), // object_dimension_byte_offset
+  (void*)(intptr_t)offsetof(SPVM_OBJECT, units_length), // object_units_length_byte_offset
   NULL, // runtime_exception_byte_offset
   SPVM_RUNTIME_call_sub,
 };
@@ -235,12 +235,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
   runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
   SPVM_ENV* env = (SPVM_ENV*)SPVM_ENV_RUNTIME;
-  
-  env->object_header_byte_size = (void*)(intptr_t)sizeof(SPVM_OBJECT);
-  env->object_ref_count_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count);
-  env->object_basic_type_id_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id);
-  env->object_dimension_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension);
-  env->object_units_length_byte_offset = (void*)(intptr_t)offsetof(SPVM_OBJECT, units_length);
   
   runtime->env = env;
   
