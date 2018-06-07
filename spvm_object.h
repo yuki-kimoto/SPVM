@@ -8,12 +8,11 @@ enum {
   SPVM_OBJECT_C_CATEGORY_OBJECT,
   SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY,
   SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY,
-  SPVM_OBJECT_C_CATEGORY_ADDRESS_ARRAY,
 };
 
 // SPVM_OBJECT
 struct SPVM_VALUE_object {
-  SPVM_OBJECT* weaken_back_refs;
+  SPVM_OBJECT** weaken_back_refs;
   int32_t weaken_back_refs_length;
   int32_t weaken_back_refs_capacity;
   int32_t ref_count;
