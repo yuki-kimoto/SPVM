@@ -45,9 +45,6 @@ struct SPVM_runtime {
   // Compiler
   SPVM_COMPILER* compiler;
   
-  // Runtime memory allocator
-  SPVM_RUNTIME_ALLOCATOR* allocator;
-  
   // Exception
   SPVM_OBJECT* exception;
   

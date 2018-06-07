@@ -9,7 +9,6 @@
 #include "spvm_util_allocator.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_dumper.h"

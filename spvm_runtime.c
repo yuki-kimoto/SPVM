@@ -15,7 +15,6 @@
 #include "spvm_runtime.h"
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_util_allocator.h"
 
 #include "spvm_package.h"
@@ -40,9 +39,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   
   runtime->env = env;
 
-  // Runtime memory allocator
-  runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
-  
   runtime->compiler = compiler;
   
   // Set global runtime
@@ -1907,8 +1903,6 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   // Free exception
   SPVM_RUNTIME_API_set_exception(runtime->env, NULL);
   
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, runtime->allocator);
-
   free(runtime->args);
   
   free(runtime->package_vars);

@@ -56,10 +56,6 @@ typedef struct SPVM_use SPVM_USE;
 struct SPVM_runtime;
 typedef struct SPVM_runtime SPVM_RUNTIME;
 
-// spvm_runtime_allocator.h
-struct SPVM_runtime_allocator;
-typedef struct SPVM_runtime_allocator SPVM_RUNTIME_ALLOCATOR;
-
 // spvm_compiler_allocator.h
 struct SPVM_compiler_allocator;
 typedef struct SPVM_compiler_allocator SPVM_COMPILER_ALLOCATOR;
