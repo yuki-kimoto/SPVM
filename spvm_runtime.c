@@ -16,6 +16,7 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_runtime_allocator.h"
+#include "spvm_util_allocator.h"
 
 #include "spvm_package.h"
 #include "spvm_sub.h"
@@ -33,12 +34,19 @@
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_new_runtime();
+  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+  
+  SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();
+  
+  runtime->env = env;
+
+  // Runtime memory allocator
+  runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
   
   runtime->compiler = compiler;
   
   // Set global runtime
-  SPVM_RUNTIME_API_set_runtime(runtime->env, runtime);
+  SPVM_RUNTIME_API_set_runtime(env, runtime);
   
   // Initialize Package Variables
   runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_var_length + 1));

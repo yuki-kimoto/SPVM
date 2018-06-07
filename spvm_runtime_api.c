@@ -231,20 +231,6 @@ void SPVM_RUNTIME_API_free_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
   free(runtime);
 }
 
-SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime() {
-  
-  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
-  
-  // Runtime memory allocator
-  runtime->allocator = SPVM_RUNTIME_ALLOCATOR_new(runtime);
-  
-  SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();
-  
-  runtime->env = env;
-  
-  return runtime;
-}
-
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime() {
   
   return SPVM_GLOBAL_RUNTIME;

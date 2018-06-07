@@ -18,7 +18,7 @@ int32_t SPVM_RUNTIME_API_create_long_type_id(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_create_float_type_id(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_create_double_type_id(SPVM_ENV* env);
 
-SPVM_RUNTIME* SPVM_RUNTIME_API_new_runtime();
+SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime();
 void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_ENV* env);
 
