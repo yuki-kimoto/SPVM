@@ -734,9 +734,8 @@ get_sub_names(...)
 {
   (void)RETVAL;
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   

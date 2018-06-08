@@ -75,7 +75,7 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
   
-  my $sub_names = SPVM::Build::SPVMInfo::get_sub_names();
+  my $sub_names = SPVM::Build::SPVMInfo::get_sub_names($self->{compiler});
   
   for my $abs_name (@$sub_names) {
     # Define SPVM subroutine
