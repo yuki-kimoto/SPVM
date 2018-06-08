@@ -14,6 +14,8 @@ use SPVM::Build::Util;
 use File::Path 'rmtree';
 use File::Spec;
 
+use SPVM();
+
 sub new {
   my $class = shift;
   

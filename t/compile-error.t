@@ -5,7 +5,6 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
-use SPVM();
 use SPVM::Build;
 
 use Test::More 'no_plan';
