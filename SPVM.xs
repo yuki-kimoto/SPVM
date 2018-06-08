@@ -729,31 +729,6 @@ to_bin(...)
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
 SV*
-get_sub_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_sub_id = ST(0);
-  
-  int32_t sub_id = (int32_t)SvIV(sv_sub_id);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-
-  const char* sub_name = sub->abs_name;
-  
-  SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-  
-  XPUSHs(sv_sub_name);
-  XSRETURN(1);
-}
-
-SV*
 get_sub_names(...)
   PPCODE:
 {
