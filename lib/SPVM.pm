@@ -18,7 +18,6 @@ use Carp 'confess';
 
 our $VERSION = '0.0344';
 
-our $COMPILER;
 our $ENV;
 our $BUILD;
 

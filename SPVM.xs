@@ -1032,7 +1032,6 @@ compile(...)
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
 
   hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
 
@@ -1113,9 +1112,6 @@ free_compiler(...)
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
-  
-  // Set undef to compiler
-  sv_setsv(get_sv("SPVM::COMPILER", 0), &PL_sv_undef);
   
   XSRETURN(0);
 }
