@@ -23,6 +23,10 @@ sub new {
   
   $self->{precompile} = SPVM::Build::Precompile->new;
   
+  $self->{package_info_symtable} = {};
+  
+  $self->{package_infos} = [];
+  
   return bless $self, $class;
 }
 

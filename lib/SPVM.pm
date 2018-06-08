@@ -20,8 +20,6 @@ our $VERSION = '0.0344';
 
 our $COMPILER;
 our $API;
-our @PACKAGE_INFOS;
-our %PACKAGE_INFO_SYMTABLE;
 our $BUILD_DIR;
 our $INITIALIZED;
 our $BUILD;
@@ -45,17 +43,16 @@ sub import {
 
   # Add package informations
   if (defined $package_name) {
-    unless ($SPVM::PACKAGE_INFO_SYMTABLE{$package_name}) {
+    unless ($BUILD->{package_info_symtable}{$package_name}) {
       my ($file, $line) = (caller)[1, 2];
-
       my $package_info = {
         name => $package_name,
         file => $file,
         line => $line
       };
-      push @SPVM::PACKAGE_INFOS, $package_info;
+      push @{$BUILD->{package_infos}}, $package_info;
       
-      $SPVM::PACKAGE_INFO_SYMTABLE{$package_name} = 1;
+      $BUILD->{package_info_symtable}{$package_name} = 1;
       
       return $package_info;
     }
