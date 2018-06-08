@@ -938,18 +938,35 @@ get_package_load_path(...)
 MODULE = SPVM::Build		PACKAGE = SPVM::Build
 
 SV*
+create_compiler(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  // Create compiler
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  
+  // Set compiler
+  size_t iv_compiler = PTR2IV(compiler);
+  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  
+  XPUSHs(sv_compiler);
+  XSRETURN(1);
+}
+
+SV*
 compile(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  
-  // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  
-  // Add package
   HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
@@ -1001,13 +1018,6 @@ compile(...)
       SPVM_LIST_push(compiler->module_include_pathes, include_path);
     }
   }
-
-  // Set compiler
-  size_t iv_compiler = PTR2IV(compiler);
-  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-
-  hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
 
   // Compile SPVM
   SPVM_COMPILER_compile(compiler);

@@ -29,7 +29,11 @@ sub new {
   
   $self->{package_infos} ||= [];
   
-  return bless $self, $class;
+  bless $self, $class;
+  
+  $self->{compiler} ||= $self->create_compiler;
+  
+  return $self;
 }
 
 sub native {
