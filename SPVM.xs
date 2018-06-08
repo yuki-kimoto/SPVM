@@ -37,7 +37,7 @@
 
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
-  SV* sv_env = get_sv("SPVM::API", 0);
+  SV* sv_env = get_sv("SPVM::ENV", 0);
   
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
@@ -98,7 +98,6 @@ DESTROY(...)
   
   assert(SvOK(sv_object));
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -129,7 +128,6 @@ set_elements(...)
   
   AV* av_values = (AV*)SvRV(sv_values);
   
-    // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -240,7 +238,6 @@ set_bin(...)
   SV* sv_array = ST(0);
   SV* sv_bin = ST(1);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -331,7 +328,6 @@ set_element(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   SV* sv_array = ST(0);
@@ -558,7 +554,6 @@ to_elements(...)
   
   SV* sv_array = ST(0);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -670,7 +665,6 @@ to_bin(...)
   
   SV* sv_array = ST(0);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
@@ -1087,12 +1081,12 @@ build_runtime(...)
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
   compiler->runtime = runtime;
   
-  // Set API
+  // Set ENV
   SPVM_ENV* env = runtime->env;
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  sv_setsv(get_sv("SPVM::API", 0), sv_env);
+  sv_setsv(get_sv("SPVM::ENV", 0), sv_env);
   
   XSRETURN(0);
 }
@@ -1452,7 +1446,6 @@ new_byte_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1478,7 +1471,6 @@ new_short_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1504,7 +1496,6 @@ new_int_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1530,7 +1521,6 @@ new_long_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1556,7 +1546,6 @@ new_float_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
@@ -1582,7 +1571,6 @@ new_double_array_len(...)
   
   int32_t length = (int32_t)SvIV(sv_length);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array

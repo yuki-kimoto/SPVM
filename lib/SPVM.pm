@@ -19,7 +19,7 @@ use Carp 'confess';
 our $VERSION = '0.0344';
 
 our $COMPILER;
-our $API;
+our $ENV;
 our $BUILD_DIR;
 our $BUILD;
 
