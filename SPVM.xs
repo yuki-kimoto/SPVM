@@ -911,8 +911,9 @@ get_native_sub_names(...)
   
   SV* sv_self = ST(0);
   
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_LIST* op_subs = compiler->op_subs;
   
@@ -1104,8 +1105,9 @@ free_compiler(...)
   
   SV* sv_self = ST(0);
   
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
@@ -1128,11 +1130,9 @@ bind_sub(...)
   SV* sv_native_sub_name = ST(1);
   SV* sv_native_address = ST(2);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
-  
   
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
