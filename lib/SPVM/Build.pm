@@ -58,7 +58,7 @@ sub build_spvm {
   my $self = shift;
   
   # Compile SPVM source code
-  my $compile_success = $self->compile();
+  my $compile_success = $self->compile_spvm();
   
   if ($compile_success) {
     # Build opcode

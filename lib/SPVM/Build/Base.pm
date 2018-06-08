@@ -67,7 +67,7 @@ sub build_and_bind {
       # Shared library is not installed, so try runtime build
       else {
         # Try runtime compile
-        my $runtime_shared_lib_path = $self->build_shared_lib_runtime($package_name);
+        my $runtime_shared_lib_path = $self->create_shared_lib_runtime($package_name);
         $self->bind_subs($runtime_shared_lib_path, $subs);
       }
     }
@@ -93,7 +93,7 @@ sub bind_subs {
   }
 }
 
-sub build_shared_lib {
+sub create_shared_lib {
   my ($self, %opt) = @_;
   
   # Config file

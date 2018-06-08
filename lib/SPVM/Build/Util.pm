@@ -97,7 +97,7 @@ sub remove_package_part_from_path {
   return $path;
 }
 
-sub create_build_shared_lib_make_rule {
+sub create_package_make_rule {
   my ($package_name, $category) = @_;
   
   my $make_rule;
@@ -135,7 +135,7 @@ sub create_build_shared_lib_make_rule {
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Mblib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->build_shared_lib_dist('$package_name')\"\n\n";
+    .= "\tperl -Mblib -MSPVM::Build::$module_category -e \"SPVM::Build::$module_category->new->create_shared_lib_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }

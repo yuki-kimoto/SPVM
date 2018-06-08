@@ -47,13 +47,13 @@ WriteMakefile(
 # Add Build shared library make rule
 sub MY::postamble {
   
-  my @module_names = qw(
+  my @package_names = qw(
     SPVM::Example
   );
   
   my $make_rule = '';
-  for my $module_name (@module_names) {
-    $make_rule .= SPVM::Build::Util::create_build_shared_lib_make_rule($module_name, 'native');
+  for my $package_name (@package_names) {
+    $make_rule .= SPVM::Build::Util::create_package_make_rule($package_name, 'native');
   }
   
   return $make_rule;

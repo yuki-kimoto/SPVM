@@ -954,7 +954,7 @@ create_compiler(...)
 }
 
 SV*
-compile(...)
+compile_spvm(...)
   PPCODE:
 {
   (void)RETVAL;

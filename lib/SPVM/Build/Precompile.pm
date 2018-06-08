@@ -50,7 +50,7 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub build_shared_lib_runtime {
+sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
 
   # Output directory
@@ -97,7 +97,7 @@ sub build_shared_lib_runtime {
   close $fh;
   
   if ($package_csource ne $old_package_csource) {
-    $self->build_shared_lib(
+    $self->create_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
       work_dir => $work_dir,
