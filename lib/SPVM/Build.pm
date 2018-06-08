@@ -23,15 +23,21 @@ sub new {
   
   my $build_dir = $self->{build_dir};
   
-  $self->{native} ||= SPVM::Build::Native->new(build_dir => $build_dir);
-  
-  $self->{precompile} ||= SPVM::Build::Precompile->new(build_dir => $build_dir);
-  
   $self->{package_infos} ||= [];
   
   bless $self, $class;
   
   $self->{compiler} ||= $self->create_compiler;
+  
+  $self->{native} ||= SPVM::Build::Native->new(
+    build_dir => $build_dir,
+    compiler => $self->{compiler}
+  );
+  
+  $self->{precompile} ||= SPVM::Build::Precompile->new(
+    build_dir => $build_dir,
+    compiler => $self->{compiler}
+  );
   
   return $self;
 }
