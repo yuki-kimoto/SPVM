@@ -50,7 +50,7 @@ sub optimize {
 sub build_and_bind {
   my $self = shift;
   
-  my $packages = SPVM::Build::SPVMInfo::get_packages();
+  my $packages = SPVM::Build::SPVMInfo::get_packages($self->{compiler});
   for my $package (@$packages) {
     my $package_name = $package->{name};
     

@@ -37,7 +37,7 @@ sub get_sub_names_from_module_file {
 sub get_subs_from_package_name {
   my ($self, $package_name) = @_;
   
-  return SPVM::Build::SPVMInfo::get_native_subs_from_package_name($package_name);;
+  return SPVM::Build::SPVMInfo::get_native_subs_from_package_name($self->{compiler}, $package_name);;
 }
 
 sub create_cfunc_name {
