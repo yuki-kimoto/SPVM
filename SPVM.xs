@@ -56,9 +56,7 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
 }
 
 SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
@@ -447,8 +445,9 @@ get_element(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
@@ -525,9 +524,6 @@ get_element(...)
   }
   
   if (is_object) {
-    SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-    SPVM_COMPILER* compiler = runtime->compiler;
-    
     // Element dimension
     int32_t element_dimension = array->dimension - 1;
     
@@ -748,9 +744,7 @@ get_sub_name(...)
   
   int32_t sub_id = (int32_t)SvIV(sv_sub_id);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
@@ -771,9 +765,7 @@ get_sub_names(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
@@ -807,9 +799,7 @@ get_subs_from_package_name(...)
   SV* sv_package_name = ST(0);
   const char* package_name = SvPV_nolen(sv_package_name);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
@@ -870,9 +860,7 @@ get_packages(...)
 {
   (void)RETVAL;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
@@ -957,9 +945,7 @@ get_package_load_path(...)
   
   SV* sv_package_name = ST(0);
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
@@ -1144,7 +1130,6 @@ bind_sub(...)
   
   // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
@@ -1208,14 +1193,12 @@ bind_sub(...)
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
   
+  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
+
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
@@ -1253,14 +1236,13 @@ call_sub(...)
   SV* sv_sub_abs_name = ST(0);
   stack_arg_start++;
   
-  // API
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
 
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   int32_t sub_id = env->get_sub_id(env, sub_abs_name);
   
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Subroutine information
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
@@ -1625,13 +1607,12 @@ new_object_array_len(...)
   SV* sv_basic_type_name = ST(0);
   SV* sv_length = ST(1);
   
-  // API
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+
+  int32_t length = (int32_t)SvIV(sv_length);
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1662,15 +1643,14 @@ new_multi_array_len(...)
   SV* sv_element_dimension = ST(1);
   SV* sv_length = ST(2);
   
-  // API
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   int32_t length = (int32_t)SvIV(sv_length);
 
   int32_t element_dimension = (int32_t)SvIV(sv_element_dimension);
-
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
