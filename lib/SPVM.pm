@@ -40,22 +40,14 @@ sub import {
 
   # Add package informations
   if (defined $package_name) {
-    unless ($BUILD->{package_info_symtable}{$package_name}) {
-      my ($file, $line) = (caller)[1, 2];
-      my $package_info = {
-        name => $package_name,
-        file => $file,
-        line => $line
-      };
-      push @{$BUILD->{package_infos}}, $package_info;
-      
-      $BUILD->{package_info_symtable}{$package_name} = 1;
-      
-      return $package_info;
-    }
+    my ($file, $line) = (caller)[1, 2];
+    my $package_info = {
+      name => $package_name,
+      file => $file,
+      line => $line
+    };
+    push @{$BUILD->{package_infos}}, $package_info;
   }
-  
-  return;
 }
 
 # Compile SPVM source code just after compile-time of Perl
