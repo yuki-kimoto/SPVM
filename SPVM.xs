@@ -975,14 +975,14 @@ compile(...)
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   // Add package
-  SV* sv_build = get_sv("SPVM::BUILD", 0);
-  HV* hv_build = (HV*)SvRV(sv_build);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_package_infos_ptr = hv_fetch(hv_build, "package_infos", strlen("package_infos"), 0);
+  SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
   AV* av_package_infos = (AV*)SvRV(sv_package_infos);
-
+  
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
+  
   {
     int32_t i;
     for (i = 0; i < av_package_infos_length; i++) {
@@ -1013,6 +1013,7 @@ compile(...)
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
     }
   }
+  
   
   // Add include paths
   AV* av_include_paths = get_av("main::INC", 0);;

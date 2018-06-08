@@ -18,14 +18,14 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
-
+  
   my $build_dir = $self->{build_dir};
   
-  $self->{native} = SPVM::Build::Native->new(build_dir => $build_dir);
+  $self->{native} ||= SPVM::Build::Native->new(build_dir => $build_dir);
   
-  $self->{precompile} = SPVM::Build::Precompile->new(build_dir => $build_dir);
+  $self->{precompile} ||= SPVM::Build::Precompile->new(build_dir => $build_dir);
   
-  $self->{package_infos} = [];
+  $self->{package_infos} ||= [];
   
   return bless $self, $class;
 }

@@ -5,6 +5,7 @@ use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
 
+use SPVM();
 use SPVM::Build;
 
 use Test::More 'no_plan';
@@ -16,72 +17,93 @@ use lib "$FindBin::Bin/default/lib";
 
 my $ok;
 
-BEGIN { $ENV{SPVM_NO_COMPILE} = 1 }
-
-sub init_spvm {
-  @SPVM::PACKAGE_INFOS = ();
-  %SPVM::PACKAGE_INFO_SYMTABLE = ();
+{
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::InvalidType',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::InvalidType';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::TypeCantBeDetectedUndef',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndef';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::TypeCantBeDetectedUndefDefault',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::TypeCantBeDetectedUndefDefault';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::AssignIncompatibleType::DifferentObject',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::AssignIncompatibleType::DifferentObject';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::AssignIncompatibleType::ConstToNoConst',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::AssignIncompatibleType::ConstToNoConst';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::Field::Private',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
 
 {
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::Field::Private';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
-}
-
-{
-  BEGIN { init_spvm() }
-  use SPVM 'TestCase::CompileError::New::Private';
-  BEGIN {
-    my $success = SPVM::Build->new->build_spvm();
-    ok($success == 0);
-  }
+  my $package_infos = [
+    {
+      name => 'TestCase::CompileError::New::Private',
+      file => __FILE__,
+      line => __LINE__ - 2,
+    }
+  ];
+  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $success = $build->build_spvm();
+  ok($success == 0);
 }
