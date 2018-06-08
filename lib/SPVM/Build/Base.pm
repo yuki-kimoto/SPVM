@@ -21,10 +21,10 @@ use File::Basename 'dirname', 'basename';
 sub new {
   my $class = shift;
   
-  my $self = {};
+  my $self = {@_};
   
-  $self->{extra_compiler_flags} = SPVM::Build::Util::default_extra_compiler_flags();
-  $self->{optimize} = SPVM::Build::Util::default_optimize();
+  $self->{extra_compiler_flags} ||= SPVM::Build::Util::default_extra_compiler_flags();
+  $self->{optimize} ||= SPVM::Build::Util::default_optimize();
   
   return bless $self, $class;
 }

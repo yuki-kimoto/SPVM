@@ -54,7 +54,7 @@ sub build_shared_lib_runtime {
   my ($self, $package_name) = @_;
 
   # Output directory
-  my $build_dir = $SPVM::BUILD_DIR;
+  my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
