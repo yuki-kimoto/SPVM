@@ -47,7 +47,7 @@ sub optimize {
   return $self->{optimize};
 }
 
-sub build_and_bind {
+sub build {
   my $self = shift;
   
   my $packages = SPVM::Build::SPVMInfo::get_packages($self->{compiler});
