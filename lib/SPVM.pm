@@ -21,7 +21,6 @@ our $VERSION = '0.0344';
 our $COMPILER;
 our $API;
 our $BUILD_DIR;
-our $INITIALIZED;
 our $BUILD;
 
 require XSLoader;
@@ -30,15 +29,13 @@ XSLoader::load('SPVM', $VERSION);
 sub import {
   my ($class, $package_name) = @_;
   
-  unless ($INITIALIZED) {
+  unless ($BUILD) {
     $BUILD = SPVM::Build->new;
     $BUILD_DIR = $ENV{SPVM_BUILD_DIR};
     if (defined $BUILD_DIR) {
       # Remove traling slash
       $BUILD_DIR = File::Spec->catdir(File::Spec->splitdir($BUILD_DIR));
     }
-    
-    $INITIALIZED = 1;
   }
 
   # Add package informations
