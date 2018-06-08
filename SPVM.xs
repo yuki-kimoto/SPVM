@@ -1034,6 +1034,8 @@ compile(...)
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   sv_setsv(get_sv("SPVM::COMPILER", 0), sv_compiler);
 
+  hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+
   // Compile SPVM
   SPVM_COMPILER_compile(compiler);
   SV* sv_compile_success;
@@ -1057,9 +1059,11 @@ build_opcode(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Build opcode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
