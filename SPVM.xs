@@ -1078,9 +1078,11 @@ build_runtime(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  
-  // Get compiler
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(get_sv("SPVM::COMPILER", 0))));
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
@@ -1103,10 +1105,11 @@ free_compiler(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
