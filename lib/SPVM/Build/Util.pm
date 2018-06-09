@@ -52,40 +52,6 @@ sub convert_module_path_to_shared_lib_path {
   return $shared_lib_path;
 }
 
-sub get_native_sub_names_from_module_file {
-  my ($module_file) = @_;
-  
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
-  
-  my $src = do { local $/; <$module_fh> };
-  
-  my $native_sub_names = [];
-  while ($src =~ /native\b(.*?)\bsub\s+([^\s]+)\s/g) {
-    my $sub_name = $1;
-    push @$native_sub_names, $sub_name;
-  }
-  
-  return $native_sub_names;
-}
-
-sub get_precompile_sub_names_from_module_file {
-  my ($module_file) = @_;
-  
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
-  
-  my $src = do { local $/; <$module_fh> };
-  
-  my $native_sub_names = [];
-  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
-    my $sub_name = $1;
-    push @$native_sub_names, $sub_name;
-  }
-  
-  return $native_sub_names;
-}
-
 sub remove_package_part_from_path {
   my ($path, $package_name) = @_;
   

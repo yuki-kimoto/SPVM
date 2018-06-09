@@ -30,7 +30,18 @@ sub new {
 sub get_sub_names_from_module_file {
   my ($self, $module_file) = @_;
   
-  return SPVM::Build::Util::get_precompile_sub_names_from_module_file($module_file);
+  open my $module_fh, '<', $module_file
+    or croak "Can't open $module_file: $!";
+  
+  my $src = do { local $/; <$module_fh> };
+  
+  my $precompile_sub_names = [];
+  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
+    my $sub_name = $1;
+    push @$precompile_sub_names, $sub_name;
+  }
+  
+  return $precompile_sub_names;
 }
 
 sub get_subs_from_package_name {
