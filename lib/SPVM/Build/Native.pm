@@ -50,7 +50,12 @@ sub get_sub_names_dist {
 sub get_subs_from_package_name {
   my ($self, $package_name) = @_;
   
-  return SPVM::Build::SPVMInfo::get_native_subs_from_package_name($self->{compiler}, $package_name);;
+  my $compiler = $self->{compiler};
+  
+  my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($compiler, $package_name);
+  $subs = [grep { $_->{have_native_desc} } @$subs];
+  
+  return $subs;
 }
 
 sub create_cfunc_name {
