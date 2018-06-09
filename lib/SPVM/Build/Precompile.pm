@@ -27,11 +27,13 @@ sub new {
   return $self;
 }
 
-sub get_sub_names_from_module_file {
-  my ($self, $module_file) = @_;
+sub get_sub_names_dist {
+  my ($self, $package_name) = @_;
   
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
+  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  
+  open my $module_fh, '<', $package_load_path
+    or croak "Can't open $package_load_path: $!";
   
   my $src = do { local $/; <$module_fh> };
   

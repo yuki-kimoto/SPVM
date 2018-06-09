@@ -28,11 +28,13 @@ sub new {
   return $self;
 }
 
-sub get_sub_names_from_module_file {
-  my ($self, $module_file) = @_;
+sub get_sub_names_dist {
+  my ($self, $package_name) = @_;
   
-  open my $module_fh, '<', $module_file
-    or croak "Can't open $module_file: $!";
+  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
+  
+  open my $module_fh, '<', $package_load_path
+    or croak "Can't open $package_load_path: $!";
   
   my $src = do { local $/; <$module_fh> };
   
@@ -66,8 +68,7 @@ sub create_shared_lib_dist {
   my $input_dir = 'lib';
   my $output_dir = 'blib/lib';
   
-  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  my $sub_names = $self->get_sub_names_from_module_file($package_load_path);
+  my $sub_names = $self->get_sub_names_dist($package_name);
   
   my $work_dir = "spvm_build/work";
   mkpath $work_dir;
