@@ -17,14 +17,8 @@ use lib "$FindBin::Bin/default/lib";
 my $ok;
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::InvalidType',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::InvalidType');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }

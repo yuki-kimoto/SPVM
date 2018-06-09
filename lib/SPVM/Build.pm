@@ -53,7 +53,7 @@ sub use {
     line => $line,
   };
   
-  return $package_info;
+  push @{$self->{package_infos}}, $package_info;
 }
 
 sub native {
