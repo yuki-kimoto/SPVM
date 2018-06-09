@@ -42,6 +42,20 @@ sub new {
   return $self;
 }
 
+sub use {
+  my ($self, $package_name) = @_;
+  
+  my (undef, $file_name, $line) = caller;
+  
+  my $package_info = {
+    name => $package_name,
+    file => $file_name,
+    line => $line,
+  };
+  
+  return $package_info;
+}
+
 sub native {
   my $self = shift;
   

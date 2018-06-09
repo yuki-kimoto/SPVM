@@ -25,7 +25,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -38,7 +38,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -51,7 +51,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -64,7 +64,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -77,7 +77,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -90,7 +90,7 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
@@ -103,6 +103,6 @@ my $ok;
     }
   ];
   my $build = SPVM::Build->new(package_infos => $package_infos);
-  my $success = $build->build_spvm();
+  my $success = $build->compile_spvm();
   ok($success == 0);
 }
