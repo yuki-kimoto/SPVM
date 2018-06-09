@@ -82,16 +82,28 @@ sub build_spvm {
     $self->build_runtime;
     
     # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
-    $self->precompile->build;
+    $self->build_precompile;
     
     # Build native packages - Compile C source codes and link them to SPVM native subroutine
-    $self->native->build;
+    $self->build_native;
     
     # Build SPVM subroutines
     $self->build_spvm_subs;
   }
   
   return $compile_success;
+}
+
+sub build_precompile {
+  my $self = shift;
+  
+  $self->precompile->build;
+}
+
+sub build_native {
+  my $self = shift;
+  
+  $self->native->build;
 }
 
 my $package_name_h = {};

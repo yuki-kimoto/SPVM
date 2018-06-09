@@ -58,18 +58,14 @@ sub build {
     
     my $subs = $self->get_subs_from_package_name($package_name);
     if (@$subs) {
-      my $installed_shared_lib_path = $self->get_installed_shared_lib_path($package_name);
-      
       # Shared library is already installed in distribution directory
-      if (-f $installed_shared_lib_path) {
-        $self->bind_subs($installed_shared_lib_path, $subs);
+      my $shared_lib_path = $self->get_installed_shared_lib_path($package_name);
+
+      # Try runtime compile if shared library is not found
+      unless (-f $shared_lib_path) {
+        $shared_lib_path = $self->create_shared_lib_runtime($package_name);
       }
-      # Shared library is not installed, so try runtime build
-      else {
-        # Try runtime compile
-        my $runtime_shared_lib_path = $self->create_shared_lib_runtime($package_name);
-        $self->bind_subs($runtime_shared_lib_path, $subs);
-      }
+      $self->bind_subs($shared_lib_path, $subs);
     }
   }
 }
