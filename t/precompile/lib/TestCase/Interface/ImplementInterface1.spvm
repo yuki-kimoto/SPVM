@@ -1,14 +1,14 @@
 package TestCase::Interface::ImplementInterface1 {
   use TestCase::Minimal;
   
-  compile sub foo : int ($self : self, $var1 : int, $var2 : long) {
+  precompile sub foo : int ($self : self, $var1 : int, $var2 : long) {
     return 1;
   }
-  compile sub bar : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : object) {
+  precompile sub bar : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : object) {
     return undef;
   }
   
-  compile sub baz : int ($self : self) {
+  precompile sub baz : int ($self : self) {
     return 1;
   }
 }

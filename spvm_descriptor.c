@@ -5,9 +5,8 @@
 
 const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "native",
-  "compile",
-  "const",
   "precompile",
+  "const",
   "interface",
   "public",
   "private",

@@ -1,5 +1,5 @@
 package TestCase::String {
-  compile sub basic : int () {
+  precompile sub basic : int () {
 
     # const
     {

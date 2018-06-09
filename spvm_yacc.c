@@ -106,7 +106,7 @@
      DEFAULT = 287,
      EVAL = 288,
      WEAKEN = 289,
-     COMPILE = 290,
+     PRECOMPILE = 290,
      UNDEF = 291,
      VOID = 292,
      BYTE = 293,
@@ -170,7 +170,7 @@
 #define DEFAULT 287
 #define EVAL 288
 #define WEAKEN 289
-#define COMPILE 290
+#define PRECOMPILE 290
 #define UNDEF 291
 #define VOID 292
 #define BYTE 293
@@ -639,13 +639,13 @@ static const char *const yytname[] =
   "ELSIF", "ELSE", "RETURN", "FOR", "WHILE", "USE", "NEW", "OUR", "SELF",
   "CONST", "LAST", "NEXT", "NAME", "CONSTANT", "ENUM", "DESCRIPTOR",
   "CORETYPE", "CROAK", "VAR_NAME", "INTERFACE", "REF", "ISA", "SWITCH",
-  "CASE", "DEFAULT", "EVAL", "WEAKEN", "COMPILE", "UNDEF", "VOID", "BYTE",
-  "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "STRING", "OBJECT", "';'",
-  "SPECIAL_ASSIGN", "ASSIGN", "OR", "AND", "BIT_XOR", "BIT_OR", "BIT_AND",
-  "REL", "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE", "MULTIPLY",
-  "'~'", "UMINUS", "ARRAY_LENGTH", "NOT", "DEC", "INC", "')'", "ARROW",
-  "'('", "'['", "'{'", "'}'", "','", "':'", "']'", "$accept", "grammar",
-  "opt_declarations_in_grammar", "declarations_in_grammar",
+  "CASE", "DEFAULT", "EVAL", "WEAKEN", "PRECOMPILE", "UNDEF", "VOID",
+  "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "STRING", "OBJECT",
+  "';'", "SPECIAL_ASSIGN", "ASSIGN", "OR", "AND", "BIT_XOR", "BIT_OR",
+  "BIT_AND", "REL", "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE",
+  "MULTIPLY", "'~'", "UMINUS", "ARRAY_LENGTH", "NOT", "DEC", "INC", "')'",
+  "ARROW", "'('", "'['", "'{'", "'}'", "','", "':'", "']'", "$accept",
+  "grammar", "opt_declarations_in_grammar", "declarations_in_grammar",
   "declaration_in_grammar", "use", "package", "anon_package",
   "opt_declarations_in_package", "declarations_in_package",
   "declaration_in_package", "package_block", "enumeration_block",

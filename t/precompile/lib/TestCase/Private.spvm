@@ -1,5 +1,5 @@
 package TestCase::Private : private {
-  compile sub new : TestCase::Private () {
+  precompile sub new : TestCase::Private () {
     new TestCase::Private;
   }
 }

@@ -145,7 +145,7 @@ spvm_yacc.h
 spvm_yacc_util.c
 spvm_yacc_util.h
 t/compile-error.t
-t/copy_default_to_jit.pl
+t/copy_default_to_precompile.pl
 t/default/array.t
 t/default/assign-operator.t
 t/default/call-sub.t

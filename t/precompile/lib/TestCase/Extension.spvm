@@ -1,7 +1,7 @@
 package TestCase::Extension {
   use TestCase;
   
-  compile sub spvm_extension_add_int_array : int () {
+  precompile sub spvm_extension_add_int_array : int () {
     my $nums1 = new int[] {1, 2, 3};
     my $nums2 = new int[] {4, 5, 6};
     
@@ -18,7 +18,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub spvm_extension : int () {
+  precompile sub spvm_extension : int () {
     my $total = sum(2, 3);
     
     if ($total == 5) {
@@ -28,7 +28,7 @@ package TestCase::Extension {
     return 0;
   }
   
-  compile sub native_use_strlen_test : int () {
+  precompile sub native_use_strlen_test : int () {
     my $string = "abcde";
     my $length = native_use_strlen($string);
     if ($length == 5) {
@@ -48,7 +48,7 @@ package TestCase::Extension {
   native sub native_env_get_double_field : double ($test_case : TestCase);
   native sub native_env_get_object_field : TestCase::Minimal ($test_case : TestCase);
   
-  compile sub native_env_get_set_field : int () {
+  precompile sub native_env_get_set_field : int () {
     
     my $test_case = TestCase->new();
     
@@ -90,7 +90,7 @@ package TestCase::Extension {
   
   native sub add_int_array : int[] ($nums1 : int[], $nums2 : int[]);
 
-  compile sub call_void_sub_exception : int () {
+  precompile sub call_void_sub_exception : int () {
     eval {
       call_void_sub_exception_native();
     };
@@ -102,7 +102,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_byte_sub_exception : int () {
+  precompile sub call_byte_sub_exception : int () {
     eval {
       call_byte_sub_exception_native();
     };
@@ -114,7 +114,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_short_sub_exception : int () {
+  precompile sub call_short_sub_exception : int () {
     eval {
       call_short_sub_exception_native();
     };
@@ -126,7 +126,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_int_sub_exception : int () {
+  precompile sub call_int_sub_exception : int () {
     eval {
       call_int_sub_exception_native();
     };
@@ -138,7 +138,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_long_sub_exception : int () {
+  precompile sub call_long_sub_exception : int () {
     eval {
       call_long_sub_exception_native();
     };
@@ -150,7 +150,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_float_sub_exception : int () {
+  precompile sub call_float_sub_exception : int () {
     eval {
       call_float_sub_exception_native();
     };
@@ -162,7 +162,7 @@ package TestCase::Extension {
     return 0;
   }
 
-  compile sub call_double_sub_exception : int () {
+  precompile sub call_double_sub_exception : int () {
     eval {
       call_double_sub_exception_native();
     };
@@ -174,7 +174,7 @@ package TestCase::Extension {
     return 0;
   }
   
-  compile sub call_object_sub_exception : int () {
+  precompile sub call_object_sub_exception : int () {
     eval {
       call_object_sub_exception_native();
     };

@@ -71,7 +71,7 @@
      DEFAULT = 287,
      EVAL = 288,
      WEAKEN = 289,
-     COMPILE = 290,
+     PRECOMPILE = 290,
      UNDEF = 291,
      VOID = 292,
      BYTE = 293,
@@ -135,7 +135,7 @@
 #define DEFAULT 287
 #define EVAL 288
 #define WEAKEN 289
-#define COMPILE 290
+#define PRECOMPILE 290
 #define UNDEF 291
 #define VOID 292
 #define BYTE 293

@@ -39,72 +39,72 @@ package TestCase {
   has minimal : TestCase::Minimal;
   has private_field : private int;
   
-  compile sub INT : int () { return 127; }
-  compile sub FLOAT_PRECICE : float () { return 16384.5f; }
-  compile sub DOUBLE_PRECICE : double () { return 65536.5; }
+  precompile sub INT : int () { return 127; }
+  precompile sub FLOAT_PRECICE : float () { return 16384.5f; }
+  precompile sub DOUBLE_PRECICE : double () { return 65536.5; }
   
-  compile sub get_private_field : int ($self : self) {
+  precompile sub get_private_field : int ($self : self) {
     return $self->{private_field};
   }
   
-  compile sub set_x_int_array : void ($self : self, $x_int_array : int[]) {
+  precompile sub set_x_int_array : void ($self : self, $x_int_array : int[]) {
     $self->{x_int_array} = $x_int_array;
   }
 
-  compile sub set_x_string : void ($self : self, $x_string : byte[]) {
+  precompile sub set_x_string : void ($self : self, $x_string : byte[]) {
     $self->{x_string} = $x_string;
   }
 
-  compile sub set_x_byte : void ($self : self, $x_byte : byte) {
+  precompile sub set_x_byte : void ($self : self, $x_byte : byte) {
     $self->{x_byte} = $x_byte;
   }
 
-  compile sub set_x_short : void ($self : self, $x_short : short) {
+  precompile sub set_x_short : void ($self : self, $x_short : short) {
     $self->{x_short} = $x_short;
   }
 
-  compile sub set_x_int : void ($self : self, $x_int : int) {
+  precompile sub set_x_int : void ($self : self, $x_int : int) {
     $self->{x_int} = $x_int;
   }
 
-  compile sub set_x_long : void ($self : self, $x_long : long) {
+  precompile sub set_x_long : void ($self : self, $x_long : long) {
     $self->{x_long} = $x_long;
   }
 
-  compile sub set_x_float : void ($self : self, $x_float : float) {
+  precompile sub set_x_float : void ($self : self, $x_float : float) {
     $self->{x_float} = $x_float;
   }
 
-  compile sub set_x_double : void ($self : self, $x_double : double) {
+  precompile sub set_x_double : void ($self : self, $x_double : double) {
     $self->{x_double} = $x_double;
   }
 
-  compile sub get_x_byte : byte ($self : self) {
+  precompile sub get_x_byte : byte ($self : self) {
     return $self->{x_byte};
   }
 
-  compile sub get_x_short : short ($self : self) {
+  precompile sub get_x_short : short ($self : self) {
     return $self->{x_short};
   }
 
-  compile sub get_x_int : int ($self : self) {
+  precompile sub get_x_int : int ($self : self) {
     return $self->{x_int};
   }
 
-  compile sub get_x_long : long ($self : self) {
+  precompile sub get_x_long : long ($self : self) {
     return $self->{x_long};
   }
 
-  compile sub get_x_float : float ($self : self) {
+  precompile sub get_x_float : float ($self : self) {
     return $self->{x_float};
   }
 
-  compile sub get_x_double : double ($self : self) {
+  precompile sub get_x_double : double ($self : self) {
     return $self->{x_double};
   }
   
   # Only compile check
-  compile sub eval_block_stack_check : void () {
+  precompile sub eval_block_stack_check : void () {
     eval {
       my $obj_error1 = "Error1";
       
@@ -118,17 +118,17 @@ package TestCase {
     }
   }
   
-  compile sub new : TestCase () {
+  precompile sub new : TestCase () {
     return new TestCase;
   }
   
-  compile sub my_var_in_loop_free : int () {
+  precompile sub my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
       my $minimal = new TestCase::Minimal;
     }
   }
   
-  compile sub next_statement : int () {
+  precompile sub next_statement : int () {
     my $total = 0;
     for (my $i = 0; $i < 5; $i++) {
       if ($i == 1) {
@@ -145,7 +145,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub convert_to_string : int () {
+  precompile sub convert_to_string : int () {
     my $byte_string = (string)(byte)23;
     my $short_string = (string)(short)23;
     my $int_string = (string)23;
@@ -170,7 +170,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub isa_basic : int () {
+  precompile sub isa_basic : int () {
     my $minimal = new TestCase::Minimal;
     if ($minimal isa TestCase::Minimal) {
       if (!($minimal isa TestCase)) {
@@ -181,7 +181,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub pre_inc : int () {
+  precompile sub pre_inc : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -224,7 +224,7 @@ package TestCase {
     }
   }
 
-  compile sub post_inc : int () {
+  precompile sub post_inc : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -266,7 +266,7 @@ package TestCase {
     }
   }
 
-  compile sub pre_dec : int () {
+  precompile sub pre_dec : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -308,7 +308,7 @@ package TestCase {
     }
   }
 
-  compile sub post_dec : int () {
+  precompile sub post_dec : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;
@@ -350,7 +350,7 @@ package TestCase {
     }
   }
   
-  compile sub package_var : int () {
+  precompile sub package_var : int () {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
       $TestCase::PACKAGE_VAR_INT = INT32_MAX();
       if ($TestCase::PACKAGE_VAR_INT == INT32_MAX()) {
@@ -370,7 +370,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub package_var_rel_name : int () {
+  precompile sub package_var_rel_name : int () {
     if ($PACKAGE_VAR_INT2 == 0) {
       $PACKAGE_VAR_INT2 = INT32_MAX();
       if ($PACKAGE_VAR_INT2 == INT32_MAX()) {
@@ -390,7 +390,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub get_field_exception_object_undef : int () {
+  precompile sub get_field_exception_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -447,7 +447,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub set_field_exception_object_undef : int () {
+  precompile sub set_field_exception_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -503,21 +503,21 @@ package TestCase {
     return 0;
   }
   
-  compile sub get_minimal : TestCase::Minimal ($self : self) {
+  precompile sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
   }
 
-  compile sub set_minimal : void ($self : self, $value : TestCase::Minimal) {
+  precompile sub set_minimal : void ($self : self, $value : TestCase::Minimal) {
     $self->{minimal} = $value;
   }
 
   # Resorved word
-  compile sub int : int ($obj : TestCase) {
+  precompile sub int : int ($obj : TestCase) {
     
     return 5;
   }
   
-  compile sub use_reserved_word : int () {
+  precompile sub use_reserved_word : int () {
     
     my $test_case = new TestCase;
     
@@ -531,7 +531,7 @@ package TestCase {
   }
   
   # SPVM set and get
-  compile sub spvm_set_and_get_byte : int ($nums : byte[]) {
+  precompile sub spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == INT8_MAX()) {
@@ -541,7 +541,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub spvm_set_and_get_short : int ($nums : short[]) {
+  precompile sub spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == INT16_MAX()) {
@@ -551,7 +551,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub spvm_set_and_get_int : int ($nums : int[]) {
+  precompile sub spvm_set_and_get_int : int ($nums : int[]) {
     
     if ($nums->[0] == 0) {
       if ($nums->[1] == INT32_MAX()) {
@@ -561,7 +561,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub spvm_set_and_get_long : int ($nums : long[]) {
+  precompile sub spvm_set_and_get_long : int ($nums : long[]) {
     
     if ($nums->[0] == 0L) {
       if ($nums->[1] == INT64_MAX()) {
@@ -571,7 +571,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub spvm_set_and_get_float : int ($nums : float[]) {
+  precompile sub spvm_set_and_get_float : int ($nums : float[]) {
     
     if ($nums->[0] == 0.0f) {
       if ($nums->[1] == FLOAT_PRECICE()) {
@@ -581,7 +581,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub spvm_set_and_get_double : int ($nums : double[]) {
+  precompile sub spvm_set_and_get_double : int ($nums : double[]) {
     
     if ($nums->[0] == 0.0) {
       if ($nums->[1] == DOUBLE_PRECICE()) {
@@ -593,7 +593,7 @@ package TestCase {
   }
   
   # Concat
-  compile sub concat_special_assign : string () {
+  precompile sub concat_special_assign : string () {
     
     my $value = "a";
     
@@ -602,7 +602,7 @@ package TestCase {
     return $value;
   }
   
-  compile sub concat : string () {
+  precompile sub concat : string () {
     "a" . "b";
     
     my $value = "a" . "b";
@@ -611,18 +611,18 @@ package TestCase {
   }
   
   # string
-  compile sub string_utf8 : string () {
+  precompile sub string_utf8 : string () {
     my $value = "あいうえお";
     
     return $value;
   }
-  compile sub string_empty : string () {
+  precompile sub string_empty : string () {
     my $value = "";
     
     return $value;
   }
 
-  compile sub assign : int () {
+  precompile sub assign : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
@@ -687,7 +687,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub special_assign : int () {
+  precompile sub special_assign : int () {
     my $num1 = 1;
     $num1 += 4;
     if ($num1 == 5) {
@@ -736,7 +736,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub call_sub_nest : int () {
+  precompile sub call_sub_nest : int () {
     my $total = call_sub_nest_sum(call_sub_nest_sum(1, 2), call_sub_nest_sum(3, 4));
     
     if ($total == 10) {
@@ -745,14 +745,14 @@ package TestCase {
     
     return 0;
   }
-  compile sub call_sub_nest_sum : int ($num1 : int, $num2 : int) {
+  precompile sub call_sub_nest_sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
-  compile sub call_sub_args_convertion_stab1 : double ($var1 : byte, $var2 : short, $var3 : int, $var4 : long, $var5 : float, $var6 : double) {
+  precompile sub call_sub_args_convertion_stab1 : double ($var1 : byte, $var2 : short, $var3 : int, $var4 : long, $var5 : float, $var6 : double) {
     return ($var1 + $var2 + $var3 + $var4 + $var5 + $var6);
   }
   
-  compile sub call_sub_args_convertion : int () {
+  precompile sub call_sub_args_convertion : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
@@ -779,7 +779,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub exception_eval_call_sub : int () {
+  precompile sub exception_eval_call_sub : int () {
     eval {
       exception_croak_return_int();
     };
@@ -791,43 +791,43 @@ package TestCase {
     return 0;
   }
   
-  compile sub exception_call_stack : int () {
+  precompile sub exception_call_stack : int () {
     exception_croak_return_int();
   }
   
-  compile sub exception_croak_return_byte : byte () {
+  precompile sub exception_croak_return_byte : byte () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_short : short () {
+  precompile sub exception_croak_return_short : short () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_int : int () {
+  precompile sub exception_croak_return_int : int () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_long : long () {
+  precompile sub exception_croak_return_long : long () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_float : float () {
+  precompile sub exception_croak_return_float : float () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_double : double () {
+  precompile sub exception_croak_return_double : double () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_object : TestCase::Minimal () {
+  precompile sub exception_croak_return_object : TestCase::Minimal () {
     croak "Error";
   }
   
-  compile sub exception_croak_return_void : void () {
+  precompile sub exception_croak_return_void : void () {
     croak "Error";
   }
 
-  compile sub exception_croak_return_int_eval_catch : int () {
+  precompile sub exception_croak_return_int_eval_catch : int () {
     eval {
       croak "Error";
     };
@@ -840,12 +840,12 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_assign : int () {
+  precompile sub call_sub_assign : int () {
     my $m = TestCase::Minimal->new();
     $m = TestCase::Minimal->new();
   }
   
-  compile sub call_sub_undef : int ($value : TestCase) {
+  precompile sub call_sub_undef : int ($value : TestCase) {
     
     if ($value == undef) {
       return 1;
@@ -854,7 +854,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_last_camma : int () {
+  precompile sub call_sub_last_camma : int () {
     
     my $total = sum_int(3, 4,);
     
@@ -865,7 +865,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub destructor : int () {
+  precompile sub destructor : int () {
     my $minimal = TestCase::Minimal->new();
     destructor_call($minimal);
     
@@ -875,12 +875,12 @@ package TestCase {
     return 0;
   }
   
-  compile sub destructor_call : int ($minimal: TestCase::Minimal) {
+  precompile sub destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor->new();
     $dest->{minimal} = $minimal;
   }
   
-  compile sub weaken_target4_weaken_object_assign : int () {
+  precompile sub weaken_target4_weaken_object_assign : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Weaken->new();
@@ -913,7 +913,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub weaken_target4 : int () {
+  precompile sub weaken_target4 : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Weaken->new();
@@ -942,7 +942,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub weaken_weaken_object_undef : int () {
+  precompile sub weaken_weaken_object_undef : int () {
     my $weaken = TestCase::Weaken->new();
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
@@ -961,7 +961,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub weaken_target_object_undef : int () {
+  precompile sub weaken_target_object_undef : int () {
     my $weaken = TestCase::Weaken->new();
     my $test_case = new TestCase;
 
@@ -977,7 +977,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub weaken_recursive3 : int () {
+  precompile sub weaken_recursive3 : int () {
     my $weaken = TestCase::Weaken->new();
     my $weaken2 = TestCase::Weaken2->new();
     my $test_case = new TestCase;
@@ -990,7 +990,7 @@ package TestCase {
     return 1;
   }
   
-  compile sub weaken_reference_count1_object : int () {
+  precompile sub weaken_reference_count1_object : int () {
     my $weaken = TestCase::Weaken->new();
     my $test_case = new TestCase;
     
@@ -1005,7 +1005,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub weaken_recursive_again : void () {
+  precompile sub weaken_recursive_again : void () {
     my $weaken = TestCase::Weaken->new();
     
     # Recuresive reference
@@ -1018,7 +1018,7 @@ package TestCase {
     weaken $test_case->{x_weaken};
   }
   
-  compile sub weaken_recursive : int () {
+  precompile sub weaken_recursive : int () {
     my $weaken = TestCase::Weaken->new();
     $weaken->{x1} = 1;
     
@@ -1039,7 +1039,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub weaken_self_recuresive : int () {
+  precompile sub weaken_self_recuresive : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 5;
     
@@ -1055,7 +1055,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
+  precompile sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
     
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
@@ -1074,7 +1074,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
+  precompile sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
     if ((int)$nums->[0][0] == (int)(short)1) {
       if ((int)$nums->[0][1] == (int)(short)2) {
         if ((int)$nums->[0][2] == (int)(short)3) {
@@ -1092,7 +1092,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
+  precompile sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {
@@ -1110,7 +1110,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
+  precompile sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
     if ($nums->[0][0] == (long)1) {
       if ($nums->[0][1] == (long)2) {
         if ($nums->[0][2] == (long)3) {
@@ -1128,7 +1128,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
+  precompile sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
     if ($nums->[0][0] == (float)1) {
       if ($nums->[0][1] == (float)2) {
         if ($nums->[0][2] == (float)3) {
@@ -1146,7 +1146,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
+  precompile sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
     if ($nums->[0][0] == (double)1) {
       if ($nums->[0][1] == (double)2) {
         if ($nums->[0][2] == (double)3) {
@@ -1164,7 +1164,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_object_array_len_element_object_array : int ($nums : TestCase[]) {
+  precompile sub spvm_new_object_array_len_element_object_array : int ($nums : TestCase[]) {
     if ($nums->[0]{x_int} == 1) {
       if ($nums->[1]{x_int} == 2) {
         return 1;
@@ -1175,10 +1175,10 @@ package TestCase {
   }
 
   # Call void function
-  compile sub call_void_sub : void ($nums : int[]) {
+  precompile sub call_void_sub : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  compile sub call_void : int () {
+  precompile sub call_void : int () {
     my $nums = new int[] {1};
     
     call_void_sub($nums);
@@ -1190,12 +1190,12 @@ package TestCase {
   }
   
   # Exception
-  compile sub exception_zero_divide_int : int () {
+  precompile sub exception_zero_divide_int : int () {
     1 / 0;
   }
 
   # Multiply
-  compile sub divide : int () {
+  precompile sub divide : int () {
     # int
     my $int_success = 0;
     {
@@ -1296,7 +1296,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub remainder : int () {
+  precompile sub remainder : int () {
     my $num1 = (byte)((byte)5 % (byte)3);
     my $num2 = (byte)((byte)-3 % (byte)5);
     my $num3 = (short)((int)(short)5 % (int)(short)3);
@@ -1328,7 +1328,7 @@ package TestCase {
   }
   
   # Default return value empty
-  compile sub default_return_value_byte : int () {
+  precompile sub default_return_value_byte : int () {
     
     if (default_return_value_byte_sub() == 0) {
       if (default_return_value_byte_sub_empty() == 0) {
@@ -1338,13 +1338,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_byte_sub : byte () {
+  precompile sub default_return_value_byte_sub : byte () {
     1;
   }
-  compile sub default_return_value_byte_sub_empty : byte () {
+  precompile sub default_return_value_byte_sub_empty : byte () {
     
   }
-  compile sub default_return_value_short : int () {
+  precompile sub default_return_value_short : int () {
     
     if ((int)default_return_value_short_sub() == (int)(short)0) {
       if ((int)default_return_value_short_sub_empty() == (int)(short)0) {
@@ -1354,13 +1354,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_short_sub : short () {
+  precompile sub default_return_value_short_sub : short () {
     1;
   }
-  compile sub default_return_value_short_sub_empty : short () {
+  precompile sub default_return_value_short_sub_empty : short () {
     
   }
-  compile sub default_return_value_int : int () {
+  precompile sub default_return_value_int : int () {
     
     if (default_return_value_int_sub() == (int)0) {
       if (default_return_value_int_sub_empty() == (int)0) {
@@ -1370,13 +1370,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_int_sub : int () {
+  precompile sub default_return_value_int_sub : int () {
     1;
   }
-  compile sub default_return_value_int_sub_empty : int () {
+  precompile sub default_return_value_int_sub_empty : int () {
     
   }
-  compile sub default_return_value_long : int () {
+  precompile sub default_return_value_long : int () {
     
     if (default_return_value_long_sub() == (long)0) {
       if (default_return_value_long_sub_empty() == (long)0) {
@@ -1386,13 +1386,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_long_sub : long () {
+  precompile sub default_return_value_long_sub : long () {
     1;
   }
-  compile sub default_return_value_long_sub_empty : long () {
+  precompile sub default_return_value_long_sub_empty : long () {
     
   }
-  compile sub default_return_value_float : int () {
+  precompile sub default_return_value_float : int () {
     
     if (default_return_value_float_sub() == (float)0) {
       if (default_return_value_float_sub_empty() == (float)0) {
@@ -1402,13 +1402,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_float_sub : float () {
+  precompile sub default_return_value_float_sub : float () {
     1;
   }
-  compile sub default_return_value_float_sub_empty : float () {
+  precompile sub default_return_value_float_sub_empty : float () {
     
   }
-  compile sub default_return_value_double : int () {
+  precompile sub default_return_value_double : int () {
     
     if (default_return_value_double_sub() == (double)0) {
       if (default_return_value_double_sub_empty() == (double)0) {
@@ -1418,13 +1418,13 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_double_sub : double () {
+  precompile sub default_return_value_double_sub : double () {
     1;
   }
-  compile sub default_return_value_double_sub_empty : double () {
+  precompile sub default_return_value_double_sub_empty : double () {
     
   }
-  compile sub default_return_value_object : int () {
+  precompile sub default_return_value_object : int () {
     
     if (default_return_value_object_sub() == undef) {
       if (default_return_value_object_sub_empty() == undef) {
@@ -1434,15 +1434,15 @@ package TestCase {
     
     return 0;
   }
-  compile sub default_return_value_object_sub : TestCase () {
+  precompile sub default_return_value_object_sub : TestCase () {
     1;
   }
-  compile sub default_return_value_object_sub_empty : TestCase () {
+  precompile sub default_return_value_object_sub_empty : TestCase () {
     
   }
   
   # Switch - nest
-  compile sub switch_nest : int () {
+  precompile sub switch_nest : int () {
     my $success1 : int;
     switch (3) {
       case 1:
@@ -1474,7 +1474,7 @@ package TestCase {
   }
   
   # Switch - lookup switch
-  compile sub switch_lookup_switch : int () {
+  precompile sub switch_lookup_switch : int () {
     my $success1 : int;
     switch (1) {
       case 1:
@@ -1539,7 +1539,7 @@ package TestCase {
   }
   
   # Switch - table switch
-  compile sub switch_table_switch : int () {
+  precompile sub switch_table_switch : int () {
     my $success1 : int;
     
     switch(3) {
@@ -1594,7 +1594,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub my_var_scope : int () {
+  precompile sub my_var_scope : int () {
     my $ok1 = 0;
     my $ok2 = 0;
     my $ok3 = 0;
@@ -1644,7 +1644,7 @@ package TestCase {
   }
   
   # My variable is initialized zero
-  compile sub my_var_initialized_zero : int () {
+  precompile sub my_var_initialized_zero : int () {
     my $var1 : int;
     my $var2 : TestCase;
     
@@ -1656,7 +1656,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub my_var_block : int () {
+  precompile sub my_var_block : int () {
     my $success = 1;
     
     my $var1 = 1;
@@ -1689,7 +1689,7 @@ package TestCase {
   }
   
   # object field is initialized zero
-  compile sub object_field_initialized_zero : int () {
+  precompile sub object_field_initialized_zero : int () {
     my $obj = new TestCase;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
@@ -1702,7 +1702,7 @@ package TestCase {
   }
   
   # object field set and get
-  compile sub object_field_set_and_get : int () {
+  precompile sub object_field_set_and_get : int () {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = INT8_MAX();
@@ -1733,7 +1733,7 @@ package TestCase {
   }
 
   # object field set and get
-  compile sub object_field_set_and_get_again : int () {
+  precompile sub object_field_set_and_get_again : int () {
     my $test_case = new TestCase;
     
     $test_case->{x_byte} = INT8_MAX();
@@ -1773,13 +1773,13 @@ package TestCase {
   }
 
   # new near small base_object_max_byte_size_use_memory_pool
-  compile sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
+  precompile sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
     my $block = new byte[0xFFF0];
     
     return 1;
   }
 
-  compile sub array_default_zero_not_memory_pool : int () {
+  precompile sub array_default_zero_not_memory_pool : int () {
     my $values_byte = new byte[1000000];
     my $values_short = new short[1000000];
     my $values_int = new int[1000000];
@@ -1816,7 +1816,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub array_default_zero_memory_pool : int () {
+  precompile sub array_default_zero_memory_pool : int () {
     my $values_byte = new byte[10];
     my $values_short = new short[10];
     my $values_int = new int[10];
@@ -1853,7 +1853,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub array_init_byte : int () {
+  precompile sub array_init_byte : int () {
     my $nums = new byte[] {(byte)1, (byte)2, INT8_MAX()};
     
     if ($nums->[0] == 1) {
@@ -1865,7 +1865,7 @@ package TestCase {
     }
     return 0;
   }
-  compile sub array_init_short : int () {
+  precompile sub array_init_short : int () {
     my $nums = new short[] {(short)1, (short)2, (short)3};
     
     if ((int)$nums->[0] == (int)(short)1) {
@@ -1877,7 +1877,7 @@ package TestCase {
     }
     return 0;
   }
-  compile sub array_init_int  : int () {
+  precompile sub array_init_int  : int () {
     my $nums = new int[] {1, 2, 3};
     my $nums2 : int[];
     $nums2 = new int[] {4, 5, 6};
@@ -1905,7 +1905,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub array_init_long : int () {
+  precompile sub array_init_long : int () {
     my $nums = new long[] {1L, 2L, 3L};
     
     if ($nums->[0] == 1L) {
@@ -1917,7 +1917,7 @@ package TestCase {
     }
     return 0;
   }
-  compile sub array_init_float : int () {
+  precompile sub array_init_float : int () {
     my $nums = new float[] {1f, 2f, 3f};
     
     if ($nums->[0] == 1f) {
@@ -1929,7 +1929,7 @@ package TestCase {
     }
     return 0;
   }
-  compile sub array_init_double : int () {
+  precompile sub array_init_double : int () {
     my $nums = new double[] {1d, 2d, 3d};
     
     if ($nums->[0] == 1d) {
@@ -1942,7 +1942,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub get_object_from_freelist  : int () {
+  precompile sub get_object_from_freelist  : int () {
     get_object_from_freelist_check();
     
     my $result = new int[65];
@@ -1950,7 +1950,7 @@ package TestCase {
     
     return 1;
   }
-  compile sub get_object_from_freelist_check : int[] () {
+  precompile sub get_object_from_freelist_check : int[] () {
     my $result = new int[63];
     my $true_result = new int[1];
     return $true_result;
@@ -1964,7 +1964,7 @@ package TestCase {
     INT_SIX = 6,
     INT_MINUS_MAX = -2147483648
   }
-  compile sub enum_int  : int () {
+  precompile sub enum_int  : int () {
     
     if (TestCase->INT_ZERO == 0) {
       if (TestCase->INT_ONE == 1) {
@@ -1984,7 +1984,7 @@ package TestCase {
   }
   
   # Convert type - floating point narrowing convertion
-  compile sub convert_float_to_byte : int () {
+  precompile sub convert_float_to_byte : int () {
     my $value = (byte)127.1f;
     
     if ($value == 127) {
@@ -1993,7 +1993,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_float_to_short : int () {
+  precompile sub convert_float_to_short : int () {
     my $value = (short)32767.1f;
     
     if ($value == 32767) {
@@ -2002,7 +2002,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_float_to_int : int () {
+  precompile sub convert_float_to_int : int () {
     my $value = (int)132767.1f;
     
     if ($value == 132767) {
@@ -2011,7 +2011,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_float_to_long : int () {
+  precompile sub convert_float_to_long : int () {
     my $value = (long)132767.1f;
     
     if ($value == 132767L) {
@@ -2020,7 +2020,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_byte : int () {
+  precompile sub convert_double_to_byte : int () {
     my $value = (byte)127.1;
     
     if ($value == 127) {
@@ -2029,7 +2029,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_short : int () {
+  precompile sub convert_double_to_short : int () {
     my $value = (short)32767.1;
     
     if ((int)$value == (int)(short)32767) {
@@ -2038,7 +2038,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_int : int () {
+  precompile sub convert_double_to_int : int () {
     my $value = (int)2147483646.1;
     
     if ($value == 2147483646) {
@@ -2047,7 +2047,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_long : int () {
+  precompile sub convert_double_to_long : int () {
     my $value = (long)2147483646.1;
     
     if ($value == 2147483646L) {
@@ -2056,7 +2056,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_float : int () {
+  precompile sub convert_double_to_float : int () {
     my $value = (float)0.5;
     
     if ($value == 0.5f) {
@@ -2067,7 +2067,7 @@ package TestCase {
   }
   
   # Convert type - floating point widning convertion
-  compile sub convert_byte_to_float : int () {
+  precompile sub convert_byte_to_float : int () {
     my $value = (float)(byte)127;
     
     if ($value == 127.0f) {
@@ -2076,7 +2076,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_float : int () {
+  precompile sub convert_short_to_float : int () {
     my $value = (float)(short)32767;
     
     if ($value == 32767.0f) {
@@ -2085,7 +2085,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_float : int () {
+  precompile sub convert_int_to_float : int () {
     my $value = (float)32767;
     
     if ($value == 32767.0f) {
@@ -2094,7 +2094,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_long_to_float : int () {
+  precompile sub convert_long_to_float : int () {
     my $value = (float)32767L;
     
     if ($value == 32767.0f) {
@@ -2103,7 +2103,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_double : int () {
+  precompile sub convert_byte_to_double : int () {
     my $value = (double)(byte)127;
     
     if ($value == 127.0) {
@@ -2112,7 +2112,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_double : int () {
+  precompile sub convert_short_to_double : int () {
     my $value = (double)(short)32767;
     
     if ($value == 32767.0) {
@@ -2121,7 +2121,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_double : int () {
+  precompile sub convert_int_to_double : int () {
     my $value = (double)2147483647;
     if ($value == 2147483647.0) {
       return 1;
@@ -2129,7 +2129,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_long_to_double : int () {
+  precompile sub convert_long_to_double : int () {
     my $value = (double)2147483647L;
     
     if ($value == 2147483647.0) {
@@ -2138,7 +2138,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_float_to_double : int () {
+  precompile sub convert_float_to_double : int () {
     my $value = (double)32767.0f;
     
     if ($value == 32767.0) {
@@ -2149,7 +2149,7 @@ package TestCase {
   }
   
   # Convert type - widning convertion
-  compile sub convert_byte_to_short_plus : int () {
+  precompile sub convert_byte_to_short_plus : int () {
     my $value = (short)(byte)0x7F;
     
     if ((int)$value == (int)(short)0x007F) {
@@ -2158,7 +2158,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_short_minus : int () {
+  precompile sub convert_byte_to_short_minus : int () {
     my $value = (short)(byte)0xFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2167,7 +2167,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_int_plus : int () {
+  precompile sub convert_byte_to_int_plus : int () {
     my $value = (int)(byte)0x7F;
     
     if ($value == 0x0000007F) {
@@ -2176,7 +2176,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_int_minus : int () {
+  precompile sub convert_byte_to_int_minus : int () {
     my $value = (int)(byte)0xFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2185,7 +2185,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_long_plus : int () {
+  precompile sub convert_byte_to_long_plus : int () {
     my $value = (long)(byte)0x7F;
     
     if ($value == 0x000000000000007FL) {
@@ -2194,7 +2194,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_long_minus : int () {
+  precompile sub convert_byte_to_long_minus : int () {
     my $value = (long)(byte)0xFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2203,7 +2203,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_int_plus : int () {
+  precompile sub convert_short_to_int_plus : int () {
     my $value = (int)(short)0x7FFF;
     
     if ($value == 0x0000007FFF) {
@@ -2212,7 +2212,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_int_minus : int () {
+  precompile sub convert_short_to_int_minus : int () {
     my $value = (int)(short)0xFFFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2221,7 +2221,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_long_plus : int () {
+  precompile sub convert_short_to_long_plus : int () {
     my $value = (long)(short)0x7FFF;
     
     if ($value == 0x000000000000007FFFL) {
@@ -2230,7 +2230,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_long_minus : int () {
+  precompile sub convert_short_to_long_minus : int () {
     my $value = (long)(short)0xFFFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2239,7 +2239,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_long_plus : int () {
+  precompile sub convert_int_to_long_plus : int () {
     my $value = (long)0x7FFFFFFF;
     
     if ($value == 0x000000007FFFFFFFL) {
@@ -2248,7 +2248,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_long_minus : int () {
+  precompile sub convert_int_to_long_minus : int () {
     my $value = (long)0xFFFFFFFF;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2259,7 +2259,7 @@ package TestCase {
   }
   
   # Convert type - convert to same type
-  compile sub convert_long_to_long : int () {
+  precompile sub convert_long_to_long : int () {
     my $value = (long)0xFFFFFFFFFFFFFFFFL;
     
     if ($value == 0xFFFFFFFFFFFFFFFFL) {
@@ -2268,7 +2268,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_int : int () {
+  precompile sub convert_int_to_int : int () {
     my $value = (int)0xFFFFFFFF;
     
     if ($value == 0xFFFFFFFF) {
@@ -2277,7 +2277,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_short : int () {
+  precompile sub convert_short_to_short : int () {
     my $value = (short)(short)0xFFFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2286,7 +2286,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_byte_to_byte : int () {
+  precompile sub convert_byte_to_byte : int () {
     my $value = (byte)(byte)0xFF;
     
     if ($value == (byte)0xFF) {
@@ -2295,7 +2295,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_float_to_float : int () {
+  precompile sub convert_float_to_float : int () {
     my $value = (float)0.5f;
     
     if ($value == 0.5f) {
@@ -2304,7 +2304,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_double_to_double : int () {
+  precompile sub convert_double_to_double : int () {
     my $value = (double)0.5;
     
     if ($value == 0.5) {
@@ -2315,7 +2315,7 @@ package TestCase {
   }
   
   # Convert type - integral narrowing convertion
-  compile sub convert_long_to_int : int () {
+  precompile sub convert_long_to_int : int () {
     my $value = (int)0xFFFFFFFFFFFFFFFFL;
     
     if ($value == 0xFFFFFFFF) {
@@ -2324,7 +2324,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_long_to_short : int () {
+  precompile sub convert_long_to_short : int () {
     my $value = (short)0xFFFFFFFFFFFFFFFFL;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2333,7 +2333,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_long_to_byte : int () {
+  precompile sub convert_long_to_byte : int () {
     my $value = (byte)0xFFFFFFFFFFFFFFFFL;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2342,7 +2342,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_short : int () {
+  precompile sub convert_int_to_short : int () {
     my $value = (short)0xFFFFFFFF;
     
     if ((int)$value == (int)(short)0xFFFF) {
@@ -2351,7 +2351,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_int_to_byte : int () {
+  precompile sub convert_int_to_byte : int () {
     my $value = (byte)0xFFFFFFFF;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2360,7 +2360,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub convert_short_to_byte : int () {
+  precompile sub convert_short_to_byte : int () {
     my $value = (byte)(short)0xFFFF;
     
     if ((int)$value == (int)(byte)0xFF) {
@@ -2370,7 +2370,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub spvm_object_set_object : int ($obj : TestCase) {
+  precompile sub spvm_object_set_object : int ($obj : TestCase) {
     my $nums = $obj->{x_int_array};
     my $values = ($obj->{x_string});
     
@@ -2396,7 +2396,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_object_set : int ($obj : TestCase) {
+  precompile sub spvm_object_set : int ($obj : TestCase) {
     if ($obj->{x_byte} == 127) {
       if ($obj->{x_short} == 32767) {
         if ($obj->{x_int} == 2147483647) {
@@ -2416,14 +2416,14 @@ package TestCase {
     return 0;
   }
   
-  compile sub logical_not_true : int () {
+  precompile sub logical_not_true : int () {
     if (!1) {
       return 0;
     }
     
     return 1;
   }
-  compile sub logical_not_false : int () {
+  precompile sub logical_not_false : int () {
     if (!0) {
       return 1;
     }
@@ -2432,7 +2432,7 @@ package TestCase {
   }
 
   # logical or
-  compile sub logical_or_both_true : int () {
+  precompile sub logical_or_both_true : int () {
     if (1 || 1) {
       return 1;
     }
@@ -2440,7 +2440,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub logical_or_left_true : int () {
+  precompile sub logical_or_left_true : int () {
     if (1 || 0) {
       return 1;
     }
@@ -2448,7 +2448,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub logical_or_right_true : int () {
+  precompile sub logical_or_right_true : int () {
     if (0 || 1) {
       return 1;
     }
@@ -2456,7 +2456,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub logical_or_both_false : int () {
+  precompile sub logical_or_both_false : int () {
     if (0 || 0) {
       return 0;
     }
@@ -2465,7 +2465,7 @@ package TestCase {
   }
   
   # logical and
-  compile sub logical_and_both_true : int () {
+  precompile sub logical_and_both_true : int () {
     if (1 && 1) {
       return 1;
     }
@@ -2473,7 +2473,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub logical_and_left_true : int () {
+  precompile sub logical_and_left_true : int () {
     if (1 && 0) {
       return 0;
     }
@@ -2481,7 +2481,7 @@ package TestCase {
     return 1;
   }
 
-  compile sub logical_and_right_true : int () {
+  precompile sub logical_and_right_true : int () {
     if (1 && 0) {
       return 0;
     }
@@ -2489,7 +2489,7 @@ package TestCase {
     return 1;
   }
 
-  compile sub logical_and_both_false : int () {
+  precompile sub logical_and_both_false : int () {
     if (0 && 0) {
       return 0;
     }
@@ -2498,7 +2498,7 @@ package TestCase {
   }
   
   # call_sub return value
-  compile sub call_sub_return_byte_array  : byte[] () {
+  precompile sub call_sub_return_byte_array  : byte[] () {
     my $nums = new byte[3];
     
     $nums->[0] = (byte)1;
@@ -2507,7 +2507,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_byte_array_check : int ($nums : byte[]) {
+  precompile sub call_sub_return_byte_array_check : int ($nums : byte[]) {
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -2522,7 +2522,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_return_short_array : short[] () {
+  precompile sub call_sub_return_short_array : short[] () {
     my $nums = new short[3];
     
     $nums->[0] = (short)1;
@@ -2531,7 +2531,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_short_array_check : int ($nums : short[]) {
+  precompile sub call_sub_return_short_array_check : int ($nums : short[]) {
     
     if ((int)$nums->[0] == (int)(short)1) {
       if ((int)$nums->[1] == (int)(short)2) {
@@ -2546,7 +2546,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_return_int_array : int[] () {
+  precompile sub call_sub_return_int_array : int[] () {
     my $nums = new int[3];
     
     $nums->[0] = (int)1;
@@ -2555,7 +2555,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_int_array_check : int ($nums : int[]) {
+  precompile sub call_sub_return_int_array_check : int ($nums : int[]) {
     
     if ($nums->[0] == (int)1) {
       if ($nums->[1] == (int)2) {
@@ -2570,7 +2570,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_return_long_array : long[] () {
+  precompile sub call_sub_return_long_array : long[] () {
     my $nums = new long[3];
     
     $nums->[0] = (long)1;
@@ -2579,7 +2579,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_long_array_check : int ($nums : long[]) {
+  precompile sub call_sub_return_long_array_check : int ($nums : long[]) {
     
     if ($nums->[0] == (long)1) {
       if ($nums->[1] == (long)2) {
@@ -2594,7 +2594,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_return_float_array : float[] () {
+  precompile sub call_sub_return_float_array : float[] () {
     my $nums = new float[3];
     
     $nums->[0] = (float)1;
@@ -2603,7 +2603,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_float_array_check : int ($nums : float[]) {
+  precompile sub call_sub_return_float_array_check : int ($nums : float[]) {
     
     if ($nums->[0] == (float)1) {
       if ($nums->[1] == (float)2) {
@@ -2618,7 +2618,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub call_sub_return_double_array : double[] () {
+  precompile sub call_sub_return_double_array : double[] () {
     my $nums = new double[3];
     
     $nums->[0] = (double)1;
@@ -2627,7 +2627,7 @@ package TestCase {
     
     return $nums;
   }
-  compile sub call_sub_return_double_array_check : int ($nums : double[]) {
+  precompile sub call_sub_return_double_array_check : int ($nums : double[]) {
     
     if ($nums->[0] == (double)1) {
       if ($nums->[1] == (double)2) {
@@ -2643,7 +2643,7 @@ package TestCase {
   }
   
   # Negate
-  compile sub negate : int () {
+  precompile sub negate : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -2676,7 +2676,7 @@ package TestCase {
   }
 
   # Negate
-  compile sub plus : int () {
+  precompile sub plus : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -2709,7 +2709,7 @@ package TestCase {
   }
 
   # Complement
-  compile sub complement : int () {
+  precompile sub complement : int () {
     my $num_byte = (byte)0xF0;
     my $num_short = (short)0xFFF0;
     my $num_int = 0xFFFFFFF0;
@@ -2734,7 +2734,7 @@ package TestCase {
   }
 
   # Add
-  compile sub add : int () {
+  precompile sub add : int () {
     # int
     my $int_success = 0;
     {
@@ -2833,32 +2833,32 @@ package TestCase {
   }
 
   # Add
-  compile sub add_int_max : int () {
+  precompile sub add_int_max : int () {
     return (int)2147483646 + (int)1;
   }
   
-  compile sub add_int_min : int () {
+  precompile sub add_int_min : int () {
     return (int)-2147483648 + (int)1;
   }
   
-  compile sub add_int_overflow : int () {
+  precompile sub add_int_overflow : int () {
     return (int)2147483647 + (int)1;
   }
 
-  compile sub add_long_max : long () {
+  precompile sub add_long_max : long () {
     return (long)9223372036854775806L + (long)1;
   }
   
-  compile sub add_long_min : long () {
+  precompile sub add_long_min : long () {
     return (long)-9223372036854775808L + (long)1;
   }
   
-  compile sub add_long_overflow : long () {
+  precompile sub add_long_overflow : long () {
     return (long)9223372036854775807L + (long)1;
   }
 
   # Subtract
-  compile sub subtract : int () {
+  precompile sub subtract : int () {
     my $value1 : int = 1 - 2;
     my $value2 : int = (byte)1 - 3;
     my $value3 : int = 1 - (byte)4;
@@ -2890,32 +2890,32 @@ package TestCase {
   }
 
   # Subtract
-  compile sub subtract_int_max : int () {
+  precompile sub subtract_int_max : int () {
     return (int)2147483647 - (int)1;
   }
   
-  compile sub subtract_int_min : int () {
+  precompile sub subtract_int_min : int () {
     return (int)-2147483647 - (int)1;
   }
   
-  compile sub subtract_int_underflow : int () {
+  precompile sub subtract_int_underflow : int () {
     return (int)-2147483648 - (int)1;
   }
 
-  compile sub subtract_long_max : long () {
+  precompile sub subtract_long_max : long () {
     return (long)9223372036854775807L - (long)1;
   }
   
-  compile sub subtract_long_min : long () {
+  precompile sub subtract_long_min : long () {
     return (long)-9223372036854775807L - (long)1;
   }
   
-  compile sub subtract_long_underflow : long () {
+  precompile sub subtract_long_underflow : long () {
     return (long)-9223372036854775808L - (long)1;
   }
 
   # Multiply
-  compile sub multiply : int () {
+  precompile sub multiply : int () {
     # int
     my $int_success = 0;
     {
@@ -3014,32 +3014,32 @@ package TestCase {
   }
   
   # Multiply
-  compile sub multiply_int_plus : int () {
+  precompile sub multiply_int_plus : int () {
     return (int)536870912 * (int)2;
   }
   
-  compile sub multiply_int_minus : int () {
+  precompile sub multiply_int_minus : int () {
     return (int)536870912 * (int)-2;
   }
   
-  compile sub multiply_int_overflow : int () {
+  precompile sub multiply_int_overflow : int () {
     return (int)1073741824 * (int)2;
   }
   
-  compile sub multiply_long_plus : long () {
+  precompile sub multiply_long_plus : long () {
     return (long)2305843009213693952L * (long)2L;
   }
   
-  compile sub multiply_long_minus : long () {
+  precompile sub multiply_long_minus : long () {
     return (long)2305843009213693952L * (long)-2L;
   }
   
-  compile sub multiply_long_overflow : long () {
+  precompile sub multiply_long_overflow : long () {
     return (long)4611686018427387904L * (long)2L;
   }
   
   # SPVM Functions
-  compile sub spvm_new_byte_array_string : int ($values : byte[]) {
+  precompile sub spvm_new_byte_array_string : int ($values : byte[]) {
     
     if ((int)$values->[0] == (int)(byte)0xE3) {
       if ((int)$values->[1] == (int)(byte)0x81) {
@@ -3054,7 +3054,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_byte_array_bin : int ($values : byte[]) {
+  precompile sub spvm_new_byte_array_bin : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -3069,7 +3069,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_byte_array_bin_pack : int ($values : byte[]) {
+  precompile sub spvm_new_byte_array_bin_pack : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -3084,7 +3084,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_short_array_bin_pack : int ($values : short[]) {
+  precompile sub spvm_new_short_array_bin_pack : int ($values : short[]) {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
@@ -3099,7 +3099,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub spvm_new_int_array_bin_pack : int ($values : int[]) {
+  precompile sub spvm_new_int_array_bin_pack : int ($values : int[]) {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
@@ -3114,7 +3114,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_long_array_bin_pack : int ($values : long[]) {
+  precompile sub spvm_new_long_array_bin_pack : int ($values : long[]) {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
@@ -3129,7 +3129,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub spvm_new_float_array_bin_pack : int ($values : float[]) {
+  precompile sub spvm_new_float_array_bin_pack : int ($values : float[]) {
     
     if ($values->[0] == (float)97) {
       if ($values->[1] == (float)98) {
@@ -3144,7 +3144,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub spvm_new_double_array_bin_pack : int ($values : double[]) {
+  precompile sub spvm_new_double_array_bin_pack : int ($values : double[]) {
     
     if ($values->[0] == (double)97) {
       if ($values->[1] == (double)98) {
@@ -3160,7 +3160,7 @@ package TestCase {
   }
   
   # byte array argument
-  compile sub call_sub_byte_array : byte ($nums : byte[]) {
+  precompile sub call_sub_byte_array : byte ($nums : byte[]) {
     
     my $total = (byte)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3171,7 +3171,7 @@ package TestCase {
   }
   
   # short array argument
-  compile sub call_sub_short_array : short ($nums : short[]) {
+  precompile sub call_sub_short_array : short ($nums : short[]) {
     
     my $total = (short)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3182,7 +3182,7 @@ package TestCase {
   }
   
   # int array argument
-  compile sub call_sub_int_array : int ($nums : int[]) {
+  precompile sub call_sub_int_array : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3193,7 +3193,7 @@ package TestCase {
   }
 
   # long array argument
-  compile sub call_sub_long_array : long ($nums : long[]) {
+  precompile sub call_sub_long_array : long ($nums : long[]) {
     
     my $total = (long)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3204,7 +3204,7 @@ package TestCase {
   }
 
   # float array argument
-  compile sub call_sub_float_array : float ($nums : float[]) {
+  precompile sub call_sub_float_array : float ($nums : float[]) {
     
     my $total = (float)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3215,7 +3215,7 @@ package TestCase {
   }
 
   # double array argument
-  compile sub call_sub_double_array : double ($nums : double[]) {
+  precompile sub call_sub_double_array : double ($nums : double[]) {
     
     my $total = (double)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -3226,216 +3226,216 @@ package TestCase {
   }
 
   # constant int
-  compile sub load_constant_int_min : int () {
+  precompile sub load_constant_int_min : int () {
    # LOAD_CONSTANT
     return -2147483647;
   }
-  compile sub load_constant_int_m32769 : int () {
+  precompile sub load_constant_int_m32769 : int () {
     # LOAD_CONSTANT
     return -32769;
   }
-  compile sub load_constant_int_m32768 : int () {
+  precompile sub load_constant_int_m32768 : int () {
     # PUSH_SHORT_TO_INT
     return -32768;
   }
-  compile sub load_constant_int_m129 : int () {
+  precompile sub load_constant_int_m129 : int () {
     # PUSH_SHORT_TO_INT
     return -129;
   }
-  compile sub load_constant_int_m128 : int () {
+  precompile sub load_constant_int_m128 : int () {
     # PUSH_BYTE_TO_INT
     return -128;
   }
-  compile sub load_constant_int_m2 : int () {
+  precompile sub load_constant_int_m2 : int () {
     # PUSH_BYTE_TO_INT
     return -2;
   }
-  compile sub load_constant_int_m1 : int () {
+  precompile sub load_constant_int_m1 : int () {
     # CONSTANT_INT_M1
     return -1;
   }
-  compile sub load_constant_int_0 : int () {
+  precompile sub load_constant_int_0 : int () {
     # CONSTANT_INT_0
     return 0;
   }
-  compile sub load_constant_int_1 : int () {
+  precompile sub load_constant_int_1 : int () {
     # CONSTANT_INT_1
     return 1;
   }
-  compile sub load_constant_int_2 : int () {
+  precompile sub load_constant_int_2 : int () {
     # CONSTANT_INT_2
     return 2;
   }
-  compile sub load_constant_int_3 : int () {
+  precompile sub load_constant_int_3 : int () {
     # CONSTANT_INT_3
     return 3;
   }
-  compile sub load_constant_int_4 : int () {
+  precompile sub load_constant_int_4 : int () {
     # CONSTANT_INT_4
     return 4;
   }
-  compile sub load_constant_int_5 : int () {
+  precompile sub load_constant_int_5 : int () {
     # CONSTANT_INT_5
     return 5;
   }
-  compile sub load_constant_int_6 : int () {
+  precompile sub load_constant_int_6 : int () {
     # PUSH_BYTE_TO_INT
     return 6;
   }
-  compile sub load_constant_int_127 : int () {
+  precompile sub load_constant_int_127 : int () {
     # PUSH_BYTE_TO_INT
     return 127;
   }
-  compile sub load_constant_int_128 : int () {
+  precompile sub load_constant_int_128 : int () {
     # PUSH_SHORT_TO_INT
     return 128;
   }
-  compile sub load_constant_int_32767 : int () {
+  precompile sub load_constant_int_32767 : int () {
     # PUSH_SHORT_TO_INT
     return 32767;
   }
-  compile sub load_constant_int_32768 : int () {
+  precompile sub load_constant_int_32768 : int () {
     # LOAD_CONSTANT
     return 32768;
   }
-  compile sub load_constant_int_max : int () {
+  precompile sub load_constant_int_max : int () {
     # LOAD_CONSTANT
     return 2147483647;
   }
 
   # constant long
-  compile sub load_constant_long_min : long () {
+  precompile sub load_constant_long_min : long () {
    # LOAD_CONSTANT
     return -9223372036854775808L;
   }
-  compile sub load_constant_long_m32769 : long () {
+  precompile sub load_constant_long_m32769 : long () {
     # LOAD_CONSTANT
     return -32769L;
   }
-  compile sub load_constant_long_m32768 : long () {
+  precompile sub load_constant_long_m32768 : long () {
     # PUSH_SHORT_TO_LONG
     return -32768L;
   }
-  compile sub load_constant_long_m129 : long () {
+  precompile sub load_constant_long_m129 : long () {
     # PUSH_SHORT_TO_LONG
     return -129L;
   }
-  compile sub load_constant_long_m128 : long () {
+  precompile sub load_constant_long_m128 : long () {
     # PUSH_BYTE_TO_LONG
     return -128L;
   }
-  compile sub load_constant_long_m2 : long () {
+  precompile sub load_constant_long_m2 : long () {
     # PUSH_BYTE_TO_LONG
     return -2L;
   }
-  compile sub load_constant_long_m1 : long () {
+  precompile sub load_constant_long_m1 : long () {
     # CONSTANT_LONG_M1
     return -1L;
   }
-  compile sub load_constant_long_0 : long () {
+  precompile sub load_constant_long_0 : long () {
     # CONSTANT_LONG_0
     return 0L;
   }
-  compile sub load_constant_long_1 : long () {
+  precompile sub load_constant_long_1 : long () {
     # CONSTANT_LONG_1
     return 1L;
   }
-  compile sub load_constant_long_2 : long () {
+  precompile sub load_constant_long_2 : long () {
     # CONSTANT_LONG_2
     return 2L;
   }
-  compile sub load_constant_long_3 : long () {
+  precompile sub load_constant_long_3 : long () {
     # CONSTANT_LONG_3
     return 3L;
   }
-  compile sub load_constant_long_4 : long () {
+  precompile sub load_constant_long_4 : long () {
     # CONSTANT_LONG_4
     return 4L;
   }
-  compile sub load_constant_long_5 : long () {
+  precompile sub load_constant_long_5 : long () {
     # CONSTANT_LONG_5
     return 5L;
   }
-  compile sub load_constant_long_6 : long () {
+  precompile sub load_constant_long_6 : long () {
     # PUSH_BYTE_TO_LONG
     return 6L;
   }
-  compile sub load_constant_long_127 : long () {
+  precompile sub load_constant_long_127 : long () {
     # PUSH_BYTE_TO_LONG
     return 127L;
   }
-  compile sub load_constant_long_128 : long () {
+  precompile sub load_constant_long_128 : long () {
     # PUSH_SHORT_TO_LONG
     return 128L;
   }
-  compile sub load_constant_long_32767 : long () {
+  precompile sub load_constant_long_32767 : long () {
     # PUSH_SHORT_TO_LONG
     return 32767L;
   }
-  compile sub load_constant_long_32768 : long () {
+  precompile sub load_constant_long_32768 : long () {
     # LOAD_CONSTANT2
     return 32768L;
   }
-  compile sub load_constant_long_max : long () {
+  precompile sub load_constant_long_max : long () {
     # LOAD_CONSTANT2
     return 9223372036854775807L;
   }
   
   # constant float
-  compile sub load_constant_float_0 : float () {
+  precompile sub load_constant_float_0 : float () {
     # CONSTANT_FLOAT_0
     return 0.0f;
   }
-  compile sub load_constant_float_1 : float () {
+  precompile sub load_constant_float_1 : float () {
     # CONSTANT_FLOAT_1
     return 1.0f;
   }
-  compile sub load_constant_float_0_5 : float () {
+  precompile sub load_constant_float_0_5 : float () {
     # LOAD_CONSTANT
     return 0.5f;
   }
-  compile sub load_constant_float_exponent_E_plus : float () {
+  precompile sub load_constant_float_exponent_E_plus : float () {
     return 0.5E+3f;
   }
-  compile sub load_constant_float_exponent_e_plus : float () {
+  precompile sub load_constant_float_exponent_e_plus : float () {
     return 0.5e3f;
   }
-  compile sub load_constant_float_exponent_E_minus : float () {
+  precompile sub load_constant_float_exponent_E_minus : float () {
     return 62.5E-3f;
   }
-  compile sub load_constant_float_exponent_e_minus : float () {
+  precompile sub load_constant_float_exponent_e_minus : float () {
     return 62.5e-3f;
   }
 
-  compile sub load_constant_double_exponent_E_plus : double () {
+  precompile sub load_constant_double_exponent_E_plus : double () {
     return 0.5E+3;
   }
-  compile sub load_constant_double_exponent_e_plus : double () {
+  precompile sub load_constant_double_exponent_e_plus : double () {
     return 0.5e3;
   }
-  compile sub load_constant_double_exponent_E_minus : double () {
+  precompile sub load_constant_double_exponent_E_minus : double () {
     return 62.5E-3;
   }
-  compile sub load_constant_double_exponent_e_minus : double () {
+  precompile sub load_constant_double_exponent_e_minus : double () {
     return 62.5e-3;
   }
   
   # constant double
-  compile sub load_constant_double_0 : double () {
+  precompile sub load_constant_double_0 : double () {
     # CONSTANT_DOUBLE_0
     return 0.0;
   }
-  compile sub load_constant_double_1 : double () {
+  precompile sub load_constant_double_1 : double () {
     # CONSTANT_DOUBLE_1
     return 1.0;
   }
-  compile sub load_constant_double_0_5 : double () {
+  precompile sub load_constant_double_0_5 : double () {
     # LOAD_CONSTANT2
     return 0.5;
   }
   
   # call_sub arguments
-  compile sub call_sub_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
+  precompile sub call_sub_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
     if ($var1 == 0) {
       if ($var2 == 127) {
         if ($var3 == -128) {
@@ -3446,7 +3446,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub call_sub_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
+  precompile sub call_sub_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
     if ((int)$var1 == (int)(short)0) {
       if ((int)$var2 == (int)(short)32767) {
         if ((int)$var3 == (int)(short)-32768) {
@@ -3457,7 +3457,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub call_sub_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
+  precompile sub call_sub_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
     if ($var1 == 0) {
       if ($var2 == 2147483647) {
         if ($var3 == -2147483648) {
@@ -3469,7 +3469,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub call_sub_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
+  precompile sub call_sub_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
     if ($var1 == 0L) {
       if ($var2 == 9223372036854775807L) {
         if ($var3 == -9223372036854775808L) {
@@ -3481,7 +3481,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub bit_and : int () {
+  precompile sub bit_and : int () {
     # byte
     my $byte_success = 0;
     {
@@ -3525,7 +3525,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub bit_or : int () {
+  precompile sub bit_or : int () {
     # byte
     my $byte_success = 0;
     {
@@ -3569,7 +3569,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub bit_xor : int () {
+  precompile sub bit_xor : int () {
     # byte
     my $byte_success = 0;
     {
@@ -3613,7 +3613,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub bit_shift_right_logical_int : int () {
+  precompile sub bit_shift_right_logical_int : int () {
     # 11000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC0000001 >>> 2;
     
@@ -3626,7 +3626,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_right_logical_long : int () {
+  precompile sub bit_shift_right_logical_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC000000000000001L >>> 2;
     
@@ -3639,7 +3639,7 @@ package TestCase {
     }
   }
 
-  compile sub bit_shift_right_int : int () {
+  precompile sub bit_shift_right_int : int () {
     # 11000000 00000000 00000000 00000001 >> 2
     my $value = 0xC0000001 >> 2;
     
@@ -3652,7 +3652,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_right_long : int () {
+  precompile sub bit_shift_right_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >> 2
     my $value = 0xC000000000000001L >> 2;
     
@@ -3665,13 +3665,13 @@ package TestCase {
     }
   }
   
-  compile sub literal_character : int () {
+  precompile sub literal_character : int () {
     my $value = 'a';
     
     return 1;
   }
   
-  compile sub number_literal_specifier : int () {
+  precompile sub number_literal_specifier : int () {
     my $value1 = 255f;
     my $value2 = 255d;
     my $value3 = 255L;
@@ -3699,7 +3699,7 @@ package TestCase {
     return 0;
   }
   
-  compile sub number_literal_underline : int () {
+  precompile sub number_literal_underline : int () {
     my $value = 123_123;
     
     if ($value == 123123) {
@@ -3710,7 +3710,7 @@ package TestCase {
     }
   }
   
-  compile sub number_literal_hex_specifier : int () {
+  precompile sub number_literal_hex_specifier : int () {
     my $value3 = 0xFFL;
     my $value4 = (byte)0xFF;
     my $value5 = (short)0xFFFF;
@@ -3731,7 +3731,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub number_literal_hex_all_number : int () {
+  precompile sub number_literal_hex_all_number : int () {
     my $value1 = 0x01234567;
     my $value2 = 0x00ABCDEF;
     my $value3 = 0x00abcdef;
@@ -3747,7 +3747,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub number_literal_underline_hex : int () {
+  precompile sub number_literal_underline_hex : int () {
     my $value = 0xFF_FF;
     
     if ($value == 0xFFFF) {
@@ -3758,7 +3758,7 @@ package TestCase {
     }
   }
   
-  compile sub number_literal_hex_int : int () {
+  precompile sub number_literal_hex_int : int () {
     my $value = 0xFF;
     
     if ($value == 255) {
@@ -3768,7 +3768,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_hex_int_max : int () {
+  precompile sub number_literal_hex_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFF;
     
@@ -3779,7 +3779,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_hex_long_max : int () {
+  precompile sub number_literal_hex_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFFFFFFFFFFL;
     
@@ -3791,7 +3791,7 @@ package TestCase {
     }
   }
 
-  compile sub number_literal_octal_specifier : int () {
+  precompile sub number_literal_octal_specifier : int () {
     my $value3 = 0377L;
     my $value4 = (byte)0377;
     my $value5 = (short)0177777;
@@ -3813,7 +3813,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub number_literal_octal_all_number : int () {
+  precompile sub number_literal_octal_all_number : int () {
     my $value1 = 0110642547;
     
     if ($value1 == 19088743) {
@@ -3823,7 +3823,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub number_literal_binary_specifier : int () {
+  precompile sub number_literal_binary_specifier : int () {
     my $value3 = 0b11111111L;
     my $value4 = (byte)0b11111111;
     my $value5 = (short)0b1111111111111111;
@@ -3844,7 +3844,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub number_literal_binary_all_number : int () {
+  precompile sub number_literal_binary_all_number : int () {
     my $value1 = 0b1001000110100010101100111;
     
     if ($value1 == 19088743) {
@@ -3854,7 +3854,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub number_literal_underline_binary : int () {
+  precompile sub number_literal_underline_binary : int () {
     my $value = 0b11111111_11111111;
     
     if ($value == 0b1111111111111111) {
@@ -3865,7 +3865,7 @@ package TestCase {
     }
   }
   
-  compile sub number_literal_binary_int : int () {
+  precompile sub number_literal_binary_int : int () {
     my $value = 0b11111111;
     
     if ($value == 255) {
@@ -3875,7 +3875,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_binary_int_max : int () {
+  precompile sub number_literal_binary_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 0b11111111111111111111111111111111;
     
@@ -3886,7 +3886,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_binary_long_max : int () {
+  precompile sub number_literal_binary_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0b1111111111111111111111111111111111111111111111111111111111111111L;
     
@@ -3898,7 +3898,7 @@ package TestCase {
     }
   }
   
-  compile sub number_literal_underline_octal : int () {
+  precompile sub number_literal_underline_octal : int () {
     my $value = 0177_777;
     
     if ($value == 0177777) {
@@ -3909,7 +3909,7 @@ package TestCase {
     }
   }
   
-  compile sub number_literal_octal_int : int () {
+  precompile sub number_literal_octal_int : int () {
     my $value = 0377;
     
     if ($value == 255) {
@@ -3919,7 +3919,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_octal_int_max : int () {
+  precompile sub number_literal_octal_int_max : int () {
     # 11111111 11111111 11111111 11111111
     my $value = 037777777777;
     
@@ -3930,7 +3930,7 @@ package TestCase {
       return 0;
     }
   }
-  compile sub number_literal_octal_long_max : int () {
+  precompile sub number_literal_octal_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 01777777777777777777777L;
     
@@ -3943,7 +3943,7 @@ package TestCase {
   }
   
   # Bit shift left
-  compile sub bit_shift_left_int : int () {
+  precompile sub bit_shift_left_int : int () {
     
     # 00000011 00000000 00000000 00000000 << 2
     my $value = 0x30000000 << 2;
@@ -3957,7 +3957,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_left_int_max : int () {
+  precompile sub bit_shift_left_int_max : int () {
     
     # 01000000 00000000 00000000 00000000 << 1
     my $value = 0x40000000 << 1;
@@ -3971,7 +3971,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_left_int_overflow : int () {
+  precompile sub bit_shift_left_int_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 << 1
     my $value = 0x80000000 << 1;
@@ -3985,7 +3985,7 @@ package TestCase {
     }
   }
 
-  compile sub bit_shift_left_long : int () {
+  precompile sub bit_shift_left_long : int () {
     
     # 00000011 00000000 00000000 00000000 00000000 00000000 00000000 00000000 << 2
     my $value = 0x3000000000000000L << 2;
@@ -3999,7 +3999,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_left_long_max : int () {
+  precompile sub bit_shift_left_long_max : int () {
     
     # 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x4000000000000000L << 1;
@@ -4013,7 +4013,7 @@ package TestCase {
     }
   }
   
-  compile sub bit_shift_left_long_overflow : int () {
+  precompile sub bit_shift_left_long_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x8000000000000000L << 1;
@@ -4028,7 +4028,7 @@ package TestCase {
   }
 
   # Array length
-  compile sub get_array_length_at : int () {
+  precompile sub get_array_length_at : int () {
     
     my $nums = new int[3];
     my $len = @$nums;
@@ -4038,7 +4038,7 @@ package TestCase {
     
     return 0;
   }
-  compile sub get_array_length_len : int () {
+  precompile sub get_array_length_len : int () {
     
     my $nums = new int[3];
     my $len = len $nums;
@@ -4049,7 +4049,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub get_array_length_undef : int () {
+  precompile sub get_array_length_undef : int () {
     
     my $nums : int[] = undef;
 
@@ -4065,7 +4065,7 @@ package TestCase {
     return 0;
   }
 
-  compile sub array : int () {
+  precompile sub array : int () {
     {
       my $nums : int[][] = new int[][3];
     }
@@ -4076,7 +4076,7 @@ package TestCase {
       return 1;
     }
   }
-  compile sub array_set_and_get_array_element_first : int () {
+  precompile sub array_set_and_get_array_element_first : int () {
     
     my $nums = new int[3];
     $nums->[0] = 345;
@@ -4084,7 +4084,7 @@ package TestCase {
     return $nums->[0];
   }
 
-  compile sub array_set_and_get_array_element_last : int () {
+  precompile sub array_set_and_get_array_element_last : int () {
     
     my $nums = new int[3];
     $nums->[2] = 298;
@@ -4092,7 +4092,7 @@ package TestCase {
     return $nums->[2];
   }
 
-  compile sub array_culcurate_sum_by_for : int () {
+  precompile sub array_culcurate_sum_by_for : int () {
     
     my $nums = new int[3];
     $nums->[0] = 1;
@@ -4108,42 +4108,42 @@ package TestCase {
   }
   
   # Sum
-  compile sub sum_byte : byte ($a : byte, $b :byte,) {
+  precompile sub sum_byte : byte ($a : byte, $b :byte,) {
     
     my $total = (byte)((int)$a + (int)$b);
     
     return $total;
   }
 
-  compile sub sum_short : short ($a : short, $b :short) {
+  precompile sub sum_short : short ($a : short, $b :short) {
     
     my $total = (short)((int)$a + (int)$b);
     
     return $total;
   }
 
-  compile sub sum_int : int ($a : int, $b :int) {
+  precompile sub sum_int : int ($a : int, $b :int) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  compile sub sum_long : long ($a : long, $b :long) {
+  precompile sub sum_long : long ($a : long, $b :long) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  compile sub sum_float : float ($a : float, $b :float) {
+  precompile sub sum_float : float ($a : float, $b :float) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  compile sub sum_double : double ($a : double, $b :double) {
+  precompile sub sum_double : double ($a : double, $b :double) {
     
     my $total = $a + $b;
     
@@ -4151,7 +4151,7 @@ package TestCase {
   }
   
   # For
-  compile sub for_basic : int () {
+  precompile sub for_basic : int () {
   
     my $success_basic = 0;
     {

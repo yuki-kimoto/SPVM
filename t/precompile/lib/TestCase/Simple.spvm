@@ -2,15 +2,15 @@ package TestCase::Simple {
   has x : int;
   has y : int;
 
-  compile sub get_x : int ($self : self) {
+  precompile sub get_x : int ($self : self) {
     return $self->{x};
   }
 
-  compile sub set_x : void ($self : self, $x : int) {
+  precompile sub set_x : void ($self : self, $x : int) {
     $self->{x} = $x;
   }
   
-  compile sub new : TestCase::Minimal () {
+  precompile sub new : TestCase::Minimal () {
     return new TestCase::Minimal;
   }
 }

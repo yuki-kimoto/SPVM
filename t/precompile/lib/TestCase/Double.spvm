@@ -1,7 +1,7 @@
 package TestCase::Double {
   use SPVM::Double;
 
-  compile sub basic : int () {
+  precompile sub basic : int () {
     my $obj_value = SPVM::Double->new(0.25);
     my $value1 = $obj_value->get_value;
     

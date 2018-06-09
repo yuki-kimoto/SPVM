@@ -5,7 +5,7 @@ package TestCase::Weaken2 {
   has test_case : TestCase;
   has weaken1 : TestCase::Weaken;
 
-  compile sub new : TestCase::Weaken2 () {
+  precompile sub new : TestCase::Weaken2 () {
     return new TestCase::Weaken2;
   }
 }

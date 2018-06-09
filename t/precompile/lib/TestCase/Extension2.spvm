@@ -1,5 +1,5 @@
 package TestCase::Extension2 {
-  compile sub spvm_extension2 : int () {
+  precompile sub spvm_extension2 : int () {
     my $total = mul(5, 3);
     
     if ($total == 15) {
@@ -9,7 +9,7 @@ package TestCase::Extension2 {
     return 0;
   }
 
-  compile sub spvm_extension2_binding : int () {
+  precompile sub spvm_extension2_binding : int () {
     my $total = one();
     
     if ($total == 1) {

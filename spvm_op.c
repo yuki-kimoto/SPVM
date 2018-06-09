@@ -1987,7 +1987,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
       sub->have_native_desc = 1;
     }
-    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_COMPILE) {
+    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_PRECOMPILE) {
       sub->have_compile_desc = 1;
     }
     else {

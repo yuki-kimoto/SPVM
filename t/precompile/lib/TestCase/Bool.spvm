@@ -1,7 +1,7 @@
 package TestCase::Bool {
   use SPVM::Bool;
 
-  compile sub basic : int () {
+  precompile sub basic : int () {
     my $obj_value1 = SPVM::Bool->new_true;
     my $is_true1 = $obj_value1->is_true;
     

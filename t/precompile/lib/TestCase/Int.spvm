@@ -1,7 +1,7 @@
 package TestCase::Int {
   use SPVM::Int;
 
-  compile sub basic : int () {
+  precompile sub basic : int () {
     my $obj_value = SPVM::Int->new(3);
     my $value1 = $obj_value->get_value;
     

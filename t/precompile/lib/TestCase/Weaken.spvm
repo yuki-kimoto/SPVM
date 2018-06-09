@@ -6,11 +6,11 @@ package TestCase::Weaken {
   has weaken2 : TestCase::Weaken2;
   has test_cases : TestCase[];
   
-  compile sub new : TestCase::Weaken () {
+  precompile sub new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }
   
-  compile sub weaken_test_case : void ($self : self) {
+  precompile sub weaken_test_case : void ($self : self) {
     weaken $self->{test_case};
   }
 }
