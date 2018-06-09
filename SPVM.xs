@@ -909,17 +909,14 @@ get_package_load_path(...)
   PPCODE:
 {
   (void)RETVAL;
-  
-  SV* sv_package_name = ST(0);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
-
+  SV* sv_compiler = ST(0);
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  
+  SV* sv_package_name = ST(1);
+  
   const char* package_name = SvPV_nolen(sv_package_name);
   
-
   // Subroutine information
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
   SPVM_PACKAGE* package = op_package->uv.package;

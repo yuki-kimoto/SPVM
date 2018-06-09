@@ -98,7 +98,7 @@ sub create_shared_lib_dist {
 sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
   
-  my $package_load_path = SPVM::Build::SPVMInfo::get_package_load_path($package_name);
+  my $package_load_path = SPVM::Build::SPVMInfo::get_package_load_path($self->{compiler}, $package_name);
   my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory
