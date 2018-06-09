@@ -24,79 +24,43 @@ my $ok;
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::TypeCantBeDetectedUndef',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndef');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::TypeCantBeDetectedUndefDefault',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::AssignIncompatibleType::DifferentObject',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::AssignIncompatibleType::DifferentObject');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::AssignIncompatibleType::ConstToNoConst',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::AssignIncompatibleType::ConstToNoConst');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::Field::Private',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::Field::Private');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
-  my $package_infos = [
-    {
-      name => 'TestCase::CompileError::New::Private',
-      file => __FILE__,
-      line => __LINE__ - 2,
-    }
-  ];
-  my $build = SPVM::Build->new(package_infos => $package_infos);
+  my $build = SPVM::Build->new;
+  $build->use('TestCase::CompileError::New::Private');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
