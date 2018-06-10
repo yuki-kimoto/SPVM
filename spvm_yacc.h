@@ -95,7 +95,7 @@
      DIVIDE = 311,
      MULTIPLY = 312,
      UMINUS = 313,
-     ARRAY_LENGTH = 314,
+     SCALAR = 314,
      NOT = 315,
      DEC = 316,
      INC = 317,
@@ -159,7 +159,7 @@
 #define DIVIDE 311
 #define MULTIPLY 312
 #define UMINUS 313
-#define ARRAY_LENGTH 314
+#define SCALAR 314
 #define NOT 315
 #define DEC 316
 #define INC 317

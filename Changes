@@ -1,3 +1,25 @@
+0.0345 2018-06-11
+  - remove len keyword and add scalar keyword
+    SPVM don't have scalar context and list context, but Perl have them.
+    In SPVM, you can get array by
+    
+      @$values
+    
+    syntax. but this confuse you sometime
+    because
+    
+      foo(@$values);
+    
+    is seem list expansion. This is always array length in SPVM.
+    Until now I provided len keyword , but this is not Perlish syntax.
+    From now I provide scalar keyword and another array syntax.
+      
+      scalar @$values
+    
+    You can write the following subroutine call
+    
+      foo(scalar @$values);
+    
 0.0345 2018-06-10
   - SPVM::Build can parse distribution module and get subrutine names from it
   - rename compile descriptor to precompile

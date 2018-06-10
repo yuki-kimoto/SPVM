@@ -36,7 +36,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_core_func_bind.h"
 
-
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "ELSIF",
@@ -147,6 +146,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "SEQUENCE",
   "COSNT",
   "COMPILE",
+  "SCALAR",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {

@@ -573,13 +573,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
         return '~';
       }
-      case '@': {
-        compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ARRAY_LENGTH);
-        yylvalp->opval = op;
-        
-        return ARRAY_LENGTH;
-      }
       case '\'': {
         compiler->bufptr++;
         
@@ -1146,13 +1139,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LAST);
                   return LAST;
                 }
-                else if (strcmp(keyword, "len") == 0) {
-                  compiler->bufptr++;
-                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ARRAY_LENGTH);
-                  yylvalp->opval = op;
-                  
-                  return ARRAY_LENGTH;
-                }
                 else if (strcmp(keyword, "lt") == 0) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LT);
                   yylvalp->opval = op;
@@ -1263,6 +1249,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "short") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SHORT);
                   return SHORT;
+                }
+                else if (strcmp(keyword, "scalar") == 0) {
+                  compiler->bufptr++;
+                  SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SCALAR);
+                  yylvalp->opval = op;
+                  
+                  return SCALAR;
                 }
                 break;
               case 'u' :

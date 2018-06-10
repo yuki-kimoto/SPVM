@@ -623,7 +623,18 @@ SPVM::Test - SPVM test module
     
     {
       my $nums = new int[2000000];
-      my $len = len $nums;
+      my $len = scalar @$nums;
+      my $i = 0;
+      for ($i = 0; $i < $len; $i = $i + 1) {
+        $nums->[$i] = $i;
+      }
+      print((string)$i . "\n");
+      print((string)$nums->[$i - 1] . "\n");
+    }
+
+    {
+      my $nums = new int[2000000];
+      my $len = scalar @{$nums};
       my $i = 0;
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;

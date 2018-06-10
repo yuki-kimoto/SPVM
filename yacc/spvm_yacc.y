@@ -40,7 +40,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> NOT '~' ARRAY_LENGTH UMINUS
+%right <opval> NOT '~' '@' SCALAR UMINUS
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
 %left <opval> ARROW
@@ -415,13 +415,25 @@ assignable_terms
   | assignable_term
 
 array_length
-  : ARRAY_LENGTH assignable_term
+  : '@' assignable_term
     {
-      $$ = SPVM_OP_build_array_length(compiler, $1, $2);
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $2);
     }
-  | ARRAY_LENGTH '{' assignable_term '}'
+  | '@' '{' assignable_term '}'
     {
-      $$ = SPVM_OP_build_array_length(compiler, $1, $3);
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
+    }
+  | SCALAR '@' assignable_term
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
+    }
+  | SCALAR '@' '{' assignable_term '}'
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
     }
 
 term
