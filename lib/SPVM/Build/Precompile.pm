@@ -42,23 +42,23 @@ sub create_csource {
   
   my $package_name = $opt{package_name};
   
+  my $input_dir = $opt{input_dir};
+
   my $work_dir = $opt{work_dir};
   mkpath $work_dir;
-  
-  my $input_dir = $opt{input_dir};
   
   my $output_dir = $opt{output_dir};
   
   my $is_cached_ref = $opt{is_cached};
   
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
-  my $output_src_dir = "$input_dir/$package_path";
-  mkpath $output_src_dir;
+  my $work_src_dir = "$work_dir/$package_path";
+  mkpath $work_src_dir;
   
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $source_file = "$output_src_dir/$module_base_name.c";
+  my $source_file = "$work_src_dir/$module_base_name.c";
 
   # Get old csource source
   my $old_package_csource;
@@ -115,7 +115,7 @@ sub create_shared_lib_dist {
   unless ($is_cached) {
     $self->create_shared_lib(
       package_name => $package_name,
-      input_dir => $input_dir,
+      input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
       quiet => 1,
@@ -155,7 +155,7 @@ sub create_shared_lib_runtime {
   unless ($is_cached) {
     $self->create_shared_lib(
       package_name => $package_name,
-      input_dir => $input_dir,
+      input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
       quiet => 1,
