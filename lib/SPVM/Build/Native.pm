@@ -56,7 +56,7 @@ sub create_shared_lib_dist {
   my $config_file = "$input_dir/$module_base_name.config";
 
   # Build shared library
-  my $shared_lib_file = $self->create_shared_lib(
+  $self->create_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
@@ -64,8 +64,6 @@ sub create_shared_lib_dist {
     sub_names => $sub_names,
     config_file => $config_file,
   );
-  
-  return $shared_lib_file;
 }
 
 sub create_shared_lib_runtime {
@@ -102,11 +100,6 @@ sub create_shared_lib_runtime {
     sub_names => $sub_names,
     config_file => $config_file,
   );
-
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
-  
-  return $shared_lib_file;
 }
 
 1;
