@@ -109,6 +109,36 @@ sub create_csource {
   }
 }
 
+sub create_shared_lib_dist {
+  my ($self, $package_name) = @_;
+
+  my $input_dir = 'lib';
+  my $output_dir = 'blib/lib';
+  
+  my $sub_names = $self->get_sub_names_dist($package_name);
+  
+  my $work_dir = "spvm_build/work";
+  mkpath $work_dir;
+
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  my $config_file = "$input_dir/$module_base_name.config";
+  
+  my $is_cached;
+  $self->create_csource($package_name, \$is_cached);
+  
+  unless ($is_cached) {
+    $self->create_shared_lib(
+      package_name => $package_name,
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $output_dir,
+      quiet => 1,
+      sub_names => $sub_names,
+    );
+  }
+}
+
 sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
 
