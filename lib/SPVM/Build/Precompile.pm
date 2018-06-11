@@ -60,11 +60,11 @@ sub get_subs_from_package_name {
 
 sub create_cfunc_name {
   my ($self, $sub_name) = @_;
-
+  
   # Precompile Subroutine names
   my $cfunc_name = $sub_name;
   $cfunc_name =~ s/:/_/g;
-  $cfunc_name = "SPVM_BUILD_PRECOMPILE_$cfunc_name";
+  $cfunc_name = "SPVM_PRECOMPILE_$cfunc_name";
   
   return $cfunc_name;
 }

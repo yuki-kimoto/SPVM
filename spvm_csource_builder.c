@@ -579,7 +579,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_STRING_BUFFER* string_buffe
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
         
   // Subroutine name. Replace : to _
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_BUILD_PRECOMPILE_");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_PRECOMPILE_");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
   {
     int32_t index = string_buffer->length - strlen(sub_abs_name);
@@ -2042,7 +2042,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_STRING_BUFFER* string_bu
         
         // Subroutine inline expantion in same package
         if (decl_sub->op_package->uv.package->id == sub->op_package->uv.package->id && decl_sub->have_compile_desc) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_BUILD_PRECOMPILE_");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
           {
             int32_t index = string_buffer->length - strlen(decl_sub->abs_name);
