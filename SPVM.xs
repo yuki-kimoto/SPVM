@@ -1107,6 +1107,7 @@ build_package_csource(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
+  
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
   int32_t package_id = op_package->uv.package->id;
   
@@ -1114,7 +1115,7 @@ build_package_csource(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // Build package csource
-  SPVM_CSOURCE_BUILDER_build_package_csource(string_buffer, package_id);
+  SPVM_CSOURCE_BUILDER_build_package_csource(compiler, string_buffer, package_id);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   

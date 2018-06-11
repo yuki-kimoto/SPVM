@@ -107,9 +107,14 @@ sub create_shared_lib_native_dist {
 sub create_shared_lib_precompile_dist {
   my ($self, $package_name) = @_;
   
+  warn("CCCCCCCCCCCC $package_name");
+  
   $self->use($package_name);
   
-  $self->compile_spvm;
+  my $compile_success = $self->compile_spvm;
+  unless ($compile_success) {
+    die "Compile error";
+  }
   
   $self->precompile->create_shared_lib_dist($package_name);
 }
