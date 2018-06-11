@@ -58,9 +58,9 @@ sub get_subs_from_package_name {
   return $subs;
 }
 
-sub create_shared_lib_runtime {
-  my ($self, $package_name) = @_;
-
+sub create_csource {
+  my ($self, $package_name, $is_cached_ref) = @_;
+  
   # Output directory
   my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
@@ -74,9 +74,6 @@ sub create_shared_lib_runtime {
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   mkpath $input_src_dir;
-  
-  my $output_dir = "$build_dir/lib";
-  mkpath $output_dir;
   
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
@@ -105,6 +102,36 @@ sub create_shared_lib_runtime {
   close $fh;
   
   if ($package_csource ne $old_package_csource) {
+    $$is_cached_ref = 0;
+  }
+  else {
+    $$is_cached_ref = 1;
+  }
+}
+
+sub create_shared_lib_runtime {
+  my ($self, $package_name) = @_;
+
+  # Output directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+  
+  my $work_dir = "$build_dir/work";
+  mkpath $work_dir;
+  my $input_dir = "$build_dir/src";
+  mkpath $input_dir;
+  my $output_dir = "$build_dir/lib";
+  mkpath $output_dir;
+  
+  my $subs = $self->get_subs_from_package_name($package_name);
+  my $sub_names = [map { $_->{name} } @$subs];
+  
+  my $is_cached;
+  $self->create_csource($package_name, \$is_cached);
+  
+  unless ($is_cached) {
     $self->create_shared_lib(
       package_name => $package_name,
       input_dir => $input_dir,
