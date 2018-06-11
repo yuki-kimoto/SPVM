@@ -9,10 +9,6 @@ use base 'SPVM::Build::Base';
 
 use Carp 'croak', 'confess';
 
-use SPVM::Build;
-use SPVM::Build::Util;
-use SPVM::Build::SPVMInfo;
-
 use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';
@@ -20,6 +16,10 @@ use File::Path 'mkpath';
 use DynaLoader;
 
 use File::Basename 'dirname', 'basename';
+
+use SPVM::Build;
+use SPVM::Build::Util;
+use SPVM::Build::SPVMInfo;
 
 sub new {
   my $self = shift->SUPER::new(@_);

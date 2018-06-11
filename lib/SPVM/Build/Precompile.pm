@@ -7,9 +7,6 @@ use base 'SPVM::Build::Base';
 use Carp 'croak', 'confess';
 use File::Spec;
 
-use SPVM::Build;
-use SPVM::Build::Util;
-
 use ExtUtils::CBuilder;
 use Config;
 use File::Copy 'move';
@@ -17,8 +14,9 @@ use File::Path 'mkpath', 'rmtree';
 
 use File::Basename 'dirname', 'basename';
 
-use SPVM::Build::SPVMInfo;
+use SPVM::Build;
 use SPVM::Build::Util;
+use SPVM::Build::SPVMInfo;
 
 sub new {
   my $self = shift->SUPER::new(@_);
@@ -26,25 +24,6 @@ sub new {
   $self->{category} = 'precompile';
   
   return $self;
-}
-
-sub get_sub_names_dist {
-  my ($self, $package_name) = @_;
-  
-  my $package_load_path = SPVM::Build::Util::create_package_load_path('lib', $package_name);
-  
-  open my $module_fh, '<', $package_load_path
-    or croak "Can't open $package_load_path: $!";
-  
-  my $src = do { local $/; <$module_fh> };
-  
-  my $precompile_sub_names = [];
-  while ($src =~ /compile\b(.*?)\bsub\s+([^\s]+)\s/g) {
-    my $sub_name = $1;
-    push @$precompile_sub_names, $sub_name;
-  }
-  
-  return $precompile_sub_names;
 }
 
 sub get_subs_from_package_name {
@@ -59,21 +38,22 @@ sub get_subs_from_package_name {
 }
 
 sub create_csource {
-  my ($self, $package_name, $is_cached_ref) = @_;
+  my ($self, %opt) = @_;
   
-  # Output directory
-  my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
-  }
+  my $package_name = $opt{package_name};
   
-  my $work_dir = "$build_dir/work";
+  my $work_dir = $opt{work_dir};
   mkpath $work_dir;
   
-  my $input_dir = "$build_dir/src";
+  my $input_dir = $opt{input_dir};
+  
+  my $output_dir = $opt{output_dir};
+  
+  my $is_cached_ref = $opt{is_cached};
+  
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
-  my $input_src_dir = "$input_dir/$package_path";
-  mkpath $input_src_dir;
+  my $output_src_dir = "$input_dir/$package_path";
+  mkpath $output_src_dir;
   
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
@@ -81,7 +61,7 @@ sub create_csource {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $source_file = "$input_src_dir/$module_base_name.c";
+  my $source_file = "$output_src_dir/$module_base_name.c";
 
   # Get old csource source
   my $old_package_csource;
@@ -125,7 +105,14 @@ sub create_shared_lib_dist {
   my $config_file = "$input_dir/$module_base_name.config";
   
   my $is_cached;
-  $self->create_csource($package_name, \$is_cached);
+  $self->create_csource(
+    package_name => $package_name,
+    input_dir => $input_dir,
+    work_dir => $work_dir,
+    output_dir => $work_dir,
+    sub_names => $sub_names,
+    is_cached => \$is_cached,
+  );
   
   unless ($is_cached) {
     $self->create_shared_lib(
@@ -159,7 +146,14 @@ sub create_shared_lib_runtime {
   my $sub_names = [map { $_->{name} } @$subs];
   
   my $is_cached;
-  $self->create_csource($package_name, \$is_cached);
+  $self->create_csource(
+    package_name => $package_name,
+    input_dir => $input_dir,
+    work_dir => $work_dir,
+    output_dir => $work_dir,
+    sub_names => $sub_names,
+    is_cached => \$is_cached,
+  );
   
   unless ($is_cached) {
     $self->create_shared_lib(
