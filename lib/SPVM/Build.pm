@@ -97,11 +97,19 @@ sub build_spvm {
 sub create_shared_lib_native_dist {
   my ($self, $package_name) = @_;
   
+  $self->use($package_name);
+  
+  $self->compile_spvm;
+  
   $self->native->create_shared_lib_dist($package_name);
 }
 
 sub create_shared_lib_precompile_dist {
   my ($self, $package_name) = @_;
+  
+  $self->use($package_name);
+  
+  $self->compile_spvm;
   
   $self->precompile->create_shared_lib_dist($package_name);
 }

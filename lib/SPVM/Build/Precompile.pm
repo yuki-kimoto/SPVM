@@ -91,13 +91,9 @@ sub create_shared_lib_dist {
   
   my $input_dir = 'lib';
   my $output_dir = 'blib/lib';
-
-  my $build = SPVM::Build->new;
-  $build->use($package_name);
-  $build->compile_spvm;
   
   my $category = $self->category;
-  my $subs = $build->$category->get_subs_from_package_name($package_name);
+  my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
   my $work_dir = "spvm_build/work";
