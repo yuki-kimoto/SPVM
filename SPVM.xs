@@ -1069,12 +1069,13 @@ bind_sub(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_native_sub_name = ST(1);
   SV* sv_native_address = ST(2);
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
@@ -1098,12 +1099,13 @@ build_package_csource(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
   int32_t package_id = op_package->uv.package->id;
@@ -1129,20 +1131,18 @@ bind_sub(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_sub_abs_name = ST(1);
   SV* sv_sub_native_address = ST(2);
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
-
-  // Subroutine information
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->precompile_address = sub_precompile_address;

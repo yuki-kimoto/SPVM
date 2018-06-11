@@ -76,20 +76,6 @@ sub build {
   }
 }
 
-sub get_sub_names_dist {
-  my ($self, $package_name) = @_;
-  
-  my $build = SPVM::Build->new;
-  $build->use($package_name);
-  $build->compile_spvm;
-  
-  my $category = $self->category;
-  my $subs = $build->$category->get_subs_from_package_name($package_name);
-  my $sub_names = [map { $_->{name} } @$subs];
-  
-  return $sub_names;
-}
-
 sub create_cfunc_name {
   my ($self, $sub_abs_name) = @_;
   
