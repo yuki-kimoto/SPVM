@@ -19,6 +19,22 @@
     You can write the following subroutine call
     
       foo(scalar @$values);
+  - add SPVM_NATIVE_SUB macro to spvm_native, and SPVM native function defenition way is changed to the following
+      
+      // My::Example::sin
+      int32_t SPVM_NATIVE_SUB(My__Example__sin) (SPVM_ENV* env, SPVM_VALUE* args) {
+        (void)env;
+        
+        double value = sin(args[0].dval);
+        
+        args[0].dval = value;
+        
+        return 0;
+      }
+    
+    SPVM_NATIVE_SUB macro automatically expand function name to SPVM_NATIVE_My__Example__sin.
+    This is very simple way to define native function.
+    Newbie only learn SPVM_NATIVE_SUB macro and replace package name : to _ and join package name and subroutine name with __.
     
 0.0345 2018-06-10
   - SPVM::Build can parse distribution module and get subrutine names from it

@@ -383,10 +383,10 @@ SPVM Module:
 
 C Source File;
 
-  // lib/MyMathNative.inline/MyMathNative.c
+  // lib/MyMathNative.native/MyMathNative.c
   #include <spvm_native.h>
 
-  int32_t SPVM__MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* args) {
+  int32_t SPVM_NATIVE_SUB(MyMathNative__sum) (SPVM_ENV* env, SPVM_VALUE* args) {
     
     // First argument
     void* sp_nums = args[0].oval;

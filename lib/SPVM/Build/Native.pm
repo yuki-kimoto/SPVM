@@ -40,15 +40,6 @@ sub get_subs_from_package_name {
   return $subs;
 }
 
-sub create_cfunc_name {
-  my ($self, $sub_name) = @_;
-
-  my $cfunc_name = "SPVM__$sub_name";
-  $cfunc_name =~ s/:/_/g;
-  
-  return $cfunc_name;
-}
-
 sub create_shared_lib_dist {
   my ($self, $package_name) = @_;
   

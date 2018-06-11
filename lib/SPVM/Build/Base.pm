@@ -84,22 +84,36 @@ sub get_sub_names_dist {
   return $sub_names;
 }
 
+sub create_cfunc_name {
+  my ($self, $sub_abs_name) = @_;
+  
+  my $category = $self->category;
+  my $prefix = 'SPVM_' . uc($category) . '_';
+  
+  # Precompile Subroutine names
+  my $sub_abs_name_under_score = $sub_abs_name;
+  $sub_abs_name_under_score =~ s/:/_/g;
+  my $cfunc_name = "$prefix$sub_abs_name_under_score";
+  
+  return $cfunc_name;
+}
+
 sub bind_subs {
   my ($self, $shared_lib_path, $subs) = @_;
   
   for my $sub (@$subs) {
-    my $sub_name = $sub->{name};
-    next if $sub_name =~ /^SPVM::CORE::/;
+    my $sub_abs_name = $sub->{name};
+    next if $sub_abs_name =~ /^SPVM::CORE::/;
 
-    my $cfunc_name = $self->create_cfunc_name($sub_name);
+    my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
     my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     unless ($cfunc_address) {
-      my $sub_name_c = "SPVM__$sub_name";
-      $sub_name_c =~ s/:/_/g;
-      confess "Can't find function address of $sub_name(). Native function name must be $sub_name_c";
+      my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
+      $cfunc_name =~ s/:/_/g;
+      confess "Can't find function address of $sub_abs_name(). Native function name must be $cfunc_name";
     }
-    $self->bind_sub($sub_name, $cfunc_address);
+    $self->bind_sub($sub_abs_name, $cfunc_address);
   }
 }
 
