@@ -73,6 +73,16 @@ my $start_objects_count = SPVM::get_objects_count();
 }
 
 {
+  is(SPVM::CORE->INT8_MAX, $BYTE_MAX);
+  is(SPVM::CORE->INT8_MIN, $BYTE_MIN);
+  is(SPVM::CORE->INT16_MAX, $SHORT_MAX);
+  is(SPVM::CORE->INT16_MIN, $SHORT_MIN);
+  is(SPVM::CORE->INT32_MAX, $INT_MAX);
+  is(SPVM::CORE->INT32_MIN, $INT_MIN);
+  is(SPVM::CORE->INT64_MAX, $LONG_MAX);
+  is(SPVM::CORE->INT64_MIN, $LONG_MIN);
+}
+{
   # Check not Inf or NaN in Perl value
   like(SPVM::CORE->FLT_MAX(), qr/[0-9]/);
   like(SPVM::CORE->FLT_MIN(), qr/[0-9]/);
