@@ -1,6 +1,134 @@
 package TestCase::CallSub {
-  use TestCase;
   use TestCase::Minimal;
+
+  # Default return value empty
+  precompile sub default_return_value_byte : int () {
+    
+    if (default_return_value_byte_sub() == 0) {
+      if (default_return_value_byte_sub_empty() == 0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_byte_sub : byte () {
+    1;
+  }
+  precompile sub default_return_value_byte_sub_empty : byte () {
+    
+  }
+  precompile sub default_return_value_short : int () {
+    
+    if ((int)default_return_value_short_sub() == (int)(short)0) {
+      if ((int)default_return_value_short_sub_empty() == (int)(short)0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_short_sub : short () {
+    1;
+  }
+  precompile sub default_return_value_short_sub_empty : short () {
+    
+  }
+  precompile sub default_return_value_int : int () {
+    
+    if (default_return_value_int_sub() == (int)0) {
+      if (default_return_value_int_sub_empty() == (int)0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_int_sub : int () {
+    1;
+  }
+  precompile sub default_return_value_int_sub_empty : int () {
+    
+  }
+  precompile sub default_return_value_long : int () {
+    
+    if (default_return_value_long_sub() == (long)0) {
+      if (default_return_value_long_sub_empty() == (long)0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_long_sub : long () {
+    1;
+  }
+  precompile sub default_return_value_long_sub_empty : long () {
+    
+  }
+  precompile sub default_return_value_float : int () {
+    
+    if (default_return_value_float_sub() == (float)0) {
+      if (default_return_value_float_sub_empty() == (float)0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_float_sub : float () {
+    1;
+  }
+  precompile sub default_return_value_float_sub_empty : float () {
+    
+  }
+  precompile sub default_return_value_double : int () {
+    
+    if (default_return_value_double_sub() == (double)0) {
+      if (default_return_value_double_sub_empty() == (double)0) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_double_sub : double () {
+    1;
+  }
+  precompile sub default_return_value_double_sub_empty : double () {
+    
+  }
+  precompile sub default_return_value_object : int () {
+    
+    if (default_return_value_object_sub() == undef) {
+      if (default_return_value_object_sub_empty() == undef) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  precompile sub default_return_value_object_sub : TestCase::Minimal () {
+    1;
+  }
+  precompile sub default_return_value_object_sub_empty : TestCase::Minimal () {
+    
+  }
+  
+  # Call void function
+  precompile sub call_void_sub : void ($nums : int[]) {
+    $nums->[0] = 5;
+  }
+  precompile sub call_void : int () {
+    my $nums = new int[] {1};
+    
+    call_void_sub($nums);
+    
+    if ($nums->[0] == 5) {
+      return 1;
+    }
+    return 0;
+  }
   
   precompile sub call_sub_nest : int () {
     my $total = call_sub_nest_sum(call_sub_nest_sum(1, 2), call_sub_nest_sum(3, 4));
@@ -305,7 +433,7 @@ package TestCase::CallSub {
     $m = TestCase::Minimal->new();
   }
   
-  precompile sub call_sub_undef : int ($value : TestCase) {
+  precompile sub call_sub_undef : int ($value : TestCase::Minimal) {
     
     if ($value == undef) {
       return 1;

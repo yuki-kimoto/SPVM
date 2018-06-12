@@ -1,5 +1,5 @@
 package TestCase::Array {
-  use TestCase;
+  use TestCase::Minimal;
   
   # Array length - @ mark
   precompile sub array_length_atmark : int () {
@@ -201,7 +201,7 @@ package TestCase::Array {
     my $values_long = new long[1000000];
     my $values_float = new float[1000000];
     my $values_double = new double[1000000];
-    my $values_object = new TestCase[1000000];
+    my $values_object = new TestCase::Minimal[1000000];
     if ($values_byte->[0] == 0) {
       if ($values_byte->[999999] == 0) {
         if ($values_short->[0] == 0) {
@@ -238,7 +238,7 @@ package TestCase::Array {
     my $values_long = new long[10];
     my $values_float = new float[10];
     my $values_double = new double[10];
-    my $values_object = new TestCase[10];
+    my $values_object = new TestCase::Minimal[10];
     if ($values_byte->[0] == 0) {
       if ($values_byte->[9] == 0) {
         if ($values_short->[0] == 0) {

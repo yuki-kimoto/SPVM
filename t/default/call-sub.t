@@ -84,7 +84,7 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Call void subroutine
 {
-  ok(TestCase->call_void());
+  ok(TestCase::CallSub->call_void());
 }
 
 # call_sub return array
@@ -117,13 +117,13 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Default return value
 {
-  ok(TestCase->default_return_value_byte());
-  ok(TestCase->default_return_value_short());
-  ok(TestCase->default_return_value_int());
-  ok(TestCase->default_return_value_long());
-  ok(TestCase->default_return_value_float());
-  ok(TestCase->default_return_value_double());
-  ok(TestCase->default_return_value_object());
+  ok(TestCase::CallSub->default_return_value_byte());
+  ok(TestCase::CallSub->default_return_value_short());
+  ok(TestCase::CallSub->default_return_value_int());
+  ok(TestCase::CallSub->default_return_value_long());
+  ok(TestCase::CallSub->default_return_value_float());
+  ok(TestCase::CallSub->default_return_value_double());
+  ok(TestCase::CallSub->default_return_value_object());
 }
 
 {

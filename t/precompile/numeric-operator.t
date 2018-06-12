@@ -67,58 +67,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::NumericOperator->negate());
 }
 
-use SPVM 'TestCase';
-
-# Complement
-{
-  ok(TestCase->complement());
-}
-
-# Increment
-{
-  ok(TestCase->pre_inc());
-  ok(TestCase->pre_dec());
-  ok(TestCase->post_inc());
-  ok(TestCase->post_dec());
-}
-
-# Bit shift left
-{
-  ok(TestCase->bit_shift_left_int());
-  ok(TestCase->bit_shift_left_int_max());
-  ok(TestCase->bit_shift_left_int_overflow());
-  ok(TestCase->bit_shift_left_long());
-  ok(TestCase->bit_shift_left_long_max());
-  ok(TestCase->bit_shift_left_long_overflow());
-}
-
-# Bit shift right logical
-{
-  ok(TestCase->bit_shift_right_logical_int());
-  ok(TestCase->bit_shift_right_logical_long());
-}
-
-# Bit shift right
-{
-  ok(TestCase->bit_shift_right_int());
-  ok(TestCase->bit_shift_right_long());
-}
-
-# Bit and
-{
-  ok(TestCase->bit_and());
-}
-
-# Bit or
-{
-  ok(TestCase->bit_or());
-}
-
-# Bit xor
-{
-  ok(TestCase->bit_xor());
-}
-
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
