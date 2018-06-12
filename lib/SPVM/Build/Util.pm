@@ -6,8 +6,10 @@ use Carp 'croak';
 use Config;
 use File::Basename 'dirname', 'basename';
 
+use SPVM::Build::Config;
+
 # SPVM::Build::tUtil is used from Makefile.PL
-# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
+# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Build::Config.
 
 sub get_shared_lib_func_address {
   my ($shared_lib_file, $shared_lib_func_name) = @_;
@@ -161,6 +163,22 @@ sub default_optimize {
   my $default_optimize = '-O3';
   
   return $default_optimize;
+}
+
+sub default_build_config {
+  my $build_config = SPVM::Build::Config->new;
+  
+  $build_config->replace_extra_compiler_flags('-std=c99');
+
+  $build_config->replace_extra_linker_flags('');
+
+  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
+  # so I dicide not to print warning in release version
+  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
+    $build_config->add_extra_compiler_flags(" -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
+  }
+
+  $build_config->optimize('-O3');
 }
 
 1;
