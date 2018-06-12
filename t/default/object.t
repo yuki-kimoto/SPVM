@@ -63,16 +63,6 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase->object_field_set_and_get());
 }
 
-# Set field exception
-{
-  ok(TestCase->set_field_exception_object_undef());
-}
-
-# Get field exception
-{
-  ok(TestCase->get_field_exception_object_undef());
-}
-
 # Field
 {
   ok(TestCase->object_field_set_and_get());
