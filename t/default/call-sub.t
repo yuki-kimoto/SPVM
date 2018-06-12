@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::CallSub';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -27,56 +27,56 @@ my $start_objects_count = SPVM::get_objects_count();
   # call_sub byte_array
   {
     my $sp_values = SPVM::new_byte_array([1, 2, 3]);
-    is(TestCase->call_sub_byte_array($sp_values), 6);
+    is(TestCase::CallSub->call_sub_byte_array($sp_values), 6);
   }
 
   # call_sub short_array
   {
     my $sp_values = SPVM::new_short_array([1, 2, 3]);
-    is(TestCase->call_sub_short_array($sp_values), 6);
+    is(TestCase::CallSub->call_sub_short_array($sp_values), 6);
   }
 
   # call_sub int_array
   {
     my $sp_values = SPVM::new_int_array([1, 2, 3]);
-    is(TestCase->call_sub_int_array($sp_values), 6);
+    is(TestCase::CallSub->call_sub_int_array($sp_values), 6);
   }
 
   # call_sub long_array
   {
     my $sp_values = SPVM::new_long_array([1, 2, 3]);
-    is(TestCase->call_sub_long_array($sp_values), 6);
+    is(TestCase::CallSub->call_sub_long_array($sp_values), 6);
   }
 
   # call_sub float_array
   {
     my $sp_values = SPVM::new_float_array([0.5, 0.5, 1.0]);
-    is(TestCase->call_sub_float_array($sp_values), 2.0);
+    is(TestCase::CallSub->call_sub_float_array($sp_values), 2.0);
   }
 
   # call_sub double_array
   {
     my $sp_values = SPVM::new_double_array([0.5, 0.5, 1.0]);
-    is(TestCase->call_sub_double_array($sp_values), 2.0);
+    is(TestCase::CallSub->call_sub_double_array($sp_values), 2.0);
   }
 
   # call_sub
   {
-    ok(TestCase->call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
-    ok(TestCase->call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
-    ok(TestCase->call_sub_args_int(0, $INT_MAX, $INT_MIN));
-    ok(TestCase->call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
+    ok(TestCase::CallSub->call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
+    ok(TestCase::CallSub->call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
+    ok(TestCase::CallSub->call_sub_args_int(0, $INT_MAX, $INT_MIN));
+    ok(TestCase::CallSub->call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
   }
 }
 
 # Call subroutine
 {
-  ok(TestCase->call_sub_last_camma());
-  ok(TestCase->call_sub_undef(undef));
+  ok(TestCase::CallSub->call_sub_last_camma());
+  ok(TestCase::CallSub->call_sub_undef(undef));
   
   {
     my $start_objects_count = SPVM::get_objects_count();
-    TestCase->call_sub_assign();
+    TestCase::CallSub->call_sub_assign();
     my $end_objects_count = SPVM::get_objects_count();
     is($start_objects_count, $end_objects_count);
   }
@@ -90,28 +90,28 @@ my $start_objects_count = SPVM::get_objects_count();
 # call_sub return array
 {
   {
-    my $sp_values = TestCase->call_sub_return_byte_array();
-    TestCase->call_sub_return_byte_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_byte_array();
+    TestCase::CallSub->call_sub_return_byte_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase->call_sub_return_short_array();
-    TestCase->call_sub_return_short_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_short_array();
+    TestCase::CallSub->call_sub_return_short_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase->call_sub_return_int_array();
-    TestCase->call_sub_return_int_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_int_array();
+    TestCase::CallSub->call_sub_return_int_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase->call_sub_return_long_array();
-    TestCase->call_sub_return_long_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_long_array();
+    TestCase::CallSub->call_sub_return_long_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase->call_sub_return_float_array();
-    TestCase->call_sub_return_float_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_float_array();
+    TestCase::CallSub->call_sub_return_float_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase->call_sub_return_double_array();
-    TestCase->call_sub_return_double_array_check($sp_values);
+    my $sp_values = TestCase::CallSub->call_sub_return_double_array();
+    TestCase::CallSub->call_sub_return_double_array_check($sp_values);
   }
 }
 
@@ -127,12 +127,12 @@ my $start_objects_count = SPVM::get_objects_count();
 }
 
 {
-  ok(TestCase->call_sub_nest());
+  ok(TestCase::CallSub->call_sub_nest());
 }
 
 # Argument convetion
 {
-  ok(TestCase->call_sub_args_convertion());
+  ok(TestCase::CallSub->call_sub_args_convertion());
 }
 
 # All object is freed
