@@ -113,6 +113,9 @@ sub create_shared_lib_precompile_dist {
   unless ($compile_success) {
     die "Compile error";
   }
+
+  # Build opcode
+  $self->build_opcode;
   
   $self->precompile->create_shared_lib_dist($package_name);
 }
