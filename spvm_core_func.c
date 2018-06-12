@@ -622,7 +622,7 @@ int32_t SPVM_CORE_FUNC_INT64_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
-  args[0].lval = (int64_t)-9223372036854775808LL;
+  args[0].lval = (int64_t)-9223372036854775808ULL;
   
   return 0;
 }

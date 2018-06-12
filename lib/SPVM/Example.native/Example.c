@@ -573,7 +573,7 @@ int32_t SPVM_NATIVE_SUB(SPVM__Example__INT64_MIN) (SPVM_ENV* env, SPVM_VALUE* ar
   (void)env;
   (void)args;
   
-  args[0].lval = (int64_t)-9223372036854775808LL;
+  args[0].lval = (int64_t)-9223372036854775808ULL;
   
   return 0;
 }
