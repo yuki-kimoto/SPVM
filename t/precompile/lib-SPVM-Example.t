@@ -29,6 +29,11 @@ my $nan_re = qr/(nan|ind)/i;
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+# Precompile subroutine
+{
+  ok(TestCase::Example->call_precompile_sub());
+}
+
 # Call subroutine
 {
   ok(TestCase::Example->sin());

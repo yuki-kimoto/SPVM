@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::Exception';
 use File::Basename 'basename';
 
 my $file = basename $0;
 
 # Exception
 {
-  eval { TestCase->exception_zero_divide_int() }; my $line = __LINE__;
+  eval { TestCase::Exception->exception_zero_divide_int() }; my $line = __LINE__;
   like($@, qr|\Q0 division|);
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
@@ -22,55 +22,66 @@ my $file = basename $0;
 # Exception
 {
   {
-    ok(TestCase->exception_eval_call_sub());
+    ok(TestCase::Exception->exception_eval_call_sub());
   }
   
   {
-    eval { TestCase->exception_call_stack() };
+    eval { TestCase::Exception->exception_call_stack() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
     like($@, qr/exception_call_stack/);
   }
 
   {
-    eval { TestCase->exception_croak_return_byte() };
+    eval { TestCase::Exception->exception_croak_return_byte() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_byte/);
   }
   {
-    eval { TestCase->exception_croak_return_short() };
+    eval { TestCase::Exception->exception_croak_return_short() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase->exception_croak_return_int() };
+    eval { TestCase::Exception->exception_croak_return_int() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
-    like($@, qr/TestCase\.spvm/);
+    like($@, qr/TestCase\/Exception\.spvm/);
   }
   {
-    eval { TestCase->exception_croak_return_long() };
+    eval { TestCase::Exception->exception_croak_return_long() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase->exception_croak_return_float() };
+    eval { TestCase::Exception->exception_croak_return_float() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase->exception_croak_return_double() };
+    eval { TestCase::Exception->exception_croak_return_double() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase->exception_croak_return_void() };
+    eval { TestCase::Exception->exception_croak_return_void() };
     like($@, qr/Error/);
   }
   {
-    ok(TestCase->exception_croak_return_int_eval_catch());
+    ok(TestCase::Exception->exception_croak_return_int_eval_catch());
   }
   {
-    eval { TestCase->exception_croak_return_object() };
+    eval { TestCase::Exception->exception_croak_return_object() };
     like($@, qr/Error/);
   }
 }
 
 eval { TestCase->eval_block_stack_check() };
 ok($@);
+
+# Set field exception
+{
+  ok(TestCase::Exception->exception_set_field_object_undef());
+}
+
+# Get field exception
+{
+  ok(TestCase::Exception->exception_get_field_object_undef());
+}
+
