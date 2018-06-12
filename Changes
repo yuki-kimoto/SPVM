@@ -1,3 +1,8 @@
+0.0346 2018-06-13
+  - fix INT64_MIN bugs
+    In native function, -9223372036854775808LL is changed to -9223372036854775808ULL
+  - fix INT32_MIN bugs
+    In native function, -2147483648L is changed to -2147483648UL
 0.0345 2018-06-12
   - Support precompile subroutine in distribution
     In this version, spvm subroutine can be precompiled before runtime.

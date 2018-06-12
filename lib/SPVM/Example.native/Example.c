@@ -555,7 +555,7 @@ int32_t SPVM_NATIVE_SUB(SPVM__Example__INT32_MIN) (SPVM_ENV* env, SPVM_VALUE* ar
   (void)env;
   (void)args;
   
-  args[0].ival = (int32_t)-2147483648L;
+  args[0].ival = (int32_t)-2147483648UL;
   
   return 0;
 }

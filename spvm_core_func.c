@@ -604,7 +604,7 @@ int32_t SPVM_CORE_FUNC_INT32_MIN(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
-  args[0].ival = (int32_t)-2147483648L;
+  args[0].ival = (int32_t)-2147483648UL;
   
   return 0;
 }
