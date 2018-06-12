@@ -433,14 +433,6 @@ is_deeply(
   cmp_ok($total, '==', 0.5);
 }
 
-# .
-{
-  {
-    is("ab", TestCase->concat_special_assign()->to_bin);
-    is("ab", TestCase->concat()->to_bin);
-  }
-}
-
 # String
 {
   {

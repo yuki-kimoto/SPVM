@@ -6,75 +6,80 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::NumericOperator';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
-# Special assign
-{
-  ok(TestCase->special_assign());
-}
-
 # Add
 {
-  ok(TestCase->add());
+  ok(TestCase::NumericOperator->add());
 
-  is(TestCase->add_int_max(), 2147483647);
-  is(TestCase->add_int_min(), -2147483647);
-  is(TestCase->add_int_overflow(), -2147483648);
-  is(TestCase->add_long_max(), 9223372036854775807);
-  is(TestCase->add_long_min(), -9223372036854775807);
-  is(TestCase->add_long_overflow(), -9223372036854775808);
+  is(TestCase::NumericOperator->add_int_max(), 2147483647);
+  is(TestCase::NumericOperator->add_int_min(), -2147483647);
+  is(TestCase::NumericOperator->add_int_overflow(), -2147483648);
+  is(TestCase::NumericOperator->add_long_max(), 9223372036854775807);
+  is(TestCase::NumericOperator->add_long_min(), -9223372036854775807);
+  is(TestCase::NumericOperator->add_long_overflow(), -9223372036854775808);
 }
 
 # Subtract
 {
-  ok(TestCase->subtract());
+  ok(TestCase::NumericOperator->subtract());
 
-  is(TestCase->subtract_int_max(), 2147483646);
-  is(TestCase->subtract_int_min(), -2147483648);
-  is(TestCase->subtract_int_underflow(), 2147483647);
-  is(TestCase->subtract_long_max(), 9223372036854775806);
-  is(TestCase->subtract_long_min(), -9223372036854775808);
-  is(TestCase->subtract_long_underflow(), 9223372036854775807);
+  is(TestCase::NumericOperator->subtract_int_max(), 2147483646);
+  is(TestCase::NumericOperator->subtract_int_min(), -2147483648);
+  is(TestCase::NumericOperator->subtract_int_underflow(), 2147483647);
+  is(TestCase::NumericOperator->subtract_long_max(), 9223372036854775806);
+  is(TestCase::NumericOperator->subtract_long_min(), -9223372036854775808);
+  is(TestCase::NumericOperator->subtract_long_underflow(), 9223372036854775807);
 }
 
 # Multiply
 {
-  ok(TestCase->multiply());
+  ok(TestCase::NumericOperator->multiply());
 
-  is(TestCase->multiply_int_plus(), 1073741824);
-  is(TestCase->multiply_int_minus(), -1073741824);
-  is(TestCase->multiply_int_overflow(), -2147483648);
-  is(TestCase->multiply_long_plus(), 4611686018427387904);
-  is(TestCase->multiply_long_minus(), -4611686018427387904);
-  is(TestCase->multiply_long_overflow(), -9223372036854775808);
+  is(TestCase::NumericOperator->multiply_int_plus(), 1073741824);
+  is(TestCase::NumericOperator->multiply_int_minus(), -1073741824);
+  is(TestCase::NumericOperator->multiply_int_overflow(), -2147483648);
+  is(TestCase::NumericOperator->multiply_long_plus(), 4611686018427387904);
+  is(TestCase::NumericOperator->multiply_long_minus(), -4611686018427387904);
+  is(TestCase::NumericOperator->multiply_long_overflow(), -9223372036854775808);
 }
 
 # Divide
 {
-  ok(TestCase->divide());
+  ok(TestCase::NumericOperator->divide());
 }
 
 # Remainder
 {
-  ok(TestCase->remainder());
+  ok(TestCase::NumericOperator->remainder());
 }
 
 # Plus
 {
-  ok(TestCase->plus());
+  ok(TestCase::NumericOperator->plus());
 }
 
 # Negate
 {
-  ok(TestCase->negate());
+  ok(TestCase::NumericOperator->negate());
 }
+
+use SPVM 'TestCase';
 
 # Complement
 {
   ok(TestCase->complement());
+}
+
+# Increment
+{
+  ok(TestCase->pre_inc());
+  ok(TestCase->pre_dec());
+  ok(TestCase->post_inc());
+  ok(TestCase->post_dec());
 }
 
 # Bit shift left
@@ -117,12 +122,4 @@ my $start_objects_count = SPVM::get_objects_count();
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
 is($end_objects_count, $start_objects_count);
-
-# Increment
-{
-  ok(TestCase->pre_inc());
-  ok(TestCase->pre_dec());
-  ok(TestCase->post_inc());
-  ok(TestCase->post_dec());
-}
 
