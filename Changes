@@ -1,4 +1,24 @@
 0.0346 2018-06-13
+  - fix Makefile.PL native and precompile make rule bug
+    
+    The following output become printed to Makefile
+    
+      dynamic :: spvm_native_SPVM__Example  
+
+      spvm_native_SPVM__Example  :: blib/lib/SPVM/Example.native/Example.so
+
+      blib/lib/SPVM/Example.native/Example.so :: lib/SPVM/Example.native/Example.c lib/SPVM/Example.spvm
+
+      	perl -Mblib -MSPVM::Build -e "SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_native_dist('SPVM::Example')"
+
+      dynamic :: spvm_precompile_SPVM__Example  
+
+      spvm_precompile_SPVM__Example  :: blib/lib/SPVM/Example.precompile/Example.so
+
+      blib/lib/SPVM/Example.precompile/Example.so :: lib/SPVM/Example.spvm
+
+      	perl -Mblib -MSPVM::Build -e "SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_precompile_dist('SPVM::Example')"
+
   - fix INT64_MIN bugs
     In native function, -9223372036854775808LL is changed to -9223372036854775808ULL
   - fix INT32_MIN bugs
