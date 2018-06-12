@@ -1,4 +1,11 @@
-0.0345 2018-06-11
+0.0345 2018-06-12
+  - Support precompile subroutine in distribution
+    In this version, spvm subroutine can be precompiled before runtime.
+    
+    You can create precompiled shared library by the following command.
+    
+      perl -MSPVM::Build -e "SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_precompile_dist('Point')";
+
   - remove len keyword and add scalar keyword
     SPVM don't have scalar context and list context, but Perl have them.
     In SPVM, you can get array by
