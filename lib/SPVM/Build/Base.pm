@@ -158,20 +158,21 @@ sub create_shared_lib {
       or confess "Can't parser $config_file: $!$@";
   }
   
-  # Include directory
-  my $include_dirs = [];
+  my $build_setting = $self->{build_setting};
+  
+  # CBuilder settings
+  my $include_dirs = [@{$build_setting->get_include_dirs}];
+  my $extra_linker_flags = [@{$build_setting->get_extra_linker_flags}];
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
   $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
   push @$include_dirs, $env_header_include_dir;
-  
   push @$include_dirs, $input_src_dir;
   
   # CBuilder config
   my $cbuilder_config = {};
   
-  my $extra_linker_flags = '';
 
   # OPTIMIZE
   $cbuilder_config->{optimize} ||= $self->optimize;
