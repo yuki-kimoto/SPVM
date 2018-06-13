@@ -5,6 +5,7 @@ use warnings;
 use Carp 'croak';
 use Config;
 use File::Basename 'dirname', 'basename';
+use File::Path 'mkpath';
 
 use SPVM::Build::Config;
 
@@ -79,33 +80,49 @@ sub create_package_make_rule {
   my $package_name_under_score = $package_name;
   $package_name_under_score =~ s/:/_/g;
   
+  my $target_name = "spvm_${category}_$package_name_under_score ";
   $make_rule
-    .= "shared_lib_$package_name_under_score ";
+    .= "$target_name ";
   $make_rule .= "\n\n";
   
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $src_dir = $package_name;
-  $src_dir =~ s/::/\//g;
-  $src_dir = "lib/$src_dir." . $category;
+  my $input_dir = 'lib';
+
+  my $work_dir = "spvm_build/work";
+  mkpath $work_dir;
+
+  my $output_dir = 'blib/lib';
   
-  # Dependency
-  my @deps = grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/*";
+  my $package_path = convert_package_name_to_path($package_name, $category);
+  my $input_src_dir = "$input_dir/$package_path";
+  
+  my $spvm_file = $package_path;
+  $spvm_file =~ s/\.[^\.]+$//;
+  $spvm_file .= '.spvm';
+  $spvm_file = "$input_dir/$spvm_file";
+  
+  # Dependency files
+  my @deps;
+  
+  # Dependency c source files
+  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$input_src_dir/*";
+  
+  # Dependency module file
+  push @deps, $spvm_file;
   
   # Shared library file
   my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
   my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
   
   # Get source files
-  my $module_category = $category;
-  $module_category = ucfirst $module_category;
   $make_rule
-    .= "shared_lib_$package_name_under_score :: $shared_lib_file\n\n";
+    .= "$target_name :: $shared_lib_file\n\n";
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Mblib -MSPVM::Build -e \"SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Build -e \"SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }

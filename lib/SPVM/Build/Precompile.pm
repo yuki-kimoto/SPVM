@@ -90,15 +90,16 @@ sub create_shared_lib_dist {
   my ($self, $package_name) = @_;
   
   my $input_dir = 'lib';
+
+  my $work_dir = "spvm_build/work";
+  mkpath $work_dir;
+
   my $output_dir = 'blib/lib';
   
   my $category = $self->category;
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
-  my $work_dir = "spvm_build/work";
-  mkpath $work_dir;
-
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   my $config_file = "$input_dir/$module_base_name.config";
