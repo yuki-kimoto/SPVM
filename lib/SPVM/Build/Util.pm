@@ -194,10 +194,7 @@ sub default_build_setting {
   }
   
   # Config
-  my $config = $build_setting->get_config;
-  
-  # Optimize
-  $config->set(optimize => '-O3');
+  $build_setting->set_config(optimize => '-O3');
   
   return $build_setting;
 }

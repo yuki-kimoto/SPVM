@@ -1,3 +1,8 @@
+0.0348 2018-06-14
+  - add SPVM::Build::Setting
+    
+    This module is to do setting ExtUtils::CBuilder. ExtUtils::CBuilder is used for native compile and precompile.
+    
 0.0347 2018-06-13
   - fix bug : [rt.cpan.org #125541] System perl used in build process
     

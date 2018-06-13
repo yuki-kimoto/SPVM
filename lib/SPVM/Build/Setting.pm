@@ -3,14 +3,12 @@ package SPVM::Build::Setting;
 use strict;
 use warnings;
 
-use SPVM::Build::Setting::Config;
-
 sub new {
   my $class = shift;
   
   my $self = {};
   
-  $self->{config} = SPVM::Build::Setting::Config->new;
+  $self->{config} = {};
 
   $self->{extra_compiler_flags} = [];
 
@@ -87,10 +85,43 @@ sub add_extra_linker_flag {
   return $self;
 }
 
+sub set_config {
+  my ($self, %key_values) = @_;
+  
+  my $config = $self->{config};
+  
+  for my $key (keys %key_values) {
+    my $value = $key_values{$key};
+    $config->{$key} = $value;
+  }
+  
+  return $self;
+}
+
+sub add_config {
+  my ($self, %key_values) = @_;
+  
+  my $config = $self->{config};
+
+  for my $key (keys %key_values) {
+    my $value = $key_values{$key};
+    $config->{$key} .= " $value";
+  }
+  
+  return $self;
+}
+
 sub get_config {
   my $self = shift;
   
-  return $self->{config};
+  my $config = $self->{config};
+
+  if (@_) {
+    return $config->{$_[0]};
+  }
+  else {
+    return $config;
+  }
 }
 
 =head1 NAME

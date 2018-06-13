@@ -152,7 +152,7 @@ sub create_shared_lib {
   my $include_dirs = [@{$build_setting->get_include_dirs}];
   my $extra_compiler_flags = [@{$build_setting->get_extra_compiler_flags}];
   my $extra_linker_flags = [@{$build_setting->get_extra_linker_flags}];
-  my $conifg = $build_setting->get_config->to_hash;
+  my $conifg = {%{$build_setting->get_config}};
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
