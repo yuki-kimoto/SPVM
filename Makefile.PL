@@ -22,8 +22,9 @@ if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
 my $debug;
 GetOptions('d' => \$debug);
 
-# Edit CCFLAGS
-my $ccflags = "$Config{ccflags} " . SPVM::Build::Util::default_extra_compiler_flags();
+my $build_setting = SPVM::Build::Util::default_build_setting;
+my $optimize = $build_setting->get_config('optimize');
+my $ccflags = "$Config{ccflags} " . join(' ', @{$build_setting->get_extra_compiler_flags});
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -36,7 +37,7 @@ WriteMakefile(
     LIBS              => ['-lm'], # e.g., '-lm'
     INC               => '-I. -Ilib/SPVM', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
-    OPTIMIZE => SPVM::Build::Util::default_optimize(),
+    OPTIMIZE => $optimize,
     OBJECT            => '$(O_FILES)', # link all the C files too
     $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},

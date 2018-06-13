@@ -33,13 +33,11 @@ sub new {
   $self->{native} ||= SPVM::Build::Native->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
-    build_setting => SPVM::Build::Util::default_build_setting,
   );
   
   $self->{precompile} ||= SPVM::Build::Precompile->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
-    build_setting => SPVM::Build::Util::default_build_setting,
   );
   
   $self->{setting} ||= SPVM::Build::Util::default_build_setting;

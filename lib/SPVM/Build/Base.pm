@@ -23,9 +23,6 @@ sub new {
   
   my $self = {@_};
   
-  $self->{extra_compiler_flags} ||= SPVM::Build::Util::default_extra_compiler_flags();
-  $self->{optimize} ||= SPVM::Build::Util::default_optimize();
-  
   return bless $self, $class;
 }
 
@@ -140,13 +137,14 @@ sub create_shared_lib {
   }
   
   # Config
-  my $config;
+  my $build_setting;
   if (defined $config_file && -f $config_file) {
-    $config = do $config_file
+    $build_setting = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
-  
-  my $build_setting = $self->{build_setting};
+  else {
+    $build_setting = SPVM::Build::Util::default_build_setting;
+  }
   
   # CBuilder settings
   my $include_dirs = [@{$build_setting->get_include_dirs}];
