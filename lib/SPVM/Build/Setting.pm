@@ -1,4 +1,4 @@
-package SPVM::Build::Config;
+package SPVM::Build::Setting;
 
 sub new {
   my $class = shift;
@@ -12,10 +12,12 @@ sub new {
   return $self;
 }
 
-sub replace_extra_compiler_flags { shift->{extra_compiler_flags} = shift }
+sub set_extra_compiler_flags { shift->{extra_compiler_flags} = shift }
+sub get_extra_compiler_flags { shift->{extra_compiler_flags} }
 sub add_extra_compiler_flags { shift->{extra_compiler_flags} .= shift }
 
-sub replace_extra_linker_flags { shift->{extra_linker_flags} = shift }
+sub set_extra_linker_flags { shift->{extra_linker_flags} = shift }
+sub get_extra_linker_flags { shift->{extra_linker_flags} }
 sub add_extra_linker_flags { shift->{extra_linker_flags} .= shift }
 
 sub quiet_on { shift->{quiet} = 1 };

@@ -7,7 +7,7 @@ use Config;
 use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 
-use SPVM::Build::Config;
+use SPVM::Build::Setting;
 
 # SPVM::Build::tUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Build::Config.
@@ -182,12 +182,12 @@ sub default_optimize {
   return $default_optimize;
 }
 
-sub default_build_config {
-  my $build_config = SPVM::Build::Config->new;
+sub default_build_setting {
+  my $build_config = SPVM::Build::Setting->new;
   
-  $build_config->replace_extra_compiler_flags('-std=c99');
+  $build_config->set_extra_compiler_flags('-std=c99');
 
-  $build_config->replace_extra_linker_flags('');
+  $build_config->set_extra_linker_flags('');
 
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
