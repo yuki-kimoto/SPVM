@@ -195,7 +195,7 @@ sub default_build_setting {
     $build_config->add_extra_compiler_flags(" -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
   }
 
-  $build_config->optimize('-O3');
+  $build_config->set_optimize('-O3');
 }
 
 1;

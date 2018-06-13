@@ -10,6 +10,7 @@ use SPVM::Build::SPVMInfo;
 use SPVM::Build::Native;
 use SPVM::Build::Precompile;
 use SPVM::Build::Util;
+use SPVM::Build::Setting;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -31,13 +32,17 @@ sub new {
   
   $self->{native} ||= SPVM::Build::Native->new(
     build_dir => $build_dir,
-    compiler => $self->{compiler}
+    compiler => $self->{compiler},
+    build_setting => SPVM::Build::Util::default_build_setting,
   );
   
   $self->{precompile} ||= SPVM::Build::Precompile->new(
     build_dir => $build_dir,
-    compiler => $self->{compiler}
+    compiler => $self->{compiler},
+    build_setting => SPVM::Build::Util::default_build_setting,
   );
+  
+  $self->{setting} ||= SPVM::Build::Util::default_build_setting;
   
   return $self;
 }
