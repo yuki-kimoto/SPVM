@@ -171,57 +171,8 @@ sub create_shared_lib {
   # CBuilder config
   my $cbuilder_config = {};
   
-  # Convert ExtUitls::MakeMaker config to ExtUtils::CBuilder config
-  if ($config) {
-    # CBuilder config name which compatible with ExtUtils::MakeMaker
-    my @cbuilder_config_names_compatible = qw(
-      optimize
-      cc
-      ccflags
-      ld
-      lddlflags
-    );
-    for my $cbuilder_name (@cbuilder_config_names_compatible) {
-      my $makemaker_name = uc $cbuilder_name;
-      
-      if (defined $config->{$makemaker_name}) {
-        $cbuilder_config->{$cbuilder_name} = delete $config->{$makemaker_name};
-      }
-    }
-  }
-  
-  # Include directory
-  if (defined $config->{INC}) {
-    my $inc = delete $config->{INC};
-    
-    my @include_dirs_tmp = split /\s+/, $inc;
-    for my $include_dir_tmp (reverse @include_dirs_tmp) {
-      if ($include_dir_tmp =~ s/^-I//) {
-        unshift @$include_dirs, $include_dir_tmp;
-      }
-      else {
-        confess "Invalid include option \"$inc\"";
-      }
-    }
-  }
-  
-  # Shared library
   my $extra_linker_flags = '';
-  if (defined $config->{LIBS}) {
-    my $libs = delete $config->{LIBS};
-    
-    if (ref $libs eq 'ARRAY') {
-      $libs = join(' ', @$libs);
-    }
-    
-    $extra_linker_flags .= $libs;
-  }
-  
-  my @keys = keys %$config;
-  if (@keys) {
-    confess "$keys[0] is not supported option";
-  }
-  
+
   # OPTIMIZE
   $cbuilder_config->{optimize} ||= $self->optimize;
   
