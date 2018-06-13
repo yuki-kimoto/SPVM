@@ -606,9 +606,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   assert(sub->have_compile_desc);
   
-  // Subroutine name
-  const char* sub_abs_name = sub->abs_name;
-
   SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub_id);
   
   // Block start

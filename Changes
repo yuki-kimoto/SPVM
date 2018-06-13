@@ -3,6 +3,9 @@
     
     This module is to do setting ExtUtils::CBuilder. ExtUtils::CBuilder is used for native compile and precompile.
   - fix config path bug
+  - add runtime allocator again to check objects count.
+      spvm_runtime_allocator.h
+      spvm_runtime_allocator.c
 0.0347 2018-06-13
   - fix bug : [rt.cpan.org #125541] System perl used in build process
     

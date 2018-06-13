@@ -13,6 +13,8 @@
 #include "spvm_op.h"
 
 void SPVM_CORE_FUNC_BIND_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
+  (void)compiler;
+  
   // Bind native subroutine
   {
     int32_t i;
