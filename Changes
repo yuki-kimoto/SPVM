@@ -1,4 +1,4 @@
-0.0346 2018-06-13
+0.0347 2018-06-13
   - fix bug : [rt.cpan.org #125541] System perl used in build process
     
     I receive a advice
@@ -10,7 +10,7 @@
       "
     
     This bug is fixed by using $^X.
-    
+0.0346 2018-06-12
   - fix Makefile.PL native and precompile make rule bug
     
     The following output become printed to Makefile
