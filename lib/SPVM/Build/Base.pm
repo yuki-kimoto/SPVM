@@ -162,7 +162,8 @@ sub create_shared_lib {
   
   # CBuilder settings
   my $include_dirs = [@{$build_setting->get_include_dirs}];
-  my $extra_linker_flags = [@{$build_setting->get_extra_linker_flags}];
+  my $extra_compiler_flags = $build_setting->get_extra_compiler_flags;
+  my $extra_linker_flags = $build_setting->get_extra_linker_flags;
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
@@ -173,7 +174,6 @@ sub create_shared_lib {
   # CBuilder config
   my $cbuilder_config = {};
   
-
   # OPTIMIZE
   $cbuilder_config->{optimize} ||= $self->optimize;
   
@@ -197,7 +197,7 @@ sub create_shared_lib {
       source => $src_file,
       object_file => $object_file,
       include_dirs => $include_dirs,
-      extra_compiler_flags => $self->extra_compiler_flags
+      extra_compiler_flags => join(' ', @$extra_compiler_flags),
     );
     push @$object_files, $object_file;
   }
@@ -221,7 +221,7 @@ sub create_shared_lib {
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
-    extra_linker_flags => $extra_linker_flags
+    extra_linker_flags => join(' ', @$extra_linker_flags),
   );
 
   # Create shared lib blib directory
