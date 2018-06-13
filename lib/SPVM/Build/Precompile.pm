@@ -119,7 +119,6 @@ sub create_shared_lib_dist {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      quiet => 1,
       sub_names => $sub_names,
     );
   }

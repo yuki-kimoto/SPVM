@@ -87,36 +87,6 @@ sub add_extra_linker_flag {
   return $self;
 }
 
-sub set_quiet_on {
-  my $self = shift;
-  
-  $self->{quiet} = 1;
-  
-  return $self;
-};
-
-sub set_quiet_off {
-  my $self = shift;
-  
-  $self->{quiet} = 0;
-
-  return $self;
-}
-
-sub set_quiet_auto {
-  my $self = shift;
-
-  delete $self->{quiet};
-  
-  return $self;
-}
-
-sub get_quiet {
-  my $self = shift;
-  
-  return $self->{quiet};
-}
-
 sub get_config {
   my $self = shift;
   

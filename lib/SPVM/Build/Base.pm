@@ -35,18 +35,6 @@ sub category {
   $self->{category};
 }
 
-sub extra_compiler_flags {
-  my $self = shift;
-  
-  return $self->{extra_compiler_flags};
-}
-
-sub optimize {
-  my $self = shift;
-  
-  return $self->{optimize};
-}
-
 sub build {
   my $self = shift;
   
@@ -162,8 +150,9 @@ sub create_shared_lib {
   
   # CBuilder settings
   my $include_dirs = [@{$build_setting->get_include_dirs}];
-  my $extra_compiler_flags = $build_setting->get_extra_compiler_flags;
-  my $extra_linker_flags = $build_setting->get_extra_linker_flags;
+  my $extra_compiler_flags = [@{$build_setting->get_extra_compiler_flags}];
+  my $extra_linker_flags = [@{$build_setting->get_extra_linker_flags}];
+  my $conifg = $build_setting->get_config->to_hash;
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
@@ -171,14 +160,8 @@ sub create_shared_lib {
   push @$include_dirs, $env_header_include_dir;
   push @$include_dirs, $input_src_dir;
   
-  # CBuilder config
-  my $cbuilder_config = {};
-  
-  # OPTIMIZE
-  $cbuilder_config->{optimize} ||= $self->optimize;
-  
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $conifg);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
