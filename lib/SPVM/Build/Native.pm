@@ -49,15 +49,11 @@ sub create_shared_lib_dist {
   mkpath $work_dir;
 
   my $output_dir = 'blib/lib';
-  
+
   my $category = $self->category;
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  my $config_file = "$input_dir/$module_base_name.config";
-
   # Build shared library
   $self->create_shared_lib(
     package_name => $package_name,
@@ -65,7 +61,6 @@ sub create_shared_lib_dist {
     work_dir => $work_dir,
     output_dir => $output_dir,
     sub_names => $sub_names,
-    config_file => $config_file,
   );
 }
 
@@ -90,10 +85,6 @@ sub create_shared_lib_runtime {
   my $subs = $self->get_subs_from_package_name($package_name);
   my $sub_names = [map { $_->{name} } @$subs];
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  my $config_file = "$input_dir/$module_base_name.config";
-
   $self->create_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
@@ -101,7 +92,6 @@ sub create_shared_lib_runtime {
     output_dir => $output_dir,
     quiet => 1,
     sub_names => $sub_names,
-    config_file => $config_file,
   );
 }
 

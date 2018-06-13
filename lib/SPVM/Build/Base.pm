@@ -97,9 +97,6 @@ sub bind_subs {
 sub create_shared_lib {
   my ($self, %opt) = @_;
   
-  # Config file
-  my $config_file = $opt{config_file};
-  
   # Package name
   my $package_name = $opt{package_name};
   
@@ -136,9 +133,15 @@ sub create_shared_lib {
     }
   }
   
+  # Config file
+  my $package_base_name = $package_name;
+  $package_base_name =~ s/^.+:://;
+  my $input_config_dir = $input_src_dir;
+  my $config_file = "$input_config_dir/$package_base_name.config";
+  
   # Config
   my $build_setting;
-  if (defined $config_file && -f $config_file) {
+  if (-f $config_file) {
     $build_setting = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
