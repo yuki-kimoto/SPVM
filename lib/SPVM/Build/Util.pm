@@ -120,7 +120,7 @@ sub create_package_make_rule {
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\tperl -Mblib -MSPVM::Build -e \"SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Build -e \"SPVM::Build->new(build_dir => 'spvm_build')->create_shared_lib_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }

@@ -1,4 +1,16 @@
 0.0346 2018-06-13
+  - fix bug : [rt.cpan.org #125541] System perl used in build process
+    
+    I receive a advice
+    
+      "
+       It seems that the system perl is used here (/usr/bin/perl),
+       not the perl used for building the distribution. Typically this can 
+       be fixed by using something like $^X.
+      "
+    
+    This bug is fixed by using $^X.
+    
   - fix Makefile.PL native and precompile make rule bug
     
     The following output become printed to Makefile
