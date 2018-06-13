@@ -183,19 +183,23 @@ sub default_optimize {
 }
 
 sub default_build_setting {
-  my $build_config = SPVM::Build::Setting->new;
+  my $build_setting = SPVM::Build::Setting->new;
   
-  $build_config->set_extra_compiler_flags('-std=c99');
-
-  $build_config->set_extra_linker_flags('');
+  $build_setting->push_extra_compiler_flag('-std=c99');
 
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $build_config->add_extra_compiler_flags(" -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
+    $build_setting->push_extra_compiler_flag(" -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
   }
-
-  $build_config->set_optimize('-O3');
+  
+  # Config
+  my $config = $build_setting->get_config;
+  
+  # Optimize
+  $config->set(optimize => '-O3');
+  
+  return $build_setting;
 }
 
 1;

@@ -50,4 +50,14 @@ sub to_hash {
   return $hash;
 }
 
+=head1 NAME
+
+SPVM::Build::Setting::Config;
+
+=head1 DESCRIPTION
+
+L<ExtUtils::CBuilder> config option of C<new> method.
+
+=cut
+
 1;

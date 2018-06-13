@@ -11,8 +11,34 @@ sub new {
   my $self = {};
   
   $self->{config} = SPVM::Build::Setting::Config->new;
+
+  $self->{extra_compiler_flags} = [];
+
+  $self->{extra_linker_flags} = [];
+
+  $self->{include_dirs} = [];
   
-  bless $self, $class;
+  return bless $self, $class;
+}
+
+sub set_include_dirs {
+  my ($self, $include_dirs) = @_;
+  
+  $self->{include_dirs} = $include_dirs;
+  
+  return $self;
+}
+
+sub get_include_dirs {
+  my $self = shift;
+  
+  return $self->{include_dirs};
+}
+
+sub add_include_dir {
+  my ($self, $include_dir) = @_;
+  
+  push @{$self->{include_dirs}}, $include_dir;
   
   return $self;
 }
@@ -31,10 +57,10 @@ sub get_extra_compiler_flags {
   return $self->{extra_compiler_flags};
 }
 
-sub add_extra_compiler_flags {
-  my ($self, $extra_compiler_flags) = @_;
+sub add_extra_compiler_flag {
+  my ($self, $extra_compiler_flag) = @_;
   
-  $self->{extra_compiler_flags} .= " $extra_compiler_flags";
+  push @{$self->{extra_compiler_flags}}, $extra_compiler_flag;
   
   return $self;
 }
@@ -53,10 +79,10 @@ sub get_extra_linker_flags {
   return $self->{extra_linker_flags};
 }
 
-sub add_extra_linker_flags {
-  my ($self, $extra_linker_flags) = @_;
+sub add_extra_linker_flag {
+  my ($self, $extra_linker_flag) = @_;
   
-  $self->{extra_linker_flags} .= " $extra_linker_flags";
+  push @{$self->{extra_linker_flags}}, $extra_linker_flag;
   
   return $self;
 }
@@ -91,24 +117,20 @@ sub get_quiet {
   return $self->{quiet};
 }
 
-sub set_optimize {
-  my ($self, $optimize) = @_;
-
-  $self->{optimize} = $optimize;
-  
-  return $self;
-}
-
-sub get_optimize {
-  my $self = shift;
-  
-  return $self->{optimize}
-}
-
 sub get_config {
   my $self = shift;
   
   return $self->{config};
 }
+
+=head1 NAME
+
+SPVM::Build::Setting;
+
+=head1 DESCRIPTION
+
+L<ExtUtils::CBuilder> setting of C<new>, C<compile>, C<link> methods.
+
+=cut
 
 1;
