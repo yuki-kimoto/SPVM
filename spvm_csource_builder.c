@@ -329,7 +329,7 @@ void SPVM_CSOURCE_BUILDER_add_array_load(SPVM_STRING_BUFFER* string_buffer, cons
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
   SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
@@ -363,7 +363,7 @@ void SPVM_CSOURCE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
   SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
   SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
@@ -862,8 +862,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_units_length_byte_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_units_length_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_elements_length_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_elements_length_byte_offset);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes1 = (SPVM_VALUE_byte*)((intptr_t)object1 + (intptr_t)env->object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes2 = (SPVM_VALUE_byte*)((intptr_t)object2 + (intptr_t)env->object_header_byte_size);\n");
@@ -1287,7 +1287,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
@@ -1335,7 +1335,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "          env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
@@ -1368,7 +1368,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset), 0)) { \n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string(env, \"Index is out of range\", 0)); \n");
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
@@ -1588,7 +1588,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_units_length_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }

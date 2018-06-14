@@ -314,8 +314,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object1 = *(void**)&vars[opcode->operand0];
         void* object2 = *(void**)&vars[opcode->operand1];
 
-        int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_units_length_byte_offset);
-        int32_t length2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_units_length_byte_offset);
+        int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_elements_length_byte_offset);
+        int32_t length2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_elements_length_byte_offset);
         
         SPVM_VALUE_byte* bytes1 = (SPVM_VALUE_byte*)((intptr_t)object1 + (intptr_t)env->object_header_byte_size);
         SPVM_VALUE_byte* bytes2 = (SPVM_VALUE_byte*)((intptr_t)object2 + (intptr_t)env->object_header_byte_size);
@@ -689,7 +689,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          int32_t length = *(SPVM_VALUE_int*)((intptr_t)*(void**)&vars[opcode->operand1] + (intptr_t)env->object_units_length_byte_offset);
+          int32_t length = *(SPVM_VALUE_int*)((intptr_t)*(void**)&vars[opcode->operand1] + (intptr_t)env->object_elements_length_byte_offset);
           
           void* string_array = env->new_multi_array(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
           
@@ -797,7 +797,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -817,7 +817,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -838,7 +838,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -858,7 +858,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -878,7 +878,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -898,7 +898,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -918,7 +918,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -941,7 +941,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -961,7 +961,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -981,7 +981,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1001,7 +1001,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1021,7 +1021,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1041,7 +1041,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1062,7 +1062,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1086,7 +1086,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_units_length_byte_offset), 0)) {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
             void* exception = env->new_string(env, "Index is out of range", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
@@ -1269,7 +1269,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)*(void**)&vars[opcode->operand1] + (intptr_t)env->object_units_length_byte_offset);
+          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)*(void**)&vars[opcode->operand1] + (intptr_t)env->object_elements_length_byte_offset);
         }
         break;
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
