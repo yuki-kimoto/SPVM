@@ -24,6 +24,13 @@ my $start_objects_count = SPVM::get_objects_count();
 
 # Create object
 {
+  # Check object count at least 1 to check object count system itself
+  {
+    my $object = TestCase->new();
+    my $objects_count = SPVM::get_objects_count();
+    ok($objects_count > 0);
+  }
+
   # Create object
   {
     my $object = TestCase->new();
@@ -87,6 +94,7 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(TestCase->isa_basic());
 }
+
 
 # All object is freed
 my $end_objects_count = SPVM::get_objects_count();
