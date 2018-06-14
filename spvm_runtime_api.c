@@ -908,33 +908,6 @@ int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT*
   return  sub_call_sub->id;
 }
 
-int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name) {
-  (void)env;
-  
-  if (sub_name == NULL) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
-  
-  int32_t sub_id = -1;
-  int32_t sub_index;
-  for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
-    SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
-    if (strcmp(op_sub->uv.sub->op_name->uv.name, sub_name) == 0) {
-      sub_id = op_sub->uv.sub->id;
-      break;
-    }
-  }
-  
-  return sub_id;
-}
-
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
   (void)env;
   
