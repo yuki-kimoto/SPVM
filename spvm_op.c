@@ -1610,6 +1610,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
+  if (package->category == SPVM_PACKAGE_C_CATEGORY_STRUCT && op_block) {
+    SPVM_yyerror_format(compiler, "struct package can't have block at %s line %d\n", op_package->file, op_package->line);
+  }
+  
   if (op_block) {
     SPVM_OP* op_decls = op_block->first;
     SPVM_OP* op_decl = op_decls->first;
