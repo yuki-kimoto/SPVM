@@ -846,16 +846,11 @@ get_packages(...)
       int32_t package_id = package->id;
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
 
-      // Is interface
-      int32_t package_is_interface = package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE;
-      SV* sv_package_is_interface = sv_2mortal(newSViv(package_is_interface));
-      
       // Package
       HV* hv_package = (HV*)sv_2mortal((SV*)newHV());
       
       hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
       hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
-      hv_store(hv_package, "is_interface", strlen("is_interface"), SvREFCNT_inc(sv_package_is_interface), 0);
       
       SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
       av_push(av_packages, SvREFCNT_inc((SV*)sv_package));
