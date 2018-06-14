@@ -53,6 +53,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_float_field,
   SPVM_RUNTIME_API_get_double_field,
   SPVM_RUNTIME_API_get_object_field,
+  SPVM_RUNTIME_API_get_struct,
   SPVM_RUNTIME_API_set_byte_field,
   SPVM_RUNTIME_API_set_short_field,
   SPVM_RUNTIME_API_set_int_field,
@@ -722,6 +723,12 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* objec
   assert(index <= object->elements_length);
   
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], oval);
+}
+
+void* SPVM_RUNTIME_API_get_struct(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return (void*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {

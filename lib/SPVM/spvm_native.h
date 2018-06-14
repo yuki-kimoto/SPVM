@@ -52,6 +52,7 @@ struct SPVM_env {
   float (*get_float_field)(SPVM_ENV*, void*, int32_t);
   double (*get_double_field)(SPVM_ENV*, void*, int32_t);
   void* (*get_object_field)(SPVM_ENV*, void*, int32_t);
+  void* (*get_struct)(SPVM_ENV*, void*);
   void (*set_byte_field)(SPVM_ENV*, void*, int32_t, int8_t);
   void (*set_short_field)(SPVM_ENV*, void*, int32_t, int16_t);
   void (*set_int_field)(SPVM_ENV*, void*, int32_t, int32_t);
