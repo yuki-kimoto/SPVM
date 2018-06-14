@@ -43,8 +43,8 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_long_array_elements,
   SPVM_RUNTIME_API_get_float_array_elements,
   SPVM_RUNTIME_API_get_double_array_elements,
-  SPVM_RUNTIME_API_get_object_array_accessent,
-  SPVM_RUNTIME_API_set_object_array_accessent,
+  SPVM_RUNTIME_API_get_object_array_element,
+  SPVM_RUNTIME_API_set_object_array_element,
   SPVM_RUNTIME_API_get_field_id,
   SPVM_RUNTIME_API_get_byte_field,
   SPVM_RUNTIME_API_get_short_field,
@@ -698,7 +698,7 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* o
   return (double*)((intptr_t)object + sizeof(SPVM_OBJECT));
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index) {
   (void)env;
   
   SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));
@@ -712,7 +712,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_accessent(SPVM_ENV* env, SPVM_OBJ
   return oval;
 }
 
-void SPVM_RUNTIME_API_set_object_array_accessent(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
+void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
   (void)env;
   
   SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT));

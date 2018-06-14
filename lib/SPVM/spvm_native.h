@@ -15,8 +15,6 @@ union SPVM_value {
   double dval;
   void* oval;
 };
-
-// spvm_native.h
 typedef union SPVM_value SPVM_VALUE;
 
 typedef int8_t SPVM_VALUE_byte;
