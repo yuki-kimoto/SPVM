@@ -96,7 +96,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      if (package->is_interface && (sub->op_block || sub->have_native_desc)) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->have_native_desc)) {
         SPVM_yyerror_format(compiler, "Subroutine in interface package can't have implementation\n", op_sub->file, op_sub->line);
       }
       
@@ -693,7 +693,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       assert(op_package);
                       SPVM_PACKAGE* package = op_package->uv.package;
                       
-                      if (package->is_interface) {
+                      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         SPVM_yyerror_format(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       else if (package->is_private) {
@@ -1968,8 +1968,8 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   (void)compiler;
   
   // When left package is interface, right package have all methods which left package have
-  assert(interface->is_interface);
-  assert(!package->is_interface);
+  assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
+  assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
   
   SPVM_LIST* op_subs_interface = interface->op_subs;
   SPVM_LIST* op_subs_package = package->op_subs;
@@ -2078,7 +2078,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
               SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
               
               // Left base type is interface
-              if (package_assign_to_base->is_interface) {
+              if (package_assign_to_base->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                 can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
               }
               else {

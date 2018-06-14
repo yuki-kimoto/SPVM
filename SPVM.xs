@@ -835,7 +835,6 @@ get_packages(...)
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-  
       SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
       SPVM_PACKAGE* package = op_package->uv.package;
       
@@ -848,7 +847,7 @@ get_packages(...)
       SV* sv_package_id = sv_2mortal(newSViv(package_id));
 
       // Is interface
-      int32_t package_is_interface = package->is_interface;
+      int32_t package_is_interface = package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE;
       SV* sv_package_is_interface = sv_2mortal(newSViv(package_is_interface));
       
       // Package

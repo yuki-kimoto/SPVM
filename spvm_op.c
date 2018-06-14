@@ -1596,7 +1596,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_INTERFACE:
-          package->is_interface = 1;
+          package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
           package->is_private = 1;
@@ -1614,7 +1614,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
     if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-      if (package->is_interface) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(package->op_fields, op_decl);
@@ -1631,7 +1631,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_OUR) {
-      if (package->is_interface) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(package->op_ours, op_decl);
@@ -1757,7 +1757,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       
       // Subroutine in interface package must be method
-      if (package->is_interface && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
         SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
       }
       
