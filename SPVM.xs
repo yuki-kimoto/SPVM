@@ -729,7 +729,7 @@ to_bin(...)
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
 SV*
-get_sub_names(...)
+get_sub_abs_names(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -737,7 +737,7 @@ get_sub_names(...)
   SV* sv_compiler = ST(0);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
+  AV* av_sub_abs_names = (AV*)sv_2mortal((SV*)newAV());
   
   {
     int32_t sub_index;
@@ -745,16 +745,16 @@ get_sub_names(...)
       SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
 
-      const char* sub_name = sub->abs_name;
+      const char* sub_abs_name = sub->abs_name;
       
-      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      SV* sv_sub_abs_name = sv_2mortal(newSVpvn(sub_abs_name, strlen(sub_abs_name)));
+      av_push(av_sub_abs_names, SvREFCNT_inc(sv_sub_abs_name));
     }
   }
   
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
+  SV* sv_sub_abs_names = sv_2mortal(newRV_inc((SV*)av_sub_abs_names));
   
-  XPUSHs(sv_sub_names);
+  XPUSHs(sv_sub_abs_names);
   XSRETURN(1);
 }
 

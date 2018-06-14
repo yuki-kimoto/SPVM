@@ -140,14 +140,14 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
   
-  my $sub_names = SPVM::Build::SPVMInfo::get_sub_names($self->{compiler});
+  my $sub_abs_names = SPVM::Build::SPVMInfo::get_sub_abs_names($self->{compiler});
   
-  for my $abs_name (@$sub_names) {
+  for my $sub_abs_name (@$sub_abs_names) {
     # Define SPVM subroutine
     no strict 'refs';
     
     # Declare package
-    my ($package_name, $sub_name) = $abs_name =~ /^(?:(.+)::)(.+)/;
+    my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.+)/;
     $package_name = "$package_name";
     unless ($package_name_h->{$package_name}) {
       
@@ -161,10 +161,10 @@ sub build_spvm_subs {
     }
     
     # Declare subroutine
-    *{"$abs_name"} = sub {
+    *{"$sub_abs_name"} = sub {
       
       my $return_value;
-      eval { $return_value = SPVM::call_sub("$abs_name", @_) };
+      eval { $return_value = SPVM::call_sub("$sub_abs_name", @_) };
       my $error = $@;
       if ($error) {
         confess $error;
