@@ -74,6 +74,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_new_object_array,
   SPVM_RUNTIME_API_new_multi_array,
   SPVM_RUNTIME_API_new_string,
+  SPVM_RUNTIME_API_new_struct,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,
@@ -587,6 +588,42 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
 
   object->units_length = fields_length;
   object->unit_byte_size = field_byte_size;
+
+  // Object type id
+  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
+  
+  // Has destructor
+  if (package->op_sub_destructor) {
+    object->has_destructor = 1;
+  }
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* ptr) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
+  SPVM_PACKAGE* package = op_package->uv.package;
+  
+  int32_t fields_length = package->op_fields->length;
+  int32_t field_byte_size = sizeof(SPVM_VALUE);
+  
+  // Alloc length + 1. Last element value is 0 to use c string functions easily
+  int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(void*);
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, object_byte_size);
+  
+  *(void**)((intptr_t)object + sizeof(SPVM_OBJECT)) = ptr;
+  
+  object->basic_type_id = basic_type->id;
+  object->dimension = 0;
+
+  object->units_length = 1;
+  object->unit_byte_size = sizeof(void*);
 
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;

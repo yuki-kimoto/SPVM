@@ -81,6 +81,7 @@ int32_t SPVM_RUNTIME_API_get_class_method_sub_id(SPVM_ENV* env, const char* pack
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name);
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t package_id);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_ENV* env, int32_t length);
