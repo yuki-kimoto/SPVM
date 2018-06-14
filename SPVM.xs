@@ -820,7 +820,6 @@ get_packages(...)
       HV* hv_package = (HV*)sv_2mortal((SV*)newHV());
       
       hv_store(hv_package, "name", strlen("name"), SvREFCNT_inc(sv_package_name), 0);
-      hv_store(hv_package, "id", strlen("id"), SvREFCNT_inc(sv_package_id), 0);
       
       SV* sv_package = sv_2mortal(newRV_inc((SV*)hv_package));
       av_push(av_packages, SvREFCNT_inc((SV*)sv_package));
