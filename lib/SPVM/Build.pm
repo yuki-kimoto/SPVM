@@ -139,38 +139,45 @@ my $package_name_h = {};
 
 sub build_spvm_subs {
   my $self = shift;
-  
-  my $sub_abs_names = SPVM::Build::SPVMInfo::get_sub_abs_names($self->{compiler});
-  
-  for my $sub_abs_name (@$sub_abs_names) {
-    # Define SPVM subroutine
-    no strict 'refs';
+
+  my $packages = SPVM::Build::SPVMInfo::get_packages($self->{compiler});
+  for my $package (@$packages) {
+    my $package_name = $package->{name};
     
-    # Declare package
-    my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.+)/;
-    $package_name = "$package_name";
-    unless ($package_name_h->{$package_name}) {
+    my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($self->{compiler}, $package_name);
+    
+    for my $sub (@$subs) {
+      my $sub_abs_name = $sub->{name};
       
-      my $code = "package $package_name; our \@ISA = ('SPVM::Data');";
-      eval $code;
+      # Define SPVM subroutine
+      no strict 'refs';
       
-      if (my $error = $@) {
-        confess $error;
+      # Declare package
+      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.+)/;
+      $package_name = "$package_name";
+      unless ($package_name_h->{$package_name}) {
+        
+        my $code = "package $package_name; our \@ISA = ('SPVM::Data');";
+        eval $code;
+        
+        if (my $error = $@) {
+          confess $error;
+        }
+        $package_name_h->{$package_name} = 1;
       }
-      $package_name_h->{$package_name} = 1;
+      
+      # Declare subroutine
+      *{"$sub_abs_name"} = sub {
+        
+        my $return_value;
+        eval { $return_value = SPVM::call_sub("$sub_abs_name", @_) };
+        my $error = $@;
+        if ($error) {
+          confess $error;
+        }
+        $return_value;
+      };
     }
-    
-    # Declare subroutine
-    *{"$sub_abs_name"} = sub {
-      
-      my $return_value;
-      eval { $return_value = SPVM::call_sub("$sub_abs_name", @_) };
-      my $error = $@;
-      if ($error) {
-        confess $error;
-      }
-      $return_value;
-    };
   }
 }
 
