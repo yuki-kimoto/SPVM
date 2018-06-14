@@ -1,0 +1,7 @@
+package TestCase::Struct : struct {
+  native sub new : TestCase::Struct ($x : int);
+  
+  native sub get_x : int ();
+  
+  native sub DESTORY ($self : self);
+}
