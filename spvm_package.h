@@ -3,6 +3,14 @@
 
 #include "spvm_base.h"
 
+enum {
+  SPVM_PACKAGE_C_ID_CLASS,
+  SPVM_PACKAGE_C_ID_INTERFACE,
+  SPVM_PACKAGE_C_ID_STRUCT,
+};
+
+extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
+
 struct SPVM_package {
   SPVM_OP* op_name;
   SPVM_LIST* op_subs;
@@ -20,6 +28,8 @@ struct SPVM_package {
   _Bool is_interface;
   _Bool is_private;
   _Bool is_anon;
+  _Bool is_struct;
+  int32_t category;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

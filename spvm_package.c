@@ -7,6 +7,12 @@
 #include "spvm_list.h"
 #include "spvm_type.h"
 
+const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
+  "class",
+  "interface",
+  "struct",
+};
+
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_PACKAGE));
   
