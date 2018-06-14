@@ -1,1 +1,3 @@
-package TestCase::Struct : struct;
+package TestCase::Struct : struct {
+
+}

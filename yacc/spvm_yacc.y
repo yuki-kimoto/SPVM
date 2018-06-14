@@ -104,12 +104,6 @@ use
     }
 
 package
-  : PACKAGE basic_type opt_colon_descriptors ';'
-    {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, NULL, $3);
-    }
-
-package
   : PACKAGE basic_type opt_colon_descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $4, $3);

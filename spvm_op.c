@@ -1610,43 +1610,37 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  if (package->category == SPVM_PACKAGE_C_CATEGORY_STRUCT && op_block) {
-    SPVM_yyerror_format(compiler, "struct package can't have block at %s line %d\n", op_package->file, op_package->line);
-  }
-  
-  if (op_block) {
-    SPVM_OP* op_decls = op_block->first;
-    SPVM_OP* op_decl = op_decls->first;
-    while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-          SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
-        }
-        SPVM_LIST_push(package->op_fields, op_decl);
+  SPVM_OP* op_decls = op_block->first;
+  SPVM_OP* op_decl = op_decls->first;
+  while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
+    if (op_decl->id == SPVM_OP_C_ID_FIELD) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+        SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_SUB) {
-        SPVM_LIST_push(package->op_subs, op_decl);
+      SPVM_LIST_push(package->op_fields, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_SUB) {
+      SPVM_LIST_push(package->op_subs, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
+      SPVM_OP* op_enum_block = op_decl->first;
+      SPVM_OP* op_enumeration_values = op_enum_block->first;
+      SPVM_OP* op_sub = op_enumeration_values->first;
+      while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
+        SPVM_LIST_push(package->op_subs, op_sub);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
-        SPVM_OP* op_enum_block = op_decl->first;
-        SPVM_OP* op_enumeration_values = op_enum_block->first;
-        SPVM_OP* op_sub = op_enumeration_values->first;
-        while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
-          SPVM_LIST_push(package->op_subs, op_sub);
-        }
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_OUR) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+        SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
-      else if (op_decl->id == SPVM_OP_C_ID_OUR) {
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-          SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
-        }
-        SPVM_LIST_push(package->op_ours, op_decl);
-      }
-      else if (op_decl->id == SPVM_OP_C_ID_USE) {
-        // Static import
-      }
-      else {
-        assert(0);
-      }
+      SPVM_LIST_push(package->op_ours, op_decl);
+    }
+    else if (op_decl->id == SPVM_OP_C_ID_USE) {
+      // Static import
+    }
+    else {
+      assert(0);
     }
   }
   
@@ -1654,11 +1648,17 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   {
     int32_t i;
     for (i = 0; i < package->op_fields->length; i++) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_STRUCT) {
+        SPVM_yyerror_format(compiler, "Struct package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+        continue;
+      }
+
       SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
       
       SPVM_FIELD* field = op_field->uv.field;
       field->id = i;
       const char* field_name = field->op_name->uv.name;
+
       
       SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
       
