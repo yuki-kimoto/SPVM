@@ -28,17 +28,16 @@
 #include "spvm_basic_type.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
-  int32_t depth = 0;
+  int32_t indent = 8;
   
   // Run OPs
   SPVM_OP* op_cur = op_base;
   _Bool finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
-    
     {
       int32_t i;
-      for (i = 0; i < depth; i++) {
+      for (i = 0; i < indent; i++) {
         printf(" ");
       }
     }
@@ -106,13 +105,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         printf(" \"Unknown\"");
       }
     }
-    else if (id == SPVM_OP_C_ID_PACKAGE) {
-      if (strcmp(op_cur->uv.package->op_name->uv.name, "SPVM::CORE") == 0) {
-        printf(" std(omit)\n");
-        op_cur = op_cur->sibparent;
-        continue;
-      }
-    }
     else if (id == SPVM_OP_C_ID_BLOCK) {
       if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_IF) {
         printf(" IF");
@@ -142,7 +134,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     
     if (op_cur->first) {
       op_cur = op_cur->first;
-      depth++;
+      indent++;
     }
     else {
       while (1) {
@@ -163,7 +155,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         // Next is parent
         else {
           op_cur = op_cur->sibparent;
-          depth--;
+          indent--;
         }
       }
       if (finish) {
@@ -174,9 +166,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
 }
 
 void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
-  
-  printf("\n[AST]\n");
-  SPVM_DUMPER_dump_ast(compiler, compiler->op_grammar);
   
   printf("\n[Basic types]\n");
   SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
@@ -408,6 +397,10 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       }
       
       printf("      call_sub_arg_stack_max => %" PRId32 "\n", sub->call_sub_arg_stack_max);
+      
+      printf("      AST\n");
+      SPVM_DUMPER_dump_ast(compiler, sub->op_block);
+      printf("\n");
       
       printf("      opcode_array\n");
       SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, sub->opcode_base, sub->opcode_length);

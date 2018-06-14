@@ -1,0 +1,1 @@
+package TestCase::Struct : struct;
