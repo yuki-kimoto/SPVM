@@ -6,14 +6,17 @@ use warnings;
 
 use Test::More 'no_plan';
 
+use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
-  is(TestCase::Extension2->mul(2, 3), 6);
-
-__END__
+# Native Exception
+{
+  ok(TestCase::Extension->native_use_strlen_test);
+  ok(TestCase::Extension->call_void_sub_exception);
+}
 
 # Native Exception
 {
