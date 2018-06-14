@@ -1257,6 +1257,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return SCALAR;
                 }
+                else if (strcmp(keyword, "struct") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STRUCT, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  
+                  return DESCRIPTOR;
+                }
                 break;
               case 'u' :
                 if (strcmp(keyword, "undef") == 0) {
