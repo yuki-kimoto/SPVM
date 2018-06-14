@@ -4,24 +4,6 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line);
-
-SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
-
-int32_t SPVM_RUNTIME_API_is_debug(SPVM_ENV* env);
-
-int32_t SPVM_RUNTIME_API_create_void_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_byte_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_short_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_int_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_long_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_float_type_id(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_create_double_type_id(SPVM_ENV* env);
-
-SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime();
-void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_ENV* env, SPVM_OBJECT* object);
-int32_t SPVM_RUNTIME_API_get_object_header_length_offset(SPVM_ENV* env);
-
 // Get
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* array);
@@ -69,11 +51,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, char* bytes, int32_t len
 int32_t SPVM_RUNTIME_API_get_string_length(SPVM_ENV* env, SPVM_OBJECT* object);
 int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string);
+SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
-// Internal functions
+// ID
 int32_t SPVM_RUNTIME_API_get_fields_length(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_dump_field_names(SPVM_ENV* env, SPVM_OBJECT* object);
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name);
 int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT* object, int32_t decl_sub_id);
@@ -95,12 +77,14 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env);
+SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line);
 
 // Reference count
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
-void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
+void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 
 // Weak refernece
 int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -109,6 +93,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address);
 void SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id);
 
 // Global information
+SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime();
 int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_ENV* env);
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime();
 void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime);
