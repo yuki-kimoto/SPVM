@@ -389,7 +389,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       for (i = 0; i < op_args->length; i++) {
         SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
         SPVM_MY* my = op_arg->uv.my;
-        printf("        arg[%" PRId32 "]\n", i);
+        printf("        [%" PRId32 "] ", i);
         SPVM_DUMPER_dump_my(compiler, my);
       }
     }
@@ -402,7 +402,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
         for (i = 0; i < op_mys->length; i++) {
           SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
           SPVM_MY* my = op_my->uv.my;
-          printf("        my[%" PRId32 "]\n", i);
+          printf("        [%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
       }
@@ -457,14 +457,12 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
   (void)compiler;
 
   if (my) {
-    printf("          name => \"%s\"\n", my->op_name->uv.name);
-    
+    printf("name => %s, type => ", my->op_name->uv.name);
     SPVM_TYPE* type = my->op_type->uv.type;
-    printf("          type => ");
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
     printf("\n");
   }
   else {
-    printf("          None\n");
+    printf("(Unexpected)\n");
   }
 }
