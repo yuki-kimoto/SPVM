@@ -1,6 +1,5 @@
 all:
 
-DEFINE :=
 CC     	 := gcc
 CFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm 
