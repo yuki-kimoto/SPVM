@@ -1,7 +1,4 @@
-# -*- mode: makefile-gmake -*-
-
 all:
-.PHONY: all
 
 DEFINE :=
 CC     	 := gcc
@@ -46,13 +43,11 @@ spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%
 	./$<
 .PRECIOUS: $(OBJDIR)/solo/t/spvm_t_%.o $(OBJDIR)/solo/t/spvm_t_%
 test: $(test_names)
-.PHONY: test
 
 # misc
 $(DIRS):
 	mkdir -p $@
 
-.PHONY: clean
 clean:
 	-find $(OBJDIR) -name \*.o | xargs rm -rf
 	-rm -rf libspvm.a $(generated_sources)
