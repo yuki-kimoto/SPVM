@@ -34,7 +34,7 @@ sub get_subs {
   
   my $compiler = $self->{compiler};
   
-  my $subs = SPVM::Build::Info->new->get_subs($compiler, $package_name);
+  my $subs = SPVM::Build::Info->new(compiler => $compiler)->get_subs($package_name);
   $subs = [grep { $_->{have_native_desc} } @$subs];
   
   return $subs;
@@ -67,7 +67,7 @@ sub create_shared_lib_dist {
 sub create_shared_lib_runtime {
   my ($self, $package_name) = @_;
   
-  my $package_load_path = SPVM::Build::Info->new->get_package_load_path($self->{compiler}, $package_name);
+  my $package_load_path = SPVM::Build::Info->new(compiler => $self->{compiler})->get_package_load_path($package_name);
   my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory

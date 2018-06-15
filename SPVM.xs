@@ -734,11 +734,13 @@ get_subs(...)
 {
   (void)RETVAL;
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV* sv_compiler = ST(1);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  SV* sv_package_name = ST(2);
+
+  SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
 
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
@@ -797,8 +799,10 @@ get_package_names(...)
 {
   (void)RETVAL;
   SV* sv_self = ST(0);
-  
-  SV* sv_compiler = ST(1);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
@@ -830,11 +834,13 @@ get_package_load_path(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV* sv_compiler = ST(1);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SV* sv_package_name = ST(2);
+  SV* sv_package_name = ST(1);
   
   const char* package_name = SvPV_nolen(sv_package_name);
   
