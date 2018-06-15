@@ -140,14 +140,13 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
 
-  my $packages = SPVM::Build::SPVMInfo::get_packages($self->{compiler});
-  for my $package (@$packages) {
-    my $package_name = $package->{name};
+  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  for my $package_name (@$package_names) {
     
     my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($self->{compiler}, $package_name);
     
     for my $sub (@$subs) {
-      my $sub_abs_name = $sub->{name};
+      my $sub_abs_name = $sub->{abs_name};
       
       # Define SPVM subroutine
       no strict 'refs';

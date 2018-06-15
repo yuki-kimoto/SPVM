@@ -52,7 +52,7 @@ sub create_shared_lib_dist {
 
   my $category = $self->category;
   my $subs = $self->get_subs_from_package_name($package_name);
-  my $sub_names = [map { $_->{name} } @$subs];
+  my $sub_names = [map { $_->{abs_name} } @$subs];
   
   # Build shared library
   $self->create_shared_lib(
@@ -83,7 +83,7 @@ sub create_shared_lib_runtime {
   mkpath $output_dir;
   
   my $subs = $self->get_subs_from_package_name($package_name);
-  my $sub_names = [map { $_->{name} } @$subs];
+  my $sub_names = [map { $_->{abs_name} } @$subs];
   
   $self->create_shared_lib(
     package_name => $package_name,

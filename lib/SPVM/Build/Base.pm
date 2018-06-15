@@ -35,9 +35,8 @@ sub category {
 sub build {
   my $self = shift;
   
-  my $packages = SPVM::Build::SPVMInfo::get_packages($self->{compiler});
-  for my $package (@$packages) {
-    my $package_name = $package->{name};
+  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  for my $package_name (@$package_names) {
     
     next if $package_name eq "SPVM::CORE";
     
@@ -79,7 +78,7 @@ sub bind_subs {
   my ($self, $shared_lib_path, $subs) = @_;
   
   for my $sub (@$subs) {
-    my $sub_abs_name = $sub->{name};
+    my $sub_abs_name = $sub->{abs_name};
     next if $sub_abs_name =~ /^SPVM::CORE::/;
 
     my $cfunc_name = $self->create_cfunc_name($sub_abs_name);

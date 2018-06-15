@@ -98,7 +98,7 @@ sub create_shared_lib_dist {
   
   my $category = $self->category;
   my $subs = $self->get_subs_from_package_name($package_name);
-  my $sub_names = [map { $_->{name} } @$subs];
+  my $sub_names = [map { $_->{abs_name} } @$subs];
   
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
@@ -141,7 +141,7 @@ sub create_shared_lib_runtime {
   mkpath $output_dir;
   
   my $subs = $self->get_subs_from_package_name($package_name);
-  my $sub_names = [map { $_->{name} } @$subs];
+  my $sub_names = [map { $_->{abs_name} } @$subs];
   
   my $is_cached;
   $self->create_csource(
