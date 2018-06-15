@@ -1,11 +1,11 @@
-package SPVM::Build::Native;
+package SPVM::Build::CBuilder::Native;
 
 # SPVM::Build::PPtUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
 use strict;
 use warnings;
-use base 'SPVM::Build::Base';
+use base 'SPVM::Build::CBuilder';
 
 use Carp 'croak', 'confess';
 

@@ -1,4 +1,4 @@
-package SPVM::Build::Base;
+package SPVM::Build::CBuilder;
 
 # SPVM::Build::PPtUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.

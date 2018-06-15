@@ -6,11 +6,11 @@ use warnings;
 use Config;
 use Carp 'confess';
 
-use SPVM::Build::SPVMInfo;
-use SPVM::Build::Native;
-use SPVM::Build::Precompile;
+use SPVM::Build::CBuilder::Native;
+use SPVM::Build::CBuilder::Precompile;
 use SPVM::Build::Util;
 use SPVM::Build::Setting;
+use SPVM::Build::SPVMInfo;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -30,12 +30,12 @@ sub new {
   
   $self->{compiler} ||= $self->create_compiler;
   
-  $self->{native} ||= SPVM::Build::Native->new(
+  $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
   );
   
-  $self->{precompile} ||= SPVM::Build::Precompile->new(
+  $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
   );
@@ -59,16 +59,16 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub native {
+sub cbuilder_native {
   my $self = shift;
   
-  return $self->{native};
+  return $self->{cbuilder_native};
 }
 
-sub precompile {
+sub cbuilder_precompile {
   my $self = shift;
   
-  return $self->{precompile};
+  return $self->{cbuilder_precompile};
 }
 
 sub build_spvm {
@@ -104,7 +104,7 @@ sub create_shared_lib_native_dist {
   
   $self->compile_spvm;
   
-  $self->native->create_shared_lib_dist($package_name);
+  $self->cbuilder_native->create_shared_lib_dist($package_name);
 }
 
 sub create_shared_lib_precompile_dist {
@@ -120,19 +120,19 @@ sub create_shared_lib_precompile_dist {
   # Build opcode
   $self->build_opcode;
   
-  $self->precompile->create_shared_lib_dist($package_name);
+  $self->cbuilder_precompile->create_shared_lib_dist($package_name);
 }
 
 sub build_precompile {
   my $self = shift;
   
-  $self->precompile->build;
+  $self->cbuilder_precompile->build;
 }
 
 sub build_native {
   my $self = shift;
   
-  $self->native->build;
+  $self->cbuilder_native->build;
 }
 
 my $package_name_h = {};

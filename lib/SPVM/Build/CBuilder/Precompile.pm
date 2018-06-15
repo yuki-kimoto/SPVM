@@ -1,8 +1,8 @@
-package SPVM::Build::Precompile;
+package SPVM::Build::CBuilder::Precompile;
 
 use strict;
 use warnings;
-use base 'SPVM::Build::Base';
+use base 'SPVM::Build::CBuilder';
 
 use Carp 'croak', 'confess';
 use File::Spec;

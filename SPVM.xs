@@ -1012,7 +1012,7 @@ free_compiler(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Build::Native		PACKAGE = SPVM::Build::Native
+MODULE = SPVM::Build::CBuilder::Native		PACKAGE = SPVM::Build::CBuilder::Native
 
 SV*
 bind_sub(...)
@@ -1044,7 +1044,7 @@ bind_sub(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Build::Precompile		PACKAGE = SPVM::Build::Precompile
+MODULE = SPVM::Build::CBuilder::Precompile		PACKAGE = SPVM::Build::CBuilder::Precompile
 
 SV*
 build_package_csource(...)

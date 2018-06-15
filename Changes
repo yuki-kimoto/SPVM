@@ -1,4 +1,8 @@
-0.0348 2018-06-14
+0.0349 2018-06-15
+  - rename SPVM::Build::Base to SPVM::Build::CBuilder
+  - rename SPVM::Build::Native to SPVM::Build::CBuilder::Native
+  - rename SPVM::Build::Precompile to SPVM::Build::CBuilder::Precompile
+0.0348 2018-06-15
   - add SPVM::Build::Setting
     
     This module is to do setting ExtUtils::CBuilder. ExtUtils::CBuilder is used for native compile and precompile.
@@ -12,7 +16,6 @@
       add Native interface new_struct and get_struct
       new_struct create object which have C/C++ struct/class
       get_struct get struct/class from SPVM object
-      
 0.0347 2018-06-13
   - fix bug : [rt.cpan.org #125541] System perl used in build process
     
