@@ -143,7 +143,7 @@ sub build_spvm_subs {
   my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
   for my $package_name (@$package_names) {
     
-    my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($self->{compiler}, $package_name);
+    my $subs = SPVM::Build::SPVMInfo::get_subs($self->{compiler}, $package_name);
     
     for my $sub (@$subs) {
       my $sub_abs_name = $sub->{abs_name};

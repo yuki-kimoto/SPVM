@@ -29,12 +29,12 @@ sub new {
   return $self;
 }
 
-sub get_subs_from_package_name {
+sub get_subs {
   my ($self, $package_name) = @_;
   
   my $compiler = $self->{compiler};
   
-  my $subs = SPVM::Build::SPVMInfo::get_subs_from_package_name($compiler, $package_name);
+  my $subs = SPVM::Build::SPVMInfo::get_subs($compiler, $package_name);
   $subs = [grep { $_->{have_native_desc} } @$subs];
   
   return $subs;
@@ -51,7 +51,7 @@ sub create_shared_lib_dist {
   my $output_dir = 'blib/lib';
 
   my $category = $self->category;
-  my $subs = $self->get_subs_from_package_name($package_name);
+  my $subs = $self->get_subs($package_name);
   my $sub_names = [map { $_->{abs_name} } @$subs];
   
   # Build shared library
@@ -82,7 +82,7 @@ sub create_shared_lib_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  my $subs = $self->get_subs_from_package_name($package_name);
+  my $subs = $self->get_subs($package_name);
   my $sub_names = [map { $_->{abs_name} } @$subs];
   
   $self->create_shared_lib(

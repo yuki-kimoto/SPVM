@@ -729,7 +729,7 @@ to_bin(...)
 MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
 
 SV*
-get_subs_from_package_name(...)
+get_subs(...)
   PPCODE:
 {
   (void)RETVAL;

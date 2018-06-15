@@ -40,7 +40,7 @@ sub build {
     
     next if $package_name eq "SPVM::CORE";
     
-    my $subs = $self->get_subs_from_package_name($package_name);
+    my $subs = $self->get_subs($package_name);
     if (@$subs) {
       # Shared library is already installed in distribution directory
       my $shared_lib_path = $self->get_installed_shared_lib_path($package_name);
