@@ -775,7 +775,6 @@ get_subs(...)
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
       hv_store(hv_sub, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
-      hv_store(hv_sub, "id", strlen("id"), SvREFCNT_inc(sv_sub_id), 0);
       hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
       hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
       hv_store(hv_sub, "have_compile_desc", strlen("have_compile_desc"), SvREFCNT_inc(sv_sub_have_compile_desc), 0);
