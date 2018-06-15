@@ -90,8 +90,8 @@ sub build_spvm {
     # Build native packages - Compile C source codes and link them to SPVM native subroutine
     $self->build_native;
     
-    # Build SPVM subroutines
-    $self->build_spvm_subs;
+    # Bind SPVM to Perl
+    $self->bind_to_perl;
   }
   
   return $compile_success;
@@ -137,7 +137,7 @@ sub build_native {
 
 my $package_name_h = {};
 
-sub build_spvm_subs {
+sub bind_to_perl {
   my $self = shift;
 
   my $package_names = SPVM::Build::Info->new(compiler => $self->{compiler})->get_package_names;
