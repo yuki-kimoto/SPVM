@@ -1,16 +1,18 @@
 all:
 
 CC     	 := gcc
-CCFLAGS  := -g -O -Wall -Wextra $(DEFINE)
+CCFLAGS  := -g -Wall -Wextra $(DEFINE) -std=c99
 LIBS   	 := -lm 
-INCLUDE  := -I. -Ilib/SPVM/Build
+INC  := -I. -Ilib/SPVM/Build
 DIRS     :=
-OPTIMIZE := 
+OPTIMIZE := -O
+
+CCCMD = $(CC) $(INC) $(CCFLAGS) $(OPTIMIZE)
 
 OBJDIR := solo/objs
 DIRS += $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 $(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
-	$(CC) -std=c99 $(CCFLAGS) $(INCLUDE) -c -o $@ $<
+	$(CCCMD) -c -o $@ $<
 
 # libspvm
 libspvm_SRCS := $(wildcard *.c) spvm_yacc.c
@@ -27,7 +29,7 @@ spvm_OBJS    := $(spvm_SRCS:%.c=$(OBJDIR)/%.o)
 spvm_LDFLAGS := $(LDFLAGS) -L .
 spvm_LIBS    := -lspvm $(LIBS)
 spvm: $(spvm_OBJS) libspvm.a
-	$(CC) $(INCLUDE) -std=c99 -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
+	$(CCCMD) -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
 all: spvm
 
 # test (solo/t/spvm_t_*)
@@ -37,7 +39,7 @@ test_names := $(test_names:solo/t/spvm_t_%.c=spvm_t_%)
 spvm_t_LDFLAGS := $(LDFLAGS) -L .
 spvm_t_LIBS    := -lspvm $(LIBS)
 $(OBJDIR)/solo/t/spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%.o libspvm.a
-	$(CC) $(spvm_t_LDFLAGS) -DDEBUG -o $@ $< $(spvm_t_LIBS)
+	$(CCCMD) $(spvm_t_LDFLAGS) -DDEBUG -o $@ $< $(spvm_t_LIBS)
 spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%
 	./$<
 .PRECIOUS: $(OBJDIR)/solo/t/spvm_t_%.o $(OBJDIR)/solo/t/spvm_t_%
