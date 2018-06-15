@@ -5,12 +5,11 @@ CFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm 
 INCLUDE  := -I. -Ilib/SPVM/Build
 DIRS     :=
-CPPFLAGS  = 
 
 OBJDIR := solo/objs
 DIRS += $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 $(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
-	$(CC) $(CPPFLAGS) -std=c99 $(CFLAGS) $(INCLUDE) -c -o $@ $<
+	$(CC) -std=c99 $(CFLAGS) $(INCLUDE) -c -o $@ $<
 
 # libspvm
 libspvm_SRCS := $(wildcard *.c) spvm_yacc.c
