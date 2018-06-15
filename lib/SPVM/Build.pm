@@ -6,11 +6,11 @@ use warnings;
 use Config;
 use Carp 'confess';
 
-use SPVM::Build::SPVMInfo;
-use SPVM::Build::Native;
-use SPVM::Build::Precompile;
+use SPVM::Build::CBuilder::Native;
+use SPVM::Build::CBuilder::Precompile;
 use SPVM::Build::Util;
 use SPVM::Build::Setting;
+use SPVM::Build::Info;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -30,14 +30,18 @@ sub new {
   
   $self->{compiler} ||= $self->create_compiler;
   
-  $self->{native} ||= SPVM::Build::Native->new(
+  $self->{info} ||= SPVM::Build::Info->new(compiler => $self->{compiler});
+  
+  $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
+    info => $self->{info},
   );
   
-  $self->{precompile} ||= SPVM::Build::Precompile->new(
+  $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
+    info => $self->{info},
   );
   
   $self->{setting} ||= SPVM::Build::Util::default_build_setting;
@@ -59,16 +63,22 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub native {
+sub info {
   my $self = shift;
   
-  return $self->{native};
+  return $self->{info};
 }
 
-sub precompile {
+sub cbuilder_native {
   my $self = shift;
   
-  return $self->{precompile};
+  return $self->{cbuilder_native};
+}
+
+sub cbuilder_precompile {
+  my $self = shift;
+  
+  return $self->{cbuilder_precompile};
 }
 
 sub build_spvm {
@@ -90,8 +100,8 @@ sub build_spvm {
     # Build native packages - Compile C source codes and link them to SPVM native subroutine
     $self->build_native;
     
-    # Build SPVM subroutines
-    $self->build_spvm_subs;
+    # Bind SPVM to Perl
+    $self->bind_to_perl;
   }
   
   return $compile_success;
@@ -104,7 +114,7 @@ sub create_shared_lib_native_dist {
   
   $self->compile_spvm;
   
-  $self->native->create_shared_lib_dist($package_name);
+  $self->cbuilder_native->create_shared_lib_dist($package_name);
 }
 
 sub create_shared_lib_precompile_dist {
@@ -120,33 +130,33 @@ sub create_shared_lib_precompile_dist {
   # Build opcode
   $self->build_opcode;
   
-  $self->precompile->create_shared_lib_dist($package_name);
+  $self->cbuilder_precompile->create_shared_lib_dist($package_name);
 }
 
 sub build_precompile {
   my $self = shift;
   
-  $self->precompile->build;
+  $self->cbuilder_precompile->build;
 }
 
 sub build_native {
   my $self = shift;
   
-  $self->native->build;
+  $self->cbuilder_native->build;
 }
 
 my $package_name_h = {};
 
-sub build_spvm_subs {
+sub bind_to_perl {
   my $self = shift;
 
-  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $subs = SPVM::Build::SPVMInfo::get_subs($self->{compiler}, $package_name);
+    my $sub_names = $self->info->get_sub_names($package_name);
     
-    for my $sub (@$subs) {
-      my $sub_abs_name = $sub->{abs_name};
+    for my $sub_name (@$sub_names) {
+      my $sub_abs_name = "${package_name}::$sub_name";
       
       # Define SPVM subroutine
       no strict 'refs';

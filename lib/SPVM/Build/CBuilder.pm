@@ -1,14 +1,10 @@
-package SPVM::Build::Base;
-
-# SPVM::Build::PPtUtil is used from Makefile.PL
-# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
+package SPVM::Build::CBuilder;
 
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
 
 use SPVM::Build::Util;
-use SPVM::Build::SPVMInfo;
 
 use ExtUtils::CBuilder;
 use Config;
@@ -26,6 +22,12 @@ sub new {
   return bless $self, $class;
 }
 
+sub info {
+  my $self = shift;
+  
+  return $self->{info};
+}
+
 sub category {
   my $self = shift;
   
@@ -35,13 +37,13 @@ sub category {
 sub build {
   my $self = shift;
   
-  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
     next if $package_name eq "SPVM::CORE";
     
-    my $subs = $self->get_subs($package_name);
-    if (@$subs) {
+    my $sub_names = $self->get_sub_names($package_name);
+    if (@$sub_names) {
       # Shared library is already installed in distribution directory
       my $shared_lib_path = $self->get_installed_shared_lib_path($package_name);
 
@@ -55,7 +57,7 @@ sub build {
         my $output_dir = "$build_dir/lib";
         $shared_lib_path = "$output_dir/$shared_lib_rel_file";
       }
-      $self->bind_subs($shared_lib_path, $subs);
+      $self->bind_subs($shared_lib_path, $package_name, $sub_names);
     }
   }
 }
@@ -75,10 +77,10 @@ sub create_cfunc_name {
 }
 
 sub bind_subs {
-  my ($self, $shared_lib_path, $subs) = @_;
+  my ($self, $shared_lib_path, $package_name, $sub_names) = @_;
   
-  for my $sub (@$subs) {
-    my $sub_abs_name = $sub->{abs_name};
+  for my $sub_name (@$sub_names) {
+    my $sub_abs_name = "${package_name}::$sub_name";
     next if $sub_abs_name =~ /^SPVM::CORE::/;
 
     my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
@@ -189,7 +191,9 @@ sub create_shared_lib {
   
   my $cfunc_names = [];
   for my $sub_name (@$sub_names) {
-    my $cfunc_name = "${package_name}::$sub_name";
+    my $category = $self->category;
+    my $category_uc = uc $category;
+    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
     $cfunc_name =~ s/:/_/g;
     push @$cfunc_names, $cfunc_name;
   }
@@ -226,7 +230,7 @@ sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($self->{compiler}, $package_name);
+  my $module_load_path = $self->info->get_package_load_path($package_name);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
