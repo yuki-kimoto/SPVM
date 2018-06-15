@@ -5,19 +5,22 @@
 
 struct TestCase__Struct {
   int32_t x;
-}
+};
 
 int32_t SPVM_NATIVE_SUB(TestCase__Struct__new) (SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
+  
   int32_t x = args[0].ival;
   
-  void* struct_ptr = malloc(sizeof(strcut TestCase__Struct));
+  struct TestCase__Struct* struct_ptr = malloc(sizeof(struct TestCase__Struct));
+  
+  struct_ptr->x = x;
   
   int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Struct");
   
-  SPVM_API_object* struct_object = api->new_struct(env, basic_type_id, struct_ptr);
+  void* struct_object = env->new_struct(env, basic_type_id, struct_ptr);
   
   args[0].oval = struct_object;
   
@@ -28,8 +31,25 @@ int32_t SPVM_NATIVE_SUB(TestCase__Struct__get_x) (SPVM_ENV* env, SPVM_VALUE* arg
   (void)env;
   (void)args;
   
-  SPVM_API_object* self = args[0].oval;
+  void* self = args[0].oval;
+  
+  
+  struct TestCase__Struct* struct_ptr = (struct TestCase__Struct*)env->get_struct(env, self);
+  
+  args[0].ival = struct_ptr->x;
   
   return 0;
 }
 
+int32_t SPVM_NATIVE_SUB(TestCase__Struct__DESTROY) (SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  void* self = args[0].oval;
+  
+  struct TestCase__Struct* struct_ptr = (struct TestCase__Struct*)env->get_struct(env, self);
+  
+  free(struct_ptr);
+  
+  return 0;
+}

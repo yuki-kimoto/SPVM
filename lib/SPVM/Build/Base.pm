@@ -87,7 +87,7 @@ sub bind_subs {
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
       $cfunc_name =~ s/:/_/g;
-      confess "Can't find function address of $sub_abs_name(). Native function name must be $cfunc_name";
+      confess "Can't find function address of $sub_abs_name(). C function name must be $cfunc_name";
     }
     $self->bind_sub($sub_abs_name, $cfunc_address);
   }

@@ -73,7 +73,7 @@ struct SPVM_env {
   void* (*new_object_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
-  void* (*new_struct)(SPVM_ENV*, void* ptr);
+  void* (*new_struct)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
   void* (*get_exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);
   int32_t (*get_ref_count)(SPVM_ENV* env, void* object);

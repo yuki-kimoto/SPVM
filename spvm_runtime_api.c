@@ -610,7 +610,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* ptr) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* struct_ptr) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -625,7 +625,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, v
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, object_byte_size);
   
-  *(void**)((intptr_t)object + sizeof(SPVM_OBJECT)) = ptr;
+  *(void**)((intptr_t)object + sizeof(SPVM_OBJECT)) = struct_ptr;
   
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
@@ -736,7 +736,9 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* objec
 void* SPVM_RUNTIME_API_get_struct(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return (void*)((intptr_t)object + sizeof(SPVM_OBJECT));
+  void* struct_ptr = *(void**)((intptr_t)object + sizeof(SPVM_OBJECT));
+  
+  return struct_ptr;
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
