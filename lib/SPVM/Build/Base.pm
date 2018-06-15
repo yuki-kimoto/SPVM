@@ -155,8 +155,8 @@ sub create_shared_lib {
   my $conifg = {%{$build_setting->get_config}};
   
   # Default include path
-  my $env_header_include_dir = $INC{"SPVM/Build/Base.pm"};
-  $env_header_include_dir =~ s/\/Build\/Base\.pm$//;
+  my $env_header_include_dir = $INC{"SPVM/Build.pm"};
+  $env_header_include_dir =~ s/\.pm$//;
   push @$include_dirs, $env_header_include_dir;
   push @$include_dirs, $input_src_dir;
   

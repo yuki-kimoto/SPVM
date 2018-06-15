@@ -7,7 +7,7 @@ DEFINE :=
 CC     	 := gcc
 CFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm 
-INCLUDE  := -I. -Ilib/SPVM
+INCLUDE  := -I. -Ilib/SPVM/Build
 DIRS     :=
 CPPFLAGS  = 
 
