@@ -32,7 +32,7 @@ sub category {
 sub build {
   my $self = shift;
   
-  my $package_names = SPVM::Build::Info::get_package_names($self->{compiler});
+  my $package_names = SPVM::Build::Info->new->get_package_names($self->{compiler});
   for my $package_name (@$package_names) {
     
     next if $package_name eq "SPVM::CORE";
@@ -223,7 +223,7 @@ sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = SPVM::Build::Info::get_package_load_path($self->{compiler}, $package_name);
+  my $module_load_path = SPVM::Build::Info->new->get_package_load_path($self->{compiler}, $package_name);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   

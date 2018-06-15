@@ -31,7 +31,7 @@ sub get_subs {
   
   my $compiler = $self->{compiler};
   
-  my $subs = SPVM::Build::Info::get_subs($compiler, $package_name);
+  my $subs = SPVM::Build::Info->new->get_subs($compiler, $package_name);
   $subs = [grep { $_->{have_compile_desc} } @$subs];
   
   return $subs;

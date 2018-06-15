@@ -140,10 +140,10 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
 
-  my $package_names = SPVM::Build::Info::get_package_names($self->{compiler});
+  my $package_names = SPVM::Build::Info->new->get_package_names($self->{compiler});
   for my $package_name (@$package_names) {
     
-    my $subs = SPVM::Build::Info::get_subs($self->{compiler}, $package_name);
+    my $subs = SPVM::Build::Info->new->get_subs($self->{compiler}, $package_name);
     
     for my $sub (@$subs) {
       my $sub_abs_name = $sub->{abs_name};

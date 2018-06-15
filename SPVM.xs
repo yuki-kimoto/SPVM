@@ -733,11 +733,12 @@ get_subs(...)
   PPCODE:
 {
   (void)RETVAL;
+  SV* sv_self = ST(0);
 
-  SV* sv_compiler = ST(0);
+  SV* sv_compiler = ST(1);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SV* sv_package_name = ST(1);
+  SV* sv_package_name = ST(2);
   const char* package_name = SvPV_nolen(sv_package_name);
 
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
@@ -795,8 +796,9 @@ get_package_names(...)
   PPCODE:
 {
   (void)RETVAL;
+  SV* sv_self = ST(0);
   
-  SV* sv_compiler = ST(0);
+  SV* sv_compiler = ST(1);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
@@ -826,11 +828,13 @@ get_package_load_path(...)
   PPCODE:
 {
   (void)RETVAL;
+  
+  SV* sv_self = ST(0);
 
-  SV* sv_compiler = ST(0);
+  SV* sv_compiler = ST(1);
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SV* sv_package_name = ST(1);
+  SV* sv_package_name = ST(2);
   
   const char* package_name = SvPV_nolen(sv_package_name);
   
