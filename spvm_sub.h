@@ -31,7 +31,7 @@ struct SPVM_sub {
   int32_t mortal_stack_max;
   int8_t call_type_id;
   _Bool have_native_desc;
-  _Bool have_compile_desc;
+  _Bool have_precompile_desc;
   _Bool is_enum;
   _Bool is_destructor;
   _Bool is_compiled;

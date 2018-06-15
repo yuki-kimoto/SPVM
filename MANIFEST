@@ -3,16 +3,12 @@ lib/SPVM.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Bool.spvm
 lib/SPVM/Build.pm
-lib/SPVM/Build/Base.pm
 lib/SPVM/Build/CBuilder.pm
 lib/SPVM/Build/CBuilder/Native.pm
 lib/SPVM/Build/CBuilder/Precompile.pm
 lib/SPVM/Build/Info.pm
-lib/SPVM/Build/Native.pm
-lib/SPVM/Build/Precompile.pm
 lib/SPVM/Build/Setting.pm
 lib/SPVM/Build/spvm_native.h
-lib/SPVM/Build/SPVMInfo.pm
 lib/SPVM/Build/Util.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm

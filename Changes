@@ -3,6 +3,7 @@
   - rename SPVM::Build::Native to SPVM::Build::CBuilder::Native
   - rename SPVM::Build::Precompile to SPVM::Build::CBuilder::Precompile
   - rename SPVM::Build::SPVMInfo to SPVM::Build::Info
+  - fix dynamic link library c func names
 0.0348 2018-06-15
   - add SPVM::Build::Setting
     

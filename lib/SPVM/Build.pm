@@ -153,10 +153,10 @@ sub bind_to_perl {
   my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $subs = $self->info->get_subs($package_name);
+    my $sub_names = $self->info->get_sub_names($package_name);
     
-    for my $sub (@$subs) {
-      my $sub_abs_name = $sub->{abs_name};
+    for my $sub_name (@$sub_names) {
+      my $sub_abs_name = "${package_name}::$sub_name";
       
       # Define SPVM subroutine
       no strict 'refs';
