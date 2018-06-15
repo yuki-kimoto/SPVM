@@ -28,15 +28,12 @@ sub new {
   return $self;
 }
 
-sub get_subs {
+sub get_sub_names {
   my ($self, $package_name) = @_;
   
-  my $compiler = $self->{compiler};
+  my $sub_names = $self->info->get_native_sub_names($package_name);
   
-  my $subs = $self->info->get_subs($package_name);
-  $subs = [grep { $_->{have_native_desc} } @$subs];
-  
-  return $subs;
+  return $sub_names;
 }
 
 sub create_shared_lib_dist {
@@ -50,8 +47,7 @@ sub create_shared_lib_dist {
   my $output_dir = 'blib/lib';
 
   my $category = $self->category;
-  my $subs = $self->get_subs($package_name);
-  my $sub_names = [map { $_->{abs_name} } @$subs];
+  my $sub_names = $self->get_sub_names($package_name);
   
   # Build shared library
   $self->create_shared_lib(
@@ -81,8 +77,7 @@ sub create_shared_lib_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  my $subs = $self->get_subs($package_name);
-  my $sub_names = [map { $_->{abs_name} } @$subs];
+  my $sub_names = $self->get_sub_names($package_name);
   
   $self->create_shared_lib(
     package_name => $package_name,
