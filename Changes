@@ -1,4 +1,4 @@
-0.0348 2018-06-14
+0.0348 2018-06-15
   - add SPVM::Build::Setting
     
     This module is to do setting ExtUtils::CBuilder. ExtUtils::CBuilder is used for native compile and precompile.
