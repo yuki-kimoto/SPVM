@@ -10,7 +10,7 @@ use SPVM::Build::CBuilder::Native;
 use SPVM::Build::CBuilder::Precompile;
 use SPVM::Build::Util;
 use SPVM::Build::Setting;
-use SPVM::Build::SPVMInfo;
+use SPVM::Build::Info;
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -140,10 +140,10 @@ my $package_name_h = {};
 sub build_spvm_subs {
   my $self = shift;
 
-  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  my $package_names = SPVM::Build::Info::get_package_names($self->{compiler});
   for my $package_name (@$package_names) {
     
-    my $subs = SPVM::Build::SPVMInfo::get_subs($self->{compiler}, $package_name);
+    my $subs = SPVM::Build::Info::get_subs($self->{compiler}, $package_name);
     
     for my $sub (@$subs) {
       my $sub_abs_name = $sub->{abs_name};

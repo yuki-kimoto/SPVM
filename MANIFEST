@@ -4,6 +4,10 @@ lib/SPVM/Bool.pm
 lib/SPVM/Bool.spvm
 lib/SPVM/Build.pm
 lib/SPVM/Build/Base.pm
+lib/SPVM/Build/CBuilder.pm
+lib/SPVM/Build/CBuilder/Native.pm
+lib/SPVM/Build/CBuilder/Precompile.pm
+lib/SPVM/Build/Info.pm
 lib/SPVM/Build/Native.pm
 lib/SPVM/Build/Precompile.pm
 lib/SPVM/Build/Setting.pm

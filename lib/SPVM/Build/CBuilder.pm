@@ -1,14 +1,11 @@
 package SPVM::Build::CBuilder;
 
-# SPVM::Build::PPtUtil is used from Makefile.PL
-# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
-
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
 
 use SPVM::Build::Util;
-use SPVM::Build::SPVMInfo;
+use SPVM::Build::Info;
 
 use ExtUtils::CBuilder;
 use Config;
@@ -35,7 +32,7 @@ sub category {
 sub build {
   my $self = shift;
   
-  my $package_names = SPVM::Build::SPVMInfo::get_package_names($self->{compiler});
+  my $package_names = SPVM::Build::Info::get_package_names($self->{compiler});
   for my $package_name (@$package_names) {
     
     next if $package_name eq "SPVM::CORE";
@@ -226,7 +223,7 @@ sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = SPVM::Build::SPVMInfo::get_package_load_path($self->{compiler}, $package_name);
+  my $module_load_path = SPVM::Build::Info::get_package_load_path($self->{compiler}, $package_name);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   

@@ -726,7 +726,7 @@ to_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Build::SPVMInfo		PACKAGE = SPVM::Build::SPVMInfo
+MODULE = SPVM::Build::Info		PACKAGE = SPVM::Build::Info
 
 SV*
 get_subs(...)
