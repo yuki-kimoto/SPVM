@@ -753,6 +753,10 @@ get_subs(...)
       
       SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
+
+      // Subroutine name
+      const char* sub_name = sub->op_name->uv.name;
+      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
       
       // Subroutine name
       const char* sub_abs_name = sub->abs_name;
@@ -777,6 +781,7 @@ get_subs(...)
       // Subroutine
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
+      hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
       hv_store(hv_sub, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
       hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
       hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
