@@ -12,7 +12,7 @@ enum {
 
 // SPVM_OBJECT
 struct SPVM_VALUE_object {
-  SPVM_OBJECT** weaken_back_refs;
+  void** weaken_back_refs;
   int32_t weaken_back_refs_length;
   int32_t weaken_back_refs_capacity;
   int32_t ref_count;

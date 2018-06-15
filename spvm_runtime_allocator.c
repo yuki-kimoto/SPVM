@@ -17,7 +17,7 @@ void* SPVM_RUNTIME_ALLOCATOR_alloc(SPVM_RUNTIME* runtime, int32_t byte_size) {
   return block;
 }
 
-void* SPVM_RUNTIME_ALLOCATOR_free(SPVM_RUNTIME* runtime, void* block) {
+void SPVM_RUNTIME_ALLOCATOR_free(SPVM_RUNTIME* runtime, void* block) {
   (void)runtime;
   
   free(block);

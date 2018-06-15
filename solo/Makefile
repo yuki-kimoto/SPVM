@@ -1,10 +1,11 @@
 all:
 
 CC     	 := gcc
-CCFLAGS 	 := -g -O -Wall -Wextra $(DEFINE)
+CCFLAGS  := -g -O -Wall -Wextra $(DEFINE)
 LIBS   	 := -lm 
 INCLUDE  := -I. -Ilib/SPVM/Build
 DIRS     :=
+OPTIMIZE := 
 
 OBJDIR := solo/objs
 DIRS += $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t

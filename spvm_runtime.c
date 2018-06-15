@@ -16,6 +16,7 @@
 #include "spvm_opcode.h"
 #include "spvm_opcode_array.h"
 #include "spvm_util_allocator.h"
+#include "spvm_runtime_allocator.h"
 
 #include "spvm_package.h"
 #include "spvm_sub.h"
@@ -65,7 +66,6 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  int32_t exception_flag;
   if (sub->have_native_desc) {
     return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
   }
@@ -131,9 +131,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  
-  int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
-  int32_t sub_return_type_dimension = sub_return_type->dimension;
   
   int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
   
@@ -1254,8 +1251,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
         void* string = env->new_string(env, constant->value.oval, constant->string_length);
-        
-        int8_t* bytes = env->get_byte_array_elements(env, string);
         
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0] , string);
