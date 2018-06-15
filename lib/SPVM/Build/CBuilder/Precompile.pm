@@ -16,7 +16,6 @@ use File::Basename 'dirname', 'basename';
 
 use SPVM::Build;
 use SPVM::Build::Util;
-use SPVM::Build::Info;
 
 sub new {
   my $self = shift->SUPER::new(@_);
@@ -31,7 +30,7 @@ sub get_subs {
   
   my $compiler = $self->{compiler};
   
-  my $subs = SPVM::Build::Info->new(compiler => $compiler)->get_subs($package_name);
+  my $subs = $self->info->get_subs($package_name);
   $subs = [grep { $_->{have_compile_desc} } @$subs];
   
   return $subs;

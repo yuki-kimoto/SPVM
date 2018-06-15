@@ -30,14 +30,18 @@ sub new {
   
   $self->{compiler} ||= $self->create_compiler;
   
+  $self->{info} ||= SPVM::Build::Info->new(compiler => $self->{compiler});
+  
   $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
+    info => $self->{info},
   );
   
   $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
     compiler => $self->{compiler},
+    info => $self->{info},
   );
   
   $self->{setting} ||= SPVM::Build::Util::default_build_setting;
@@ -57,6 +61,12 @@ sub use {
   };
   
   push @{$self->{package_infos}}, $package_info;
+}
+
+sub info {
+  my $self = shift;
+  
+  return $self->{info};
 }
 
 sub cbuilder_native {
@@ -140,10 +150,10 @@ my $package_name_h = {};
 sub bind_to_perl {
   my $self = shift;
 
-  my $package_names = SPVM::Build::Info->new(compiler => $self->{compiler})->get_package_names;
+  my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $subs = SPVM::Build::Info->new(compiler => $self->{compiler})->get_subs($package_name);
+    my $subs = $self->info->get_subs($package_name);
     
     for my $sub (@$subs) {
       my $sub_abs_name = $sub->{abs_name};

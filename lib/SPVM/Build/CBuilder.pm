@@ -5,7 +5,6 @@ use warnings;
 use Carp 'croak', 'confess';
 
 use SPVM::Build::Util;
-use SPVM::Build::Info;
 
 use ExtUtils::CBuilder;
 use Config;
@@ -23,6 +22,12 @@ sub new {
   return bless $self, $class;
 }
 
+sub info {
+  my $self = shift;
+  
+  return $self->{info};
+}
+
 sub category {
   my $self = shift;
   
@@ -32,7 +37,7 @@ sub category {
 sub build {
   my $self = shift;
   
-  my $package_names = SPVM::Build::Info->new(compiler => $self->{compiler})->get_package_names;
+  my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
     next if $package_name eq "SPVM::CORE";
@@ -223,7 +228,7 @@ sub get_installed_shared_lib_path {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = SPVM::Build::Info->new(compiler => $self->{compiler})->get_package_load_path($package_name);
+  my $module_load_path = $self->info->get_package_load_path($package_name);
   
   my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
