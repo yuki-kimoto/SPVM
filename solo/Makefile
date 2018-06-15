@@ -4,13 +4,11 @@ CC     	 := gcc
 CCFLAGS  := -g -Wall -Wextra $(DEFINE) -std=c99
 LIBS   	 := -lm 
 INC  := -I. -Ilib/SPVM/Build
-DIRS     :=
 OPTIMIZE := -O
 
 CCCMD = $(CC) $(INC) $(CCFLAGS) $(OPTIMIZE)
 
 OBJDIR := solo/objs
-DIRS += $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 $(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
 	$(CCCMD) -c -o $@ $<
 
@@ -32,23 +30,14 @@ spvm: $(spvm_OBJS) libspvm.a
 	$(CCCMD) -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
 all: spvm
 
-# test (solo/t/spvm_t_*)
-test_names := $(wildcard solo/t/spvm_t_*.c)
-test_names := $(test_names:solo/t/spvm_t_%.c=spvm_t_%)
-
-spvm_t_LDFLAGS := $(LDFLAGS) -L .
-spvm_t_LIBS    := -lspvm $(LIBS)
-$(OBJDIR)/solo/t/spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%.o libspvm.a
-	$(CCCMD) $(spvm_t_LDFLAGS) -DDEBUG -o $@ $< $(spvm_t_LIBS)
-spvm_t_%: $(OBJDIR)/solo/t/spvm_t_%
-	./$<
-.PRECIOUS: $(OBJDIR)/solo/t/spvm_t_%.o $(OBJDIR)/solo/t/spvm_t_%
-test: $(test_names)
-
-# misc
-$(DIRS):
-	mkdir -p $@
+test:
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_array.o solo/t/spvm_t_array.c
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_array solo/objs/solo/t/spvm_t_array.o -lspvm -lm
+	solo/objs/solo/t/spvm_t_array
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o -lspvm -lm
+	solo/objs/solo/t/spvm_t_hash
 
 clean:
-	-find $(OBJDIR) -name \*.o | xargs rm -rf
-	-rm -rf libspvm.a $(generated_sources)
+	find $(OBJDIR) -name \*.o | xargs rm -rf
+	rm -rf libspvm.a $(generated_sources)
