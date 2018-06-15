@@ -8,6 +8,11 @@
       spvm_runtime_allocator.c
   - fix native function name set_object_array_element, get_object_array_element. this name was wrong by wrong replacing.
   - fix weaken memory broken bug
+  - add C/C++ struct/class binding features
+      add Native interface new_struct and get_struct
+      new_struct create object which have C/C++ struct/class
+      get_struct get struct/class from SPVM object
+      
 0.0347 2018-06-13
   - fix bug : [rt.cpan.org #125541] System perl used in build process
     
