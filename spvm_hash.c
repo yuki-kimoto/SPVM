@@ -16,7 +16,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
 
   // Default table capacity
   if (table_capacity == 0) {
-    hash->table_capacity = 101;
+    hash->table_capacity = 1;
   }
   else {
     hash->table_capacity = table_capacity;
