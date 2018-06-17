@@ -35,7 +35,7 @@ int main()
   {
     SPVM_LIST* array = SPVM_LIST_new(0);
     
-    OK(array->capacity == 128);
+    OK(array->capacity == 1);
     
     OK(array->length == 0);
   }

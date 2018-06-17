@@ -31,9 +31,9 @@ spvm: $(spvm_OBJS) libspvm.a
 all: spvm
 
 test:
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_array.o solo/t/spvm_t_array.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_array solo/objs/solo/t/spvm_t_array.o -lspvm -lm
-	solo/objs/solo/t/spvm_t_array
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_list.o solo/t/spvm_t_list.c
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_list solo/objs/solo/t/spvm_t_list.o -lspvm -lm
+	solo/objs/solo/t/spvm_t_list
 	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
 	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o -lspvm -lm
 	solo/objs/solo/t/spvm_t_hash
