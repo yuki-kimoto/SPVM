@@ -3,6 +3,8 @@ use warnings;
 
 my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
 
+my $object_dir = 'solo/objs';
+
 my $makefile = <<"EOS";
 
 all:
@@ -15,22 +17,21 @@ OPTIMIZE := -O
 
 CCCMD = \$(CC) \$(INC) \$(CCFLAGS) \$(OPTIMIZE)
 
-OBJDIR := solo/objs
-\$(OBJDIR)/%.o: %.c | \$(OBJDIR) \$(OBJDIR)/solo \$(OBJDIR)/t
+$object_dir/%.o: %.c | $object_dir $object_dir/solo $object_dir/t
 	\$(CCCMD) -c -o \$@ \$<
 
 # libspvm
 libspvm_SRCS := @c_source_files
-libspvm_OBJS := \$(libspvm_SRCS:%.c=\$(OBJDIR)/%.o)
-\$(OBJDIR)/spvm_toke.o: spvm_toke.c spvm_yacc.h
-\$(OBJDIR)/spvm_yacc_util.o: spvm_yacc_util.c spvm_yacc.h
+libspvm_OBJS := \$(libspvm_SRCS:%.c=$object_dir/%.o)
+$object_dir/spvm_toke.o: spvm_toke.c spvm_yacc.h
+$object_dir/spvm_yacc_util.o: spvm_yacc_util.c spvm_yacc.h
 libspvm.a: \$(libspvm_OBJS)
 	\$(AR) crs \$@ \$(libspvm_OBJS)
 all: libspvm.a
 
 # spvm
 spvm_SRCS    := solo/spvm_main.c
-spvm_OBJS    := \$(spvm_SRCS:%.c=\$(OBJDIR)/%.o)
+spvm_OBJS    := \$(spvm_SRCS:%.c=$object_dir/%.o)
 spvm_LDFLAGS := \$(LDFLAGS) -L .
 spvm_LIBS    := -lspvm \$(LIBS)
 spvm: \$(spvm_OBJS) libspvm.a
@@ -51,7 +52,7 @@ test:
 	solo/objs/solo/t/spvm_t_hash
 
 clean:
-	find \$(OBJDIR) -name \*.o | xargs rm -rf
+	find $object_dir -name \*.o | xargs rm -rf
 	rm -rf libspvm.a \$(generated_sources)
 EOS
 
