@@ -4,7 +4,6 @@
 
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
-#include "spvm_compiler.h"
 
 SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   
