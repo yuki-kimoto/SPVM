@@ -1,43 +1,14 @@
+
 all:
-
-CC     	 := gcc
-CCFLAGS  := -g -Wall -Wextra $(DEFINE) -std=c99
-LIBS   	 := -lm 
-INC  := -I. -Ilib/SPVM/Build
-OPTIMIZE := -O
-
-CCCMD = $(CC) $(INC) $(CCFLAGS) $(OPTIMIZE)
-
-OBJDIR := solo/objs
-$(OBJDIR)/%.o: %.c | $(OBJDIR) $(OBJDIR)/solo $(OBJDIR)/t
-	$(CCCMD) -c -o $@ $<
-
-# libspvm
-libspvm_SRCS := $(wildcard *.c) spvm_yacc.c
-libspvm_OBJS := $(libspvm_SRCS:%.c=$(OBJDIR)/%.o)
-$(OBJDIR)/spvm_toke.o: spvm_toke.c spvm_yacc.h
-$(OBJDIR)/spvm_yacc_util.o: spvm_yacc_util.c spvm_yacc.h
-libspvm.a: $(libspvm_OBJS)
-	$(AR) crs $@ $(libspvm_OBJS)
-all: libspvm.a
-
-# spvm
-spvm_SRCS    := solo/spvm_main.c
-spvm_OBJS    := $(spvm_SRCS:%.c=$(OBJDIR)/%.o)
-spvm_LDFLAGS := $(LDFLAGS) -L .
-spvm_LIBS    := -lspvm $(LIBS)
-spvm: $(spvm_OBJS) libspvm.a
-	$(CCCMD) -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) $(spvm_LIBS)
-all: spvm
+	make
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra -DSPVM_DEBUG_YACC -std=c99 -O -o solo/spvm_main solo/spvm_main.c spvm_basic_type.o spvm_block.o spvm_call_sub.o spvm_compiler.o spvm_compiler_allocator.o spvm_constant.o spvm_core_func.o spvm_core_func_bind.o spvm_csource_builder.o spvm_descriptor.o spvm_dumper.o spvm_enumeration.o spvm_enumeration_value.o spvm_field.o spvm_field_access.o spvm_hash.o spvm_hash_func.o spvm_list.o spvm_my.o spvm_op.o spvm_op_checker.o spvm_opcode.o spvm_opcode_array.o spvm_opcode_builder.o spvm_our.o spvm_package.o spvm_package_var.o spvm_runtime.o spvm_runtime_allocator.o spvm_runtime_api.o spvm_string_buffer.o spvm_sub.o spvm_switch_info.o spvm_toke.o spvm_type.o spvm_use.o spvm_util_allocator.o spvm_var.o spvm_yacc.o spvm_yacc_util.o -lm
 
 test:
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_array.o solo/t/spvm_t_array.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_array solo/objs/solo/t/spvm_t_array.o -lspvm -lm
-	solo/objs/solo/t/spvm_t_array
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o -lspvm -lm
-	solo/objs/solo/t/spvm_t_hash
+	make
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra -DSPVM_DEBUG_YACC -std=c99 -O -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o -lm
+	solo/t/spvm_t_list
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra -DSPVM_DEBUG_YACC -std=c99 -O -o solo/t/spvm_t_hash solo/t/spvm_t_hash.c spvm_hash.o spvm_util_allocator.o spvm_hash_func.o -lm
+	solo/t/spvm_t_hash
 
 clean:
-	find $(OBJDIR) -name \*.o | xargs rm -rf
-	rm -rf libspvm.a $(generated_sources)
+	rm -rf solo/spvm_main

@@ -16,7 +16,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
 
   // Default table capacity
   if (table_capacity == 0) {
-    hash->table_capacity = 101;
+    hash->table_capacity = 1;
   }
   else {
     hash->table_capacity = table_capacity;
@@ -28,7 +28,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
-  hash->entries_capacity = 255;
+  hash->entries_capacity = 1;
   int64_t hash_entries_byte_size = (int64_t)hash->entries_capacity * (int64_t)sizeof(SPVM_HASH_ENTRY);
   hash->entries = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(hash_entries_byte_size);
   hash->entries_length = 0;

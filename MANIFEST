@@ -57,9 +57,10 @@ solo/lib/TestCase/Weaken2.spvm
 solo/Main.spvm
 solo/Makefile
 solo/README.md
+solo/solo_Makefile.PL
 solo/spvm_main.c
-solo/t/spvm_t_array.c
 solo/t/spvm_t_hash.c
+solo/t/spvm_t_list.c
 SPVM.xs
 spvm_base.h
 spvm_basic_type.c

@@ -4,7 +4,6 @@
 
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
-#include "spvm_compiler.h"
 
 SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   
@@ -14,7 +13,7 @@ SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   array->length = 0;
   
   if (capacity == 0) {
-    array->capacity = 8;
+    array->capacity = 1;
   }
   else {
     array->capacity = capacity;

@@ -10,7 +10,7 @@ void* SPVM_RUNTIME_ALLOCATOR_alloc(SPVM_RUNTIME* runtime, int32_t byte_size) {
   void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
   runtime->objects_count++;
   
-#ifdef DEBUG
+#ifdef SPVM_DEBUG_OBJECT_COUNT
   fprintf(stderr, "[INC_OBJ_CNT] %d\n", runtime->objects_count);
 #endif
   
@@ -23,7 +23,7 @@ void SPVM_RUNTIME_ALLOCATOR_free(SPVM_RUNTIME* runtime, void* block) {
   free(block);
   runtime->objects_count--;
   
-#ifdef DEBUG
+#ifdef SPVM_DEBUG_OBJECT_COUNT
   fprintf(stderr, "[DEC_OBJ_CNT] %d\n", runtime->objects_count);
 #endif
 }

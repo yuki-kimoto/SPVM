@@ -39,7 +39,7 @@ int main()
   {
     SPVM_HASH* hash = SPVM_HASH_new(0);
     // capacity
-    OK(hash->table_capacity == 101);
+    OK(hash->table_capacity == 1);
   }
 
   // Hash - first same key
