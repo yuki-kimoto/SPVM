@@ -87,7 +87,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
       {
         int32_t sub_index;
-        for (sub_index = 0; sub_index < compiler->op_subs->length; sub_index++) {
+        for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
           // opcode index stack for if start
           SPVM_LIST* if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(0);
           
@@ -127,7 +127,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Mortal variable base stack
           SPVM_LIST* mortal_base_stack = SPVM_LIST_new(0);
 
-          SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_index);
+          SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
           SPVM_SUB* sub = op_sub->uv.sub;
           
           // Check sub information
