@@ -23,7 +23,11 @@
 int main(int argc, char *argv[])
 {
   // If this is set to 1, you can see yacc parsing result
+#ifdef SPVM_DEBUG_YACC
+  SPVM_yydebug = 1;
+#else
   SPVM_yydebug = 0;
+#endif
 
   if (argc < 2) {
     fprintf(stderr, "Not script\n");
@@ -66,7 +70,7 @@ int main(int argc, char *argv[])
   // Build bytecode
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
 
-#ifdef DEBUG
+#ifdef SPVM_DEBUG_DUMP
     // Dump spvm information
     SPVM_DUMPER_dump_all(compiler);
 #endif

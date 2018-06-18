@@ -3,13 +3,25 @@ use warnings;
 use Getopt::Long 'GetOptions';
 
 my $debug_dump;
+my $debug_yacc;
+my $debug_object_count;
 
-GetOptions("--debug-dump" => \$debug_dump);
+GetOptions(
+  "--debug-dump" => \$debug_dump,
+  "--debug-yacc" => \$debug_yacc,
+  "--debug-object-count" => \$debug_object_count,
+);
 
 my @defines;
 
 if ($debug_dump) {
-  push @defines, '-DDEBUG';
+  push @defines, '-DSPVM_DEBUG_DUMP';
+}
+if ($debug_yacc) {
+  push @defines, '-DSPVM_DEBUG_YACC';
+}
+if ($debug_object_count) {
+  push @defines, '-DSPVM_DEBUG_OBJECT_COUNT';
 }
 
 my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
