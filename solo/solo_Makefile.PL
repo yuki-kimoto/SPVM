@@ -5,20 +5,21 @@ my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
 
 my $object_dir = 'solo/objs';
 
+my $CC = 'gcc';
+my $CCFLAGS  = '-g -Wall -Wextra $(DEFINE) -std=c99';
+my $LIBS = '-lm';
+my $INC  = '-I. -Ilib/SPVM/Build';
+my $OPTIMIZE = '-O';
+
+my $CCCMD = "$CC $INC $CCFLAGS $OPTIMIZE";
+
 my $makefile = <<"EOS";
 
 all:
 
-CC     	 := gcc
-CCFLAGS  := -g -Wall -Wextra \$(DEFINE) -std=c99
-LIBS   	 := -lm 
-INC  := -I. -Ilib/SPVM/Build
-OPTIMIZE := -O
-
-CCCMD = \$(CC) \$(INC) \$(CCFLAGS) \$(OPTIMIZE)
 
 $object_dir/%.o: %.c | $object_dir $object_dir/solo $object_dir/t
-	\$(CCCMD) -c -o \$@ \$<
+	$CCCMD -c -o \$\@ \$<
 
 # libspvm
 libspvm_SRCS := @c_source_files
@@ -26,16 +27,15 @@ libspvm_OBJS := \$(libspvm_SRCS:%.c=$object_dir/%.o)
 $object_dir/spvm_toke.o: spvm_toke.c spvm_yacc.h
 $object_dir/spvm_yacc_util.o: spvm_yacc_util.c spvm_yacc.h
 libspvm.a: \$(libspvm_OBJS)
-	\$(AR) crs \$@ \$(libspvm_OBJS)
+	\$(AR) crs \$\@ \$(libspvm_OBJS)
 all: libspvm.a
 
 # spvm
 spvm_SRCS    := solo/spvm_main.c
 spvm_OBJS    := \$(spvm_SRCS:%.c=$object_dir/%.o)
 spvm_LDFLAGS := \$(LDFLAGS) -L .
-spvm_LIBS    := -lspvm \$(LIBS)
 spvm: \$(spvm_OBJS) libspvm.a
-	\$(CCCMD) -o \$@ \$(spvm_LDFLAGS) \$(spvm_OBJS) \$(spvm_LIBS)
+	$CCCMD -o \$\@ \$(spvm_LDFLAGS) \$(spvm_OBJS) -lspvm $LIBS
 all: spvm
 
 
