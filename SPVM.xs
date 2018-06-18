@@ -1122,7 +1122,7 @@ build_package_csource(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // Build package csource
-  SPVM_CSOURCE_BUILDER_build_package_csource(compiler, string_buffer, package_id);
+  SPVM_CSOURCE_BUILDER_build_package_csource(compiler, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   

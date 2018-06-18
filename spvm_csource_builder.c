@@ -467,8 +467,11 @@ char* SPVM_CSOURCE_BUILDER_get_type_name(int32_t basic_type_id, int32_t dimensio
   }
 }
 
-void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t package_id) {
-  SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_id);
+void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  
+  assert(op_package);
+  
   SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_LIST* op_subs = package->op_subs;
   
