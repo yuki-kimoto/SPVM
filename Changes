@@ -1,3 +1,15 @@
+0.0350 2018-06-18
+  - improve solo SPVM tests command
+      You can run solo tests by the following commands. This comands is wrote in solo/README
+      
+		    # Normal run
+		    perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
+
+		    # Debug run - Print AST, package information, operaion codes
+		    perl solo/solo_Makefile.PL --debug-dump --debug-object-count && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
+
+		    # Debug run - Print yacc result
+		    perl solo/solo_Makefile.PL --debug-yacc && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
 0.0349 2018-06-15
   - rename SPVM::Build::Base to SPVM::Build::CBuilder
   - rename SPVM::Build::Native to SPVM::Build::CBuilder::Native
