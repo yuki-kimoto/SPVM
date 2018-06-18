@@ -1183,21 +1183,24 @@ call_sub(...)
   
   int32_t stack_arg_start = 0;
   
-  SV* sv_sub_abs_name = ST(0);
-  stack_arg_start++;
-  
+  SV* sv_package_name = ST(0);
+  SV* sv_sub_name = ST(1);
+
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+  
+  const char* package_name = SvPV_nolen(sv_package_name);
+  const char* sub_name = SvPV_nolen(sv_sub_name);
 
-  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
+  SPVM_SUB* sub = op_sub->uv.sub;
+  const char* sub_abs_name = sub->abs_name;
   int32_t sub_id = env->get_sub_id(env, sub_abs_name);
   
-  
-  // Subroutine information
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
+  stack_arg_start += 2;
   
   // Arguments
   {

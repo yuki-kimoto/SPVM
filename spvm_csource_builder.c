@@ -501,8 +501,9 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
     for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
       SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
       SPVM_SUB* sub = op_sub->uv.sub;
+      const char* sub_name = sub->op_name->uv.name;
       if (sub->have_precompile_desc) {
-        SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, sub->id);
+        SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, package_name, sub_name);
       }
     }
   }
@@ -596,9 +597,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* args)");
 }
 
-void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t sub_id) {
-
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
+void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
 
   // Subroutine return type

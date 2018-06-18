@@ -179,7 +179,7 @@ sub bind_to_perl {
       *{"$sub_abs_name"} = sub {
         
         my $return_value;
-        eval { $return_value = SPVM::call_sub("$sub_abs_name", @_) };
+        eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
