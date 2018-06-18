@@ -33,7 +33,7 @@ my $CC = 'gcc';
 my $CCFLAGS  = "-g -Wall -Wextra @defines -std=c99";
 my $LIBS = '-lm';
 my $INC  = '-I. -Ilib/SPVM/Build';
-my $OPTIMIZE = '-O';
+my $OPTIMIZE = '-O3';
 
 my $CCCMD = "$CC $INC $CCFLAGS $OPTIMIZE";
 
