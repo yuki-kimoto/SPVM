@@ -1,28 +1,9 @@
-# SPVM solo
-
-This is test program to run SPVM solo.
-
-# Development
-
-For compile, bison command is needed.
+This is SPVM solo test program
 
 ## Run
-   # Debug mode
-   perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG && ./solo/spvm_main TestCase
-   
-   # Normal mode
+
+   # Normal run
    perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
 
-## Cleanup
-
-  make -f solo/Makefile clean
-  
-## Test
-    
-  yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG test
-
-# Contributors
-
-* [akinomyoga](https://github.com/akinomyoga) (Koichi Murase)
-* [NAGAYASU Shinya](https://github.com/nagayasu-shinya)
-* [Reini Urban](https://github.com/rurban)
+   # Debug run
+   perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG && ./solo/spvm_main TestCase
