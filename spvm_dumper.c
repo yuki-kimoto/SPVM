@@ -172,9 +172,6 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
-
-  printf("\n[Subroutines]\n");
-  SPVM_DUMPER_dump_subs(compiler, compiler->op_subs);
 }
 
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants) {
@@ -185,18 +182,6 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants
       SPVM_CONSTANT* constant = op_constant->uv.constant;
       printf("    constant[%" PRId32 "]\n", i);
       SPVM_DUMPER_dump_constant(compiler, constant);
-    }
-  }
-}
-
-void SPVM_DUMPER_dump_subs(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
-  {
-    int32_t j;
-    for (j = 0; j < op_subs->length; j++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, j);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      printf("  sub[%" PRId32 "]\n", j);
-      SPVM_DUMPER_dump_sub(compiler, sub);
     }
   }
 }
@@ -228,6 +213,15 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
           SPVM_FIELD* field = op_field->uv.field;
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
+        }
+      }
+      {
+        int32_t j;
+        for (j = 0; j < package->op_subs->length; j++) {
+          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, j);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          printf("  sub[%" PRId32 "]\n", j);
+          SPVM_DUMPER_dump_sub(compiler, sub);
         }
       }
     }
