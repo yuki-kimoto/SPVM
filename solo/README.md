@@ -8,10 +8,10 @@ For compile, bison command is needed.
 
 ## Run
    # Debug mode
-   yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG && ./spvm TestCase
+   perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile DEFINE=-DDEBUG && ./solo/spvm_main TestCase
    
    # Normal mode
-   yacc/bison.sh && make -f solo/Makefile && ./spvm TestCase
+   perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
 
 ## Cleanup
 
