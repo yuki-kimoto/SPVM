@@ -11,5 +11,4 @@ test:
 	solo/t/spvm_t_hash
 
 clean:
-	find solo -name *.o | xargs rm -rf
-	rm -rf libspvm.a
+	rm -rf solo/spvm_main

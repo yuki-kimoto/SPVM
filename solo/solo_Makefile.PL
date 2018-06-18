@@ -28,8 +28,7 @@ test:
 	solo/t/spvm_t_hash
 
 clean:
-	find $object_dir -name \*.o | xargs rm -rf
-	rm -rf libspvm.a
+	rm -rf solo/spvm_main
 EOS
 
 my $makefile_file = 'solo/Makefile';
@@ -38,4 +37,3 @@ open my $fh, '>', $makefile_file
   or die "Can't open $makefile_file: $!";
 
 print $fh $makefile;
-
