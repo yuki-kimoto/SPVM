@@ -1,5 +1,16 @@
 use strict;
 use warnings;
+use Getopt::Long 'GetOptions';
+
+my $debug_dump;
+
+GetOptions("--debug-dump" => \$debug_dump);
+
+my @defines;
+
+if ($debug_dump) {
+  push @defines, '-DDEBUG';
+}
 
 my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
 my @object_files = map { $_ =~ s/\.c$/.o/; $_ } @c_source_files;
@@ -7,7 +18,7 @@ my @object_files = map { $_ =~ s/\.c$/.o/; $_ } @c_source_files;
 my $object_dir = 'solo';
 
 my $CC = 'gcc';
-my $CCFLAGS  = '-g -Wall -Wextra $(DEFINE) -std=c99';
+my $CCFLAGS  = "-g -Wall -Wextra @defines -std=c99";
 my $LIBS = '-lm';
 my $INC  = '-I. -Ilib/SPVM/Build';
 my $OPTIMIZE = '-O';
