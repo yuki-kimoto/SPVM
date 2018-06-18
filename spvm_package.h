@@ -14,6 +14,7 @@ extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
 struct SPVM_package {
   SPVM_OP* op_name;
   SPVM_LIST* op_subs;
+  SPVM_HASH* op_sub_symtable;
   SPVM_LIST* op_fields;
   SPVM_HASH* op_field_symtable;
   SPVM_LIST* object_field_ids;

@@ -1800,6 +1800,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+        
+        SPVM_HASH_insert(package->op_sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), op_sub);
       }
     }
   }
