@@ -33,9 +33,8 @@ all: libspvm.a
 # spvm
 spvm_SRCS    := solo/spvm_main.c
 spvm_OBJS    := \$(spvm_SRCS:%.c=$object_dir/%.o)
-spvm_LDFLAGS := \$(LDFLAGS) -L .
 spvm: \$(spvm_OBJS) libspvm.a
-	$CCCMD -o \$\@ \$(spvm_LDFLAGS) \$(spvm_OBJS) -lspvm $LIBS
+	$CCCMD -o \$\@  -L . \$(spvm_OBJS) -lspvm $LIBS
 all: spvm
 
 

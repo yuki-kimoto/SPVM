@@ -17,9 +17,8 @@ all: libspvm.a
 # spvm
 spvm_SRCS    := solo/spvm_main.c
 spvm_OBJS    := $(spvm_SRCS:%.c=solo/objs/%.o)
-spvm_LDFLAGS := $(LDFLAGS) -L .
 spvm: $(spvm_OBJS) libspvm.a
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra $(DEFINE) -std=c99 -O -o $@ $(spvm_LDFLAGS) $(spvm_OBJS) -lspvm -lm
+	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra $(DEFINE) -std=c99 -O -o $@  -L . $(spvm_OBJS) -lspvm -lm
 all: spvm
 
 
