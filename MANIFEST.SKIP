@@ -27,3 +27,5 @@ SPVM-.*
 ^spvm_build/[^\.]
 ^t/spvm_build/[^\.]
 ^SPVM-
+^solo/t/spvm_t_hash
+^solo/t/spvm_t_list

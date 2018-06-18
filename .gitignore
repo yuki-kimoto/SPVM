@@ -32,3 +32,5 @@ spvm_build/*
 !spvm_build/.gitkeep
 t/spvm_build/*
 !t/spvm_build/.gitkeep
+solo/t/spvm_t_hash
+solo/t/spvm_t_list

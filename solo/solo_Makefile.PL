@@ -3,7 +3,7 @@ use warnings;
 
 my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
 
-my $object_dir = 'solo/objs';
+my $object_dir = 'solo';
 
 my $CC = 'gcc';
 my $CCFLAGS  = '-g -Wall -Wextra $(DEFINE) -std=c99';
@@ -39,16 +39,10 @@ all: spvm
 
 
 test:
-	gcc $CCCMD -c -o spvm_util_allocator.o spvm_util_allocator.c
-	gcc $CCCMD -c -o spvm_list.o spvm_list.c
-	gcc $CCCMD -c -o solo/objs/solo/t/spvm_t_list.o solo/t/spvm_t_list.c
-	gcc $CCCMD  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_list solo/objs/solo/t/spvm_t_list.o spvm_list.o spvm_util_allocator.o -lm
-	solo/objs/solo/t/spvm_t_list
-	gcc $CCCMD -c -o spvm_hash_func.o spvm_hash_func.c
-	gcc $CCCMD -c -o spvm_hash.o spvm_hash.c
-	gcc $CCCMD -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
-	gcc $CCCMD  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o spvm_hash.o spvm_util_allocator.o spvm_hash_func.o -lm
-	solo/objs/solo/t/spvm_t_hash
+	$CCCMD -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o -lm
+	solo/t/spvm_t_list
+	$CCCMD -o solo/t/spvm_t_hash solo/t/spvm_t_hash.c spvm_hash.o spvm_util_allocator.o spvm_hash_func.o -lm
+	solo/t/spvm_t_hash
 
 clean:
 	find $object_dir -name \*.o | xargs rm -rf
