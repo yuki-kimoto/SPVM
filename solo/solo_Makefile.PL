@@ -39,15 +39,15 @@ all: spvm
 
 
 test:
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o spvm_util_allocator.o spvm_util_allocator.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o spvm_list.o spvm_list.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_list.o solo/t/spvm_t_list.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_list solo/objs/solo/t/spvm_t_list.o spvm_list.o spvm_util_allocator.o -lm
+	gcc $CCCMD -c -o spvm_util_allocator.o spvm_util_allocator.c
+	gcc $CCCMD -c -o spvm_list.o spvm_list.c
+	gcc $CCCMD -c -o solo/objs/solo/t/spvm_t_list.o solo/t/spvm_t_list.c
+	gcc $CCCMD  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_list solo/objs/solo/t/spvm_t_list.o spvm_list.o spvm_util_allocator.o -lm
 	solo/objs/solo/t/spvm_t_list
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o spvm_hash_func.o spvm_hash_func.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o spvm_hash.o spvm_hash.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
-	gcc -I. -Ilib/SPVM/Build -g -Wall -Wextra  -std=c99 -O  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o spvm_hash.o spvm_util_allocator.o spvm_hash_func.o -lm
+	gcc $CCCMD -c -o spvm_hash_func.o spvm_hash_func.c
+	gcc $CCCMD -c -o spvm_hash.o spvm_hash.c
+	gcc $CCCMD -c -o solo/objs/solo/t/spvm_t_hash.o solo/t/spvm_t_hash.c
+	gcc $CCCMD  -L . -DDEBUG -o solo/objs/solo/t/spvm_t_hash solo/objs/solo/t/spvm_t_hash.o spvm_hash.o spvm_util_allocator.o spvm_hash_func.o -lm
 	solo/objs/solo/t/spvm_t_hash
 
 clean:
