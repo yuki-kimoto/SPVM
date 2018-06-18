@@ -52,7 +52,7 @@ test:
 
 clean:
 	find $object_dir -name \*.o | xargs rm -rf
-	rm -rf libspvm.a \$(generated_sources)
+	rm -rf libspvm.a
 EOS
 
 my $makefile_file = 'solo/Makefile';
