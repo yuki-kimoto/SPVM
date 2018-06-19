@@ -80,6 +80,12 @@ struct SPVM_compiler {
   // Subroutine absolute name symbol table
   SPVM_HASH* op_sub_symtable;
 
+  // Field ops
+  SPVM_LIST* op_fields;
+  
+  // Field absolute name symbol table
+  SPVM_HASH* op_field_symtable;
+
   // Method signature
   SPVM_LIST* method_signatures;
 
