@@ -722,8 +722,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", basic_type_name, op_cur->file, op_cur->line);
                           }
-                          SPVM_LIST_push(package->symbol_names, basic_type_name);
-                          SPVM_HASH_insert(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name), basic_type_name);
+                          SPVM_LIST_push(package->symbol_names, (void*)basic_type_name);
+                          SPVM_HASH_insert(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
                         }
                       }
                       else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
@@ -1686,6 +1686,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (call_sub_args_count > sub->call_sub_arg_stack_max) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
+
+                      // Add sub name to symbol name symtable
+                      const char* sub_name = call_sub->sub->op_name->uv.name;
+                      const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, sub_name, strlen(sub_name));
+                      if (!found_symbol_name) {
+                        if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                        }
+                        SPVM_LIST_push(package->symbol_names, (void*)sub_name);
+                        SPVM_HASH_insert(package->symbol_name_symtable, sub_name, strlen(sub_name), (void*)sub_name);
+                      }
                       
                       break;
                     }
@@ -1747,8 +1758,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                           SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", field_name, op_cur->file, op_cur->line);
                         }
-                        SPVM_LIST_push(package->symbol_names, field_name);
-                        SPVM_HASH_insert(package->symbol_name_symtable, field_name, strlen(field_name), field_name);
+                        SPVM_LIST_push(package->symbol_names, (void*)field_name);
+                        SPVM_HASH_insert(package->symbol_name_symtable, field_name, strlen(field_name), (void*)field_name);
                       }
                       
                       break;
