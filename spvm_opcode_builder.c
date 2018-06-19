@@ -393,7 +393,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand0 = index_out;
                         opcode.operand1 = index_term_object;
-                        opcode.operand2 = sizeof(SPVM_VALUE) * field->id;
+                        opcode.operand2 = field->id;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
