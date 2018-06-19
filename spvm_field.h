@@ -8,6 +8,7 @@ struct SPVM_field {
   SPVM_OP* op_package;
   SPVM_OP* op_name;
   SPVM_OP* op_type;
+  const char* abs_name;
   int32_t index;
   int32_t id;
   _Bool is_private;
