@@ -30,6 +30,9 @@ enum {
   
   /* Basic type name length limit */
   SPVM_LIMIT_BASIC_TYPE_NAME = INT16_MAX,
+
+  /* Symbol names max length in package */
+  SPVM_LIMIT_SYMBOL_NAMES = UINT16_MAX,
 };
 
 #endif
