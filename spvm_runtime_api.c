@@ -868,17 +868,15 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const 
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   
-  SPVM_LIST* op_fields = op_package->uv.package->op_fields;
+  SPVM_HASH* op_field_symtable = op_package->uv.package->op_field_symtable;
+  SPVM_OP* op_field = SPVM_HASH_search(op_field_symtable, field_name, strlen(field_name));
   
-  int32_t field_id = -1;
-  {
-    for (field_id = 0; field_id < op_fields->length; field_id++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_id);
-      SPVM_FIELD* field = op_field->uv.field;
-      if (strcmp(field_name, field->op_name->uv.name) == 0) {
-        return field->id;
-      }
-    }
+  int32_t field_id;
+  if (op_field) {
+    field_id = op_field->uv.field->id;
+  }
+  else {
+    field_id = -1;
   }
   
   return field_id;
