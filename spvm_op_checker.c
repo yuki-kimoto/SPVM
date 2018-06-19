@@ -715,6 +715,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         else {
                           assert(0);
                         }
+                        
+                        const char* basic_type_name = type->basic_type->name;
+                        const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name));
+                        if (!found_symbol_name) {
+                          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", basic_type_name, op_cur->file, op_cur->line);
+                          }
+                          SPVM_LIST_push(package->symbol_names, basic_type_name);
+                          SPVM_HASH_insert(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name), basic_type_name);
+                        }
                       }
                       else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
                         // Constant string
@@ -722,7 +732,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       else {
                         assert(0);
                       }
-
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_BIT_XOR: {
