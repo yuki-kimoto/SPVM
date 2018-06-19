@@ -62,7 +62,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_set_double_field,
   SPVM_RUNTIME_API_set_object_field,
   SPVM_RUNTIME_API_get_sub_id,
-  SPVM_RUNTIME_API_get_sub_id_interface_method,
+  SPVM_RUNTIME_API_get_sub_id_method_call,
   SPVM_RUNTIME_API_get_basic_type_id,
   SPVM_RUNTIME_API_new_object,
   SPVM_RUNTIME_API_new_byte_array,
@@ -898,7 +898,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name) {
   return sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name) {
+int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();

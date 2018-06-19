@@ -56,7 +56,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
 // ID
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name);
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name);
+int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name);
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t package_id);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
