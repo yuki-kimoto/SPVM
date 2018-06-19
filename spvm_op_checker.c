@@ -716,6 +716,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
+                        // Add basic type name to symbol name symtable
                         const char* basic_type_name = type->basic_type->name;
                         const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name));
                         if (!found_symbol_name) {
