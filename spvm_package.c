@@ -52,3 +52,11 @@ int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACK
   
   return object_fields_length;
 }
+
+void SPVM_PACKAGE_add_symbol_name(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, const char* symbol_name) {
+  const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, symbol_name);
+  if (!found_symbol_name) {
+    SPVM_LIST_push(package->symbol_names, symbol_name);
+    SPVM_HASH_insert(package->symbol_name_symtable, symbol_name, strlen(symbol_name));
+  }
+}
