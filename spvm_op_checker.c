@@ -1740,6 +1740,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
+                      // Add field name to symbol name symtable
+                      const char* field_name = field->op_name->uv.name;
+                      const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, field_name, strlen(field_name));
+                      if (!found_symbol_name) {
+                        if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", field_name, op_cur->file, op_cur->line);
+                        }
+                        SPVM_LIST_push(package->symbol_names, field_name);
+                        SPVM_HASH_insert(package->symbol_name_symtable, field_name, strlen(field_name), field_name);
+                      }
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_WEAKEN_FIELD: {
