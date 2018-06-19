@@ -857,7 +857,7 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->ref_count;
 }
 
-int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* name) {
+int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* field_name) {
   (void)env;
   
   // Runtime
@@ -875,7 +875,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const 
     for (field_id = 0; field_id < op_fields->length; field_id++) {
       SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_id);
       SPVM_FIELD* field = op_field->uv.field;
-      if (strcmp(name, field->op_name->uv.name) == 0) {
+      if (strcmp(field_name, field->op_name->uv.name) == 0) {
         return field->id;
       }
     }
