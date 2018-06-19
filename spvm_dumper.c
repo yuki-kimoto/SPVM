@@ -411,7 +411,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
   if (field) {
     printf("      name => \"%s\"\n", field->op_name->uv.name);
     
-    printf("      index => \"%" PRId32 "\"\n", field->id);
+    printf("      index => \"%" PRId32 "\"\n", field->index);
     
     SPVM_TYPE* type = field->op_type->uv.type;
     printf("      type => ");
@@ -419,7 +419,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("\n");
     printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
     
-    printf("      index => \"%" PRId32 "\"\n", field->id);
+    printf("      index => \"%" PRId32 "\"\n", field->index);
   }
   else {
     printf("        None\n");

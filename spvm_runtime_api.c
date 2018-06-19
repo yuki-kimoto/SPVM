@@ -871,15 +871,15 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   SPVM_HASH* op_field_symtable = op_package->uv.package->op_field_symtable;
   SPVM_OP* op_field = SPVM_HASH_search(op_field_symtable, field_name, strlen(field_name));
   
-  int32_t field_id;
+  int32_t field_index;
   if (op_field) {
-    field_id = op_field->uv.field->id;
+    field_index = op_field->uv.field->index;
   }
   else {
-    field_id = -1;
+    field_index = -1;
   }
   
-  return field_id;
+  return field_index;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name) {
