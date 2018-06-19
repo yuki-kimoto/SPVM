@@ -10,6 +10,7 @@
 #include "spvm_sub.h"
 #include "spvm_op.h"
 #include "spvm_list.h"
+#include "spvm_hash.h"
 #include "spvm_type.h"
 #include "spvm_object.h"
 #include "spvm_runtime.h"
