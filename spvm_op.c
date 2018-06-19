@@ -1679,7 +1679,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       
       if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-        SPVM_LIST_push(package->object_field_ids, (void*)(intptr_t)field->index);
+        SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
       }
     }
   }

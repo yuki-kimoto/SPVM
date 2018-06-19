@@ -17,7 +17,7 @@ struct SPVM_package {
   SPVM_HASH* op_sub_symtable;
   SPVM_LIST* op_fields;
   SPVM_HASH* op_field_symtable;
-  SPVM_LIST* object_field_ids;
+  SPVM_LIST* object_field_indexes;
   SPVM_HASH* op_our_symtable;
   SPVM_LIST* op_ours;
   SPVM_HASH* method_signature_symtable;

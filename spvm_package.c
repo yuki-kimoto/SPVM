@@ -26,7 +26,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->object_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   package->symbol_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

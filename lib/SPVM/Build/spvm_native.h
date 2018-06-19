@@ -44,7 +44,7 @@ struct SPVM_env {
   double* (*get_double_array_elements)(SPVM_ENV*, void*);
   void* (*get_object_array_element)(SPVM_ENV*, void*, int32_t index);
   void (*set_object_array_element)(SPVM_ENV*, void*, int32_t index, void* value);
-  int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*);
+  int32_t (*get_field_index)(SPVM_ENV*, const char*, const char*);
   int8_t (*get_byte_field)(SPVM_ENV*, void*, int32_t);
   int16_t (*get_short_field)(SPVM_ENV*, void*, int32_t);
   int32_t (*get_int_field)(SPVM_ENV*, void*, int32_t);
@@ -87,7 +87,7 @@ struct SPVM_env {
   int32_t (*isweak)(SPVM_ENV* env, void* object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
-  void (*weaken_object_field)(SPVM_ENV* env, void* object, int32_t field_id);
+  void (*weaken_object_field)(SPVM_ENV* env, void* object, int32_t field_index);
   void* (*create_exception_stack_trace)(SPVM_ENV* env, void* excetpion, int32_t sub_id, int32_t current_line);
   int32_t (*check_cast)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
   void* object_header_byte_size;
