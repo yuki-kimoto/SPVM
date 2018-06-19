@@ -1952,7 +1952,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                         
                       opcode.operand0 = index_term_object;
-                      opcode.operand1 = sizeof(SPVM_VALUE) * field->id;
+                      opcode.operand1 = field->id;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                       SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
