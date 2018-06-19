@@ -1685,7 +1685,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
           void* object = *(void**)&vars[opcode->operand2];
-          call_sub_id = env->get_sub_id_interface_method(env, object, decl_sub_id);
+          call_sub_id = env->get_sub_id_interface_method(env, object, decl_sub->op_name->uv.name);
         }
         else {
           assert(0);

@@ -2031,7 +2031,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, "    if (decl_sub_id == -1) { decl_sub_id = env->get_sub_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_interface_method(env, object, decl_sub_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_interface_method(env, object, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         }
         else {
           assert(0);

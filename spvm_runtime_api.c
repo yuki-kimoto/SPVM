@@ -898,23 +898,19 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name) {
   return sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT* object, int32_t decl_sub_id) {
+int32_t SPVM_RUNTIME_API_get_sub_id_interface_method(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_OP* op_sub_decl_sub = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
-
-  const char* method_signature = op_sub_decl_sub->uv.sub->method_signature;
-  
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
   SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));  
   SPVM_PACKAGE* package = op_package->uv.package;
   
-  SPVM_SUB* sub_call_sub = SPVM_HASH_search(package->method_signature_symtable, method_signature, strlen(method_signature));
+  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
   
-  return  sub_call_sub->id;
+  return  op_sub->uv.sub->id;
 }
 
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
