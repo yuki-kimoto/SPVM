@@ -1251,7 +1251,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_NEW) {
                         
-
                         if (op_assign_from->first->id == SPVM_OP_C_ID_CONSTANT) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));

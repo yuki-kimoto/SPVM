@@ -118,6 +118,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               
               switch (op_cur->id) {
                 case SPVM_OP_C_ID_NEW: {
+                  // If new package { ... } syntax, replace package to type
                   if (op_cur->first->id == SPVM_OP_C_ID_PACKAGE) {
                     SPVM_OP* op_package = op_cur->first;
                     SPVM_PACKAGE* package = op_package->uv.package;
