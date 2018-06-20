@@ -1523,10 +1523,16 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
-        
         void* object = *(void**)&vars[opcode->operand0];
+
+        // Get field index
+        int32_t field_abs_name_symbol_index = opcode->operand1;
+        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
+        const char* field_abs_name = field_abs_name_symbol->name;
+        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        int32_t field_index = op_field->uv.field->index;
         
-        env->weaken_object_field(env, object, opcode->operand1);
+        env->weaken_object_field(env, object, field_index);
         
         if (env->get_exception(env)) {
           exception_flag = 1;

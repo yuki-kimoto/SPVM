@@ -1944,7 +1944,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_ID_FIELD_ACCESS: {
-                    
                     // Weaken field
                     if (op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                       SPVM_OPCODE opcode;
@@ -1955,9 +1954,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_OP* op_term_object = op_cur->first;
                       int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
+
+                      // Field absolute name symbol
+                      SPVM_SYMBOL* field_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, field->abs_name, strlen(field->abs_name));
+                      int32_t field_abs_name_symbol_index = field_abs_name_symbol->index;
                         
                       opcode.operand0 = index_term_object;
-                      opcode.operand1 = field->index;
+                      opcode.operand1 = field_abs_name_symbol_index;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                       SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
