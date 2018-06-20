@@ -398,7 +398,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand0 = index_out;
                         opcode.operand1 = index_term_object;
-                        opcode.operand2 = field->index;
+                        opcode.operand2 = field_abs_name_symbol_index;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
