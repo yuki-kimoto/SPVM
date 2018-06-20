@@ -1509,6 +1509,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = *(void**)&vars[opcode->operand0];
 
+        // Get field index
+        int32_t field_abs_name_symbol_index = opcode->operand1;
+        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
+        const char* field_abs_name = field_abs_name_symbol->name;
+        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        int32_t field_index = op_field->uv.field->index;
+
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
           env->set_exception(env, exception);
@@ -1516,7 +1523,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * opcode->operand1),
+            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),
             NULL
           );
         }
