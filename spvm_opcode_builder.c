@@ -2807,4 +2807,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       }
     }
   }
+#ifdef SPVM_DEBUG_DUMP
+#include "spvm_dumper.h"
+    // Dump spvm information
+    SPVM_DUMPER_dump_all(compiler);
+#endif
+  
 }

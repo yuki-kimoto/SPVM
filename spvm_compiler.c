@@ -157,6 +157,13 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
+
+  // If this is set to 1, you can see yacc parsing result
+#ifdef SPVM_DEBUG_YACC
+  SPVM_yydebug = 1;
+#else
+  SPVM_yydebug = 0;
+#endif
   
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);

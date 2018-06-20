@@ -5,10 +5,12 @@ use ExtUtils::MakeMaker;
 
 # SPVM only support the environment 64bit integer is supported
 use Config;
-use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Build::Util;
+use Getopt::Long 'GetOptions';
+
+my @defines = @ARGV;
 
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
@@ -18,9 +20,6 @@ if ($ivsize < 8) {
 if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
   die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
 }
-
-my $debug;
-GetOptions('d' => \$debug);
 
 my $build_setting = SPVM::Build::Util::default_build_setting;
 my $optimize = $build_setting->get_config('optimize');
@@ -39,9 +38,9 @@ WriteMakefile(
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
     OBJECT            => '$(O_FILES)', # link all the C files too
-    $debug ? (DEFINE => '-DDEBUG') : (),
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
     clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib t/spvm_build/src t/spvm_build/work t/spvm_build/lib"},
+    DEFINE => "@defines",
 );
 
 
