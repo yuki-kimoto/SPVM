@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_symbol.h
+struct SPVM_symbol;
+typedef struct SPVM_symbol SPVM_SYMBOL;
+
 // spvm_basic_type.h
 struct SPVM_basic_type;
 typedef struct SPVM_basic_type SPVM_BASIC_TYPE;
@@ -28,7 +32,7 @@ typedef struct SPVM_string_buffer SPVM_STRING_BUFFER;
 struct SPVM_package_var;
 typedef struct SPVM_package_var SPVM_PACKAGE_VAR;
 
-// spvm_field.h
+// spvm_our.h
 struct SPVM_our;
 typedef struct SPVM_our SPVM_OUR;
 

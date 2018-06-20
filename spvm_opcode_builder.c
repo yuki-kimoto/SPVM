@@ -1950,8 +1950,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_OP* op_term_object = op_cur->first;
                       int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
-                      
-                      const char* field_name_id = 
                         
                       opcode.operand0 = index_term_object;
                       opcode.operand1 = field->index;
