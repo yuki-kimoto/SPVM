@@ -1459,12 +1459,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+        // Get field index
+        int32_t basic_type_name_symbol_index = opcode->operand1;
+        SPVM_SYMBOL* basic_type_name_symbol = SPVM_LIST_fetch(package->symbol_names, basic_type_name_symbol_index);
+        const char* basic_type_name = basic_type_name_symbol->name;
+
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object(env, basic_type_id);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
@@ -1563,7 +1566,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = opcode->operand1;
+        int32_t constant_id = (opcode->operand1 << 16) + opcode->operand2;
         
         SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;

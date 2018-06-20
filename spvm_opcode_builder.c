@@ -1265,7 +1265,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CONSTANT* constant = op_assign_from->first->uv.constant;
 
                           opcode.operand0 = index_out;
-                          opcode.operand1 = constant->id;
+                          opcode.operand1 = constant->id >> 16;
+                          opcode.operand2 = constant->id & 0xFFFF;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
@@ -1420,10 +1421,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT;
                             
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                            int32_t basic_type_id = op_assign_from->first->uv.type->basic_type->id;
+                            const char* basic_type_name = op_assign_from->first->uv.type->basic_type->name;
+
+                            SPVM_SYMBOL* basic_type_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name));
+                            int32_t basic_type_name_symbol_index = basic_type_name_symbol->index;
                             
                             opcode.operand0 = index_out;
-                            opcode.operand1 = basic_type_id;
+                            opcode.operand1 = basic_type_name_symbol_index;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                         }

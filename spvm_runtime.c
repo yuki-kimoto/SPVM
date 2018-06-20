@@ -1148,8 +1148,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        // Get subroutine ID
-        int32_t basic_type_id = opcode->operand1;
+        // Get field index
+        int32_t basic_type_name_symbol_index = opcode->operand1;
+        SPVM_SYMBOL* basic_type_name_symbol = SPVM_LIST_fetch(package->symbol_names, basic_type_name_symbol_index);
+        const char* basic_type_name = basic_type_name_symbol->name;
+        SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+        int32_t basic_type_id = basic_type->id;
         
         void* object = env->new_object(env, basic_type_id);
         
@@ -1250,7 +1254,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = opcode->operand1;
+        int32_t constant_id = (opcode->operand1 << 16) + opcode->operand2;
         
         SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;

@@ -6,6 +6,8 @@
 // Field information
 struct SPVM_symbol {
   const char* name;
+  int32_t basic_type_name;
+  int32_t dimension;
   int32_t index;
 };
 
