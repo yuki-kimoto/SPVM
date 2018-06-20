@@ -33,6 +33,7 @@
 #include "spvm_opcode.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_symbol.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -84,7 +85,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
       SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      SPVM_LIST* op_subs = op_package->uv.package->op_subs;
+      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_LIST* op_subs = package->op_subs;
       {
         int32_t sub_index;
         for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
@@ -387,9 +389,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         else {
                           opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_OBJECT;
                         }
-
+                        
+                        // Field absolute name symbol
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                         int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
+                        SPVM_SYMBOL* field_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, field->abs_name, strlen(field->abs_name));
+                        int32_t field_abs_name_symbol_index = field_abs_name_symbol->index;
 
                         opcode.operand0 = index_out;
                         opcode.operand1 = index_term_object;
