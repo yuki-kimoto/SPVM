@@ -1656,6 +1656,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       const char* sub_abs_name = call_sub->sub->abs_name;
+                      const char* sub_name = call_sub->sub->op_name->uv.name;
                       
                       int32_t sub_args_count = call_sub->sub->op_args->length;
                       SPVM_OP* op_term = op_list_args->first;
@@ -1695,19 +1696,34 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
                       
-                      // Add sub absolute name to symbol name symtable
-                      SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
-                      if (!found_sub_abs_name_symbol) {
-                        if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
-                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                      if (call_sub->sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                        // Add sub name to symbol name symtable
+                        SPVM_SYMBOL* found_sub_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_name, strlen(sub_name));
+                        if (!found_sub_name_symbol) {
+                          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                          }
+                          SPVM_SYMBOL* sub_name_symbol = SPVM_SYMBOL_new(compiler);
+                          sub_name_symbol->name = sub_name;
+                          sub_name_symbol->index = package->symbol_names->length;
+                          SPVM_LIST_push(package->symbol_names, (void*)sub_name_symbol);
+                          SPVM_HASH_insert(package->symbol_name_symtable, sub_name, strlen(sub_name), (void*)sub_name_symbol);
                         }
-                        SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);
-                        sub_abs_name_symbol->name = sub_abs_name;
-                        sub_abs_name_symbol->index = package->symbol_names->length;
-                        SPVM_LIST_push(package->symbol_names, (void*)sub_abs_name_symbol);
-                        SPVM_HASH_insert(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name), (void*)sub_abs_name_symbol);
                       }
-                      
+                      else {
+                        // Add sub absolute name to symbol name symtable
+                        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
+                        if (!found_sub_abs_name_symbol) {
+                          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                          }
+                          SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);
+                          sub_abs_name_symbol->name = sub_abs_name;
+                          sub_abs_name_symbol->index = package->symbol_names->length;
+                          SPVM_LIST_push(package->symbol_names, (void*)sub_abs_name_symbol);
+                          SPVM_HASH_insert(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name), (void*)sub_abs_name_symbol);
+                        }
+                      }
                       break;
                     }
                     case SPVM_OP_C_ID_PACKAGE_VAR: {
