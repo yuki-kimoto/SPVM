@@ -1,11 +1,11 @@
 This is SPVM solo test command
 
    # Normal run
-   perl Makefile.PL && make && perl solo/solo_Makefile.PL && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
+   yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/spvm_main TestCase
 
    # Debug run - Print AST, package information, operaion codes
-   perl Makefile.PL && make && perl solo/solo_Makefile.PL --debug-dump --debug-object-count && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
+   yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL --debug-dump --debug-object-count && make -f solo/Makefile && ./solo/spvm_main TestCase
 
    # Debug run - Print yacc result
-   perl Makefile.PL && make && perl solo/solo_Makefile.PL --debug-yacc && yacc/bison.sh && make -f solo/Makefile && ./solo/spvm_main TestCase
+   yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL --debug-yacc && make -f solo/Makefile && ./solo/spvm_main TestCase
  
