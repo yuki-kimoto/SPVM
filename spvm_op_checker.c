@@ -717,15 +717,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
-                        // Add basic type name to symbol name symtable
-                        const char* basic_type_name = type->basic_type->name;
-                        const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name));
-                        if (!found_symbol_name) {
+                        // Add package name to symbol name symtable
+                        const char* package_name = type->basic_type->name;
+                        SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, package_name, strlen(package_name));
+                        if (!found_package_name_symbol) {
                           if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
-                            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", basic_type_name, op_cur->file, op_cur->line);
+                            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_cur->file, op_cur->line);
                           }
-                          SPVM_LIST_push(package->symbol_names, (void*)basic_type_name);
-                          SPVM_HASH_insert(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
+                          SPVM_SYMBOL* package_name_symbol = SPVM_SYMBOL_new(compiler);
+                          package_name_symbol->name = package_name;
+                          package_name_symbol->index = package->symbol_names->length;
+                          SPVM_LIST_push(package->symbol_names, (void*)package_name_symbol);
+                          SPVM_HASH_insert(package->symbol_name_symtable, package_name, strlen(package_name), (void*)package_name_symbol);
                         }
                       }
                       else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
