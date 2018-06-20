@@ -87,7 +87,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_HASH_search(compiler->basic_type_symtable, "byte", strlen("byte"));
+  type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "byte", strlen("byte"));
   type->dimension = 0;
   
   assert(type);

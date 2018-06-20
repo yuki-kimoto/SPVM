@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
   SPVM_OP* op_sub_start;
   int32_t sub_id;
   if (start_sub_name) {
-    op_sub_start = SPVM_HASH_search(compiler->op_sub_symtable, start_sub_name, strlen(start_sub_name));
+    op_sub_start = SPVM_HASH_fetch(compiler->op_sub_symtable, start_sub_name, strlen(start_sub_name));
     if (op_sub_start) {
       sub_id = op_sub_start->uv.sub->id;
     }

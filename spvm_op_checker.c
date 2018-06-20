@@ -697,7 +697,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_yyerror_format(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         else if (SPVM_TYPE_is_object(compiler, type)) {
-                          SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                          SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                           assert(op_package);
                           SPVM_PACKAGE* package = op_package->uv.package;
                           
@@ -719,9 +719,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Add package name to symbol name symtable
                         const char* package_name = type->basic_type->name;
-                        SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+                        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
                         if (op_package) {
-                          SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, package_name, strlen(package_name));
+                          SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, package_name, strlen(package_name));
                           if (!found_package_name_symbol) {
                             if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                               SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_cur->file, op_cur->line);
@@ -1698,7 +1698,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       if (call_sub->sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         // Add sub name to symbol name symtable
-                        SPVM_SYMBOL* found_sub_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_name, strlen(sub_name));
+                        SPVM_SYMBOL* found_sub_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_name, strlen(sub_name));
                         if (!found_sub_name_symbol) {
                           if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_name, op_cur->file, op_cur->line);
@@ -1712,7 +1712,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       else {
                         // Add sub absolute name to symbol name symtable
-                        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
+                        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
                         if (!found_sub_abs_name_symbol) {
                           if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
@@ -1748,7 +1748,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
-                      SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                      SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                       
                       if (!(type && op_package)) {
                         SPVM_yyerror_format(compiler, "Invalid invoker at %s line %d\n", op_cur->file, op_cur->line);
@@ -1779,7 +1779,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Add field name to symbol name symtable
                       const char* field_abs_name = field->abs_name;
-                      SPVM_SYMBOL* found_field_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, field_abs_name, strlen(field_abs_name));
+                      SPVM_SYMBOL* found_field_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, field_abs_name, strlen(field_abs_name));
                       if (!found_field_abs_name_symbol) {
                         if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
                           SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", field_abs_name, op_cur->file, op_cur->line);
@@ -2047,7 +2047,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   SPVM_LIST* op_subs_interface = interface->op_subs;
   SPVM_LIST* op_subs_package = package->op_subs;
   
-  int32_t has_interface_cache = (intptr_t)SPVM_HASH_search(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
+  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
   
   int32_t is_cached = has_interface_cache & 1;
   int32_t has_interface;
@@ -2144,8 +2144,8 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
               SPVM_BASIC_TYPE* assign_to_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_to_basic_type_id);
               SPVM_BASIC_TYPE* assign_from_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_from_basic_type_id);
               
-              SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
-              SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_search(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
+              SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
+              SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
               
               SPVM_PACKAGE* package_assign_to_base = assign_to_basic_type_op_package->uv.package;
               SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
@@ -2303,7 +2303,7 @@ void SPVM_OP_CHECKER_check_types(SPVM_COMPILER* compiler) {
         
         // Package
         SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-        SPVM_OP* op_found_package = SPVM_HASH_search(op_package_symtable, basic_type_name, strlen(basic_type_name));
+        SPVM_OP* op_found_package = SPVM_HASH_fetch(op_package_symtable, basic_type_name, strlen(basic_type_name));
         
         if (op_found_package) {
           // Nothing

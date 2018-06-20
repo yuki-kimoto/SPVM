@@ -228,7 +228,7 @@ void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* va
   SPVM_HASH_insert_norehash(hash, key, length, value);
 }
 
-void* SPVM_HASH_search(SPVM_HASH* hash, const char* key, int32_t length) {
+void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
   
   assert(hash);
   assert(key);

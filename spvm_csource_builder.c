@@ -470,7 +470,7 @@ char* SPVM_CSOURCE_BUILDER_get_type_name(int32_t basic_type_id, int32_t dimensio
 }
 
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   
   assert(op_package);
   
@@ -568,9 +568,9 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
 
   assert(sub->have_precompile_desc);
@@ -600,9 +600,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Symbol table symtable
@@ -1219,7 +1219,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_BYTE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_byte", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1227,7 +1227,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_SHORT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_short", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1235,7 +1235,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_INT: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_INT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1243,7 +1243,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_LONG: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_long", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1251,7 +1251,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "ULL;\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_float", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1259,7 +1259,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "f;\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_CONSTANT_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_double", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1267,25 +1267,25 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_BYTE:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_SHORT:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_INT:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_INT:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_LONG:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_FLOAT:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_DOUBLE:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE:
         SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_ARRAY_LOAD_OBJECT:
+      case SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT:
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
@@ -1612,7 +1612,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
         
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, field_index);
@@ -1623,7 +1623,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, field_index);
@@ -1634,7 +1634,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, field_index);
@@ -1645,7 +1645,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, field_index);
@@ -1656,7 +1656,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, field_index);
@@ -1667,7 +1667,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, field_index);
@@ -1678,7 +1678,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand2;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
@@ -1703,7 +1703,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, field_index, opcode->operand2);
@@ -1714,7 +1714,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, field_index, opcode->operand2);
@@ -1725,7 +1725,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_int", opcode->operand0, field_index, opcode->operand2);
@@ -1736,7 +1736,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_long", opcode->operand0, field_index, opcode->operand2);
@@ -1747,7 +1747,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_float", opcode->operand0, field_index, opcode->operand2);
@@ -1758,7 +1758,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_double", opcode->operand0, field_index, opcode->operand2);
@@ -1770,7 +1770,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
@@ -1799,7 +1799,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
@@ -1826,7 +1826,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t field_abs_name_symbol_index = opcode->operand1;
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_search(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
+        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
         int32_t field_index = op_field->uv.field->index;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  env->weaken_object_field(env, ");
@@ -1879,47 +1879,47 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_EXCEPTION_VAR: {
+      case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", env->get_exception(env));\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_STORE_EXCEPTION_VAR: {
+      case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_STORE_EXCEPTION_VAR_UNDEF: {
+      case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
         SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, NULL);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_INT:
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_LONG:
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_DOUBLE:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
       {
         char* package_var_type = NULL;
         switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_BYTE:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
             package_var_type = "SPVM_VALUE_byte";
             break;
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_SHORT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
             package_var_type = "SPVM_VALUE_short";
             break;
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_INT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
             package_var_type = "SPVM_VALUE_int";
             break;
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_LONG:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
             package_var_type = "SPVM_VALUE_long";
             break;
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_FLOAT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
             package_var_type = "float";
             break;
-          case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_DOUBLE:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
             package_var_type = "double";
             break;
         }
@@ -1938,7 +1938,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_LOAD_PACKAGE_VAR_OBJECT: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)");
@@ -1951,31 +1951,31 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_INT:
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_LONG:
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
       {
         char* package_var_type = NULL;
         switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_BYTE:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
             package_var_type = "SPVM_VALUE_byte";
             break;
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_SHORT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
             package_var_type = "SPVM_VALUE_short";
             break;
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_INT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
             package_var_type = "SPVM_VALUE_int";
             break;
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_LONG:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
             package_var_type = "SPVM_VALUE_long";
             break;
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_FLOAT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
             package_var_type = "float";
             break;
-          case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_DOUBLE:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
             package_var_type = "double";
             break;
         }
@@ -1994,7 +1994,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_OBJECT: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));        SPVM_STRING_BUFFER_add(string_buffer, "))[\n");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
@@ -2004,7 +2004,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_STORE_PACKAGE_VAR_UNDEF: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));        SPVM_STRING_BUFFER_add(string_buffer, "))[\n");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);

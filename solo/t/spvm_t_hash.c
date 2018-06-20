@@ -23,7 +23,7 @@ int main()
     int32_t value1 = 3;
     SPVM_HASH_insert_norehash(hash, "", 0, &value1);
     
-    int32_t value1_ret = *(int32_t*)SPVM_HASH_search(hash, "", 0);
+    int32_t value1_ret = *(int32_t*)SPVM_HASH_fetch(hash, "", 0);
     OK(value1_ret == 3);
   }
   
@@ -48,13 +48,13 @@ int main()
     int32_t value1 = 3;
     SPVM_HASH_insert_norehash(hash, "key1", 4, &value1);
 
-    int32_t value1_ret = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
+    int32_t value1_ret = *(int32_t*)SPVM_HASH_fetch(hash, "key1", 4);
     OK(value1_ret == 3);
 
     int32_t value2 = 5;
     SPVM_HASH_insert_norehash(hash, "key", 3, &value2);
     
-    int32_t value2_ret = *(int32_t*)SPVM_HASH_search(hash, "key", 3);
+    int32_t value2_ret = *(int32_t*)SPVM_HASH_fetch(hash, "key", 3);
     OK(value2_ret == 5);
   }
 
@@ -87,11 +87,11 @@ int main()
     OK(hash->entries_length == 2);
     
     // Search
-    int32_t value1_1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
+    int32_t value1_1 = *(int32_t*)SPVM_HASH_fetch(hash, "key1", 4);
     OK(value1_1 == 7);
-    int32_t value2_1 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
+    int32_t value2_1 = *(int32_t*)SPVM_HASH_fetch(hash, "key2", 4);
     OK(value2_1 == 5);
-    void* value3_1 = SPVM_HASH_search(hash, "none", 4);
+    void* value3_1 = SPVM_HASH_fetch(hash, "none", 4);
     OK(!value3_1);
   }
   
@@ -118,17 +118,17 @@ int main()
     OK(hash->table_capacity == 11);
     OK(hash->entries_length == 5);
 
-    int32_t* search_value1_ptr = SPVM_HASH_search(hash, "key1", 4);
+    int32_t* search_value1_ptr = SPVM_HASH_fetch(hash, "key1", 4);
     int32_t* search_value1 = *search_value1_ptr;
     OK(search_value1 == 1);
 
-    int32_t search_value2 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
+    int32_t search_value2 = *(int32_t*)SPVM_HASH_fetch(hash, "key2", 4);
     OK(search_value2 == 2);
-    int32_t search_value3 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
+    int32_t search_value3 = *(int32_t*)SPVM_HASH_fetch(hash, "key3", 4);
     OK(search_value3 == 3);
-    int32_t search_value4 = *(int32_t*)SPVM_HASH_search(hash, "key4", 4);
+    int32_t search_value4 = *(int32_t*)SPVM_HASH_fetch(hash, "key4", 4);
     OK(search_value4 == 4);
-    int32_t search_value5 = *(int32_t*)SPVM_HASH_search(hash, "key5", 4);
+    int32_t search_value5 = *(int32_t*)SPVM_HASH_fetch(hash, "key5", 4);
     OK(search_value5 == 5);
 
     int32_t value6 = 6;
@@ -149,15 +149,15 @@ int main()
     OK(hash->table_capacity == 23);
     OK(hash->entries_length == 10);
     
-    int32_t search_value6 = *(int32_t*)SPVM_HASH_search(hash, "key6", 4);
+    int32_t search_value6 = *(int32_t*)SPVM_HASH_fetch(hash, "key6", 4);
     OK(search_value6 == 6);
-    int32_t search_value7 = *(int32_t*)SPVM_HASH_search(hash, "key7", 4);
+    int32_t search_value7 = *(int32_t*)SPVM_HASH_fetch(hash, "key7", 4);
     OK(search_value7 == 7);
-    int32_t search_value8 = *(int32_t*)SPVM_HASH_search(hash, "key8", 4);
+    int32_t search_value8 = *(int32_t*)SPVM_HASH_fetch(hash, "key8", 4);
     OK(search_value8 == 8);
-    int32_t search_value9 = *(int32_t*)SPVM_HASH_search(hash, "key9", 4);
+    int32_t search_value9 = *(int32_t*)SPVM_HASH_fetch(hash, "key9", 4);
     OK(search_value9 == 9);
-    int32_t search_value10 = *(int32_t*)SPVM_HASH_search(hash, "key10", 5);
+    int32_t search_value10 = *(int32_t*)SPVM_HASH_fetch(hash, "key10", 5);
     OK(search_value10 == 10);
   }
 
@@ -178,7 +178,7 @@ int main()
     
     _Bool ok = 1;
     
-    int32_t value = (int32_t)(intptr_t)SPVM_HASH_search(hash, "", strlen(""));
+    int32_t value = (int32_t)(intptr_t)SPVM_HASH_fetch(hash, "", strlen(""));
     if (value != -1) {
       ok = 0;
     }
@@ -186,7 +186,7 @@ int main()
     for (i = 1; i < max; i++) {
       char* key = malloc(10);
       sprintf(key, "key%d", i);
-      int32_t value = (int32_t)(intptr_t)SPVM_HASH_search(hash, key, strlen(key));
+      int32_t value = (int32_t)(intptr_t)SPVM_HASH_fetch(hash, key, strlen(key));
       if (value != i * 10) {
         ok = 0;
       }
@@ -220,11 +220,11 @@ int main()
     OK(hash->entries_length == 3);
 
     // Search
-    int32_t value1_1 = *(int32_t*)SPVM_HASH_search(hash, "key1", 4);
+    int32_t value1_1 = *(int32_t*)SPVM_HASH_fetch(hash, "key1", 4);
     OK(value1_1 == 3);
-    int32_t value2_1 = *(int32_t*)SPVM_HASH_search(hash, "key2", 4);
+    int32_t value2_1 = *(int32_t*)SPVM_HASH_fetch(hash, "key2", 4);
     OK(value2_1 == 5);
-    int32_t value3_1 = *(int32_t*)SPVM_HASH_search(hash, "key3", 4);
+    int32_t value3_1 = *(int32_t*)SPVM_HASH_fetch(hash, "key3", 4);
     OK(value3_1 == 7);
     
     // free

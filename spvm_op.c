@@ -364,7 +364,7 @@ void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_va
     abs_name = SPVM_OP_create_package_var_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
   }
   
-  SPVM_OP* op_our = SPVM_HASH_search(compiler->op_our_symtable, abs_name, strlen(abs_name));
+  SPVM_OP* op_our = SPVM_HASH_fetch(compiler->op_our_symtable, abs_name, strlen(abs_name));
   
   if (op_our) {
     op_package_var->uv.package_var->op_our = op_our;
@@ -1138,7 +1138,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ARRAY_ACCESS: {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       type = SPVM_TYPE_new(compiler);
-      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
+      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
       type->basic_type = basic_type;
       assert(first_type->dimension > 0);
       type->dimension = first_type->dimension - 1;
@@ -1238,7 +1238,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_SUB: {
       SPVM_CALL_SUB* call_sub = op->uv.call_sub;
       const char* abs_name = call_sub->sub->abs_name;
-      SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, abs_name, strlen(abs_name));
+      SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, abs_name, strlen(abs_name));
       SPVM_SUB* sub = op_sub->uv.sub;
       type = sub->op_return_type->uv.type;
       break;
@@ -1276,7 +1276,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
     const char* basic_type_name = type->basic_type->name;
     const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, basic_type_name, sub_name);
     
-    found_op_sub= SPVM_HASH_search(
+    found_op_sub= SPVM_HASH_fetch(
       compiler->op_sub_symtable,
       sub_abs_name,
       strlen(sub_abs_name)
@@ -1287,7 +1287,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
     if (call_sub->op_invocant) {
       const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
       const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-      found_op_sub= SPVM_HASH_search(
+      found_op_sub= SPVM_HASH_fetch(
         compiler->op_sub_symtable,
         sub_abs_name,
         strlen(sub_abs_name)
@@ -1299,7 +1299,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       SPVM_PACKAGE* package = op_package_current->uv.package;
       const char* package_name = package->op_name->uv.name;
       const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-      found_op_sub= SPVM_HASH_search(
+      found_op_sub= SPVM_HASH_fetch(
         compiler->op_sub_symtable,
         sub_abs_name,
         strlen(sub_abs_name)
@@ -1309,7 +1309,7 @@ void SPVM_OP_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPV
       if (!found_op_sub) {
         sub_abs_name = SPVM_OP_create_abs_name(compiler, "SPVM::CORE", sub_name);
         
-        found_op_sub= SPVM_HASH_search(
+        found_op_sub= SPVM_HASH_fetch(
           compiler->op_sub_symtable,
           sub_abs_name,
           strlen(sub_abs_name)
@@ -1335,11 +1335,11 @@ void SPVM_OP_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_acc
   SPVM_OP* op_name = op_field_access->last;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   const char* field_name = op_name->uv.name;
   
-  SPVM_OP* found_op_field = SPVM_HASH_search(
+  SPVM_OP* found_op_field = SPVM_HASH_fetch(
     package->op_field_symtable,
     field_name,
     strlen(field_name)
@@ -1578,7 +1578,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
 
   // Add package name to symbol name symtable
-  SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, package_name, strlen(package_name));
+  SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, package_name, strlen(package_name));
   if (!found_package_name_symbol) {
     if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
       SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_package->file, op_package->line);
@@ -1591,7 +1591,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   }
   
   // Redeclaration package error
-  SPVM_OP* found_op_package = SPVM_HASH_search(op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* found_op_package = SPVM_HASH_fetch(op_package_symtable, package_name, strlen(package_name));
   if (found_op_package) {
     SPVM_yyerror_format(compiler, "redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
     return NULL;
@@ -1675,7 +1675,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
       field->abs_name = field_abs_name;
       
-      SPVM_OP* found_op_field = SPVM_HASH_search(package->op_field_symtable, field_name, strlen(field_name));
+      SPVM_OP* found_op_field = SPVM_HASH_fetch(package->op_field_symtable, field_name, strlen(field_name));
       
       assert(package->op_fields->length <= SPVM_LIMIT_C_FIELDS);
       
@@ -1713,7 +1713,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_OUR* our = op_our->uv.our;
       const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
       
-      SPVM_OP* found_op_our = SPVM_HASH_search(package->op_our_symtable, package_var_name, strlen(package_var_name));
+      SPVM_OP* found_op_our = SPVM_HASH_fetch(package->op_our_symtable, package_var_name, strlen(package_var_name));
       
       assert(package->op_ours->length <= SPVM_LIMIT_C_OURS);
       
@@ -1786,7 +1786,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
       }
       
-      SPVM_OP* found_op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+      SPVM_OP* found_op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
       
       if (found_op_sub) {
         SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
@@ -1823,7 +1823,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_HASH_insert(package->op_sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), op_sub);
 
         // Add sub absolute name to symbol name symtable
-        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
+        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
         if (!found_sub_abs_name_symbol) {
           if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
@@ -2559,7 +2559,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_LIST_push(compiler->op_types, op_type);
   
   // Add basic type
-  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_search(compiler->basic_type_symtable, name, strlen(name));
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
     type->basic_type = found_basic_type;
   }

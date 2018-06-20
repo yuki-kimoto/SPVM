@@ -69,7 +69,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             assert(package_name);
             
-            SPVM_OP* found_op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+            SPVM_OP* found_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
             
             if (found_op_package) {
               continue;
@@ -1022,7 +1022,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           char* keyword;
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* found_name = SPVM_HASH_search(compiler->name_symtable, cur_token_ptr, str_len);
+          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, str_len);
           if (found_name) {
             keyword = found_name;
           }

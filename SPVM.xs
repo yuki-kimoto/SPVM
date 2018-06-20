@@ -743,7 +743,7 @@ get_subs(...)
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
 
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
   AV* av_subs = (AV*)sv_2mortal((SV*)newAV());
@@ -813,7 +813,7 @@ get_sub_names(...)
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
 
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
@@ -890,7 +890,7 @@ get_package_load_path(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
   // Subroutine information
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));;
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));;
   SPVM_PACKAGE* package = op_package->uv.package;
   
   const char* package_load_path = package->load_path;
@@ -1091,7 +1091,7 @@ bind_sub(...)
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Set native address to subroutine
-  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->native_address = native_address;
@@ -1115,7 +1115,7 @@ build_package_csource(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   int32_t package_id = op_package->uv.package->id;
   
   // String buffer for csource
@@ -1150,7 +1150,7 @@ bind_sub(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SPVM_OP* op_sub = SPVM_HASH_search(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
   sub->precompile_address = sub_precompile_address;
@@ -1193,9 +1193,9 @@ call_sub(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
-  SPVM_OP* op_package = SPVM_HASH_search(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_search(package->op_sub_symtable, sub_name, strlen(sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   const char* sub_abs_name = sub->abs_name;
   int32_t sub_id = env->get_sub_id(env, sub_abs_name);
@@ -1564,7 +1564,7 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   assert(basic_type);
   
   // New array
@@ -1602,7 +1602,7 @@ new_multi_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_search(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   assert(basic_type);
   
   // New array
