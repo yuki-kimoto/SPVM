@@ -56,11 +56,8 @@ solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
 solo/Main.spvm
 solo/Makefile
-solo/README.md
+solo/README
 solo/solo_Makefile.PL
-solo/spvm_main.c
-solo/t/spvm_t_hash.c
-solo/t/spvm_t_list.c
 SPVM.xs
 spvm_base.h
 spvm_basic_type.c
@@ -135,6 +132,8 @@ spvm_sub.c
 spvm_sub.h
 spvm_switch_info.c
 spvm_switch_info.h
+spvm_symbol.c
+spvm_symbol.h
 spvm_toke.c
 spvm_toke.h
 spvm_type.c
@@ -284,6 +283,8 @@ t/precompile/lib/TestCase/Short.spvm
 t/precompile/lib/TestCase/Simple.spvm
 t/precompile/lib/TestCase/SpecialAssign.spvm
 t/precompile/lib/TestCase/String.spvm
+t/precompile/lib/TestCase/Struct.native/Struct.c
+t/precompile/lib/TestCase/Struct.spvm
 t/precompile/lib/TestCase/Switch.spvm
 t/precompile/lib/TestCase/Weaken.spvm
 t/precompile/lib/TestCase/Weaken.wpvm

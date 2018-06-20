@@ -6,7 +6,7 @@
 // Field information
 struct SPVM_symbol {
   const char* name;
-  int32_t id;
+  int32_t index;
 };
 
 SPVM_SYMBOL* SPVM_SYMBOL_new(SPVM_COMPILER* compiler);

@@ -37,6 +37,4 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
 
 int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACKAGE* package);
 
-void SPVM_PACKAGE_add_symbol_name(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, const char* symbol_name);
-
 #endif

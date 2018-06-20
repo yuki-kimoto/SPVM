@@ -31,6 +31,7 @@
 #include "spvm_package_var.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_symbol.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
@@ -1687,16 +1688,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (call_sub_args_count > sub->call_sub_arg_stack_max) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
-
-                      // Add sub name to symbol name symtable
-                      const char* sub_name = call_sub->sub->op_name->uv.name;
-                      const char* found_symbol_name = SPVM_HASH_search(package->symbol_name_symtable, sub_name, strlen(sub_name));
-                      if (!found_symbol_name) {
+                      
+                      // Add sub absolute name to symbol name symtable
+                      const char* found_sub_abs_name_symbol = SPVM_HASH_search(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
+                      if (!found_sub_abs_name_symbol) {
                         if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
-                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                         }
-                        SPVM_LIST_push(package->symbol_names, (void*)sub_name);
-                        SPVM_HASH_insert(package->symbol_name_symtable, sub_name, strlen(sub_name), (void*)sub_name);
+                        SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);
+                        sub_abs_name_symbol->name = sub_abs_name;
+                        sub_abs_name_symbol->index = package->symbol_names->length;
+                        SPVM_LIST_push(package->symbol_names, (void*)sub_abs_name_symbol);
+                        SPVM_HASH_insert(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name), (void*)sub_abs_name_symbol);
                       }
                       
                       break;
