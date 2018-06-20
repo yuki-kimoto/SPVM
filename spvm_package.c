@@ -18,16 +18,21 @@ const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_PACKAGE));
   
+  // Fields
   package->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  
   package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  
+  // Package variables
+  package->op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+
   package->method_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   package->symbol_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->symbol_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);

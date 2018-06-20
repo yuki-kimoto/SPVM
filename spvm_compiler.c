@@ -45,6 +45,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->op_packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->op_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->op_ours = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->op_our_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

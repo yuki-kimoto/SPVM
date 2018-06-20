@@ -69,6 +69,9 @@ struct SPVM_compiler {
   SPVM_LIST* op_types;
 
   // OP our symtable
+  SPVM_LIST* op_ours;
+
+  // OP our symtable
   SPVM_HASH* op_our_symtable;
 
   // Package Variable length
