@@ -1796,6 +1796,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_LIST_push(package->symbol_names, (void*)field_abs_name_symbol);
                         SPVM_HASH_insert(package->symbol_name_symtable, field_abs_name, strlen(field_abs_name), (void*)field_abs_name_symbol);
                       }
+
+                      if (package->op_field_accesses->length >= SPVM_LIMIT_FIELD_ACCESSES) {
+                        SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.field_access->rel_id = package->op_field_accesses->length;
+                      SPVM_LIST_push(package->op_field_accesses, op_cur);
                       
                       break;
                     }

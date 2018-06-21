@@ -36,6 +36,9 @@ enum {
 
   /* Symbol names max length in package */
   SPVM_LIMIT_PACKAGE_VAR_ACCESSES = UINT16_MAX,
+
+  /* Symbol names max length in package */
+  SPVM_LIMIT_FIELD_ACCESSES = UINT16_MAX,
 };
 
 #endif
