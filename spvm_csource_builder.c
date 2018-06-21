@@ -1968,6 +1968,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
       {
+        int32_t rel_id = opcode->operand0;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+
         char* package_var_access_type = NULL;
         switch (opcode->id) {
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
@@ -1996,7 +2000,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));
         SPVM_STRING_BUFFER_add(string_buffer, "))[");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, pacakge_var_id);
         SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, package_var_access_type, opcode->operand1);
@@ -2005,9 +2009,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
+        int32_t rel_id = opcode->operand0;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));        SPVM_STRING_BUFFER_add(string_buffer, "))[\n");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, pacakge_var_id);
         SPVM_STRING_BUFFER_add(string_buffer, "],\n");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");");
@@ -2015,9 +2023,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
+        int32_t rel_id = opcode->operand0;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));        SPVM_STRING_BUFFER_add(string_buffer, "))[\n");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add_int(string_buffer, pacakge_var_id);
         SPVM_STRING_BUFFER_add(string_buffer, "], NULL);\n");
         
         break;
