@@ -1,9 +1,9 @@
 use 5.008007;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
 
-# SPVM only support the environment 64bit integer is supported
+# If you edit yacc/spvm_yacc.y, spvm_yacc.c is re-generate by the folloing command before perl Makefile.PL
+#   yacc/bison.sh
+
 use Config;
 use Getopt::Long;
 use FindBin;
@@ -19,8 +19,6 @@ GetOptions(
   "--OPTIMIZE=s" => \$optimize,
 );
 
-warn "AAAAAAAAAA";
-
 # Add -D
 @defines = map { "-D$_" } @defines;
 
@@ -29,11 +27,13 @@ if ($optimize) {
   $optimize = "-$optimize";
 }
 
+# SPVM only support 64bit integer Perl
 my $ivsize = $Config{ivsize};
 if ($ivsize < 8) {
   die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
 }
 
+# SPVM only support NetBSD 7+
 if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
   die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
 }
