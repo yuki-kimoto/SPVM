@@ -1282,7 +1282,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1292,7 +1292,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1302,7 +1302,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
 
@@ -1312,7 +1312,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1322,7 +1322,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1332,7 +1332,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1342,7 +1342,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1352,7 +1352,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1362,7 +1362,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1372,7 +1372,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(float*)&vars[opcode->operand0] = *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(float*)&vars[opcode->operand0] = *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1382,7 +1382,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1392,7 +1392,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(double*)&vars[opcode->operand0] = *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          *(double*)&vars[opcode->operand0] = *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id);
         }
         break;
       }
@@ -1402,7 +1402,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         void* object = *(void**)&vars[opcode->operand1];
         
@@ -1412,7 +1412,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index));
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id));
         }
         break;
       }
@@ -1423,7 +1423,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1431,7 +1431,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_byte*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
+          *(SPVM_VALUE_byte*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1442,7 +1442,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1450,7 +1450,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+          *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1461,7 +1461,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1469,7 +1469,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+          *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1480,7 +1480,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1488,7 +1488,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_long*)&vars[opcode->operand2];
+          *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(SPVM_VALUE_long*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1499,7 +1499,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1507,7 +1507,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(float*)&vars[opcode->operand2];
+          *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(float*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1518,7 +1518,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1526,7 +1526,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 1;
         }
         else {
-          *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(double*)&vars[opcode->operand2];
+          *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id) = *(double*)&vars[opcode->operand2];
         }
         break;
       }
@@ -1537,7 +1537,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1546,7 +1546,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),
+            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id),
             *(void**)&vars[opcode->operand2]
           );
         }
@@ -1560,7 +1560,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
 
         if (__builtin_expect(object == NULL, 0)) {
           void* exception = env->new_string(env, "Object must be not undef.", 0);
@@ -1569,7 +1569,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         }
         else {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),
+            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_rel_id),
             NULL
           );
         }
@@ -1583,9 +1583,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
         const char* field_abs_name = field_abs_name_symbol->name;
         SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_index = op_field->uv.field->index;
+        int32_t field_rel_id = op_field->uv.field->rel_id;
         
-        env->weaken_object_field(env, object, field_index);
+        env->weaken_object_field(env, object, field_rel_id);
         
         if (env->get_exception(env)) {
           exception_flag = 1;
