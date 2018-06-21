@@ -32,6 +32,9 @@
 #include "spvm_hash.h"
 #include "spvm_basic_type.h"
 #include "spvm_symbol.h"
+#include "spvm_package_var.h"
+#include "spvm_package_var_access.h"
+
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   
@@ -1624,39 +1627,65 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE: {
-
-        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT: {
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT: {
-        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG: {
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT: {
-        *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE: {
-        *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
-       SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1]);
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
+        int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[pacakge_var_id]);
         
         break;
       }
