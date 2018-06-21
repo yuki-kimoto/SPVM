@@ -35,7 +35,6 @@
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_core_func_bind.h"
-#include "spvm_symbol.h"
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
@@ -1467,19 +1466,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   const char* package_name = op_type->uv.type->basic_type->name;
   SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
 
-  // Add package name to symbol name symtable
-  SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, package_name, strlen(package_name));
-  if (!found_package_name_symbol) {
-    if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
-      SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_package->file, op_package->line);
-    }
-    SPVM_SYMBOL* package_name_symbol = SPVM_SYMBOL_new(compiler);
-    package_name_symbol->name = package_name;
-    package_name_symbol->index = package->symbol_names->length;
-    SPVM_LIST_push(package->symbol_names, (void*)package_name_symbol);
-    SPVM_HASH_insert(package->symbol_name_symtable, package_name, strlen(package_name), (void*)package_name_symbol);
-  }
-  
   // Redeclaration package error
   SPVM_OP* found_op_package = SPVM_HASH_fetch(op_package_symtable, package_name, strlen(package_name));
   if (found_op_package) {
@@ -1701,19 +1687,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
         
         SPVM_HASH_insert(package->op_sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), op_sub);
-
-        // Add sub absolute name to symbol name symtable
-        SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
-        if (!found_sub_abs_name_symbol) {
-          if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
-            SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
-          }
-          SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);
-          sub_abs_name_symbol->name = sub_abs_name;
-          sub_abs_name_symbol->index = package->symbol_names->length;
-          SPVM_LIST_push(package->symbol_names, (void*)sub_abs_name_symbol);
-          SPVM_HASH_insert(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name), (void*)sub_abs_name_symbol);
-        }
       }
     }
   }
@@ -1731,7 +1704,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
 
-  // Register method signature symbol table
+  // Register method signature symtable
   {
     int32_t i;
     for (i = 0; i < package->op_subs->length; i++) {

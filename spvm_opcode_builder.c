@@ -33,7 +33,6 @@
 #include "spvm_opcode.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
-#include "spvm_symbol.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,

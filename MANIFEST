@@ -131,8 +131,6 @@ spvm_sub.c
 spvm_sub.h
 spvm_switch_info.c
 spvm_switch_info.h
-spvm_symbol.c
-spvm_symbol.h
 spvm_toke.c
 spvm_toke.h
 spvm_type.c

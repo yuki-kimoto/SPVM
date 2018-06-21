@@ -31,7 +31,6 @@
 #include "spvm_package_var_access.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
-#include "spvm_symbol.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
