@@ -31,6 +31,7 @@ struct SPVM_package {
   int32_t category;
   SPVM_LIST* symbol_names;
   SPVM_HASH* symbol_name_symtable;
+  SPVM_LIST* op_package_var_accesses;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

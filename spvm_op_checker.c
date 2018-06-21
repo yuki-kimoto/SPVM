@@ -1737,6 +1737,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       
+                      if (package->op_package_var_accesses->length >= SPVM_LIMIT_PACKAGE_VAR_ACCESSES) {
+                        SPVM_yyerror_format(compiler, "Too many package var access at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.package_var_access->rel_id = package->op_package_var_accesses->length;
+                      SPVM_LIST_push(package->op_package_var_accesses, op_cur);
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_FIELD_ACCESS: {

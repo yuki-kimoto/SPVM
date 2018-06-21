@@ -36,6 +36,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
 
   package->symbol_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->symbol_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+
+  package->op_package_var_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return package;
 }
