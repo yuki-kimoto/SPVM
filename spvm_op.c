@@ -1470,7 +1470,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Add package name to symbol name symtable
   SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, package_name, strlen(package_name));
   if (!found_package_name_symbol) {
-    if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+    if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
       SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_package->file, op_package->line);
     }
     SPVM_SYMBOL* package_name_symbol = SPVM_SYMBOL_new(compiler);
@@ -1705,7 +1705,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Add sub absolute name to symbol name symtable
         SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
         if (!found_sub_abs_name_symbol) {
-          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+          if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
           }
           SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);

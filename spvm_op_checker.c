@@ -717,13 +717,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
+                        op_type->uv.type->rel_id = package->op_types->length;
+                        SPVM_LIST_push(package->op_types, op_type);
+                        
                         // Add package name to symbol name symtable
                         const char* package_name = type->basic_type->name;
                         SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
                         if (op_package) {
                           SPVM_SYMBOL* found_package_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, package_name, strlen(package_name));
                           if (!found_package_name_symbol) {
-                            if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                            if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
                               SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", package_name, op_cur->file, op_cur->line);
                             }
                             SPVM_SYMBOL* package_name_symbol = SPVM_SYMBOL_new(compiler);
@@ -1700,7 +1703,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         // Add sub name to symbol name symtable
                         SPVM_SYMBOL* found_sub_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_name, strlen(sub_name));
                         if (!found_sub_name_symbol) {
-                          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                          if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
                             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_name, op_cur->file, op_cur->line);
                           }
                           SPVM_SYMBOL* sub_name_symbol = SPVM_SYMBOL_new(compiler);
@@ -1714,7 +1717,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         // Add sub absolute name to symbol name symtable
                         SPVM_SYMBOL* found_sub_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, sub_abs_name, strlen(sub_abs_name));
                         if (!found_sub_abs_name_symbol) {
-                          if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
+                          if (package->symbol_names->length >= SPVM_LIMIT_C_SYMBOL_NAMES) {
                             SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                           }
                           SPVM_SYMBOL* sub_abs_name_symbol = SPVM_SYMBOL_new(compiler);
@@ -1737,7 +1740,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       
-                      if (package->op_package_var_accesses->length >= SPVM_LIMIT_PACKAGE_VAR_ACCESSES) {
+                      if (package->op_package_var_accesses->length >= SPVM_LIMIT_C_PACKAGE_VAR_ACCESSES_IN_PACKAGE) {
                         SPVM_yyerror_format(compiler, "Too many package var access at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_cur->uv.package_var_access->rel_id = package->op_package_var_accesses->length;
@@ -1783,7 +1786,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      if (package->op_field_accesses->length >= SPVM_LIMIT_FIELD_ACCESSES) {
+                      if (package->op_field_accesses->length >= SPVM_LIMIT_C_FIELD_ACCESSES_IN_PACKAGE) {
                         SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_cur->uv.field_access->rel_id = package->op_field_accesses->length;

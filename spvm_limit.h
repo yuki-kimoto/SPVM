@@ -26,19 +26,22 @@ enum {
   SPVM_LIMIT_C_CASES = INT32_MAX,
   
   /* Type dimension limit */
-  SPVM_LIMIT_DIMENSION = UINT8_MAX,
+  SPVM_LIMIT_C_DIMENSION = UINT8_MAX,
   
   /* Basic type name length limit */
-  SPVM_LIMIT_BASIC_TYPE_NAME = INT16_MAX,
+  SPVM_LIMIT_C_BASIC_TYPE_NAME = INT16_MAX,
 
   /* Symbol names max length in package */
-  SPVM_LIMIT_SYMBOL_NAMES = UINT16_MAX,
+  SPVM_LIMIT_C_SYMBOL_NAMES = UINT16_MAX,
 
-  /* Symbol names max length in package */
-  SPVM_LIMIT_PACKAGE_VAR_ACCESSES = UINT16_MAX,
+  /* Package variable access limit in package */
+  SPVM_LIMIT_C_PACKAGE_VAR_ACCESSES_IN_PACKAGE = UINT16_MAX,
 
-  /* Symbol names max length in package */
-  SPVM_LIMIT_FIELD_ACCESSES = UINT16_MAX,
+  /* Field access limit in package */
+  SPVM_LIMIT_C_FIELD_ACCESSES_IN_PACKAGE = UINT16_MAX,
+
+  /* Type limit in package */
+  SPVM_LIMIT_C_TYPES_IN_PACKAGE = UINT16_MAX,
 };
 
 #endif

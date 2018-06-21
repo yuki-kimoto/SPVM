@@ -39,6 +39,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
 
   package->op_package_var_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_field_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return package;
 }
