@@ -25,8 +25,8 @@ SPVM::Test - SPVM test module
 =cut
 
   
-  our $PACKAGE_VAR_INT : int;
-  our $PACKAGE_VAR_TEST_CASE : TestCase;
+  our $PACKAGE_VAR_ACCESS_INT : int;
+  our $PACKAGE_VAR_ACCESS_TEST_CASE : TestCase;
   
   has next_test : TestCase;
   has minimal : TestCase::Minimal;
@@ -104,7 +104,7 @@ SPVM::Test - SPVM test module
     
     # UNDEF
     {
-      $PACKAGE_VAR_TEST_CASE = undef;
+      $PACKAGE_VAR_ACCESS_TEST_CASE = undef;
       $@ = undef;
       {
         my $test_case = new TestCase;
@@ -272,7 +272,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      $TestCase::PACKAGE_VAR_TEST_CASE = undef;
+      $TestCase::PACKAGE_VAR_ACCESS_TEST_CASE = undef;
     }
 
     {
@@ -291,31 +291,31 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $var = $PACKAGE_VAR_INT;
+      my $var = $PACKAGE_VAR_ACCESS_INT;
       
-      $PACKAGE_VAR_INT = 1;
+      $PACKAGE_VAR_ACCESS_INT = 1;
       
-      if ($PACKAGE_VAR_INT == 0) {
-        $PACKAGE_VAR_INT = 1;
-        if ($PACKAGE_VAR_INT == 1) {
+      if ($PACKAGE_VAR_ACCESS_INT == 0) {
+        $PACKAGE_VAR_ACCESS_INT = 1;
+        if ($PACKAGE_VAR_ACCESS_INT == 1) {
           return 1;
         }
       }
-      my $str = "" . (string)$PACKAGE_VAR_INT;
+      my $str = "" . (string)$PACKAGE_VAR_ACCESS_INT;
     }
     
     {
-      my $var = $TestCase::PACKAGE_VAR_INT;
+      my $var = $TestCase::PACKAGE_VAR_ACCESS_INT;
       
-      $TestCase::PACKAGE_VAR_INT = 1;
+      $TestCase::PACKAGE_VAR_ACCESS_INT = 1;
       
-      if ($TestCase::PACKAGE_VAR_INT == 0) {
-        $TestCase::PACKAGE_VAR_INT = 1;
-        if ($TestCase::PACKAGE_VAR_INT == 1) {
+      if ($TestCase::PACKAGE_VAR_ACCESS_INT == 0) {
+        $TestCase::PACKAGE_VAR_ACCESS_INT = 1;
+        if ($TestCase::PACKAGE_VAR_ACCESS_INT == 1) {
           return 1;
         }
       }
-      my $str = "" . (string)$TestCase::PACKAGE_VAR_INT;
+      my $str = "" . (string)$TestCase::PACKAGE_VAR_ACCESS_INT;
     }
     
     

@@ -130,7 +130,7 @@ enum {
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_GET,
   SPVM_OP_C_ID_OUR,
-  SPVM_OP_C_ID_PACKAGE_VAR,
+  SPVM_OP_C_ID_PACKAGE_VAR_ACCESS,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_BOOL,
   SPVM_OP_C_ID_LOOP_INCREMENT,
@@ -209,7 +209,7 @@ struct SPVM_op {
     SPVM_CALL_SUB* call_sub;
     SPVM_FIELD_ACCESS* field_access;
     SPVM_OUR* our;
-    SPVM_PACKAGE_VAR* package_var;
+    SPVM_PACKAGE_VAR_ACCESS* package_var_access;
     SPVM_BLOCK* block;
     SPVM_DESCRIPTOR* descriptor;
   } uv;
@@ -238,7 +238,7 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
 
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line);
 SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name);
-SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name);
+SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t line);
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line);
 
@@ -306,7 +306,7 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
 void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 
 const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* base_name);
-const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name);
+const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name);
 
 SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line);
 SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, const char* file, int32_t line);

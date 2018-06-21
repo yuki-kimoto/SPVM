@@ -30,7 +30,7 @@
 #include "spvm_limit.h"
 #include "spvm_use.h"
 #include "spvm_our.h"
-#include "spvm_package_var.h"
+#include "spvm_package_var_access.h"
 #include "spvm_csource_builder.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
@@ -131,7 +131,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "SET",
   "GET",
   "OUR",
-  "PACKAGE_VAR",
+  "PACKAGE_VAR_ACCESS",
   "ARRAY_INIT",
   "BOOL",
   "LOOP_INCREMENT",
@@ -337,9 +337,9 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
     }
     
     // Var OP
-    SPVM_OP* op_package_var = SPVM_OP_new_op_package_var(compiler, op_var_name);
+    SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_var_name);
     
-    op_var_ret = op_package_var;
+    op_var_ret = op_package_var_access;
   }
   // Lexical variable
   else {
@@ -376,14 +376,14 @@ SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t
   return op_block;
 }
 
-SPVM_OP* SPVM_OP_new_op_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
-  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_name->file, op_name->line);
+SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
+  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, op_name->file, op_name->line);
 
-  SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
-  package_var->op_name = op_name;
-  op_package_var->uv.package_var = package_var;
+  SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_PACKAGE_VAR_ACCESS_new(compiler);
+  package_var_access->op_name = op_name;
+  op_package_var_access->uv.package_var_access = package_var_access;
   
-  return op_package_var;
+  return op_package_var_access;
 }
 
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
@@ -1196,8 +1196,8 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_ID_PACKAGE_VAR: {
-      SPVM_OUR* our = op->uv.package_var->op_our->uv.our;
+    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
+      SPVM_OUR* our = op->uv.package_var_access->op_our->uv.our;
       if (our->op_type) {
         type = our->op_type->uv.type;
       }
@@ -1433,7 +1433,7 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
   return method_signature;
 }
 
-const char* SPVM_OP_create_package_var_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
+const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
   char* abs_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
@@ -1602,26 +1602,26 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_OUR* our = op_our->uv.our;
       our->rel_id = i;
-      const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
+      const char* package_var_access_name = our->op_package_var_access->uv.package_var_access->op_name->uv.name;
       
-      SPVM_OP* found_op_our = SPVM_HASH_fetch(package->op_our_symtable, package_var_name, strlen(package_var_name));
+      SPVM_OP* found_op_our = SPVM_HASH_fetch(package->op_our_symtable, package_var_access_name, strlen(package_var_access_name));
       
       assert(package->op_ours->length <= SPVM_LIMIT_C_OURS);
       
       if (found_op_our) {
-        SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_our->file, op_our->line);
+        SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_access_name, op_our->file, op_our->line);
       }
       else if (package->op_ours->length == SPVM_LIMIT_C_OURS) {
-        SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_name, op_our->file, op_our->line);
+        SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_access_name, op_our->file, op_our->line);
         compiler->fatal_error = 1;
       }
       else {
-        const char* package_var_abs_name = SPVM_OP_create_package_var_abs_name(compiler, package_name, package_var_name);
+        const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_access_name);
         our->id = compiler->op_ours->length;
         SPVM_LIST_push(compiler->op_ours, op_our);
-        SPVM_HASH_insert(compiler->op_our_symtable, package_var_abs_name, strlen(package_var_abs_name), op_our);
+        SPVM_HASH_insert(compiler->op_our_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), op_our);
 
-        SPVM_HASH_insert(package->op_our_symtable, package_var_name, strlen(package_var_name), op_our);
+        SPVM_HASH_insert(package->op_our_symtable, package_var_access_name, strlen(package_var_access_name), op_our);
         
         // Add op package
         our->op_package = op_package;
@@ -1809,15 +1809,15 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_type) {
   
-  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_OUR, op_package_var->file, op_package_var->line);
+  SPVM_OP* op_our = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_OUR, op_package_var_access->file, op_package_var_access->line);
   SPVM_OUR* our = SPVM_OUR_new(compiler);
   
-  const char* name = SPVM_OP_get_var_name(compiler, op_package_var);
+  const char* name = SPVM_OP_get_var_name(compiler, op_package_var_access);
   
   _Bool invalid_name = 0;
-  if (op_package_var->id != SPVM_OP_C_ID_PACKAGE_VAR) {
+  if (op_package_var_access->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
     invalid_name = 1;
   }
   else {
@@ -1827,11 +1827,11 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
   }
   
   if (invalid_name) {
-    SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_package_var->file, op_package_var->line);
+    SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_package_var_access->file, op_package_var_access->line);
     compiler->fatal_error = 1;
   }
   
-  our->op_package_var = op_package_var;
+  our->op_package_var_access = op_package_var_access;
   our->op_type = op_type;
   op_our->uv.our = our;
   
@@ -1845,8 +1845,8 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
   if (op_var->id == SPVM_OP_C_ID_VAR) {
     name = op_var->uv.var->op_name->uv.name;
   }
-  else if (op_var->id == SPVM_OP_C_ID_PACKAGE_VAR) {
-    name = op_var->uv.package_var->op_name->uv.name;
+  else if (op_var->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
+    name = op_var->uv.package_var_access->op_name->uv.name;
   }
   else if (op_var->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
     name = "$@";

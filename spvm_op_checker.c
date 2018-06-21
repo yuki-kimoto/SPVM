@@ -28,7 +28,7 @@
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
 #include "spvm_our.h"
-#include "spvm_package_var.h"
+#include "spvm_package_var_access.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_symbol.h"
@@ -1726,13 +1726,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_PACKAGE_VAR: {
+                    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
                       
                       // Check field name
-                      SPVM_OP_CHECKER_resolve_package_var(compiler, op_cur, op_package);
-                      if (!op_cur->uv.package_var->op_our) {
+                      SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, op_package);
+                      if (!op_cur->uv.package_var_access->op_our) {
                         SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
-                          op_cur->uv.package_var->op_name->uv.name, op_cur->file, op_cur->line);
+                          op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
                         return;
                       }
@@ -1931,7 +1931,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_NEW:
                       case SPVM_OP_C_ID_CONCAT:
                       case SPVM_OP_C_ID_EXCEPTION_VAR:
-                      case SPVM_OP_C_ID_PACKAGE_VAR:
+                      case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
                       case SPVM_OP_C_ID_ARRAY_ACCESS:
                       case SPVM_OP_C_ID_SWITCH_CONDITION:
                         create_tmp_var = 1;
@@ -2408,9 +2408,9 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   }
 }
 
-void SPVM_OP_CHECKER_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_package) {
+void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_package) {
   
-  SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
+  SPVM_OP* op_name = op_package_var_access->uv.package_var_access->op_name;
   
   const char* name = op_name->uv.name;
   const char* abs_name;
@@ -2418,13 +2418,13 @@ void SPVM_OP_CHECKER_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_pa
     abs_name = name;
   }
   else {
-    abs_name = SPVM_OP_create_package_var_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
+    abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
   }
   
   SPVM_OP* op_our = SPVM_HASH_fetch(compiler->op_our_symtable, abs_name, strlen(abs_name));
   
   if (op_our) {
-    op_package_var->uv.package_var->op_our = op_our;
+    op_package_var_access->uv.package_var_access->op_our = op_our;
   }
 }
 
