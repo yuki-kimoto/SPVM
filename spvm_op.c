@@ -1548,7 +1548,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Register field
+  // Field declarations
   {
     int32_t i;
     for (i = 0; i < package->op_fields->length; i++) {
@@ -1593,7 +1593,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
 
-  // Register package variable
+  // Package variable declarations
   {
     int32_t i;
     for (i = 0; i < package->op_ours->length; i++) {
@@ -1629,10 +1629,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Add package
-  op_package->uv.package = package;
-
-  // Register subrotuine
+  // Subroutine declarations
   {
     int32_t i;
     for (i = 0; i < package->op_subs->length; i++) {
@@ -1700,13 +1697,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         sub->file_name = op_sub->file;
         
-        // Register method signature symbol table
-        if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-          const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
-          sub->method_signature = method_signature;
-          SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
-        }
-        
         SPVM_LIST_push(compiler->op_subs, op_sub);
         SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
         
@@ -1733,10 +1723,29 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_CORE_FUNC_BIND_bind_core_func(compiler, package->op_subs);
   }
   
+  // Set package
+  op_package->uv.package = package;
+  
+  // Add package
   package->id = compiler->op_packages->length;
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
 
+  // Register method signature symbol table
+  {
+    int32_t i;
+    for (i = 0; i < package->op_subs->length; i++) {
+      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
+      SPVM_SUB* sub = op_sub->uv.sub;
+      
+      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+        const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
+        sub->method_signature = method_signature;
+        SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
+      }
+    }
+  }
+  
   return op_package;
 }
 
