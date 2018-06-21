@@ -34,6 +34,7 @@
 #include "spvm_symbol.h"
 #include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
+#include "spvm_field_access.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -1610,78 +1611,57 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
         
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_CSOURCE_BUILDER_add_get_field(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, field_rel_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand2;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);

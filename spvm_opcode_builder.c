@@ -355,7 +355,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         // Call field
                         SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-                        SPVM_FIELD* field = field_access->field;
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
                         
@@ -392,12 +391,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Field absolute name symbol
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                         int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
-                        SPVM_SYMBOL* field_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, field->abs_name, strlen(field->abs_name));
-                        int32_t field_abs_name_symbol_index = field_abs_name_symbol->index;
 
                         opcode.operand0 = index_out;
                         opcode.operand1 = index_term_object;
-                        opcode.operand2 = field_abs_name_symbol_index;
+                        opcode.operand2 = field_access->rel_id;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
