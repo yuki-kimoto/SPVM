@@ -1266,6 +1266,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         else if (op_assign_from->first->id == SPVM_OP_C_ID_TYPE) {
                           
+                          SPVM_OP* op_type = op_assign_from->first;
+                          
                           SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from->first);
                           
                           if (type->dimension > 0) {
@@ -1384,7 +1386,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                                   opcode.operand0 = index_out;
-                                  opcode.operand1 = basic_type_id;
+                                  opcode.operand1 = op_type->uv.type->rel_id;
                                   opcode.operand2 = index_index;
 
                                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

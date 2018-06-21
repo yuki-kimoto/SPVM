@@ -1464,7 +1464,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
-        int32_t basic_type_name = op_type->uv.type->basic_type->name;
+        const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
@@ -1528,13 +1528,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         break;
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        int32_t basic_type_id = opcode->operand1;
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
@@ -2125,7 +2126,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_method_call(env, object, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         }
         else {

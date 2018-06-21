@@ -1230,7 +1230,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        int32_t basic_type_id = opcode->operand1;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        int32_t basic_type_id = op_type->uv.type->basic_type->id;
         
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
