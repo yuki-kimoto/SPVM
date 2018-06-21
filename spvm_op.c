@@ -1197,9 +1197,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
-      SPVM_PACKAGE_VAR* our = op->uv.package_var_access->op_package_var->uv.our;
-      if (our->op_type) {
-        type = our->op_type->uv.type;
+      SPVM_PACKAGE_VAR* package_var = op->uv.package_var_access->op_package_var->uv.package_var;
+      if (package_var->op_type) {
+        type = package_var->op_type->uv.type;
       }
       break;
     }
@@ -1514,7 +1514,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Divide declarations to field, sub, enum, our, use
+  // Divide declarations to field, sub, enum, package variable, use
   SPVM_OP* op_decls = op_block->first;
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
@@ -1600,31 +1600,31 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     for (i = 0; i < package->op_package_vars->length; i++) {
       SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, i);
       
-      SPVM_PACKAGE_VAR* our = op_package_var->uv.our;
-      our->rel_id = i;
-      const char* package_var_access_name = our->op_package_var_access->uv.package_var_access->op_name->uv.name;
+      SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
+      package_var->rel_id = i;
+      const char* package_var_access_name = package_var->op_package_var_access->uv.package_var_access->op_name->uv.name;
       
       SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_access_name, strlen(package_var_access_name));
       
       assert(package->op_package_vars->length <= SPVM_LIMIT_C_PACKAGE_VARS);
       
       if (found_op_package_var) {
-        SPVM_yyerror_format(compiler, "Redeclaration of our \"%s::%s\" at %s line %d\n", package_name, package_var_access_name, op_package_var->file, op_package_var->line);
+        SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_access_name, op_package_var->file, op_package_var->line);
       }
       else if (package->op_package_vars->length == SPVM_LIMIT_C_PACKAGE_VARS) {
-        SPVM_yyerror_format(compiler, "Too many ours, our \"%s\" ignored at %s line %d\n", package_var_access_name, op_package_var->file, op_package_var->line);
+        SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", op_package_var->file, op_package_var->line);
         compiler->fatal_error = 1;
       }
       else {
         const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_access_name);
-        our->id = compiler->op_package_vars->length;
+        package_var->id = compiler->op_package_vars->length;
         SPVM_LIST_push(compiler->op_package_vars, op_package_var);
         SPVM_HASH_insert(compiler->op_package_var_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), op_package_var);
 
         SPVM_HASH_insert(package->op_package_var_symtable, package_var_access_name, strlen(package_var_access_name), op_package_var);
         
         // Add op package
-        our->op_package = op_package;
+        package_var->op_package = op_package;
       }
     }
   }
@@ -1812,7 +1812,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
 SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_type) {
   
   SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_package_var_access->file, op_package_var_access->line);
-  SPVM_PACKAGE_VAR* our = SPVM_PACKAGE_VAR_new(compiler);
+  SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
   
   const char* name = SPVM_OP_get_var_name(compiler, op_package_var_access);
   
@@ -1831,9 +1831,9 @@ SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_
     compiler->fatal_error = 1;
   }
   
-  our->op_package_var_access = op_package_var_access;
-  our->op_type = op_type;
-  op_package_var->uv.our = our;
+  package_var->op_package_var_access = op_package_var_access;
+  package_var->op_type = op_type;
+  op_package_var->uv.package_var = package_var;
   
   return op_package_var;
 }
