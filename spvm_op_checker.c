@@ -1783,20 +1783,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      // Add field name to symbol name symtable
-                      const char* field_abs_name = field->abs_name;
-                      SPVM_SYMBOL* found_field_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, field_abs_name, strlen(field_abs_name));
-                      if (!found_field_abs_name_symbol) {
-                        if (package->symbol_names->length >= SPVM_LIMIT_SYMBOL_NAMES) {
-                          SPVM_yyerror_format(compiler, "Can't register symbol name %s for limit at %s line %d\n", field_abs_name, op_cur->file, op_cur->line);
-                        }
-                        SPVM_SYMBOL* field_abs_name_symbol = SPVM_SYMBOL_new(compiler);
-                        field_abs_name_symbol->name = field_abs_name;
-                        field_abs_name_symbol->index = package->symbol_names->length;
-                        SPVM_LIST_push(package->symbol_names, (void*)field_abs_name_symbol);
-                        SPVM_HASH_insert(package->symbol_name_symtable, field_abs_name, strlen(field_abs_name), (void*)field_abs_name_symbol);
-                      }
-
                       if (package->op_field_accesses->length >= SPVM_LIMIT_FIELD_ACCESSES) {
                         SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
                       }
