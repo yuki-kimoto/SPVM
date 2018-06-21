@@ -35,6 +35,7 @@
 #include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
 #include "spvm_field_access.h"
+#include "spvm_call_sub.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -2089,7 +2090,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_CALL_SUB:
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
-        int32_t decl_sub_id = opcode->operand1;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(package->op_call_subs, rel_id);
+        int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
+
         SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
         SPVM_SUB* decl_sub = op_sub_decl->uv.sub;
         

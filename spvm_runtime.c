@@ -35,6 +35,7 @@
 #include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
 #include "spvm_field_access.h"
+#include "spvm_call_sub.h"
 
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
@@ -1800,7 +1801,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_CALL_SUB:
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
-        int32_t decl_sub_id = opcode->operand1;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(package->op_call_subs, rel_id);
+
+        int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
 
         // Declare subroutine
         SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
