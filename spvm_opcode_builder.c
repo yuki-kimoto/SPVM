@@ -456,9 +456,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
-
+                        
+                        SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_assign_from->uv.package_var_access;
+                        
                         // VAR = PACKAGE_VAR_ACCESS
-                        SPVM_PACKAGE_VAR* our = op_assign_from->uv.package_var_access->op_package_var->uv.our;
+                        SPVM_PACKAGE_VAR* our = package_var_access->op_package_var->uv.our;
                         
                         int32_t package_var_access_id = our->id;
                         
