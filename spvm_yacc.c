@@ -657,7 +657,7 @@ static const char *const yytname[] =
   "normal_statement_for_end", "for_statement", "while_statement",
   "switch_statement", "case_statement", "default_statement",
   "if_statement", "else_statement", "field", "sub", "enumeration",
-  "my_var", "our_var", "opt_assignable_terms", "assignable_terms",
+  "my_var", "package_var_var", "opt_assignable_terms", "assignable_terms",
   "array_length", "term", "assignable_term", "expression", "isa",
   "new_object", "array_init", "convert_type", "field_access",
   "weaken_field", "unop", "binop", "relative_term", "logical_term",
@@ -2300,7 +2300,7 @@ yyreduce:
   case 63:
 #line 375 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_our(compiler, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_package_var(compiler, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
     ;}
     break;
 

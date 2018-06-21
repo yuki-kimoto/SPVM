@@ -129,7 +129,7 @@ enum {
   SPVM_OP_C_ID_CONCAT,
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_GET,
-  SPVM_OP_C_ID_OUR,
+  SPVM_OP_C_ID_PACKAGE_VAR,
   SPVM_OP_C_ID_PACKAGE_VAR_ACCESS,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_BOOL,
@@ -208,7 +208,7 @@ struct SPVM_op {
     SPVM_USE* use;
     SPVM_CALL_SUB* call_sub;
     SPVM_FIELD_ACCESS* field_access;
-    SPVM_OUR* our;
+    SPVM_PACKAGE_VAR* our;
     SPVM_PACKAGE_VAR_ACCESS* package_var_access;
     SPVM_BLOCK* block;
     SPVM_DESCRIPTOR* descriptor;
@@ -289,7 +289,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_subname, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block);
 SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* op_descripters, SPVM_OP* type);
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
+SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type);
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages);

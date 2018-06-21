@@ -27,7 +27,7 @@
 #include "spvm_type.h"
 #include "spvm_switch_info.h"
 #include "spvm_limit.h"
-#include "spvm_our.h"
+#include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
@@ -1730,7 +1730,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Check field name
                       SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, op_package);
-                      if (!op_cur->uv.package_var_access->op_our) {
+                      if (!op_cur->uv.package_var_access->op_package_var) {
                         SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
                           op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                         compiler->fatal_error = 1;
@@ -2421,10 +2421,10 @@ void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP
     abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
   }
   
-  SPVM_OP* op_our = SPVM_HASH_fetch(compiler->op_our_symtable, abs_name, strlen(abs_name));
+  SPVM_OP* op_package_var = SPVM_HASH_fetch(compiler->op_package_var_symtable, abs_name, strlen(abs_name));
   
-  if (op_our) {
-    op_package_var_access->uv.package_var_access->op_our = op_our;
+  if (op_package_var) {
+    op_package_var_access->uv.package_var_access->op_package_var = op_package_var;
   }
 }
 

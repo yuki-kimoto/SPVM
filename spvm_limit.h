@@ -8,7 +8,7 @@ enum {
   SPVM_LIMIT_C_FIELDS = INT32_MAX,
 
   /* Fields count our */
-  SPVM_LIMIT_C_OURS = INT32_MAX,
+  SPVM_LIMIT_C_PACKAGE_VARS = INT32_MAX,
   
   /* Lexical variables count limit */
   SPVM_LIMIT_C_MY_VARS = INT32_MAX,

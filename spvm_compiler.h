@@ -69,10 +69,10 @@ struct SPVM_compiler {
   SPVM_LIST* op_types;
 
   // OP our symtable
-  SPVM_LIST* op_ours;
+  SPVM_LIST* op_package_vars;
 
   // OP our symtable
-  SPVM_HASH* op_our_symtable;
+  SPVM_HASH* op_package_var_symtable;
 
   // Subroutine ops
   SPVM_LIST* op_subs;

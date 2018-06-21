@@ -32,9 +32,9 @@ typedef struct SPVM_string_buffer SPVM_STRING_BUFFER;
 struct SPVM_package_var_access;
 typedef struct SPVM_package_var_access SPVM_PACKAGE_VAR_ACCESS;
 
-// spvm_our.h
-struct SPVM_our;
-typedef struct SPVM_our SPVM_OUR;
+// spvm_package_var.h
+struct SPVM_package_var;
+typedef struct SPVM_package_var SPVM_PACKAGE_VAR;
 
 // spvm_call_sub.h
 struct SPVM_call_sub;

@@ -47,7 +47,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   SPVM_RUNTIME_API_set_runtime(env, runtime);
   
   // Initialize Package Variables
-  runtime->package_var_accesss = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->op_ours->length + 1));
+  runtime->package_var_accesss = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->op_package_vars->length + 1));
 
   // Arguments
   runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);

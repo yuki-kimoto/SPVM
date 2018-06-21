@@ -55,7 +55,6 @@ solo/lib/TestCase/Struct.spvm
 solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
 solo/Main.spvm
-solo/Makefile
 solo/README
 solo/solo_Makefile.PL
 SPVM.xs
@@ -114,10 +113,10 @@ spvm_opcode_array.c
 spvm_opcode_array.h
 spvm_opcode_builder.c
 spvm_opcode_builder.h
-spvm_our.c
-spvm_our.h
 spvm_package.c
 spvm_package.h
+spvm_package_var.c
+spvm_package_var.h
 spvm_package_var_access.c
 spvm_package_var_access.h
 spvm_runtime.c

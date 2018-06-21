@@ -21,7 +21,7 @@
 #include "spvm_package.h"
 #include "spvm_type.h"
 #include "spvm_opcode.h"
-#include "spvm_our.h"
+#include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
 #include "spvm_opcode_array.h"
 #include "spvm_block.h"
@@ -79,8 +79,8 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" \"%s\"", my->op_name->uv.name);
       printf(" (my->index:%d)", my->index);
     }
-    else if (id == SPVM_OP_C_ID_OUR) {
-      SPVM_OUR* our = op_cur->uv.our;
+    else if (id == SPVM_OP_C_ID_PACKAGE_VAR) {
+      SPVM_PACKAGE_VAR* our = op_cur->uv.our;
       printf(" \"%s\"", our->op_package_var_access->uv.package_var_access->op_name->uv.name);
       printf(" (id :%d)", our->id);
     }
@@ -92,7 +92,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
       printf(" \"%s\"", package_var_access->op_name->uv.name);
-      printf(" (id :%d)", package_var_access->op_our->uv.our->id);
+      printf(" (id :%d)", package_var_access->op_package_var->uv.our->id);
     }
     else if (id == SPVM_OP_C_ID_NAME) {
       printf(" \"%s\"", op_cur->uv.name);

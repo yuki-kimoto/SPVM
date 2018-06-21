@@ -1,10 +1,10 @@
-#ifndef SPVM_OUR_H
-#define SPVM_OUR_H
+#ifndef SPVM_PACKAGE_VAR_H
+#define SPVM_PACKAGE_VAR_H
 
 #include "spvm_base.h"
 
 // Field information
-struct SPVM_our {
+struct SPVM_package_var {
   SPVM_OP* op_name;
   SPVM_OP* op_package;
   SPVM_OP* op_package_var_access;
@@ -14,6 +14,6 @@ struct SPVM_our {
   const char* abs_name;
 };
 
-SPVM_OUR* SPVM_OUR_new(SPVM_COMPILER* compiler);
+SPVM_PACKAGE_VAR* SPVM_PACKAGE_VAR_new(SPVM_COMPILER* compiler);
 
 #endif

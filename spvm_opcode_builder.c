@@ -27,7 +27,7 @@
 #include "spvm_type.h"
 #include "spvm_limit.h"
 #include "spvm_object.h"
-#include "spvm_our.h"
+#include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
 #include "spvm_dumper.h"
 #include "spvm_opcode.h"
@@ -458,7 +458,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
 
                         // VAR = PACKAGE_VAR_ACCESS
-                        SPVM_OUR* our = op_assign_from->uv.package_var_access->op_our->uv.our;
+                        SPVM_PACKAGE_VAR* our = op_assign_from->uv.package_var_access->op_package_var->uv.our;
                         
                         int32_t package_var_access_id = our->id;
                         
@@ -1488,7 +1488,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       if (SPVM_TYPE_is_undef(compiler, from_type)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                        int32_t package_var_access_id = package_var_access->op_our->uv.our->id;
+                        int32_t package_var_access_id = package_var_access->op_package_var->uv.our->id;
                         opcode.id = SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF;
                         opcode.operand0 = package_var_access_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1527,7 +1527,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.id = SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT;
                         }
                                           
-                        int32_t package_var_access_id = package_var_access->op_our->uv.our->id;
+                        int32_t package_var_access_id = package_var_access->op_package_var->uv.our->id;
                         int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                         
                         opcode.operand0 = package_var_access_id;
