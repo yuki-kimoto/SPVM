@@ -42,6 +42,9 @@ enum {
 
   /* Type limit in package */
   SPVM_LIMIT_C_TYPES_IN_PACKAGE = UINT16_MAX,
+  
+  /* Call sub limit in package */
+  SPVM_LIMIT_C_CALL_SUBS_IN_PACKAGE = UINT16_MAX,
 };
 
 #endif

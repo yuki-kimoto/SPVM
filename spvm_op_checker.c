@@ -1681,6 +1681,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (call_sub_args_count > sub->call_sub_arg_stack_max) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
+
+                      if (package->op_call_subs->length >= SPVM_LIMIT_C_CALL_SUBS_IN_PACKAGE) {
+                        SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.call_sub->rel_id = package->op_call_subs->length;
+                      SPVM_LIST_push(package->op_call_subs, op_cur);
                       
                       if (call_sub->sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         // Add sub name to symbol name symtable
