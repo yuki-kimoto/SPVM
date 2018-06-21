@@ -1623,79 +1623,79 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE: {
 
         *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT: {
         
         *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_INT: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT: {
         *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_LONG: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG: {
         *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT: {
         *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE: {
         *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_ACCESS_OBJECT: {
+      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand1]);
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_BYTE: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE: {
         *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_SHORT: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT: {
         *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_INT: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT: {
         *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_LONG: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG: {
         *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_FLOAT: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT: {
         *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(float*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_DOUBLE: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE: {
         *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0] = *(double*)&vars[opcode->operand1];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_OBJECT: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0], *(void**)&vars[opcode->operand1]);
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_ACCESS_UNDEF: {
+      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[opcode->operand0], NULL);
         
         break;
