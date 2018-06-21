@@ -1514,6 +1514,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
+  // Divide declarations to field, sub, enum, our, use
   SPVM_OP* op_decls = op_block->first;
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
