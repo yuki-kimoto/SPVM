@@ -1544,12 +1544,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
         void* object = *(void**)&vars[opcode->operand0];
 
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand1;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
         
         env->weaken_object_field(env, object, field_rel_id);
         

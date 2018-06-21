@@ -1780,12 +1780,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
-        // Get field index
-        int32_t field_abs_name_symbol_index = opcode->operand1;
-        SPVM_SYMBOL* field_abs_name_symbol = SPVM_LIST_fetch(package->symbol_names, field_abs_name_symbol_index);
-        const char* field_abs_name = field_abs_name_symbol->name;
-        SPVM_OP* op_field = SPVM_HASH_fetch(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name));
-        int32_t field_rel_id = op_field->uv.field->rel_id;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        int32_t field_rel_id = op_field_access->uv.field_access->field->rel_id;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  env->weaken_object_field(env, ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
