@@ -23,7 +23,7 @@
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
-%type <opval> enumeration_values enumeration_value weaken_field our_var invocant
+%type <opval> enumeration_values enumeration_value weaken_field package_var invocant
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
@@ -152,7 +152,7 @@ declaration_in_package
   : field
   | sub
   | enumeration
-  | our_var ';'
+  | package_var ';'
   | use;
 
 package_block
@@ -370,10 +370,10 @@ my_var
       $$ = SPVM_OP_build_my(compiler, $1, $2, NULL);
     }
 
-our_var
+package_var
   : OUR var ':' type
     {
-      $$ = SPVM_OP_build_our(compiler, $2, $4);
+      $$ = SPVM_OP_build_package_var(compiler, $2, $4);
     }
 
 opt_assignable_terms

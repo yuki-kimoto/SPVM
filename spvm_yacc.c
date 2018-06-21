@@ -657,7 +657,7 @@ static const char *const yytname[] =
   "normal_statement_for_end", "for_statement", "while_statement",
   "switch_statement", "case_statement", "default_statement",
   "if_statement", "else_statement", "field", "sub", "enumeration",
-  "my_var", "package_var_var", "opt_assignable_terms", "assignable_terms",
+  "my_var", "package_var", "opt_assignable_terms", "assignable_terms",
   "array_length", "term", "assignable_term", "expression", "isa",
   "new_object", "array_init", "convert_type", "field_access",
   "weaken_field", "unop", "binop", "relative_term", "logical_term",
