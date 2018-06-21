@@ -351,26 +351,6 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   return op_var_ret;
 }
 
-void SPVM_OP_resolve_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_package) {
-  
-  SPVM_OP* op_name = op_package_var->uv.package_var->op_name;
-  
-  const char* name = op_name->uv.name;
-  const char* abs_name;
-  if (strchr(name, ':')) {
-    abs_name = name;
-  }
-  else {
-    abs_name = SPVM_OP_create_package_var_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
-  }
-  
-  SPVM_OP* op_our = SPVM_HASH_fetch(compiler->op_our_symtable, abs_name, strlen(abs_name));
-  
-  if (op_our) {
-    op_package_var->uv.package_var->op_our = op_our;
-  }
-}
-
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
   SPVM_OP* op_descriptor = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DESCRIPTOR, file, line);
   
@@ -1257,32 +1237,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   }
   
   return type;
-}
-
-void SPVM_OP_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
-
-  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-
-  if (field_access->field) {
-    return;
-  }
-
-  SPVM_OP* op_term = op_field_access->first;
-  SPVM_OP* op_name = op_field_access->last;
-  
-  SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
-  const char* field_name = op_name->uv.name;
-  
-  SPVM_OP* found_op_field = SPVM_HASH_fetch(
-    package->op_field_symtable,
-    field_name,
-    strlen(field_name)
-  );
-  if (found_op_field) {
-    op_field_access->uv.field_access->field = found_op_field->uv.field;
-  }
 }
 
 SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
