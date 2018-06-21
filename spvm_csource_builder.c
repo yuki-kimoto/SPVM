@@ -1462,10 +1462,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        // Get field index
-        int32_t basic_type_name_symbol_index = opcode->operand1;
-        SPVM_SYMBOL* basic_type_name_symbol = SPVM_LIST_fetch(package->symbol_names, basic_type_name_symbol_index);
-        const char* basic_type_name = basic_type_name_symbol->name;
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        int32_t basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");

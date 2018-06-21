@@ -1415,13 +1415,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT;
                             
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
-                            const char* basic_type_name = op_assign_from->first->uv.type->basic_type->name;
-
-                            SPVM_SYMBOL* basic_type_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, basic_type_name, strlen(basic_type_name));
-                            int32_t basic_type_name_symbol_index = basic_type_name_symbol->index;
                             
                             opcode.operand0 = index_out;
-                            opcode.operand1 = basic_type_name_symbol_index;
+                            opcode.operand1 = type->rel_id;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                         }
