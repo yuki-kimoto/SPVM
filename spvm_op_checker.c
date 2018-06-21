@@ -1635,7 +1635,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_ID_CALL_SUB: {
                       
                       // Check sub name
-                      SPVM_OP_resolve_call_sub(compiler, op_cur, op_package);
+                      SPVM_OP_CHECKER_resolve_call_sub(compiler, op_cur, op_package);
                       
                       SPVM_OP* op_list_args = op_cur->last;
                       
@@ -2315,5 +2315,69 @@ void SPVM_OP_CHECKER_check_types(SPVM_COMPILER* compiler) {
         }
       }
     }
+  }
+}
+
+void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_sub, SPVM_OP* op_package_current) {
+  
+  SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
+  
+  if (call_sub->sub) {
+    return;
+  }
+  
+  SPVM_OP* found_op_sub;
+  
+  const char* sub_name = call_sub->op_name->uv.name;
+  // $obj->sub_name
+  if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
+    const char* basic_type_name = type->basic_type->name;
+    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, basic_type_name, sub_name);
+    
+    found_op_sub= SPVM_HASH_fetch(
+      compiler->op_sub_symtable,
+      sub_abs_name,
+      strlen(sub_abs_name)
+    );
+  }
+  else {
+    // Package->sub_name
+    if (call_sub->op_invocant) {
+      const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+      found_op_sub= SPVM_HASH_fetch(
+        compiler->op_sub_symtable,
+        sub_abs_name,
+        strlen(sub_abs_name)
+      );
+    }
+    // sub_name
+    else {
+      // Search current pacakge
+      SPVM_PACKAGE* package = op_package_current->uv.package;
+      const char* package_name = package->op_name->uv.name;
+      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
+      found_op_sub= SPVM_HASH_fetch(
+        compiler->op_sub_symtable,
+        sub_abs_name,
+        strlen(sub_abs_name)
+      );
+      
+      // Search SPVM::CORE
+      if (!found_op_sub) {
+        sub_abs_name = SPVM_OP_create_abs_name(compiler, "SPVM::CORE", sub_name);
+        
+        found_op_sub= SPVM_HASH_fetch(
+          compiler->op_sub_symtable,
+          sub_abs_name,
+          strlen(sub_abs_name)
+        );
+      }
+    }
+  }
+  
+  if (found_op_sub) {
+    call_sub->sub = found_op_sub->uv.sub;
   }
 }
