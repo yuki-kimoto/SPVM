@@ -1619,16 +1619,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
                       }
                     }
+                    // Set field
                     else if (op_assign_to->id == SPVM_OP_C_ID_FIELD_ACCESS) {
-                      
-                      // $VAR_ARRAY->{NAME} = $VAR_TERM
                       
                       SPVM_OP* op_field_access = op_assign_to;
                       SPVM_OP* op_term_object = op_field_access->first;
 
                       // Call field
                       SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-                      SPVM_FIELD* field = field_access->field;
 
                       SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
                       
@@ -1639,11 +1637,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
 
-                        SPVM_SYMBOL* field_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, field->abs_name, strlen(field->abs_name));
-                        int32_t field_abs_name_symbol_index = field_abs_name_symbol->index;
-                        
                         opcode.operand0 = index_term_object;
-                        opcode.operand1 = field_abs_name_symbol_index;
+                        opcode.operand1 = field_access->rel_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
@@ -1681,12 +1676,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         int32_t index_term_object = SPVM_OP_get_my_index(compiler, op_term_object);
                         int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
-
-                        SPVM_SYMBOL* field_abs_name_symbol = SPVM_HASH_fetch(package->symbol_name_symtable, field->abs_name, strlen(field->abs_name));
-                        int32_t field_abs_name_symbol_index = field_abs_name_symbol->index;
                         
                         opcode.operand0 = index_term_object;
-                        opcode.operand1 = field_abs_name_symbol_index;
+                        opcode.operand1 = field_access->rel_id;
                         opcode.operand2 = index_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
