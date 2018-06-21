@@ -1598,10 +1598,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   {
     int32_t i;
     for (i = 0; i < package->op_ours->length; i++) {
-
       SPVM_OP* op_our = SPVM_LIST_fetch(package->op_ours, i);
       
       SPVM_OUR* our = op_our->uv.our;
+      our->rel_id = i;
       const char* package_var_name = our->op_package_var->uv.package_var->op_name->uv.name;
       
       SPVM_OP* found_op_our = SPVM_HASH_fetch(package->op_our_symtable, package_var_name, strlen(package_var_name));
