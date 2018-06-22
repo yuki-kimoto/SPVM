@@ -122,7 +122,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Sub name
-  const char* sub_name = sub->abs_name;
+  const char* sub_abs_name = sub->abs_name;
   
   // File name
   const char* file_name = sub->file_name;
@@ -139,7 +139,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   int32_t total_length = 0;
   total_length += exception_length;
   total_length += strlen(from_part);
-  total_length += strlen(sub_name);
+  total_length += strlen(sub_abs_name);
   total_length += strlen(at_part);
   total_length += strlen(file_name);
 
@@ -164,7 +164,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%" PRId32,
     from_part,
-    sub_name,
+    sub_abs_name,
     at_part,
     file_name,
     line_part,
