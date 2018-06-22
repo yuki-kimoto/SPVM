@@ -192,10 +192,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                           {
                             if (package->op_constants->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
-                              SPVM_yyerror_format(compiler, "Too many package var access at %s line %d\n", op_cur->file, op_cur->line);
+                              SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
                             }
                             op_cur->uv.constant->rel_id = package->op_constants->length;
                             SPVM_LIST_push(package->op_constants, op_cur);
+                            
                           }
                         }
                       }

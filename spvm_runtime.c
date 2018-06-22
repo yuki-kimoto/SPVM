@@ -35,6 +35,7 @@
 #include "spvm_package_var_access.h"
 #include "spvm_field_access.h"
 #include "spvm_call_sub.h"
+#include "spvm_constant.h"
 
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
@@ -785,15 +786,21 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_GET_CONSTANT_INT:
         *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&opcode->operand1;
         break;
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG:
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
+        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&op_constant->uv.constant->value;
         break;
+      }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT:
         *(float*)&vars[opcode->operand0] = *(float*)&opcode->operand1;
         break;
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE:
-        *(double*)&vars[opcode->operand0] = *(double*)&opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
+        *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&op_constant->uv.constant->value;
         break;
+      }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];

@@ -971,7 +971,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_LONG;
-                            *(SPVM_VALUE_long*)&opcode.operand1 = *(SPVM_VALUE_long*)&constant->value;
+                            opcode.operand1 = constant->rel_id;
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT;
@@ -979,7 +979,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE;
-                            *(SPVM_VALUE_double*)&opcode.operand1 = *(SPVM_VALUE_double*)&constant->value;
+                            opcode.operand1 = constant->rel_id;
                             break;
                           default:
                             assert(0);
