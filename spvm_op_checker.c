@@ -1839,6 +1839,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             can_convert = 0;
                           }
                         }
+                        
                       }
                       else {
                         can_convert = 0;
@@ -1851,6 +1852,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         compiler->fatal_error = 1;
                         return;
                       }
+
+                      if (package->op_types->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_type->uv.type->rel_id = package->op_types->length;
+                      SPVM_LIST_push(package->op_types, op_type);
                     }
                     break;
                   }

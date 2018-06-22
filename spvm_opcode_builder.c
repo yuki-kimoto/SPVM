@@ -1234,7 +1234,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                            opcode.operand2 = ((uint32_t)dist_type->basic_type->id + ((uint32_t)dist_type->dimension << 24));
+                            opcode.operand2 = op_dist_type->uv.type->rel_id;
                           }
                         }
 

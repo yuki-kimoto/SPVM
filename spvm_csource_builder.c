@@ -2063,15 +2063,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
-        int32_t cast_basic_type_id = (uint32_t)opcode->operand2 & 0xFFFFFF;
-        int32_t cast_type_dimension  = (uint32_t)opcode->operand2 >> 24;
-
-        SPVM_BASIC_TYPE* cast_basic_type = SPVM_LIST_fetch(compiler->basic_types, cast_basic_type_id);
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        const char* cast_basic_type_name = op_type->uv.type->basic_type->name;
+        int32_t cast_type_dimension = op_type->uv.type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t cast_basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (cast_basic_type_id == -1) { cast_basic_type_id = env->get_basic_type_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
