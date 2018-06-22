@@ -1577,9 +1577,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = (opcode->operand1 << 16) + opcode->operand2;
-        
-        SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;
 
         const char* name = constant->value.oval;

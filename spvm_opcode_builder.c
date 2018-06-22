@@ -1258,8 +1258,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CONSTANT* constant = op_assign_from->first->uv.constant;
 
                           opcode.operand0 = index_out;
-                          opcode.operand1 = constant->id >> 16;
-                          opcode.operand2 = constant->id & 0xFFFF;
+                          opcode.operand1 = constant->rel_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }

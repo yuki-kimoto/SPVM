@@ -1266,9 +1266,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = (opcode->operand1 << 16) + opcode->operand2;
-        
-        SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_id);
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
         void* string = env->new_string(env, constant->value.oval, constant->string_length);

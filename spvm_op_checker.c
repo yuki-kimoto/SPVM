@@ -186,20 +186,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_ID_CONSTANT: {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                       
+                      _Bool add_constant = 0;
+                      
                       if (type->dimension == 0) {
                         switch (type->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                          {
-                            if (package->op_constants->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
-                              SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
-                            }
-                            op_cur->uv.constant->rel_id = package->op_constants->length;
-                            SPVM_LIST_push(package->op_constants, op_cur);
-                            
-                          }
+                            add_constant = 1;
                         }
                       }
+                      // String
+                      else if (type->dimension == 1 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                        add_constant = 1;
+                      }
+                      
+                      if (add_constant) {
+                        if (package->op_constants->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
+                        }
+                        op_cur->uv.constant->rel_id = package->op_constants->length;
+                        SPVM_LIST_push(package->op_constants, op_cur);
+                      }
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_SWITCH: {
