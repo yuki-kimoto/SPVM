@@ -165,18 +165,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
-  
-  printf("\n[Basic types]\n");
-  SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
-  
-  printf("\n[Packages]\n");
-  SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
-
-  printf("\n[Packages]\n");
-  SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->op_packages);
-}
-
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants) {
   {
     int32_t i;

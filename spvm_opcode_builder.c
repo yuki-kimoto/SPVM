@@ -2796,8 +2796,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   }
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
-    // Dump spvm information
-    SPVM_DUMPER_dump_all(compiler);
+  printf("\n[Basic types]\n");
+  SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
+  
+  printf("\n[Packages]\n");
+  SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
+
+  printf("\n[OP codes]\n");
+  SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->op_packages);
 #endif
   
 }
