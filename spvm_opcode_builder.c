@@ -37,9 +37,9 @@
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
   SPVM_OPCODE_ARRAY* opcode_array,
-  SPVM_LIST* push_eval_opcode_index_stack,
-  SPVM_LIST* if_croak_catch_goto_opcode_index_stack,
-  SPVM_LIST* if_croak_return_goto_opcode_index_stack,
+  SPVM_LIST* push_eval_opcode_rel_index_stack,
+  SPVM_LIST* if_croak_catch_goto_opcode_rel_index_stack,
+  SPVM_LIST* if_croak_return_goto_opcode_rel_index_stack,
   SPVM_OP* op_sub,
   int32_t line
 )
@@ -47,7 +47,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_SUB* sub = op_sub->uv.sub;
   int32_t sub_opcode_base = sub->opcode_base;
   
-  if (push_eval_opcode_index_stack->length > 0) {
+  if (push_eval_opcode_rel_index_stack->length > 0) {
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     opcode.id = SPVM_OPCODE_C_ID_IF_CROAK_CATCH;
@@ -58,7 +58,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
     
     int32_t if_croak_catch_opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
     
-    SPVM_LIST_push(if_croak_catch_goto_opcode_index_stack, (void*)(intptr_t)if_croak_catch_opcode_rel_index);
+    SPVM_LIST_push(if_croak_catch_goto_opcode_rel_index_stack, (void*)(intptr_t)if_croak_catch_opcode_rel_index);
   }
   else {
     SPVM_OPCODE opcode;
@@ -70,7 +70,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
 
     int32_t if_croak_return_opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
     
-    SPVM_LIST_push(if_croak_return_goto_opcode_index_stack, (void*)(intptr_t)(if_croak_return_opcode_rel_index));
+    SPVM_LIST_push(if_croak_return_goto_opcode_rel_index_stack, (void*)(intptr_t)(if_croak_return_opcode_rel_index));
   }
 }
 
@@ -89,31 +89,31 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         int32_t sub_index;
         for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
           // opcode index stack for if start
-          SPVM_LIST* if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* if_eq_or_if_ne_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for if end
-          SPVM_LIST* if_block_end_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for loop start
-          SPVM_LIST* loop_first_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* loop_first_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for last
-          SPVM_LIST* last_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* last_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for next
-          SPVM_LIST* next_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* next_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for eval start
-          SPVM_LIST* push_eval_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // IF_CROAK_CATCH opcode index stack
-          SPVM_LIST* if_croak_catch_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* if_croak_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
 
           // IF_CROAK_RETURN opcode index stack
-          SPVM_LIST* if_croak_return_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* if_croak_return_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
 
           // RETURN goto opcode index stack
-          SPVM_LIST* return_goto_opcode_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* return_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // Switch stack
           SPVM_LIST* switch_info_stack = SPVM_LIST_new(0);
@@ -169,12 +169,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   int32_t opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
                   
-                  SPVM_LIST_push(loop_first_goto_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                  SPVM_LIST_push(loop_first_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 }
                 else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                   int32_t opcode_rel_index = opcode_array->length - sub_opcode_base;
                   
-                  SPVM_LIST_push(push_eval_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                  SPVM_LIST_push(push_eval_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 }
                 
                 int32_t mortal_base = mortal_stack->length;
@@ -233,7 +233,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
 
@@ -329,7 +329,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
                         SPVM_OPCODE opcode;
@@ -344,7 +344,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_FIELD_ACCESS) {
                         
@@ -397,7 +397,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                         
@@ -448,7 +448,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
@@ -644,7 +644,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         switch (type_to->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                           case SPVM_BASIC_TYPE_C_ID_LONG:
-                            SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                            SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                           break;
                         }
                       }
@@ -685,7 +685,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         switch (type_to->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                           case SPVM_BASIC_TYPE_C_ID_LONG:
-                            SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                            SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                           break;
                         }
                       }
@@ -1570,7 +1570,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand1 = index_term_index;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else {
                         SPVM_OPCODE opcode;
@@ -1612,7 +1612,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand2 = index_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                     }
                     // Set field
@@ -1637,7 +1637,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand1 = field_access->rel_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else {
                         SPVM_OPCODE opcode;
@@ -1678,7 +1678,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand2 = index_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                     }
                     else {
@@ -1908,9 +1908,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     
                     // Set last position
-                    while (last_goto_opcode_index_stack->length > 0) {
+                    while (last_goto_opcode_rel_index_stack->length > 0) {
                       
-                      int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_index_stack);
+                      int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
                       
                       SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + last_opcode_index);
                       int32_t last_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -1950,7 +1950,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.operand1 = op_cur->uv.field_access->rel_id;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                     }
                     
                     break;
@@ -1967,7 +1967,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
                     
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                     
                     break;
                   }
@@ -1980,7 +1980,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     int32_t opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
                     
-                    SPVM_LIST_push(last_goto_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                    SPVM_LIST_push(last_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                     
                     break;
                   }
@@ -1993,7 +1993,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     int32_t opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
                     
-                    SPVM_LIST_push(next_goto_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                    SPVM_LIST_push(next_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                     
                     break;
                   }
@@ -2010,11 +2010,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         
                         int32_t opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
-                        SPVM_LIST_push(if_block_end_goto_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                        SPVM_LIST_push(if_block_end_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                       }
 
                       // Set if jump opcode index
-                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_eq_or_if_ne_opcode_index_stack);
+                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_eq_or_if_ne_opcode_rel_index_stack);
                       
                       // Set jump
                       SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + opcode_index);
@@ -2023,9 +2023,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_ELSE) {
                       
-                      assert(if_block_end_goto_opcode_index_stack->length > 0);
+                      assert(if_block_end_goto_opcode_rel_index_stack->length > 0);
                       
-                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_block_end_goto_opcode_index_stack);
+                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_block_end_goto_opcode_rel_index_stack);
                       
                       // Set jump
                       SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + opcode_index);
@@ -2034,9 +2034,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
                       // Set last position
-                      while (last_goto_opcode_index_stack->length > 0) {
+                      while (last_goto_opcode_rel_index_stack->length > 0) {
                         
-                        int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_index_stack);
+                        int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
                         
                         SPVM_OPCODE* opcode_last = (opcode_array->values + sub_opcode_base + last_opcode_index);
                         int32_t loop_init_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -2045,9 +2045,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                       // Set next position
-                      while (next_goto_opcode_index_stack->length > 0) {
+                      while (next_goto_opcode_rel_index_stack->length > 0) {
                         
-                        int32_t next_opcode_index = (intptr_t)SPVM_LIST_pop(next_goto_opcode_index_stack);
+                        int32_t next_opcode_index = (intptr_t)SPVM_LIST_pop(next_goto_opcode_rel_index_stack);
                         
                         SPVM_OPCODE* opcode_next = (opcode_array->values + sub_opcode_base + next_opcode_index);
                         int32_t loop_statements_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -2056,20 +2056,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                       // Set IF_CROAK_CATCH opcode index
-                      while (if_croak_catch_goto_opcode_index_stack->length > 0) {
-                        int32_t if_croak_catch_opcode_index = (intptr_t)SPVM_LIST_pop(if_croak_catch_goto_opcode_index_stack);
+                      while (if_croak_catch_goto_opcode_rel_index_stack->length > 0) {
+                        int32_t if_croak_catch_opcode_index = (intptr_t)SPVM_LIST_pop(if_croak_catch_goto_opcode_rel_index_stack);
                         
                         SPVM_OPCODE* opcode_if_croak_catch = (opcode_array->values + sub_opcode_base + if_croak_catch_opcode_index);
                         int32_t eval_opcode_rel_index = opcode_array->length - sub_opcode_base;
                         opcode_if_croak_catch->operand0 = eval_opcode_rel_index;
                       }
                       
-                      SPVM_LIST_pop(push_eval_opcode_index_stack);
+                      SPVM_LIST_pop(push_eval_opcode_rel_index_stack);
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SUB) {
-                      while (return_goto_opcode_index_stack->length > 0) {
+                      while (return_goto_opcode_rel_index_stack->length > 0) {
                         
-                        int32_t return_opcode_index = (intptr_t)SPVM_LIST_pop(return_goto_opcode_index_stack);
+                        int32_t return_opcode_index = (intptr_t)SPVM_LIST_pop(return_goto_opcode_rel_index_stack);
                         
                         SPVM_OPCODE* opcode_return = (opcode_array->values + sub_opcode_base + return_opcode_index);
                         int32_t sub_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -2077,8 +2077,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
 
                       // Set IF_CROAK_RETURN opcode index
-                      while (if_croak_return_goto_opcode_index_stack->length > 0) {
-                        int32_t if_croak_return_opcode_index = (intptr_t)SPVM_LIST_pop(if_croak_return_goto_opcode_index_stack);
+                      while (if_croak_return_goto_opcode_rel_index_stack->length > 0) {
+                        int32_t if_croak_return_opcode_index = (intptr_t)SPVM_LIST_pop(if_croak_return_goto_opcode_rel_index_stack);
                         
                         SPVM_OPCODE* opcode_if_croak_return = (opcode_array->values + sub_opcode_base + if_croak_return_opcode_index);
                         int32_t if_croak_return_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -2121,7 +2121,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_ID_LOOP_INCREMENT: {
                     // Set loop first GOTO opcode
-                    int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_index_stack, loop_first_goto_opcode_index_stack->length - 1);
+                    int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
                     
                     SPVM_OPCODE* opcode_loop_first = (opcode_array->values + sub_opcode_base + loop_first_opcode_index);
                     int32_t loop_first_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -2146,12 +2146,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     
                     if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                      SPVM_LIST_push(if_eq_or_if_ne_opcode_index_stack, (void*)(intptr_t)opcode_rel_index);
+                      SPVM_LIST_push(if_eq_or_if_ne_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                     }
                     else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
-                      assert(loop_first_goto_opcode_index_stack->length > 0);
+                      assert(loop_first_goto_opcode_rel_index_stack->length > 0);
                       
-                      int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_index_stack);
+                      int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_rel_index_stack);
                       
                       opcode.operand0 = loop_first_opcode_index + 1;
                     }
@@ -2674,7 +2674,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_index_stack, if_croak_catch_goto_opcode_index_stack, if_croak_return_goto_opcode_index_stack, op_sub, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                     }
                     
                     break;
@@ -2739,7 +2739,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     int32_t return_opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
                     
-                    SPVM_LIST_push(return_goto_opcode_index_stack, (void*)(intptr_t)return_opcode_rel_index);
+                    SPVM_LIST_push(return_goto_opcode_rel_index_stack, (void*)(intptr_t)return_opcode_rel_index);
                     
                     break;
                   }
@@ -2777,15 +2777,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           sub->mortal_stack_max = mortal_stack_max;
           
           // Free list
-          SPVM_LIST_free(if_eq_or_if_ne_opcode_index_stack);
-          SPVM_LIST_free(if_block_end_goto_opcode_index_stack);
-          SPVM_LIST_free(loop_first_goto_opcode_index_stack);
-          SPVM_LIST_free(last_goto_opcode_index_stack);
-          SPVM_LIST_free(next_goto_opcode_index_stack);
-          SPVM_LIST_free(push_eval_opcode_index_stack);
-          SPVM_LIST_free(if_croak_catch_goto_opcode_index_stack);
-          SPVM_LIST_free(if_croak_return_goto_opcode_index_stack);
-          SPVM_LIST_free(return_goto_opcode_index_stack);
+          SPVM_LIST_free(if_eq_or_if_ne_opcode_rel_index_stack);
+          SPVM_LIST_free(if_block_end_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(loop_first_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(last_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(next_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(push_eval_opcode_rel_index_stack);
+          SPVM_LIST_free(if_croak_catch_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(if_croak_return_goto_opcode_rel_index_stack);
+          SPVM_LIST_free(return_goto_opcode_rel_index_stack);
           SPVM_LIST_free(switch_info_stack);
           SPVM_LIST_free(op_block_stack);
           SPVM_LIST_free(mortal_stack);
