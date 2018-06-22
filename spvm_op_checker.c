@@ -743,6 +743,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
+                        if (package->op_types->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                        }
                         op_type->uv.type->rel_id = package->op_types->length;
                         SPVM_LIST_push(package->op_types, op_type);
                       }
@@ -1708,8 +1711,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
 
-                      if (package->op_call_subs->length >= SPVM_LIMIT_C_CALL_SUBS_IN_PACKAGE) {
-                        SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
+                      if (package->op_call_subs->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_cur->uv.call_sub->rel_id = package->op_call_subs->length;
                       SPVM_LIST_push(package->op_call_subs, op_cur);
@@ -1727,7 +1730,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       
-                      if (package->op_package_var_accesses->length >= SPVM_LIMIT_C_PACKAGE_VAR_ACCESSES_IN_PACKAGE) {
+                      if (package->op_package_var_accesses->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
                         SPVM_yyerror_format(compiler, "Too many package var access at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_cur->uv.package_var_access->rel_id = package->op_package_var_accesses->length;
@@ -1773,7 +1776,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      if (package->op_field_accesses->length >= SPVM_LIMIT_C_FIELD_ACCESSES_IN_PACKAGE) {
+                      if (package->op_field_accesses->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
                         SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_cur->uv.field_access->rel_id = package->op_field_accesses->length;
