@@ -1554,13 +1554,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_OP* found_op_field = SPVM_HASH_fetch(package->op_field_symtable, field_name, strlen(field_name));
       
-      assert(package->op_fields->length <= SPVM_LIMIT_C_FIELDS);
-      
       if (found_op_field) {
         SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
       }
-      else if (package->op_fields->length == SPVM_LIMIT_C_FIELDS) {
-        SPVM_yyerror_format(compiler, "Too many fields, field \"%s\" ignored at %s line %d\n", field_name, op_field->file, op_field->line);
+      else if (package->op_fields->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+        SPVM_yyerror_format(compiler, "Too many field declarations at %s line %d\n", op_field->file, op_field->line);
         compiler->fatal_error = 1;
       }
       else {
@@ -1592,12 +1590,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_access_name, strlen(package_var_access_name));
       
-      assert(package->op_package_vars->length <= SPVM_LIMIT_C_PACKAGE_VARS);
-      
       if (found_op_package_var) {
         SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_access_name, op_package_var->file, op_package_var->line);
       }
-      else if (package->op_package_vars->length == SPVM_LIMIT_C_PACKAGE_VARS) {
+      else if (package->op_package_vars->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
         SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", op_package_var->file, op_package_var->line);
         compiler->fatal_error = 1;
       }
@@ -1664,8 +1660,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (found_op_sub) {
         SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
       }
-      else if (package->op_subs->length == SPVM_LIMIT_C_SUBS) {
-        SPVM_yyerror_format(compiler, "Too many subroutines at %s line %d\n", sub_name, op_sub->file, op_sub->line);
+      else if (package->op_subs->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+        SPVM_yyerror_format(compiler, "Too many sub declarations at %s line %d\n", sub_name, op_sub->file, op_sub->line);
         compiler->fatal_error = 1;
       }
       // Unknown sub
