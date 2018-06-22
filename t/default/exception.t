@@ -31,7 +31,7 @@ my $file = basename $0;
     eval { TestCase::Exception->exception_call_stack() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
-    like($@, qr/exception_call_stack/);
+    like($@, qr/exception_call_stacka/);
   }
 
   {

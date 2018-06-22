@@ -122,14 +122,17 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   SPVM_SUB* sub = op_sub->uv.sub;
   
   // Sub name
-  const char* sub_abs_name = sub->abs_name;
+  const char* sub_name = sub->op_name->uv.name;
+  
+  const char* package_name = sub->op_package->uv.package->op_name->uv.name;
   
   // File name
   const char* file_name = sub->file_name;
   
   // stack trace strings
   const char* from_part = "\n  from ";
-  const char* at_part = "() at ";
+  const char* arrow_part = "->";
+  const char* at_part = " at ";
 
   // Exception
   int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
@@ -139,7 +142,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   int32_t total_length = 0;
   total_length += exception_length;
   total_length += strlen(from_part);
-  total_length += strlen(sub_abs_name);
+  total_length += strlen(package_name);
+  total_length += strlen(arrow_part);
+  total_length += strlen(sub_name);
   total_length += strlen(at_part);
   total_length += strlen(file_name);
 
@@ -162,9 +167,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
 
   sprintf(
     (char*)new_exception_bytes + exception_length,
-    "%s%s%s%s%s%" PRId32,
+    "%s%s%s%s%s%s%s%" PRId32,
     from_part,
-    sub_abs_name,
+    package_name,
+    arrow_part,
+    sub_name,
     at_part,
     file_name,
     line_part,
