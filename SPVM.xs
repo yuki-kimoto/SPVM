@@ -994,31 +994,20 @@ compile_spvm(...)
     sv_compile_success = sv_2mortal(newSViv(0));
   }
   else {
-    sv_compile_success = sv_2mortal(newSViv(1));
+    // Build opcode
+    SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+
+    if (compiler->error_count > 0) {
+      sv_compile_success = sv_2mortal(newSViv(0));
+    }
+    else {
+      sv_compile_success = sv_2mortal(newSViv(1));
+    }
   }
-  
+
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
-}
-
-SV*
-build_opcode(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // Build opcode
-  SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-  
-  XSRETURN(0);
 }
 
 SV*
