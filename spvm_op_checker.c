@@ -59,8 +59,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           int32_t eval_block_stack_length = 0;
           int32_t loop_block_stack_length = 0;
           
-          SPVM_LIST* op_mys = sub->op_mys;
-          
           // My stack
           SPVM_LIST* op_my_stack = SPVM_LIST_new(0);
           
@@ -1626,7 +1624,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       else {
-                        SPVM_LIST_push(op_mys, op_cur);
+                        SPVM_LIST_push(sub->op_mys, op_cur);
                         SPVM_LIST_push(op_my_stack, op_cur);
                       }
                       
@@ -2018,6 +2016,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
               SPVM_MY* my = op_my->uv.my;
               my->index = my_index;
+              if (my_index >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", op_my->file, op_my->line);
+              }
             }
           }
           
