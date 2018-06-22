@@ -2040,6 +2040,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       constant->id = constant_index;
     }
   }
+#ifdef SPVM_DEBUG_DUMP
+#include "spvm_dumper.h"
+  printf("\n[Basic types]\n");
+  SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
+  
+  printf("\n[Packages]\n");
+  SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
+#endif
 }
 
 _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
