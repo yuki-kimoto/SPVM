@@ -172,6 +172,9 @@ void SPVM_DUMPER_dump_all(SPVM_COMPILER* compiler) {
   
   printf("\n[Packages]\n");
   SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
+
+  printf("\n[Packages]\n");
+  SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->op_packages);
 }
 
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants) {
@@ -222,6 +225,34 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
           SPVM_SUB* sub = op_sub->uv.sub;
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_sub(compiler, sub);
+        }
+      }
+    }
+  }
+}
+
+void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) {
+  {
+    int32_t i;
+    for (i = 0; i < op_packages->length; i++) {
+      printf("package[%" PRId32 "]\n", i);
+      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, i);
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      if (package->op_name) {
+        printf("  name => \"%s\"\n", package->op_name->uv.name);
+      }
+      else {
+        printf("  name => \"ANON\"\n");
+      }
+      
+      {
+        int32_t j;
+        for (j = 0; j < package->op_subs->length; j++) {
+          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, j);
+          SPVM_SUB* sub = op_sub->uv.sub;
+          printf("  sub[%" PRId32 "]\n", j);
+          SPVM_DUMPER_dump_sub_opcode_array(compiler, sub);
         }
       }
     }
@@ -395,6 +426,33 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       printf("      AST\n");
       SPVM_DUMPER_dump_ast(compiler, sub->op_block);
       printf("\n");
+    }
+  }
+  else {
+    printf("      None\n");
+  }
+}
+
+void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+  (void)compiler;
+  
+  if (sub) {
+    
+    printf("      abs_name => \"%s\"\n", sub->abs_name);
+    printf("      name => \"%s\"\n", sub->op_name->uv.name);
+    
+    if (!sub->have_native_desc) {
+      printf("      mys\n");
+      SPVM_LIST* op_mys = sub->op_mys;
+      {
+        int32_t i;
+        for (i = 0; i < op_mys->length; i++) {
+          SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
+          SPVM_MY* my = op_my->uv.my;
+          printf("        [%" PRId32 "] ", i);
+          SPVM_DUMPER_dump_my(compiler, my);
+        }
+      }
       
       printf("      opcode_array\n");
       SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, sub->opcode_base, sub->opcode_length);
