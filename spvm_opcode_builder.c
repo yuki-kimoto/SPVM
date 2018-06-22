@@ -51,7 +51,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     opcode.id = SPVM_OPCODE_C_ID_IF_CROAK_CATCH;
-    opcode.operand1 = sub->id;
+    opcode.operand1 = sub->rel_id;
     opcode.operand2 = line;
     
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -64,7 +64,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     opcode.id = SPVM_OPCODE_C_ID_IF_CROAK_RETURN;
-    opcode.operand1 = sub->id;
+    opcode.operand1 = sub->rel_id;
     opcode.operand2 = line;
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 

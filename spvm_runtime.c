@@ -1861,7 +1861,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         if (exception_flag) {
           exception_flag = 0;
           
-          int32_t sub_id = opcode->operand1;
+          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
+          int32_t sub_id = op_sub->uv.sub->id;
+
           int32_t line = opcode->operand2;
           
           // Exception stack trace
@@ -1873,7 +1875,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
-          int32_t sub_id = opcode->operand1;
+          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
+          int32_t sub_id = op_sub->uv.sub->id;
+
           int32_t line = opcode->operand2;
 
           // Exception stack trace
