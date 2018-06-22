@@ -2488,11 +2488,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.id = SPVM_OPCODE_C_ID_ISA;
                     
                     int32_t index_in1 = SPVM_OP_get_my_index(compiler, op_cur->first);
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);
+                    SPVM_OP* op_type = op_cur->last;
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
                     
                     opcode.operand0 = index_in1;
-                    opcode.operand1 = type->basic_type->id;
-                    opcode.operand2 = type->dimension;
+                    opcode.operand1 = op_type->uv.type->rel_id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     

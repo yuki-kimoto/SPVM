@@ -304,8 +304,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_ISA:
       {
         void* object = *(void**)&vars[opcode->operand0];
-        int32_t basic_type_id = opcode->operand1;
-        int32_t dimension = opcode->operand2;
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        int32_t basic_type_id = op_type->uv.type->basic_type->id;
+        int32_t dimension = op_type->uv.type->dimension;
         
         condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_dimension_byte_offset) == dimension);
         
