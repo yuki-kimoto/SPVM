@@ -114,6 +114,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_OP* op_cur = op_base;
             _Bool finish = 0;
             while (op_cur) {
+              int32_t rel_line = op_cur->line - op_sub->line;
+              if (op_cur->line >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                SPVM_yyerror_format(compiler, "Too many lines at %s line %d\n", op_cur->file, op_cur->line);
+              }
+              
               // [START]Preorder traversal position
               
               switch (op_cur->id) {
