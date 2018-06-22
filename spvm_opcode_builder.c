@@ -2119,11 +2119,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_ID_LOOP_INCREMENT: {
                     // Set loop first GOTO opcode
-                    int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
+                    int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
                     
-                    SPVM_OPCODE* opcode_loop_first = (opcode_array->values + sub_opcode_base + loop_first_opcode_index);
-                    int32_t loop_first_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                    opcode_loop_first->operand0 = loop_first_opcode_rel_index;
+                    SPVM_OPCODE* loop_first_goto = (opcode_array->values + sub_opcode_base + loop_first_goto_opcode_rel_index);
+                    int32_t loop_first_goto_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                    loop_first_goto->operand0 = loop_first_goto_jump_opcode_rel_index;
                     
                     break;
                   }
@@ -2149,9 +2149,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
                       assert(loop_first_goto_opcode_rel_index_stack->length > 0);
                       
-                      int32_t loop_first_opcode_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_rel_index_stack);
+                      int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_rel_index_stack);
                       
-                      opcode.operand0 = loop_first_opcode_index + 1;
+                      opcode.operand0 = loop_first_goto_opcode_rel_index + 1;
                     }
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
