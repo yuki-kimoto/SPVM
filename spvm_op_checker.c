@@ -803,12 +803,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_ISA: {
                       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_cur->first);
+                      SPVM_OP* op_type = op_cur->last;
                       
                       // Can receive only numeric type
                       if (!SPVM_TYPE_is_object(compiler, term_type)) {
                         SPVM_yyerror_format(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
                         return;
                       }
+
+                      if (package->op_types->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_type->uv.type->rel_id = package->op_types->length;
+                      SPVM_LIST_push(package->op_types, op_type);
                       
                       break;
                     }
