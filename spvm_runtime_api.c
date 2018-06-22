@@ -112,7 +112,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, i
   return SPVM_OP_CHECKER_can_assign(compiler, cast_basic_type_id, cast_type_dimension, object->basic_type_id, object->dimension);
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t sub_id, int32_t current_line) {
+SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t sub_id, int32_t line) {
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
@@ -128,8 +128,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   const char* file_name = sub->file_name;
   
   // stack trace strings
-  const char* from = "\n  from ";
-  const char* at = "() at ";
+  const char* from_part = "\n  from ";
+  const char* at_part = "() at ";
 
   // Exception
   int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
@@ -138,16 +138,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   // Total string length
   int32_t total_length = 0;
   total_length += exception_length;
-  total_length += strlen(from);
+  total_length += strlen(from_part);
   total_length += strlen(sub_name);
-  total_length += strlen(at);
+  total_length += strlen(at_part);
   total_length += strlen(file_name);
 
-  const char* line = " line ";
+  const char* line_part = " line ";
   char line_str[20];
   
-  sprintf(line_str, "%" PRId32, current_line);
-  total_length += strlen(line);
+  sprintf(line_str, "%" PRId32, line);
+  total_length += strlen(line_part);
   total_length += strlen(line_str);
   
   // Create exception message
@@ -163,12 +163,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   sprintf(
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%" PRId32,
-    from,
+    from_part,
     sub_name,
-    at,
+    at_part,
     file_name,
-    line,
-    current_line
+    line_part,
+    line
   );
   
   return new_exception;
