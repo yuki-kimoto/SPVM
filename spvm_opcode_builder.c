@@ -1910,11 +1910,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Set last position
                     while (last_goto_opcode_rel_index_stack->length > 0) {
                       
-                      int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
+                      int32_t last_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
                       
-                      SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + last_opcode_index);
-                      int32_t last_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                      opcode_goto->operand0 = last_opcode_rel_index;
+                      SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + last_goto_opcode_rel_index);
+                      int32_t last_goto_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                      opcode_goto->operand0 = last_goto_jump_opcode_rel_index;
                     }
                     
                     break;
