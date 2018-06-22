@@ -1,4 +1,7 @@
-0.0350 2018-06-18
+0.0351 2018-06-18
+  - improve exception message
+  - create_exception_stack_trace become receive package_name, sub_name, file instead of sub_id
+0.0350 2018-06-23
   - improve solo SPVM tests command
       You can run solo tests by the following commands. This comands is wrote in solo/README
       

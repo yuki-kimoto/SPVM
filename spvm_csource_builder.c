@@ -2186,20 +2186,34 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
         SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-        const char* sub_abs_name = op_sub->uv.sub->abs_name;
+        SPVM_SUB* sub = op_sub->uv.sub;
+        int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
+        
+        const char* sub_name = sub->op_name->uv.name;
+        const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* file = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)file);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2209,19 +2223,33 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-        const char* sub_abs_name = op_sub->uv.sub->abs_name;
+        SPVM_SUB* sub = op_sub->uv.sub;
+        int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
+        
+        const char* sub_name = sub->op_name->uv.name;
+        const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* file = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)file);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");

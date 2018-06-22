@@ -112,22 +112,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, i
   return SPVM_OP_CHECKER_can_assign(compiler, cast_basic_type_id, cast_type_dimension, object->basic_type_id, object->dimension);
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, int32_t sub_id, int32_t line) {
-
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  // Constant pool sub
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
-  
-  // Sub name
-  const char* sub_name = sub->op_name->uv.name;
-  
-  const char* package_name = sub->op_package->uv.package->op_name->uv.name;
-  
-  // File name
-  const char* file_name = sub->file_name;
+SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
   
   // stack trace strings
   const char* from_part = "\n  from ";
@@ -146,7 +131,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   total_length += strlen(arrow_part);
   total_length += strlen(sub_name);
   total_length += strlen(at_part);
-  total_length += strlen(file_name);
+  total_length += strlen(file);
 
   const char* line_part = " line ";
   char line_str[20];
@@ -173,7 +158,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
     arrow_part,
     sub_name,
     at_part,
-    file_name,
+    file,
     line_part,
     line
   );

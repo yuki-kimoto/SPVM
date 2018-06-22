@@ -1862,12 +1862,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           exception_flag = 0;
           
           SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-          int32_t sub_id = op_sub->uv.sub->id;
+          SPVM_SUB* sub = op_sub->uv.sub;
+          int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = op_sub->line + rel_line;
           
+          const char* sub_name = sub->op_name->uv.name;
+          const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+          const char* file = op_sub->file;
+          
           // Exception stack trace
-          env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));
+          env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
           opcode_index = opcode->operand0;
           continue;
         }
@@ -1876,12 +1881,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
           SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-          int32_t sub_id = op_sub->uv.sub->id;
+          SPVM_SUB* sub = op_sub->uv.sub;
+          int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = op_sub->line + rel_line;
+          
+          const char* sub_name = sub->op_name->uv.name;
+          const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+          const char* file = op_sub->file;
 
           // Exception stack trace
-          env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));
+          env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
           opcode_index = opcode->operand0;
           continue;
         }
