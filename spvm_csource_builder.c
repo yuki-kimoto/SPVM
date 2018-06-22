@@ -2185,9 +2185,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
-        int32_t sub_id = opcode->operand1;
-        SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-        SPVM_SUB* sub = op_sub->uv.sub;
+        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
+        int32_t sub_abs_name = op_sub->uv.sub->abs_name;
+        int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
@@ -2207,9 +2207,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
-        int32_t sub_id = opcode->operand1;
-        SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-        SPVM_SUB* sub = op_sub->uv.sub;
+        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
+        int32_t sub_abs_name = op_sub->uv.sub->abs_name;
+        int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
