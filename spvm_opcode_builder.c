@@ -89,7 +89,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         int32_t sub_index;
         for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
           // opcode index stack for if start
-          SPVM_LIST* if_eq_or_if_ne_opcode_rel_index_stack = SPVM_LIST_new(0);
+          SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
           
           // opcode index stack for if end
           SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
@@ -2013,13 +2013,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_LIST_push(if_block_end_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                       }
 
-                      // Set if jump opcode index
-                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_eq_or_if_ne_opcode_rel_index_stack);
+                      int32_t if_eq_or_if_ne_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_eq_or_if_ne_goto_opcode_rel_index_stack);
                       
                       // Set jump
-                      SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + opcode_index);
-                      int32_t if_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                      opcode_goto->operand0 = if_opcode_rel_index;
+                      SPVM_OPCODE* if_eq_or_if_ne_goto = (opcode_array->values + sub_opcode_base + if_eq_or_if_ne_goto_opcode_rel_index);
+                      int32_t if_eq_or_if_ne_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                      if_eq_or_if_ne_goto->operand0 = if_eq_or_if_ne_jump_opcode_rel_index;
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_ELSE) {
                       
@@ -2146,7 +2145,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     
                     if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                      SPVM_LIST_push(if_eq_or_if_ne_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
+                      SPVM_LIST_push(if_eq_or_if_ne_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                     }
                     else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
                       assert(loop_first_goto_opcode_rel_index_stack->length > 0);
@@ -2777,7 +2776,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           sub->mortal_stack_max = mortal_stack_max;
           
           // Free list
-          SPVM_LIST_free(if_eq_or_if_ne_opcode_rel_index_stack);
+          SPVM_LIST_free(if_eq_or_if_ne_goto_opcode_rel_index_stack);
           SPVM_LIST_free(if_block_end_goto_opcode_rel_index_stack);
           SPVM_LIST_free(loop_first_goto_opcode_rel_index_stack);
           SPVM_LIST_free(last_goto_opcode_rel_index_stack);
