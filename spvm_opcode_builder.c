@@ -2024,33 +2024,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       assert(if_block_end_goto_opcode_rel_index_stack->length > 0);
                       
-                      int32_t opcode_index = (intptr_t)SPVM_LIST_pop(if_block_end_goto_opcode_rel_index_stack);
+                      int32_t if_block_end_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_block_end_goto_opcode_rel_index_stack);
                       
-                      // Set jump
-                      SPVM_OPCODE* opcode_goto = (opcode_array->values + sub_opcode_base + opcode_index);
-                      int32_t else_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                      opcode_goto->operand0 = else_opcode_rel_index;
+                      SPVM_OPCODE* if_block_end_goto = (opcode_array->values + sub_opcode_base + if_block_end_goto_opcode_rel_index);
+                      int32_t if_block_end_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                      if_block_end_goto->operand0 = if_block_end_jump_opcode_rel_index;
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
                       // Set last position
                       while (last_goto_opcode_rel_index_stack->length > 0) {
                         
-                        int32_t last_opcode_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
+                        int32_t last_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(last_goto_opcode_rel_index_stack);
                         
-                        SPVM_OPCODE* opcode_last = (opcode_array->values + sub_opcode_base + last_opcode_index);
-                        int32_t loop_init_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                        opcode_last->operand0 = loop_init_opcode_rel_index;
+                        SPVM_OPCODE* last_goto = (opcode_array->values + sub_opcode_base + last_goto_opcode_rel_index);
+                        int32_t last_goto_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                        last_goto->operand0 = last_goto_jump_opcode_rel_index;
                       }
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                       // Set next position
                       while (next_goto_opcode_rel_index_stack->length > 0) {
                         
-                        int32_t next_opcode_index = (intptr_t)SPVM_LIST_pop(next_goto_opcode_rel_index_stack);
+                        int32_t next_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(next_goto_opcode_rel_index_stack);
                         
-                        SPVM_OPCODE* opcode_next = (opcode_array->values + sub_opcode_base + next_opcode_index);
-                        int32_t loop_statements_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                        opcode_next->operand0 = loop_statements_opcode_rel_index;
+                        SPVM_OPCODE* next_goto = (opcode_array->values + sub_opcode_base + next_goto_opcode_rel_index);
+                        int32_t next_goto_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                        next_goto->operand0 = next_goto_jump_opcode_rel_index;
                       }
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
