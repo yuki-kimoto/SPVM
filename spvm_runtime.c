@@ -1863,8 +1863,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           
           SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
           int32_t sub_id = op_sub->uv.sub->id;
-
-          int32_t line = opcode->operand2;
+          int32_t rel_line = opcode->operand2;
+          int32_t line = op_sub->line + rel_line;
           
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));
@@ -1877,8 +1877,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         if (exception_flag) {
           SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
           int32_t sub_id = op_sub->uv.sub->id;
-
-          int32_t line = opcode->operand2;
+          int32_t rel_line = opcode->operand2;
+          int32_t line = op_sub->line + rel_line;
 
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_id, line));
