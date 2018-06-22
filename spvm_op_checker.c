@@ -183,6 +183,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
+                    case SPVM_OP_C_ID_CONSTANT: {
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                      
+                      if (type->dimension == 0) {
+                        switch (type->basic_type->id) {
+                          case SPVM_BASIC_TYPE_C_ID_LONG:
+                          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                          {
+                            if (package->op_constants->length >= SPVM_LIMIT_C_PACKAGE_ITEMS_MAX) {
+                              SPVM_yyerror_format(compiler, "Too many package var access at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                            op_cur->uv.constant->rel_id = package->op_constants->length;
+                            SPVM_LIST_push(package->op_constants, op_cur);
+                          }
+                        }
+                      }
+                      break;
+                    }
                     case SPVM_OP_C_ID_SWITCH: {
                       
                       SPVM_OP* op_switch_condition = op_cur->first;
