@@ -36,6 +36,7 @@
 #include "spvm_field_access.h"
 #include "spvm_call_sub.h"
 #include "spvm_constant.h"
+#include "spvm_switch_info.h"
 
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
@@ -1966,37 +1967,46 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         // npare
         int32_t cases_length = opcode->operand2 & 0xFFFF;
         
-        int32_t rel_id = opcode->operand2 >> 16;
-        
-        // min
-        int32_t min = (opcode + 1)->operand0;
-        
-        // max
-        int32_t max = (opcode + 1 + cases_length - 1)->operand0;
-        
-        if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
-          // 2 opcode_rel_index searching
-          int32_t cur_min_pos = 0;
-          int32_t cur_max_pos = cases_length - 1;
+        if (cases_length > 0) {
+          int32_t rel_id = opcode->operand2 >> 16;
           
-          while (1) {
-            if (cur_max_pos < cur_min_pos) {
-              opcode_rel_index = default_opcode_rel_index;
-              break;
-            }
-            int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-            int32_t cur_half = (opcode + 1 + cur_half_pos)->operand0;
+          SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
+          SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
+          SPVM_LIST* op_cases = switch_info->op_cases_ordered;
+          
+          // min
+          int32_t min = (opcode + 1)->operand0;
+          
+          // max
+          int32_t max = (opcode + 1 + cases_length - 1)->operand0;
+          
+          if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
+            // 2 opcode_rel_index searching
+            int32_t cur_min_pos = 0;
+            int32_t cur_max_pos = cases_length - 1;
             
-            if (*(SPVM_VALUE_int*)&vars[opcode->operand0] > cur_half) {
-              cur_min_pos = cur_half_pos + 1;
+            while (1) {
+              if (cur_max_pos < cur_min_pos) {
+                opcode_rel_index = default_opcode_rel_index;
+                break;
+              }
+              int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
+              int32_t cur_half = (opcode + 1 + cur_half_pos)->operand0;
+              
+              if (*(SPVM_VALUE_int*)&vars[opcode->operand0] > cur_half) {
+                cur_min_pos = cur_half_pos + 1;
+              }
+              else if (*(SPVM_VALUE_int*)&vars[opcode->operand0] < cur_half) {
+                cur_max_pos = cur_half_pos - 1;
+              }
+              else {
+                opcode_rel_index = (opcode + 1 + cur_half_pos)->operand1;
+                break;
+              }
             }
-            else if (*(SPVM_VALUE_int*)&vars[opcode->operand0] < cur_half) {
-              cur_max_pos = cur_half_pos - 1;
-            }
-            else {
-              opcode_rel_index = (opcode + 1 + cur_half_pos)->operand1;
-              break;
-            }
+          }
+          else {
+            opcode_rel_index = default_opcode_rel_index;
           }
         }
         else {
