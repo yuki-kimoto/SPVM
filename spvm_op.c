@@ -1291,25 +1291,7 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   
   SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_packages->file, op_packages->line);
   SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_packages);
-  
-  compiler->op_grammar = op_grammar;
-  
-  // Check syntax and data validity
-  SPVM_OP_CHECKER_check(compiler);
-  
-  if (compiler->fatal_error) {
-    return NULL;
-  }
-  
-  if (compiler->fatal_error) {
-    return NULL;
-  }
-  
-  // Create bytecodes
-  if (compiler->error_count > 0) {
-    return NULL;
-  }
-  
+
   return op_grammar;
 }
 
@@ -1559,7 +1541,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       else if (package->op_fields->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_yyerror_format(compiler, "Too many field declarations at %s line %d\n", op_field->file, op_field->line);
-        compiler->fatal_error = 1;
+        
       }
       else {
         field->id = compiler->op_fields->length;
@@ -1595,7 +1577,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       else if (package->op_package_vars->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", op_package_var->file, op_package_var->line);
-        compiler->fatal_error = 1;
+        
       }
       else {
         const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_access_name);
@@ -1663,7 +1645,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       else if (package->op_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_yyerror_format(compiler, "Too many sub declarations at %s line %d\n", sub_name, op_sub->file, op_sub->line);
-        compiler->fatal_error = 1;
+        
       }
       // Unknown sub
       else {
@@ -1773,7 +1755,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);
     SPVM_yyerror_format(compiler, "Invalid lexical variable name %s at %s line %d\n", name, op_var->file, op_var->line);
-    compiler->fatal_error = 1;
+    
   }
   
   return op_var;
@@ -1798,7 +1780,7 @@ SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_
   
   if (invalid_name) {
     SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_package_var_access->file, op_package_var_access->line);
-    compiler->fatal_error = 1;
+    
   }
   
   package_var->op_package_var_access = op_package_var_access;

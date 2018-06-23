@@ -101,9 +101,6 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Error is fatal
-  _Bool fatal_error;
-  
   // Temporary buffer
   char tmp_buffer[UINT16_MAX];
   

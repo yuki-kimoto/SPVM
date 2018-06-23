@@ -13,6 +13,7 @@
   #include "spvm_constant.h"
   #include "spvm_type.h"
   #include "spvm_block.h"
+  #include "spvm_op_checker.h"
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
@@ -53,6 +54,11 @@ grammar
   : opt_declarations_in_grammar
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
+
+      compiler->op_grammar = $$;
+      
+      // Check syntax
+      SPVM_OP_CHECKER_check(compiler);
       
       // Syntax error
       if (compiler->error_count) {
