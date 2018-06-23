@@ -177,7 +177,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   
   char tmp_string[30];
 
-  register int32_t opcode_index = 0;
+  register int32_t opcode_rel_index = 0;
 
   // Initialize variables
   memset(vars, 0, sizeof(SPVM_VALUE) * sub->op_mys->length);
@@ -199,7 +199,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   }
   
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[sub_opcode_base + opcode_index]);
+    SPVM_OPCODE* opcode = &(opcodes[sub_opcode_base + opcode_rel_index]);
     
     switch (opcode->id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:
@@ -1732,18 +1732,18 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_GOTO:
-        opcode_index = opcode->operand0;
+        opcode_rel_index = opcode->operand0;
         continue;
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
         if (condition_flag == 0) {
-          opcode_index = opcode->operand0;
+          opcode_rel_index = opcode->operand0;
           continue;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_IF_NE_ZERO: {
         if (condition_flag) {
-          opcode_index = opcode->operand0;
+          opcode_rel_index = opcode->operand0;
           continue;
         }
         break;
@@ -1873,7 +1873,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
-          opcode_index = opcode->operand0;
+          opcode_rel_index = opcode->operand0;
           continue;
         }
         break;
@@ -1892,7 +1892,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
-          opcode_index = opcode->operand0;
+          opcode_rel_index = opcode->operand0;
           continue;
         }
         break;
@@ -1903,43 +1903,43 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_BYTE:
       {
         *(SPVM_VALUE_byte*)&args[0] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_SHORT:
       {
         *(SPVM_VALUE_short*)&args[0] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_INT:
       {
         *(SPVM_VALUE_int*)&args[0] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_LONG:
       {
         *(SPVM_VALUE_long*)&args[0] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_FLOAT:
       {
         *(SPVM_VALUE_float*)&args[0] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
       {
         *(SPVM_VALUE_double*)&args[0] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT:
@@ -1949,13 +1949,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         if (*(void**)&args[0] != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(void**)&args[0]);
         }
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_UNDEF:
       {
         *(void**)&args[0] = NULL;
-        opcode_index = opcode->operand1;
+        opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
@@ -1966,7 +1966,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         // 25 match3 offset3 // max
         
         // default offset
-        int32_t default_branch = opcode->operand1;
+        int32_t default_opcode_rel_index = opcode->operand1;
         
         // npare
         int32_t case_count = opcode->operand2;
@@ -1978,13 +1978,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         int32_t max = (opcode + 1 + case_count - 1)->operand0;
         
         if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
-          // 2 branch searching
+          // 2 opcode_rel_index searching
           int32_t cur_min_pos = 0;
           int32_t cur_max_pos = case_count - 1;
           
           while (1) {
             if (cur_max_pos < cur_min_pos) {
-              opcode_index = default_branch;
+              opcode_rel_index = default_opcode_rel_index;
               break;
             }
             int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
@@ -1997,14 +1997,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
               cur_max_pos = cur_half_pos - 1;
             }
             else {
-              int32_t branch = (opcode + 1 + cur_half_pos)->operand1;
-              opcode_index = branch;
+              opcode_rel_index = (opcode + 1 + cur_half_pos)->operand1;
               break;
             }
           }
         }
         else {
-          opcode_index = default_branch;
+          opcode_rel_index = default_opcode_rel_index;
         }
         
         continue;
@@ -2013,7 +2012,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         goto label_END_SUB;
       }
     }
-    opcode_index++;
+    opcode_rel_index++;
   }
 
   label_END_SUB:
