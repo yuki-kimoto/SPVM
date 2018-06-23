@@ -2371,13 +2371,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // 17 match2 offset2
         // 25 match3 offset3 // max
         
-        // default offset
-        int32_t default_opcode_rel_index = opcode->operand1;
-
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
         SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
         SPVM_LIST* op_cases = switch_info->op_cases_ordered;
+
+        // default offset
+        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
         
         // case count
         int32_t cases_length = op_cases->length;

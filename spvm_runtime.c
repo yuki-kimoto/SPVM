@@ -1961,13 +1961,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
 
-        // default offset
-        int32_t default_opcode_rel_index = opcode->operand1;
-
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
         SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
         SPVM_LIST* op_cases = switch_info->op_cases_ordered;
+        
+        // default offset
+        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
         
         // cases length
         int32_t cases_length = op_cases->length;
