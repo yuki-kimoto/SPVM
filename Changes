@@ -1,9 +1,9 @@
-0.0351 2018-06-18
+0.0351 2018-06-23
   - improve exception message
   - create_exception_stack_trace become receive package_name, sub_name, file instead of sub_id
   - LOOKUP_SWITCH opcode become 1 operation
   - opcode become 64bit from 128bit
-0.0350 2018-06-23
+0.0350 2018-06-22
   - improve solo SPVM tests command
       You can run solo tests by the following commands. This comands is wrote in solo/README
       
