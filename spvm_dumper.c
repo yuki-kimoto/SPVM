@@ -274,6 +274,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
       
       // Operand
       switch (opcode.id) {
+        /*
         case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
           printf(" ");
           
@@ -295,11 +296,10 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
           
           break;
         }
+        */
         default :
-        // Have seven operands
         {
-          printf(" %d %d %d\n",
-            opcode.operand0, opcode.operand1, opcode.operand2);
+          printf(" %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2);
           break;
         }
       }
