@@ -34,6 +34,7 @@
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_yacc_util.h"
+#include "spvm_case_info.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -1797,7 +1798,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t i;
                       for (i = 0; i < case_length; i++) {
                         SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
-                        SPVM_OP* op_constant = op_case->first;
+                        SPVM_OP* op_constant = op_case->uv.case_info->op_constant;
                         int32_t match = op_constant->uv.constant->value.ival;
 
                         int32_t case_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, i);
