@@ -4,6 +4,7 @@
 #include "spvm_base.h"
 
 struct SPVM_case_info {
+  SPVM_OP* op_term;
   SPVM_OP* op_constant;
   int32_t goto_opcode_rel_index;
 };

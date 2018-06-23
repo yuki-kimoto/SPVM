@@ -35,6 +35,7 @@
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_core_func_bind.h"
+#include "spvm_case_info.h"
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
@@ -716,9 +717,13 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
 
 SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case, SPVM_OP* op_term) {
   
-  SPVM_OP_insert_child(compiler, op_case, op_case->last, op_term);
+  SPVM_CASE_INFO* case_info = SPVM_CASE_INFO_new(compiler);
+  case_info->op_term = op_term;
   
+  SPVM_OP_insert_child(compiler, op_case, op_case->last, op_term);
   op_term->flag = SPVM_OP_C_FLAG_CONSTANT_CASE;
+  
+  op_case->uv.case_info = case_info;
   
   return op_case;
 }
