@@ -1720,16 +1720,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Switch opcode index
                     SPVM_LIST_push(switch_info_stack, switch_info);
                     
-                    // Match-Offsets
-                    {
-                      int32_t i;
-                      for (i = 0; i < cases_length; i++) {
-                        SPVM_OPCODE opcode_case;
-                        memset(&opcode_case, 0, sizeof(SPVM_OPCODE));
-                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case);
-                      }
-                    }
-                    
                     break;
                   }
                   case SPVM_OP_C_ID_SWITCH: {

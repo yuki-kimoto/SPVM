@@ -2365,12 +2365,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
-        // 1  default
-        // 5  npare
-        // 9  match1 offset1 // min
-        // 17 match2 offset2
-        // 25 match3 offset3 // max
-        
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
         SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
@@ -2403,9 +2397,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_rel_index);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
-        opcode_index += (1 + cases_length);
-        continue;
       }
     }
     opcode_index++;
