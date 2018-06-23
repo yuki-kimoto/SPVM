@@ -253,27 +253,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      int32_t min = INT32_MAX;
-                      int32_t max = INT32_MIN;
-                      {
-                        int32_t i;
-                        for (i = 0; i < length; i++) {
-                          SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
-                          SPVM_OP* op_constant = op_case->first;
-                          int32_t value = op_constant->uv.constant->value.ival;
-                          
-                          if (value < min) {
-                            min = value;
-                          }
-                          if (value > max) {
-                            max = value;
-                          }
-                        }
-                      }
-                      
                       switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-                      switch_info->min = min;
-                      switch_info->max = max;
                       
                       SPVM_LIST_pop(op_switch_stack);
 

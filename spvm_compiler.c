@@ -24,6 +24,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
 #include "spvm_op_checker.h"
+#include "spvm_opcode_builder.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -157,7 +158,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
-int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
+void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 
   // If this is set to 1, you can see yacc parsing result
 #ifdef SPVM_DEBUG_YACC
