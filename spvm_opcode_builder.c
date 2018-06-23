@@ -1742,8 +1742,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     int32_t default_goto_opcode_rel_index = switch_info->default_goto_opcode_rel_index;
                     SPVM_LIST* case_goto_opcode_rel_indexes = switch_info->case_goto_opcode_rel_indexes;
                     
-                    SPVM_LIST* ordered_case_goto_opcode_rel_indexes = SPVM_LIST_new(0);
-
                     // Default branch
                     if (!default_goto_opcode_rel_index) {
                       default_goto_opcode_rel_index = opcode_array->length - sub_opcode_base;
@@ -1764,7 +1762,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       for (i = 0; i < case_length; i++) {
                         SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases, i);
                         int32_t case_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(case_goto_opcode_rel_indexes, i);
-                        SPVM_LIST_push(ordered_case_goto_opcode_rel_indexes, (void*)(intptr_t)case_goto_opcode_rel_index);
                         op_case->uv.case_info->goto_opcode_rel_index = case_goto_opcode_rel_index;
                       }
                     }
@@ -1781,15 +1778,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             int32_t match_i = op_case_i->uv.case_info->op_constant->uv.constant->value.ival;
                             int32_t match_j = op_case_j->uv.case_info->op_constant->uv.constant->value.ival;
                             
-                            int32_t* case_goto_opcode_rel_index_i = SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, i);
-                            int32_t* case_goto_opcode_rel_index_j = SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, j);
-                            
                             if (match_i > match_j) {
                               SPVM_LIST_store(switch_info->op_cases_ordered, i, op_case_j);
                               SPVM_LIST_store(switch_info->op_cases_ordered, j, op_case_i);
-                              
-                              SPVM_LIST_store(ordered_case_goto_opcode_rel_indexes, i, case_goto_opcode_rel_index_j);
-                              SPVM_LIST_store(ordered_case_goto_opcode_rel_indexes, j, case_goto_opcode_rel_index_i);
                             }
                           }
                         }
@@ -1817,8 +1808,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Branch
                         opcode_case->operand1 = case_goto_opcode_rel_index;
                       }
-
-                      SPVM_LIST_free(ordered_case_goto_opcode_rel_indexes);
                     }
                     
                     // Set last position
