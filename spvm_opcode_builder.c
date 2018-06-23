@@ -33,6 +33,7 @@
 #include "spvm_opcode.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_yacc_util.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -155,6 +156,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           int32_t mortal_stack_max = 0;
           
           while (op_cur) {
+            int32_t opcode_length = opcode_array->length - sub->opcode_base;
+            if (opcode_length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+              SPVM_yyerror_format(compiler, "Too many opcode", op_cur->file, op_cur->line);
+            }
+            
             // [START]Preorder traversal position
             switch (op_cur->id) {
               case SPVM_OP_C_ID_BLOCK: { // Preorder
@@ -2774,6 +2780,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
           sub->opcode_length = opcode_array->length - sub->opcode_base;
+          
           sub->mortal_stack_max = mortal_stack_max;
           
           // Free list
