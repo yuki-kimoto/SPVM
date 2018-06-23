@@ -9,7 +9,6 @@ SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   
   switch_info->op_cases = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   switch_info->op_cases_ordered = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  switch_info->case_opcode_rel_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return switch_info;
 }
