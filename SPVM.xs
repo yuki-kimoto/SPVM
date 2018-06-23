@@ -994,15 +994,7 @@ compile_spvm(...)
     sv_compile_success = sv_2mortal(newSViv(0));
   }
   else {
-    // Build opcode
-    SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-
-    if (compiler->error_count > 0) {
-      sv_compile_success = sv_2mortal(newSViv(0));
-    }
-    else {
-      sv_compile_success = sv_2mortal(newSViv(1));
-    }
+    sv_compile_success = sv_2mortal(newSViv(1));
   }
 
   XPUSHs(sv_compile_success);

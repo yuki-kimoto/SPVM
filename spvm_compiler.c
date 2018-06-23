@@ -171,6 +171,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 
   // Check syntax
   SPVM_OP_CHECKER_check(compiler);
+
+  // Build bytecode
+  if (compiler->error_count == 0) {
+    SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+  }
   
   if (parse_success) {
     return 1;

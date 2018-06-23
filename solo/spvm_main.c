@@ -60,9 +60,6 @@ int main(int argc, char *argv[])
     exit(1);
   }
   
-  // Build bytecode
-  SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
   compiler->runtime = runtime;
