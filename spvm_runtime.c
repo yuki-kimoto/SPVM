@@ -1964,18 +1964,20 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         int32_t default_opcode_rel_index = opcode->operand1;
         
         // npare
-        int32_t case_length = opcode->operand2;
+        int32_t cases_length = opcode->operand2 & 0xFFFF;
+        
+        int32_t rel_id = opcode->operand2 >> 16;
         
         // min
         int32_t min = (opcode + 1)->operand0;
         
         // max
-        int32_t max = (opcode + 1 + case_length - 1)->operand0;
+        int32_t max = (opcode + 1 + cases_length - 1)->operand0;
         
         if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
           // 2 opcode_rel_index searching
           int32_t cur_min_pos = 0;
-          int32_t cur_max_pos = case_length - 1;
+          int32_t cur_max_pos = cases_length - 1;
           
           while (1) {
             if (cur_max_pos < cur_min_pos) {

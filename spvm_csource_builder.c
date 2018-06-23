@@ -2373,14 +2373,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t default_branch = opcode->operand1;
         
         // case count
-        int32_t case_count = opcode->operand2;
+        int32_t cases_length = opcode->operand2 & 0xFFFF;
+
+        int32_t rel_id = opcode->operand2 >> 16;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         {
           int32_t case_index;
-          for (case_index = 0; case_index < case_count; case_index++) {
+          for (case_index = 0; case_index < cases_length; case_index++) {
             int32_t match = (opcode + 1 + case_index)->operand0;
             int32_t branch = (opcode + 1 + case_index)->operand1;
             
@@ -2396,7 +2398,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
-        opcode_index += (1 + case_count);
+        opcode_index += (1 + cases_length);
         continue;
       }
     }
