@@ -1762,8 +1762,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     {
                       int32_t i;
                       for (i = 0; i < case_length; i++) {
+                        SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases, i);
                         int32_t case_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(case_goto_opcode_rel_indexes, i);
                         SPVM_LIST_push(ordered_case_goto_opcode_rel_indexes, (void*)(intptr_t)case_goto_opcode_rel_index);
+                        op_case->uv.case_info->goto_opcode_rel_index = case_goto_opcode_rel_index;
                       }
                     }
                     
@@ -1796,12 +1798,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     {
                       int32_t i;
-                      for (i = 0; i < case_length; i++) {
+                      for (i = 0; i < switch_info->op_cases_ordered->length; i++) {
                         SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
-                        SPVM_OP* op_constant = op_case->uv.case_info->op_constant;
+                        SPVM_CASE_INFO* case_info = op_case->uv.case_info;
+                        
+                        SPVM_OP* op_constant = case_info->op_constant;
                         int32_t match = op_constant->uv.constant->value.ival;
 
-                        int32_t case_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, i);
+                        int32_t case_goto_opcode_rel_index = case_info->goto_opcode_rel_index;
                         
                         SPVM_OPCODE* opcode_case = (opcode_array->values + sub_opcode_base + switch_opcode_rel_index + 1 + i);
                         
