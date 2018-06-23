@@ -1826,6 +1826,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     if (switch_info_stack->length > 0) {
                       SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
                       int32_t opcode_rel_index = opcode_array->length - sub_opcode_base;
+                      op_cur->uv.case_info->opcode_rel_index = opcode_rel_index;
                       
                       SPVM_LIST_push(switch_info->case_opcode_rel_indexes, (void*)(intptr_t)opcode_rel_index);
                     }
