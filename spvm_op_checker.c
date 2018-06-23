@@ -287,7 +287,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       switch_info->max = max;
                       
                       SPVM_LIST_pop(op_switch_stack);
-                      
+
+                      if (package->op_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.switch_info->rel_id = package->op_switch_infos->length;
+                      SPVM_LIST_push(package->op_switch_infos, op_cur);
+                    
                       break;
                     }
                     case SPVM_OP_C_ID_CASE: {
