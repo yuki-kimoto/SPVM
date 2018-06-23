@@ -37,7 +37,7 @@
 #include "spvm_call_sub.h"
 #include "spvm_constant.h"
 #include "spvm_switch_info.h"
-
+#include "spvm_case_info.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   
@@ -1973,12 +1973,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
           SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
           SPVM_LIST* op_cases = switch_info->op_cases_ordered;
+          SPVM_OP* op_case_min = SPVM_LIST_fetch(op_cases, 0);
+          SPVM_OP* op_case_max = SPVM_LIST_fetch(op_cases, op_cases->length - 1);
           
           // min
-          int32_t min = (opcode + 1)->operand0;
+          int32_t min = op_case_min->uv.case_info->op_constant->uv.constant->value.ival;
           
           // max
-          int32_t max = (opcode + 1 + cases_length - 1)->operand0;
+          int32_t max = op_case_max->uv.case_info->op_constant->uv.constant->value.ival;
           
           if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
