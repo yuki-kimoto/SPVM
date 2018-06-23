@@ -1047,22 +1047,22 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_complement(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_BYTE:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_byte", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_SHORT:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_short", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_INT:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_int", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_LONG:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_long", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_FLOAT:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_float", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_INC_DOUBLE:
-        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_add_inc(string_buffer, "SPVM_VALUE_double", opcode->operand0, (int16_t)opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE:
         SPVM_CSOURCE_BUILDER_add_convert(string_buffer, "SPVM_VALUE_byte", "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);

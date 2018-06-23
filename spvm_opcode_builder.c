@@ -2065,10 +2065,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand0 = my->index;
                     
                     if (op_cur->id == SPVM_OP_C_ID_INC) {
-                      opcode.operand1 = 1;
+                      opcode.operand1 = (int16_t)1;
                     }
                     else if (op_cur->id == SPVM_OP_C_ID_DEC) {
-                      opcode.operand1 = -1;
+                      opcode.operand1 = (int16_t)-1;
                     }
                     else {
                       assert(0);
