@@ -167,21 +167,19 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 #endif
   
   /* call SPVM_yyparse */
-  int32_t parse_success = SPVM_yyparse(compiler);
-
-  // Check syntax
-  SPVM_OP_CHECKER_check(compiler);
-
-  // Build bytecode
-  if (compiler->error_count == 0) {
-    SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+  int32_t parse_error_flag = SPVM_yyparse(compiler);
+  if (parse_error_flag) {
+    compiler->error_count++;
   }
   
-  if (parse_success) {
-    return 1;
-  }
-  else {
-    return 0;
+  if (compiler->error_count == 0) {
+    // Check syntax
+    SPVM_OP_CHECKER_check(compiler);
+
+    // Build bytecode
+    if (compiler->error_count == 0) {
+      SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+    }
   }
 }
 
