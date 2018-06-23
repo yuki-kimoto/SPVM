@@ -1959,12 +1959,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         continue;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
-        // 0  default
-        // 5  case length
-        // 9  match1 offset1 // min
-        // 17 match2 offset2
-        // 25 match3 offset3 // max
-        
+
         // default offset
         int32_t default_opcode_rel_index = opcode->operand1;
         
