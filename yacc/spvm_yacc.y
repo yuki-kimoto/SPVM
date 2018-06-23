@@ -60,10 +60,7 @@ grammar
       // Check syntax
       SPVM_OP_CHECKER_check(compiler);
       
-      // Syntax error
-      if (compiler->error_count) {
-        YYABORT;
-      }
+
     }
 
 opt_declarations_in_grammar
