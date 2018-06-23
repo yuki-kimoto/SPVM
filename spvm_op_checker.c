@@ -276,9 +276,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                         
                         if (switch_info->op_default) {
-                          SPVM_yyerror_format(compiler, "multiple default is forbidden at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                          SPVM_yyerror_format(compiler, "Duplicate default statement at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         else {
                           switch_info->op_default = op_cur;
