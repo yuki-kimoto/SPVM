@@ -1776,8 +1776,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           for (j = i + 1; j < case_length; j++) {
                             SPVM_OP* op_case_i = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
                             SPVM_OP* op_case_j = SPVM_LIST_fetch(switch_info->op_cases_ordered, j);
-                            int32_t match_i = op_case_i->first->uv.constant->value.ival;
-                            int32_t match_j = op_case_j->first->uv.constant->value.ival;
+                            int32_t match_i = op_case_i->uv.case_info->op_constant->uv.constant->value.ival;
+                            int32_t match_j = op_case_j->uv.case_info->op_constant->uv.constant->value.ival;
                             
                             int32_t* case_goto_opcode_rel_index_i = SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, i);
                             int32_t* case_goto_opcode_rel_index_j = SPVM_LIST_fetch(ordered_case_goto_opcode_rel_indexes, j);
