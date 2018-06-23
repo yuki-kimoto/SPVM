@@ -259,8 +259,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "SET_FIELD_UNDEF",
   "IF_EQ_ZERO",
   "IF_NE_ZERO",
-  "TABLE_SWITCH",
-  "TABLE_SWITCH_RANGE",
   "LOOKUP_SWITCH",
   "GOTO",
   "CALL_SUB",

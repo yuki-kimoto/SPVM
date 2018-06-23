@@ -1958,26 +1958,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         opcode_index = opcode->operand1;
         continue;
       }
-      case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
-        // default offset
-        int32_t default_offset = opcode->operand1;
-        
-        // min
-        int32_t min = (opcode + 1)->operand0;
-        
-        // max
-        int32_t max = (opcode + 1)->operand1;
-        
-        if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
-          int32_t branch_offset = (opcode + 2 + *(SPVM_VALUE_int*)&vars[opcode->operand0] - min)->operand1;
-          opcode_index = branch_offset;
-        }
-        else {
-          opcode_index = default_offset;
-        }
-        
-        continue;
-      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         // 1  default
         // 5  npare

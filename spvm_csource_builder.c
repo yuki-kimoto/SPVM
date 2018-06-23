@@ -2362,46 +2362,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
-        // 1  default
-        // 5  npare
-        // 9  match1 offset1 // min
-        // 17 match2 offset2
-        // 25 match3 offset3 // max
-        
-        // default offset
-        int32_t default_branch = opcode->operand1;
-        
-        int32_t min = (opcode + 1)->operand0;
-        
-        int32_t max = (opcode + 1)->operand1;
-        
-        // case count
-        int32_t length = max - min + 1;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-        {
-          int32_t case_index;
-          for (case_index = 0; case_index < length; case_index++) {
-            int32_t branch = (opcode + 2 + case_index)->operand1;
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "    case ");
-            SPVM_STRING_BUFFER_add_int(string_buffer, min + case_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-            SPVM_STRING_BUFFER_add_int(string_buffer, branch);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-          }
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, default_branch);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
-        opcode_index += (2 + length);
-        continue;
-      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         // 1  default
         // 5  npare

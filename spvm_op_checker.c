@@ -271,18 +271,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      // tableswitch if the following. SWITCHRTIO is 1.5 by default
-                      // 4 + range <= (3 + 2 * length) * SWITCHRTIO
-                      double range = (double) max - (double) min;
-                      int32_t id;
-                      if (4.0 + range <= (3.0 + 2.0 * (double) length) * 1.5) {
-                        id = SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH;
-                      }
-                      else {
-                        id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-                      }
-                      
-                      switch_info->id = id;
+                      switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
                       switch_info->min = min;
                       switch_info->max = max;
                       
