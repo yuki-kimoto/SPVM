@@ -205,6 +205,7 @@ struct SPVM_op {
     SPVM_PACKAGE* package;
     SPVM_ENUMERATION* enumeration;
     SPVM_SWITCH_INFO* switch_info;
+    SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
     SPVM_CALL_SUB* call_sub;
     SPVM_FIELD_ACCESS* field_access;

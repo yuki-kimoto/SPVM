@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_case_info.h
+struct SPVM_case_info;
+typedef struct SPVM_case_info SPVM_CASE_INFO;
+
 // spvm_basic_type.h
 struct SPVM_basic_type;
 typedef struct SPVM_basic_type SPVM_BASIC_TYPE;
