@@ -266,6 +266,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (op_switch_stack->length > 0) {
                         SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
                         SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+                        op_cur->uv.case_info->index = switch_info->op_cases->length;
                         SPVM_LIST_push(switch_info->op_cases, op_cur);
                       }
                       break;
