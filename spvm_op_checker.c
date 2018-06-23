@@ -31,6 +31,7 @@
 #include "spvm_package_var_access.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_case_info.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
@@ -221,7 +222,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Check type
                       if (!term_type || !(term_type->dimension == 0 && term_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
-                        SPVM_yyerror_format(compiler, "Switch condition need int value at %s line %d\n", op_cur->file, op_cur->line);
+                        SPVM_yyerror_format(compiler, "Switch condition must be int value at %s line %d\n", op_cur->file, op_cur->line);
                         
                         return;
                       }
@@ -238,18 +239,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_OP* op_constant = op_case->first;
 
                           if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
-                            SPVM_yyerror_format(compiler, "case need constant at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
+                            SPVM_yyerror_format(compiler, "case value must be constant at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           
                           SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
-                          
-                          if (!(case_value_type->basic_type->id == term_type->basic_type->id && case_value_type->dimension == term_type->dimension)) {
-                            SPVM_yyerror_format(compiler, "case value type must be same as switch condition value type at %s line %d\n", op_case->file, op_case->line);
-                            
-                            return;
+                          if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
+                            SPVM_yyerror_format(compiler, "case value must be int constant at %s line %d\n", op_case->file, op_case->line);
                           }
+                          op_case->uv.case_info->op_constant = op_constant;
                         }
                       }
                       
