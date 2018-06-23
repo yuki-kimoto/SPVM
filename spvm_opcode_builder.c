@@ -1712,7 +1712,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode_switch_info.operand1 = 0;
                     
                     // Case count
-                    int32_t case_length = switch_info->op_cases->length;
+                    int32_t cases_length = switch_info->op_cases->length;
                     opcode_switch_info.operand2 = switch_info->rel_id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
@@ -1723,7 +1723,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Match-Offsets
                     {
                       int32_t i;
-                      for (i = 0; i < case_length; i++) {
+                      for (i = 0; i < cases_length; i++) {
                         SPVM_OPCODE opcode_case;
                         memset(&opcode_case, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_case);
@@ -1737,11 +1737,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Pop switch information
                     SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
                     
-                    int32_t case_length = (int32_t) switch_info->op_cases->length;
+                    int32_t cases_length = (int32_t) switch_info->op_cases->length;
                     
                     {
                       int32_t i;
-                      for (i = 0; i < case_length; i++) {
+                      for (i = 0; i < cases_length; i++) {
                         SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases, i);
                         SPVM_LIST_push(switch_info->op_cases_ordered, op_case);
                       }
@@ -1749,10 +1749,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // sort by asc order
                     {
                       int32_t i;
-                      for (i = 0; i < case_length; i++) {
+                      for (i = 0; i < cases_length; i++) {
                         int32_t j;
                         {
-                          for (j = i + 1; j < case_length; j++) {
+                          for (j = i + 1; j < cases_length; j++) {
                             SPVM_OP* op_case_i = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
                             SPVM_OP* op_case_j = SPVM_LIST_fetch(switch_info->op_cases_ordered, j);
                             int32_t match_i = op_case_i->uv.case_info->op_constant->uv.constant->value.ival;
