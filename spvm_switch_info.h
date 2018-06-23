@@ -15,8 +15,8 @@ struct SPVM_switch_info {
   SPVM_OP* op_default;
   int32_t id;
   int32_t opcode_rel_index;
-  int32_t default_goto_opcode_rel_index;
-  SPVM_LIST* case_goto_opcode_rel_indexes;
+  int32_t default_opcode_rel_index;
+  SPVM_LIST* case_opcode_rel_indexes;
   int32_t rel_id;
 };
 

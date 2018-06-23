@@ -1739,14 +1739,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Pop switch information
                     SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
                     int32_t switch_opcode_rel_index = switch_info->opcode_rel_index;
-                    int32_t default_goto_opcode_rel_index = switch_info->default_goto_opcode_rel_index;
-                    SPVM_LIST* case_goto_opcode_rel_indexes = switch_info->case_goto_opcode_rel_indexes;
+                    int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+                    SPVM_LIST* case_opcode_rel_indexes = switch_info->case_opcode_rel_indexes;
                     
                     // Default branch
-                    if (!default_goto_opcode_rel_index) {
-                      default_goto_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                    if (!default_opcode_rel_index) {
+                      default_opcode_rel_index = opcode_array->length - sub_opcode_base;
                     }
-                    (opcode_array->values + sub_opcode_base + switch_opcode_rel_index)->operand1 = default_goto_opcode_rel_index;
+                    (opcode_array->values + sub_opcode_base + switch_opcode_rel_index)->operand1 = default_opcode_rel_index;
                     
                     int32_t case_length = (int32_t) switch_info->op_cases->length;
                     
@@ -1761,8 +1761,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t i;
                       for (i = 0; i < case_length; i++) {
                         SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases, i);
-                        int32_t case_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(case_goto_opcode_rel_indexes, i);
-                        op_case->uv.case_info->goto_opcode_rel_index = case_goto_opcode_rel_index;
+                        int32_t case_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(case_opcode_rel_indexes, i);
+                        op_case->uv.case_info->opcode_rel_index = case_opcode_rel_index;
                       }
                     }
                     
@@ -1796,7 +1796,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_constant = case_info->op_constant;
                         int32_t match = op_constant->uv.constant->value.ival;
 
-                        int32_t case_goto_opcode_rel_index = case_info->goto_opcode_rel_index;
+                        int32_t case_opcode_rel_index = case_info->opcode_rel_index;
                         
                         SPVM_OPCODE* opcode_case = (opcode_array->values + sub_opcode_base + switch_opcode_rel_index + 1 + i);
                         
@@ -1806,7 +1806,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode_case->operand0 = match;
 
                         // Branch
-                        opcode_case->operand1 = case_goto_opcode_rel_index;
+                        opcode_case->operand1 = case_opcode_rel_index;
                       }
                     }
                     
@@ -1827,14 +1827,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
                       int32_t opcode_rel_index = opcode_array->length - sub_opcode_base;
                       
-                      SPVM_LIST_push(switch_info->case_goto_opcode_rel_indexes, (void*)(intptr_t)opcode_rel_index);
+                      SPVM_LIST_push(switch_info->case_opcode_rel_indexes, (void*)(intptr_t)opcode_rel_index);
                     }
                     break;
                   }
                   case SPVM_OP_C_ID_DEFAULT: {
                     if (switch_info_stack->length > 0) {
                       SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
-                      switch_info->default_goto_opcode_rel_index = opcode_array->length - sub_opcode_base;
+                      switch_info->default_opcode_rel_index = opcode_array->length - sub_opcode_base;
                     }
                     break;
                   }
