@@ -35,6 +35,8 @@
 #include "spvm_package_var_access.h"
 #include "spvm_field_access.h"
 #include "spvm_call_sub.h"
+#include "spvm_switch_info.h"
+#include "spvm_case_info.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -2371,11 +2373,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // default offset
         int32_t default_branch = opcode->operand1;
+
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
+        SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
+        SPVM_LIST* op_cases = switch_info->op_cases_ordered;
         
         // case count
-        int32_t cases_length = opcode->operand2 & 0xFFFF;
-
-        int32_t rel_id = opcode->operand2 >> 16;
+        int32_t cases_length = op_cases->length;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);

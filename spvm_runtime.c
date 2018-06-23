@@ -1963,16 +1963,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
         // default offset
         int32_t default_opcode_rel_index = opcode->operand1;
+
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
+        SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
+        SPVM_LIST* op_cases = switch_info->op_cases_ordered;
         
-        // npare
-        int32_t cases_length = opcode->operand2 & 0xFFFF;
+        // cases length
+        int32_t cases_length = op_cases->length;
         
         if (cases_length > 0) {
-          int32_t rel_id = opcode->operand2 >> 16;
           
-          SPVM_OP* op_switch_info = SPVM_LIST_fetch(package->op_switch_infos, rel_id);
-          SPVM_SWITCH_INFO* switch_info = op_switch_info->uv.switch_info;
-          SPVM_LIST* op_cases = switch_info->op_cases_ordered;
           SPVM_OP* op_case_min = SPVM_LIST_fetch(op_cases, 0);
           SPVM_OP* op_case_max = SPVM_LIST_fetch(op_cases, op_cases->length - 1);
           
