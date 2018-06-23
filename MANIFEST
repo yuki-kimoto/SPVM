@@ -66,6 +66,8 @@ spvm_block.h
 spvm_build/.gitkeep
 spvm_call_sub.c
 spvm_call_sub.h
+spvm_case_info.c
+spvm_case_info.h
 spvm_compiler.c
 spvm_compiler.h
 spvm_compiler_allocator.c
