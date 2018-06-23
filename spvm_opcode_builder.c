@@ -1718,8 +1718,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                     
                     // Switch opcode index
-                    int32_t switch_opcode_rel_index = opcode_array->length - 1 - sub_opcode_base;
-                    switch_info->opcode_rel_index = switch_opcode_rel_index;
                     SPVM_LIST_push(switch_info_stack, switch_info);
                     
                     // Match-Offsets
@@ -1738,14 +1736,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     // Pop switch information
                     SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
-                    int32_t switch_opcode_rel_index = switch_info->opcode_rel_index;
-                    int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
-                    
-                    // Default branch
-                    if (!default_opcode_rel_index) {
-                      default_opcode_rel_index = opcode_array->length - sub_opcode_base;
-                    }
-                    (opcode_array->values + sub_opcode_base + switch_opcode_rel_index)->operand1 = default_opcode_rel_index;
                     
                     int32_t case_length = (int32_t) switch_info->op_cases->length;
                     
@@ -1774,29 +1764,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
                         }
-                      }
-                    }
-                    
-                    {
-                      int32_t i;
-                      for (i = 0; i < switch_info->op_cases_ordered->length; i++) {
-                        SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
-                        SPVM_CASE_INFO* case_info = op_case->uv.case_info;
-                        
-                        SPVM_OP* op_constant = case_info->op_constant;
-                        int32_t match = op_constant->uv.constant->value.ival;
-
-                        int32_t case_opcode_rel_index = case_info->opcode_rel_index;
-                        
-                        SPVM_OPCODE* opcode_case = (opcode_array->values + sub_opcode_base + switch_opcode_rel_index + 1 + i);
-                        
-                        opcode_case->id = SPVM_OPCODE_C_ID_CASE;
-                        
-                        // Match
-                        opcode_case->operand0 = match;
-
-                        // Branch
-                        opcode_case->operand1 = case_opcode_rel_index;
                       }
                     }
                     
