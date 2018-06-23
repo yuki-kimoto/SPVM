@@ -23,6 +23,7 @@
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
+#include "spvm_op_checker.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -167,8 +168,16 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   /* call SPVM_yyparse */
   int32_t parse_success = SPVM_yyparse(compiler);
+
+  // Check syntax
+  SPVM_OP_CHECKER_check(compiler);
   
-  return parse_success;
+  if (parse_success) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
