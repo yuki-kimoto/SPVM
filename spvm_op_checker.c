@@ -2016,6 +2016,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 case SPVM_OP_C_ID_BLOCK: {
                   // Push block
                   SPVM_LIST_push(op_block_stack, op_cur);
+                  
                   break;
                 }
               }
@@ -2027,9 +2028,35 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 while (1) {
                   // [START]Postorder traversal position
                   switch (op_cur->id) {
-                    case SPVM_OP_C_ID_BLOCK:
+                    case SPVM_OP_C_ID_BLOCK: {
+                      SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+
                       SPVM_LIST_pop(op_block_stack);
+                      
+                      // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+                      if (op_block_stack->length > 0) {
+                        SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                        if (!op_block_parent->uv.block->have_object_var_decl) {
+                          if (op_block_current->uv.block->have_object_var_decl) {
+                            op_block_parent->uv.block->have_object_var_decl = 1;
+                          }
+                        }
+                      }
+                    
                       break;
+                    }
+                    case SPVM_OP_C_ID_MY: {
+                      SPVM_MY* my = op_cur->uv.my;
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                      
+                      if (SPVM_TYPE_is_object(compiler, type)) {
+                        SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                        op_block_current->uv.block->have_object_var_decl = 1;
+                      }
+                      
+                      break;
+                    }
                   }
 
                   if (op_cur == op_base) {

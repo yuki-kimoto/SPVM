@@ -1954,16 +1954,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_LIST_pop(op_block_stack);
 
-                    // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
-                    if (op_block_stack->length > 0) {
-                      SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                      if (!op_block_parent->uv.block->have_object_var_decl) {
-                        if (op_block_current->uv.block->have_object_var_decl) {
-                          op_block_parent->uv.block->have_object_var_decl = 1;
-                        }
-                      }
-                    }
-                    
                     break;
                   }
                   case SPVM_OP_C_ID_LOOP_INCREMENT: {
