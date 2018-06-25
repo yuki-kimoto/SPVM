@@ -24,7 +24,7 @@ GetOptions(
 
 # Add -
 if ($optimize) {
-  $optimize = "-$optimize";
+  $optimize = "$optimize";
 }
 
 # SPVM only support 64bit integer Perl
