@@ -636,7 +636,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE mortal_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_max);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = -1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   }
   
   // Call subroutine argument stack top
@@ -1439,23 +1439,23 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n");
         break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  mortal_stack_top++;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  *(int32_t*)&mortal_stack[mortal_stack_top] = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  mortal_stack_top++;\n");
         break;
       }
 
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        int32_t mortal_stack_current_base = (opcode->operand0 << 16) + opcode->operand1;
+        int32_t original_mortal_stack_top = (opcode->operand0 << 16) + opcode->operand1;
         if (sub->mortal_stack_max > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t mortal_stack_current_base = ");
-          SPVM_STRING_BUFFER_add_int(string_buffer, mortal_stack_current_base);
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t original_mortal_stack_top = ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_var_index_index;\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      for (object_var_index_index = mortal_stack_current_base; object_var_index_index <= mortal_stack_top; object_var_index_index++) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      for (object_var_index_index = original_mortal_stack_top; object_var_index_index < mortal_stack_top; object_var_index_index++) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = *(int32_t*)&mortal_stack[object_var_index_index];\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        if (*(void**)&vars[var_index] != NULL) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&vars[var_index]); }\n");
@@ -1464,7 +1464,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    mortal_stack_top = mortal_stack_current_base - 1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    mortal_stack_top = original_mortal_stack_top;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
         break;
