@@ -136,7 +136,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
   // Mortal stack
   SPVM_VALUE* mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->mortal_stack_max + 1));
-  int32_t mortal_stack_top = -1;
+  int32_t mortal_stack_top = 0;
 
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
@@ -1107,15 +1107,15 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
         break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        mortal_stack_top++;
         *(int32_t*)&mortal_stack[mortal_stack_top] = opcode->operand0;
+        mortal_stack_top++;
         
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        int32_t mortal_stack_current_base = (opcode->operand0 << 16) + opcode->operand1;
+        int32_t original_mortal_stack_top = (opcode->operand0 << 16) + opcode->operand1;
         int32_t object_var_index_index;
-        for (object_var_index_index = mortal_stack_current_base; object_var_index_index <= mortal_stack_top; object_var_index_index++) {
+        for (object_var_index_index = original_mortal_stack_top; object_var_index_index < mortal_stack_top; object_var_index_index++) {
           int32_t var_index = mortal_stack[object_var_index_index].ival;
           
           if (*(void**)&vars[var_index] != NULL) {
@@ -1126,7 +1126,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           *(void**)&vars[var_index] = NULL;
         }
         
-        mortal_stack_top = mortal_stack_current_base - 1;
+        mortal_stack_top = original_mortal_stack_top;
         
         break;
       }

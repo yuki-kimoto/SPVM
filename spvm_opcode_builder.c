@@ -129,7 +129,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST* mortal_stack = SPVM_LIST_new(0);
           
           // Mortal variable base stack
-          SPVM_LIST* mortal_base_stack = SPVM_LIST_new(0);
+          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(0);
 
           SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
           SPVM_SUB* sub = op_sub->uv.sub;
@@ -186,8 +186,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_LIST_push(push_eval_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 }
                 
-                int32_t mortal_base = mortal_stack->length;
-                SPVM_LIST_push(mortal_base_stack, (void*)(intptr_t)mortal_base);
+                int32_t mortal_top = mortal_stack->length;
+                SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
               }
             }
             
@@ -1934,20 +1934,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     
                     // Leave scope
-                    int32_t mortal_base = (intptr_t)SPVM_LIST_pop(mortal_base_stack);
+                    int32_t mortal_top = (intptr_t)SPVM_LIST_pop(mortal_top_stack);
 
                     SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                     
                     if (op_block_current->uv.block->have_object_var_decl) {
-                      while (mortal_stack->length > mortal_base) {
+                      while (mortal_stack->length > mortal_top) {
                         SPVM_LIST_pop(mortal_stack);
                       }
                       
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       opcode.id = SPVM_OPCODE_C_ID_LEAVE_SCOPE;
-                      opcode.operand0 = mortal_base >> 16;
-                      opcode.operand1 = mortal_base & 0xFFFF;
+                      opcode.operand0 = mortal_top >> 16;
+                      opcode.operand1 = mortal_top & 0xFFFF;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
@@ -2627,7 +2627,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(switch_info_stack);
           SPVM_LIST_free(op_block_stack);
           SPVM_LIST_free(mortal_stack);
-          SPVM_LIST_free(mortal_base_stack);
+          SPVM_LIST_free(mortal_top_stack);
         }
       }
     }
