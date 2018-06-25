@@ -132,9 +132,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   int32_t sub_opcode_base = sub->opcode_base;
   
   // Variables
-  SPVM_VALUE* vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * sub->op_mys->length + 1);
+  SPVM_VALUE* vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->op_mys->length + 1));
 
-  // Auto decrement reference count variable index stack top
+  // Mortal stack
   SPVM_VALUE* mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->mortal_stack_max + 1));
   int32_t mortal_stack_top = -1;
 
