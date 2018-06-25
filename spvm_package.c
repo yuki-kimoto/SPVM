@@ -34,9 +34,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->object_field_rel_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
-  package->symbol_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->symbol_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-
   package->op_package_var_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_field_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

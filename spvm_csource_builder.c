@@ -610,9 +610,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   
-  // Symbol table symtable
-  SPVM_HASH* symbol_name_symtable = package->symbol_name_symtable;
-  
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   

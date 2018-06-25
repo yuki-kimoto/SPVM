@@ -116,7 +116,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   
   SPVM_OP* op_package = sub->op_package;
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_HASH* symbol_name_symtable = package->symbol_name_symtable;
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;

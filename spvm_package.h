@@ -29,8 +29,6 @@ struct SPVM_package {
   _Bool is_private;
   _Bool is_anon;
   int32_t category;
-  SPVM_LIST* symbol_names;
-  SPVM_HASH* symbol_name_symtable;
   SPVM_LIST* op_package_var_accesses;
   SPVM_LIST* op_field_accesses;
   SPVM_LIST* op_types;
