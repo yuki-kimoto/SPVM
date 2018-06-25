@@ -39,30 +39,6 @@
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
 
-SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
-  
-  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
-  
-  SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();
-  
-  runtime->env = env;
-
-  runtime->compiler = compiler;
-  
-  // Set global runtime
-  SPVM_RUNTIME_API_set_runtime(env, runtime);
-  
-  // Initialize Package Variables
-  runtime->package_var_accesss = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->op_package_vars->length + 1));
-
-  // Arguments
-  runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
-  
-  runtime->mortal_stack_top = -1;
-  
-  return runtime;
-}
-
 int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   (void)env;
   

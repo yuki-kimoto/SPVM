@@ -1016,7 +1016,7 @@ build_runtime(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new(compiler);
+  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
   compiler->runtime = runtime;
   
   // Set ENV

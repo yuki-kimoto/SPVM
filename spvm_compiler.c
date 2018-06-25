@@ -66,6 +66,30 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
+SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+  
+  SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();
+  
+  runtime->env = env;
+
+  runtime->compiler = compiler;
+  
+  // Set global runtime
+  SPVM_RUNTIME_API_set_runtime(env, runtime);
+  
+  // Initialize Package Variables
+  runtime->package_var_accesss = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->op_package_vars->length + 1));
+
+  // Arguments
+  runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
+  
+  runtime->mortal_stack_top = -1;
+  
+  return runtime;
+}
+
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   // Add unknown basic_type
   {
