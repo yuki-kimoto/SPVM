@@ -124,29 +124,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               // [START]Preorder traversal position
               
               switch (op_cur->id) {
-                case SPVM_OP_C_ID_NEW: {
-                  // If new package { ... } syntax, replace package to type
-                  if (op_cur->first->id == SPVM_OP_C_ID_PACKAGE) {
-                    SPVM_OP* op_package = op_cur->first;
-                    SPVM_PACKAGE* package = op_package->uv.package;
-
-                    SPVM_TYPE* type = package->op_type->uv.type;
-                    
-                    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_package->file, op_package->line);
-                    op_type->uv.type = type;
-                    
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
-                    SPVM_OP_replace_op(compiler, op_stab, op_type);
-                  }
-                  
-                  break;
-                }
-                case SPVM_OP_C_ID_SWITCH: {
-                  SPVM_LIST_push(op_switch_stack, op_cur);
-                  break;
-                }
                 // Start scope
                 case SPVM_OP_C_ID_BLOCK: {
+
+                  // Push block
+                  SPVM_LIST_push(op_block_stack, op_cur);
                   
                   int32_t block_my_base = op_my_stack->length;
                   SPVM_LIST_push(block_my_base_stack, (void*)(intptr_t)block_my_base);
@@ -160,6 +142,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (eval_block_stack_length > sub->eval_stack_max_length) {
                       sub->eval_stack_max_length = eval_block_stack_length;
                     }
+                  }
+                  
+                  break;
+                }
+                case SPVM_OP_C_ID_SWITCH: {
+                  SPVM_LIST_push(op_switch_stack, op_cur);
+                  break;
+                }
+                case SPVM_OP_C_ID_NEW: {
+                  // If new package { ... } syntax, replace package to type
+                  if (op_cur->first->id == SPVM_OP_C_ID_PACKAGE) {
+                    SPVM_OP* op_package = op_cur->first;
+                    SPVM_PACKAGE* package = op_package->uv.package;
+
+                    SPVM_TYPE* type = package->op_type->uv.type;
+                    
+                    SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_package->file, op_package->line);
+                    op_type->uv.type = type;
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
+                    SPVM_OP_replace_op(compiler, op_stab, op_type);
                   }
                   
                   break;
@@ -1540,6 +1543,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                         eval_block_stack_length--;
                       }
+
+                      SPVM_LIST_pop(op_block_stack);
                       
                       break;
                     }
