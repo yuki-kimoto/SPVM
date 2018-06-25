@@ -53,6 +53,8 @@ struct SPVM_runtime {
   
   SPVM_VALUE* args;
   
+  int32_t mortal_stack_top;
+  
   int32_t objects_count;
 };
 

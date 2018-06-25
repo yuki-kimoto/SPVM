@@ -58,6 +58,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new(SPVM_COMPILER* compiler) {
   // Arguments
   runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
   
+  runtime->mortal_stack_top = -1;
+  
   return runtime;
 }
 
