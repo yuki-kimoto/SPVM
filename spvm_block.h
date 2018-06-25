@@ -5,7 +5,7 @@
 
 struct SPVM_block {
   int32_t id;
-  int32_t need_leave_scope;
+  int32_t have_object_var_decl;
 };
 
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);

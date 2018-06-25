@@ -1938,7 +1938,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                     
-                    if (op_block_current->uv.block->need_leave_scope) {
+                    if (op_block_current->uv.block->have_object_var_decl) {
                       while (mortal_stack->length > mortal_base) {
                         SPVM_LIST_pop(mortal_stack);
                       }
@@ -1957,9 +1957,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
                     if (op_block_stack->length > 0) {
                       SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                      if (!op_block_parent->uv.block->need_leave_scope) {
-                        if (op_block_current->uv.block->need_leave_scope) {
-                          op_block_parent->uv.block->need_leave_scope = 1;
+                      if (!op_block_parent->uv.block->have_object_var_decl) {
+                        if (op_block_current->uv.block->have_object_var_decl) {
+                          op_block_parent->uv.block->have_object_var_decl = 1;
                         }
                       }
                     }
@@ -2028,7 +2028,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                      op_block_current->uv.block->need_leave_scope = 1;
+                      op_block_current->uv.block->have_object_var_decl = 1;
                     }
                     
                     break;
