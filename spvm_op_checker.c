@@ -66,6 +66,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Block my base stack
           SPVM_LIST* block_my_base_stack = SPVM_LIST_new(0);
           
+          // Block stack
+          SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+          
           // Switch stack
           SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
           
@@ -1997,6 +2000,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(op_my_stack);
           SPVM_LIST_free(block_my_base_stack);
           SPVM_LIST_free(op_switch_stack);
+          SPVM_LIST_free(op_block_stack);
         }
       }
     }
