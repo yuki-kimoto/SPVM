@@ -57,20 +57,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Set subroutine id
           sub->id = sub_id++;
           
-          int32_t eval_block_stack_length = 0;
-          int32_t loop_block_stack_length = 0;
-          
-          // My stack
-          SPVM_LIST* op_my_stack = SPVM_LIST_new(0);
-          
-          // Block my base stack
-          SPVM_LIST* block_my_base_stack = SPVM_LIST_new(0);
-          
-          // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
-          
-          // Switch stack
-          SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
           
           // Destructor must receive own package object
           if (sub->is_destructor) {
@@ -108,8 +94,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_yyerror_format(compiler, "Interface sub can't have implementation\n", op_sub->file, op_sub->line);
           }
           
-          // Only process normal subroutine
+          // Check subroutine
           if (!sub->have_native_desc) {
+            int32_t eval_block_stack_length = 0;
+            int32_t loop_block_stack_length = 0;
+            
+            // My stack
+            SPVM_LIST* op_my_stack = SPVM_LIST_new(0);
+            
+            // Block my base stack
+            SPVM_LIST* block_my_base_stack = SPVM_LIST_new(0);
+            
+            // Switch stack
+            SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
             
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
@@ -127,8 +124,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 // Start scope
                 case SPVM_OP_C_ID_BLOCK: {
 
-                  // Push block
-                  SPVM_LIST_push(op_block_stack, op_cur);
                   
                   int32_t block_my_base = op_my_stack->length;
                   SPVM_LIST_push(block_my_base_stack, (void*)(intptr_t)block_my_base);
@@ -1544,7 +1539,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         eval_block_stack_length--;
                       }
 
-                      SPVM_LIST_pop(op_block_stack);
                       
                       break;
                     }
@@ -1869,6 +1863,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
             }
+            // Free list
+            SPVM_LIST_free(op_my_stack);
+            SPVM_LIST_free(block_my_base_stack);
+            SPVM_LIST_free(op_switch_stack);
           }
           
           // Create temporary variables for not assigned values
@@ -1989,7 +1987,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           assert(sub->file_name);
           
-          // My index
+          // Resolve my index
           {
             int32_t my_index;
             for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
@@ -2001,12 +1999,64 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
           }
-          
-          // Free list
-          SPVM_LIST_free(op_my_stack);
-          SPVM_LIST_free(block_my_base_stack);
-          SPVM_LIST_free(op_switch_stack);
-          SPVM_LIST_free(op_block_stack);
+
+          // Add more information for opcode building
+          if (!sub->have_native_desc) {
+            // Block stack
+            SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+            
+            // Run OPs
+            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
+            SPVM_OP* op_cur = op_base;
+            _Bool finish = 0;
+            while (op_cur) {
+              // [START]Preorder traversal position
+              switch (op_cur->id) {
+                // Start scope
+                case SPVM_OP_C_ID_BLOCK: {
+                  // Push block
+                  SPVM_LIST_push(op_block_stack, op_cur);
+                  break;
+                }
+              }
+
+              if (op_cur->first) {
+                op_cur = op_cur->first;
+              }
+              else {
+                while (1) {
+                  // [START]Postorder traversal position
+                  switch (op_cur->id) {
+                    case SPVM_OP_C_ID_BLOCK:
+                      SPVM_LIST_pop(op_block_stack);
+                      break;
+                  }
+
+                  if (op_cur == op_base) {
+
+                    // Finish
+                    finish = 1;
+                    
+                    break;
+                  }
+                  
+                  // Next sibling
+                  if (op_cur->moresib) {
+                    op_cur = SPVM_OP_sibling(compiler, op_cur);
+                    break;
+                  }
+                  // Next is parent
+                  else {
+                    op_cur = op_cur->sibparent;
+                  }
+                }
+                if (finish) {
+                  break;
+                }
+              }
+            }
+            SPVM_LIST_free(op_block_stack);
+          }
         }
       }
     }
