@@ -97,10 +97,21 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension), // object_dimension_byte_offset
   (void*)(intptr_t)offsetof(SPVM_OBJECT, elements_length), // object_elements_length_byte_offset
   SPVM_RUNTIME_call_sub,
+  SPVM_RUNTIME_API_enter_scope,
 };
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
   return (SPVM_ENV*)SPVM_ENV_RUNTIME;
+}
+
+int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
+  (void)env;
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  int32_t mortal_stack_top = runtime->mortal_stack_top;
+  
+  return mortal_stack_top;
 }
 
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {

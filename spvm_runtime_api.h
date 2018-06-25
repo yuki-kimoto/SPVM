@@ -93,4 +93,7 @@ int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_ENV* env);
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime();
 void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 
+// Scope
+int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env);
+
 #endif
