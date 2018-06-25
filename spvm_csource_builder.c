@@ -1450,10 +1450,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
 
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
+        int32_t mortal_stack_current_base = (opcode->operand0 << 16) + opcode->operand1;
         if (sub->mortal_stack_max > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t mortal_stack_current_base = ");
-          SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+          SPVM_STRING_BUFFER_add_int(string_buffer, mortal_stack_current_base);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_var_index_index;\n");

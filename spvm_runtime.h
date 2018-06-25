@@ -55,6 +55,8 @@ struct SPVM_runtime {
   
   int32_t mortal_stack_top;
   
+  SPVM_OBJECT* mortal_stack;
+  
   int32_t objects_count;
 };
 

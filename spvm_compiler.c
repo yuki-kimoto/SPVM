@@ -25,6 +25,7 @@
 #include "spvm_use.h"
 #include "spvm_op_checker.h"
 #include "spvm_opcode_builder.h"
+#include "spvm_object.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -86,6 +87,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
   
   runtime->mortal_stack_top = -1;
+
+  runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT) * 1);
   
   return runtime;
 }

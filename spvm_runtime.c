@@ -1123,7 +1123,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        int32_t mortal_stack_current_base = opcode->operand0;
+        int32_t mortal_stack_current_base = (opcode->operand0 << 16) + opcode->operand1;
         int32_t object_var_index_index;
         for (object_var_index_index = mortal_stack_current_base; object_var_index_index <= mortal_stack_top; object_var_index_index++) {
           int32_t var_index = mortal_stack[object_var_index_index].ival;

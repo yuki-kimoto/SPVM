@@ -1946,10 +1946,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       opcode.id = SPVM_OPCODE_C_ID_LEAVE_SCOPE;
-                      opcode.operand0 = mortal_base;
+                      opcode.operand0 = mortal_base >> 16;
+                      opcode.operand1 = mortal_base & 0xFFFF;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                      
                     }
 
                     SPVM_LIST_pop(op_block_stack);
