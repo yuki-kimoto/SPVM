@@ -640,7 +640,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Call subroutine argument stack top
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t call_sub_arg_stack_top = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t call_sub_arg_stack_top = 0;\n");
 
   // Condition flag
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
@@ -2002,7 +2002,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         switch (opcode->id) {
           case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
@@ -2052,13 +2051,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             break;
         }
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "*(void**)&args[call_sub_arg_stack_top] = NULL;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         
         break;
       }

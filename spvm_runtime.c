@@ -139,7 +139,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   int32_t mortal_stack_top = -1;
 
   // Call subroutine argument stack top
-  int32_t call_sub_arg_stack_top = -1;
+  int32_t call_sub_arg_stack_top = 0;
   
   // Condition flag
   register int32_t condition_flag = 0;
@@ -1718,43 +1718,43 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_byte*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_short*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_int*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_long*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_float*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-        call_sub_arg_stack_top++;
         *(SPVM_VALUE_double*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
-        call_sub_arg_stack_top++;
         *(void**)&args[call_sub_arg_stack_top] = *(void**)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
-        call_sub_arg_stack_top++;
         *(void**)&args[call_sub_arg_stack_top] = NULL;
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
