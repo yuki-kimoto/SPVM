@@ -132,17 +132,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   // Opcode base
   int32_t sub_opcode_base = sub->opcode_base;
   
-  // Subroutine stack
-  // This is used Variables, mortal stack
-  int32_t call_frame_length = sub->op_mys->length + 1 + sub->mortal_stack_max;
-  SPVM_VALUE* call_frame = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * call_frame_length);
-  
   // Variables
-  SPVM_VALUE* vars = call_frame;
+  SPVM_VALUE* vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * sub->op_mys->length + 1);
 
   // Auto decrement reference count variable index stack top
-  int32_t mortal_stack_base = sub->op_mys->length + 1;
-  SPVM_VALUE* mortal_stack = &call_frame[mortal_stack_base];
+  SPVM_VALUE* mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->mortal_stack_max + 1));
   int32_t mortal_stack_top = -1;
 
   // Call subroutine argument stack top
@@ -2018,7 +2012,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
     env->set_exception(env, NULL);
   }
   
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, call_frame);
+  SPVM_RUNTIME_ALLOCATOR_free(runtime, vars);
+  SPVM_RUNTIME_ALLOCATOR_free(runtime, mortal_stack);
   
   return exception_flag;
 }
