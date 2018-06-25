@@ -151,9 +151,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
   register int32_t opcode_rel_index = 0;
 
-  // Initialize variables
-  memset(vars, 0, sizeof(SPVM_VALUE) * sub->op_mys->length);
-  
   // Copy arguments to variables
   memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
   
