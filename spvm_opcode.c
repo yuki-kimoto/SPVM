@@ -319,6 +319,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "MOVE_DOUBLE",
   "MOVE_OBJECT",
   "MOVE_UNDEF",
+  "ENTER_SCOPE",
   "PUSH_MORTAL",
   "LEAVE_SCOPE",
   "PUSH_ARG_BYTE",
