@@ -1871,6 +1871,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
+          // Create temporary variables for not assigned values
           if (!sub->have_native_desc) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, op_sub);
