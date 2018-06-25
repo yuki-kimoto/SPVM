@@ -1454,9 +1454,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_var_index_index;\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      for (object_var_index_index = original_mortal_stack_top; object_var_index_index < mortal_stack_top; object_var_index_index++) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = *(int32_t*)&mortal_stack[object_var_index_index];\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      int32_t mortal_stack_index;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = *(int32_t*)&mortal_stack[mortal_stack_index];\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        if (*(void**)&vars[var_index] != NULL) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&vars[var_index]); }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "          else { env->dec_ref_count(env, *(void**)&vars[var_index]); }\n");

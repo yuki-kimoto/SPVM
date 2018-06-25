@@ -1114,9 +1114,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = (opcode->operand0 << 16) + opcode->operand1;
-        int32_t object_var_index_index;
-        for (object_var_index_index = original_mortal_stack_top; object_var_index_index < mortal_stack_top; object_var_index_index++) {
-          int32_t var_index = mortal_stack[object_var_index_index].ival;
+        int32_t mortal_stack_index;
+        for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {
+          int32_t var_index = mortal_stack[mortal_stack_index].ival;
           
           if (*(void**)&vars[var_index] != NULL) {
             if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&vars[var_index]); }
