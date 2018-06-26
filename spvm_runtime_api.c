@@ -100,6 +100,17 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_enter_scope,
   SPVM_RUNTIME_API_push_mortal,
   SPVM_RUNTIME_API_leave_scope,
+  SPVM_RUNTIME_API_new_object,
+  SPVM_RUNTIME_API_new_byte_array,
+  SPVM_RUNTIME_API_new_short_array,
+  SPVM_RUNTIME_API_new_int_array,
+  SPVM_RUNTIME_API_new_long_array,
+  SPVM_RUNTIME_API_new_float_array,
+  SPVM_RUNTIME_API_new_double_array,
+  SPVM_RUNTIME_API_new_object_array,
+  SPVM_RUNTIME_API_new_multi_array,
+  SPVM_RUNTIME_API_new_string,
+  SPVM_RUNTIME_API_new_struct,
 };
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
@@ -434,6 +445,127 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env) {
   return runtime->exception;
 }
 
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_array_raw(env, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_array_raw(env, basic_type_id, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_multi_array(env, basic_type_id, element_dimension, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_raw(env, basic_type_id);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* struct_ptr) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_struct_raw(env, basic_type_id, struct_ptr);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, char* bytes, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_string_raw(env, bytes, length);
+  
+  object->ref_count++;
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   
@@ -693,12 +825,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_struct_raw(SPVM_ENV* env, int32_t basic_type_i
   return object;
 }
 
-int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* object) {
-  (void)env;
-  
-  return object->elements_length;
-}
-
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, char* bytes, int32_t length) {
   (void)env;
 
@@ -718,6 +844,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, char* bytes, int32_t
   }
 
   return object;
+}
+
+int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return object->elements_length;
 }
 
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {

@@ -1,3 +1,32 @@
+0.0352 2018-06-26
+  - Separate mortal API and raw API
+    raw API create object which reference count is zero.
+    mortal API create object which refernece count is one and pushed to mortal stack.
+      [Mortal API]
+		  SPVM_RUNTIME_API_new_object
+		  SPVM_RUNTIME_API_new_byte_array
+		  SPVM_RUNTIME_API_new_short_array
+		  SPVM_RUNTIME_API_new_int_array
+		  SPVM_RUNTIME_API_new_long_array
+		  SPVM_RUNTIME_API_new_float_array
+		  SPVM_RUNTIME_API_new_double_array
+		  SPVM_RUNTIME_API_new_object_array
+		  SPVM_RUNTIME_API_new_multi_array
+		  SPVM_RUNTIME_API_new_string
+		  SPVM_RUNTIME_API_new_struct
+		  [Raw API]
+		  SPVM_RUNTIME_API_new_object_raw 
+		  SPVM_RUNTIME_API_new_byte_array_raw 
+		  SPVM_RUNTIME_API_new_short_array_raw 
+		  SPVM_RUNTIME_API_new_int_array_raw 
+		  SPVM_RUNTIME_API_new_long_array_raw 
+		  SPVM_RUNTIME_API_new_float_array_raw 
+		  SPVM_RUNTIME_API_new_double_array_raw 
+		  SPVM_RUNTIME_API_new_object_array_raw 
+		  SPVM_RUNTIME_API_new_multi_array_raw 
+		  SPVM_RUNTIME_API_new_string_raw 
+		  SPVM_RUNTIME_API_new_struct_raw 
+
 0.0351 2018-06-23
   - improve exception message
   - create_exception_stack_trace become receive package_name, sub_name, file instead of sub_id
