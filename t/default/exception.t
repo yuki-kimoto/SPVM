@@ -18,7 +18,7 @@ my $file = basename $0;
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
   like($@, qr/179/);
-  like($@, qr|t/default/lib/TestCase/Exception.spvm|);
+  like($@, qr|/lib/TestCase/Exception.spvm|);
 }
 
 # Exception

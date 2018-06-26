@@ -245,3 +245,32 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_object_sub_exception_native(SPVM_E
   
   return 0;
 }
+
+int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* args) {
+  (void)env;
+  (void)args;
+  
+  // Check if object count is zero in extension.t
+  int32_t length = 10;
+  {
+    void* sp_values = env->new_byte_array(env, length);
+  }
+  {
+    void* sp_values = env->new_short_array(env, length);
+  }
+  {
+    void* sp_values = env->new_int_array(env, length);
+  }
+  {
+    void* sp_values = env->new_long_array(env, length);
+  }
+  {
+    void* sp_values = env->new_float_array(env, length);
+  }
+  {
+    void* sp_values = env->new_long_array(env, length);
+  }
+  
+  return 0;
+}
+

@@ -178,6 +178,4 @@ package TestCase::Exception {
   precompile sub exception_zero_divide_int : int () {
     1 / 0;
   }
-  
-
 }
