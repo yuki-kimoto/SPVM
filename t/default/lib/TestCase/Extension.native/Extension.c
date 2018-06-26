@@ -146,7 +146,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__add_int_array) (SPVM_ENV* env, SPVM
   int32_t* nums1 = env->get_int_array_elements(env, obj_nums1);
   int32_t* nums2 = env->get_int_array_elements(env, obj_nums2);
   
-  void* obj_nums3 = env->new_int_array(env, length);
+  void* obj_nums3 = env->new_int_array_immortal(env, length);
   int32_t* nums3 = env->get_int_array_elements(env, obj_nums3);
   
   {
@@ -165,7 +165,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_void_sub_exception_native) (SP
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return 0;
@@ -175,7 +175,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_byte_sub_exception_native) (SP
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].bval = 0;
   
@@ -186,7 +186,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_short_sub_exception_native) (S
   (void)env;
   (void)args;
 
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].sval = 0;
   
@@ -197,7 +197,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_int_sub_exception_native) (SPV
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].ival = 0;
   
@@ -208,7 +208,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_long_sub_exception_native) (SP
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].lval = 0;
   
@@ -219,7 +219,7 @@ float SPVM_NATIVE_SUB(TestCase__Extension__call_float_sub_exception_native) (SPV
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   return 0;
 }
@@ -228,7 +228,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_double_sub_exception_native) (
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].dval = 0;
   
@@ -239,7 +239,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_object_sub_exception_native) (
   (void)env;
   (void)args;
   
-  void* exception = env->new_string(env, "Exception", 0);
+  void* exception = env->new_string_immortal(env, "Exception", 0);
   env->set_exception(env, exception);
   args[0].oval = NULL;
   

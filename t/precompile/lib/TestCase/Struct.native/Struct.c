@@ -20,7 +20,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Struct__new) (SPVM_ENV* env, SPVM_VALUE* args)
   
   int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Struct");
   
-  void* struct_object = env->new_struct(env, basic_type_id, struct_ptr);
+  void* struct_object = env->new_struct_immortal(env, basic_type_id, struct_ptr);
   
   args[0].oval = struct_object;
   
