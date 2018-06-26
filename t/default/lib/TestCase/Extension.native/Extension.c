@@ -251,26 +251,40 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* a
   (void)args;
   
   // Check if object count is zero in extension.t
+  int32_t ref_count = 0;
+  
   int32_t length = 10;
   {
     void* sp_values = env->new_byte_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
   {
     void* sp_values = env->new_short_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
   {
     void* sp_values = env->new_int_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
   {
     void* sp_values = env->new_long_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
   {
     void* sp_values = env->new_float_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
   {
     void* sp_values = env->new_long_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
+  }
+  
+  if (ref_count == 6) {
+    args[0].ival = 1;
+  }
+  else {
+    args[0].ival = 0;
   }
   
   return 0;
 }
-
