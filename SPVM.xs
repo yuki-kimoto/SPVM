@@ -1389,7 +1389,7 @@ new_byte_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_byte_array_immortal(env, length);
+  void* array =  env->new_byte_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1414,7 +1414,7 @@ new_short_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_short_array_immortal(env, length);
+  void* array =  env->new_short_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1439,7 +1439,7 @@ new_int_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_int_array_immortal(env, length);
+  void* array =  env->new_int_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1464,7 +1464,7 @@ new_long_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_long_array_immortal(env, length);
+  void* array =  env->new_long_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1489,7 +1489,7 @@ new_float_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_float_array_immortal(env, length);
+  void* array =  env->new_float_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1514,7 +1514,7 @@ new_double_array_len(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // New array
-  void* array =  env->new_double_array_immortal(env, length);
+  void* array =  env->new_double_array_raw(env, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1549,7 +1549,7 @@ new_object_array_len(...)
   assert(basic_type);
   
   // New array
-  void* array = env->new_object_array_immortal(env, basic_type->id, length);
+  void* array = env->new_object_array_raw(env, basic_type->id, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
@@ -1587,7 +1587,7 @@ new_multi_array_len(...)
   assert(basic_type);
   
   // New array
-  void* array = env->new_multi_array_immortal(env, basic_type->id, element_dimension, length);
+  void* array = env->new_multi_array_raw(env, basic_type->id, element_dimension, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
