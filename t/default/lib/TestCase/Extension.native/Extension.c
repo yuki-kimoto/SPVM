@@ -3,7 +3,7 @@
 
 #include <spvm_native.h>
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_use_strlen) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -18,7 +18,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_use_strlen) (SPVM_ENV* env, 
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_byte_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -33,7 +33,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_byte_field) (SPVM_EN
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_short_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_short_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -48,7 +48,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_short_field) (SPVM_E
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_int_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_int_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -63,7 +63,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_int_field) (SPVM_ENV
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_long_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_long_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -78,7 +78,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_long_field) (SPVM_EN
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_float_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_float_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -93,7 +93,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_float_field) (SPVM_E
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_double_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_double_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -108,7 +108,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_double_field) (SPVM_
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_object_field) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_object_field(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -123,7 +123,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__native_env_get_object_field) (SPVM_
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__sum) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -134,7 +134,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__sum) (SPVM_ENV* env, SPVM_VALUE* ar
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__add_int_array) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__add_int_array(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -161,7 +161,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__add_int_array) (SPVM_ENV* env, SPVM
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_void_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -171,7 +171,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_void_sub_exception_native) (SP
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_byte_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -182,7 +182,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_byte_sub_exception_native) (SP
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_short_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
 
@@ -193,7 +193,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_short_sub_exception_native) (S
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_int_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -204,7 +204,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_int_sub_exception_native) (SPV
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_long_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -215,7 +215,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_long_sub_exception_native) (SP
   return 0;
 }
 
-float SPVM_NATIVE_SUB(TestCase__Extension__call_float_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+float SPVM_NATIVE_TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -224,7 +224,7 @@ float SPVM_NATIVE_SUB(TestCase__Extension__call_float_sub_exception_native) (SPV
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_double_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -235,7 +235,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_double_sub_exception_native) (
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension__call_object_sub_exception_native) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   

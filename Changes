@@ -2,6 +2,7 @@
   - Separate mortal API and raw API
     raw API create object which reference count is zero.
     mortal API create object which refernece count is one and pushed to mortal stack.
+
       [Mortal API]
 		  SPVM_RUNTIME_API_new_object
 		  SPVM_RUNTIME_API_new_byte_array
@@ -14,6 +15,7 @@
 		  SPVM_RUNTIME_API_new_multi_array
 		  SPVM_RUNTIME_API_new_string
 		  SPVM_RUNTIME_API_new_struct
+
 		  [Raw API]
 		  SPVM_RUNTIME_API_new_object_raw 
 		  SPVM_RUNTIME_API_new_byte_array_raw 
@@ -27,6 +29,14 @@
 		  SPVM_RUNTIME_API_new_string_raw 
 		  SPVM_RUNTIME_API_new_struct_raw 
 
+  - remove SPVM_NATIVE_SUB macro in spvm_native.h. Native function name become start with SPVM_NATIVE_
+
+        SPVM_NATIVE_SUB(My__Point__clear)
+
+      is changed to
+
+        SPVM_NATIVE_My__Point__clear
+      
 0.0351 2018-06-23
   - improve exception message
   - create_exception_stack_trace become receive package_name, sub_name, file instead of sub_id

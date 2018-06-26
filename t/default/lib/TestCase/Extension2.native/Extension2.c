@@ -2,7 +2,7 @@
 
 #include <Extension2_util.h>
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension2__mul) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension2__mul(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
 
@@ -13,7 +13,7 @@ int32_t SPVM_NATIVE_SUB(TestCase__Extension2__mul) (SPVM_ENV* env, SPVM_VALUE* a
   return 0;
 }
 
-int32_t SPVM_NATIVE_SUB(TestCase__Extension2__one) (SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension2__one(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   

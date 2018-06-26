@@ -25,7 +25,9 @@ typedef float SPVM_VALUE_float;
 typedef double SPVM_VALUE_double;
 typedef void* SPVM_VALUE_object;
 
-#define SPVM_NATIVE_SUB(sub_abs_name_under_score) SPVM_NATIVE_ ## sub_abs_name_under_score
+
+
+
 
 
 
