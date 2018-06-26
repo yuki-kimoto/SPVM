@@ -98,6 +98,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   (void*)(intptr_t)offsetof(SPVM_OBJECT, elements_length), // object_elements_length_byte_offset
   SPVM_RUNTIME_call_sub,
   SPVM_RUNTIME_API_enter_scope,
+  SPVM_RUNTIME_API_push_mortal,
   SPVM_RUNTIME_API_leave_scope,
 };
 
@@ -115,10 +116,48 @@ int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
   return mortal_stack_top;
 }
 
+void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  if (object != NULL) {
+    // Extend mortal stack
+    if (runtime->mortal_stack_top >= runtime->mortal_stack_capacity) {
+      int32_t new_mortal_stack_capacity = runtime->mortal_stack_capacity * 2;
+      SPVM_OBJECT** new_mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * new_mortal_stack_capacity);
+      memcpy(new_mortal_stack, runtime->mortal_stack, sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+      runtime->mortal_stack_capacity = new_mortal_stack_capacity;
+      runtime->mortal_stack = new_mortal_stack;
+    }
+    
+    runtime->mortal_stack[runtime->mortal_stack_top] = object;
+    runtime->mortal_stack_top++;
+  }
+}
+
 void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+
+  int32_t mortal_stack_index;
+  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < runtime->mortal_stack_top; mortal_stack_index++) {
+    SPVM_OBJECT* object = runtime->mortal_stack[mortal_stack_index];
+    
+    if (object != NULL) {
+      if (object->ref_count > 1) {
+        object->ref_count--;
+      }
+      else {
+        SPVM_RUNTIME_API_dec_ref_count(env, object);
+      }
+    }
+    
+    runtime->mortal_stack[mortal_stack_index] = NULL;
+  }
+  
+  runtime->mortal_stack_top = original_mortal_stack_top;
 }
 
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
