@@ -95,5 +95,6 @@ void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 
 // Scope
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env);
+void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top);
 
 #endif

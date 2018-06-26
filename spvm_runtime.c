@@ -52,7 +52,11 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   SPVM_SUB* sub = op_sub->uv.sub;
   
   if (sub->have_native_desc) {
-    return SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
+    int32_t exception_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
+    
+    return exception_flag;
   }
   else if (sub->is_compiled) {
     return SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);

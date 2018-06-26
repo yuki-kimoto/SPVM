@@ -85,12 +85,14 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
 
   // Arguments
   runtime->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * 255);
+
+  runtime->mortal_stack_capacity = 1;
+
+  runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT) * runtime->mortal_stack_capacity);
   
-  runtime->mortal_stack_top = -1;
-
-  runtime->enter_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * 1);
-
-  runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT) * 1);
+  runtime->enter_stack_capacity = 1;
+  
+  runtime->enter_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->enter_stack_capacity);
   
   return runtime;
 }
