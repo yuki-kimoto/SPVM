@@ -144,6 +144,8 @@ void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     runtime->mortal_stack[runtime->mortal_stack_top] = object;
     runtime->mortal_stack_top++;
+    
+    object->ref_count++;
   }
 }
 
@@ -450,7 +452,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -461,7 +462,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -472,7 +472,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -483,7 +482,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -494,7 +492,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -505,7 +502,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_ENV* env, int32_t length) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_array_raw(env, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -516,7 +512,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_array_raw(env, basic_type_id, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -527,7 +522,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_multi_array(env, basic_type_id, element_dimension, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -538,7 +532,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_raw(env, basic_type_id);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -549,7 +542,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, v
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_struct_raw(env, basic_type_id, struct_ptr);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
@@ -560,7 +552,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, char* bytes, int32_t len
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_string_raw(env, bytes, length);
   
-  object->ref_count++;
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
