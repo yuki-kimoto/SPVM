@@ -1,4 +1,4 @@
-0.0352 2018-06-26
+0.0352 2018-06-27
   - Separate mortal API and raw API
     raw API create object which reference count is zero.
     mortal API create object which refernece count is one and pushed to mortal stack.
@@ -36,6 +36,15 @@
       is changed to
 
         SPVM_NATIVE_My__Point__clear
+  - add SPVM_SUCCESS and SPVM_EXCEPTION macro in native.h
+      SPVM Native Interface must return 0 in success, or 1 in exception,
+      This mean exception flag, but this is little difficult to keep in mind.
+      I add SPVM_SUCCESS and SPVM_EXCEPTION macro.
+      You can use them
+      
+        return SPVM_SUCCESS
+        
+        return SPVM_EXCEPTION;
       
 0.0351 2018-06-23
   - improve exception message
