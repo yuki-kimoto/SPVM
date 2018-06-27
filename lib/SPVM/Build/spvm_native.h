@@ -63,7 +63,7 @@ struct SPVM_env {
   void (*set_float_field)(SPVM_ENV*, void*, int32_t, float);
   void (*set_double_field)(SPVM_ENV*, void*, int32_t, double);
   void (*set_object_field)(SPVM_ENV*, void*, int32_t, void*);
-  int32_t (*get_sub_id)(SPVM_ENV*, const char*);
+  int32_t (*get_sub_id)(SPVM_ENV*, const char*, const char*);
   int32_t (*get_sub_id_method_call)(SPVM_ENV*, void* object, const char*);
   int32_t (*get_basic_type_id)(SPVM_ENV*, const char*);
   void* (*new_object_raw)(SPVM_ENV*, int32_t);

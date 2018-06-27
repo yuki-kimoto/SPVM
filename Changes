@@ -1,3 +1,10 @@
+0.0353 2018-06-27
+  - get_sub_id receive package name and subroutine name
+      [Before]
+      int32_t sub_id = env->get_sub_id(env, sub_abs_name);
+      [After]
+      int32_t sub_id = env->get_sub_id(env, package_name, sub_name);
+      
 0.0352 2018-06-27
   - Separate mortal API and raw API
     raw API create object which reference count is zero.

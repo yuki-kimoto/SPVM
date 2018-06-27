@@ -1179,7 +1179,10 @@ call_sub(...)
   SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
   SPVM_SUB* sub = op_sub->uv.sub;
   const char* sub_abs_name = sub->abs_name;
-  int32_t sub_id = env->get_sub_id(env, sub_abs_name);
+  int32_t sub_id = env->get_sub_id(env, package_name, sub_name);
+  if (sub_id < 0) {
+    croak("Subroutine not found %s->%s", package_name, sub_name);
+  }
   
   stack_arg_start += 2;
   

@@ -1054,17 +1054,24 @@ int32_t SPVM_RUNTIME_API_get_field_rel_id(SPVM_ENV* env, const char* package_nam
   return field_rel_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* name) {
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name) {
   (void)env;
-  
-  if (name == NULL) {
-    return 0;
-  }
-  
+
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, name, strlen(name));
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+  if (op_package == NULL) {
+    return -1;
+  }
+  
+  SPVM_PACKAGE* package = op_package->uv.package;
+  
+  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
+  if (op_sub == NULL) {
+    return -1;
+  }
+  
   int32_t sub_id = op_sub->uv.sub->id;
   
   return sub_id;
