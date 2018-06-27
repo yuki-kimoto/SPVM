@@ -25,7 +25,8 @@ typedef float SPVM_VALUE_float;
 typedef double SPVM_VALUE_double;
 typedef void* SPVM_VALUE_object;
 
-
+#define SPVM_SUCCESS 0
+#define SPVM_EXCEPTION 1
 
 
 
