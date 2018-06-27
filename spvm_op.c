@@ -1309,7 +1309,7 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
   return abs_name;
 }
 
-const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   assert(sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
   
@@ -1354,10 +1354,10 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
     length += 1;
   }
   
-  char* method_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
   // Calcurate signature length
-  char* bufptr = method_signature;
+  char* bufptr = signature;
   {
     // Return type
     memcpy(bufptr, sub->op_return_type->uv.type->basic_type->name, strlen(sub->op_return_type->uv.type->basic_type->name));
@@ -1415,7 +1415,7 @@ const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* s
     bufptr += 1;
   }
   
-  return method_signature;
+  return signature;
 }
 
 const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
@@ -1695,9 +1695,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_SUB* sub = op_sub->uv.sub;
       
       if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-        const char* method_signature = SPVM_OP_create_method_signature(compiler, sub);
-        sub->method_signature = method_signature;
-        SPVM_HASH_insert(sub->op_package->uv.package->method_signature_symtable, method_signature, strlen(method_signature), sub);
+        const char* signature = SPVM_OP_create_signature(compiler, sub);
+        sub->signature = signature;
+        SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
       }
     }
   }

@@ -2142,7 +2142,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
             SPVM_OP* op_sub_package = SPVM_LIST_fetch(op_subs_package, sub_index_package);
             SPVM_SUB* sub_package = op_sub_package->uv.sub;
             
-            if (strcmp(sub_interface->method_signature, sub_package->method_signature) == 0) {
+            if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
               found = 1;
             }
           }

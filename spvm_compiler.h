@@ -87,10 +87,10 @@ struct SPVM_compiler {
   SPVM_HASH* op_field_symtable;
 
   // Method signature
-  SPVM_LIST* method_signatures;
+  SPVM_LIST* signatures;
 
   // Method signature symbol table
-  SPVM_HASH* method_signature_symtable;
+  SPVM_HASH* signature_symtable;
   
   // AST grammar
   SPVM_OP* op_grammar;
