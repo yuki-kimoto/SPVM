@@ -335,3 +335,38 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t length = 10;
+  int32_t start_objects_count = env->get_objects_count(env);
+  env->new_int_array(env, length);
+  env->new_int_array(env, length);
+  int32_t before_enter_objects_count = env->get_objects_count(env);
+  int32_t before_leave_objects_count;
+  {
+    int32_t scope_id = env->enter_scope(env);
+
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
+    
+    before_leave_objects_count = env->get_objects_count(env);
+    env->leave_scope(env, scope_id);
+  }
+  
+  int32_t after_leave_objects_counts = env->get_objects_count(env);
+  
+  stack[0].ival = 0;
+  if ((before_enter_objects_count - start_objects_count) == 2) {
+    if (before_enter_objects_count == after_leave_objects_counts) {
+      if ((before_leave_objects_count - before_enter_objects_count) == 3) {
+        stack[0].ival = 1;
+      }
+    }
+  }
+  
+  return SPVM_SUCCESS;
+}

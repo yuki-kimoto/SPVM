@@ -22,6 +22,7 @@ my $start_objects_count = SPVM::get_objects_count();
 # Check mortal API
 {
   ok(TestCase::Extension->mortal_api);
+  ok(TestCase::Extension->enter_scope_leave_scope);
 }
 
 # Native Exception

@@ -246,31 +246,127 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_object_sub_exception_native(SPVM_E
   return 0;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
-  (void)args;
+  (void)stack;
   
   // Check if object count is zero in extension.t
+  int32_t ref_count = 0;
+  
   int32_t length = 10;
+  // 1
   {
     void* sp_values = env->new_byte_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
+  // 2
   {
     void* sp_values = env->new_short_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
+  // 3
   {
     void* sp_values = env->new_int_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
+  // 4
   {
     void* sp_values = env->new_long_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
+  // 5
   {
     void* sp_values = env->new_float_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
   }
+  // 6
   {
     void* sp_values = env->new_long_array(env, length);
+    ref_count += env->get_ref_count(env, sp_values);
+  }
+  // 7
+  {
+    void* sp_values = env->new_string(env, "foo", 0);
+    ref_count += env->get_ref_count(env, sp_values);
+  }
+  // 8
+  {
+    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
+    if (basic_type_id < 0) {
+      return SPVM_EXCEPTION;
+    }
+    void* sp_object = env->new_object(env, basic_type_id);
+    ref_count += env->get_ref_count(env, sp_object);
+  }
+  // 9
+  {
+    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
+    if (basic_type_id < 0) {
+      return SPVM_EXCEPTION;
+    }
+    void* sp_objects = env->new_object_array(env, basic_type_id, 3);
+    ref_count += env->get_ref_count(env, sp_objects);
+  }
+  // 10
+  {
+    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
+    if (basic_type_id < 0) {
+      return SPVM_EXCEPTION;
+    }
+    void* sp_objects = env->new_object_array(env, basic_type_id, 3);
+    ref_count += env->get_ref_count(env, sp_objects);
+  }
+  // 11
+  {
+    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Struct");
+    if (basic_type_id < 0) {
+      return SPVM_EXCEPTION;
+    }
+    void* sp_objects = env->new_struct(env, basic_type_id, NULL);
+    ref_count += env->get_ref_count(env, sp_objects);
   }
   
-  return 0;
+  if (ref_count == 11) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
+  return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t length = 10;
+  int32_t start_objects_count = env->get_objects_count(env);
+  env->new_int_array(env, length);
+  env->new_int_array(env, length);
+  int32_t before_enter_objects_count = env->get_objects_count(env);
+  int32_t before_leave_objects_count;
+  {
+    int32_t scope_id = env->enter_scope(env);
+
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
+    
+    before_leave_objects_count = env->get_objects_count(env);
+    env->leave_scope(env, scope_id);
+  }
+  
+  int32_t after_leave_objects_counts = env->get_objects_count(env);
+  
+  stack[0].ival = 0;
+  if ((before_enter_objects_count - start_objects_count) == 2) {
+    if (before_enter_objects_count == after_leave_objects_counts) {
+      if ((before_leave_objects_count - before_enter_objects_count) == 3) {
+        stack[0].ival = 1;
+      }
+    }
+  }
+  
+  return SPVM_SUCCESS;
+}
