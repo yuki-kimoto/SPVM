@@ -1317,12 +1317,16 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   // Calcurate signature length
   {
-    // Return type
+    // (
+    length += 1;
+
+    // Return type basic type
     length += strlen(sub->op_return_type->uv.type->basic_type->name);
     
+    // Return type dimension
     length += sub->op_return_type->uv.type->dimension * 2;
     
-    // Space
+    // )
     length += 1;
     
     // Subroutine name
@@ -1359,6 +1363,10 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   // Calcurate signature length
   char* bufptr = signature;
   {
+    // (
+    memcpy(bufptr, "(", 1);
+    bufptr += 1;
+
     // Return type
     memcpy(bufptr, sub->op_return_type->uv.type->basic_type->name, strlen(sub->op_return_type->uv.type->basic_type->name));
     bufptr += strlen(sub->op_return_type->uv.type->basic_type->name);
@@ -1369,8 +1377,8 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       bufptr += 2;
     }
     
-    // Space
-    memcpy(bufptr, " ", 1);
+    // )
+    memcpy(bufptr, ")", 1);
     bufptr += 1;
 
     // Subroutine name
