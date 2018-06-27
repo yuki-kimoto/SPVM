@@ -1175,13 +1175,19 @@ call_sub(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+  if (op_package == NULL) {
+    croak("Subroutine not found %s %s", package_name, sub_name);
+  }
   SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
+  if (op_sub == NULL) {
+    croak("Subroutine not found %s %s", package_name, sub_name);
+  }
   SPVM_SUB* sub = op_sub->uv.sub;
-  const char* sub_abs_name = sub->abs_name;
-  int32_t sub_id = env->get_sub_id(env, package_name, sub_name);
+  const char* sub_signature = sub->signature;
+  int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
   if (sub_id < 0) {
-    croak("Subroutine not found %s->%s", package_name, sub_name);
+    croak("Subroutine not found %s %s", package_name, sub_signature);
   }
   
   stack_arg_start += 2;

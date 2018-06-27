@@ -2118,30 +2118,24 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-
+        
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
           SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t call_sub_id = -1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id == -1) { call_sub_id = env->get_sub_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
           SPVM_STRING_BUFFER_add(string_buffer, "    void* object = *(void**)&vars[");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t decl_sub_id = -1;\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (decl_sub_id == -1) { decl_sub_id = env->get_sub_id(env, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t call_sub_id = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id == -1) { call_sub_id = env->get_sub_id_method_call(env, object, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_method_call(env, object, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         }
         else {
           assert(0);
@@ -2195,17 +2189,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
         
-        const char* sub_name = sub->op_name->uv.name;
         const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_name = sub->op_name->uv.name;
         const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->op_package->uv.package->op_name->uv.name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->op_name->uv.name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
@@ -2234,17 +2222,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
         
-        const char* sub_name = sub->op_name->uv.name;
         const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_name = sub->op_name->uv.name;
         const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t sub_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_id == -1) { sub_id = env->get_sub_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->op_package->uv.package->op_name->uv.name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->op_name->uv.name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");

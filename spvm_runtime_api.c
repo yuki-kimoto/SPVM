@@ -1054,7 +1054,7 @@ int32_t SPVM_RUNTIME_API_get_field_rel_id(SPVM_ENV* env, const char* package_nam
   return field_rel_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name) {
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* signature) {
   (void)env;
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -1067,17 +1067,17 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   
   SPVM_PACKAGE* package = op_package->uv.package;
   
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
-  if (op_sub == NULL) {
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->signature_symtable, signature, strlen(signature));
+  if (sub == NULL) {
     return -1;
   }
   
-  int32_t sub_id = op_sub->uv.sub->id;
+  int32_t sub_id = sub->id;
   
   return sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name) {
+int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* signature) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -1085,11 +1085,19 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));  
+  if (op_package == NULL) {
+    return -1;
+  }
   SPVM_PACKAGE* package = op_package->uv.package;
   
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
+  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, signature, strlen(signature));
+
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->signature_symtable, signature, strlen(signature));
+  if (sub == NULL) {
+    return -1;
+  }
   
-  return  op_sub->uv.sub->id;
+  return sub->id;
 }
 
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {

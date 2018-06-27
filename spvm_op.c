@@ -1311,8 +1311,6 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
 
 const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
-  assert(sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-  
   int32_t length = 0;
   
   // Calcurate signature length
@@ -1695,18 +1693,16 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
 
-  // Register method signature symtable
+  // Register signature
   {
     int32_t i;
     for (i = 0; i < package->op_subs->length; i++) {
       SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
       SPVM_SUB* sub = op_sub->uv.sub;
       
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-        const char* signature = SPVM_OP_create_signature(compiler, sub);
-        sub->signature = signature;
-        SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
-      }
+      const char* signature = SPVM_OP_create_signature(compiler, sub);
+      sub->signature = signature;
+      SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
     }
   }
   

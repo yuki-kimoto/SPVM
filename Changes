@@ -1,10 +1,15 @@
 0.0353 2018-06-27
-  - get_sub_id receive package name and subroutine name
+  - get_sub_id receive package name and signature
       [Before]
       int32_t sub_id = env->get_sub_id(env, sub_abs_name);
       [After]
-      int32_t sub_id = env->get_sub_id(env, package_name, sub_name);
+      int32_t sub_id = env->get_sub_id(env, package_name, signature);
       
+      Signature contains return type, subroutine name, and argument types
+      For example
+      
+        (int)foo(double,long)
+        
 0.0352 2018-06-27
   - Separate mortal API and raw API
     raw API create object which reference count is zero.
