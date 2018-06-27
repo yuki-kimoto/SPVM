@@ -28,7 +28,21 @@
 		  SPVM_RUNTIME_API_new_multi_array_raw 
 		  SPVM_RUNTIME_API_new_string_raw 
 		  SPVM_RUNTIME_API_new_struct_raw 
+  - Add enter_scope and leave_scope native.h
+      If you use enter_scope, return scope_id. and you create objects,
+      and use leave_scope, objects is automatically released.
+		  {
+		    // Enter scope
+		    int32_t scope_id = env->enter_scope(env);
 
+		    env->new_int_array(env, 3);
+		    env->new_int_array(env, 3);
+		    env->new_int_array(env, 3);
+		    
+		    // Leave scope
+		    env->leave_scope(env, scope_id);
+		  }
+  
   - remove SPVM_NATIVE_SUB macro in spvm_native.h. Native function name become start with SPVM_NATIVE_
 
         SPVM_NATIVE_SUB(My__Point__clear)
