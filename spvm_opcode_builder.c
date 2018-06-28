@@ -184,6 +184,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t opcode_rel_index = opcode_array->length - sub_opcode_base;
                   
                   SPVM_LIST_push(push_eval_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
+
+                  // Set exception var to undef in eval block start
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.id = SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF;
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                 }
                 
                 int32_t mortal_top = mortal_stack->length;
