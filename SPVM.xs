@@ -1293,41 +1293,54 @@ call_sub(...)
           
   // Return count
   SV* sv_return_value = NULL;
+  int32_t excetpion_flag;
   SPVM_VALUE* args = runtime->args;
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        env->call_sub(env, sub_id, args);
+        excetpion_flag = env->call_sub(env, sub_id, args);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSViv(args[0].bval));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSViv(args[0].bval));
+        }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSViv(args[0].sval));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSViv(args[0].sval));
+        }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSViv(args[0].ival));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSViv(args[0].ival));
+        }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSViv(args[0].lval));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSViv(args[0].lval));
+        }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSVnv(args[0].fval));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSVnv(args[0].fval));
+        }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        env->call_sub(env, sub_id, args);
-        sv_return_value = sv_2mortal(newSVnv(args[0].dval));
+        excetpion_flag = env->call_sub(env, sub_id, args);
+        if (!excetpion_flag) {
+          sv_return_value = sv_2mortal(newSVnv(args[0].dval));
+        }
         break;
       }
       default:
@@ -1335,54 +1348,59 @@ call_sub(...)
     }
   }
   else {
-    env->call_sub(env, sub_id, args);
-    void* exception = env->get_exception(env);
-    if (exception) {
-      int32_t length = env->get_array_length(env, exception);
-      int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
-      SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
-      croak("%s", SvPV_nolen(sv_exception));
-    }
-    
-    void* return_value = args[0].oval;
-    sv_return_value = NULL;
-    if (return_value != NULL) {
-      env->inc_ref_count(env, return_value);
-      
-      if (return_type_dimension == 0) {
-        SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
+    excetpion_flag = env->call_sub(env, sub_id, args);
+    if (!excetpion_flag) {
+      void* return_value = args[0].oval;
+      sv_return_value = NULL;
+      if (return_value != NULL) {
+        env->inc_ref_count(env, return_value);
         
-        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
+        if (return_type_dimension == 0) {
+          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
+        }
+        else if (return_type_dimension > 0) {
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
+        }
       }
-      else if (return_type_dimension > 0) {
-        sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
+      else {
+        sv_return_value = &PL_sv_undef;
       }
-    }
-    else {
-      sv_return_value = &PL_sv_undef;
     }
   }
   SPAGAIN;
   ax = (SP - PL_stack_base) + 1;
   
-  void* exception = env->get_exception(env);
-  if (exception) {
-    int32_t length = env->get_array_length(env, exception);
-    int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
+  // Exception
+  if (excetpion_flag) {
+    void* exception = env->get_exception(env);
+    const char* exception_bytes;
+    int32_t length;
+    if (exception) {
+      length = env->get_array_length(env, exception);
+      exception_bytes = (char*)env->get_byte_array_elements(env, exception);
+    }
+    else {
+      exception_bytes = "Error";
+      length = strlen(exception_bytes);
+    }
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }
-  
-  int32_t return_count;
-  if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
-    return_count = 0;
-  }
+  // Success
   else {
-    XPUSHs(sv_return_value);
-    return_count = 1;
+    int32_t return_count;
+    if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
+      return_count = 0;
+    }
+    else {
+      XPUSHs(sv_return_value);
+      return_count = 1;
+    }
+    
+    XSRETURN(return_count);
   }
-  
-  XSRETURN(return_count);
 }
 
 SV*

@@ -1705,7 +1705,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       const char* signature = SPVM_OP_create_signature(compiler, sub);
       sub->signature = signature;
-      SPVM_LIST_push(sub->op_package->uv.package->signatures, signature);
+      SPVM_LIST_push(sub->op_package->uv.package->signatures, (char*)signature);
       SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
     }
   }
