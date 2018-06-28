@@ -1143,6 +1143,18 @@ bind_sub(...)
 MODULE = SPVM		PACKAGE = SPVM
 
 SV*
+set_exception_undef(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  env->set_exception(env, NULL);
+  
+  XSRETURN(0);
+}
+
+SV*
 get_objects_count(...)
   PPCODE:
 {

@@ -2005,8 +2005,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&args[0]);
       }
     }
-    
-    env->set_exception(env, NULL);
   }
   
   SPVM_RUNTIME_ALLOCATOR_free(runtime, vars);

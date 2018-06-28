@@ -198,4 +198,8 @@ package TestCase::Extension {
   
   native sub mortal_api : int ();
   native sub enter_scope_leave_scope : int ();
+  
+  precompile sub get_my_value : int ($value : int) { return $value; }
+  
+  native sub native_call_sub : int ();
 }
