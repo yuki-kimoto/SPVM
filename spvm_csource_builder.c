@@ -2395,7 +2395,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   if (sub_return_type_is_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (args[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(args[0].oval); }\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, NULL);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  return exception_flag;\n");
