@@ -22,6 +22,10 @@ struct SPVM_package {
   SPVM_LIST* object_field_rel_ids;
   SPVM_LIST* sub_signatures;
   SPVM_HASH* sub_signature_symtable;
+  SPVM_LIST* field_signatures;
+  SPVM_HASH* field_signature_symtable;
+  SPVM_LIST* package_var_signatures;
+  SPVM_HASH* package_var_signature_symtable;
   SPVM_HASH* has_interface_cache_symtable;
   SPVM_OP* op_sub_destructor;
   const char* load_path;
