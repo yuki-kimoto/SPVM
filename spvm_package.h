@@ -20,6 +20,7 @@ struct SPVM_package {
   SPVM_LIST* op_subs;
   SPVM_HASH* op_sub_symtable;
   SPVM_LIST* object_field_rel_ids;
+  SPVM_HASH* signatures;
   SPVM_HASH* signature_symtable;
   SPVM_HASH* has_interface_cache_symtable;
   SPVM_OP* op_sub_destructor;

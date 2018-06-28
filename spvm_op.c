@@ -1330,12 +1330,16 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     // Subroutine name
     length += strlen(sub->op_name->uv.name);
     
-    // (self,
-    length += 6;
+    // (
+    length += 1;
     
-    if (sub->op_args->length > 1) {
-      int32_t arg_index;
-      for (arg_index = 1; arg_index < sub->op_args->length; arg_index++) {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
+        // self
+        length += 4;
+      }
+      else {
         SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
         
@@ -1344,11 +1348,10 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
         
         // Dimension
         length += type_arg_sub->dimension * 2;
-        
-        // ,
-        if (arg_index != sub->op_args->length - 1) {
-          length += 1;
-        }
+      }
+      // ,
+      if (arg_index != sub->op_args->length - 1) {
+        length += 1;
       }
     }
     
@@ -1376,20 +1379,25 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     }
     
     // )
-    memcpy(bufptr, ")", 1);
+    *bufptr = ')';
     bufptr += 1;
 
     // Subroutine name
     memcpy(bufptr, sub->op_name->uv.name, strlen(sub->op_name->uv.name));
     bufptr += strlen(sub->op_name->uv.name);
     
-    if (sub->op_args->length > 1) {
-      // (self,
-      memcpy(bufptr, "(self,", 6);
-      bufptr += 6;
+    // (
+    *bufptr = '(';
+    bufptr += 1;
     
-      int32_t arg_index;
-      for (arg_index = 1; arg_index < sub->op_args->length; arg_index++) {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      // self
+      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
+        memcpy(bufptr, "self", 4);
+        bufptr += 4;
+      }
+      else {
         SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
         
@@ -1402,18 +1410,13 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
           memcpy(bufptr, "[]", 2);
           bufptr += 2;
         }
-        
-        // ,
-        if (arg_index != sub->op_args->length - 1) {
-          memcpy(bufptr, ",", 1);
-          bufptr += 1;
-        }
       }
-    }
-    else {
-      // (self,
-      memcpy(bufptr, "(self", 5);
-      bufptr += 5;
+
+      // ,
+      if (arg_index != sub->op_args->length - 1) {
+        memcpy(bufptr, ",", 1);
+        bufptr += 1;
+      }
     }
     
     // )
@@ -1702,6 +1705,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       const char* signature = SPVM_OP_create_signature(compiler, sub);
       sub->signature = signature;
+      SPVM_LIST_push(sub->op_package->uv.package->signatures, signature);
       SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
     }
   }
