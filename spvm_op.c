@@ -1427,6 +1427,59 @@ const char* SPVM_OP_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub)
   return sub_signature;
 }
 
+const char* SPVM_OP_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+  
+  int32_t length = 0;
+  
+  // Calcurate signature length
+  {
+    // (
+    length += 1;
+
+    // Return type basic type
+    length += strlen(field->op_type->uv.type->basic_type->name);
+    
+    // Return type dimension
+    length += field->op_type->uv.type->dimension * 2;
+    
+    // )
+    length += 1;
+    
+    // Subroutine name
+    length += strlen(field->op_name->uv.name);
+  }
+  
+  char* field_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  
+  // Calcurate field signature length
+  char* bufptr = field_signature;
+  {
+    // (
+    memcpy(bufptr, "(", 1);
+    bufptr += 1;
+
+    // Return type
+    memcpy(bufptr, field->op_type->uv.type->basic_type->name, strlen(field->op_type->uv.type->basic_type->name));
+    bufptr += strlen(field->op_type->uv.type->basic_type->name);
+    
+    int32_t dim_index;
+    for (dim_index = 0; dim_index < field->op_type->uv.type->dimension; dim_index++) {
+      memcpy(bufptr, "[]", 2);
+      bufptr += 2;
+    }
+    
+    // )
+    *bufptr = ')';
+    bufptr += 1;
+
+    // Subroutine name
+    memcpy(bufptr, field->op_name->uv.name, strlen(field->op_name->uv.name));
+    bufptr += strlen(field->op_name->uv.name);
+  }
+  
+  return field_signature;
+}
+
 const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   

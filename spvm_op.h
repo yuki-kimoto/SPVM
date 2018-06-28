@@ -223,7 +223,8 @@ struct SPVM_op {
   _Bool is_passed_to_sub;
 };
 
-const char* SPVM_OP_create_method_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+const char* SPVM_OP_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+const char* SPVM_OP_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field);
 
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
