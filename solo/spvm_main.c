@@ -91,12 +91,7 @@ int main(int argc, char *argv[])
   int32_t exception_flag = env->call_sub(env, sub_id, args);
   
   if (exception_flag) {
-    if (runtime->exception) {
-      SPVM_RUNTIME_API_print(env, runtime->exception);
-    }
-    else {
-      SPVM_RUNTIME_API_print(env, "Error");
-    }
+    SPVM_RUNTIME_API_print(env, runtime->exception);
     printf("\n");
   }
   else {

@@ -1387,16 +1387,8 @@ call_sub(...)
   // Exception
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
-    const char* exception_bytes;
-    int32_t length;
-    if (exception) {
-      length = env->get_array_length(env, exception);
-      exception_bytes = (char*)env->get_byte_array_elements(env, exception);
-    }
-    else {
-      exception_bytes = "Error";
-      length = strlen(exception_bytes);
-    }
+    int32_t length = env->get_array_length(env, exception);
+    const char* exception_bytes = (char*)env->get_byte_array_elements(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s", SvPV_nolen(sv_exception));
   }

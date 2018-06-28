@@ -51,19 +51,26 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
   
+  int32_t exception_flag = 0;
   if (sub->have_native_desc) {
     int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
-    int32_t exception_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, args);
+    exception_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, args);
     SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
-    
-    return exception_flag;
   }
   else if (sub->is_compiled) {
-    return SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
+    exception_flag = SPVM_RUNTIME_call_sub_precompile(env, sub_id, args);
   }
   else {
-    return SPVM_RUNTIME_call_sub_vm(env, sub_id, args);
+    exception_flag = SPVM_RUNTIME_call_sub_vm(env, sub_id, args);
   }
+  
+  // Set default exception message
+  if (exception_flag && runtime->exception == NULL) {
+    void* exception = env->new_string_raw(env, "Error", 0);
+    env->set_exception(env, exception);
+  }
+  
+  return exception_flag;
 }
 
 int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args) {
