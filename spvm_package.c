@@ -26,8 +26,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  package->signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->sub_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->sub_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->op_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);

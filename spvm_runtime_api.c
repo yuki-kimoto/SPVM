@@ -1054,7 +1054,7 @@ int32_t SPVM_RUNTIME_API_get_field_rel_id(SPVM_ENV* env, const char* package_nam
   return field_rel_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_signature) {
   (void)env;
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -1067,7 +1067,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   
   SPVM_PACKAGE* package = op_package->uv.package;
   
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->signature_symtable, signature, strlen(signature));
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
     return -1;
   }
@@ -1077,7 +1077,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   return sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_signature) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -1090,9 +1090,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   }
   SPVM_PACKAGE* package = op_package->uv.package;
   
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, signature, strlen(signature));
-
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->signature_symtable, signature, strlen(signature));
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
     return -1;
   }

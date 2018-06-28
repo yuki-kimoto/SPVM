@@ -1309,7 +1309,7 @@ const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package
   return abs_name;
 }
 
-const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+const char* SPVM_OP_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   int32_t length = 0;
   
@@ -1359,10 +1359,10 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     length += 1;
   }
   
-  char* signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* sub_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
-  // Calcurate signature length
-  char* bufptr = signature;
+  // Calcurate sub signature length
+  char* bufptr = sub_signature;
   {
     // (
     memcpy(bufptr, "(", 1);
@@ -1424,7 +1424,7 @@ const char* SPVM_OP_create_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     bufptr += 1;
   }
   
-  return signature;
+  return sub_signature;
 }
 
 const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
@@ -1696,17 +1696,17 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST_push(compiler->op_packages, op_package);
   SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
 
-  // Register signature
+  // Register sub signature
   {
     int32_t i;
     for (i = 0; i < package->op_subs->length; i++) {
       SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
       SPVM_SUB* sub = op_sub->uv.sub;
       
-      const char* signature = SPVM_OP_create_signature(compiler, sub);
-      sub->signature = signature;
-      SPVM_LIST_push(sub->op_package->uv.package->signatures, (char*)signature);
-      SPVM_HASH_insert(sub->op_package->uv.package->signature_symtable, signature, strlen(signature), sub);
+      const char* sub_signature = SPVM_OP_create_sub_signature(compiler, sub);
+      sub->signature = sub_signature;
+      SPVM_LIST_push(sub->op_package->uv.package->sub_signatures, (char*)sub_signature);
+      SPVM_HASH_insert(sub->op_package->uv.package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
     }
   }
   
