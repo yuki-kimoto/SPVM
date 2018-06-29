@@ -225,6 +225,7 @@ struct SPVM_op {
 
 const char* SPVM_OP_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
 const char* SPVM_OP_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field);
+const char* SPVM_OP_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var);
 
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
 

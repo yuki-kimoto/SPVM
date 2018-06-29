@@ -1480,6 +1480,59 @@ const char* SPVM_OP_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* 
   return field_signature;
 }
 
+const char* SPVM_OP_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var) {
+  
+  int32_t length = 0;
+  
+  // Calcurate signature length
+  {
+    // (
+    length += 1;
+
+    // Return type basic type
+    length += strlen(package_var->op_type->uv.type->basic_type->name);
+    
+    // Return type dimension
+    length += package_var->op_type->uv.type->dimension * 2;
+    
+    // )
+    length += 1;
+    
+    // Subroutine name
+    length += strlen(package_var->op_name->uv.name);
+  }
+  
+  char* package_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  
+  // Calcurate package_var signature length
+  char* bufptr = package_var_signature;
+  {
+    // (
+    memcpy(bufptr, "(", 1);
+    bufptr += 1;
+
+    // Return type
+    memcpy(bufptr, package_var->op_type->uv.type->basic_type->name, strlen(package_var->op_type->uv.type->basic_type->name));
+    bufptr += strlen(package_var->op_type->uv.type->basic_type->name);
+    
+    int32_t dim_index;
+    for (dim_index = 0; dim_index < package_var->op_type->uv.type->dimension; dim_index++) {
+      memcpy(bufptr, "[]", 2);
+      bufptr += 2;
+    }
+    
+    // )
+    *bufptr = ')';
+    bufptr += 1;
+
+    // Subroutine name
+    memcpy(bufptr, package_var->op_name->uv.name, strlen(package_var->op_name->uv.name));
+    bufptr += strlen(package_var->op_name->uv.name);
+  }
+  
+  return package_var_signature;
+}
+
 const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
   int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
   
