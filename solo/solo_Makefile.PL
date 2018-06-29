@@ -4,9 +4,26 @@ use Config;
 
 use lib 'lib';
 use SPVM::Build::Util;
+use Getopt::Long 'GetOptions';
+
+my @defines;
+my $optimize;
+
+GetOptions(
+  "--DEFINE=s" => \@defines,
+  "--OPTIMIZE=s" => \$optimize,
+);
+
+# Add -D
+@defines = map { "-D$_" } @defines;
+
+# Add -
+if ($optimize) {
+  $optimize = "$optimize";
+}
 
 my $build_setting = SPVM::Build::Util::default_build_setting;
-my $optimize = $build_setting->get_config('optimize');
+$optimize ||= $build_setting->get_config('optimize');
 
 my $ccflags = "$Config{ccflags} " . join(' ', @{$build_setting->get_extra_compiler_flags});
 
@@ -15,7 +32,7 @@ my @object_files = map { $_ =~ s/\.c$/.o/; $_ } @c_source_files;
 
 my $object_dir = 'solo';
 
-my $cccmd = "gcc -I. -Ilib/SPVM/Build $ccflags -lm";
+my $cccmd = "cc @defines -I. -Ilib/SPVM/Build $ccflags -lm  $optimize";
 
 my $makefile = <<"EOS";
 

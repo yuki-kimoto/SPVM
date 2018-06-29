@@ -12,6 +12,7 @@ struct SPVM_package_var {
   int32_t id;
   int32_t rel_id;
   const char* abs_name;
+  const char* signature;
 };
 
 SPVM_PACKAGE_VAR* SPVM_PACKAGE_VAR_new(SPVM_COMPILER* compiler);

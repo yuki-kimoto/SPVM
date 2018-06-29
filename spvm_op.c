@@ -1815,7 +1815,21 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_HASH_insert(sub->op_package->uv.package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
     }
   }
-  
+
+  // Register field signature
+  {
+    int32_t i;
+    for (i = 0; i < package->op_fields->length; i++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
+      SPVM_FIELD* field = op_field->uv.field;
+      
+      const char* field_signature = SPVM_OP_create_field_signature(compiler, field);
+      field->signature = field_signature;
+      SPVM_LIST_push(field->op_package->uv.package->field_signatures, (char*)field_signature);
+      SPVM_HASH_insert(field->op_package->uv.package->field_signature_symtable, field_signature, strlen(field_signature), field);
+    }
+  }
+
   return op_package;
 }
 
