@@ -1648,7 +1648,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
       
       SPVM_FIELD* field = op_field->uv.field;
-      field->rel_id = i;
+      field->index = i;
       const char* field_name = field->op_name->uv.name;
       const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
       field->abs_name = field_abs_name;
@@ -1674,7 +1674,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       
       if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-        SPVM_LIST_push(package->object_field_rel_ids, (void*)(intptr_t)field->rel_id);
+        SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
       }
     }
   }
