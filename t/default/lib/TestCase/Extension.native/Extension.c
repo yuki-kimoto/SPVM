@@ -24,9 +24,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_byte");
+  int32_t field_index = env->get_field_index(env, test_case, "(byte)x_byte");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  int8_t value = env->get_byte_field(env, test_case, field_rel_id);
+  int8_t value = env->get_byte_field(env, test_case, field_index);
   
   stack[0].bval = value;
   
@@ -39,9 +42,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_short_field(SPVM_ENV* en
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_short");
+  int32_t field_index = env->get_field_index(env, test_case, "(short)x_short");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  int16_t value = env->get_short_field(env, test_case, field_rel_id);
+  int16_t value = env->get_short_field(env, test_case, field_index);
   
   stack[0].sval = value;
   
@@ -54,9 +60,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_int_field(SPVM_ENV* env,
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_int");
+  int32_t field_index = env->get_field_index(env, test_case, "(int)x_int");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  int32_t value = env->get_int_field(env, test_case, field_rel_id);
+  int32_t value = env->get_int_field(env, test_case, field_index);
   
   stack[0].ival = value;
   
@@ -69,9 +78,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_long_field(SPVM_ENV* env
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_long");
+  int32_t field_index = env->get_field_index(env, test_case, "(long)x_long");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  int64_t value = env->get_long_field(env, test_case, field_rel_id);
+  int64_t value = env->get_long_field(env, test_case, field_index);
   
   stack[0].ival = value;
   
@@ -84,9 +96,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_float_field(SPVM_ENV* en
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_float");
+  int32_t field_index = env->get_field_index(env, test_case, "(float)x_float");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  float value = env->get_float_field(env, test_case, field_rel_id);
+  float value = env->get_float_field(env, test_case, field_index);
   
   stack[0].fval = value;
   
@@ -99,9 +114,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_double_field(SPVM_ENV* e
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "x_double");
+  int32_t field_index = env->get_field_index(env, test_case, "(double)x_double");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  double value = env->get_double_field(env, test_case, field_rel_id);
+  double value = env->get_double_field(env, test_case, field_index);
   
   stack[0].ival = value;
   
@@ -114,9 +132,12 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_object_field(SPVM_ENV* e
   
   void* test_case = stack[0].oval;
   
-  int32_t field_rel_id = env->get_field_rel_id(env, test_case, "minimal");
+  int32_t field_index = env->get_field_index(env, test_case, "(TestCase::Minimal)minimal");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
   
-  void* value = env->get_object_field(env, test_case, field_rel_id);
+  void* value = env->get_object_field(env, test_case, field_index);
   
   stack[0].oval = value;
   

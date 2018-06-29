@@ -1029,7 +1029,7 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->ref_count;
 }
 
-int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name, const char* field_name) {
+int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name, const char* field_signature) {
   (void)env;
   
   // Runtime
@@ -1038,18 +1038,18 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name
   
   // Package
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+  if (!op_package) {
+    return -1;
+  }
   
   // Field
-  SPVM_HASH* op_field_symtable = op_package->uv.package->op_field_symtable;
-  SPVM_OP* op_field = SPVM_HASH_fetch(op_field_symtable, field_name, strlen(field_name));
+  SPVM_FIELD* field = SPVM_HASH_fetch(op_package->uv.package->field_signature_symtable, field_signature, strlen(field_signature));
   
-  int32_t field_index;
-  if (op_field) {
-    field_index = op_field->uv.field->index;
+  if (!field) {
+    return -2;
   }
-  else {
-    field_index = -1;
-  }
+  
+  int32_t field_index = field->index;
   
   return field_index;
 }
