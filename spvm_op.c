@@ -1687,24 +1687,24 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
       package_var->rel_id = i;
-      const char* package_var_access_name = package_var->op_package_var_access->uv.package_var_access->op_name->uv.name;
+      const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       
-      SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_access_name, strlen(package_var_access_name));
+      SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_name, strlen(package_var_name));
       
       if (found_op_package_var) {
-        SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_access_name, op_package_var->file, op_package_var->line);
+        SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_package_var->file, op_package_var->line);
       }
       else if (package->op_package_vars->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", op_package_var->file, op_package_var->line);
         
       }
       else {
-        const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_access_name);
+        const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_name);
         package_var->id = compiler->op_package_vars->length;
         SPVM_LIST_push(compiler->op_package_vars, op_package_var);
         SPVM_HASH_insert(compiler->op_package_var_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), op_package_var);
 
-        SPVM_HASH_insert(package->op_package_var_symtable, package_var_access_name, strlen(package_var_access_name), op_package_var);
+        SPVM_HASH_insert(package->op_package_var_symtable, package_var_name, strlen(package_var_name), op_package_var);
         
         // Add op package
         package_var->op_package = op_package;
@@ -1915,7 +1915,7 @@ SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPV
     
   }
   
-  package_var->op_package_var_access = op_var;
+  package_var->op_var = op_var;
   package_var->op_type = op_type;
   op_package_var->uv.package_var = package_var;
   
