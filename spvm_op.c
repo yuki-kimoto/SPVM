@@ -1893,15 +1893,15 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_package_var_access->file, op_package_var_access->line);
+  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_var->file, op_var->line);
   SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
   
-  const char* name = SPVM_OP_get_var_name(compiler, op_package_var_access);
+  const char* name = SPVM_OP_get_var_name(compiler, op_var);
   
   _Bool invalid_name = 0;
-  if (op_package_var_access->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
+  if (op_var->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
     invalid_name = 1;
   }
   else {
@@ -1911,11 +1911,11 @@ SPVM_OP* SPVM_OP_build_package_var(SPVM_COMPILER* compiler, SPVM_OP* op_package_
   }
   
   if (invalid_name) {
-    SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_package_var_access->file, op_package_var_access->line);
+    SPVM_yyerror_format(compiler, "Invalid package variable name %s at %s line %d\n", name, op_var->file, op_var->line);
     
   }
   
-  package_var->op_package_var_access = op_package_var_access;
+  package_var->op_package_var_access = op_var;
   package_var->op_type = op_type;
   op_package_var->uv.package_var = package_var;
   
