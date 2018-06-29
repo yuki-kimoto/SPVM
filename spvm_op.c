@@ -1499,7 +1499,7 @@ const char* SPVM_OP_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_P
     length += 1;
     
     // Subroutine name
-    length += strlen(package_var->op_name->uv.name);
+    length += strlen(package_var->op_var->uv.var->op_name->uv.name);
   }
   
   char* package_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
@@ -1526,8 +1526,8 @@ const char* SPVM_OP_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_P
     bufptr += 1;
 
     // Subroutine name
-    memcpy(bufptr, package_var->op_name->uv.name, strlen(package_var->op_name->uv.name));
-    bufptr += strlen(package_var->op_name->uv.name);
+    memcpy(bufptr, package_var->op_var->uv.var->op_name->uv.name, strlen(package_var->op_var->uv.var->op_name->uv.name));
+    bufptr += strlen(package_var->op_var->uv.var->op_name->uv.name);
   }
   
   return package_var_signature;
@@ -1827,6 +1827,20 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       field->signature = field_signature;
       SPVM_LIST_push(field->op_package->uv.package->field_signatures, (char*)field_signature);
       SPVM_HASH_insert(field->op_package->uv.package->field_signature_symtable, field_signature, strlen(field_signature), field);
+    }
+  }
+
+  // Register package_var signature
+  {
+    int32_t i;
+    for (i = 0; i < package->op_package_vars->length; i++) {
+      SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, i);
+      SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
+      
+      const char* package_var_signature = SPVM_OP_create_package_var_signature(compiler, package_var);
+      package_var->signature = package_var_signature;
+      SPVM_LIST_push(package_var->op_package->uv.package->package_var_signatures, (char*)package_var_signature);
+      SPVM_HASH_insert(package_var->op_package->uv.package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
     }
   }
 
