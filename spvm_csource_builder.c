@@ -2037,6 +2037,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(package->op_package_var_accesses, rel_id);
         int32_t pacakge_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
+        
+        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_signature = package_var->signature;
 
         char* package_var_access_type = NULL;
         switch (opcode->id) {
