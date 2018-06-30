@@ -1901,7 +1901,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
-        int32_t field_index = op_field_access->uv.field_access->field->index;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
@@ -1930,9 +1929,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        (void**)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
-        SPVM_STRING_BUFFER_add(string_buffer, "),\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        NULL");
         SPVM_STRING_BUFFER_add(string_buffer, "      );\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
