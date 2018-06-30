@@ -1,5 +1,5 @@
-0.0353 2018-06-27
-  - get_sub_id receive package name and signature
+0.0353 2018-06-30
+  - env->get_sub_id receive package name and signature
       [Before]
       int32_t sub_id = env->get_sub_id(env, sub_abs_name);
       [After]
@@ -9,7 +9,29 @@
       For example
       
         (int)foo(double,long)
+
+  - rename env->get_field_rel_id to env->get_field_index and receive package name and signature
+      [Before]
+      int32_t field_index = env->get_field_rel_id(env, name);
+      [After]
+      int32_t field_index = env->get_field_index(env, package_name, signature);
+      
+      Signature contains field type and field name
+      For example
+      
+        (int)x
+
+  - add env->get_package_var_id
+
+      int32_t package_var_id = env->get_field_index(env, package_name, signature);
+      
+      Signature contains package variable type and package variable name
+      For example
+      
+        (int)$FOO
+        
   - improve exception logic
+  - improve precompile symbol name check
 0.0352 2018-06-27
   - Separate mortal API and raw API
     raw API create object which reference count is zero.
