@@ -404,7 +404,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
@@ -441,7 +441,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
 void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, const char* package_name, const char* field_signature, int32_t in_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
@@ -1757,7 +1757,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
@@ -1859,7 +1859,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
@@ -1904,7 +1904,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
@@ -1946,7 +1946,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
