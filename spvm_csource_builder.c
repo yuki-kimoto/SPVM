@@ -403,7 +403,7 @@ void SPVM_CSOURCE_BUILDER_add_move(SPVM_STRING_BUFFER* string_buffer, const char
 void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, const char* package_name, const char* field_signature) {
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t field_index = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -440,7 +440,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
 
 void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, const char* package_name, const char* field_signature, int32_t in_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t field_index = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -881,7 +881,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t dimension = op_type->uv.type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
@@ -1519,7 +1519,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
@@ -1594,7 +1594,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
@@ -1622,7 +1622,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t element_dimension = op_type->uv.type->dimension - 1;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
@@ -1756,7 +1756,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* field_signature = field->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t field_index = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -1858,7 +1858,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* field_signature = field->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t field_index = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index == -1) { field_index = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -2202,7 +2202,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t cast_type_dimension = op_type->uv.type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t cast_basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_basic_type_id = -1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (cast_basic_type_id == -1) { cast_basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
@@ -2263,7 +2263,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t call_sub_id = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = -1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id == -1) { call_sub_id = env->get_sub_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
@@ -2274,7 +2274,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, "    void* object = *(void**)&vars[");
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    static int32_t call_sub_id = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = -1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id == -1) { call_sub_id = env->get_sub_id_method_call(env, object, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
