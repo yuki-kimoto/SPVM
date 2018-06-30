@@ -27,7 +27,7 @@
 #include "spvm_list.h"
 #include "spvm_op_checker.h"
 #include "spvm_basic_type.h"
-
+#include "spvm_package_var.h"
 
 
 
@@ -111,6 +111,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_new_multi_array,
   SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_new_struct,
+  SPVM_RUNTIME_API_get_package_var_id,
 };
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
@@ -1029,7 +1030,7 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->ref_count;
 }
 
-int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name, const char* field_signature) {
+int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -1043,7 +1044,7 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name
   }
   
   // Field
-  SPVM_FIELD* field = SPVM_HASH_fetch(op_package->uv.package->field_signature_symtable, field_signature, strlen(field_signature));
+  SPVM_FIELD* field = SPVM_HASH_fetch(op_package->uv.package->field_signature_symtable, signature, strlen(signature));
   
   if (!field) {
     return -2;
@@ -1052,6 +1053,31 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name
   int32_t field_index = field->index;
   
   return field_index;
+}
+
+int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* signature) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  // Package
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+  if (!op_package) {
+    return -1;
+  }
+  
+  // Field
+  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(op_package->uv.package->package_var_signature_symtable, signature, strlen(signature));
+  
+  if (!package_var) {
+    return -2;
+  }
+  
+  int32_t package_var_id = package_var->id;
+  
+  return package_var_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_signature) {

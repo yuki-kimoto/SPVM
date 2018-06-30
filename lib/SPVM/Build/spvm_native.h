@@ -112,6 +112,7 @@ struct SPVM_env {
   void* (*new_object_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
-  void* (*new_struct)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
+  void* (*new_struct)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
+  int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* signature);
 };
 #endif
