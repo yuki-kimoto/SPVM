@@ -1,6 +1,8 @@
 package TestCase::Simple {
   has x : int;
   has y : int;
+  
+  our $FOO : int;
 
   sub get_x : int ($self : self) {
     return $self->{x};
