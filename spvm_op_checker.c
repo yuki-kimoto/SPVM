@@ -211,6 +211,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         op_cur->uv.constant->rel_id = package->op_constants->length;
                         SPVM_LIST_push(package->op_constants, op_cur);
+
+                        if (sub->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
+                        }
+                        op_cur->uv.constant->sub_rel_id = sub->op_constants->length;
+                        SPVM_LIST_push(sub->op_constants, op_cur);
                       }
                       
                       break;
@@ -260,6 +266,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       op_cur->uv.switch_info->rel_id = package->op_switch_infos->length;
                       SPVM_LIST_push(package->op_switch_infos, op_cur);
+
+                      if (sub->op_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.switch_info->sub_rel_id = sub->op_switch_infos->length;
+                      SPVM_LIST_push(sub->op_switch_infos, op_cur);
                     
                       break;
                     }
@@ -716,6 +728,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         op_type->uv.type->rel_id = package->op_types->length;
+
+                        if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                        }
+                        op_type->uv.type->sub_rel_id = sub->op_types->length;
+
                         SPVM_LIST_push(package->op_types, op_type);
                       }
                       else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
@@ -790,6 +808,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_type->uv.type->rel_id = package->op_types->length;
+
+                      if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_type->uv.type->sub_rel_id = sub->op_types->length;
+
                       SPVM_LIST_push(package->op_types, op_type);
                       
                       break;
@@ -1694,6 +1718,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       op_cur->uv.call_sub->rel_id = package->op_call_subs->length;
                       SPVM_LIST_push(package->op_call_subs, op_cur);
                       
+                      if (sub->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_cur->uv.call_sub->sub_rel_id = sub->op_call_subs->length;
+                      SPVM_LIST_push(sub->op_call_subs, op_cur);
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
@@ -1839,6 +1869,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
                       }
                       op_type->uv.type->rel_id = package->op_types->length;
+
+                      if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      op_type->uv.type->sub_rel_id = sub->op_types->length;
+
                       SPVM_LIST_push(package->op_types, op_type);
                     }
                     break;
