@@ -749,7 +749,49 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
-
+  
+  // Get field index
+  {
+    SPVM_HASH* field_name_symtable = SPVM_HASH_new(1);
+    int32_t field_access_index;
+    for (field_access_index = 0; field_access_index < sub->op_field_accesses->length; field_access_index++) {
+      SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, field_access_index);
+      SPVM_FIELD* field = op_field_access->uv.field_access->field;
+      const char* package_name = field->op_package->uv.package->op_name->uv.name;
+      const char* field_signature = field->signature;
+      const char* field_name = field->op_name->uv.name;
+      
+      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_name_symtable, field_name, strlen(field_name));
+      if (!found_field) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index_");
+        SPVM_STRING_BUFFER_add(string_buffer, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t field_index = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      field_index = env->get_field_index(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (field_index < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), field);
+      }
+    }
+    SPVM_HASH_free(field_name_symtable);
+  }
+  
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   int32_t sub_opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
