@@ -2414,6 +2414,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, " ");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
           SPVM_STRING_BUFFER_add(string_buffer, "    void* object = *(void**)&vars[");
@@ -2423,21 +2432,20 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id == -1) { call_sub_id = env->get_sub_id_method_call(env, object, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(string_buffer, " ");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
         else {
           assert(0);
         }
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_package->uv.package->op_name->uv.name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        
         // Subroutine inline expantion in same package
         if (decl_sub->op_package->uv.package->id == sub->op_package->uv.package->id && decl_sub->have_precompile_desc) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
