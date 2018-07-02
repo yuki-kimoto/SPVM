@@ -1249,7 +1249,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
-                            opcode.operand2 = op_dist_type->uv.type->rel_id;
+                            opcode.operand2 = op_dist_type->uv.type->sub_rel_id;
                           }
                         }
 
@@ -1399,7 +1399,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
 
                                   opcode.operand0 = index_out;
-                                  opcode.operand1 = op_type->uv.type->rel_id;
+                                  opcode.operand1 = op_type->uv.type->sub_rel_id;
                                   opcode.operand2 = index_index;
 
                                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1417,7 +1417,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               int32_t index_index = SPVM_OP_get_my_index(compiler, op_assign_from->first->last);
                               
                               opcode.operand0 = index_out;
-                              opcode.operand1 = op_type->uv.type->rel_id;
+                              opcode.operand1 = op_type->uv.type->sub_rel_id;
                               opcode.operand2 = index_index;
 
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1432,7 +1432,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                             
                             opcode.operand0 = index_out;
-                            opcode.operand1 = type->rel_id;
+                            opcode.operand1 = type->sub_rel_id;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                         }
@@ -2343,7 +2343,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
                     
                     opcode.operand0 = index_in1;
-                    opcode.operand1 = op_type->uv.type->rel_id;
+                    opcode.operand1 = op_type->uv.type->sub_rel_id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     

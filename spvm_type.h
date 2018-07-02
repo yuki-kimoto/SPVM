@@ -9,7 +9,6 @@ struct SPVM_type {
   int32_t dimension;
   SPVM_BASIC_TYPE* basic_type;
   _Bool is_const;
-  int32_t rel_id;
   int32_t sub_rel_id;
 };
 

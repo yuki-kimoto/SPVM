@@ -878,7 +878,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_ISA:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* basic_type_name = op_type->uv.type->basic_type->name;
         int32_t dimension = op_type->uv.type->dimension;
         
@@ -1517,7 +1517,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1592,7 +1592,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* basic_type_name = op_type->uv.type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1619,7 +1619,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* basic_type_name = op_type->uv.type->basic_type->name;
         int32_t element_dimension = op_type->uv.type->dimension - 1;
         
@@ -2342,7 +2342,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* cast_basic_type_name = op_type->uv.type->basic_type->name;
         int32_t cast_type_dimension = op_type->uv.type->dimension;
         

@@ -283,7 +283,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         int32_t basic_type_id = op_type->uv.type->basic_type->id;
         int32_t dimension = op_type->uv.type->dimension;
         
@@ -1140,7 +1140,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         int32_t basic_type_id = op_type->uv.type->basic_type->id;
         
         void* object = env->new_object_raw(env, basic_type_id);
@@ -1218,7 +1218,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         int32_t basic_type_id = op_type->uv.type->basic_type->id;
         
         // length
@@ -1232,7 +1232,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         int32_t basic_type_id = op_type->uv.type->basic_type->id;
         int32_t element_dimension = op_type->uv.type->dimension - 1;
         
@@ -1769,7 +1769,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand1];
 
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_type = SPVM_LIST_fetch(package->op_types, rel_id);
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         int32_t cast_basic_type_id = op_type->uv.type->basic_type->id;
         int32_t cast_type_dimension = op_type->uv.type->dimension;
         
