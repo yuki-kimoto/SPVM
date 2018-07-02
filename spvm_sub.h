@@ -39,6 +39,12 @@ struct SPVM_sub {
   _Bool is_core;
   _Bool is_static;
   _Bool is_return_type_object;
+  SPVM_LIST* op_package_var_accesses;
+  SPVM_LIST* op_field_accesses;
+  SPVM_LIST* op_types;
+  SPVM_LIST* op_call_subs;
+  SPVM_LIST* op_constants;
+  SPVM_LIST* op_switch_infos;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
