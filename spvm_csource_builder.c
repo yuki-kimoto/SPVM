@@ -416,8 +416,8 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index_");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+  SPVM_STRING_BUFFER_add_field_index_name(string_buffer, package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, ");");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -436,8 +436,8 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index_");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+  SPVM_STRING_BUFFER_add_field_index_name(string_buffer, package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, ") = ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, field_type_name, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -732,15 +732,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       
       SPVM_FIELD* found_field = SPVM_HASH_fetch(field_name_symtable, field_name, strlen(field_name));
       if (!found_field) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
@@ -1807,7 +1807,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
         const char* field_signature = field->signature;
 
@@ -1823,8 +1823,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "));");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -1834,22 +1834,22 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
         const char* field_signature = field->signature;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, package_name, field_name, field_signature, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, field_package_name, field_name, field_signature, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
         const char* field_signature = field->signature;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, package_name, field_name, field_signature, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, field_package_name, field_name, field_signature, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
@@ -1901,8 +1901,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
-        const char* field_signature = field->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -1915,8 +1915,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        (void**)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand2);
@@ -1931,6 +1931,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1944,8 +1945,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        (void**)((intptr_t)");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "),\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        NULL");
         SPVM_STRING_BUFFER_add(string_buffer, "      );\n");
@@ -1958,13 +1959,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->weaken_object_field(env, ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (env->get_exception(env)) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
