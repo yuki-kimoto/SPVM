@@ -8,7 +8,6 @@ struct SPVM_call_sub {
   SPVM_OP* op_name;
   SPVM_SUB* sub;
   int32_t call_type_id;
-  int32_t rel_id;
   int32_t sub_rel_id;
 };
 

@@ -1706,11 +1706,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         sub->call_sub_arg_stack_max = call_sub_args_count;
                       }
 
-                      if (package->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                      if (sub->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                         SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
                       }
-                      op_cur->uv.call_sub->rel_id = package->op_call_subs->length;
-                      SPVM_LIST_push(package->op_call_subs, op_cur);
+                      op_cur->uv.call_sub->sub_rel_id = sub->op_call_subs->length;
+                      SPVM_LIST_push(sub->op_call_subs, op_cur);
                       
                       if (sub->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                         SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);

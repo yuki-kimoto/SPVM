@@ -2384,7 +2384,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(package->op_call_subs, rel_id);
+        SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, rel_id);
         int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
 
         SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);

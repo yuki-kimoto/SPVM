@@ -334,12 +334,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                           opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
-                          opcode.operand1 = call_sub->rel_id;
+                          opcode.operand1 = call_sub->sub_rel_id;
                           opcode.operand2 = first_arg_index;
                         }
                         else {
                           opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
-                          opcode.operand1 = call_sub->rel_id;
+                          opcode.operand1 = call_sub->sub_rel_id;
                         }
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -2506,12 +2506,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
-                        opcode.operand1 = call_sub->rel_id;
+                        opcode.operand1 = call_sub->sub_rel_id;
                         opcode.operand2 = first_arg_index;
                       }
                       else {
                         opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
-                        opcode.operand1 = call_sub->rel_id;
+                        opcode.operand1 = call_sub->sub_rel_id;
                       }
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

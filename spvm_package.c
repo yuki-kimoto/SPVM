@@ -41,7 +41,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   package->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_call_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return package;
 }
