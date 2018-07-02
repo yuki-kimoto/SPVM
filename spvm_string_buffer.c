@@ -46,6 +46,12 @@ void SPVM_STRING_BUFFER_add_field_index_name(SPVM_STRING_BUFFER* string_buffer, 
   SPVM_STRING_BUFFER_add_package_name(string_buffer, field_name);
 }
 
+void SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name) {
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, &package_var_name[1]);
+}
+
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
 
   // Extend

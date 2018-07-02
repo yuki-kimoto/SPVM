@@ -728,7 +728,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Get field index
   SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
   {
-    SPVM_HASH* field_name_symtable = SPVM_HASH_new(1);
+    SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
     int32_t field_access_index;
     for (field_access_index = 0; field_access_index < sub->op_field_accesses->length; field_access_index++) {
       SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, field_access_index);
@@ -737,7 +737,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       const char* field_signature = field->signature;
       const char* field_name = field->op_name->uv.name;
       
-      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_name_symtable, field_name, strlen(field_name));
+      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_abs_name_symtable, field->abs_name, strlen(field->abs_name));
       if (!found_field) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
@@ -758,10 +758,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), field);
+        SPVM_HASH_insert(field_abs_name_symtable, field->abs_name, strlen(field->abs_name), field);
       }
     }
-    SPVM_HASH_free(field_name_symtable);
+    SPVM_HASH_free(field_abs_name_symtable);
   }
   
   /*
@@ -771,33 +771,36 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_HASH* package_var_name_symtable = SPVM_HASH_new(1);
     int32_t package_var_access_index;
     for (package_var_access_index = 0; package_var_access_index < sub->op_package_var_accesses->length; package_var_access_index++) {
+      warn("AAAAAAAAAAAA");
       SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, package_var_access_index);
       SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+      const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
       const char* package_var_name = package_var->op_name->uv.name;
       const char* package_var_signature = package_var->signature;
       
-      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_name_symtable, field_name, strlen(field_name));
-      if (!found_field) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
+      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_name_symtable, package_var_name, strlen(package_var_name));
+      if (!found_package_var) {
+      warn("BBBBBBBBBB");
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_package_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Field not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Package variable not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), field);
+        SPVM_HASH_insert(package_var_name_symtable, package_var_name, strlen(package_var_name), package_var);
       }
     }
     SPVM_HASH_free(package_var_name_symtable);
