@@ -26,6 +26,26 @@ char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
   return string_buffer->buffer;
 }
 
+void SPVM_STRING_BUFFER_add_package_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+  {
+    int32_t index = string_buffer->length - strlen(package_name);
+    
+    while (index < string_buffer->length) {
+      if (string_buffer->buffer[index] == ':') {
+        string_buffer->buffer[index] = '_';
+      }
+      index++;
+    }
+  }
+}
+
+void SPVM_STRING_BUFFER_add_field_index_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, field_name);
+}
+
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
 
   // Extend
