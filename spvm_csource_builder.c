@@ -37,6 +37,7 @@
 #include "spvm_call_sub.h"
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
+#include "spvm_var.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -768,19 +769,19 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Get package variable id
   SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
   {
-    SPVM_HASH* package_var_name_symtable = SPVM_HASH_new(1);
+    SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
     int32_t package_var_access_index;
     for (package_var_access_index = 0; package_var_access_index < sub->op_package_var_accesses->length; package_var_access_index++) {
-      warn("AAAAAAAAAAAA");
       SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, package_var_access_index);
       SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
       const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-      const char* package_var_name = package_var->op_name->uv.name;
+      const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_signature = package_var->signature;
       
-      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_name_symtable, package_var_name, strlen(package_var_name));
-      if (!found_package_var) {
+      warn("AAAAAAAAAAAA %s %s %s", package_var_package_name, package_var_name, package_var_signature);
+      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name));
       warn("BBBBBBBBBB");
+      if (!found_package_var) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_package_var_id(env, \"");
@@ -800,10 +801,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(package_var_name_symtable, package_var_name, strlen(package_var_name), package_var);
+        SPVM_HASH_insert(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name), package_var);
       }
     }
-    SPVM_HASH_free(package_var_name_symtable);
+    SPVM_HASH_free(package_var_abs_name_symtable);
   }
   */
   
@@ -2003,7 +2004,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
         const char* package_var_signature = package_var->signature;
 
         char* package_var_access_type = NULL;
@@ -2065,7 +2066,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
         const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -2108,7 +2109,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
         const char* package_var_signature = package_var->signature;
 
         char* package_var_access_type = NULL;
@@ -2170,7 +2171,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
         const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -2206,7 +2207,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_name->uv.name;
+        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
         const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");

@@ -5,7 +5,6 @@
 
 // Field information
 struct SPVM_package_var {
-  SPVM_OP* op_name;
   SPVM_OP* op_package;
   SPVM_OP* op_var;
   SPVM_OP* op_type;
