@@ -1692,7 +1692,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1702,7 +1702,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1712,7 +1712,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1722,7 +1722,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1732,7 +1732,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1742,7 +1742,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1752,7 +1752,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1794,7 +1794,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1804,7 +1804,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1814,7 +1814,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1824,7 +1824,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1834,7 +1834,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1844,7 +1844,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1855,7 +1855,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1901,7 +1901,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;
@@ -1945,7 +1945,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_signature = field->signature;

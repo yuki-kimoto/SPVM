@@ -1269,7 +1269,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1286,7 +1286,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1303,7 +1303,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1320,7 +1320,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1337,7 +1337,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1354,7 +1354,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1371,7 +1371,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -1390,7 +1390,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1407,7 +1407,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1424,7 +1424,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1441,7 +1441,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1458,7 +1458,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1475,7 +1475,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -1492,7 +1492,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -1512,7 +1512,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -1532,7 +1532,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(package->op_field_accesses, rel_id);
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
         env->weaken_object_field(env, object, field_index);

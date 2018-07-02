@@ -40,7 +40,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
-  package->op_field_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_call_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

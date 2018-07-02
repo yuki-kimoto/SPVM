@@ -34,7 +34,6 @@ struct SPVM_package {
   _Bool is_private;
   _Bool is_anon;
   int32_t category;
-  SPVM_LIST* op_field_accesses;
   SPVM_LIST* op_types;
   SPVM_LIST* op_call_subs;
   SPVM_LIST* op_constants;

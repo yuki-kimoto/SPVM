@@ -1783,11 +1783,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      if (package->op_field_accesses->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                      if (sub->op_field_accesses->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                         SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
                       }
-                      op_cur->uv.field_access->rel_id = package->op_field_accesses->length;
-                      SPVM_LIST_push(package->op_field_accesses, op_cur);
+                      op_cur->uv.field_access->sub_rel_id = sub->op_field_accesses->length;
+                      SPVM_LIST_push(sub->op_field_accesses, op_cur);
                       
                       break;
                     }
