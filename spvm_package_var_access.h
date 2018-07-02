@@ -6,7 +6,6 @@
 struct SPVM_package_var_access {
   SPVM_OP* op_name;
   SPVM_OP* op_package_var;
-  int32_t rel_id;
   int32_t sub_rel_id;
 };
 

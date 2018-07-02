@@ -504,7 +504,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t index_out = SPVM_OP_get_my_index(compiler, op_assign_to);
                         
                         opcode.operand0 = index_out;
-                        opcode.operand1 = package_var_access->rel_id;
+                        opcode.operand1 = package_var_access->sub_rel_id;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
@@ -1496,7 +1496,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         int32_t package_var_access_id = package_var_access->op_package_var->uv.package_var->id;
                         opcode.id = SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF;
-                        opcode.operand0 = package_var_access->rel_id;
+                        opcode.operand0 = package_var_access->sub_rel_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       // PACKAGE_VAR_ACCESS = VAR
@@ -1536,7 +1536,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t package_var_access_id = package_var_access->op_package_var->uv.package_var->id;
                         int32_t index_in = SPVM_OP_get_my_index(compiler, op_assign_from);
                         
-                        opcode.operand0 = package_var_access->rel_id;
+                        opcode.operand0 = package_var_access->sub_rel_id;
                         opcode.operand1 = index_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
