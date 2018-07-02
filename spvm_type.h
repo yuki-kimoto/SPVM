@@ -10,6 +10,7 @@ struct SPVM_type {
   SPVM_BASIC_TYPE* basic_type;
   _Bool is_const;
   int32_t rel_id;
+  int32_t sub_rel_id;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
