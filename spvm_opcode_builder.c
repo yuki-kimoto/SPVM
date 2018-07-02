@@ -1719,7 +1719,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     // Case count
                     int32_t cases_length = switch_info->op_cases->length;
-                    opcode_switch_info.operand2 = switch_info->rel_id;
+                    opcode_switch_info.operand2 = switch_info->sub_rel_id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                     
