@@ -206,11 +206,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (add_constant) {
-                        if (package->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        if (sub->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        op_cur->uv.constant->rel_id = package->op_constants->length;
-                        SPVM_LIST_push(package->op_constants, op_cur);
+                        op_cur->uv.constant->sub_rel_id = sub->op_constants->length;
+                        SPVM_LIST_push(sub->op_constants, op_cur);
 
                         if (sub->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);

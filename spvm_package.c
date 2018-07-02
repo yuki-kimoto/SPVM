@@ -42,7 +42,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
 
   package->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_call_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return package;
 }

@@ -986,7 +986,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_LONG;
-                            opcode.operand1 = constant->rel_id;
+                            opcode.operand1 = constant->sub_rel_id;
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT;
@@ -994,7 +994,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE;
-                            opcode.operand1 = constant->rel_id;
+                            opcode.operand1 = constant->sub_rel_id;
                             break;
                           default:
                             assert(0);
@@ -1273,7 +1273,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CONSTANT* constant = op_assign_from->first->uv.constant;
 
                           opcode.operand0 = index_out;
-                          opcode.operand1 = constant->rel_id;
+                          opcode.operand1 = constant->sub_rel_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }

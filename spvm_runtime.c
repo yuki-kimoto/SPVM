@@ -768,7 +768,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
+        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
         *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&op_constant->uv.constant->value;
         break;
       }
@@ -777,7 +777,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
+        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
         *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&op_constant->uv.constant->value;
         break;
       }
@@ -1247,7 +1247,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(package->op_constants, rel_id);
+        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
         SPVM_CONSTANT* constant = op_constant->uv.constant;
         
         void* string = env->new_string_raw(env, constant->value.oval, constant->string_length);
