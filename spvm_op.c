@@ -1688,6 +1688,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
       package_var->rel_id = i;
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+      const char* package_var_abs_name = SPVM_OP_create_abs_name(compiler, package_name, package_var_name);
+      package_var->abs_name = package_var_abs_name;
       
       SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_name, strlen(package_var_name));
       

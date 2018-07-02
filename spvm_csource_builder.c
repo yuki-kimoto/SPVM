@@ -726,7 +726,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
   
-  // Get field index
+  // Get and check field index
   SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
   {
     SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
@@ -765,8 +765,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_HASH_free(field_abs_name_symtable);
   }
   
-  /*
-  // Get package variable id
+  // Get and check package variable id
   SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
   {
     SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
@@ -778,9 +777,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_signature = package_var->signature;
       
-      warn("AAAAAAAAAAAA %s %s %s", package_var_package_name, package_var_name, package_var_signature);
       SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name));
-      warn("BBBBBBBBBB");
       if (!found_package_var) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
@@ -806,7 +803,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     }
     SPVM_HASH_free(package_var_abs_name_symtable);
   }
-  */
   
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   int32_t sub_opcode_base = sub->opcode_base;
