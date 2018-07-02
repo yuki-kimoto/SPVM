@@ -734,26 +734,21 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       if (!found_field) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index_");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    field_index_");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (field_index_");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (field_index_");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         SPVM_HASH_insert(field_name_symtable, field_name, strlen(field_name), field);
