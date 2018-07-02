@@ -426,7 +426,8 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD* field, int32_t in_index) {
+void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_OP* op_field_access, int32_t in_index) {
+  SPVM_FIELD* field = op_field_access->uv.field_access->field;
   const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
   const char* field_name = field->op_name->uv.name;
 
@@ -1791,7 +1792,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
         const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
-        const char* field_signature = field->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
@@ -1815,49 +1815,43 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_byte", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_short", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
         
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_int", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_int", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_long", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_long", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_float", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_float", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
 
-        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_double", opcode->operand0, field, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(string_buffer, "SPVM_VALUE_double", opcode->operand0, op_field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
@@ -2459,12 +2453,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
         
-        const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
         const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
@@ -2477,7 +2471,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_package_name, sub_name, file, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2492,12 +2486,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = op_sub->line + rel_line;
         
-        const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
         const char* file = op_sub->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
@@ -2509,7 +2503,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), sub_package_name, sub_name, file, line));\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
