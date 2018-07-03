@@ -49,7 +49,7 @@ struct SPVM_runtime {
   SPVM_OBJECT* exception;
   
   // Package variables
-  SPVM_VALUE* package_var_accesss;
+  SPVM_VALUE* package_vars;
   
   SPVM_VALUE* args;
   

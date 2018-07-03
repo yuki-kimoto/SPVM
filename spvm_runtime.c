@@ -1578,7 +1578,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1587,7 +1587,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1596,7 +1596,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1605,7 +1605,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1614,7 +1614,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1623,7 +1623,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id];
+        *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id];
         
         break;
       }
@@ -1632,7 +1632,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id]);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id]);
         
         break;
       }
@@ -1641,7 +1641,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
+        *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
         
         break;
       }
@@ -1650,7 +1650,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
+        *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
         
         break;
       }
@@ -1659,7 +1659,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
         break;
       }
@@ -1668,7 +1668,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
+        *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
         
         break;
       }
@@ -1677,7 +1677,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(float*)&vars[opcode->operand1];
+        *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(float*)&vars[opcode->operand1];
         
         break;
       }
@@ -1686,7 +1686,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id] = *(double*)&vars[opcode->operand1];
+        *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id] = *(double*)&vars[opcode->operand1];
         
         break;
       }
@@ -1695,7 +1695,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id], *(void**)&vars[opcode->operand1]);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id], *(void**)&vars[opcode->operand1]);
         
         break;
       }
@@ -1704,7 +1704,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
         int32_t package_var_id = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var->id;
         
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_var_accesss)))[package_var_id], NULL);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + offsetof(SPVM_RUNTIME, package_vars)))[package_var_id], NULL);
         
         break;
       }
@@ -2027,7 +2027,7 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   
   free(runtime->args);
   
-  free(runtime->package_var_accesss);
+  free(runtime->package_vars);
   
   free(runtime);
 }
