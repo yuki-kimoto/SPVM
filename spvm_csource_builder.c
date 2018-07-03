@@ -2076,9 +2076,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, " = *(");
         SPVM_STRING_BUFFER_add(string_buffer, package_var_access_type);
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
-        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2097,9 +2095,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)");
-        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -2145,9 +2141,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    *(");
         SPVM_STRING_BUFFER_add(string_buffer, package_var_access_type);
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
-        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -2165,9 +2159,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "],\n");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
@@ -2184,9 +2176,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_vars));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "], NULL);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
