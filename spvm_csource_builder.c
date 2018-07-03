@@ -727,7 +727,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Get and check field index
-  SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
+  if (sub->op_field_accesses->length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
+  }
   {
     SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
     int32_t field_access_index;
@@ -766,7 +768,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Get and check package variable id
-  SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
+  if (sub->op_package_var_accesses->length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
+  }
   {
     SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
     int32_t package_var_access_index;
