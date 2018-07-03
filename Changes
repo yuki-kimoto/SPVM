@@ -1,3 +1,7 @@
+0.0354 2018-07-03
+  - Get and check field index in top of subroutine in precompile
+  - Get and check package variable id in top of subroutine in precompile
+  - Get and check sub id in top of subroutine in precompile
 0.0353 2018-06-30
   - env->get_sub_id receive package name and signature
       [Before]
