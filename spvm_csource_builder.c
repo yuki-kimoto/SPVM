@@ -38,6 +38,7 @@
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
 #include "spvm_var.h"
+#include "spvm_call_sub.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
@@ -806,6 +807,47 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
     }
     SPVM_HASH_free(package_var_abs_name_symtable);
+  }
+
+  // Get and check sub id
+  if (sub->op_call_subs->length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
+  }
+  {
+    SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
+    int32_t call_sub_index;
+    for (call_sub_index = 0; call_sub_index < sub->op_call_subs->length; call_sub_index++) {
+      SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, call_sub_index);
+      SPVM_SUB* sub = op_call_sub->uv.call_sub->sub;
+      const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
+      const char* sub_signature = sub->signature;
+      const char* sub_name = sub->op_name->uv.name;
+      
+      SPVM_FIELD* found_sub = SPVM_HASH_fetch(sub_abs_name_symtable, sub->abs_name, strlen(sub->abs_name));
+      if (!found_sub) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+        SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_sub_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Subroutine not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        SPVM_HASH_insert(sub_abs_name_symtable, sub->abs_name, strlen(sub->abs_name), sub);
+      }
+    }
+    SPVM_HASH_free(sub_abs_name_symtable);
   }
   
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
