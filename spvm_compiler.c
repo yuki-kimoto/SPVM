@@ -90,11 +90,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
-  // Object alignment must be over 8
-  if ((sizeof(SPVM_OBJECT) % 8) != 0) {
-    fprintf(stderr, "Object alignment must be over 8");
-    exit(1);
-  }
+  // Object alignment must be sizeof(SPVM_VALUE)
+  assert(sizeof(SPVM_OBJECT) % sizeof(SPVM_VALUE) == 0);
   
   return runtime;
 }

@@ -11,7 +11,10 @@ enum {
 };
 
 // SPVM_OBJECT
-struct SPVM_VALUE_object {
+struct SPVM_object {
+  // This is dummy data. SPVM max data size is sizeof(SPVM_VALUE)
+  // In SPVM, data is placed after SPVM_OBJECT, by this dummy, allignment is adjust
+  SPVM_VALUE dummy;
   void** weaken_back_refs;
   int32_t weaken_back_refs_length;
   int32_t weaken_back_refs_capacity;
