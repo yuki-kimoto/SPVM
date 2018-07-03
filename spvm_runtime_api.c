@@ -35,6 +35,7 @@
 
 
 
+
 static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_array_length,
   SPVM_RUNTIME_API_get_byte_array_elements,
@@ -112,6 +113,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_new_string,
   SPVM_RUNTIME_API_new_struct,
   SPVM_RUNTIME_API_get_package_var_id,
+  (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars), // runtime_package_vars_byte_offset
 };
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
