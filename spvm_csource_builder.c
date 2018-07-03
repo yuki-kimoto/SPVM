@@ -659,8 +659,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Condition flag
   SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
   
-  // tmp string
-  SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_string[30];\n");
+  // Convert string
+  SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string[30];\n");
 
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
@@ -1326,40 +1326,40 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         switch (opcode->id) {
           case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%\" PRId8, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%\" PRId8, ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_byte", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%\" PRId16, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%\" PRId16, ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_short", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%\" PRId32, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%\" PRId32, ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%\" PRId64, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%\" PRId64, ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_long", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%g\", ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%g\", ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_float", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             
             break;
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(tmp_string, \"%g\", ");
+            SPVM_STRING_BUFFER_add(string_buffer, "    sprintf(convert_string, \"%g\", ");
             SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_double", opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(tmp_string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, tmp_string, string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(convert_string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, convert_string, string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
