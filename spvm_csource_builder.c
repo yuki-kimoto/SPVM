@@ -2046,33 +2046,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-        const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t package_var_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      package_var_id = env->get_package_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Package variable not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)");
         SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[package_var_id]);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
@@ -2089,7 +2072,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-        const char* package_var_signature = package_var->signature;
 
         char* package_var_access_type = NULL;
         switch (opcode->id) {
@@ -2114,30 +2096,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t package_var_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      package_var_id = env->get_package_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Package variable not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
         SPVM_STRING_BUFFER_add(string_buffer, "    *(");
         SPVM_STRING_BUFFER_add(string_buffer, package_var_access_type);
         SPVM_STRING_BUFFER_add(string_buffer, "*)");
         SPVM_STRING_BUFFER_add(string_buffer, "&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[package_var_id]");
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "]");
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, package_var_access_type, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2151,30 +2117,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-        const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t package_var_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      package_var_id = env->get_package_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Package variable not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[package_var_id],\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "],\n");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -2187,29 +2136,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
         const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
         const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-        const char* package_var_signature = package_var->signature;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t package_var_id = -1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      package_var_id = env->get_package_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (package_var_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Package variable not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)package_var_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + ");
         SPVM_STRING_BUFFER_add_int(string_buffer, offsetof(SPVM_RUNTIME, package_var_accesss));
-        SPVM_STRING_BUFFER_add(string_buffer, "))[package_var_id], NULL);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "))[");
+        SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "], NULL);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
