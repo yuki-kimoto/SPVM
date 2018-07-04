@@ -1,12 +1,12 @@
-package TestCase::Struct : struct {
-  native sub new : TestCase::Struct ($x : int);
+package TestCase::Pointer : pointer {
+  native sub new : TestCase::Pointer ($x : int);
   
   native sub get_x : int ($self : self);
   
   native sub DESTROY : void ($self : self);
   
   sub struct_test : int () {
-    my $struct = TestCase::Struct->new(3);
+    my $struct = TestCase::Pointer->new(3);
     my $x = $struct->get_x;
     
     if ($x == 3) {

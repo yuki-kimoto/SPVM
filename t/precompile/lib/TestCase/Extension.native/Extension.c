@@ -333,11 +333,11 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   }
   // 11
   {
-    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Struct");
+    int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Pointer");
     if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
-    void* sp_objects = env->new_struct(env, basic_type_id, NULL);
+    void* sp_objects = env->new_pointer(env, basic_type_id, NULL);
     ref_count += env->get_ref_count(env, sp_objects);
   }
   

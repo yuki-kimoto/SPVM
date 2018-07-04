@@ -23,6 +23,7 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase->package_var());
+  ok(TestCase->package_var_other_package());
   my $end_objects_count = SPVM::get_objects_count();
   is($start_objects_count, $end_objects_count);
 }

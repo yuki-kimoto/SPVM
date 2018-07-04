@@ -1,6 +1,7 @@
 package TestCase {
   use TestCase::Weaken;
   use TestCase::Minimal;
+  use TestCase::Simple;
   use TestCase::Destructor;
   use TestCase::Empty;
   use TestCase::Private;
@@ -221,6 +222,16 @@ package TestCase {
     return 0;
   }
 
+  precompile sub package_var_other_package : int () {
+    if ($TestCase::Simple::FOO == 0) {
+      $TestCase::Simple::FOO = 1;
+      if ($TestCase::Simple::FOO == 1) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
   precompile sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
   }

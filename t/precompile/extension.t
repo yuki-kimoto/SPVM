@@ -8,7 +8,7 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
-use SPVM 'TestCase::Struct';
+use SPVM 'TestCase::Pointer';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
@@ -38,9 +38,9 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Extension2->spvm_extension2_binding());
 }
 
-# Struct
+# Pointer
 {
-  ok(TestCase::Struct->struct_test());
+  ok(TestCase::Pointer->struct_test());
 }
 
 # Clear exception

@@ -10,7 +10,8 @@ const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "interface",
   "public",
   "private",
-  "struct",
+  "pointer",
+  "values"
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {

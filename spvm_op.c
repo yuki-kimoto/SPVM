@@ -1586,8 +1586,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         case SPVM_DESCRIPTOR_C_ID_INTERFACE:
           package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
           break;
-        case SPVM_DESCRIPTOR_C_ID_STRUCT:
-          package->category = SPVM_PACKAGE_C_CATEGORY_STRUCT;
+        case SPVM_DESCRIPTOR_C_ID_POINTER:
+          package->category = SPVM_PACKAGE_C_CATEGORY_POINTER;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
           package->is_private = 1;
@@ -1640,8 +1640,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   {
     int32_t i;
     for (i = 0; i < package->op_fields->length; i++) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_STRUCT) {
-        SPVM_yyerror_format(compiler, "Struct package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+        SPVM_yyerror_format(compiler, "Pointer package can't have field at %s line %d\n", op_decl->file, op_decl->line);
         continue;
       }
 

@@ -54,7 +54,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_float_field,
   SPVM_RUNTIME_API_get_double_field,
   SPVM_RUNTIME_API_get_object_field,
-  SPVM_RUNTIME_API_get_struct,
+  SPVM_RUNTIME_API_get_pointer,
   SPVM_RUNTIME_API_set_byte_field,
   SPVM_RUNTIME_API_set_short_field,
   SPVM_RUNTIME_API_set_int_field,
@@ -75,7 +75,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_new_object_array_raw,
   SPVM_RUNTIME_API_new_multi_array_raw,
   SPVM_RUNTIME_API_new_string_raw,
-  SPVM_RUNTIME_API_new_struct_raw,
+  SPVM_RUNTIME_API_new_pointer_raw,
   SPVM_RUNTIME_API_get_exception,
   SPVM_RUNTIME_API_set_exception,
   SPVM_RUNTIME_API_get_ref_count,
@@ -111,7 +111,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_new_object_array,
   SPVM_RUNTIME_API_new_multi_array,
   SPVM_RUNTIME_API_new_string,
-  SPVM_RUNTIME_API_new_struct,
+  SPVM_RUNTIME_API_new_pointer,
   SPVM_RUNTIME_API_get_package_var_id,
   (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars), // runtime_package_vars_byte_offset
 };
@@ -540,10 +540,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_struct(SPVM_ENV* env, int32_t basic_type_id, void* struct_ptr) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* pointer) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_struct_raw(env, basic_type_id, struct_ptr);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_pointer_raw(env, basic_type_id, pointer);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
@@ -785,7 +785,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_struct_raw(SPVM_ENV* env, int32_t basic_type_id, void* struct_ptr) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void* pointer) {
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
@@ -800,7 +800,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_struct_raw(SPVM_ENV* env, int32_t basic_type_i
   int64_t object_byte_size = (int64_t)sizeof(SPVM_OBJECT) + (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, object_byte_size);
   
-  *(void**)((intptr_t)object + sizeof(SPVM_OBJECT)) = struct_ptr;
+  *(void**)((intptr_t)object + sizeof(SPVM_OBJECT)) = pointer;
   
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
@@ -908,12 +908,12 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* objec
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], oval);
 }
 
-void* SPVM_RUNTIME_API_get_struct(SPVM_ENV* env, SPVM_OBJECT* object) {
+void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  void* struct_ptr = *(void**)((intptr_t)object + sizeof(SPVM_OBJECT));
+  void* pointer = *(void**)((intptr_t)object + sizeof(SPVM_OBJECT));
   
-  return struct_ptr;
+  return pointer;
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {

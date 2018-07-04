@@ -10,7 +10,7 @@ package TestCase {
   use TestCase::ImplementInterface1;
   use TestCase::ImplementInterface2;
   use TestCase::Comparator;
-  use TestCase::Struct;
+  use TestCase::Pointer;
 
 =pod
 
