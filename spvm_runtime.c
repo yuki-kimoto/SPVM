@@ -1535,11 +1535,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         int32_t field_index = op_field_access->uv.field_access->field->index;
         
-        env->weaken_object_field(env, object, field_index);
-        
-        if (env->get_exception(env)) {
-          exception_flag = 1;
-        }
+        exception_flag = env->weaken_object_field(env, object, field_index);
+
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {

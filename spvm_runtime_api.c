@@ -1223,12 +1223,12 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int
   return value;
 }
 
-void SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
   if (__builtin_expect(!object, 0)) {
     SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
     env->set_exception(env, exception);
-    return;
+    return SPVM_EXCEPTION;
   }
 
   SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + sizeof(SPVM_VALUE) * field_index);
@@ -1238,7 +1238,7 @@ void SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, in
     SPVM_RUNTIME_API_weaken(env, object_address);
   }
   
-  return;
+  return SPVM_SUCCESS;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
