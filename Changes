@@ -1,4 +1,4 @@
-0.0355 2018-07-04
+0.0355 2018-07-05
   - Symbol name can't conatain __
   - Object alignment must be sizeof(SPVM_VALUE)
   - rename strcut descripter to pointer
