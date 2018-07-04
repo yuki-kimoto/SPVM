@@ -1148,24 +1148,12 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_byte_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
-  
   int8_t value = *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
   return value;
 }
 
 int16_t SPVM_RUNTIME_API_get_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_short_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
 
   int16_t value = *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
@@ -1174,23 +1162,11 @@ int16_t SPVM_RUNTIME_API_get_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int
 
 int32_t SPVM_RUNTIME_API_get_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_int_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
-
   int32_t value = *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
   return value;
 }
 int64_t SPVM_RUNTIME_API_get_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_long_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
 
   int64_t value = *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
@@ -1199,24 +1175,12 @@ int64_t SPVM_RUNTIME_API_get_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int3
 
 float SPVM_RUNTIME_API_get_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_float_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
-
   float value = *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
   return value;
 }
 
 double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_double_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return 0;
-  }
 
   double value = *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
@@ -1243,12 +1207,6 @@ int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object,
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(get_object_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return NULL;
-  }
-
   void* value = *(void**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index);
   
   return value;
@@ -1256,77 +1214,35 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* objec
 
 void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_byte_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
-
   *(int8_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int16_t value) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_short_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
 
   *(int16_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int32_t value) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_int_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
-
   *(int32_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int64_t value) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_long_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
 
   *(int64_t*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, float value) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_float_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
-  
   *(float*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, double value) {
-
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_double_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
 
   *(double*)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index) = value;
 }
 
 void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value) {
 
-  if (__builtin_expect(object == NULL, 0)) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, "Object must be not undef(set_object_field).", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return;
-  }
-  
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_OBJECT**)((intptr_t)object + sizeof(SPVM_OBJECT) + field_index), value);
 }
