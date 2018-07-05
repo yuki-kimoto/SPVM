@@ -37,12 +37,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Check types
   SPVM_OP_CHECKER_check_types(compiler);
-  
+
   int32_t sub_id = 0;
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
       SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
+      
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
+      // value_t package limitation
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+        // Can't have subroutines
+        if (package->op_subs->length > 0) {
+          SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", op_package->file, op_package->line);
+        }
+        // Can't have package variables
+        if (package->op_package_vars->length > 0) {
+          SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
+        }
+      }
+
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
       {
         int32_t sub_index;
