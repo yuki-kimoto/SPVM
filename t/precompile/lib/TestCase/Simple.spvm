@@ -2,6 +2,13 @@ package TestCase::Simple {
   has x : int;
   has y : int;
   
+  has byte_value : byte;
+  has short_value : short;
+  has int_value : int;
+  has long_value : long;
+  has float_value : float;
+  has double_value : double;
+  
   our $FOO : int;
 
   precompile sub get_x : int ($self : self) {

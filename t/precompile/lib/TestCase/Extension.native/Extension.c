@@ -3,6 +3,29 @@
 
 #include <spvm_native.h>
 
+int32_t SPVM_NATIVE_TestCase__Extension__native_get_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(byte)byte_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  int8_t byte_value = env->get_byte_field(env, object, field_index);
+  
+  if (byte_value == -128) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

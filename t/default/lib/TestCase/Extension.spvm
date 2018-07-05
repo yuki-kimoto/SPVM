@@ -1,5 +1,17 @@
 package TestCase::Extension {
   use TestCase;
+  use TestCase::Simple;
+  
+  sub get_byte_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{byte_value} = -128;
+    
+    my $success = native_get_byte_field($simple);
+    
+    return $success;
+  }
+  
+  native sub native_get_byte_field : int ($simple : TestCase::Simple);
   
   sub spvm_extension_add_int_array : int () {
     my $nums1 = new int[] {1, 2, 3};
