@@ -62,7 +62,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
         }
         else {
-          
+          SPVM_LIST* op_fields = package->op_fields;
+          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_fields, 0);
+          SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, op_first_field);
+          if (!SPVM_TYPE_is_numeric(compiler, first_field_type)) {
+            SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_first_field->file, op_first_field->line);
+          }
+          else {
+            int32_t field_index;
+            _Bool numeric_field_error = 0;
+            for (field_index = 0; field_index < package->op_fields->length; field_index++) {
+              SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
+              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+              if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
+                SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_field->file, op_field->line);
+                numeric_field_error = 1;
+              }
+            }
+            if (!numeric_field_error) {
+              
+            }
+          }
         }
       }
 
