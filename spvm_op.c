@@ -1856,6 +1856,21 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_HASH_insert(package_var->op_package->uv.package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
     }
   }
+  
+  // Value type limitation
+  if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+    // Can't have subroutines
+    if (package->op_subs->length > 0) {
+      SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", op_package->file, op_package->line);
+    }
+    // Can't have package variables
+    if (package->op_package_vars->length > 0) {
+      SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
+    }
+    
+    
+    
+  }
 
   return op_package;
 }
