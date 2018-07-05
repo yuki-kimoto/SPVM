@@ -750,10 +750,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             return;
                           }
                         }
-                        // 
+                        // Numeric type
                         else if (SPVM_TYPE_is_numeric(compiler, type)) {
                           SPVM_yyerror_format(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
                         }
+                        // Object type
                         else if (SPVM_TYPE_is_object(compiler, type)) {
                           SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                           assert(op_package);
@@ -764,6 +765,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           else if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
                             SPVM_yyerror_format(compiler, "Can't create object of struct package at %s line %d\n", op_cur->file, op_cur->line);
+                          }
+                          else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                            SPVM_yyerror_format(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           else if (package->is_private) {
                             if (strcmp(package->op_name->uv.name, sub->op_package->uv.package->op_name->uv.name) != 0) {
