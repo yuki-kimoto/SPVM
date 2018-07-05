@@ -45,6 +45,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
       
       SPVM_PACKAGE* package = op_package->uv.package;
+      const char* package_name = package->op_name->uv.name;
       
       // value_t package limitation
       if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
@@ -80,7 +81,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
             if (!numeric_field_error) {
+              // Check type name
+              char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
+              sprintf(tail_name, "_%s_%d", first_field_type->basic_type->name, op_fields->length);
+              int32_t tail_name_length = (int32_t)strlen(tail_name);
               
+              char* found_pos_ptr = strstr(package_name, tail_name);
+              if (found_pos_ptr) {
+                if (*(found_pos_ptr + tail_name_length) != '\0') {
+                  SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+                }
+              }
+              else {
+                SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+              }
             }
           }
         }
