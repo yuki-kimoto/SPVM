@@ -80,6 +80,19 @@ package TestCase::Extension {
   }
   native sub native_set_double_field : void ($simple : TestCase::Simple);
 
+  precompile sub set_object_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_object_field($simple);
+    
+    if ($simple->{object_value}{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_object_field : int ($simple : TestCase::Simple);
+
   precompile sub get_byte_field : int () {
     my $simple = new TestCase::Simple;
     $simple->{byte_value} = INT8_MIN();
@@ -88,6 +101,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_byte_field : int ($simple : TestCase::Simple);
 
   precompile sub get_short_field : int () {
     my $simple = new TestCase::Simple;
@@ -97,6 +111,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_short_field : int ($simple : TestCase::Simple);
 
   precompile sub get_int_field : int () {
     my $simple = new TestCase::Simple;
@@ -106,6 +121,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_int_field : int ($simple : TestCase::Simple);
 
   precompile sub get_long_field : int () {
     my $simple = new TestCase::Simple;
@@ -115,6 +131,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_long_field : int ($simple : TestCase::Simple);
 
   precompile sub get_float_field : int () {
     my $simple = new TestCase::Simple;
@@ -124,6 +141,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_float_field : int ($simple : TestCase::Simple);
 
   precompile sub get_double_field : int () {
     my $simple = new TestCase::Simple;
@@ -133,13 +151,18 @@ package TestCase::Extension {
     
     return $success;
   }
-  
-  native sub native_get_byte_field : int ($simple : TestCase::Simple);
-  native sub native_get_short_field : int ($simple : TestCase::Simple);
-  native sub native_get_int_field : int ($simple : TestCase::Simple);
-  native sub native_get_long_field : int ($simple : TestCase::Simple);
-  native sub native_get_float_field : int ($simple : TestCase::Simple);
   native sub native_get_double_field : int ($simple : TestCase::Simple);
+
+  precompile sub get_object_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{object_value} = new TestCase::Minimal;
+    $simple->{object_value}{x} = 5;
+    
+    my $success = native_get_object_field($simple);
+    
+    return $success;
+  }
+  native sub native_get_object_field : int ($simple : TestCase::Simple);
   
   precompile sub spvm_extension_add_int_array : int () {
     my $nums1 = new int[] {1, 2, 3};

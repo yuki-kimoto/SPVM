@@ -1,4 +1,6 @@
 package TestCase::Simple {
+  use TestCase::Minimal;
+  
   has x : int;
   has y : int;
   
@@ -8,6 +10,7 @@ package TestCase::Simple {
   has long_value : long;
   has float_value : float;
   has double_value : double;
+  has object_value : TestCase::Minimal;
   
   our $FOO : int;
 

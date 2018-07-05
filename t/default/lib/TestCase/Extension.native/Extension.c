@@ -101,6 +101,34 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_double_field(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_object_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  void* object_simple = stack[0].oval;
+  
+  int32_t field_index_object_simple_object_value = env->get_field_index(env, "TestCase::Simple", "(TestCase::Minimal)object_value");
+  if (field_index_object_simple_object_value < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
+  if (basic_type_id < 0) {
+    return SPVM_EXCEPTION;
+  }
+  void* object_minimal = env->new_object(env, basic_type_id);
+  
+  int32_t field_index_minimal_x = env->get_field_index(env, "TestCase::Minimal", "(int)x");
+  if (field_index_minimal_x < 0) {
+    return SPVM_EXCEPTION;
+  }
+  env->set_int_field(env, object_minimal, field_index_minimal_x, 3);
+  
+  env->set_object_field(env, object_simple, field_index_object_simple_object_value, object_minimal);
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__native_get_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

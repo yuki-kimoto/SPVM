@@ -46,6 +46,7 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Extension->set_long_field());
   ok(TestCase::Extension->set_float_field());
   ok(TestCase::Extension->set_double_field());
+  ok(TestCase::Extension->set_object_field());
 
 }
 
