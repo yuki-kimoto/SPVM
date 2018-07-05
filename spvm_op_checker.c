@@ -75,7 +75,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
               if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-                SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_field->file, op_field->line);
+                SPVM_yyerror_format(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, op_field->file, op_field->line);
                 numeric_field_error = 1;
               }
             }
