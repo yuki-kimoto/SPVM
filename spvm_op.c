@@ -1589,6 +1589,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         case SPVM_DESCRIPTOR_C_ID_POINTER:
           package->category = SPVM_PACKAGE_C_CATEGORY_POINTER;
           break;
+        case SPVM_DESCRIPTOR_C_ID_VALUE_T:
+          package->category = SPVM_PACKAGE_C_CATEGORY_VALUE_T;
+          break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
           package->is_private = 1;
           break;

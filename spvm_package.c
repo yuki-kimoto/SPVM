@@ -13,6 +13,7 @@ const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
   "class",
   "interface",
   "pointer",
+  "value_t",
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
