@@ -7,6 +7,7 @@ use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
 use FindBin;
+use POSIX();
 
 use Test::More 'no_plan';
 
