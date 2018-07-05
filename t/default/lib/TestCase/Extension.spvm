@@ -4,14 +4,64 @@ package TestCase::Extension {
   
   sub get_byte_field : int () {
     my $simple = new TestCase::Simple;
-    $simple->{byte_value} = -128;
+    $simple->{byte_value} = INT8_MIN();
     
     my $success = native_get_byte_field($simple);
     
     return $success;
   }
+
+  sub get_short_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{short_value} = INT16_MIN();
+    
+    my $success = native_get_short_field($simple);
+    
+    return $success;
+  }
+
+  sub get_int_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{int_value} = INT32_MIN();
+    
+    my $success = native_get_int_field($simple);
+    
+    return $success;
+  }
+
+  sub get_long_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{long_value} = INT64_MIN();
+    
+    my $success = native_get_long_field($simple);
+    
+    return $success;
+  }
+
+  sub get_float_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{float_value} = FLT_MIN();
+    
+    my $success = native_get_float_field($simple);
+    
+    return $success;
+  }
+
+  sub get_double_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{double_value} = DBL_MIN();
+    
+    my $success = native_get_double_field($simple);
+    
+    return $success;
+  }
   
   native sub native_get_byte_field : int ($simple : TestCase::Simple);
+  native sub native_get_short_field : int ($simple : TestCase::Simple);
+  native sub native_get_int_field : int ($simple : TestCase::Simple);
+  native sub native_get_long_field : int ($simple : TestCase::Simple);
+  native sub native_get_float_field : int ($simple : TestCase::Simple);
+  native sub native_get_double_field : int ($simple : TestCase::Simple);
   
   sub spvm_extension_add_int_array : int () {
     my $nums1 = new int[] {1, 2, 3};

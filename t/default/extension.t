@@ -33,6 +33,11 @@ my $start_objects_count = SPVM::get_objects_count();
 # Field
 {
   ok(TestCase::Extension->get_byte_field());
+  ok(TestCase::Extension->get_short_field());
+  ok(TestCase::Extension->get_int_field());
+  ok(TestCase::Extension->get_long_field());
+  ok(TestCase::Extension->get_float_field());
+  ok(TestCase::Extension->get_double_field());
 }
 
 # Native Exception
