@@ -88,6 +88,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_byte_field : int ($simple : TestCase::Simple);
 
   sub get_short_field : int () {
     my $simple = new TestCase::Simple;
@@ -97,6 +98,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_short_field : int ($simple : TestCase::Simple);
 
   sub get_int_field : int () {
     my $simple = new TestCase::Simple;
@@ -106,6 +108,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_int_field : int ($simple : TestCase::Simple);
 
   sub get_long_field : int () {
     my $simple = new TestCase::Simple;
@@ -115,6 +118,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_long_field : int ($simple : TestCase::Simple);
 
   sub get_float_field : int () {
     my $simple = new TestCase::Simple;
@@ -124,6 +128,7 @@ package TestCase::Extension {
     
     return $success;
   }
+  native sub native_get_float_field : int ($simple : TestCase::Simple);
 
   sub get_double_field : int () {
     my $simple = new TestCase::Simple;
@@ -133,13 +138,18 @@ package TestCase::Extension {
     
     return $success;
   }
-  
-  native sub native_get_byte_field : int ($simple : TestCase::Simple);
-  native sub native_get_short_field : int ($simple : TestCase::Simple);
-  native sub native_get_int_field : int ($simple : TestCase::Simple);
-  native sub native_get_long_field : int ($simple : TestCase::Simple);
-  native sub native_get_float_field : int ($simple : TestCase::Simple);
   native sub native_get_double_field : int ($simple : TestCase::Simple);
+
+  sub get_object_field : int () {
+    my $simple = new TestCase::Simple;
+    $simple->{object_value} = new TestCase::Minimal;
+    $simple->{object_value}{x} = 5;
+    
+    my $success = native_get_object_field($simple);
+    
+    return $success;
+  }
+  native sub native_get_object_field : int ($simple : TestCase::Simple);
   
   sub spvm_extension_add_int_array : int () {
     my $nums1 = new int[] {1, 2, 3};
