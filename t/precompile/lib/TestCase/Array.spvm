@@ -1,6 +1,18 @@
 package TestCase::Array {
   use TestCase::Minimal;
   
+  # Array store undef
+  precompile sub array_store_undef : int () {
+    my $minimals = new TestCase::Minimal[3];
+    $minimals->[0] = new TestCase::Minimal;
+    $minimals->[0] = undef;
+    
+    if ($minimals->[0] == undef) {
+      return 1;
+    }
+    return 0;
+  }
+  
   # Array length - @ mark
   precompile sub array_length_atmark : int () {
     

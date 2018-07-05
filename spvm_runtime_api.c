@@ -139,8 +139,8 @@ void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
     // Extend mortal stack
     if (runtime->mortal_stack_top >= runtime->mortal_stack_capacity) {
       int32_t new_mortal_stack_capacity = runtime->mortal_stack_capacity * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * new_mortal_stack_capacity);
-      memcpy(new_mortal_stack, runtime->mortal_stack, sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+      SPVM_OBJECT** new_mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * new_mortal_stack_capacity);
+      memcpy(new_mortal_stack, runtime->mortal_stack, sizeof(void*) * runtime->mortal_stack_capacity);
       runtime->mortal_stack_capacity = new_mortal_stack_capacity;
       runtime->mortal_stack = new_mortal_stack;
     }
@@ -346,7 +346,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   // Create array of weaken_back_refs if need
   if (object->weaken_back_refs == NULL) {
     object->weaken_back_refs_capacity = 1;
-    object->weaken_back_refs = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_OBJECT*) * object->weaken_back_refs_capacity);
+    object->weaken_back_refs = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(void*) * object->weaken_back_refs_capacity);
   }
   
   int32_t capacity = object->weaken_back_refs_capacity;
@@ -356,13 +356,13 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   assert(capacity >= length);
   if (length == capacity) {
     int32_t new_capacity = capacity * 2;
-    void** new_weaken_back_refs = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_OBJECT*) * new_capacity);
+    void** new_weaken_back_refs = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(void*) * new_capacity);
     
     void** weaken_back_refs = object->weaken_back_refs;
     memcpy(new_weaken_back_refs, weaken_back_refs, length * sizeof(void*));
     
     // Old object become NULL
-    memset(weaken_back_refs, 0, length * sizeof(SPVM_OBJECT*));
+    memset(weaken_back_refs, 0, length * sizeof(void*));
     
     // Free old weaken back references
     SPVM_RUNTIME_ALLOCATOR_free(runtime, object->weaken_back_refs);
@@ -422,7 +422,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     }
     if (found_index < length - 1) {
       int32_t move_length = length - found_index - 1;
-      memmove(&weaken_back_refs[found_index], &weaken_back_refs[found_index + 1], move_length * sizeof(SPVM_OBJECT*));
+      memmove(&weaken_back_refs[found_index], &weaken_back_refs[found_index + 1], move_length * sizeof(void*));
     }
   }
   object->weaken_back_refs_length--;
@@ -706,7 +706,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Alloc length + 1. Last element value is 0 to use c string functions easily
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * (int64_t)sizeof(SPVM_OBJECT*);
+  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, array_byte_size);
   
   ((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size))[length] = 0;
@@ -719,7 +719,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   // Set array length
   object->elements_length = length;
   
-  object->element_byte_size = sizeof(SPVM_OBJECT*);
+  object->element_byte_size = sizeof(void*);
 
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
@@ -732,7 +732,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
   // Alloc length + 1. Last element value is 0 to use c string functions easily
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * (int64_t)sizeof(SPVM_OBJECT*);
+  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, array_byte_size);
   
   ((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size))[length] = 0;
@@ -743,7 +743,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   // Set array length
   object->elements_length = length;
   
-  object->element_byte_size = sizeof(SPVM_OBJECT*);
+  object->element_byte_size = sizeof(void*);
 
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
@@ -977,7 +977,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       {
         int32_t i;
         for (i = 0; i < length; i++) {
-          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_OBJECT*) * i);
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(void*) * i);
           if (*object_field_address != NULL) {
             SPVM_RUNTIME_API_dec_ref_count(env, *object_field_address);
           }

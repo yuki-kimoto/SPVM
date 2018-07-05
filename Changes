@@ -6,6 +6,7 @@
   - rename env->get_struct to env->get_pointer
   - remove object null check from env->get/set_xxx_field
   - fix env->get/set_xxx_field bugs
+  - fix array store undef bug in precompile code
 0.0354 2018-07-03
   - Get and check field index in top of subroutine in precompile
   - Get and check package variable id in top of subroutine in precompile

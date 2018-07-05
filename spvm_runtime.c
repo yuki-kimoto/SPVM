@@ -1062,7 +1062,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_OBJECT*) * index),
+              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
               *(void**)&vars[opcode->operand2]
             );
           }
@@ -1086,7 +1086,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           }
           else {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_OBJECT*) * index),
+              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
               NULL
             );
           }

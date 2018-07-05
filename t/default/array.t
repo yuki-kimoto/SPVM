@@ -11,6 +11,12 @@ use SPVM 'TestCase::Array';
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+# Array
+{
+  ok(TestCase::Array->array());
+  ok(TestCase::Array->array_store_undef());
+}
+
 # Array length
 {
   ok(TestCase::Array->array_length_atmark());
@@ -52,11 +58,6 @@ my $start_objects_count = SPVM::get_objects_count();
 {
   ok(TestCase::Array->array_default_zero_memory_pool());
   ok(TestCase::Array->array_default_zero_not_memory_pool());
-}
-
-# Array
-{
-  ok(TestCase::Array->array());
 }
 
 # Clear exception
