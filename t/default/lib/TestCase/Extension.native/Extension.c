@@ -21,6 +21,86 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_byte_field(SPVM_ENV* env, SP
   return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_short_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(short)short_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_short_field(env, object, field_index, INT16_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_int_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(int)int_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_int_field(env, object, field_index, INT32_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_long_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(long)long_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_long_field(env, object, field_index, INT64_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_float_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(float)float_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_float_field(env, object, field_index, FLT_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_double_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(double)double_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_double_field(env, object, field_index, DBL_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__native_get_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

@@ -14,7 +14,72 @@ package TestCase::Extension {
     return 0;
   }
   native sub native_set_byte_field : void ($simple : TestCase::Simple);
+
+  sub set_short_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_short_field($simple);
+    
+    if ($simple->{short_value} == INT16_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_short_field : void ($simple : TestCase::Simple);
+
+  sub set_int_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_int_field($simple);
+    
+    if ($simple->{int_value} == INT32_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_int_field : void ($simple : TestCase::Simple);
+
+  sub set_long_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_long_field($simple);
+    
+    if ($simple->{long_value} == INT64_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_long_field : void ($simple : TestCase::Simple);
+
+  sub set_float_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_float_field($simple);
+    
+    if ($simple->{float_value} == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_float_field : void ($simple : TestCase::Simple);
   
+  sub set_double_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_double_field($simple);
+    
+    if ($simple->{double_value} == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_double_field : void ($simple : TestCase::Simple);
+
   sub get_byte_field : int () {
     my $simple = new TestCase::Simple;
     $simple->{byte_value} = INT8_MIN();

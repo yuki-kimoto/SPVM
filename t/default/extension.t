@@ -40,13 +40,11 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Extension->get_double_field());
 
   ok(TestCase::Extension->set_byte_field());
-=pod
   ok(TestCase::Extension->set_short_field());
   ok(TestCase::Extension->set_int_field());
   ok(TestCase::Extension->set_long_field());
   ok(TestCase::Extension->set_float_field());
   ok(TestCase::Extension->set_double_field());
-=cut
 
 }
 
