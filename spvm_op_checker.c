@@ -56,6 +56,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         if (package->op_package_vars->length > 0) {
           SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
         }
+        
+        // At least have one field
+        if (package->op_fields->length == 0) {
+          SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
+        }
+        else {
+          
+        }
       }
 
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
