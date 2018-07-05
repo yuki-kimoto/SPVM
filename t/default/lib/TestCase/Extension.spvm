@@ -1,6 +1,19 @@
 package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
+
+  sub set_byte_field : int () {
+    my $simple = new TestCase::Simple;
+    
+    native_set_byte_field($simple);
+    
+    if ($simple->{byte_value} == INT8_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_byte_field : void ($simple : TestCase::Simple);
   
   sub get_byte_field : int () {
     my $simple = new TestCase::Simple;

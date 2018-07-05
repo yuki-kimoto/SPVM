@@ -4,6 +4,23 @@
 
 #include <spvm_native.h>
 
+
+int32_t SPVM_NATIVE_TestCase__Extension__native_set_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(byte)byte_value");
+  if (field_index < 0) {
+    return SPVM_EXCEPTION;
+  }
+  
+  env->set_byte_field(env, object, field_index, INT8_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__native_get_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
