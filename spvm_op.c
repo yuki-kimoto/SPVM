@@ -1578,6 +1578,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->op_name = op_name_package;
 
   // Package is interface
+  int32_t duplicate_descriptors = 0;
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
@@ -1585,12 +1586,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_INTERFACE:
           package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
+          duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_POINTER:
           package->category = SPVM_PACKAGE_C_CATEGORY_POINTER;
+          duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_VALUE_T:
           package->category = SPVM_PACKAGE_C_CATEGORY_VALUE_T;
+          duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
           package->is_private = 1;
@@ -1602,6 +1606,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_yyerror_format(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
       }
     }
+  }
+  
+  if (duplicate_descriptors > 1) {
+    SPVM_yyerror_format(compiler, "Invalid descriptor combination at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
   }
   
   // Divide declarations to field, sub, enum, package variable, use
