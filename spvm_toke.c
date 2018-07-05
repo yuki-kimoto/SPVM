@@ -1301,7 +1301,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Symbol name can't conatain __
           if (strstr(keyword, "__")) {
-            fprintf(stderr, "Symbol name can't contain __ %s at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
+            fprintf(stderr, "Symbol name can't contain __ at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
             exit(1);
           }
           
