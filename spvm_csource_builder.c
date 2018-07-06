@@ -2385,66 +2385,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_RETURN_BYTE:
+      case SPVM_OPCODE_C_ID_RETURN:
       {
         const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_byte*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_SHORT:
-      {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_short*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_INT:
-      {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_int*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_LONG:
-      {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_long*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_FLOAT:
-      {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_float*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
-      {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(SPVM_VALUE_double*)&args[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  args[0] = ");
+        SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);

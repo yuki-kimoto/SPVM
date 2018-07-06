@@ -1858,39 +1858,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         opcode_rel_index = opcode->operand1;
         continue;
       }
-      case SPVM_OPCODE_C_ID_RETURN_BYTE:
+      case SPVM_OPCODE_C_ID_RETURN:
       {
-        *(SPVM_VALUE_byte*)&stack[0] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
-        opcode_rel_index = opcode->operand1;
-        continue;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_SHORT:
-      {
-        *(SPVM_VALUE_short*)&stack[0] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
-        opcode_rel_index = opcode->operand1;
-        continue;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_INT:
-      {
-        *(SPVM_VALUE_int*)&stack[0] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
-        opcode_rel_index = opcode->operand1;
-        continue;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_LONG:
-      {
-        *(SPVM_VALUE_long*)&stack[0] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
-        opcode_rel_index = opcode->operand1;
-        continue;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_FLOAT:
-      {
-        *(SPVM_VALUE_float*)&stack[0] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
-        opcode_rel_index = opcode->operand1;
-        continue;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
-      {
-        *(SPVM_VALUE_double*)&stack[0] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
+        stack[0] = vars[opcode->operand0];
         opcode_rel_index = opcode->operand1;
         continue;
       }
