@@ -670,27 +670,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
-  // Copy arguments to variables
-  {
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      const char* arg_type_name = SPVM_CSOURCE_BUILDER_get_type_name(arg_type->basic_type->id, arg_type->dimension);
+  int32_t arg_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
 
-      // Assign argument
-      SPVM_STRING_BUFFER_add(string_buffer, "  ");
-      SPVM_CSOURCE_BUILDER_add_operand(string_buffer, arg_type_name, arg_index);
-      SPVM_STRING_BUFFER_add(string_buffer, " = ");
-      SPVM_STRING_BUFFER_add(string_buffer, "*(");
-      SPVM_STRING_BUFFER_add(string_buffer, SPVM_CSOURCE_BUILDER_get_type_name(arg_type->basic_type->id, arg_type->dimension));
-      SPVM_STRING_BUFFER_add(string_buffer, "*)&args[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, arg_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      
-      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-    }
+  // Copy arguments to variables
+  if (arg_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(vars, args, sizeof(SPVM_VALUE) * ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, arg_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   }
   
   // If arg is object, increment reference count

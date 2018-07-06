@@ -168,7 +168,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   // Copy arguments to variables
   if (vars) {
     if (arg_alloc_length > 0) {
-      memcpy(vars, args, arg_alloc_length * sizeof(SPVM_VALUE));
+      memcpy(vars, args, sizeof(SPVM_VALUE) * arg_alloc_length);
     }
   }
   
