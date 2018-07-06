@@ -1,0 +1,4 @@
+package TestCase::Complex_double_2 : value_t {
+  has x : double;
+  has y : double;
+}

@@ -11,6 +11,7 @@ package TestCase {
   use TestCase::ImplementInterface2;
   use TestCase::Comparator;
   use TestCase::Pointer;
+  use TestCase::Complex_double_2;
 
 =pod
 
