@@ -639,11 +639,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
+  int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
+  
   // Variables
-  if (sub->op_mys->length > 0) {
+  if (var_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, sub->op_mys->length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, var_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  memset(vars, 0, sizeof(SPVM_VALUE) * ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, var_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, ");");
   }
   
   if (sub->mortal_stack_max > 0) {
@@ -664,27 +669,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
-
-  // Initialize variables
-  {
-    int32_t my_index;
-    for (my_index = sub->op_args->length; my_index < sub->op_mys->length; my_index++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
-      
-      if (SPVM_TYPE_is_object(compiler, my_type)) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", my_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-      }
-      else {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, SPVM_CSOURCE_BUILDER_get_type_name(my_type->basic_type->id, my_type->dimension), my_index);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
 
   // Copy arguments to variables
   {

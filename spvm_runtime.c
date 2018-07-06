@@ -139,8 +139,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   // Opcode base
   int32_t sub_opcode_base = sub->opcode_base;
   
+  int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
+
   // Variables
-  SPVM_VALUE* vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->op_mys->length + 1));
+  SPVM_VALUE* vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (var_alloc_length + 1));
 
   // Mortal stack
   SPVM_VALUE* mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * (sub->mortal_stack_max + 1));
