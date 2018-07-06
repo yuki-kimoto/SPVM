@@ -185,11 +185,17 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
       SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, i);
       SPVM_PACKAGE* package = op_package->uv.package;
       
+      
       if (package->op_name) {
         printf("  name => \"%s\"\n", package->op_name->uv.name);
       }
       else {
         printf("  name => \"ANON\"\n");
+      }
+
+      if (strcmp(package->op_name->uv.name, "SPVM::CORE") == 0) {
+        printf("  (Omit)\n");
+        continue;
       }
       
       printf("  byte_size => %" PRId32 "\n", package->op_fields->length);
@@ -232,6 +238,10 @@ void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* 
       }
       else {
         printf("  name => \"ANON\"\n");
+      }
+      if (strcmp(package->op_name->uv.name, "SPVM::CORE") == 0) {
+        printf("  (Omit)\n");
+        continue;
       }
       
       {
@@ -322,6 +332,8 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("\n");
     printf("      is_enum => %d\n", sub->is_enum);
     printf("      have_native_desc => %d\n", sub->have_native_desc);
+    printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
+    printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     
     printf("      args\n");
     SPVM_LIST* op_args = sub->op_args;
@@ -343,7 +355,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
         for (i = 0; i < op_mys->length; i++) {
           SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
           SPVM_MY* my = op_my->uv.my;
-          printf("        [%" PRId32 "] ", i);
+          printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
       }
@@ -367,6 +379,8 @@ void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     
     printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
+    printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
+    printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     
     if (!sub->have_native_desc) {
       printf("      mys\n");
@@ -376,7 +390,7 @@ void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
         for (i = 0; i < op_mys->length; i++) {
           SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, i);
           SPVM_MY* my = op_my->uv.my;
-          printf("        [%" PRId32 "] ", i);
+          printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
       }
