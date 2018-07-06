@@ -270,7 +270,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_SUB* sub_call_sub = op_sub_call_sub->uv.sub;
 
                         // Push args
-                        int32_t first_arg_index = -1;
+                        int32_t first_arg_var_id = -1;
                         SPVM_OP* op_args = op_assign_from->last;
                         SPVM_OP* op_arg = op_args->first;
                         while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
@@ -313,12 +313,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
                             }
 
-                            int32_t index_arg = SPVM_OP_get_my_var_id(compiler, op_arg);
+                            int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_arg);
                             
-                            opcode.operand0 = index_arg;
+                            opcode.operand0 = var_id_arg;
                             
-                            if (first_arg_index == -1) {
-                              first_arg_index = index_arg;
+                            if (first_arg_var_id == -1) {
+                              first_arg_var_id = var_id_arg;
                             }
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
@@ -335,7 +335,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                           opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
                           opcode.operand1 = call_sub->sub_rel_id;
-                          opcode.operand2 = first_arg_index;
+                          opcode.operand2 = first_arg_var_id;
                         }
                         else {
                           opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
@@ -2445,7 +2445,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_SUB* sub_call_sub = op_sub_call_sub->uv.sub;
                     
                     if (sub_call_sub->op_return_type->uv.type->dimension == 0 && sub_call_sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
-                      int32_t first_arg_index = -1;
+                      int32_t first_arg_var_id = -1;
 
                       // Push args
                       SPVM_OP* op_args = op_cur->last;
@@ -2490,10 +2490,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
                           }
 
-                          int32_t index_arg = SPVM_OP_get_my_var_id(compiler, op_arg);
-                          opcode.operand0 = index_arg;
-                          if (first_arg_index == -1) {
-                            first_arg_index = index_arg;
+                          int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_arg);
+                          opcode.operand0 = var_id_arg;
+                          if (first_arg_var_id == -1) {
+                            first_arg_var_id = var_id_arg;
                           }
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
@@ -2507,7 +2507,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
                         opcode.operand1 = call_sub->sub_rel_id;
-                        opcode.operand2 = first_arg_index;
+                        opcode.operand2 = first_arg_var_id;
                       }
                       else {
                         opcode.id = SPVM_OPCODE_C_ID_CALL_SUB;
