@@ -38,3 +38,18 @@ int32_t SPVM_SUB_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   }
   return var_alloc_length;
 }
+
+
+int32_t SPVM_SUB_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+  // Calcurate variable alloc length
+  int32_t arg_alloc_length = 0;
+  {
+    int32_t arg_index;
+    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+      SPVM_MY* my_arg = op_arg->uv.my;
+      arg_alloc_length += my_arg->width;
+    }
+  }
+  return arg_alloc_length;
+}

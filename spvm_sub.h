@@ -49,5 +49,6 @@ struct SPVM_sub {
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
 int32_t SPVM_SUB_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+int32_t SPVM_SUB_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub);
 
 #endif
