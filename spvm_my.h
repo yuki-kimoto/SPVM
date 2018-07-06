@@ -6,7 +6,7 @@
 struct SPVM_my {
   SPVM_OP* op_type;
   SPVM_OP* op_name;
-  int32_t index;
+  int32_t var_id;
   int32_t width;
   SPVM_OP* op_term_type_inference;
   _Bool try_type_inference;

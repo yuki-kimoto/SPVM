@@ -8,7 +8,7 @@ SPVM_MY* SPVM_MY_new(SPVM_COMPILER* compiler) {
 
   my->op_type = NULL;
   my->op_name = NULL;
-  my->index = -1;
+  my->var_id = -1;
   
   return my;
 }

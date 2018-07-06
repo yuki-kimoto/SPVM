@@ -1077,12 +1077,12 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op_var;
 }
 
-int32_t SPVM_OP_get_my_index(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->op_my->uv.my->index;
+  return op_var->uv.var->op_my->uv.my->var_id;
 }
 
 

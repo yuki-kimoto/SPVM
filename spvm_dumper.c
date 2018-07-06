@@ -77,7 +77,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_MY) {
       SPVM_MY* my = op_cur->uv.my;
       printf(" \"%s\"", my->op_name->uv.name);
-      printf(" (my->index:%d)", my->index);
+      printf(" (my->var_id:%d)", my->var_id);
     }
     else if (id == SPVM_OP_C_ID_PACKAGE_VAR) {
       SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
@@ -87,7 +87,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
-      printf(" (my->index:%d)", var->op_my->uv.my->index);
+      printf(" (my->var_id:%d)", var->op_my->uv.my->var_id);
     }
     else if (id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
