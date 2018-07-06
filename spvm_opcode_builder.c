@@ -293,36 +293,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
                               assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
-                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             else {
-                              if (arg_type->dimension == 0) {
-                                switch (arg_type->basic_type->id) {
-                                  case SPVM_BASIC_TYPE_C_ID_BYTE:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
-                                    break;
-                                  case SPVM_BASIC_TYPE_C_ID_SHORT:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_SHORT;
-                                    break;
-                                  case SPVM_BASIC_TYPE_C_ID_INT:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_INT;
-                                    break;
-                                  case SPVM_BASIC_TYPE_C_ID_LONG:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_LONG;
-                                    break;
-                                  case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT;
-                                    break;
-                                  case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE;
-                                    break;
-                                  default:
-                                    opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
-                                }
-                              }
-                              else {
-                                opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
-                              }
+                              opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
 
                               // Term of argument
                               int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
@@ -332,10 +305,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (arg_index == 0) {
                                 first_arg_var_id = var_id_arg;
                               }
-                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             opcode.operand1 = my_arg->width;
-                            assert(opcode.operand1 == 1);
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                            
                           }
                         }
 
@@ -2485,36 +2458,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
                             assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else {
-                            if (arg_type->dimension == 0) {
-                              switch (arg_type->basic_type->id) {
-                                case SPVM_BASIC_TYPE_C_ID_BYTE:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_SHORT:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_SHORT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_INT:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_INT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_LONG:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_LONG;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE;
-                                  break;
-                                default:
-                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
-                              }
-                            }
-                            else {
-                              opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
-                            }
+                            opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
 
                             // Term of argument
                             int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
@@ -2524,10 +2470,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             if (arg_index == 0) {
                               first_arg_var_id = var_id_arg;
                             }
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           opcode.operand1 = my_arg->width;
-                          assert(opcode.operand1 == 1);
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
                         }
                       }
 

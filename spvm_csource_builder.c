@@ -2158,62 +2158,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_byte*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_short*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_int*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_long*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_float*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(SPVM_VALUE_double*)&");
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
-            SPVM_STRING_BUFFER_add(string_buffer, "*(void**)&");
-            break;
-        }
         SPVM_STRING_BUFFER_add(string_buffer, "args[call_sub_arg_stack_top] = ");
-        switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_byte", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_short", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_long", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_float", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_double", opcode->operand0);
-            break;
-          case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
-            SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-            break;
-        }
+        SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         

@@ -1730,44 +1730,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-        *(SPVM_VALUE_byte*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-        *(SPVM_VALUE_short*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-        *(SPVM_VALUE_int*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-        *(SPVM_VALUE_long*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-        *(SPVM_VALUE_float*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-        *(SPVM_VALUE_double*)&args[call_sub_arg_stack_top] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
-        
-        break;
-      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
-        *(void**)&args[call_sub_arg_stack_top] = *(void**)&vars[opcode->operand0];
-        call_sub_arg_stack_top++;
+      case SPVM_OPCODE_C_ID_PUSH_ARG:
+        args[call_sub_arg_stack_top] = vars[opcode->operand0];
+        call_sub_arg_stack_top += opcode->operand1;
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
         *(void**)&args[call_sub_arg_stack_top] = NULL;
-        call_sub_arg_stack_top++;
+        call_sub_arg_stack_top += opcode->operand1;
         
         break;
       case SPVM_OPCODE_C_ID_CHECK_CAST: {
@@ -1821,7 +1791,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
           assert(0);
         }
         
-        call_sub_arg_stack_top -= decl_sub_args_length;
+        call_sub_arg_stack_top -= SPVM_SUB_get_arg_alloc_length(compiler, decl_sub);
         
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, args);
