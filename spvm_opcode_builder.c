@@ -325,6 +325,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                               
                               opcode.operand0 = var_id_arg;
+                              opcode.operand1 = my_arg->width;
                               
                               if (arg_index == 0) {
                                 first_arg_var_id = var_id_arg;
@@ -2512,6 +2513,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                             
                             opcode.operand0 = var_id_arg;
+                            opcode.operand1 = my_arg->width;
                             
                             if (arg_index == 0) {
                               first_arg_var_id = var_id_arg;
