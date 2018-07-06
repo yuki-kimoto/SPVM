@@ -2523,6 +2523,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                               opcode.id = SPVM_OPCODE_C_ID_RETURN;
+                              opcode.operand2 = 1;
                               break;
                             default:
                               opcode.id = SPVM_OPCODE_C_ID_RETURN_OBJECT;

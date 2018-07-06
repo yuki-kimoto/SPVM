@@ -2388,9 +2388,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_RETURN:
       {
         const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  args[0] = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(&args[0], &");
         SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(SPVM_VALUE) * ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
