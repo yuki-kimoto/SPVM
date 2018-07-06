@@ -2078,6 +2078,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           assert(sub->file_name);
           
+          // Add op my if need
+          if (sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+            int32_t arg_index;
+            for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+              SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+              SPVM_LIST_push(sub->op_mys, op_arg);
+            }
+          }
+          
           // Resolve my var id
           {
             int32_t my_index;
