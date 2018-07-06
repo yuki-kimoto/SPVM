@@ -130,9 +130,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   
   int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
   
-  // Args length
-  int32_t args_length = sub->op_args->length;
-  
   // Bytecodes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   
@@ -140,6 +137,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   int32_t sub_opcode_base = sub->opcode_base;
   
   int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
+  int32_t arg_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
   
   // Variables
   SPVM_VALUE* vars = NULL;
@@ -169,7 +167,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
 
   // Copy arguments to variables
   if (vars) {
-    memcpy(vars, args, args_length * sizeof(SPVM_VALUE));
+    if (arg_alloc_length > 0) {
+      memcpy(vars, args, arg_alloc_length * sizeof(SPVM_VALUE));
+    }
   }
   
   // If arg is object, increment reference count
