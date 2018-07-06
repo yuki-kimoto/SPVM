@@ -167,7 +167,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       if (SPVM_TYPE_is_object(compiler, arg_type)) {
-        void* object = *(void**)&vars[arg_index];
+        SPVM_MY* my_arg = op_arg->uv.my;
+        void* object = *(void**)&vars[my_arg->var_id];
         if (object != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }

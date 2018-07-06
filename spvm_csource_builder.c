@@ -687,10 +687,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       
       if (SPVM_TYPE_is_object(compiler, arg_type)) {
+        SPVM_MY* my_arg = op_arg->uv.my;
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", arg_index);
+        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", my_arg->var_id);
         SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", arg_index);
+        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", my_arg->var_id);
         SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
       }
     }
