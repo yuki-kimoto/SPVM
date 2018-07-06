@@ -273,7 +273,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_args = op_assign_from->last;
                         SPVM_OP* op_term_arg = op_term_args->first;
 
-                        SPVM_OP* op_args = sub_call_sub->op_args;
+                        SPVM_LIST* op_args = sub_call_sub->op_args;
                         {
                           int32_t arg_index;
                           for (arg_index = 0; arg_index < sub_call_sub->op_args->length; arg_index++) {
@@ -328,13 +328,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                               
                               opcode.operand0 = var_id_arg;
-                              opcode.operand1 = my_arg->width;
                               
                               if (arg_index == 0) {
                                 first_arg_var_id = var_id_arg;
                               }
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
+                            opcode.operand1 = my_arg->width;
                           }
                         }
 
@@ -2464,7 +2464,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_args = op_cur->last;
                       SPVM_OP* op_term_arg = op_term_args->first;
 
-                      SPVM_OP* op_args = sub_call_sub->op_args;
+                      SPVM_LIST* op_args = sub_call_sub->op_args;
                       {
                         int32_t arg_index;
                         for (arg_index = 0; arg_index < sub_call_sub->op_args->length; arg_index++) {
@@ -2519,13 +2519,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                             
                             opcode.operand0 = var_id_arg;
-                            opcode.operand1 = my_arg->width;
                             
                             if (arg_index == 0) {
                               first_arg_var_id = var_id_arg;
                             }
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
+                          opcode.operand1 = my_arg->width;
                         }
                       }
 
