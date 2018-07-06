@@ -2085,6 +2085,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
               SPVM_MY* my = op_my->uv.my;
               my->index = my_index;
+              my->width = 1;
               if (my_index >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", op_my->file, op_my->line);
               }
