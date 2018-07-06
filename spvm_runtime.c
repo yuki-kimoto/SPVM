@@ -125,11 +125,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
   SPVM_OP* op_package = sub->op_package;
   SPVM_PACKAGE* package = op_package->uv.package;
 
-  // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  
-  int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
-  
   // Bytecodes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
   
@@ -2013,6 +2008,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args
     
   // Croak
   if (!exception_flag) {
+    // Subroutine return type
+    SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+    
+    int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
+  
     // Decrement ref count of return value
     if (sub_return_type_is_object) {
       if (*(void**)&args[0] != NULL) {
