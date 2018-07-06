@@ -335,6 +335,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             opcode.operand1 = my_arg->width;
+                            assert(opcode.operand1 == 1);
                           }
                         }
 
@@ -2526,6 +2527,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           opcode.operand1 = my_arg->width;
+                          assert(opcode.operand1 == 1);
                         }
                       }
 
