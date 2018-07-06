@@ -282,11 +282,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             // Argument type
                             SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+
+                            // Term argment type
+                            op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
+                            SPVM_TYPE* term_arg_type = SPVM_OP_get_type(compiler, op_term_arg);
                             
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             
-                            if (SPVM_TYPE_is_undef(compiler, arg_type)) {
+                            if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
                               assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -321,7 +325,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
 
                               // Term of argument
-                              op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
                               int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                               
                               opcode.operand0 = var_id_arg;
@@ -2471,10 +2474,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // Argument type
                           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
                           
+                          // Term argment type
+                          op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
+                          SPVM_TYPE* term_arg_type = SPVM_OP_get_type(compiler, op_term_arg);
+                          
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          if (SPVM_TYPE_is_undef(compiler, arg_type)) {
+                          if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
                             assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -2509,7 +2516,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
 
                             // Term of argument
-                            op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
                             int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
                             
                             opcode.operand0 = var_id_arg;
