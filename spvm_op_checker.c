@@ -2078,17 +2078,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           assert(sub->file_name);
           
-          // Resolve my index
+          // Resolve my var id
           {
             int32_t my_index;
+            int32_t my_var_id = 0;
             for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
               SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
               SPVM_MY* my = op_my->uv.my;
-              my->var_id = my_index;
-              my->width = 1;
-              if (my_index >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+              int32_t width = 1;
+              if (my_var_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", op_my->file, op_my->line);
               }
+              my->var_id = my_var_id;
+              my->width = width;
+              my_var_id += my->width;
             }
           }
 
