@@ -1217,11 +1217,13 @@ call_sub(...)
       croak("Argument count is defferent");
     }
     
+    int32_t arg_var_id = 0;
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SV* sv_value = ST(arg_index + stack_arg_start);
       
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+      int32_t arg_type_width = SPVM_TYPE_get_width(compiler, arg_type);
       
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
@@ -1232,39 +1234,39 @@ call_sub(...)
         switch (arg_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
-            args[arg_index].bval = value;
+            args[arg_var_id].bval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
-            args[arg_index].sval = value;
+            args[arg_var_id].sval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
-            args[arg_index].ival = value;
+            args[arg_var_id].ival = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
-            args[arg_index].lval = value;
+            args[arg_var_id].lval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
             float value = (float)SvNV(sv_value);
-            args[arg_index].fval = value;
+            args[arg_var_id].fval = value;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
             double value = (double)SvNV(sv_value);
-            args[arg_index].dval = value;
+            args[arg_var_id].dval = value;
             break;
           }
         }
       }
       else {
         if (!SvOK(sv_value)) {
-          args[arg_index].oval = NULL;
+          args[arg_var_id].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value)) {
@@ -1281,7 +1283,7 @@ call_sub(...)
                 croak("Argument basic_object type need %s, but %s", SvPV_nolen(sv_arg_type_name), SvPV_nolen(sv_basic_object_type));
               }
               
-              args[arg_index].oval = basic_object;
+              args[arg_var_id].oval = basic_object;
             }
             else {
               croak("Data must be derived from SPVM::Data");
@@ -1292,6 +1294,7 @@ call_sub(...)
           }
         }
       }
+      arg_var_id += arg_type_width;
     }
   }
   
