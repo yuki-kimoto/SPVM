@@ -99,6 +99,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
       }
+      
+      /*
+      // valut_t can't become field
+      {
+        int32_t field_index;
+        for (field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
+          SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fileds, field_index);
+          
+        }
+      }
+      */
+      
 
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
       {
