@@ -84,18 +84,18 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  SPVM_VALUE* args = runtime->args;
+  SPVM_VALUE* stack = runtime->stack;
   args[0].ival = 2;
   
   // Run
-  int32_t exception_flag = env->call_sub(env, sub_id, args);
+  int32_t exception_flag = env->call_sub(env, sub_id, stack);
   
   if (exception_flag) {
     SPVM_RUNTIME_API_print(env, runtime->exception);
     printf("\n");
   }
   else {
-    printf("TEST return_value: %" PRId32 "\n", args[0].ival);
+    printf("TEST return_value: %" PRId32 "\n", stack[0].ival);
   }
   
   SPVM_RUNTIME_free(runtime);
