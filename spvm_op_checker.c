@@ -1110,7 +1110,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       if (from_type->dimension == 0 && from_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
                         // To type is undef
                         if (to_type->dimension == 0 && to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) { 
-                          SPVM_yyerror_format(compiler, "undef can't be assigned to empty type at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "undef can't be assigned to undef at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         else {
                           _Bool to_type_is_value_t = SPVM_TYPE_is_value_t(compiler, to_type);
@@ -1119,7 +1119,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                         }
                       }
-                      
                       
                       // Check if source value can be assigned to distination value
                       // If needed, automatical numeric convertion op is added
