@@ -198,8 +198,6 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
         continue;
       }
       
-      printf("  byte_size => %" PRId32 "\n", package->op_fields->length);
-      
       // Field information
       printf("  fields\n");
       SPVM_LIST* op_fields = package->op_fields;
@@ -265,7 +263,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     for (i = 0; i < basic_types->length; i++) {
       printf("basic_type[%" PRId32 "]\n", i);
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, i);
-      printf("    name => %s", basic_type->name);
+      printf("    name => %s\n", basic_type->name);
     }
   }
 }
@@ -416,8 +414,6 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("      type => ");
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
     printf("\n");
-    printf("      byte_size => \"%" PRId32 "\"\n", SPVM_FIELD_get_byte_size(compiler, field));
-    
     printf("      index => \"%" PRId32 "\"\n", field->index);
   }
   else {

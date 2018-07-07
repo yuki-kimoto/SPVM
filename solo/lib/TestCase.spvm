@@ -52,6 +52,11 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      my $z : TestCase::Complex_double_2;
+    }
+    
+    
+    {
       my $total = sum0(sum0(1, 2), sum0(3, 4));
     }
     
