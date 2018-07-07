@@ -364,8 +364,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         *(float*)&vars[opcode->operand0] = *(float*)&vars[opcode->operand1] + *(float*)&vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_ADD_DOUBLE:
-        warn("GGGGGGGGGGGG %f %f %d %d", *(double*)&vars[opcode->operand1], *(double*)&vars[opcode->operand2], opcode->operand1, opcode->operand2);
-        
         *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1] + *(double*)&vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_SUBTRACT_INT:
@@ -1813,7 +1811,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
             int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
             memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-            warn("AAAAAAAAAAAAA %d %f %f", decl_sub_return_type_width, stack[0].dval, stack[1].dval);
           }
           else if (decl_sub_return_type_is_object) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], stack[0].oval);
@@ -1879,8 +1876,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN:
       {
-        warn("CCCCCCCCCCCC %f %f", vars[opcode->operand0].dval, vars[opcode->operand0 + 1].dval);
-        
         memcpy(&stack[0], &vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         opcode_rel_index = opcode->operand1;
         continue;
