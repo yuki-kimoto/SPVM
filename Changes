@@ -1,3 +1,9 @@
+0.0356 2018-07-07
+  - Support value_t package. This is value type.
+      package TestCase::Complex_double_2 : value_t {
+        has re : double;
+        has im : double;
+      }
 0.0355 2018-07-05
   - Symbol name can't conatain __
   - Object alignment must be sizeof(SPVM_VALUE)
