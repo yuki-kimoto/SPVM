@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
   }
 
   SPVM_VALUE* stack = runtime->stack;
-  args[0].ival = 2;
+  stack[0].ival = 2;
   
   // Run
   int32_t exception_flag = env->call_sub(env, sub_id, stack);
