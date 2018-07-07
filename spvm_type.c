@@ -11,7 +11,6 @@
 #include "spvm_yacc_util.h"
 #include "spvm_package.h"
 #include "spvm_limit.h"
-#include "spvm_package.h"
 #include "spvm_basic_type.h"
 
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
@@ -289,4 +288,33 @@ _Bool SPVM_TYPE_is_undef(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   else {
     return 0;
   }
+}
+
+int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  
+  int32_t width;
+  if (type->dimension == 0) {
+    const char* basic_type_name = type->basic_type->name;
+    SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
+    // Package
+    if (op_package) {
+      SPVM_PACKAGE* package = op_package->uv.package;
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+        width = package->op_fields->length;
+      }
+      else {
+        width = 1;
+      }
+    }
+    // Numeric type
+    else {
+      width = 1;
+    }
+  }
+  // Array
+  else {
+    width = 1;
+  }
+  
+  return width;
 }

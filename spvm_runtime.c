@@ -121,6 +121,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Subroutine
   SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
   SPVM_SUB* sub = op_sub->uv.sub;
+
+  // Subroutine return type
+  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   
   // Package
   SPVM_OP* op_package = sub->op_package;
@@ -1952,8 +1955,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     
   // Croak
   if (!exception_flag) {
-    // Subroutine return type
-    SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
     
     int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
   
