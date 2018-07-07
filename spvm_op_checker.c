@@ -114,6 +114,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
+      // valut_t can't become package variable
+      {
+        int32_t package_var_index;
+        for (package_var_index = 0; package_var_index < op_package->uv.package->op_package_vars->length; package_var_index++) {
+          SPVM_OP* op_package_var = SPVM_LIST_fetch(op_package->uv.package->op_package_vars, package_var_index);
+          SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, op_package_var);
+          _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, package_var_type);
+          
+          if (is_value_t) {
+            SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", op_package_var->file, op_package_var->line);
+          }
+        }
+      }
 
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
       {

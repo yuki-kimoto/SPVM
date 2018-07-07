@@ -1206,6 +1206,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
+    case SPVM_OP_C_ID_PACKAGE_VAR: {
+      SPVM_PACKAGE_VAR* package_var = op->uv.package_var;
+      if (package_var->op_type) {
+        type = package_var->op_type->uv.type;
+      }
+      break;
+    }
     case SPVM_OP_C_ID_EXCEPTION_VAR: {
       type = SPVM_TYPE_create_string_type(compiler);
       break;
