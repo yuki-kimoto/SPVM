@@ -54,6 +54,7 @@ SPVM::Test - SPVM test module
     {
       my $z : TestCase::Complex_double_2;
       $z->{re} = 0.5;
+      $z->{im} = 0.25;
     }
     {
       my $total = sum0(sum0(1, 2), sum0(3, 4));
