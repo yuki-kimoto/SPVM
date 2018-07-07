@@ -2182,8 +2182,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_MY* my = op_cur->uv.my;
                       
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                      _Bool type_is_value_t = SPVM_TYPE_is_value_t(compiler, type);
                       
-                      if (SPVM_TYPE_is_object(compiler, type)) {
+                      if (SPVM_TYPE_is_object(compiler, type) && !type_is_value_t) {
                         SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                         op_block_current->uv.block->have_object_var_decl = 1;
                       }
