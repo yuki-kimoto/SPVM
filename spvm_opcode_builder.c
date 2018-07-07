@@ -359,48 +359,90 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+
+                        SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
                         
-                        SPVM_OPCODE opcode;
-                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                        if (type->dimension == 0) {
+                        _Bool is_value_access = SPVM_TYPE_is_value_t(compiler, field_access_type);
+                        
+                        if (is_value_access) {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          
                           switch (type->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_BYTE:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_BYTE;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_BYTE;
                               break;
                             case SPVM_BASIC_TYPE_C_ID_SHORT:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_SHORT;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_SHORT;
                               break;
                             case SPVM_BASIC_TYPE_C_ID_INT:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_INT;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_INT;
                               break;
                             case SPVM_BASIC_TYPE_C_ID_LONG:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_LONG;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_LONG;
                               break;
                             case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_FLOAT;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_FLOAT;
                               break;
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE;
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_DOUBLE;
                               break;
                             default:
-                              opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_OBJECT;
+                              assert(0);
                           }
+                          
+                          // Field absolute name symbol
+                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                          int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_term_object) + op_field_access->uv.field_access->field->index;
+
+                          opcode.operand0 = var_id_out;
+                          opcode.operand1 = var_id_in;
+
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
                         else {
-                          opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_OBJECT;
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          if (type->dimension == 0) {
+                            switch (type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_BYTE;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_SHORT:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_SHORT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_INT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_LONG;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_FLOAT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE;
+                                break;
+                              default:
+                                opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_OBJECT;
+                            }
+                          }
+                          else {
+                            opcode.id = SPVM_OPCODE_C_ID_GET_FIELD_OBJECT;
+                          }
+                          
+                          // Field absolute name symbol
+                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                          int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_object);
+
+                          opcode.operand0 = var_id_out;
+                          opcode.operand1 = index_term_object;
+                          opcode.operand2 = field_access->sub_rel_id;
+
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                          SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                         }
-                        
-                        // Field absolute name symbol
-                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
-                        int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_object);
-
-                        opcode.operand0 = var_id_out;
-                        opcode.operand1 = index_term_object;
-                        opcode.operand2 = field_access->sub_rel_id;
-
-                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                         
