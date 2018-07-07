@@ -2325,7 +2325,20 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
       
       // To basic type is any object
       if (assign_to_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-        can_assign = 1;
+        if (assign_from_type_dimension == 0) {
+          SPVM_BASIC_TYPE* assign_from_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_from_basic_type_id);
+          SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
+          SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
+          if (package_assign_from_base->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+            can_assign = 0;
+          }
+          else {
+            can_assign = 1;
+          }
+        }
+        else {
+          can_assign = 1;
+        }
       }
       else {
         if (assign_to_type_dimension != assign_from_type_dimension) {
