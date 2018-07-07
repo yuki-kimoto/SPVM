@@ -2168,17 +2168,20 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "args[call_sub_arg_stack_top] = ");
-        SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top += \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";");
+        SPVM_STRING_BUFFER_add(string_buffer, "    memcpy(&args[call_sub_arg_stack_top], &");
+        SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(SPVM_VALUE) * width);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    call_sub_arg_stack_top += width;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }");
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "*(void**)&args[call_sub_arg_stack_top] = NULL;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&args[call_sub_arg_stack_top] = NULL;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         
         break;

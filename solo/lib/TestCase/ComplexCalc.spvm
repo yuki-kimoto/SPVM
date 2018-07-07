@@ -5,7 +5,7 @@ package TestCase::ComplexCalc {
     my $z3 : TestCase::Complex_double_2;
     
     $z3->{re} = $z1->{re} + $z2->{re};
-    $z3->{im} = $z1->{im} + $z3->{im};
+    $z3->{im} = $z1->{im} + $z2->{im};
     
     return $z3;
   }
