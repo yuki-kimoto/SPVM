@@ -450,7 +450,6 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
     printf("\n");
     printf("          var_id => %d\n", my->var_id);
-    printf("          width => %d\n", my->width);
   }
   else {
     printf("          (Unexpected)\n");

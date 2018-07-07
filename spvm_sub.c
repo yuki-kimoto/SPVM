@@ -32,8 +32,9 @@ int32_t SPVM_SUB_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     int32_t my_index;
     for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
       SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_MY* my = op_my->uv.my;
-      var_alloc_length += my->width;
+      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
+      int32_t width = SPVM_TYPE_get_width(compiler, type);
+      var_alloc_length += width;
     }
   }
   return var_alloc_length;
@@ -47,8 +48,9 @@ int32_t SPVM_SUB_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     int32_t arg_index;
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_MY* my_arg = op_arg->uv.my;
-      arg_alloc_length += my_arg->width;
+      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_arg);
+      int32_t width = SPVM_TYPE_get_width(compiler, type);
+      arg_alloc_length += width;
     }
   }
   return arg_alloc_length;
