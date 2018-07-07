@@ -1564,6 +1564,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n");
         break;
+      case SPVM_OPCODE_C_ID_MOVE_VALUES:
+        SPVM_STRING_BUFFER_add(string_buffer, "memcpy(&vars[opcode->operand0], &vars[opcode->operand1], sizeof(SPVM_VALUE) * ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ");");
+        break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
         SPVM_STRING_BUFFER_add(string_buffer, "  mortal_stack[mortal_stack_top] = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
