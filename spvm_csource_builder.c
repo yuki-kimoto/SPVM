@@ -687,8 +687,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_t(compiler, arg_type);
       
-      if (SPVM_TYPE_is_object(compiler, arg_type)) {
+      if (SPVM_TYPE_is_object(compiler, arg_type) && !arg_type_is_value_t) {
         SPVM_MY* my_arg = op_arg->uv.my;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
@@ -2235,6 +2236,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, decl_sub_return_type);
         
         // Declare subroutine return type id
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
@@ -2298,7 +2300,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Call subroutine
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {");
-        if (decl_sub_return_type_is_object) {
+        if (decl_sub_return_type_is_value_t) {
+          int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
+          int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
+          SPVM_STRING_BUFFER_add(string_buffer, "memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_return_type_width);
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        }
+        else if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", args[0].oval);");
@@ -2473,7 +2482,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  if (sub_return_type_is_object) {
+  _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, sub_return_type);
+  if (sub_return_type_is_object && !sub_return_type_is_value_t) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (args[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(args[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");

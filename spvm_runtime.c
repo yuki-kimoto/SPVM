@@ -170,7 +170,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      if (SPVM_TYPE_is_object(compiler, arg_type)) {
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_t(compiler, arg_type);
+      if (SPVM_TYPE_is_object(compiler, arg_type) && !arg_type_is_value_t) {
         SPVM_MY* my_arg = op_arg->uv.my;
         void* object = *(void**)&vars[my_arg->var_id];
         if (object != NULL) {
@@ -1781,6 +1782,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, decl_sub_return_type);
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->op_args->length;
@@ -1803,7 +1805,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          if (decl_sub_return_type_is_object) {
+          if (decl_sub_return_type_is_value_t) {
+            int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
+            int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
+            memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
+          }
+          else if (decl_sub_return_type_is_object) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], stack[0].oval);
           }
           else {
@@ -1960,9 +1967,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   if (!exception_flag) {
     
     int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
-  
+    _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, sub_return_type);
+    
     // Decrement ref count of return value
-    if (sub_return_type_is_object) {
+    if (sub_return_type_is_object && !sub_return_type_is_value_t) {
       if (*(void**)&stack[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
       }

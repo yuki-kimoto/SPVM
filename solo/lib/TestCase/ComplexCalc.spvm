@@ -1,4 +1,4 @@
-package TestCaseComplexCalc {
+package TestCase::ComplexCalc {
   use TestCase::Complex_double_2;
   
   sub add : TestCase::Complex_double_2 ($z1 : TestCase::Complex_double_2, $z2 : TestCase::Complex_double_2) {

@@ -2628,8 +2628,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               opcode.id = SPVM_OPCODE_C_ID_RETURN;
                               break;
                             }
-                            default:
-                              opcode.id = SPVM_OPCODE_C_ID_RETURN_OBJECT;
+                            default: {
+                              _Bool return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, return_type);
+                              if (return_type_is_value_t) {
+                                opcode.id = SPVM_OPCODE_C_ID_RETURN;
+                              }
+                              else {
+                                opcode.id = SPVM_OPCODE_C_ID_RETURN_OBJECT;
+                              }
+                            }
                           }
                         }
                         else {
