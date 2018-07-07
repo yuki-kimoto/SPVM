@@ -2521,10 +2521,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             case SPVM_BASIC_TYPE_C_ID_INT:
                             case SPVM_BASIC_TYPE_C_ID_LONG:
                             case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                              SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
                               opcode.id = SPVM_OPCODE_C_ID_RETURN;
-                              opcode.operand2 = 1;
+                              opcode.operand2 = SPVM_TYPE_get_width(compiler, sub_return_type);
                               break;
+                            }
                             default:
                               opcode.id = SPVM_OPCODE_C_ID_RETURN_OBJECT;
                           }
