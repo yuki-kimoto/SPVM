@@ -1629,6 +1629,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
                       
+                      SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access);
+                      
+                      
                       if (SPVM_TYPE_is_undef(compiler, from_type)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
