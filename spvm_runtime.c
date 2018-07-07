@@ -124,8 +124,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  
-  
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
   
   // Package
   SPVM_OP* op_package = sub->op_package;
@@ -1865,8 +1864,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN:
       {
-        int32_t width = opcode->operand2;
-        memcpy(&stack[0], &vars[opcode->operand0], sizeof(SPVM_VALUE) * width);
+        memcpy(&stack[0], &vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         opcode_rel_index = opcode->operand1;
         continue;
       }

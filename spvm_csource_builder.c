@@ -631,6 +631,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   int32_t sub_return_type_dimension = sub_return_type->dimension;
   int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
+
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
   
   assert(sub->have_precompile_desc);
   
@@ -2391,7 +2393,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(&args[0], &");
         SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(SPVM_VALUE) * ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
+        SPVM_STRING_BUFFER_add_int(string_buffer, sub_return_type_width);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
