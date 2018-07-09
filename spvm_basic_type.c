@@ -27,7 +27,7 @@ const char* const SPVM_BASIC_TYPE_C_CATEGORY_NAMES[] = {
   "any_object",
   "class",
   "interface",
-  "struct",
+  "pointer",
   "value_t",
 };
 

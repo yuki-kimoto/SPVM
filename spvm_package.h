@@ -40,5 +40,6 @@ struct SPVM_package {
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
 
 int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACKAGE* package);
+void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler);
 
 #endif

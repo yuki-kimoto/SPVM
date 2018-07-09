@@ -33,6 +33,54 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 
+void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
+  SPVM_LIST* basic_types = compiler->basic_types;
+  
+  {
+    int32_t basic_type_index;
+    for (basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, basic_type_index);
+      int32_t basic_type_id = basic_type->id;
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_UNKNOWN) {
+        basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_UNKNOWN;
+      }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
+        basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_VOID;
+      }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
+        basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_UNDEF;
+      }
+      else if (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+        basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC;
+      }
+      else {
+        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
+        if (op_package) {
+          SPVM_PACKAGE* package = op_package->uv.package;
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_CLASS) {
+            basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC;
+          }
+          else if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+            basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_INTERFACE;
+          }
+          else if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+            basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_POINTER;
+          }
+          else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+            basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_VALUE_T;
+          }
+          else {
+            assert(0);
+          }
+        }
+        else {
+          assert(0);
+        }
+      }
+    }
+  }
+}
+
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Check types
