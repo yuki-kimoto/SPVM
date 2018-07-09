@@ -1735,6 +1735,33 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
+      case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
+        const char* basic_type_name = op_type->uv.type->basic_type->name;
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = -1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id == -1) { basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"); }\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (basic_type_id < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", env->new_value_t_array_raw(env, basic_type_id, ");
+        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
