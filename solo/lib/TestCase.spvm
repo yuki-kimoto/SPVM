@@ -54,6 +54,7 @@ SPVM::Test - SPVM test module
   sub main : int ($mvar : int) {
     {
       my $nums = new TestCase::Complex_double_2[3];
+      
     }
     
     {
