@@ -53,6 +53,11 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      # my $nums = new TestCase::Complex_double_2[3];
+      
+    }
+    
+    {
       my $z1 : TestCase::Complex_double_2;
       $z1->{re} = 0.5;
       $z1->{im} = 0.25;

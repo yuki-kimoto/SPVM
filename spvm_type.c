@@ -348,3 +348,4 @@ _Bool SPVM_TYPE_is_value_t(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   
   return is_value_t;
 }
+
