@@ -2701,7 +2701,7 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   }
 
   SPVM_OP* op_term = op_field_access->first;
-  SPVM_OP* op_name = op_field_access->last;
+  SPVM_OP* op_name = field_access->op_name;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
