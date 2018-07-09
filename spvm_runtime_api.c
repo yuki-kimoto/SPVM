@@ -936,7 +936,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   assert(object != NULL);
   assert(object->ref_count > 0);
   
-  if (__builtin_expect(object->ref_count < 1, 0)) {
+  if (object->ref_count < 1) {
     fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count())");
     abort();
   }
@@ -949,7 +949,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
     SPVM_COMPILER* compiler = runtime->compiler;
     
-    if (__builtin_expect(object->has_destructor, 0)) {
+    if (object->has_destructor) {
       if (object->in_destroy) {
         return;
       }
@@ -998,7 +998,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * object_field_index);
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
-            if (__builtin_expect(SPVM_RUNTIME_API_isweak(env, *object_field_address), 0)) {
+            if (SPVM_RUNTIME_API_isweak(env, *object_field_address)) {
               SPVM_RUNTIME_API_unweaken(env, object_field_address);
             }
             else {
@@ -1007,7 +1007,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           }
         }
       }
-      if (__builtin_expect(object->weaken_back_refs != NULL, 0)) {
+      if (object->weaken_back_refs != NULL) {
         SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_back_refs, object->weaken_back_refs_length);
       }
     }
@@ -1197,7 +1197,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* objec
 
 int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  if (__builtin_expect(!object, 0)) {
+  if (!object) {
     SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
     env->set_exception(env, exception);
     return SPVM_EXCEPTION;
