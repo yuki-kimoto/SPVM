@@ -577,8 +577,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   // Set array length
   object->elements_length = length;
   
-  object->element_byte_size = sizeof(int8_t);
-  
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
   return object;
@@ -599,8 +597,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length)
   
   // Set array length
   object->elements_length = length;
-
-  object->element_byte_size = sizeof(int16_t);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
 
@@ -623,8 +619,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->elements_length = length;
 
-  object->element_byte_size = sizeof(int32_t);
-
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
   return object;
@@ -645,8 +639,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length) 
 
   // Set array length
   object->elements_length = length;
-
-  object->element_byte_size = sizeof(int64_t);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -669,8 +661,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   // Set array length
   object->elements_length = length;
 
-  object->element_byte_size = sizeof(float);
-
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
   return object;
@@ -691,8 +681,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length
   
   // Set array length
   object->elements_length = length;
-
-  object->element_byte_size = sizeof(double);
 
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
@@ -719,8 +707,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   // Set array length
   object->elements_length = length;
   
-  object->element_byte_size = sizeof(void*);
-
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
   return object;
@@ -743,8 +729,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   // Set array length
   object->elements_length = length;
   
-  object->element_byte_size = sizeof(void*);
-
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
   return object;
@@ -772,7 +756,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->dimension = 0;
 
   object->elements_length = fields_length;
-  object->element_byte_size = field_byte_size;
 
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
@@ -806,7 +789,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->dimension = 0;
 
   object->elements_length = 1;
-  object->element_byte_size = sizeof(void*);
 
   // Object type id
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
