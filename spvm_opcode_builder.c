@@ -1418,21 +1418,52 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   break;
                                 }
                                 default: {
-                                  SPVM_OPCODE opcode;
-                                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                                  _Bool is_value_t_array = 0;
+                                  
+                                  SPVM_BASIC_TYPE* basic_type = type->basic_type;
+                                  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
+                                  if (op_package) {
+                                    SPVM_PACKAGE* package = op_package->uv.package;
+                                    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                                      assert(type->dimension == 1);
+                                      is_value_t_array = 1;
+                                    }
+                                  }
+                                  
+                                  if (is_value_t_array) {
+                                    SPVM_OPCODE opcode;
+                                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                                  opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY;
+                                    opcode.id = SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY;
 
-                                  int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
-                                  SPVM_TYPE* type = op_assign_from->first->first->uv.type;
-                                  int32_t basic_type_id = type->basic_type->id;
-                                  int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_assign_from->first->last);
+                                    int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                                    SPVM_TYPE* type = op_assign_from->first->first->uv.type;
+                                    int32_t basic_type_id = type->basic_type->id;
+                                    int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_assign_from->first->last);
 
-                                  opcode.operand0 = var_id_out;
-                                  opcode.operand1 = op_type->uv.type->sub_rel_id;
-                                  opcode.operand2 = var_id_index;
+                                    opcode.operand0 = var_id_out;
+                                    opcode.operand1 = op_type->uv.type->sub_rel_id;
+                                    opcode.operand2 = var_id_index;
 
-                                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                                  }
+                                  else {
+                                    SPVM_OPCODE opcode;
+                                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                                    opcode.id = SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY;
+
+                                    int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                                    SPVM_TYPE* type = op_assign_from->first->first->uv.type;
+                                    int32_t basic_type_id = type->basic_type->id;
+                                    int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_assign_from->first->last);
+
+                                    opcode.operand0 = var_id_out;
+                                    opcode.operand1 = op_type->uv.type->sub_rel_id;
+                                    opcode.operand2 = var_id_index;
+
+                                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                                  }
                                 }
                               }
                             }
