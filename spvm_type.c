@@ -349,3 +349,29 @@ _Bool SPVM_TYPE_is_value_t(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return is_value_t;
 }
 
+_Bool SPVM_TYPE_is_value_t_array(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  (void)compiler;
+  
+  assert(type->dimension == 1);
+  
+  int32_t is_value_t_array;
+  const char* basic_type_name = type->basic_type->name;
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
+  
+  // Package
+  if (op_package) {
+    SPVM_PACKAGE* package = op_package->uv.package;
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+      is_value_t_array = 1;
+    }
+    else {
+      is_value_t_array = 0;
+    }
+  }
+  // Numeric type
+  else {
+    is_value_t_array = 0;
+  }
+  
+  return is_value_t_array;
+}

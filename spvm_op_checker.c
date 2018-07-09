@@ -1955,7 +1955,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_LIST_push(sub->op_field_accesses, op_cur);
                       
                       // If invocker is array access and array access object is value_t, this field access is valut_t array element field access
-                      
+                      if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
+                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_invocker->first);
+                        _Bool is_value_t_array = SPVM_TYPE_is_value_t_array(compiler, array_type);
+                        if (is_value_t_array) {
+                          
+                        }
+                      }
                       
                       break;
                     }
