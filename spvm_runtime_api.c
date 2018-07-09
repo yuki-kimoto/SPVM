@@ -757,24 +757,26 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
   SPVM_PACKAGE* package = op_package->uv.package;
   int32_t fields_length = package->op_fields->length;
+  SPVM_OP* op_field_first = SPVM_LIST_fetch(package->op_fields, 0);
+  int32_t field_basic_type_id = op_field_first->uv.field->op_type->uv.type->basic_type->id;
 
   int32_t unit_size;
-  if (basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+  if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
     unit_size = sizeof(int8_t);
   }
-  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+  else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT) {
     unit_size = sizeof(int16_t);
   }
-  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+  else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT) {
     unit_size = sizeof(int32_t);
   }
-  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+  else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG) {
     unit_size = sizeof(int64_t);
   }
-  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+  else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
     unit_size = sizeof(float);
   }
-  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+  else if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     unit_size = sizeof(double);
   }
   else {
