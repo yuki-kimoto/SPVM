@@ -1261,6 +1261,20 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         break;
       }
+      case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
+        int32_t basic_type_id = op_type->uv.type->basic_type->id;
+        
+        // length
+        int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+        
+        void* object = env->new_value_t_array_raw(env, basic_type_id, length);
+        
+        // Set object
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
