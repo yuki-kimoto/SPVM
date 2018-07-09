@@ -114,6 +114,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         if (package->op_fields->length == 0) {
           SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
         }
+        // Max fields length is 16
+        else if (package->op_fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
+          SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", op_package->file, op_package->line);
+        }
         else {
           SPVM_LIST* op_fields = package->op_fields;
           SPVM_OP* op_first_field = SPVM_LIST_fetch(op_fields, 0);
