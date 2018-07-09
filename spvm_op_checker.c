@@ -1959,7 +1959,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_invocker->first);
                         _Bool is_value_t_array = SPVM_TYPE_is_value_t_array(compiler, array_type);
                         if (is_value_t_array) {
-                          
+                          SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
                         }
                       }
                       
