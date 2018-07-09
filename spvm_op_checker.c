@@ -75,6 +75,7 @@ void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
+          basic_type->op_package = op_package;
         }
       }
     }
