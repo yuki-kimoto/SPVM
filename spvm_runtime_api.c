@@ -530,6 +530,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_
   return object;
 }
 
+SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_value_t_array(env, basic_type_id, element_dimension, length);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t basic_type_id) {
   (void)env;
   
@@ -731,6 +741,58 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
   
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  // valut_t array dimension must be 1
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
+  SPVM_PACKAGE* package = op_package->uv.package;
+  int32_t fields_length = package->op_fields->length;
+
+  int32_t unit_size;
+  if (basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+    unit_size = sizeof(int8_t);
+  }
+  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+    unit_size = sizeof(int16_t);
+  }
+  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+    unit_size = sizeof(int32_t);
+  }
+  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+    unit_size = sizeof(int64_t);
+  }
+  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+    unit_size = sizeof(float);
+  }
+  else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+    unit_size = sizeof(double);
+  }
+  else {
+    assert(0);
+  }
+
+  // Alloc length + 1. Last element value is 0 to use c string functions easily
+  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * unit_size * fields_length;
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, array_byte_size);
+
+  ((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size))[length] = 0;
+
+  object->basic_type_id = basic_type->id;
+  object->dimension = 1;
+
+  // Set array length
+  object->elements_length = length;
+
+  object->category = SPVM_OBJECT_C_CATEGORY_VALUE_T_ARRAY;
+
   return object;
 }
 
