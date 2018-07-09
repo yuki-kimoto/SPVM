@@ -1869,6 +1869,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       op_cur->uv.call_sub->sub_rel_id = sub->op_call_subs->length;
                       SPVM_LIST_push(sub->op_call_subs, op_cur);
                       
+                      if (call_sub->sub->is_destructor) {
+                        SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
+                      }
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
