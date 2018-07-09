@@ -1954,6 +1954,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       op_cur->uv.field_access->sub_rel_id = sub->op_field_accesses->length;
                       SPVM_LIST_push(sub->op_field_accesses, op_cur);
                       
+                      // If invocker is array access and array access object is value_t, this field access is valut_t array element field access
+                      
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_WEAKEN_FIELD: {
