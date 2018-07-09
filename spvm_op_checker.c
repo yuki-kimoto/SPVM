@@ -53,6 +53,9 @@ void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
       else if (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
         basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC;
       }
+      else if (basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+        basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_ANY_OBJECT;
+      }
       else {
         SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
         if (op_package) {
@@ -73,9 +76,6 @@ void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
             assert(0);
           }
         }
-        else {
-          assert(0);
-        }
       }
     }
   }
@@ -85,6 +85,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Check types
   SPVM_OP_CHECKER_check_types(compiler);
+  
+  // Resolve basic type category
+  SPVM_OP_CHECKER_resolve_basic_type_category(compiler);
 
   int32_t sub_id = 0;
   {
