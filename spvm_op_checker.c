@@ -1912,7 +1912,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_FIELD_ACCESS: {
                       SPVM_OP* op_term_invocker = op_cur->first;
-                      SPVM_OP* op_name = op_cur->last;
+                      SPVM_OP* op_name = op_cur->uv.field_access->op_name;
                       
                       if (op_term_invocker->id == SPVM_OP_C_ID_ASSIGN) {
                         op_term_invocker = op_term_invocker->first;
@@ -1960,6 +1960,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         _Bool is_value_t_array = SPVM_TYPE_is_value_t_array(compiler, array_type);
                         if (is_value_t_array) {
                           SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
+                          
                         }
                       }
                       

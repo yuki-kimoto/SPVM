@@ -1260,9 +1260,9 @@ SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SP
 }
 
 SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, SPVM_OP* op_name_field) {
-  SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, op_term->file, op_term->line);
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_term);
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
+  SPVM_OP* op_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, op_term->file, op_term->line);
+  SPVM_OP_insert_child(compiler, op_field_access, op_field_access->last, op_term);
+  SPVM_OP_insert_child(compiler, op_field_access, op_field_access->last, op_name_field);
   
   SPVM_FIELD_ACCESS* field_access = SPVM_FIELD_ACCESS_new(compiler);
   
@@ -1273,9 +1273,9 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, S
   
   field_access->op_term = op_term;
   field_access->op_name = op_name_field;
-  op_field->uv.field_access = field_access;
+  op_field_access->uv.field_access = field_access;
   
-  return op_field;
+  return op_field_access;
 }
 
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access) {
