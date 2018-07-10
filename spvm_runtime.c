@@ -938,7 +938,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_BYTE: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_BYTE: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -961,7 +961,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_SHORT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_SHORT: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -984,7 +984,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_INT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_INT: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -1007,7 +1007,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_LONG: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_LONG: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -1030,7 +1030,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_FLOAT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_FLOAT: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -1053,7 +1053,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_DOUBLE: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_DOUBLE: {
         void* array = *(void**)&vars[opcode->operand1];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         int32_t unit = opcode->operand3 >> 4;
@@ -1244,7 +1244,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_BYTE: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_BYTE: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
@@ -1266,7 +1266,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_SHORT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_SHORT: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
@@ -1288,7 +1288,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_INT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_INT: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
@@ -1310,7 +1310,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_LONG: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_LONG: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
@@ -1332,7 +1332,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_FLOAT: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_FLOAT: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
@@ -1354,7 +1354,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_STORE_DOUBLE: {
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_DOUBLE: {
         void* array = *(void**)&vars[opcode->operand0];
         int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         int32_t unit = opcode->operand3 >> 4;
