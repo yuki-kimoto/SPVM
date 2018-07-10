@@ -16,7 +16,6 @@
 #include "spvm_sub.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
-#include "spvm_array_field_access.h"
 #include "spvm_my.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
@@ -33,6 +32,7 @@
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
+#include "spvm_array_field_access.h"
 
 void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
   SPVM_LIST* basic_types = compiler->basic_types;
@@ -1166,6 +1166,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       
+                      assert(op_cur->first);
+                      assert(op_cur->last);
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_ASSIGN: {
@@ -1957,21 +1960,35 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // If invocker is array access and array access object is value_t, this op become array field access
                       if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
-                        SPVM_OP* op_array_access = op_term_invocker->first;
-                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_access);
-                        _Bool is_value_t_array = SPVM_TYPE_is_value_t_array(compiler, array_type);
-                        if (is_value_t_array) {
-                          SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
-                          op_array_field_access->uv.array_field_access->field = field;
-                          SPVM_OP_cut_op(compiler, op_array_access->first);
-                          SPVM_OP_cut_op(compiler, op_array_access->last);
-                          SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array_access->first);
-                          SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array_access->last);
-                          
-                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                          SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
-                          
-                          op_cur = op_array_field_access;
+                        SPVM_OP* op_array_access = op_term_invocker;
+                        
+                        SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
+                        
+                        _Bool is_basic_type_value_t = SPVM_TYPE_is_basic_type_value_t(compiler, array_element_type);
+                        if (is_basic_type_value_t) {
+                          if (array_element_type->dimension != 0) {
+                            SPVM_yyerror_format(compiler, "value_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
+                          }
+                          else {
+                            SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
+                            
+                            SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
+                            array_field_access->field = field;
+                            op_array_field_access->uv.array_field_access = array_field_access;
+                            
+                            SPVM_OP* op_array = op_array_access->first;
+                            SPVM_OP* op_index = op_array_access->last;
+                            SPVM_OP_cut_op(compiler, op_array_access->first);
+                            SPVM_OP_cut_op(compiler, op_array_access->last);
+                            
+                            SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
+                            SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
+                            
+                            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                            SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
+                            
+                            op_cur = op_array_field_access;
+                          }
                         }
                       }
                       

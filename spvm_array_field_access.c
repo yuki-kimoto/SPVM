@@ -1,13 +1,8 @@
-#ifndef SPVM_ARRAY_FIELD_ACCESS_H
-#define SPVM_ARRAY_FIELD_ACCESS_H
+#include "spvm_array_field_access.h"
 
-#include "spvm_base.h"
+#include "spvm_compiler_allocator.h"
+#include "spvm_compiler.h"
 
-struct SPVM_array_field_access {
-  SPVM_FIELD* field;
-  int32_t sub_rel_id;
-};
-
-SPVM_ARRAY_FIELD_ACCESS* SPVM_ARRAY_FIELD_ACCESS_new(SPVM_COMPILER* compiler);
-
-#endif
+SPVM_ARRAY_FIELD_ACCESS* SPVM_ARRAY_FIELD_ACCESS_new(SPVM_COMPILER* compiler) {
+  return SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_ARRAY_FIELD_ACCESS));
+}

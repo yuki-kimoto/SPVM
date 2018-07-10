@@ -36,6 +36,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_core_func_bind.h"
 #include "spvm_case_info.h"
+#include "spvm_array_field_access.h"
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
@@ -1237,6 +1238,12 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_FIELD_ACCESS: {
       SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
       SPVM_FIELD* field = field_access->field;
+      type = field->op_type->uv.type;
+      break;
+    }
+    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
+      SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
+      SPVM_FIELD* field = array_field_access->field;
       type = field->op_type->uv.type;
       break;
     }
