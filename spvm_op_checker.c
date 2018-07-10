@@ -1971,6 +1971,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           else {
                             SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
+                            op_array_field_access->is_lvalue = op_cur->is_lvalue;
+                            op_array_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                             
                             SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
                             array_field_access->field = field;
@@ -2153,6 +2155,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
                       case SPVM_OP_C_ID_ARRAY_ACCESS:
                       case SPVM_OP_C_ID_SWITCH_CONDITION:
+                      case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
                         create_tmp_var = 1;
                         break;
                       case SPVM_OP_C_ID_CONSTANT: {

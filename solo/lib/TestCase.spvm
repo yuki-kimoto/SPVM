@@ -60,7 +60,7 @@ SPVM::Test - SPVM test module
       my $nums1_9_re = $nums1->[9]{re};
       my $nums1_9_im = $nums1->[9]{im};
       
-      print((string)$nums1_9_re . "\n");
+      print((string)$nums1->[9]{re} . "\n");
       print((string)$nums1_9_im . "\n");
     }
     
