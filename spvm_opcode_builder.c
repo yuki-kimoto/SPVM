@@ -35,6 +35,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_yacc_util.h"
 #include "spvm_case_info.h"
+#include "spvm_array_field_access.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -344,6 +345,67 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in;
+
+                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
+                      }
+                      else if (op_assign_from->id == SPVM_OP_C_ID_ARRAY_FIELD_ACCESS) {
+                        
+                        // $VAR = $VAR_OBJECT->[INDEX]{NAME}
+                        SPVM_OP* op_array_field_access = op_assign_from;
+                        SPVM_OP* op_term_object = op_array_field_access->first;
+                        SPVM_OP* op_term_index = op_array_field_access->last;
+                        
+                        // Call field
+                        SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
+                        SPVM_FIELD* field = array_field_access->field;
+                        
+                        // Array type
+                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
+                        SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
+                        
+                        // Element type
+                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_field_access);
+                        SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
+
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                        switch (element_type->basic_type->id) {
+                          case SPVM_BASIC_TYPE_C_ID_BYTE:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_BYTE;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_SHORT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_SHORT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_INT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_INT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_LONG:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_LONG;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_FLOAT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_DOUBLE;
+                            break;
+                          default:
+                            assert(0);
+                        }
+                        
+                        // Field absolute name symbol
+                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                        int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_object);
+                        int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                        
+                        int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                        int32_t offset = field->index;
+
+                        opcode.operand0 = var_id_out;
+                        opcode.operand1 = index_term_object;
+                        opcode.operand2 = index_term_index;
+                        opcode.operand3 = unit << 4 + offset;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
