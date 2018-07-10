@@ -189,10 +189,6 @@ enum {
   SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN = 1
 };
 
-enum {
-  SPVM_OP_C_FLAG_ARRAY_ACCESS_IS_VALUE_T_FIELD_ACCESS = 1
-};
-
 /* Binary operation */
 struct SPVM_op {
   SPVM_OP* first;
