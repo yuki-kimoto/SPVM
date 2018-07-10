@@ -405,7 +405,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = index_term_object;
                         opcode.operand2 = index_term_index;
-                        opcode.operand3 = unit << 4 + offset;
+                        opcode.operand3 = (unit << 4) + offset;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -1876,6 +1876,63 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                         }
                       }
+                    }
+                    // Set field
+                    else if (op_assign_to->id == SPVM_OP_C_ID_ARRAY_FIELD_ACCESS) {
+                      
+                      SPVM_OP* op_array_field_access = op_assign_to;
+                      SPVM_OP* op_term_object = op_array_field_access->first;
+                      SPVM_OP* op_term_index = op_array_field_access->last;
+
+                      // Call field
+                      SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
+                      SPVM_FIELD* field = array_field_access->field;
+
+                      // Array type
+                      SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
+                      SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
+
+                      // Element type
+                      SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_assign_from);
+                      SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
+                      
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                      
+                      if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_BYTE;
+                      }
+                      else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_SHORT;
+                      }
+                      else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_INT;
+                      }
+                      else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_LONG;
+                      }
+                      else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_FLOAT;
+                      }
+                      else if (element_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                        opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_DOUBLE;
+                      }
+                      
+                      int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_object);
+                      int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_from);
+                      int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+
+                      int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                      int32_t offset = field->index;
+                      
+                      opcode.operand0 = index_term_object;
+                      opcode.operand1 = index_term_index;
+                      opcode.operand2 = var_id_in;
+                      opcode.operand3 = (unit << 4) + offset;
+                      
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                      SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                     }
                     else {
                       assert(0);
