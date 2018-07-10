@@ -214,6 +214,7 @@ struct SPVM_op {
     SPVM_USE* use;
     SPVM_CALL_SUB* call_sub;
     SPVM_FIELD_ACCESS* field_access;
+    SPVM_ARRAY_FIELD_ACCESS* array_field_access;
     SPVM_PACKAGE_VAR* package_var;
     SPVM_PACKAGE_VAR_ACCESS* package_var_access;
     SPVM_BLOCK* block;

@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_array_field_access.h
+struct SPVM_array_field_access;
+typedef struct SPVM_array_field_access SPVM_ARRAY_FIELD_ACCESS;
+
 // spvm_case_info.h
 struct SPVM_case_info;
 typedef struct SPVM_case_info SPVM_CASE_INFO;
@@ -108,7 +112,7 @@ typedef struct SPVM_assign SPVM_ASSIGN;
 struct SPVM_package;
 typedef struct SPVM_package SPVM_PACKAGE;
 
-// spvm_type.h
+// spvm_field_access.h
 struct SPVM_field_access;
 typedef struct SPVM_field_access SPVM_FIELD_ACCESS;
 
@@ -155,10 +159,6 @@ typedef struct SPVM_descriptor SPVM_DESCRIPTOR;
 // spvm_sub.h
 struct SPVM_sub;
 typedef struct SPVM_sub SPVM_SUB;
-
-// spvm_list_element.h
-struct SPVM_array_accessent;
-typedef struct SPVM_array_accessent SPVM_LIST_ELEMENT;
 
 // spvm_list.h
 struct SPVM_list;
