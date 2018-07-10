@@ -16,6 +16,7 @@
 #include "spvm_sub.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
+#include "spvm_array_field_access.h"
 #include "spvm_my.h"
 #include "spvm_var.h"
 #include "spvm_enumeration_value.h"
