@@ -513,49 +513,109 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_array = op_array_access->first;
                         SPVM_OP* op_term_index = op_array_access->last;
                         
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
+                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_access);
                         
-                        SPVM_OPCODE opcode;
-                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                        if (type->dimension == 0) {
-                          switch (type->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_BYTE:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE;
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_SHORT:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT;
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_INT;
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG;
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT;
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE;
-                              break;
-                            default:
-                              opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT;
+                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
+
+                        _Bool is_value_t_array = 0;
+                        SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
+                        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, array_basic_type->name, strlen(array_basic_type->name));
+                        if (op_package) {
+                          SPVM_PACKAGE* package = op_package->uv.package;
+                          if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                            assert(array_type->dimension == 1);
+                            is_value_t_array = 1;
                           }
                         }
-                        else {
-                          opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT;
+                        
+                        if (is_value_t_array) {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          if (element_type->dimension == 0) {
+                            switch (element_type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_BYTE;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_SHORT:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_SHORT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_INT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_LONG;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_FLOAT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_DOUBLE;
+                                break;
+                              default:
+                                assert(0);
+                            }
+                          }
+                          else {
+                            opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT;
+                          }
+
+                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                          int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
+                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+
+                          opcode.operand0 = var_id_out;
+                          opcode.operand1 = index_term_array;
+                          opcode.operand2 = index_term_index;
+                          opcode.operand3 = (unit << 4);
+
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                          SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
                         }
+                        else {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          if (element_type->dimension == 0) {
+                            switch (element_type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_SHORT:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_INT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT;
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE;
+                                break;
+                              default:
+                                opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT;
+                            }
+                          }
+                          else {
+                            opcode.id = SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT;
+                          }
 
-                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
-                        int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                        int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_to);
+                          int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
+                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
 
-                        opcode.operand0 = var_id_out;
-                        opcode.operand1 = index_term_array;
-                        opcode.operand2 = index_term_index;
+                          opcode.operand0 = var_id_out;
+                          opcode.operand1 = index_term_array;
+                          opcode.operand2 = index_term_index;
 
-                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
+                          SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
+                        }
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_from);
