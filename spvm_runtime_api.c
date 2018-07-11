@@ -783,11 +783,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
     assert(0);
   }
 
-  // Alloc length + 1. Last element value is 0 to use c string functions easily
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * unit_size * fields_length;
+  // Alloc length
+  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + (int64_t)length * unit_size * fields_length;
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, array_byte_size);
-
-  ((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size))[length] = 0;
 
   object->basic_type_id = basic_type->id;
   object->dimension = 1;

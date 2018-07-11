@@ -57,6 +57,12 @@ solo/lib/TestCase/ImplementInterface2.spvm
 solo/lib/TestCase/Inline.spvm
 solo/lib/TestCase/Interface.spvm
 solo/lib/TestCase/Minimal.spvm
+solo/lib/TestCase/Point_b3.spvm
+solo/lib/TestCase/Point_d3.spvm
+solo/lib/TestCase/Point_f3.spvm
+solo/lib/TestCase/Point_i3.spvm
+solo/lib/TestCase/Point_l3.spvm
+solo/lib/TestCase/Point_s3.spvm
 solo/lib/TestCase/Pointer.spvm
 solo/lib/TestCase/Simple.spvm
 solo/lib/TestCase/Weaken.spvm
