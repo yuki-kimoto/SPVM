@@ -405,7 +405,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = index_term_object;
                         opcode.operand2 = index_term_index;
-                        opcode.operand3 = (unit << 4) + offset;
+                        opcode.operand3 = (offset << 4) + unit;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -564,7 +564,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = index_term_array;
                           opcode.operand2 = index_term_index;
-                          opcode.operand3 = (unit << 4);
+                          opcode.operand3 = unit;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -1820,7 +1820,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.operand0 = index_term_array;
                         opcode.operand1 = index_term_index;
                         opcode.operand2 = var_id_in;
-                        opcode.operand3 = (unit << 4);
+                        opcode.operand3 = unit;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2045,7 +2045,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.operand0 = index_term_object;
                       opcode.operand1 = index_term_index;
                       opcode.operand2 = var_id_in;
-                      opcode.operand3 = (unit << 4) + offset;
+                      opcode.operand3 = (offset << 4) + unit;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
