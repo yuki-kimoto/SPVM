@@ -1,3 +1,41 @@
+0.0357 2018-07-08
+  - value_t package must be end with [Prefix][FieldLength]
+      package TestCase::Complex_b2 : value_t {
+        has re : byte;
+        has im : byte;
+      }
+      package TestCase::Complex_s2 : value_t {
+        has re : short;
+        has im : short;
+      }
+      package TestCase::Complex_i2 : value_t {
+        has re : int;
+        has im : int;
+      }
+      package TestCase::Complex_l2 : value_t {
+        has re : long;
+        has im : long;
+      }
+      package TestCase::Complex_f2 : value_t {
+        has re : float;
+        has im : float;
+      }
+      package TestCase::Complex_d2 : value_t {
+        has re : double;
+        has im : double;
+      }
+  - support value_t array
+      my $nums1 = new TestCase::Complex_d2[10];
+      $nums1->[9]{re} = 5;
+      $nums1->[9]{im} = 9;
+      
+      my $nums1_9_re = $nums1->[9]{re};
+      my $nums1_9_im = $nums1->[9]{im};
+      
+      my $nums2 = $nums1->[9];
+      
+      $nums1->[5] = $nums2;
+      
 0.0356 2018-07-07
   - Support value_t package. This is value type.
       package TestCase::Complex_double_2 : value_t {

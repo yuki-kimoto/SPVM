@@ -140,7 +140,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             if (!numeric_field_error) {
               // Check type name
               char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
-              sprintf(tail_name, "_%s_%d", first_field_type->basic_type->name, op_fields->length);
+              switch (first_field_type->basic_type->id) {
+                case SPVM_BASIC_TYPE_C_ID_BYTE:
+                  sprintf(tail_name, "_b%d", op_fields->length);
+                  break;
+                case SPVM_BASIC_TYPE_C_ID_SHORT:
+                  sprintf(tail_name, "_s%d", op_fields->length);
+                  break;
+                case SPVM_BASIC_TYPE_C_ID_INT:
+                  sprintf(tail_name, "_i%d", op_fields->length);
+                  break;
+                case SPVM_BASIC_TYPE_C_ID_LONG:
+                  sprintf(tail_name, "_l%d", op_fields->length);
+                  break;
+                case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                  sprintf(tail_name, "_f%d", op_fields->length);
+                  break;
+                case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                  sprintf(tail_name, "_d%d", op_fields->length);
+                  break;
+                default:
+                  assert(0);
+              }
               int32_t tail_name_length = (int32_t)strlen(tail_name);
               
               char* found_pos_ptr = strstr(package_name, tail_name);

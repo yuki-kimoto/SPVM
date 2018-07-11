@@ -11,7 +11,7 @@ package TestCase {
   use TestCase::ImplementInterface2;
   use TestCase::Comparator;
   use TestCase::Pointer;
-  use TestCase::Complex_double_2;
+  use TestCase::Complex_d2;
   use TestCase::ComplexCalc;
 
 =pod
@@ -53,7 +53,7 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
-      my $nums1 = new TestCase::Complex_double_2[10];
+      my $nums1 = new TestCase::Complex_d2[10];
       $nums1->[9]{re} = 5;
       $nums1->[9]{im} = 9;
       
@@ -66,14 +66,19 @@ SPVM::Test - SPVM test module
       my $nums2 = $nums1->[9];
       print((string)$nums1->[9]{re} . "\n");
       print((string)$nums1->[9]{im} . "\n");
+      
+      $nums1->[5] = $nums2;
+      print((string)$nums1->[5]{re} . "\n");
+      print((string)$nums1->[5]{im} . "\n");
+      
     }
     
     {
-      my $z1 : TestCase::Complex_double_2;
+      my $z1 : TestCase::Complex_d2;
       $z1->{re} = 0.5;
       $z1->{im} = 0.25;
       
-      my $z2 : TestCase::Complex_double_2;
+      my $z2 : TestCase::Complex_d2;
       $z2->{re} = 1.0;
       $z2->{im} = 0.5;
       
@@ -87,7 +92,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : TestCase::Complex_double_2;
+      my $z : TestCase::Complex_d2;
       $z->{re} = 0.5;
       $z->{im} = 0.25;
       

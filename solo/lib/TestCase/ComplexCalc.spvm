@@ -1,8 +1,8 @@
 package TestCase::ComplexCalc {
-  use TestCase::Complex_double_2;
+  use TestCase::Complex_d2;
   
-  sub add : TestCase::Complex_double_2 ($z1 : TestCase::Complex_double_2, $z2 : TestCase::Complex_double_2) {
-    my $z3 : TestCase::Complex_double_2;
+  sub add : TestCase::Complex_d2 ($z1 : TestCase::Complex_d2, $z2 : TestCase::Complex_d2) {
+    my $z3 : TestCase::Complex_d2;
     
     $z3->{re} = $z1->{re} + $z2->{re};
     $z3->{im} = $z1->{im} + $z2->{im};
