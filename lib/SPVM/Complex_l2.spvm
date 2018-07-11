@@ -1,0 +1,4 @@
+package SPVM::Complex_l2 : value_t {
+  has re : long;
+  has im : long;
+}

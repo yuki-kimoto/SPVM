@@ -1,0 +1,4 @@
+package SPVM::Complex_i2 : value_t {
+  has re : int;
+  has im : int;
+}

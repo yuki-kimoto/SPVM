@@ -1,4 +1,0 @@
-package TestCase::Complex_double_2 : value_t {
-  has re : double;
-  has im : double;
-}

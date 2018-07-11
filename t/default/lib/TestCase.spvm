@@ -5,7 +5,7 @@ package TestCase {
   use TestCase::Destructor;
   use TestCase::Empty;
   use TestCase::Private;
-  use TestCase::Complex_double_2;
+  use TestCase::Point_i3;
 
   use SPVM::Byte;
   use SPVM::Short;
