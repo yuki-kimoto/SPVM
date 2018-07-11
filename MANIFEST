@@ -13,6 +13,10 @@ lib/SPVM/Build/Util.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
+lib/SPVM/Complex_d2.spvm
+lib/SPVM/Complex_f2.spvm
+lib/SPVM/Complex_i2.spvm
+lib/SPVM/Complex_l2.spvm
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
 lib/SPVM/Data/Array.pm
@@ -40,7 +44,9 @@ ppport.h
 README
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Comparator.spvm
+solo/lib/TestCase/Complex_d2.spvm
 solo/lib/TestCase/Complex_double_2.spvm
+solo/lib/TestCase/ComplexCalc.spvm
 solo/lib/TestCase/Destructor.spvm
 solo/lib/TestCase/EnumA.spvm
 solo/lib/TestCase/EnumB.spvm
@@ -59,6 +65,8 @@ solo/Main.spvm
 solo/README
 solo/solo_Makefile.PL
 SPVM.xs
+spvm_array_field_access.c
+spvm_array_field_access.h
 spvm_base.h
 spvm_basic_type.c
 spvm_basic_type.h
@@ -156,6 +164,7 @@ t/default/bit-operator.t
 t/default/call-sub.t
 t/default/comparison-operator.t
 t/default/constant.t
+t/default/convert.t
 t/default/core-func.t
 t/default/enum.t
 t/default/exception.t
@@ -180,6 +189,8 @@ t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/Complex_double_2.spvm
+t/default/lib/TestCase/Constant.spvm
+t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
 t/default/lib/TestCase/Destructor.spvm
 t/default/lib/TestCase/Double.spvm
@@ -201,9 +212,17 @@ t/default/lib/TestCase/Interface/ImplementInterface1.spvm
 t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
 t/default/lib/TestCase/Literal.spvm
+t/default/lib/TestCase/LogicalOperator.spvm
 t/default/lib/TestCase/Long.spvm
+t/default/lib/TestCase/Loop.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/NumericOperator.spvm
+t/default/lib/TestCase/Point_b3.spvm
+t/default/lib/TestCase/Point_d3.spvm
+t/default/lib/TestCase/Point_f3.spvm
+t/default/lib/TestCase/Point_i3.spvm
+t/default/lib/TestCase/Point_l3.spvm
+t/default/lib/TestCase/Point_s3.spvm
 t/default/lib/TestCase/Pointer.native/Pointer.c
 t/default/lib/TestCase/Pointer.spvm
 t/default/lib/TestCase/Private.spvm
@@ -212,6 +231,7 @@ t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Switch.spvm
+t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/Weaken2.spvm
 t/default/literal.t
@@ -225,6 +245,7 @@ t/default/special-assign.t
 t/default/string.t
 t/default/switch.t
 t/default/type-convertion.t
+t/default/value_t_array.t
 t/default/weaken.t
 t/lib/TestAuto.pm
 t/precompile/array.t
@@ -233,6 +254,7 @@ t/precompile/bit-operator.t
 t/precompile/call-sub.t
 t/precompile/comparison-operator.t
 t/precompile/constant.t
+t/precompile/convert.t
 t/precompile/core-func.t
 t/precompile/enum.t
 t/precompile/exception.t
@@ -256,6 +278,8 @@ t/precompile/lib/TestCase/CompileError/InvalidType.spvm
 t/precompile/lib/TestCase/CompileError/New/Private.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/precompile/lib/TestCase/Constant.spvm
+t/precompile/lib/TestCase/Convert.spvm
 t/precompile/lib/TestCase/CoreFunc/Math.spvm
 t/precompile/lib/TestCase/Destructor.spvm
 t/precompile/lib/TestCase/Double.spvm
@@ -277,9 +301,17 @@ t/precompile/lib/TestCase/Interface/ImplementInterface1.spvm
 t/precompile/lib/TestCase/Interface/ImplementInterface2.spvm
 t/precompile/lib/TestCase/Interface/Interface.spvm
 t/precompile/lib/TestCase/Literal.spvm
+t/precompile/lib/TestCase/LogicalOperator.spvm
 t/precompile/lib/TestCase/Long.spvm
+t/precompile/lib/TestCase/Loop.spvm
 t/precompile/lib/TestCase/Minimal.spvm
 t/precompile/lib/TestCase/NumericOperator.spvm
+t/precompile/lib/TestCase/Point_b3.spvm
+t/precompile/lib/TestCase/Point_d3.spvm
+t/precompile/lib/TestCase/Point_f3.spvm
+t/precompile/lib/TestCase/Point_i3.spvm
+t/precompile/lib/TestCase/Point_l3.spvm
+t/precompile/lib/TestCase/Point_s3.spvm
 t/precompile/lib/TestCase/Pointer.native/Pointer.c
 t/precompile/lib/TestCase/Pointer.spvm
 t/precompile/lib/TestCase/Private.spvm
@@ -288,6 +320,7 @@ t/precompile/lib/TestCase/Simple.spvm
 t/precompile/lib/TestCase/SpecialAssign.spvm
 t/precompile/lib/TestCase/String.spvm
 t/precompile/lib/TestCase/Switch.spvm
+t/precompile/lib/TestCase/ValueTArray.spvm
 t/precompile/lib/TestCase/Weaken.spvm
 t/precompile/lib/TestCase/Weaken.wpvm
 t/precompile/lib/TestCase/Weaken2.spvm
@@ -302,6 +335,7 @@ t/precompile/special-assign.t
 t/precompile/string.t
 t/precompile/switch.t
 t/precompile/type-convertion.t
+t/precompile/value_t_array.t
 t/precompile/weaken.t
 t/spvm_build/.gitkeep
 yacc/bison.sh
