@@ -6,14 +6,15 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::Loop';
 
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
 # for
 {
-  ok(TestCase->for_basic());
+  ok(TestCase::Loop->for_basic());
+  ok(TestCase::Loop->next_statement());
 }
 
 
