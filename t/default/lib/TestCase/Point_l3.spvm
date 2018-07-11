@@ -1,0 +1,5 @@
+package TestCase::Point_l3 : value_t {
+  has x : long;
+  has y : long;
+  has z : long;
+}

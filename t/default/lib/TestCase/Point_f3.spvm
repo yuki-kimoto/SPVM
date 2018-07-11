@@ -1,0 +1,5 @@
+package TestCase::Point_f3 : value_t {
+  has x : float;
+  has y : float;
+  has z : float;
+}

@@ -1,0 +1,20 @@
+package TestCase::ValueTArray {
+  use TestCase::Point_i3;
+  
+  precompile sub store_fetch_int : int () {
+    my $nums = new TestCase::Point_i3[10];
+    $nums->[9]{x} = INT32_MIN();
+    $nums->[9]{y} = INT32_MIN() + 1;
+    $nums->[9]{z} = INT32_MIN() + 2;
+    
+    my $x = $nums->[9]{x};
+    my $y = $nums->[9]{y};
+    my $z = $nums->[9]{z};
+    
+    if ($x == INT32_MIN() && $y == (INT32_MIN() + 1) && $z == (INT32_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+}
