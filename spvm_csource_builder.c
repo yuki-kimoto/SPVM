@@ -46,11 +46,26 @@ void SPVM_CSOURCE_BUILDER_add_var(SPVM_STRING_BUFFER* string_buffer, int32_t ind
   SPVM_STRING_BUFFER_add(string_buffer, "]");
 }
 
+void SPVM_CSOURCE_BUILDER_add_var_offset(SPVM_STRING_BUFFER* string_buffer, int32_t index, int32_t offset) {
+  SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, offset);
+  SPVM_STRING_BUFFER_add(string_buffer, "]");
+}
+
 void SPVM_CSOURCE_BUILDER_add_operand(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "*(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "*)&");
   SPVM_CSOURCE_BUILDER_add_var(string_buffer, var_index);
+}
+
+void SPVM_CSOURCE_BUILDER_add_operand_offset(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index, int32_t offset) {
+  SPVM_STRING_BUFFER_add(string_buffer, "*(");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&");
+  SPVM_CSOURCE_BUILDER_add_var_offset(string_buffer, var_index, offset);
 }
 
 void SPVM_CSOURCE_BUILDER_add_bool(SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t in_index) {
@@ -354,6 +369,49 @@ void SPVM_CSOURCE_BUILDER_add_array_fetch(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, ") * ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
   SPVM_STRING_BUFFER_add(string_buffer, "); \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+}
+
+void SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_index, int32_t array_index, int32_t index_index, int32_t unit) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
+  SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_raw(env, \"Array must not be undef\", 0)); \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  else { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+  SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " < 0 || ");
+  SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
+  SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_raw(env, \"Index is out of range\", 0)); \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
+  {
+    int32_t offset;
+    for (offset = 0; offset < unit; offset++) {
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_CSOURCE_BUILDER_add_operand(string_buffer, element_type_name, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, " = *(");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)");
+      SPVM_CSOURCE_BUILDER_add_operand_offset(string_buffer, "void*", array_index, offset);
+      SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_header_byte_size + sizeof(");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") * (");
+      SPVM_STRING_BUFFER_add_int(string_buffer, unit);
+      SPVM_STRING_BUFFER_add(string_buffer, " * ");
+      SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", index_index);
+      SPVM_STRING_BUFFER_add(string_buffer, " + ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, offset);
+      SPVM_STRING_BUFFER_add(string_buffer, ")); \n");
+    }
+  }
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
 }
@@ -1416,6 +1474,30 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE:
         SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_BYTE: {
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_SHORT: {
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_INT: {
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_LONG: {
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_FLOAT: {
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_DOUBLE: {
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
+        break;
+      }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT:
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand1);
