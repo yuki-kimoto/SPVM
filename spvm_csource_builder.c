@@ -324,7 +324,7 @@ void SPVM_CSOURCE_BUILDER_add_load_constant_0(SPVM_STRING_BUFFER* string_buffer,
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_array_load(SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_index, int32_t array_index, int32_t index_index) {
+void SPVM_CSOURCE_BUILDER_add_array_fetch(SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_index, int32_t array_index, int32_t index_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n");
@@ -1399,22 +1399,22 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_INT:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE:
-        SPVM_CSOURCE_BUILDER_add_array_load(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT:
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");

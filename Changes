@@ -35,7 +35,8 @@
       my $nums2 = $nums1->[9];
       
       $nums1->[5] = $nums2;
-      
+  - add SPVM::Complex_i2, SPVM::Complex_l2, SPVM::Complex_f2, SPVM::Complex_d2
+
 0.0356 2018-07-07
   - Support value_t package. This is value type.
       package TestCase::Complex_double_2 : value_t {
