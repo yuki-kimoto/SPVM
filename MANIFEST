@@ -45,7 +45,6 @@ README
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/Complex_d2.spvm
-solo/lib/TestCase/Complex_double_2.spvm
 solo/lib/TestCase/ComplexCalc.spvm
 solo/lib/TestCase/Destructor.spvm
 solo/lib/TestCase/EnumA.spvm
@@ -194,7 +193,6 @@ t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
-t/default/lib/TestCase/Complex_double_2.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
@@ -250,7 +248,6 @@ t/default/perl-api.t
 t/default/special-assign.t
 t/default/string.t
 t/default/switch.t
-t/default/type-convertion.t
 t/default/value_t_array.t
 t/default/weaken.t
 t/lib/TestAuto.pm
@@ -328,7 +325,6 @@ t/precompile/lib/TestCase/String.spvm
 t/precompile/lib/TestCase/Switch.spvm
 t/precompile/lib/TestCase/ValueTArray.spvm
 t/precompile/lib/TestCase/Weaken.spvm
-t/precompile/lib/TestCase/Weaken.wpvm
 t/precompile/lib/TestCase/Weaken2.spvm
 t/precompile/literal.t
 t/precompile/logical-operator.t
@@ -340,7 +336,6 @@ t/precompile/perl-api.t
 t/precompile/special-assign.t
 t/precompile/string.t
 t/precompile/switch.t
-t/precompile/type-convertion.t
 t/precompile/value_t_array.t
 t/precompile/weaken.t
 t/spvm_build/.gitkeep
