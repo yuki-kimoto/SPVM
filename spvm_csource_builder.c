@@ -1598,7 +1598,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_BYTE: {
-        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_value_t_array_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FETCH_SHORT: {
@@ -1624,7 +1624,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_BYTE: {
         int32_t unit = opcode->operand3 & 0xF;
         int32_t offset = opcode->operand3 >> 4;
-        SPVM_CSOURCE_BUILDER_add_array_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_value_t_array_field_fetch(string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, opcode->operand2, unit, offset);
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_FETCH_SHORT: {
