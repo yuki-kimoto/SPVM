@@ -1,5 +1,27 @@
 package TestCase::ValueTArray {
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
   use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  
+  sub store_fetch_byte : int () {
+    my $nums = new TestCase::Point_b3[10];
+    $nums->[9]{x} = (byte)INT8_MIN();
+    $nums->[9]{y} = (byte)(INT8_MIN() + 1);
+    $nums->[9]{z} = (byte)(INT8_MIN() + 2);
+    
+    my $x = $nums->[9]{x};
+    my $y = $nums->[9]{y};
+    my $z = $nums->[9]{z};
+    
+    if ($x == INT8_MIN() && $y == (INT8_MIN() + 1) && $z == (INT8_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   sub store_fetch_int : int () {
     my $nums = new TestCase::Point_i3[10];
