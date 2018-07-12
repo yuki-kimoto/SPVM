@@ -2584,6 +2584,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           assert(0);
         }
 
+
         // Subroutine inline expantion in same package
         if (decl_sub->op_package->uv.package->id == sub->op_package->uv.package->id && decl_sub->have_precompile_desc) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
@@ -2598,6 +2599,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
               index++;
             }
           }
+          SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
+        }
+        // Core function is inline expansion
+        else if (strcmp(decl_sub->op_package->uv.package->op_name->uv.name, "SPVM::CORE") == 0) {
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_CORE_FUNC_");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
         // Call subroutine
