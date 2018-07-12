@@ -2786,6 +2786,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     }
     opcode_index++;
   }
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE save_stack = stack[0];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_CORE_FUNC_INT32_MAX(env, stack);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  stack[0] = save_stack;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
 
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");

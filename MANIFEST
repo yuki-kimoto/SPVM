@@ -65,7 +65,6 @@ lib/SPVM/Build/src/spvm_case_info.c
 lib/SPVM/Build/src/spvm_compiler.c
 lib/SPVM/Build/src/spvm_compiler_allocator.c
 lib/SPVM/Build/src/spvm_constant.c
-lib/SPVM/Build/src/spvm_core_func.c
 lib/SPVM/Build/src/spvm_core_func_bind.c
 lib/SPVM/Build/src/spvm_csource_builder.c
 lib/SPVM/Build/src/spvm_descriptor.c

@@ -550,24 +550,6 @@ static inline int32_t SPVM_CORE_FUNC_DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM__SPVM__Math__PI(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  stack[0].dval = 3.14159265358979323846;
-  
-  return SPVM_SUCCESS;;
-}
-
-int32_t SPVM__SPVM__Math__E(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  stack[0].dval = 2.7182818284590452354;
-  
-  return SPVM_SUCCESS;;
-}
-
 static inline int32_t SPVM_CORE_FUNC_INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
