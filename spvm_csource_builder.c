@@ -883,7 +883,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
   
-  // Get and check field index
+  // Get field index
   if (sub->op_field_accesses->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
   }
@@ -924,7 +924,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_HASH_free(field_abs_name_symtable);
   }
   
-  // Get and check package variable id
+  // Get package variable id
   if (sub->op_package_var_accesses->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
   }
@@ -965,9 +965,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     SPVM_HASH_free(package_var_abs_name_symtable);
   }
 
-  // Get and check sub id
+  // Get sub id
   if (sub->op_call_subs->length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub index\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
   }
   {
     SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
@@ -1004,6 +1004,41 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
     }
     SPVM_HASH_free(sub_abs_name_symtable);
+  }
+
+  // Get basic type id
+  if (sub->op_types->length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
+  }
+  {
+    SPVM_HASH* basic_type_symtable = SPVM_HASH_new(1);
+    int32_t type_index;
+    for (type_index = 0; type_index < sub->op_types->length; type_index++) {
+      SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, type_index);
+      SPVM_BASIC_TYPE* basic_type = op_type->uv.type->basic_type;
+      const char* basic_type_name = basic_type->name;
+      
+      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(basic_type_symtable, basic_type_name, strlen(basic_type_name));
+      if (!found_basic_type) {
+        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        SPVM_HASH_insert(basic_type_symtable, basic_type_name, strlen(basic_type_name), basic_type);
+      }
+    }
+    SPVM_HASH_free(basic_type_symtable);
   }
   
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
