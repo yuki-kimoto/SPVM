@@ -111,8 +111,6 @@ sub create_shared_lib_native_dist {
   
   $self->compile_spvm;
   
-  warn "AAAAAAAAAA";
-  
   $self->cbuilder_native->create_shared_lib_dist($package_name);
 }
 
