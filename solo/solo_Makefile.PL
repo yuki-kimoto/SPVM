@@ -32,7 +32,7 @@ my @object_files = map { $_ =~ s/\.c$/.o/; $_ } @c_source_files;
 
 my $object_dir = 'solo';
 
-my $cccmd = "cc @defines -I. -Ilib/SPVM/Build $ccflags -lm  $optimize";
+my $cccmd = "cc @defines -I. -Ilib/SPVM/Build/include $ccflags -lm  $optimize";
 
 my $makefile = <<"EOS";
 

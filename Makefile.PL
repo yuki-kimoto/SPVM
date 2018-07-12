@@ -42,6 +42,11 @@ my $build_setting = SPVM::Build::Util::default_build_setting;
 $optimize ||= $build_setting->get_config('optimize');
 my $ccflags = "$Config{ccflags} " . join(' ', @{$build_setting->get_extra_compiler_flags});
 
+my @csource_files;
+push @csource_files, 'SPVM.c';
+push @csource_files, glob '*.c';
+push @csource_files, glob 'lib/SPVM/Build/src/*';
+
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
@@ -54,6 +59,7 @@ WriteMakefile(
     INC               => '-I. -Ilib/SPVM/Build/include', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
+    C => [@csource_files],
     OBJECT            => '$(O_FILES)', # link all the C files too
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
     clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib t/spvm_build/src t/spvm_build/work t/spvm_build/lib"},
