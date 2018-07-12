@@ -721,6 +721,7 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER
   
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_native.h>\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_core_func.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Inline macro function
@@ -796,7 +797,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
   }
   
   // Arguments
-  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* args)");
+  SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* stack)");
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
@@ -818,7 +819,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   assert(sub->have_precompile_desc);
   
   SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->op_package->uv.package->op_name->uv.name, sub->op_name->uv.name);
-  
+
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
@@ -857,7 +858,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   // Copy arguments to variables
   if (arg_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(vars, args, sizeof(SPVM_VALUE) * ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(vars, stack, sizeof(SPVM_VALUE) * ");
     SPVM_STRING_BUFFER_add_int(string_buffer, arg_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   }
@@ -1047,7 +1048,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
-  
+
   while (opcode_index < opcode_length) {
 
     // Line label
@@ -2484,7 +2485,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";");
-        SPVM_STRING_BUFFER_add(string_buffer, "    memcpy(&args[call_sub_arg_stack_top], &");
+        SPVM_STRING_BUFFER_add(string_buffer, "    memcpy(&stack[call_sub_arg_stack_top], &");
         SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(SPVM_VALUE) * width);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    call_sub_arg_stack_top += width;\n");
@@ -2493,7 +2494,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&args[call_sub_arg_stack_top] = NULL;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[call_sub_arg_stack_top] = NULL;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  call_sub_arg_stack_top++;\n");
         
         break;
@@ -2597,11 +2598,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
               index++;
             }
           }
-          SPVM_STRING_BUFFER_add(string_buffer, "(env, args);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
         // Call subroutine
         else {
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_sub(env, call_sub_id, args);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_sub(env, call_sub_id, stack);\n");
         }
         
         // Call subroutine
@@ -2616,11 +2617,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         else if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, ", args[0].oval);");
+          SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);");
         }
         else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
           SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = args[0]; ");
+          SPVM_STRING_BUFFER_add(string_buffer, " = stack[0]; ");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
@@ -2710,7 +2711,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_RETURN:
       {
         const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(&args[0], &");
+        SPVM_STRING_BUFFER_add(string_buffer, "  memcpy(&stack[0], &");
         SPVM_CSOURCE_BUILDER_add_var(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(SPVM_VALUE) * ");
         SPVM_STRING_BUFFER_add_int(string_buffer, sub_return_type_width);
@@ -2723,13 +2724,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_RETURN_OBJECT:
       {
         const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(sub_return_basic_type_id, sub_return_type_dimension);
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&args[0] = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = ");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, return_type_name, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         // Increment ref count of return value not to release by decrement
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (*(void**)&args[0] != NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(void**)&args[0]);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (*(void**)&stack[0] != NULL) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(*(void**)&stack[0]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -2740,7 +2741,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_RETURN_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&args[0] = NULL;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = NULL;\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
@@ -2790,7 +2791,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
   _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, sub_return_type);
   if (sub_return_type_is_object && !sub_return_type_is_value_t) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    if (args[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(args[0].oval); }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
