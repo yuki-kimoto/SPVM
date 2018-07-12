@@ -7,6 +7,7 @@
 #include "spvm_my.h"
 #include "spvm_list.h"
 #include "spvm_op.h"
+#include "spvm_type.h"
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   SPVM_SUB* sub = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_SUB));
