@@ -1,3 +1,5 @@
+0.0358 2018-07-12
+  - add c source files and header files to distribution
 0.0357 2018-07-11
   - value_t package must be end with [Prefix][FieldLength]
       package TestCase::Complex_b2 : value_t {
