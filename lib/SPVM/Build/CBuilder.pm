@@ -159,6 +159,7 @@ sub create_shared_lib {
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build.pm"};
   $env_header_include_dir =~ s/\.pm$//;
+  $env_header_include_dir .= '/include';
   push @$include_dirs, $env_header_include_dir;
   push @$include_dirs, $input_src_dir;
   

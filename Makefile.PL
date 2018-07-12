@@ -51,7 +51,7 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
        AUTHOR         => 'A. U. Thor <kimoto@sakura.ne.jp>') : ()),
     LIBS              => ['-lm'], # e.g., '-lm'
-    INC               => '-I. -Ilib/SPVM/Build', # e.g., '-I. -I/usr/include/other'
+    INC               => '-I. -Ilib/SPVM/Build/include', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
     OBJECT            => '$(O_FILES)', # link all the C files too
