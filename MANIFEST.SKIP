@@ -31,4 +31,3 @@ SPVM-.*
 ^solo/t/spvm_t_list
 ^solo/spvm_main
 ^solo/Makefile
-^[^\/]+\.c$
