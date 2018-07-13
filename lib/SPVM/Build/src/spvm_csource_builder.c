@@ -2601,8 +2601,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           }
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
-        // Core function is inline expansion
-        else if (strcmp(decl_sub->op_package->uv.package->op_name->uv.name, "SPVM::CORE") == 0) {
+        // Inline expansion is done in native core function
+        else if (strcmp(decl_sub->op_package->uv.package->op_name->uv.name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_CORE_FUNC_");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
