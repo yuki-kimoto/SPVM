@@ -1,3 +1,5 @@
+0.0359 2018-07-14
+  - SPVM::CORE become done native compile
 0.0358 2018-07-13
   - add c source files and header files to distribution
   - Core function is done inline-expansion in precompile
