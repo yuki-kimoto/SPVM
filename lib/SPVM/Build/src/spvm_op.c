@@ -1816,11 +1816,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Bind core functions
-  if (strcmp(package_name, "SPVM::CORE") == 0) {
-    SPVM_CORE_FUNC_BIND_bind_core_func(compiler, package->op_subs);
-  }
-  
   // Set package
   op_package->uv.package = package;
   

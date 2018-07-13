@@ -106,6 +106,7 @@ lib/SPVM/Complex_d2.spvm
 lib/SPVM/Complex_f2.spvm
 lib/SPVM/Complex_i2.spvm
 lib/SPVM/Complex_l2.spvm
+lib/SPVM/CORE.native/CORE.c
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
 lib/SPVM/Data/Array.pm

@@ -27,8 +27,9 @@ $optimize ||= $build_setting->get_config('optimize');
 
 my $ccflags = "$Config{ccflags} " . join(' ', @{$build_setting->get_extra_compiler_flags});
 
-my @c_source_files = grep { $_ ne 'SPVM.c' } glob '*.c';
-my @object_files = map { $_ =~ s/\.c$/.o/; $_ } @c_source_files;
+my $src_dir = "lib/SPVM/Build/src";
+my @csource_files = glob "$src_dir/*.c";
+my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $object_file } @csource_files;
 
 my $object_dir = 'solo';
 
