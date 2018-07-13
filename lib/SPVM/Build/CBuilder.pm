@@ -40,8 +40,6 @@ sub build {
   my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
-    next if $package_name eq "SPVM::CORE";
-    
     my $sub_names = $self->get_sub_names($package_name);
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
@@ -81,7 +79,6 @@ sub bind_subs {
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
-    next if $sub_abs_name =~ /^SPVM::CORE::/;
 
     my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
     my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);

@@ -1,6 +1,9 @@
 #include "spvm_native.h"
 #include "spvm_core_func.h"
 
+int32_t SPVM_NATIVE_SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_print(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_warn(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_time(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__isinff(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_isinff(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__isfinitef(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_isfinitef(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__isnanf(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_isnanf(env, stack); };
