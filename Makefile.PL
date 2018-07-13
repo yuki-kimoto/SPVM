@@ -79,6 +79,7 @@ sub MY::postamble {
   
   my @native_package_names = qw(
     SPVM::Example
+    SPVM::CORE
   );
   
   for my $native_package_name (@native_package_names) {
