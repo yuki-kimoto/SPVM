@@ -34,6 +34,7 @@ my $start_objects_count = SPVM::get_objects_count();
   ok(TestCase::Array->array_init_long());
   ok(TestCase::Array->array_init_float());
   ok(TestCase::Array->array_init_double());
+  ok(TestCase::Array->array_init_list());
 }
 
 # array - set and get array element, first element

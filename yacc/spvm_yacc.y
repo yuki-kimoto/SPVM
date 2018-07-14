@@ -13,6 +13,7 @@
   #include "spvm_constant.h"
   #include "spvm_type.h"
   #include "spvm_block.h"
+  #include "spvm_list.h"
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
@@ -23,7 +24,7 @@
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
-%type <opval> enumeration_values enumeration_value weaken_field package_var invocant
+%type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
@@ -405,12 +406,50 @@ assignable_terms
       
       $$ = op_list;
     }
+  | assignable_terms ',' list_assignable_terms
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      
+      if ($3->id == SPVM_OP_C_ID_LIST) {
+        SPVM_OP* op_term = $3->first;
+        while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
+          SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
+          op_term = op_stab;
+        }
+      }
+      else {
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      }
+      
+      $$ = op_list;
+    }
   | assignable_terms ','
     {
-      $$ = $1
+      $$ = $1;
+    }
+  | list_assignable_terms
+    {
+      $$ = $1;
     }
   | assignable_term
+    {
+      $$ = $1;
+    }
 
+list_assignable_terms
+  : '(' assignable_terms ')'
+    {
+      $$ = $2;
+    }
+    
 array_length
   : '@' assignable_term
     {

@@ -1,5 +1,17 @@
 package TestCase::CoreFunc::Math {
   
+  precompile sub test_join : int () {
+    my $strings = ["abc", "def", "hij"];
+    
+    my $join = join(",", $strings);
+    
+    if ($join eq "abc,def,hij") {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   precompile sub test_sin : int () {
     my $value = sin(PI());
     

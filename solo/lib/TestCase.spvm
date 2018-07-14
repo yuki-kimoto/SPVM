@@ -53,6 +53,10 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
+      print((string)$array->[7]);
+    }
+    {
       my $strings = ["abc", "def", "hij"];
     }
     {
