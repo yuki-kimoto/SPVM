@@ -1861,12 +1861,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       const char* sub_name = call_sub->sub->op_name->uv.name;
                       
                       int32_t sub_args_count = call_sub->sub->op_args->length;
+                      
                       SPVM_OP* op_term = op_list_args->first;
                       int32_t call_sub_args_count = 0;
                       while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                         call_sub_args_count++;
                         if (call_sub_args_count > sub_args_count) {
-                          SPVM_yyerror_format(compiler, "Too many arguments. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                           
                           return;
                         }

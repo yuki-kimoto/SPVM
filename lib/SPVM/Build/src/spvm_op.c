@@ -1011,12 +1011,14 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_list_elem
         SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
         type_element->basic_type = type_term_element->basic_type;
         type_element->dimension = type_term_element->dimension;
+        type_element->is_const = type_term_element->is_const;
         op_type_element->uv.type = type_element;
         
         // Create array type
         SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
         type_new->basic_type = type_term_element->basic_type;
         type_new->dimension = type_term_element->dimension + 1;
+        type_new->is_const = type_term_element->is_const;
         op_type_new->uv.type= type_new;
         
         op_var_tmp_new->uv.var->op_my->uv.my->op_type = op_type_new;
@@ -1127,6 +1129,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type->basic_type = basic_type;
       assert(first_type->dimension > 0);
       type->dimension = first_type->dimension - 1;
+      type->is_const = first_type->is_const;
       break;
     }
     case SPVM_OP_C_ID_ADD:
@@ -2084,7 +2087,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       sub_index++;
     }
   }
-
+  
   // Native my vars is same as arguments
   if (sub->have_native_desc) {
     SPVM_OP* op_arg = op_args->first;
@@ -2616,6 +2619,7 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->dimension = op_type_child->uv.type->dimension + 1;
   type->basic_type = op_type_child->uv.type->basic_type;
+  type->is_const = op_type_child->uv.type->is_const;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_child->file, op_type_child->line);

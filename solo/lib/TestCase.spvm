@@ -53,6 +53,9 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      my $strings = ["abc", "def", "hij"];
+    }
+    {
       my $nums1 = new TestCase::Complex_d2[10];
       $nums1->[9]{re} = 5;
       $nums1->[9]{im} = 9;

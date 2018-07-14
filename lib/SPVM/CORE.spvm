@@ -1,4 +1,17 @@
 package SPVM::CORE {
+  sub join : string ($sep : string, $strings : string[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$strings; $i++) {
+      my $string = $strings->[$i];
+      $join .= $string;
+      if ($i != @$strings - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
   native sub print : void ($value : string);
   native sub warn : void ($value : string);
   native sub time : long ();

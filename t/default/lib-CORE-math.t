@@ -31,6 +31,8 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_objects_count = SPVM::get_objects_count();
 
+ok(TestCase::CoreFunc::Math->test_join());
+
 # Call subroutine
 {
   ok(TestCase::CoreFunc::Math->test_sin());
