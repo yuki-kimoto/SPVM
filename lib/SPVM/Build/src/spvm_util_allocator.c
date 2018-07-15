@@ -6,7 +6,7 @@
 
 #include "spvm_util_allocator.h"
 
-void* SPVM_UTIL_ALLOCATOR_safe_malloc(int64_t byte_size) {
+void* SPVM_UTIL_ALLOCATOR_safe_malloc(size_t byte_size) {
   
   if (byte_size < 1) {
     fprintf(stderr, "Failed to allocate memory. Size must be more than 0(SPVM_UTIL_ALLOCATOR_safe_malloc)\n");
@@ -28,7 +28,7 @@ void* SPVM_UTIL_ALLOCATOR_safe_malloc(int64_t byte_size) {
   return block;
 }
 
-void* SPVM_UTIL_ALLOCATOR_safe_malloc_zero(int64_t byte_size) {
+void* SPVM_UTIL_ALLOCATOR_safe_malloc_zero(size_t byte_size) {
   
   if (byte_size < 1) {
     fprintf(stderr, "Failed to allocate memory. Size must be more than 0(SPVM_UTIL_ALLOCATOR_safe_malloc_zero())\n");

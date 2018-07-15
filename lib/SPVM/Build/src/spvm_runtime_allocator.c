@@ -4,7 +4,7 @@
 #include "spvm_util_allocator.h"
 #include "spvm_runtime.h"
 
-void* SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(SPVM_RUNTIME* runtime, int32_t byte_size) {
+void* SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(SPVM_RUNTIME* runtime, size_t byte_size) {
   (void)runtime;
   
   void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
