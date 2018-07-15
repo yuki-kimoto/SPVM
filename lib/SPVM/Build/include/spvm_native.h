@@ -6,6 +6,8 @@
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
 
+typedef union SPVM_value SPVM_VALUE;
+
 union SPVM_value {
   int8_t bval;
   int16_t sval;
@@ -14,8 +16,14 @@ union SPVM_value {
   float fval;
   double dval;
   void* oval;
+  int8_t* baval;
+  int16_t* saval;
+  int32_t* iaval;
+  int64_t* laval;
+  float* faval;
+  double* daval;
+  SPVM_VALUE* vaval;
 };
-typedef union SPVM_value SPVM_VALUE;
 
 typedef int8_t SPVM_VALUE_byte;
 typedef int16_t SPVM_VALUE_short;
