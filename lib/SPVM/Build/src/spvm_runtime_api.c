@@ -782,11 +782,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
   
-  int32_t fields_length = package->op_fields->length;
+  SPVM_OP* op_package = basic_type->op_package;
+  if (!op_package) {
+    return NULL;
+  }
+
+  int32_t fields_length = op_package->uv.package->op_fields->length;
   int32_t field_byte_size = sizeof(SPVM_VALUE);
   
   int64_t object_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + (int64_t)(fields_length) * field_byte_size;
@@ -801,7 +803,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->op_sub_destructor) {
+  if (op_package->uv.package->op_sub_destructor) {
     object->has_destructor = 1;
   }
   
@@ -816,10 +818,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
 
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
-  
-  // Alloc length + 1. Last element value is 0 to use c string functions easily
+  SPVM_OP* op_package = basic_type->op_package;
+  if (!op_package) {
+    return NULL;
+  }
+
   int64_t object_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + (int64_t)sizeof(void*);
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, object_byte_size);
   
@@ -834,7 +837,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->op_sub_destructor) {
+  if (op_package->uv.package->op_sub_destructor) {
     object->has_destructor = 1;
   }
   
