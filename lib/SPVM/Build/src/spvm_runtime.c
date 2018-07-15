@@ -153,7 +153,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_VALUE* vars = NULL;
   int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
   if (var_alloc_length > 0) {
-    vars = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(SPVM_VALUE) * var_alloc_length);
+    vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * var_alloc_length);
   }
   
   // Copy arguments to variables
@@ -184,7 +184,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Mortal stack
   int32_t* mortal_stack = NULL;
   if (sub->mortal_stack_max > 0) {
-    mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc(runtime, sizeof(int32_t) * sub->mortal_stack_max);
+    mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(int32_t) * sub->mortal_stack_max);
   }
   int32_t mortal_stack_top = 0;
   
@@ -2561,8 +2561,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     }
   }
   
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, vars);
-  SPVM_RUNTIME_ALLOCATOR_free(runtime, mortal_stack);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, mortal_stack);
   
   return exception_flag;
 }
