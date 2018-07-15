@@ -29,7 +29,7 @@ my $nan_re = qr/(nan|ind)/i;
 use SPVM 'TestCase::CoreFunc::Math';
 
 # Start objects count
-my $start_objects_count = SPVM::get_objects_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 ok(TestCase::CoreFunc::Math->test_join());
 
@@ -91,5 +91,5 @@ ok(TestCase::CoreFunc::Math->test_join());
 }
 
 # All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);

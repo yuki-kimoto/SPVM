@@ -1155,16 +1155,16 @@ set_exception_undef(...)
 }
 
 SV*
-get_objects_count(...)
+get_memory_blocks_count(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  int32_t objects_count = env->get_objects_count(env);
-  SV* sv_objects_count = sv_2mortal(newSViv(objects_count));
+  int32_t memory_blocks_count = env->get_memory_blocks_count(env);
+  SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
   
-  XPUSHs(sv_objects_count);
+  XPUSHs(sv_memory_blocks_count);
   XSRETURN(1);
 }
 

@@ -107,7 +107,7 @@ int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object,
 
 // Global information
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime();
-int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_ENV* env);
+int32_t SPVM_RUNTIME_API_get_memory_blocks_count(SPVM_ENV* env);
 SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime();
 void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime);
 

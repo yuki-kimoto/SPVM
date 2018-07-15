@@ -9,7 +9,7 @@ use Test::More 'no_plan';
 use SPVM 'TestCase::AssignOperator';
 
 # Start objects count
-my $start_objects_count = SPVM::get_objects_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Number literal
 {
@@ -17,5 +17,5 @@ my $start_objects_count = SPVM::get_objects_count();
 }
 
 # All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);

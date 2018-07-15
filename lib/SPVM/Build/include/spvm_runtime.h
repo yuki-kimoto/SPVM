@@ -60,7 +60,7 @@ struct SPVM_runtime {
   
   int32_t mortal_stack_capacity;
 
-  int32_t objects_count;
+  int32_t memory_blocks_count;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -29,7 +29,7 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
 # Start objects count
-my $start_objects_count = SPVM::get_objects_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # time
 {
@@ -448,6 +448,6 @@ is_deeply(
 }
 
 # All object is freed
-my $end_objects_count = SPVM::get_objects_count();
-is($end_objects_count, $start_objects_count);
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);
 

@@ -83,7 +83,7 @@ struct SPVM_env {
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
   void (*inc_dec_ref_count)(SPVM_ENV* env, void* object);
-  int32_t (*get_objects_count)(SPVM_ENV* env);
+  int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
   void* (*get_runtime)(SPVM_ENV* env);
   void (*dec_ref_count_only)(SPVM_ENV* env, void* object);
   void (*weaken)(SPVM_ENV* env, void** object_address);

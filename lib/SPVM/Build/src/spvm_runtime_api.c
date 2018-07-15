@@ -83,7 +83,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_inc_ref_count,
   SPVM_RUNTIME_API_dec_ref_count,
   SPVM_RUNTIME_API_inc_dec_ref_count,
-  SPVM_RUNTIME_API_get_objects_count,
+  SPVM_RUNTIME_API_get_memory_blocks_count,
   SPVM_RUNTIME_API_get_runtime,
   SPVM_RUNTIME_API_dec_ref_count_only,
   SPVM_RUNTIME_API_weaken,
@@ -296,9 +296,9 @@ void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
   SPVM_GLOBAL_RUNTIME = runtime;
 }
 
-int32_t SPVM_RUNTIME_API_get_objects_count(SPVM_ENV* env) {
+int32_t SPVM_RUNTIME_API_get_memory_blocks_count(SPVM_ENV* env) {
   (void)env;
-  return SPVM_RUNTIME_API_get_runtime()->objects_count;
+  return SPVM_RUNTIME_API_get_runtime()->memory_blocks_count;
 }
 
 void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_ENV* env, void** weaken_back_refs, int32_t weaken_back_refs_length) {
