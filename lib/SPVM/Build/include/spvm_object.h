@@ -21,9 +21,9 @@ struct SPVM_object {
   int32_t basic_type_id;
   int32_t elements_length;
   uint8_t dimension;
-  unsigned has_destructor : 1;
-  unsigned in_destroy : 1;
-  unsigned category : 3;
+  uint8_t has_destructor;
+  uint8_t in_destroy;
+  uint8_t category;
 };
 
 #endif
