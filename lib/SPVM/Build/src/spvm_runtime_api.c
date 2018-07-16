@@ -1007,29 +1007,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
     SPVM_COMPILER* compiler = runtime->compiler;
     
-    if (object->has_destructor) {
-      if (object->in_destroy) {
-        return;
-      }
-      else {
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-        SPVM_PACKAGE* package = op_package->uv.package;
-        
-        // Call destructor
-        SPVM_VALUE args[1];
-        args[0].oval = object;
-        object->in_destroy = 1;
-        SPVM_RUNTIME_call_sub(env, package->op_sub_destructor->uv.sub->id, args);
-        object->in_destroy = 0;
-        
-        if (object->ref_count < 0) {
-          printf("object reference count become minus in DESTROY()\n");
-          abort();
-        }
-      }
-    }
-    
     if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY) {
       int32_t length = object->elements_length;
       {
@@ -1043,6 +1020,29 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     else if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT) {
+      if (object->has_destructor) {
+        if (object->in_destroy) {
+          return;
+        }
+        else {
+          SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+          SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
+          SPVM_PACKAGE* package = op_package->uv.package;
+          
+          // Call destructor
+          SPVM_VALUE args[1];
+          args[0].oval = object;
+          object->in_destroy = 1;
+          SPVM_RUNTIME_call_sub(env, package->op_sub_destructor->uv.sub->id, args);
+          object->in_destroy = 0;
+          
+          if (object->ref_count < 0) {
+            printf("object reference count become minus in DESTROY()\n");
+            abort();
+          }
+        }
+      }
+    
       
       // Type
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
