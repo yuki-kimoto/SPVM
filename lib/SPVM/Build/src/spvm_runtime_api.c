@@ -944,33 +944,31 @@ double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* o
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index) {
   (void)env;
   
-  SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
-
   assert(object);
   assert(index >= 0);
   assert(index <= object->elements_length);
   
-  SPVM_OBJECT* oval = values[index];
+  SPVM_OBJECT* oval = (*(SPVM_VALUE_object**)&(*(void**)object))[index];
   
   return oval;
+}
+
+void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
+  (void)env;
+  
+  void* object_address = &((*(SPVM_VALUE_object**)&(*(void**)object))[index]);
+  
+  assert(object);
+  assert(index >= 0);
+  assert(index <= object->elements_length);
+  
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_address, oval);
 }
 
 void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return object->body;
-}
-
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
-  (void)env;
-  
-  SPVM_OBJECT** values = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
-  
-  assert(object);
-  assert(index >= 0);
-  assert(index <= object->elements_length);
-  
-  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], oval);
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
@@ -1018,9 +1016,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY) {
       int32_t length = object->elements_length;
       {
-        int32_t i;
-        for (i = 0; i < length; i++) {
-          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(void*) * i);
+        int32_t index;
+        for (index = 0; index < length; index++) {
+          SPVM_OBJECT** object_field_address = &((*(SPVM_VALUE_object**)&(*(void**)object))[index]);
           if (*object_field_address != NULL) {
             SPVM_RUNTIME_API_dec_ref_count(env, *object_field_address);
           }
