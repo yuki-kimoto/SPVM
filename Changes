@@ -1,9 +1,10 @@
-0.0359 2018-07-14
+0.0359 2018-07-16
   - SPVM::CORE become done native compile
   - add join function
   - fix const assignment bug
   - support list syntax
       my $nums = [(1, 2), (3, 4), (5, 6)];
+  - object have body field at offset 0. This will fix alignment bugs.
 0.0358 2018-07-13
   - add c source files and header files to distribution
   - Core function is done inline-expansion in precompile
