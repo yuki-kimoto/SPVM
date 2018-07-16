@@ -856,11 +856,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
     return NULL;
   }
 
-  int64_t object_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + (int64_t)sizeof(void*);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, object_byte_size);
-  
-  *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size) = pointer;
- 
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+
+  // Alloc body length + 1
+  object->body = pointer;
+
   object->basic_type_id = basic_type->id;
   object->dimension = 0;
 
@@ -954,6 +955,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJEC
   return oval;
 }
 
+void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return object->body;
+}
+
 void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index, SPVM_OBJECT* oval) {
   (void)env;
   
@@ -964,14 +971,6 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* objec
   assert(index <= object->elements_length);
   
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&values[index], oval);
-}
-
-void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
-  (void)env;
-  
-  void* pointer = *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
-  
-  return pointer;
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
