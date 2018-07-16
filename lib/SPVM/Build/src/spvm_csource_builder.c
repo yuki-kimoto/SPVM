@@ -621,13 +621,14 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, field_type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&fields[");
   SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, ");");
+  SPVM_STRING_BUFFER_add(string_buffer, "];");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
@@ -646,11 +647,12 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_STRING_BUFFER* string_buffer, const
   SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);");
   SPVM_STRING_BUFFER_add(string_buffer, "      *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_type_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&fields[");
   SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, ") = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, field_type_name, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
