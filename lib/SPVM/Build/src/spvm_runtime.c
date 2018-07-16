@@ -829,8 +829,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_short*)&vars[opcode->operand0]
-              = *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int16_t) * index);
+            *(SPVM_VALUE_short*)&vars[opcode->operand0] = (*(SPVM_VALUE_short**)&(*(void**)array))[index];
           }
         }
         break;
@@ -973,7 +972,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int16_t) * index) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+           (*(SPVM_VALUE_short**)&(*(void**)array))[index] = *(SPVM_VALUE_short*)&vars[opcode->operand2];
           }
         }
         break;
