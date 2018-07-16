@@ -675,9 +675,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
 SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length) * (int64_t)sizeof(double);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, array_byte_size);
+  // Alloc body length + 1
+  SPVM_VALUE_double* body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_double));
+  *(SPVM_VALUE_double**)&object->body = body;
   
   object->dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
@@ -900,7 +904,7 @@ int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_ENV* env, SPVM_OBJECT* obj
 int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return *(int64_t**)&object->body;
+  return *(SPVM_VALUE_long**)&object->body;
 }
 
 float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
@@ -912,7 +916,7 @@ float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_ENV* env, SPVM_OBJECT* obj
 double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return (double*)((intptr_t)object + (intptr_t)env->object_header_byte_size);
+  return *(SPVM_VALUE_double**)&object->body;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJECT* object, int32_t index) {

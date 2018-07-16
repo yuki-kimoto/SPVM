@@ -361,7 +361,7 @@ void SPVM_CSOURCE_BUILDER_add_array_fetch(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, element_type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  if (strcmp(element_type_name, "SPVM_VALUE_long") == 0) {
+  if (strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "(*(");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
     SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(SPVM_VALUE*)");
@@ -486,7 +486,7 @@ void SPVM_CSOURCE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
 
-  if (strcmp(element_type_name, "SPVM_VALUE_long") == 0) {
+  if (strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "(*(");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
     SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(SPVM_VALUE*)");
