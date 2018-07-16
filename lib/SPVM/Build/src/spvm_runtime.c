@@ -1124,7 +1124,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_byte*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * (unit * index + offset));
+              *(SPVM_VALUE_byte*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_byte**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1277,7 +1277,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * (unit * index + offset));
+            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = (*(SPVM_VALUE_byte**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1415,7 +1415,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * (unit * index + offset)) = *(SPVM_VALUE_byte*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_byte**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_byte*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1558,7 +1558,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * (unit * index + offset)) = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_byte**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
           }
         }
         break;
