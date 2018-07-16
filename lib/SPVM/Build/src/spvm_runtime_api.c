@@ -1051,7 +1051,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         int32_t index;
         for (index = 0; index < package->object_field_indexes->length; index++) {
           int32_t object_field_index = (intptr_t)SPVM_LIST_fetch(package->object_field_indexes, index);
-          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * object_field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          SPVM_OBJECT** object_field_address = (SPVM_VALUE_object*)&fields[object_field_index];
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
             if (SPVM_RUNTIME_API_isweak(env, *object_field_address)) {
@@ -1264,7 +1265,9 @@ double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  void* value = *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  
+  void* value = *(SPVM_VALUE_object*)&fields[field_index];
   
   return value;
 }
@@ -1277,11 +1280,12 @@ int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object,
     return SPVM_EXCEPTION;
   }
 
-  SPVM_OBJECT** object_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  SPVM_OBJECT** object_field_address = (SPVM_VALUE_object*)&fields[field_index];
   
   // Weaken object field
-  if (*object_address != NULL) {
-    SPVM_RUNTIME_API_weaken(env, object_address);
+  if (*object_field_address != NULL) {
+    SPVM_RUNTIME_API_weaken(env, object_field_address);
   }
   
   return SPVM_SUCCESS;
@@ -1331,5 +1335,9 @@ void SPVM_RUNTIME_API_set_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32
 
 void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value) {
 
-  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index), value);
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  
+  void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
+
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, value);
 }
