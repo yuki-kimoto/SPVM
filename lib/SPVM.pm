@@ -16,7 +16,7 @@ use Encode 'encode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0358';
+our $VERSION = '0.0359';
 
 our $ENV;
 our $BUILD;
