@@ -620,7 +620,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   if (length > 0) {
     SPVM_VALUE_int* body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, length * sizeof(SPVM_VALUE_int));
     *(SPVM_VALUE_int**)&object->body = body;
-    SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, body);
   }
   
   object->dimension = 1;
@@ -1043,6 +1042,12 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     
+    // Free object body
+    if (object->body.oval != NULL) {
+      SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, object->body.oval);
+    }
+    
+    // Free object
     SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, object);
   }
 }

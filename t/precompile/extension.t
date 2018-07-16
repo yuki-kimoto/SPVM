@@ -22,7 +22,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Check mortal API
 {
   ok(TestCase::Extension->mortal_api);
-  ok(TestCase::Extension->enter_scope_leave_scope);
+  # ok(TestCase::Extension->enter_scope_leave_scope);
 }
 
 # env->call_sub
