@@ -1149,7 +1149,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_short*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_short) * (unit * index + offset));
+              *(SPVM_VALUE_short*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_short**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1175,7 +1175,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_int*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_int) * (unit * index + offset));
+              *(SPVM_VALUE_int*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_int**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1201,7 +1201,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_long*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_long*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_long) * (unit * index + offset));
+              *(SPVM_VALUE_long*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_long**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1227,7 +1227,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_float*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_float*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * (unit * index + offset));
+              *(SPVM_VALUE_float*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_float**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1253,7 +1253,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_double*)&vars[opcode->operand0 + offset] = *(SPVM_VALUE_double*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (unit * index + offset));
+              *(SPVM_VALUE_double*)&vars[opcode->operand0 + offset] = (*(SPVM_VALUE_double**)&(*(void**)array))[unit * index + offset];
             }
           }
         }
@@ -1300,7 +1300,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_short) * (unit * index + offset));
+            *(SPVM_VALUE_short*)&vars[opcode->operand0] = (*(SPVM_VALUE_short**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1323,7 +1323,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_int) * (unit * index + offset));
+            *(SPVM_VALUE_int*)&vars[opcode->operand0] = (*(SPVM_VALUE_int**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1346,7 +1346,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_long) * (unit * index + offset));
+            *(SPVM_VALUE_long*)&vars[opcode->operand0] = (*(SPVM_VALUE_long**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1369,7 +1369,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * (unit * index + offset));
+            *(SPVM_VALUE_float*)&vars[opcode->operand0] = (*(SPVM_VALUE_float**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1392,7 +1392,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (unit * index + offset));
+            *(SPVM_VALUE_double*)&vars[opcode->operand0] = (*(SPVM_VALUE_double**)&(*(void**)array))[unit * index + offset];
           }
         }
         break;
@@ -1439,7 +1439,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_short) * (unit * index + offset)) = *(SPVM_VALUE_short*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_short**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_short*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1463,7 +1463,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_int) * (unit * index + offset)) = *(SPVM_VALUE_int*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_int**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_int*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1487,7 +1487,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_long*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_long) * (unit * index + offset)) = *(SPVM_VALUE_long*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_long**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_long*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1511,7 +1511,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_float*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * (unit * index + offset)) = *(SPVM_VALUE_float*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_float**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_float*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1535,7 +1535,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           else {
             int32_t offset;
             for (offset = 0; offset < unit; offset++) {
-              *(SPVM_VALUE_double*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (unit * index + offset)) = *(SPVM_VALUE_double*)&vars[opcode->operand2 + offset];
+              (*(SPVM_VALUE_double**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_double*)&vars[opcode->operand2 + offset];
             }
           }
         }
@@ -1580,7 +1580,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_short) * (unit * index + offset)) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_short**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_short*)&vars[opcode->operand2];
           }
         }
         break;
@@ -1602,7 +1602,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_int) * (unit * index + offset)) = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_int**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_int*)&vars[opcode->operand2];
           }
         }
         break;
@@ -1624,7 +1624,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_long*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_long) * (unit * index + offset)) = *(SPVM_VALUE_long*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_long**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
           }
         }
         break;
@@ -1646,7 +1646,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_float*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * (unit * index + offset)) = *(SPVM_VALUE_float*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_float**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_float*)&vars[opcode->operand2];
           }
         }
         break;
@@ -1668,7 +1668,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_double*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (unit * index + offset)) = *(SPVM_VALUE_double*)&vars[opcode->operand2];
+            (*(SPVM_VALUE_double**)&(*(void**)array))[unit * index + offset] = *(SPVM_VALUE_double*)&vars[opcode->operand2];
           }
         }
         break;
