@@ -577,9 +577,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
-  // Alloc length + 1. Last element value is 0 to use c string functions easily
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length + 1) * (int64_t)sizeof(int8_t);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, array_byte_size);
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_byte));
@@ -599,8 +598,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length)
   (void)env;
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length) * (int64_t)sizeof(int16_t);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, array_byte_size);
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_short));
@@ -666,8 +665,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   (void)env;
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
 
-  int64_t array_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + ((int64_t)length) * (int64_t)sizeof(float);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, array_byte_size);
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_float));
@@ -819,12 +818,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
     return NULL;
   }
 
-  int32_t fields_length = op_package->uv.package->op_fields->length;
-  
-  int64_t object_byte_size = (int64_t)(intptr_t)env->object_header_byte_size + (int64_t)(fields_length) * sizeof(SPVM_VALUE);
-  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, object_byte_size);
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
+  int32_t fields_length = op_package->uv.package->op_fields->length;
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
 
   object->basic_type_id = basic_type->id;
