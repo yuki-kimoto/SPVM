@@ -1212,7 +1212,9 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
 
 int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
 
-  int8_t value = *(int8_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+
+  int8_t value = *(SPVM_VALUE_byte*)&fields[field_index];
   
   return value;
 }
@@ -1279,7 +1281,9 @@ int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object,
 
 void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value) {
 
-  *(int8_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = value;
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+
+  *(SPVM_VALUE_byte*)&fields[field_index] = value;
 }
 
 void SPVM_RUNTIME_API_set_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int16_t value) {
