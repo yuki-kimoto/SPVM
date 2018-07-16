@@ -929,10 +929,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)&vars[opcode->operand0],
-              *(void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index)
-            );
+            void* object = *(void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
           }
         }
         break;
@@ -1073,10 +1071,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
-              *(void**)&vars[opcode->operand2]
-            );
+            void* object = (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object, *(void**)&vars[opcode->operand2]);
           }
         }
         break;
@@ -1097,10 +1093,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
-              NULL
-            );
+            void* object = (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object, NULL);
           }
         }
         break;
@@ -1985,7 +1979,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index));
+          void* object_field = *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object_field);
         }
         break;
       }
@@ -2110,10 +2105,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),
-            *(void**)&vars[opcode->operand2]
-          );
+          void* object_field_address = (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, *(void**)&vars[opcode->operand2]);
         }
         break;
       }
@@ -2130,10 +2123,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index),
-            NULL
-          );
+          void* object_field_address = (void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, NULL);
         }
         break;
       }
@@ -2154,10 +2145,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-            (void**)&vars[opcode->operand0],
-            concat_string
-          );
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], concat_string);
         }
         
         break;
