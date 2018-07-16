@@ -1895,7 +1895,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[field_index];
         }
         break;
       }
@@ -1912,7 +1913,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[field_index];
         }
         break;
       }
@@ -1929,7 +1931,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[field_index];
         }
         break;
       }
@@ -1946,7 +1949,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(float*)&vars[opcode->operand0] = *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[field_index];
         }
         break;
       }
@@ -1963,7 +1967,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(double*)&vars[opcode->operand0] = *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index);
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[field_index];
         }
         break;
       }
@@ -2015,7 +2020,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_short*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_short*)&fields[field_index] = *(SPVM_VALUE_short*)&vars[opcode->operand2];
         }
         break;
       }
@@ -2032,7 +2038,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_int*)&fields[field_index] = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         }
         break;
       }
@@ -2049,7 +2056,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(SPVM_VALUE_long*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(SPVM_VALUE_long*)&vars[opcode->operand2];
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_long*)&fields[field_index] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
         }
         break;
       }
@@ -2066,7 +2074,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(float*)&vars[opcode->operand2];
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_float*)&fields[field_index] = *(SPVM_VALUE_float*)&vars[opcode->operand2];
         }
         break;
       }
@@ -2083,7 +2092,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           exception_flag = 1;
         }
         else {
-          *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * field_index) = *(double*)&vars[opcode->operand2];
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_double*)&fields[field_index] = *(SPVM_VALUE_double*)&vars[opcode->operand2];
         }
         break;
       }
