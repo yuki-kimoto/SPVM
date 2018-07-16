@@ -1726,7 +1726,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = *(void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = (*(SPVM_VALUE_object**)&(*(void**)array))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object); \n");
@@ -1771,7 +1771,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = &((*(SPVM_VALUE_object**)&(*(void**)array))[index]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          object_address, ");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
@@ -1811,11 +1811,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = &((*(SPVM_VALUE_object**)&(*(void**)array))[index]);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "          &*(void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * \n");
-        SPVM_CSOURCE_BUILDER_add_operand(string_buffer, "SPVM_VALUE_int", opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, "),\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          object_address,\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          NULL");
         SPVM_STRING_BUFFER_add(string_buffer, "        );\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
