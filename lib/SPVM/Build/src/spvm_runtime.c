@@ -697,66 +697,72 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_byte value = *(SPVM_VALUE_byte*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * index);
+                SPVM_VALUE_byte* byte_elements = env->get_byte_array_elements(env, numeric_array);
+                SPVM_VALUE_byte value = byte_elements[index];
                 sprintf(string_convert_buffer, "%" PRId8, value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }
             case SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_short value = *(SPVM_VALUE_short*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_short) * index);
+                SPVM_VALUE_short* short_elements = env->get_short_array_elements(env, numeric_array);
+                SPVM_VALUE_short value = short_elements[index];
                 sprintf(string_convert_buffer, "%" PRId16, value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }
             case SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_int value = *(SPVM_VALUE_int*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_int) * index);
+                SPVM_VALUE_int* int_elements = env->get_int_array_elements(env, numeric_array);
+                SPVM_VALUE_int value = int_elements[index];
                 sprintf(string_convert_buffer, "%" PRId32, value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }
             case SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_long value = *(SPVM_VALUE_long*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_long) * index);
+                SPVM_VALUE_long* long_elements = env->get_long_array_elements(env, numeric_array);
+                SPVM_VALUE_long value = long_elements[index];
                 sprintf(string_convert_buffer, "%" PRId64, value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }
             case SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_float value = *(SPVM_VALUE_float*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * index);
+                SPVM_VALUE_float* float_elements = env->get_float_array_elements(env, numeric_array);
+                SPVM_VALUE_float value = float_elements[index];
                 sprintf(string_convert_buffer, "%g", value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }
             case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY: {
               int32_t index;
               for (index = 0; index < length; index++) {
-                SPVM_VALUE_double value = *(SPVM_VALUE_double*)((intptr_t)numeric_array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * index);
+                SPVM_VALUE_double* double_elements = env->get_double_array_elements(env, numeric_array);
+                SPVM_VALUE_double value = double_elements[index];
                 sprintf(string_convert_buffer, "%g", value);
                 void* string = env->new_string_raw(env, string_convert_buffer, strlen(string_convert_buffer));
                 SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(string);
-                *(void**)((intptr_t)string_array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index) = string;
+                env->set_object_array_element(env, string_array, index, string);
               }
               break;
             }

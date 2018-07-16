@@ -857,7 +857,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   // Create object
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
-  // Alloc body length + 1
   object->body = pointer;
 
   object->basic_type_id = basic_type->id;
