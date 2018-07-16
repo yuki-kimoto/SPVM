@@ -931,7 +931,7 @@ int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_ENV* env, SPVM_OBJECT* ob
 float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return (float*)((intptr_t)object + (intptr_t)env->object_header_byte_size);
+  return *(SPVM_VALUE_float**)&object->body;
 }
 
 double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
