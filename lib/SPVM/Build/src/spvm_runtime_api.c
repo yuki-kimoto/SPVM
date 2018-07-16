@@ -1006,7 +1006,16 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   if (object->ref_count == 0) {
     SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
     SPVM_COMPILER* compiler = runtime->compiler;
-    
+
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
+    SPVM_OP* op_package = basic_type->op_package;
+    _Bool is_pointer = 0;
+    if (op_package) {
+      if (op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+        is_pointer = 1;
+      }
+    }
+
     if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY) {
       int32_t length = object->elements_length;
       {
@@ -1020,15 +1029,13 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     else if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT) {
+      SPVM_PACKAGE* package = op_package->uv.package;
+      
       if (object->has_destructor) {
         if (object->in_destroy) {
           return;
         }
         else {
-          SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-          SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-          SPVM_PACKAGE* package = op_package->uv.package;
-          
           // Call destructor
           SPVM_VALUE args[1];
           args[0].oval = object;
@@ -1042,12 +1049,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           }
         }
       }
-    
-      
-      // Type
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-      SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-      SPVM_PACKAGE* package = op_package->uv.package;
       
       {
         int32_t index;
@@ -1071,7 +1072,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     }
     
     // Free object body
-    if (object->body != NULL) {
+    if (object->body != NULL && !is_pointer) {
       SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, object->body);
     }
     
