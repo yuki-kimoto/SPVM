@@ -442,7 +442,7 @@ void SPVM_CSOURCE_BUILDER_add_array_fetch(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_CSOURCE_BUILDER_add_operand(string_buffer, element_type_name, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  if (strcmp(element_type_name, "SPVM_VALUE_short") == 0 || strcmp(element_type_name, "SPVM_VALUE_int") == 0 || strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0 || strcmp(element_type_name, "SPVM_VALUE_float") == 0) {
+  if (strcmp(element_type_name, "SPVM_VALUE_byte") == 0 || strcmp(element_type_name, "SPVM_VALUE_short") == 0 || strcmp(element_type_name, "SPVM_VALUE_int") == 0 || strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0 || strcmp(element_type_name, "SPVM_VALUE_float") == 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "(*(");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
     SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)");
@@ -486,7 +486,7 @@ void SPVM_CSOURCE_BUILDER_add_array_store(SPVM_STRING_BUFFER* string_buffer, con
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
 
-  if (strcmp(element_type_name, "SPVM_VALUE_short") == 0 ||strcmp(element_type_name, "SPVM_VALUE_int") == 0 || strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0 || strcmp(element_type_name, "SPVM_VALUE_float") == 0) {
+  if (strcmp(element_type_name, "SPVM_VALUE_byte") == 0 || strcmp(element_type_name, "SPVM_VALUE_short") == 0 || strcmp(element_type_name, "SPVM_VALUE_int") == 0 || strcmp(element_type_name, "SPVM_VALUE_long") == 0 || strcmp(element_type_name, "SPVM_VALUE_double") == 0 || strcmp(element_type_name, "SPVM_VALUE_float") == 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "(*(");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)element_type_name);
     SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)");
@@ -1232,8 +1232,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_elements_length_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_elements_length_byte_offset);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes1 = (SPVM_VALUE_byte*)((intptr_t)object1 + (intptr_t)env->object_header_byte_size);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes2 = (SPVM_VALUE_byte*)((intptr_t)object2 + (intptr_t)env->object_header_byte_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes1 = *(SPVM_VALUE_byte**)&(*(void**)object1);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes2 = *(SPVM_VALUE_byte**)&(*(void**)object2);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");

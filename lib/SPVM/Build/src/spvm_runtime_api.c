@@ -888,10 +888,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, char* bytes, int32_t
   
   if (length > 0) {
     if (bytes == NULL) {
-      memset((void*)((intptr_t)object + (intptr_t)env->object_header_byte_size), 0, length);
+      memset(object->body, 0, length);
     }
     else {
-      memcpy((void*)((intptr_t)object + (intptr_t)env->object_header_byte_size), (char*)bytes, length);
+      memcpy(object->body, (char*)bytes, length);
     }
   }
 
@@ -907,7 +907,7 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* object) {
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
-  return (int8_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size);
+  return *(SPVM_VALUE_byte**)&object->body;
 }
 
 int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
