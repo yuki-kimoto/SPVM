@@ -1335,38 +1335,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                         }
-                        else if (SPVM_TYPE_is_array_numeric(compiler, src_type)) {
-                          if (dist_type->dimension == 1) {
-                            assert(dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
-                            
-                            opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
-                          }
-                          else if (dist_type->dimension == 2) {
-                            assert(dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
-                            
-                            if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_SHORT_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_INT_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_LONG_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_FLOAT_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else if (src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                              opcode.id = SPVM_OPCODE_C_ID_CONVERT_DOUBLE_ARRAY_TO_STRING_ARRAY;
-                            }
-                            else {
-                              assert(0);
-                            }
-                          }
-                        }
                         // Check cast
                         else {
                           if (src_type->basic_type->id == dist_type->basic_type->id && src_type->dimension == dist_type->dimension) {

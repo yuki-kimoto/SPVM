@@ -2046,22 +2046,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       assert(type_type);
                       
                       _Bool can_convert;
+                      // Convert number to number
                       if (SPVM_TYPE_is_numeric(compiler, term_type) && SPVM_TYPE_is_numeric(compiler, type_type)) {
                         can_convert = 1;
                       }
+                      // Convert number to string
                       else if (SPVM_TYPE_is_numeric(compiler, term_type) && (type_type->dimension == 1 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
                         can_convert = 1;
                       }
+                      // Convert object to object
                       else if (SPVM_TYPE_is_object(compiler, term_type) && SPVM_TYPE_is_object(compiler, type_type)) {
-                        if (SPVM_TYPE_is_array_numeric(compiler, term_type) && !SPVM_TYPE_is_array_numeric(compiler, type_type)) {
-                          if (type_type->dimension == 2 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                            can_convert = 1;
-                          }
-                          else {
-                            can_convert = 0;
-                          }
-                        }
-                        else if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
+                        if (!SPVM_TYPE_is_array_numeric(compiler, term_type) && SPVM_TYPE_is_array_numeric(compiler, type_type)) {
                           can_convert = 0;
                         }
                         else {
@@ -2072,7 +2067,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             can_convert = 0;
                           }
                         }
-                        
                       }
                       else {
                         can_convert = 0;
