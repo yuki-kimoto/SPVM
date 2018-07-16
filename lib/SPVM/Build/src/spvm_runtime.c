@@ -850,7 +850,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int32_t) * index);
+            *(SPVM_VALUE_int*)&vars[opcode->operand0] = (*(SPVM_VALUE_int**)&(*(void**)array))[index];
           }
         }
         break;
@@ -933,6 +933,174 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
               (void**)&vars[opcode->operand0],
               *(void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index)
+            );
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_BYTE: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int8_t) * index) = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_SHORT: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int16_t) * index) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_INT: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            (*(SPVM_VALUE_int**)&(*(void**)array))[index] = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_LONG: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            (*(SPVM_VALUE_long**)&(*(void**)array))[index] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_FLOAT: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            (*(SPVM_VALUE_float**)&(*(void**)array))[index] = *(float*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_DOUBLE: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+           (*(SPVM_VALUE_double**)&(*(void**)array))[index] = *(double*)&vars[opcode->operand2];
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT: {
+        
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
+              *(void**)&vars[opcode->operand2]
+            );
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF: {
+        
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
+              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
+              NULL
             );
           }
         }
@@ -1226,174 +1394,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           else {
             *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (unit * index + offset));
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_BYTE: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            *(SPVM_VALUE_byte*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int8_t) * index) = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_SHORT: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            *(SPVM_VALUE_short*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int16_t) * index) = *(SPVM_VALUE_short*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_INT: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(int32_t) * index) = *(SPVM_VALUE_int*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_LONG: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            (*(SPVM_VALUE_long**)&(*(void**)array))[index] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_FLOAT: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            (*(SPVM_VALUE_float**)&(*(void**)array))[index] = *(float*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_DOUBLE: {
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-           (*(SPVM_VALUE_double**)&(*(void**)array))[index] = *(double*)&vars[opcode->operand2];
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT: {
-        
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
-              *(void**)&vars[opcode->operand2]
-            );
-          }
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF: {
-        
-        void* array = *(void**)&vars[opcode->operand0];
-        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(
-              (void**)((intptr_t)array + (intptr_t)env->object_header_byte_size + sizeof(void*) * index),
-              NULL
-            );
           }
         }
         break;
