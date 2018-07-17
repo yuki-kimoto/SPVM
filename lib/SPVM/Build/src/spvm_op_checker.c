@@ -1901,7 +1901,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       // Convert object to object
                       else if (SPVM_TYPE_is_object_type(compiler, src_type) && SPVM_TYPE_is_object_type(compiler, dist_type)) {
-                        is_convertable = 1;
+                        // Value type can't be convert
+                        if (SPVM_TYPE_is_value_type(compiler, src_type) || SPVM_TYPE_is_value_type(compiler, dist_type)) {
+                          is_convertable = 0;
+                        }
+                        // Value array type can't be convert
+                        else if (SPVM_TYPE_is_value_array_type(compiler, src_type) || SPVM_TYPE_is_value_array_type(compiler, dist_type)) {
+                          is_convertable = 0;
+                        }
+                        else {
+                          is_convertable = 1;
+                        }
                       }
                       // Other
                       else {
