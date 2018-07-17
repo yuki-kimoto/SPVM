@@ -2289,10 +2289,6 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
 
 _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t assign_to_basic_type_id, int32_t assign_to_type_dimension, int32_t assign_from_basic_type_id, int32_t assign_from_type_dimension) {
   
-  if (assign_from_type_dimension == 0 && assign_from_basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
-    return 1;
-  }
-  
   _Bool check_cast;
   
   // Same type
@@ -2462,8 +2458,14 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
       // object type check
       else {
-        _Bool check_cast = SPVM_OP_CHECKER_check_cast(
-          compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);
+        _Bool check_cast;
+        if (assign_from_type->dimension == 0 && assign_from_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
+          check_cast = 1;
+        }
+        else {
+          check_cast = SPVM_OP_CHECKER_check_cast(compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);
+        }
+        
         if (!check_cast) {
           SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
