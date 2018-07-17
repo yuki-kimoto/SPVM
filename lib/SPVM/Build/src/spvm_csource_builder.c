@@ -2461,7 +2461,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_CAST: {
+      case SPVM_OPCODE_C_ID_CAST: {
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
         const char* cast_basic_type_name = op_type->uv.type->basic_type->name;

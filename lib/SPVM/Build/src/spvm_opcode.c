@@ -313,7 +313,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "LEAVE_SCOPE",
   "PUSH_ARG",
   "PUSH_ARG_UNDEF",
-  "CHECK_CAST",
+  "CAST",
   "STRING_EQ",
   "STRING_NE",
   "STRING_GT",
