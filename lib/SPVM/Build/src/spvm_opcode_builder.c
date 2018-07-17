@@ -1367,7 +1367,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
                           else {
-                            opcode.id = SPVM_OPCODE_C_ID_CHECK_CAST;
+                            opcode.id = SPVM_OPCODE_C_ID_CAST;
                             opcode.operand2 = op_dist_type->uv.type->sub_rel_id;
                           }
                         }

@@ -1890,8 +1890,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
                       assert(dist_type);
                       
-                      _Bool is_convertable;
                       // Convert number to number
+                      _Bool is_convertable;
                       if (SPVM_TYPE_is_numeric_type(compiler, src_type) && SPVM_TYPE_is_numeric_type(compiler, dist_type)) {
                         is_convertable = 1;
                       }
@@ -2277,23 +2277,23 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   return has_interface;
 }
 
-_Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basic_type_id, int32_t assign_to_type_dimension, int32_t assign_from_basic_type_id, int32_t assign_from_type_dimension) {
+_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t assign_to_basic_type_id, int32_t assign_to_type_dimension, int32_t assign_from_basic_type_id, int32_t assign_from_type_dimension) {
   
   if (assign_from_type_dimension == 0 && assign_from_basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
     return 1;
   }
   
-  _Bool can_assign;
+  _Bool check_cast;
   
   // Same type
   if (assign_to_basic_type_id == assign_from_basic_type_id && assign_to_type_dimension == assign_from_type_dimension) {
-    can_assign = 1;
+    check_cast = 1;
   }
   // Different type
   else {
     // To dimension is greater than from dimension
     if (assign_to_type_dimension > assign_from_type_dimension) {
-      can_assign = 0;
+      check_cast = 0;
     }
     // To dimension is less than or equal to from dimension
     else if (assign_to_type_dimension <= assign_from_type_dimension) {
@@ -2305,25 +2305,25 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
           SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
           SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
           if (package_assign_from_base->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-            can_assign = 0;
+            check_cast = 0;
           }
           else {
-            can_assign = 1;
+            check_cast = 1;
           }
         }
         else {
-          can_assign = 1;
+          check_cast = 1;
         }
       }
       else {
         if (assign_to_type_dimension != assign_from_type_dimension) {
-          can_assign = 0;
+          check_cast = 0;
         }
         // Same dimension
         else {
           // Same base type
           if (assign_to_basic_type_id == assign_from_basic_type_id) {
-            can_assign = 1;
+            check_cast = 1;
           }
           // Different base type
           else {
@@ -2331,7 +2331,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
             if ((assign_to_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && assign_to_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
               || (assign_from_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && assign_from_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
             {
-              can_assign = 0;
+              check_cast = 0;
             }
             else {
               SPVM_BASIC_TYPE* assign_to_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_to_basic_type_id);
@@ -2345,10 +2345,10 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
               
               // Left base type is interface
               if (package_assign_to_base->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                can_assign = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+                check_cast = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
               }
               else {
-                can_assign = 0;
+                check_cast = 0;
               }
             }
           }
@@ -2357,7 +2357,7 @@ _Bool SPVM_OP_CHECKER_can_assign(SPVM_COMPILER* compiler, int32_t assign_to_basi
     }
   }
   
-  return can_assign;
+  return check_cast;
 }
 
 SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
@@ -2452,9 +2452,9 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
       // object type check
       else {
-        _Bool can_assign = SPVM_OP_CHECKER_can_assign(
+        _Bool check_cast = SPVM_OP_CHECKER_check_cast(
           compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);
-        if (!can_assign) {
+        if (!check_cast) {
           SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
         // Const check

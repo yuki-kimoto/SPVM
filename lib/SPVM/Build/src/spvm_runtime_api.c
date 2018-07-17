@@ -184,7 +184,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, i
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  return SPVM_OP_CHECKER_can_assign(compiler, cast_basic_type_id, cast_type_dimension, object->basic_type_id, object->dimension);
+  return SPVM_OP_CHECKER_check_cast(compiler, cast_basic_type_id, cast_type_dimension, object->basic_type_id, object->dimension);
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
