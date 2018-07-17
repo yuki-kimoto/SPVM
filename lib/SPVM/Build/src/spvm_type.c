@@ -236,7 +236,7 @@ _Bool SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
 _Bool SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   
-  _Bool is_package = (type->dimension == 0 && type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  _Bool is_package = (type->dimension == 0 && type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
   
   return is_package;
 }
@@ -260,17 +260,6 @@ _Bool SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) 
   
   if (type->dimension == 1 && (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
   {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
-_Bool SPVM_TYPE_is_int(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
-  (void)compiler;
-  
-  if (type->dimension == 0 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
     return 1;
   }
   else {
