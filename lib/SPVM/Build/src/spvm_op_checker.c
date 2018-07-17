@@ -1884,34 +1884,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term = op_cur->first;
                       SPVM_OP* op_type = op_cur->last;
                       
-                      SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
-                      assert(term_type);
+                      SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term);
+                      assert(src_type);
                       
-                      SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
-                      assert(type_type);
+                      SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
+                      assert(dist_type);
                       
                       _Bool is_convertable;
                       // Convert number to number
-                      if (SPVM_TYPE_is_numeric_type(compiler, term_type) && SPVM_TYPE_is_numeric_type(compiler, type_type)) {
+                      if (SPVM_TYPE_is_numeric_type(compiler, src_type) && SPVM_TYPE_is_numeric_type(compiler, dist_type)) {
                         is_convertable = 1;
                       }
                       // Convert number to string
-                      else if (SPVM_TYPE_is_numeric_type(compiler, term_type) && (type_type->dimension == 1 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
+                      else if (SPVM_TYPE_is_numeric_type(compiler, src_type) && (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
                         is_convertable = 1;
                       }
                       // Convert object to object
-                      else if (SPVM_TYPE_is_object_type(compiler, term_type) && SPVM_TYPE_is_object_type(compiler, type_type)) {
-                        if (!SPVM_TYPE_is_numeric_array_type(compiler, term_type) && SPVM_TYPE_is_numeric_array_type(compiler, type_type)) {
-                          is_convertable = 0;
-                        }
-                        else {
-                          if (term_type->dimension == type_type->dimension) {
-                            is_convertable = 1;
-                          }
-                          else {
-                            is_convertable = 0;
-                          }
-                        }
+                      else if (SPVM_TYPE_is_object_type(compiler, src_type) && SPVM_TYPE_is_object_type(compiler, dist_type)) {
+                        is_convertable = 1;
                       }
                       // Other
                       else {
@@ -1919,9 +1909,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (!is_convertable) {
-                        char* type_type_name = compiler->tmp_buffer;
-                        SPVM_TYPE_sprint_type_name(compiler, type_type_name, type_type->basic_type->id, type_type->dimension);
-                        SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", type_type_name, op_cur->file, op_cur->line);
+                        char* dist_type_name = compiler->tmp_buffer;
+                        SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension);
+                        SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", dist_type_name, op_cur->file, op_cur->line);
                         
                         return;
                       }
