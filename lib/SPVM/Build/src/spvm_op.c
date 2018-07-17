@@ -1700,10 +1700,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Add op package
         field->op_package = op_package;
       }
-      
-      if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-        SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
-      }
     }
   }
 

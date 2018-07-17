@@ -129,16 +129,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         }
       }
       
-      // valut_t can't become field
+      // Check fields
       {
         int32_t field_index;
         for (field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+          SPVM_FIELD* field = op_field->uv.field;
           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+
+          // valut_t can't become field
           _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, field_type);
-          
           if (is_value_t) {
             SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", op_field->file, op_field->line);
+          }
+          else {
+            // Add object field indexes
+            if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
+              SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
+            }
           }
         }
       }
