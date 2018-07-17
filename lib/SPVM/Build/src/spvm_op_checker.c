@@ -2287,30 +2287,30 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   return has_interface;
 }
 
-_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t assign_to_basic_type_id, int32_t assign_to_type_dimension, int32_t assign_from_basic_type_id, int32_t assign_from_type_dimension) {
+_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t src_basic_type_id, int32_t src_type_dimension) {
   
   _Bool check_cast;
   
   // Same type
-  if (assign_to_basic_type_id == assign_from_basic_type_id && assign_to_type_dimension == assign_from_type_dimension) {
+  if (dist_basic_type_id == src_basic_type_id && dist_type_dimension == src_type_dimension) {
     check_cast = 1;
   }
   // Different type
   else {
     // To dimension is greater than from dimension
-    if (assign_to_type_dimension > assign_from_type_dimension) {
+    if (dist_type_dimension > src_type_dimension) {
       check_cast = 0;
     }
     // To dimension is less than or equal to from dimension
-    else if (assign_to_type_dimension <= assign_from_type_dimension) {
+    else if (dist_type_dimension <= src_type_dimension) {
       
       // To basic type is any object
-      if (assign_to_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-        if (assign_from_type_dimension == 0) {
-          SPVM_BASIC_TYPE* assign_from_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_from_basic_type_id);
-          SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
-          SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
-          if (package_assign_from_base->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+      if (dist_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+        if (src_type_dimension == 0) {
+          SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
+          SPVM_OP* src_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, src_basic_type->name, strlen(src_basic_type->name));
+          SPVM_PACKAGE* package_src_base = src_basic_type_op_package->uv.package;
+          if (package_src_base->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
             check_cast = 0;
           }
           else {
@@ -2322,36 +2322,36 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t assign_to_basi
         }
       }
       else {
-        if (assign_to_type_dimension != assign_from_type_dimension) {
+        if (dist_type_dimension != src_type_dimension) {
           check_cast = 0;
         }
         // Same dimension
         else {
           // Same base type
-          if (assign_to_basic_type_id == assign_from_basic_type_id) {
+          if (dist_basic_type_id == src_basic_type_id) {
             check_cast = 1;
           }
           // Different base type
           else {
             // At least one base type is number
-            if ((assign_to_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && assign_to_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
-              || (assign_from_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && assign_from_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
+            if ((dist_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && dist_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
+              || (src_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && src_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
             {
               check_cast = 0;
             }
             else {
-              SPVM_BASIC_TYPE* assign_to_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_to_basic_type_id);
-              SPVM_BASIC_TYPE* assign_from_basic_type = SPVM_LIST_fetch(compiler->basic_types, assign_from_basic_type_id);
+              SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_basic_type_id);
+              SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
               
-              SPVM_OP* assign_to_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_to_basic_type->name, strlen(assign_to_basic_type->name));
-              SPVM_OP* assign_from_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, assign_from_basic_type->name, strlen(assign_from_basic_type->name));
+              SPVM_OP* dist_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, dist_basic_type->name, strlen(dist_basic_type->name));
+              SPVM_OP* src_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, src_basic_type->name, strlen(src_basic_type->name));
               
-              SPVM_PACKAGE* package_assign_to_base = assign_to_basic_type_op_package->uv.package;
-              SPVM_PACKAGE* package_assign_from_base = assign_from_basic_type_op_package->uv.package;
+              SPVM_PACKAGE* package_dist_base = dist_basic_type_op_package->uv.package;
+              SPVM_PACKAGE* package_src_base = src_basic_type_op_package->uv.package;
               
               // Left base type is interface
-              if (package_assign_to_base->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                check_cast = SPVM_OP_CHECKER_has_interface(compiler, package_assign_from_base, package_assign_to_base);
+              if (package_dist_base->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                check_cast = SPVM_OP_CHECKER_has_interface(compiler, package_src_base, package_dist_base);
               }
               else {
                 check_cast = 0;
