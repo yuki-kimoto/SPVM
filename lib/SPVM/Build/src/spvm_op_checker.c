@@ -2328,28 +2328,28 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_typ
           }
           // Dist basic type is different from source basic type
           else {
-            // At least one base type is not object
-            if (dist_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE || src_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
-            {
-              check_cast = 0;
-            }
-            else {
-              SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_basic_type_id);
-              SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
+            SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_basic_type_id);
+            SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
+            SPVM_OP* op_dist_package = dist_basic_type->op_package;
+            SPVM_OP* op_src_package = src_basic_type->op_package;
+            
+            // Dist basic type and source basic type is package
+            if (op_dist_package && op_src_package) {
+              SPVM_PACKAGE* dist_package = op_dist_package->uv.package;
+              SPVM_PACKAGE* src_package = op_src_package->uv.package;
               
-              SPVM_OP* dist_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, dist_basic_type->name, strlen(dist_basic_type->name));
-              SPVM_OP* src_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, src_basic_type->name, strlen(src_basic_type->name));
-              
-              SPVM_PACKAGE* package_dist_base = dist_basic_type_op_package->uv.package;
-              SPVM_PACKAGE* package_src_base = src_basic_type_op_package->uv.package;
-              
-              // Left base type is interface
-              if (package_dist_base->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                check_cast = SPVM_OP_CHECKER_has_interface(compiler, package_src_base, package_dist_base);
+              // Dist base type is interface
+              if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                check_cast = SPVM_OP_CHECKER_has_interface(compiler, src_package, dist_package);
               }
+              // Dist base type is not interface
               else {
                 check_cast = 0;
               }
+            }
+            // Dist basic type is not package or source basic type is not package
+            else {
+              check_cast = 0;
             }
           }
         }
