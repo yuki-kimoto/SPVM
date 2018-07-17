@@ -1896,7 +1896,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         is_convertable = 1;
                       }
                       // Convert number to string
-                      else if (SPVM_TYPE_is_numeric_type(compiler, src_type) && (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
+                      else if (SPVM_TYPE_is_numeric_type(compiler, src_type) && SPVM_TYPE_is_string_type(compiler, dist_type)) {
                         is_convertable = 1;
                       }
                       // Convert object to object
