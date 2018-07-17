@@ -36,11 +36,11 @@
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
-  // Check types
-  SPVM_OP_CHECKER_check_types(compiler);
+  // Resolve types
+  SPVM_OP_CHECKER_resolve_types(compiler);
   
-  // Resolve basic type category
-  SPVM_OP_CHECKER_resolve_basic_type_category(compiler);
+  // Resolve basic types
+  SPVM_OP_CHECKER_resolve_basic_types(compiler);
 
   int32_t sub_id = 0;
   {
@@ -2596,7 +2596,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
   return op_out;
 }
 
-void SPVM_OP_CHECKER_check_types(SPVM_COMPILER* compiler) {
+void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
 
   SPVM_LIST* op_types = compiler->op_types;
   
@@ -2745,7 +2745,7 @@ void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP
   }
 }
 
-void SPVM_OP_CHECKER_resolve_basic_type_category(SPVM_COMPILER* compiler) {
+void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   SPVM_LIST* basic_types = compiler->basic_types;
   
   {
