@@ -41,130 +41,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve basic types
   SPVM_OP_CHECKER_resolve_basic_types(compiler);
-
+  
+  // Resolve packages
+  SPVM_OP_CHECKER_resolve_packages(compiler);
+  
+  // Check trees
   int32_t sub_id = 0;
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
       SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      
-      SPVM_PACKAGE* package = op_package->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      
-      // value_t package limitation
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-        // Can't have subroutines
-        if (package->op_subs->length > 0) {
-          SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", op_package->file, op_package->line);
-        }
-        // Can't have package variables
-        if (package->op_package_vars->length > 0) {
-          SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
-        }
-        
-        // At least have one field
-        if (package->op_fields->length == 0) {
-          SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
-        }
-        // Max fields length is 16
-        else if (package->op_fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
-          SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", op_package->file, op_package->line);
-        }
-        else {
-          SPVM_LIST* op_fields = package->op_fields;
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_fields, 0);
-          SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, op_first_field);
-          if (!SPVM_TYPE_is_numeric(compiler, first_field_type)) {
-            SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_first_field->file, op_first_field->line);
-          }
-          else {
-            int32_t field_index;
-            _Bool numeric_field_error = 0;
-            for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-              SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
-              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
-              if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-                SPVM_yyerror_format(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, op_field->file, op_field->line);
-                numeric_field_error = 1;
-              }
-            }
-            if (!numeric_field_error) {
-              // Check type name
-              char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
-              switch (first_field_type->basic_type->id) {
-                case SPVM_BASIC_TYPE_C_ID_BYTE:
-                  sprintf(tail_name, "_b%d", op_fields->length);
-                  break;
-                case SPVM_BASIC_TYPE_C_ID_SHORT:
-                  sprintf(tail_name, "_s%d", op_fields->length);
-                  break;
-                case SPVM_BASIC_TYPE_C_ID_INT:
-                  sprintf(tail_name, "_i%d", op_fields->length);
-                  break;
-                case SPVM_BASIC_TYPE_C_ID_LONG:
-                  sprintf(tail_name, "_l%d", op_fields->length);
-                  break;
-                case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                  sprintf(tail_name, "_f%d", op_fields->length);
-                  break;
-                case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                  sprintf(tail_name, "_d%d", op_fields->length);
-                  break;
-                default:
-                  assert(0);
-              }
-              int32_t tail_name_length = (int32_t)strlen(tail_name);
-              
-              char* found_pos_ptr = strstr(package_name, tail_name);
-              if (found_pos_ptr) {
-                if (*(found_pos_ptr + tail_name_length) != '\0') {
-                  SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
-                }
-              }
-              else {
-                SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
-              }
-            }
-          }
-        }
-      }
-      
-      // Check fields
-      {
-        int32_t field_index;
-        for (field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
-          SPVM_FIELD* field = op_field->uv.field;
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
-
-          // valut_t can't become field
-          _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, field_type);
-          if (is_value_t) {
-            SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", op_field->file, op_field->line);
-          }
-          else {
-            // Add object field indexes
-            if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
-              SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
-            }
-          }
-        }
-      }
-      
-      // valut_t can't become package variable
-      {
-        int32_t package_var_index;
-        for (package_var_index = 0; package_var_index < op_package->uv.package->op_package_vars->length; package_var_index++) {
-          SPVM_OP* op_package_var = SPVM_LIST_fetch(op_package->uv.package->op_package_vars, package_var_index);
-          SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, op_package_var);
-          _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, package_var_type);
-          
-          if (is_value_t) {
-            SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", op_package_var->file, op_package_var->line);
-          }
-        }
-      }
-
       SPVM_LIST* op_subs = op_package->uv.package->op_subs;
       {
         int32_t sub_index;
@@ -2794,3 +2680,126 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
+void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
+  int32_t package_index;
+  for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
+    SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
+    
+    SPVM_PACKAGE* package = op_package->uv.package;
+    const char* package_name = package->op_name->uv.name;
+    
+    // value_t package limitation
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+      // Can't have subroutines
+      if (package->op_subs->length > 0) {
+        SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", op_package->file, op_package->line);
+      }
+      // Can't have package variables
+      if (package->op_package_vars->length > 0) {
+        SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
+      }
+      
+      // At least have one field
+      if (package->op_fields->length == 0) {
+        SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
+      }
+      // Max fields length is 16
+      else if (package->op_fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
+        SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", op_package->file, op_package->line);
+      }
+      else {
+        SPVM_LIST* op_fields = package->op_fields;
+        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_fields, 0);
+        SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, op_first_field);
+        if (!SPVM_TYPE_is_numeric(compiler, first_field_type)) {
+          SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_first_field->file, op_first_field->line);
+        }
+        else {
+          int32_t field_index;
+          _Bool numeric_field_error = 0;
+          for (field_index = 0; field_index < package->op_fields->length; field_index++) {
+            SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
+            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+            if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
+              SPVM_yyerror_format(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, op_field->file, op_field->line);
+              numeric_field_error = 1;
+            }
+          }
+          if (!numeric_field_error) {
+            // Check type name
+            char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
+            switch (first_field_type->basic_type->id) {
+              case SPVM_BASIC_TYPE_C_ID_BYTE:
+                sprintf(tail_name, "_b%d", op_fields->length);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_SHORT:
+                sprintf(tail_name, "_s%d", op_fields->length);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_INT:
+                sprintf(tail_name, "_i%d", op_fields->length);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_LONG:
+                sprintf(tail_name, "_l%d", op_fields->length);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                sprintf(tail_name, "_f%d", op_fields->length);
+                break;
+              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                sprintf(tail_name, "_d%d", op_fields->length);
+                break;
+              default:
+                assert(0);
+            }
+            int32_t tail_name_length = (int32_t)strlen(tail_name);
+            
+            char* found_pos_ptr = strstr(package_name, tail_name);
+            if (found_pos_ptr) {
+              if (*(found_pos_ptr + tail_name_length) != '\0') {
+                SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+              }
+            }
+            else {
+              SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+            }
+          }
+        }
+      }
+    }
+    
+    // Check fields
+    {
+      int32_t field_index;
+      for (field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
+        SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+        SPVM_FIELD* field = op_field->uv.field;
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+
+        // valut_t can't become field
+        _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, field_type);
+        if (is_value_t) {
+          SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", op_field->file, op_field->line);
+        }
+        else {
+          // Add object field indexes
+          if (SPVM_TYPE_is_object(compiler, field->op_type->uv.type)) {
+            SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
+          }
+        }
+      }
+    }
+    
+    // valut_t can't become package variable
+    {
+      int32_t package_var_index;
+      for (package_var_index = 0; package_var_index < op_package->uv.package->op_package_vars->length; package_var_index++) {
+        SPVM_OP* op_package_var = SPVM_LIST_fetch(op_package->uv.package->op_package_vars, package_var_index);
+        SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, op_package_var);
+        _Bool is_value_t = SPVM_TYPE_is_value_t(compiler, package_var_type);
+        
+        if (is_value_t) {
+          SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", op_package_var->file, op_package_var->line);
+        }
+      }
+    }
+  }
+}

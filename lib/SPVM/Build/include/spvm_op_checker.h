@@ -12,5 +12,6 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
 void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
 void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_package);
 void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler);
+void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler);
 
 #endif
