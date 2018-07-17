@@ -2291,51 +2291,45 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_typ
   
   _Bool check_cast;
   
-  // Same type
+  // Dist type is same as source type
   if (dist_basic_type_id == src_basic_type_id && dist_type_dimension == src_type_dimension) {
     check_cast = 1;
   }
-  // Different type
+  // Dist type is difference from source type
   else {
-    // To dimension is greater than from dimension
-    if (dist_type_dimension > src_type_dimension) {
-      check_cast = 0;
-    }
-    // To dimension is less than or equal to from dimension
-    else if (dist_type_dimension <= src_type_dimension) {
-      
-      // To basic type is any object
+    // Dist type dimension is less than or equal to source type dimension
+    if (dist_type_dimension <= src_type_dimension) {
+      // Dist basic type is any object
       if (dist_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
         if (src_type_dimension == 0) {
+          // Source basic type is value type
           SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
-          SPVM_OP* src_basic_type_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, src_basic_type->name, strlen(src_basic_type->name));
-          SPVM_PACKAGE* package_src_base = src_basic_type_op_package->uv.package;
-          if (package_src_base->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+          SPVM_PACKAGE* src_base_package = src_basic_type->op_package->uv.package;
+          if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
             check_cast = 0;
           }
+          // Source basic type is not value type
           else {
             check_cast = 1;
           }
         }
+        // Source type is array
         else {
           check_cast = 1;
         }
       }
+      // Dist basic type is object (except for any object)
       else {
-        if (dist_type_dimension != src_type_dimension) {
-          check_cast = 0;
-        }
-        // Same dimension
-        else {
-          // Same base type
+        // Dist type dimension is equal to source type dimension
+        if (dist_type_dimension == src_type_dimension) {
+          // Dist basic type is same as source basic type
           if (dist_basic_type_id == src_basic_type_id) {
             check_cast = 1;
           }
-          // Different base type
+          // Dist basic type is different from source basic type
           else {
-            // At least one base type is number
-            if ((dist_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && dist_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
-              || (src_basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && src_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
+            // At least one base type is not object
+            if (dist_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE || src_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
             {
               check_cast = 0;
             }
@@ -2359,7 +2353,15 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_typ
             }
           }
         }
+        // Dist type dimension is different from source type dimension
+        else {
+          check_cast = 0;
+        }
       }
+    }
+    // Dist type dimension is greater than source type dimension
+    else if (dist_type_dimension > src_type_dimension) {
+      check_cast = 0;
     }
   }
   
