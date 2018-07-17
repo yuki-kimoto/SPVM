@@ -2249,8 +2249,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t cast_basic_type_id = op_type->uv.type->basic_type->id;
         int32_t cast_type_dimension = op_type->uv.type->dimension;
         
-        _Bool can_assign = env->check_cast(env, cast_basic_type_id, cast_type_dimension, object);
-        if (can_assign) {
+        _Bool can_cast = env->check_cast(env, cast_basic_type_id, cast_type_dimension, object);
+        if (can_cast) {
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
