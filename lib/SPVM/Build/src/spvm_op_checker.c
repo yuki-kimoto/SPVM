@@ -1890,35 +1890,35 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* type_type = SPVM_OP_get_type(compiler, op_type);
                       assert(type_type);
                       
-                      _Bool convert_impossible;
+                      _Bool is_convertable;
                       // Convert number to number
                       if (SPVM_TYPE_is_numeric_type(compiler, term_type) && SPVM_TYPE_is_numeric_type(compiler, type_type)) {
-                        convert_impossible = 0;
+                        is_convertable = 1;
                       }
                       // Convert number to string
                       else if (SPVM_TYPE_is_numeric_type(compiler, term_type) && (type_type->dimension == 1 && type_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
-                        convert_impossible = 0;
+                        is_convertable = 1;
                       }
                       // Convert object to object
                       else if (SPVM_TYPE_is_object_type(compiler, term_type) && SPVM_TYPE_is_object_type(compiler, type_type)) {
                         if (!SPVM_TYPE_is_numeric_array_type(compiler, term_type) && SPVM_TYPE_is_numeric_array_type(compiler, type_type)) {
-                          convert_impossible = 1;
+                          is_convertable = 0;
                         }
                         else {
                           if (term_type->dimension == type_type->dimension) {
-                            convert_impossible = 0;
+                            is_convertable = 1;
                           }
                           else {
-                            convert_impossible = 1;
+                            is_convertable = 0;
                           }
                         }
                       }
                       // Other
                       else {
-                        convert_impossible = 1;
+                        is_convertable = 0;
                       }
                       
-                      if (convert_impossible) {
+                      if (!is_convertable) {
                         char* type_type_name = compiler->tmp_buffer;
                         SPVM_TYPE_sprint_type_name(compiler, type_type_name, type_type->basic_type->id, type_type->dimension);
                         SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", type_type_name, op_cur->file, op_cur->line);
