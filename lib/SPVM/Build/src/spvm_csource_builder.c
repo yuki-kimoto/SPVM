@@ -780,7 +780,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
   
   int32_t sub_return_type_dimension = sub_return_type->dimension;
-  int32_t sub_return_type_is_object = SPVM_TYPE_is_object(compiler, sub_return_type);
+  int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_type);
 
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
   
@@ -837,9 +837,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_t(compiler, arg_type);
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type);
       
-      if (SPVM_TYPE_is_object(compiler, arg_type) && !arg_type_is_value_t) {
+      if (SPVM_TYPE_is_object_type(compiler, arg_type) && !arg_type_is_value_t) {
         SPVM_MY* my_arg = op_arg->uv.my;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
@@ -2504,8 +2504,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
-        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object(compiler, decl_sub_return_type);
-        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type);
         
         // Declare subroutine return type id
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
@@ -2764,7 +2764,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, sub_return_type);
+  _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type);
   if (sub_return_type_is_object && !sub_return_type_is_value_t) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }

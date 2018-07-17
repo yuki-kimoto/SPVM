@@ -14,15 +14,15 @@ struct SPVM_type {
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
-_Bool SPVM_TYPE_is_integral(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_array(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_array_numeric(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_string(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_package(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_object(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_any_object(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_undef(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler);
@@ -42,7 +42,7 @@ void SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic
 void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t basic_type_id, int32_t dimension);
 
 int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_value_t(SPVM_COMPILER* compiler, SPVM_TYPE* type);
-_Bool SPVM_TYPE_is_basic_type_value_t(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+_Bool SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 #endif

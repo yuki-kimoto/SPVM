@@ -291,7 +291,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             
-                            if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
+                            if (SPVM_TYPE_is_undef_type(compiler, term_arg_type)) {
                               assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                             }
@@ -424,7 +424,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
                         
-                        _Bool is_value_access = SPVM_TYPE_is_value_t(compiler, field_access_type);
+                        _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, field_access_type);
                         
                         if (is_value_access) {
                           SPVM_OPCODE opcode;
@@ -1591,7 +1591,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else if (op_assign_from->id == SPVM_OP_C_ID_VAR || op_assign_from->id == SPVM_OP_C_ID_ASSIGN) {
-                        _Bool type_to_is_value_t = SPVM_TYPE_is_value_t(compiler, type_to);
+                        _Bool type_to_is_value_t = SPVM_TYPE_is_value_type(compiler, type_to);
                         
                         if (type_to_is_value_t) {
                           SPVM_OPCODE opcode;
@@ -1660,7 +1660,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
 
                       // PACKAGE_VAR_ACCESS = UNDEF
-                      if (SPVM_TYPE_is_undef(compiler, from_type)) {
+                      if (SPVM_TYPE_is_undef_type(compiler, from_type)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         int32_t package_var_access_id = package_var_access->op_package_var->uv.package_var->id;
@@ -1714,7 +1714,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_from);
                       
-                      if (SPVM_TYPE_is_undef(compiler, from_type)) {
+                      if (SPVM_TYPE_is_undef_type(compiler, from_type)) {
                         // EXCEPTION_VAR = undef
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1798,7 +1798,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_assign_from);
 
-                        if (SPVM_TYPE_is_undef(compiler, element_type)) {
+                        if (SPVM_TYPE_is_undef_type(compiler, element_type)) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
@@ -1870,7 +1870,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
                       
-                      _Bool is_value_access = SPVM_TYPE_is_value_t(compiler, field_access_type);
+                      _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, field_access_type);
                       if (is_value_access) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1906,7 +1906,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       else {
-                        if (SPVM_TYPE_is_undef(compiler, from_type)) {
+                        if (SPVM_TYPE_is_undef_type(compiler, from_type)) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           opcode.id = SPVM_OPCODE_C_ID_SET_FIELD_UNDEF;
@@ -2329,9 +2329,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_MY* my = op_cur->uv.my;
                     
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                    _Bool type_is_value_t = SPVM_TYPE_is_value_t(compiler, type);
+                    _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type);
                     
-                    if (SPVM_TYPE_is_object(compiler, type) && !type_is_value_t) {
+                    if (SPVM_TYPE_is_object_type(compiler, type) && !type_is_value_t) {
                       
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -2792,7 +2792,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          if (SPVM_TYPE_is_undef(compiler, term_arg_type)) {
+                          if (SPVM_TYPE_is_undef_type(compiler, term_arg_type)) {
                             assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                           }
@@ -2839,7 +2839,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     if (op_cur->first) {
                       SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_cur->first);
                       
-                      if (SPVM_TYPE_is_undef(compiler, return_type)) {
+                      if (SPVM_TYPE_is_undef_type(compiler, return_type)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
@@ -2864,7 +2864,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               break;
                             }
                             default: {
-                              _Bool return_type_is_value_t = SPVM_TYPE_is_value_t(compiler, return_type);
+                              _Bool return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, return_type);
                               if (return_type_is_value_t) {
                                 opcode.id = SPVM_OPCODE_C_ID_RETURN;
                               }
