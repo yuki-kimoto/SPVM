@@ -43,23 +43,3 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   
   return package;
 }
-
-int32_t SPVM_PACKAGE_get_object_fields_length(SPVM_COMPILER* compiler, SPVM_PACKAGE* package) {
-  
-  SPVM_LIST* op_fields = package->op_fields;
-  
-  int32_t object_fields_length = 0;
-  
-  int32_t field_pos;
-  for (field_pos = 0; field_pos < op_fields->length; field_pos++) {
-    SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_pos);
-    SPVM_FIELD* field = op_field->uv.field;
-    SPVM_TYPE* field_type = field->op_type->uv.type;
-    
-    if (SPVM_TYPE_is_object(compiler, field_type)) {
-      object_fields_length++;
-    }
-  }
-  
-  return object_fields_length;
-}

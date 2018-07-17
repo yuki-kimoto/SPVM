@@ -1014,7 +1014,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       {
         int32_t index;
         for (index = 0; index < length; index++) {
-          SPVM_OBJECT** object_field_address = &((*(SPVM_VALUE_object**)&(*(void**)object))[index]);
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&((*(SPVM_VALUE_object**)&(*(void**)object))[index]);
           if (*object_field_address != NULL) {
             SPVM_RUNTIME_API_dec_ref_count(env, *object_field_address);
           }
@@ -1048,7 +1048,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         for (index = 0; index < package->object_field_indexes->length; index++) {
           int32_t object_field_index = (intptr_t)SPVM_LIST_fetch(package->object_field_indexes, index);
           SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-          SPVM_OBJECT** object_field_address = (SPVM_VALUE_object*)&fields[object_field_index];
+          SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[object_field_index];
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
             if (SPVM_RUNTIME_API_isweak(env, *object_field_address)) {
@@ -1277,7 +1277,7 @@ int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object,
   }
 
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-  SPVM_OBJECT** object_field_address = (SPVM_VALUE_object*)&fields[field_index];
+  SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[field_index];
   
   // Weaken object field
   if (*object_field_address != NULL) {
