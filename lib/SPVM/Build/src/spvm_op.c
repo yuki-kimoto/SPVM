@@ -1096,13 +1096,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NEGATE:
     case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CAST:
+    case SPVM_OP_C_ID_ARRAY_INIT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
     }
     case SPVM_OP_C_ID_LIST:
     case SPVM_OP_C_ID_SEQUENCE:
-    case SPVM_OP_C_ID_ARRAY_INIT:
       type = SPVM_OP_get_type(compiler, op->last);
       break;
     case SPVM_OP_C_ID_ASSIGN: {
