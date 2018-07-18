@@ -2548,7 +2548,7 @@ yyreduce:
 #line 557 "yacc/spvm_yacc.y"
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
-      (yyval.opval) = SPVM_OP_build_array_init(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(2) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_array_init(compiler, op_array_init, (yyvsp[(2) - (3)].opval));
     ;}
     break;
 

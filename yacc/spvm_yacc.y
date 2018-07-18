@@ -556,7 +556,7 @@ array_init
   : '[' opt_assignable_terms ']'
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_array_init(compiler, $1, $2);
+      $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2);
     }
 
 convert_type
