@@ -1,3 +1,8 @@
+0.0360 2018-07-18
+  - add new_icomplex core function
+  - add new_lcomplex core function
+  - add new_fcomplex core function
+  - add new_dcomplex core function
 0.0359 2018-07-16
   - SPVM::CORE become done native compile
   - add join function
