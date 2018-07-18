@@ -7,6 +7,7 @@ package SPVM::CORE {
   sub new_icomplex_array : SPVM::Complex_i2[] ($pairs : int[]) {
     my $length = @$pairs;
     
+    
     if ($length % 2 != 0) {
       croak "Pairs count must be even";
     }
