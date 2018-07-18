@@ -245,6 +245,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 while (1) {
                   // [START]Postorder traversal position
                   switch (op_cur->id) {
+                    case SPVM_OP_C_ID_ARRAY_INIT: {
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_NEXT: {
                       if (loop_block_stack_length == 0) {
                         SPVM_yyerror_format(compiler, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
