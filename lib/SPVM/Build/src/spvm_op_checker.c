@@ -34,6 +34,71 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 
+void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+  
+  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
+  
+  SPVM_TYPE* dist_type;
+  if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT) {
+    dist_type = SPVM_TYPE_create_int_type(compiler);
+  }
+  else {
+    return;
+  }
+  
+  if (!(type->basic_type->id == dist_type->basic_type->id && type->dimension == dist_type->dimension)) {
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
+    
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term->file, op_term->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_term->file, op_term->line);
+    op_dist_type->uv.type = dist_type;
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term);
+    
+    SPVM_OP_replace_op(compiler, op_stab, op_convert);
+  }
+}
+
+void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+  SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
+  
+  SPVM_TYPE* dist_type;
+  if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
+    dist_type = SPVM_TYPE_create_double_type(compiler);
+  }
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
+    dist_type = SPVM_TYPE_create_float_type(compiler);
+  }
+  else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
+    dist_type = SPVM_TYPE_create_long_type(compiler);
+  }
+  else {
+    dist_type = SPVM_TYPE_create_int_type(compiler);
+  }
+  
+  if (!(first_type->basic_type->id == dist_type->basic_type->id && first_type->dimension == dist_type->dimension)) {
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
+    
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_first->file, op_first->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_first->file, op_first->line);
+    op_dist_type->uv.type = dist_type;
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_first);
+    
+    SPVM_OP_replace_op(compiler, op_stab, op_convert);
+  }
+  
+  if (!(last_type->basic_type->id == dist_type->basic_type->id && last_type->dimension == dist_type->dimension)) {
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
+    
+    SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_last->file, op_last->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_last->file, op_last->line);
+    op_dist_type->uv.type = dist_type;
+    SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_last);
+    SPVM_OP_replace_op(compiler, op_stab, op_convert);
+  }
+}
+
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve types
@@ -579,7 +644,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Can receive only numeric type
                       if (SPVM_TYPE_is_integral_type(compiler, first_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       }
                       else {
                         SPVM_yyerror_format(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -588,7 +653,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (SPVM_TYPE_is_integral_type(compiler, last_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
                         
                         if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                           SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -610,7 +675,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Can receive only numeric type
                       if (SPVM_TYPE_is_integral_type(compiler, first_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       }
                       else {
                         SPVM_yyerror_format(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -619,7 +684,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (SPVM_TYPE_is_integral_type(compiler, last_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
                         
                         if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                           SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -641,7 +706,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Can receive only numeric type
                       if (SPVM_TYPE_is_integral_type(compiler, first_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       }
                       else {
                         SPVM_yyerror_format(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -650,7 +715,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       
                       if (SPVM_TYPE_is_integral_type(compiler, last_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
                         
                         if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                           SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -683,7 +748,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           assert(index_type);
                           if (SPVM_TYPE_is_numeric_type(compiler, index_type)) {
-                            SPVM_OP_apply_unary_numeric_promotion(compiler, op_index_term);
+                            SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_index_term);
                             
                             SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                             
@@ -1017,7 +1082,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       // Right value must be integer
                       if (SPVM_TYPE_is_numeric_type(compiler, last_type)) {
-                        SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->last);
+                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                         
                         if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
@@ -1124,7 +1189,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
                       
-                      SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                      SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       
                       break;
                     }
@@ -1138,7 +1203,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                      SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       
                       break;
                     }
@@ -1152,7 +1217,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         return;
                       }
 
-                      SPVM_OP_apply_unary_numeric_promotion(compiler, op_cur->first);
+                      SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
                       
                       break;
                     }
