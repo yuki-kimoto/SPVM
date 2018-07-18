@@ -886,6 +886,13 @@ SPVM_OP* SPVM_OP_build_new_object(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM
 
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements) {
   
+  /*
+  
+  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
+  return  op_array_init;
+  
+  */
+  
   // Create array initialize AST
   //   SEQUENCE
   //     ASSIGN_NEW
