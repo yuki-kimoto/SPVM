@@ -12,6 +12,14 @@
 #include <math.h>
 #include <time.h>
 
+static inline int32_t SPVM_CORE_FUNC_new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+
+static inline int32_t SPVM_CORE_FUNC_new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+
+static inline int32_t SPVM_CORE_FUNC_new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+
+static inline int32_t SPVM_CORE_FUNC_new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+
 static inline int32_t SPVM_CORE_FUNC_time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

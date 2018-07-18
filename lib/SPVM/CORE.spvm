@@ -1,4 +1,13 @@
 package SPVM::CORE {
+  use SPVM::Complex_i2;
+  use SPVM::Complex_l2;
+  use SPVM::Complex_f2;
+  use SPVM::Complex_d2;
+
+  native sub new_icomplex : SPVM::Complex_i2 ($re : int, $im : int);
+  native sub new_lcomplex : SPVM::Complex_l2 ($re : long, $im : long);
+  native sub new_fcomplex : SPVM::Complex_f2 ($re : float, $im : float);
+  native sub new_dcomplex : SPVM::Complex_d2 ($re : double, $im : double);
   sub join : string ($sep : string, $strings : string[]) {
     my $join = "";
     

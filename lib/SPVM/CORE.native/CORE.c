@@ -1,6 +1,11 @@
 #include "spvm_native.h"
 #include "spvm_core_func.h"
 
+int32_t SPVM_NATIVE_SPVM__CORE__new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_icomplex(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_lcomplex(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_fcomplex(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_dcomplex(env, stack); };
+
 int32_t SPVM_NATIVE_SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_print(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_warn(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_time(env, stack); };
