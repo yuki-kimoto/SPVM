@@ -1,6 +1,5 @@
 package TestCase::CoreFunc::Math {
 
-=pod
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
     
@@ -12,7 +11,6 @@ package TestCase::CoreFunc::Math {
     
     return 0;
   }
-=cut
 
   sub test_sin : int () {
     my $value = sin(PI());

@@ -3,6 +3,7 @@
   - add new_lcomplex core function
   - add new_fcomplex core function
   - add new_dcomplex core function
+  - fix array init multi dimention bugs
 0.0359 2018-07-16
   - SPVM::CORE become done native compile
   - add join function

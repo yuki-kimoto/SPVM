@@ -31,7 +31,7 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# ok(TestCase::CoreFunc::Math->test_join());
+ok(TestCase::CoreFunc::Math->test_join());
 
 # Call subroutine
 {

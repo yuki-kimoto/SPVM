@@ -292,13 +292,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               type_element->dimension = type_term_element->dimension;
                               type_element->is_const = type_term_element->is_const;
                               op_type_element->uv.type = type_element;
-                              
+
+                              if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                              }
+                              op_type_element->uv.type->sub_rel_id = sub->op_types->length;
+                              SPVM_LIST_push(sub->op_types, op_type_element);
+                                                      
                               // Create array type
                               SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
                               type_new->basic_type = type_term_element->basic_type;
                               type_new->dimension = type_term_element->dimension + 1;
                               type_new->is_const = type_term_element->is_const;
                               op_type_new->uv.type= type_new;
+
+                              if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                              }
+                              op_type_new->uv.type->sub_rel_id = sub->op_types->length;
+                              SPVM_LIST_push(sub->op_types, op_type_new);
                               
                               op_var_tmp_new->uv.var->op_my->uv.my->op_type = op_type_new;
                             }

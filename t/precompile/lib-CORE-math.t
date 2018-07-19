@@ -31,9 +31,8 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# ok(TestCase::CoreFunc::Math->test_join());
+ok(TestCase::CoreFunc::Math->test_join());
 
-=pod
 # Call subroutine
 {
   ok(TestCase::CoreFunc::Math->test_sin());
@@ -90,7 +89,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   like(SPVM::CORE->FLT_MAX(), qr/[0-9]/);
   like(SPVM::CORE->FLT_MIN(), qr/[0-9]/);
 }
-=cut
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

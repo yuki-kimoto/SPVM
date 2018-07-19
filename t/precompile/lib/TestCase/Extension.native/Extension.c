@@ -669,9 +669,9 @@ int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, 
   int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count(env);
   
   stack[0].ival = 0;
-  if ((before_enter_memory_blocks_count - start_memory_blocks_count) == 2) {
+  if ((before_enter_memory_blocks_count - start_memory_blocks_count) == (2 * 2)) {
     if (before_enter_memory_blocks_count == after_leave_memory_blocks_counts) {
-      if ((before_leave_memory_blocks_count - before_enter_memory_blocks_count) == 3) {
+      if ((before_leave_memory_blocks_count - before_enter_memory_blocks_count) == (3 * 2)) {
         stack[0].ival = 1;
       }
     }
