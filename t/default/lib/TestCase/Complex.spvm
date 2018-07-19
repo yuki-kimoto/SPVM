@@ -5,9 +5,9 @@ package TestCase::Complex {
   use SPVM::Complex_d2;
 
   sub test_new_icomplex_array : int () {
-    my $z_array = new_icomplex_array([(7, 1), (2, 3), (4, 5)]);
+    my $z_array = new_icomplex_array([(INT32_MIN(), 1), (2, 3), (4, 5)]);
 
-    if ($z_array->[0]{re} == 7 && $z_array->[0]{im} == 1
+    if ($z_array->[0]{re} == INT32_MIN() && $z_array->[0]{im} == 1
       && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
       && $z_array->[2]{re} == 4 && $z_array->[2]{im} == 5)
     {

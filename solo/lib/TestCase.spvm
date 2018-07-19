@@ -58,6 +58,8 @@ SPVM::Test - SPVM test module
     }
     {
       my $strings = ["abc", "def", "hij"];
+      print($strings->[2] . "\n");
+      
     }
     {
       my $nums1 = new TestCase::Complex_d2[10];
