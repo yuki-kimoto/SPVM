@@ -2579,9 +2579,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         if (decl_sub_return_type_is_value_t) {
           int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
           int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
-          SPVM_STRING_BUFFER_add(string_buffer, "memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * ");
+          SPVM_STRING_BUFFER_add(string_buffer, " memcpy(&vars[");
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, "], &stack[0], sizeof(SPVM_VALUE) * ");
           SPVM_STRING_BUFFER_add_int(string_buffer, decl_sub_return_type_width);
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "); ");
         }
         else if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
