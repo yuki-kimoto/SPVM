@@ -11,6 +11,19 @@
 #include <float.h>
 #include <math.h>
 #include <time.h>
+#include <complex.h>
+
+static inline int32_t SPVM_CORE_FUNC_cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
+  double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
+  double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
+  
+  double _Complex x_out = x_in1 + x_in2;
+  
+  stack[0].dval = creal(x_out);
+  stack[1].dval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
 
 static inline int32_t SPVM_CORE_FUNC_new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 

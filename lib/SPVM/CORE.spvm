@@ -1,6 +1,17 @@
 package SPVM::CORE {
   use SPVM::Complex_f2;
   use SPVM::Complex_d2;
+  
+  native sub cadd : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
+=pod
+  native sub csub : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
+  native sub cmul : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
+  native sub cdiv : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
+  native sub caddf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+  native sub csubf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+  native sub cmulf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+  native sub cdivf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+=cut
 
   sub new_fcomplex_array : SPVM::Complex_f2[] ($pairs : float[]) {
     my $length = @$pairs;

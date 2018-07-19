@@ -1,6 +1,19 @@
 #include "spvm_native.h"
 #include "spvm_core_func.h"
 
+// Complex
+int32_t SPVM_NATIVE_SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_cadd(env, stack); };
+/*
+int32_t SPVM_NATIVE_SPVM__CORE__csub(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_csub(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__cmul(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_cmul(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__cdiv(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_cdiv(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__caddf(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_caddf(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__csubf(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_csubf(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__cmulf(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_cmulf(env, stack); };
+int32_t SPVM_NATIVE_SPVM__CORE__cdivf(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_cdivf(env, stack); };
+*/
+
+// Complex array
 int32_t SPVM_NATIVE_SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_fcomplex(env, stack); };
 int32_t SPVM_NATIVE_SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_CORE_FUNC_new_dcomplex(env, stack); };
 
