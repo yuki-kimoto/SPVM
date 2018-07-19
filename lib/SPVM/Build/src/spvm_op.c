@@ -1404,10 +1404,8 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_my->uv.my = my;
     
     op_var->uv.var->op_my = op_my;
-    
+
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my);
-    
-    assert(op_var->first);
   }
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);
@@ -1559,7 +1557,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       if (sub_index == 0) {
         // Call type
-        SPVM_OP* op_type = op_arg->first->uv.my->op_type;
+        SPVM_OP* op_type = op_arg->uv.var->op_my->uv.my->op_type;
         if (op_type) {
           if (op_type->id == SPVM_OP_C_ID_SELF) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
@@ -1569,7 +1567,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
           }
         }
       }
-      SPVM_LIST_push(sub->op_args, op_arg->first);
+      SPVM_LIST_push(sub->op_args, op_arg->uv.var->op_my);
       sub_index++;
     }
   }
@@ -1578,7 +1576,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (sub->have_native_desc) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_LIST_push(sub->op_mys, op_arg->first);
+      SPVM_LIST_push(sub->op_mys, op_arg->uv.var->op_my);
     }
   }
 
@@ -1600,6 +1598,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       int32_t i;
       for (i = sub->op_args->length - 1; i >= 0; i--) {
         SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
+        assert(op_arg);
         SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_arg->file, op_arg->line);
         op_my->uv.my = op_arg->uv.my;
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->op_name);

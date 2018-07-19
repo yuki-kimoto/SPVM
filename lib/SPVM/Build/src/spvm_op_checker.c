@@ -2271,6 +2271,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             int32_t my_var_id = 0;
             for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
               SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+              assert(op_my);
               SPVM_MY* my = op_my->uv.my;
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
               
