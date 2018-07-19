@@ -355,19 +355,19 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_from_op_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_var, const char* file, int32_t line) {
   (void)compiler;
   
   SPVM_VAR* var = SPVM_VAR_new(compiler);
   SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
   
-  SPVM_MY* my = op_my->uv.my;
-  
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = my->op_name->uv.name;
+  op_name->uv.name = original_op_var->uv.var->op_my->uv.my->op_name->uv.name;
   var->op_name = op_name;
-  var->op_my = op_my;
+  var->op_my = original_op_var->uv.var->op_my;
   op_var->uv.var = var;
+  
+  assert(original_op_var->uv.var != op_var->uv.var);
   
   return op_var;
 }
