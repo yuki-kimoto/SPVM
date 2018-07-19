@@ -223,6 +223,7 @@ struct SPVM_op {
   _Bool is_lvalue;
   _Bool is_assigned_to_var;
   _Bool is_passed_to_sub;
+  _Bool no_need_check;
 };
 
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
