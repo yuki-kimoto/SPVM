@@ -12,12 +12,8 @@ use SPVM 'TestCase::Complex';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::Complex->test_new_icomplex());
-  ok(TestCase::Complex->test_new_lcomplex());
   ok(TestCase::Complex->test_new_fcomplex());
   ok(TestCase::Complex->test_new_dcomplex());
-  ok(TestCase::Complex->test_new_icomplex_array());
-  ok(TestCase::Complex->test_new_lcomplex_array());
   ok(TestCase::Complex->test_new_fcomplex_array());
   ok(TestCase::Complex->test_new_dcomplex_array());
 }

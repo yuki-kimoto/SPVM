@@ -1,10 +1,6 @@
 0.0360 2018-07-20
-  - add new_icomplex core function
-  - add new_lcomplex core function
   - add new_fcomplex core function
   - add new_dcomplex_array core function
-  - add new_icomplex_array core function
-  - add new_lcomplex_array core function
   - add new_fcomplex_array core function
   - add new_dcomplex_array core function
   - fix array init multi dimention bugs

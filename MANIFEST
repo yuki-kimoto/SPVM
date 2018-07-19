@@ -103,8 +103,6 @@ lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
 lib/SPVM/Complex_d2.spvm
 lib/SPVM/Complex_f2.spvm
-lib/SPVM/Complex_i2.spvm
-lib/SPVM/Complex_l2.spvm
 lib/SPVM/CORE.native/CORE.c
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
@@ -167,6 +165,7 @@ t/default/assign-operator.t
 t/default/bit-operator.t
 t/default/call-sub.t
 t/default/comparison-operator.t
+t/default/complex.t
 t/default/constant.t
 t/default/convert.t
 t/default/core-func.t
@@ -192,6 +191,7 @@ t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/default/lib/TestCase/Complex.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
@@ -255,6 +255,7 @@ t/precompile/assign-operator.t
 t/precompile/bit-operator.t
 t/precompile/call-sub.t
 t/precompile/comparison-operator.t
+t/precompile/complex.t
 t/precompile/constant.t
 t/precompile/convert.t
 t/precompile/core-func.t
@@ -280,6 +281,7 @@ t/precompile/lib/TestCase/CompileError/InvalidType.spvm
 t/precompile/lib/TestCase/CompileError/New/Private.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/precompile/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
+t/precompile/lib/TestCase/Complex.spvm
 t/precompile/lib/TestCase/Constant.spvm
 t/precompile/lib/TestCase/Convert.spvm
 t/precompile/lib/TestCase/CoreFunc/Math.spvm

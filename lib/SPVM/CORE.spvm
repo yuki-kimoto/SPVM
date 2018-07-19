@@ -1,46 +1,7 @@
 package SPVM::CORE {
-  use SPVM::Complex_i2;
-  use SPVM::Complex_l2;
   use SPVM::Complex_f2;
   use SPVM::Complex_d2;
 
-  sub new_icomplex_array : SPVM::Complex_i2[] ($pairs : int[]) {
-    my $length = @$pairs;
-    
-    
-    if ($length % 2 != 0) {
-      croak "Pairs count must be even";
-    }
-    
-    my $loop_count = $length / 2;
-    
-    my $z_array = new SPVM::Complex_i2[$length];
-    for (my $i = 0; $i < $loop_count; $i++) {
-      $z_array->[$i]{re} = $pairs->[$i * 2];
-      $z_array->[$i]{im} = $pairs->[$i * 2 + 1];
-    }
-    
-    return $z_array;
-  }
-  
-  sub new_lcomplex_array : SPVM::Complex_l2[] ($pairs : long[]) {
-    my $length = @$pairs;
-    
-    if ($length % 2 != 0) {
-      croak "Pairs count must be even";
-    }
-    
-    my $loop_count = $length / 2;
-    
-    my $z_array = new SPVM::Complex_l2[$length];
-    for (my $i = 0; $i < $loop_count; $i++) {
-      $z_array->[$i]{re} = $pairs->[$i * 2];
-      $z_array->[$i]{im} = $pairs->[$i * 2 + 1];
-    }
-    
-    return $z_array;
-  }
-  
   sub new_fcomplex_array : SPVM::Complex_f2[] ($pairs : float[]) {
     my $length = @$pairs;
     
@@ -78,8 +39,6 @@ package SPVM::CORE {
     return $z_array;
   }
 
-  native sub new_icomplex : SPVM::Complex_i2 ($re : int, $im : int);
-  native sub new_lcomplex : SPVM::Complex_l2 ($re : long, $im : long);
   native sub new_fcomplex : SPVM::Complex_f2 ($re : float, $im : float);
   native sub new_dcomplex : SPVM::Complex_d2 ($re : double, $im : double);
   sub join : string ($sep : string, $strings : string[]) {

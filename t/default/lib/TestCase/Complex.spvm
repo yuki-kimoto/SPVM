@@ -1,34 +1,6 @@
 package TestCase::Complex {
-  use SPVM::Complex_i2;
-  use SPVM::Complex_l2;
   use SPVM::Complex_f2;
   use SPVM::Complex_d2;
-
-  sub test_new_icomplex_array : int () {
-    my $z_array = new_icomplex_array([(INT32_MIN(), 1), (2, 3), (4, 5)]);
-
-    if ($z_array->[0]{re} == INT32_MIN() && $z_array->[0]{im} == 1
-      && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
-      && $z_array->[2]{re} == 4 && $z_array->[2]{im} == 5)
-    {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub test_new_lcomplex_array : int () {
-    my $z_array = new_lcomplex_array([(INT64_MIN(), 1), (2, 3), (4, 5)]);
-
-    if ($z_array->[0]{re} == INT64_MIN() && $z_array->[0]{im} == 1
-      && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
-      && $z_array->[2]{re} == 4 && $z_array->[2]{im} == 5)
-    {
-      return 1;
-    }
-    
-    return 0;
-  }
 
   sub test_new_fcomplex_array : int () {
     my $z_array = new_fcomplex_array([(FLT_MIN(), 1), (2, 3), (4, 5)]);
@@ -56,24 +28,6 @@ package TestCase::Complex {
     return 0;
   }
   
-  sub test_new_icomplex : int () {
-    my $z = new_icomplex(INT32_MIN(), INT32_MIN() + 1);
-    if ($z->{re} == INT32_MIN() && $z->{im} == INT32_MIN() + 1) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub test_new_lcomplex : int () {
-    my $z = new_lcomplex(INT64_MIN(), INT64_MIN() + 1);
-    if ($z->{re} == INT64_MIN() && $z->{im} == INT64_MIN() + 1) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
   sub test_new_fcomplex : int () {
     my $z = new_fcomplex(FLT_MIN(), FLT_MIN() + 1);
     if ($z->{re} == FLT_MIN() && $z->{im} == FLT_MIN() + 1) {
