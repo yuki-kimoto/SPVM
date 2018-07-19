@@ -1758,6 +1758,60 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       // Add my var
                       case SPVM_OP_C_ID_VAR: {
+                        if (op_cur->uv.var->is_declaration) {
+                          
+                          SPVM_OP* op_my = op_cur->uv.var->op_my;
+                          
+                          SPVM_MY* my = op_my->uv.my;
+                          
+                          // Redeclaration error if same name variable is declare in same block
+                          _Bool found = 0;
+                          int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(block_my_base_stack, block_my_base_stack->length - 1);
+                          {
+                            int32_t i;
+                            for (i = block_my_base; i < op_my_stack->length; i++) {
+                              SPVM_OP* op_bef_my = SPVM_LIST_fetch(op_my_stack, i);
+                              SPVM_MY* bef_my = op_bef_my->uv.my;
+                              if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
+                                // Temporaly variable is not duplicated
+                                if (my->op_name->uv.name[0] != '@') {
+                                  found = 1;
+                                }
+                                break;
+                              }
+                            }
+                          }
+                          if (found) {
+                            SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, op_my->file, op_my->line);
+                            
+                            return;
+                          }
+                          else {
+                            SPVM_LIST_push(sub->op_mys, op_my);
+                            SPVM_LIST_push(op_my_stack, op_my);
+                          }
+                          
+                          // Type inference
+                          if (my->op_type == NULL) {
+                            if (my->try_type_inference) {
+                              SPVM_OP* op_term_type_inference = my->op_term_type_inference;
+                              
+                              SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
+                              
+                              if (inferenced_type) {
+                                my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_my->file, op_my->line);
+                                my->op_type->uv.type = inferenced_type;
+                              }
+                            }
+                          }
+                          
+                          // Type can't be detected
+                          if (my->op_type == NULL) {
+                            SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_my->file, op_my->line);
+                            
+                            return;
+                          }
+                        }
                         
                         SPVM_VAR* var = op_cur->uv.var;
                         
@@ -1782,61 +1836,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         else {
                           // Error
-                          SPVM_yyerror_format(compiler, "%s is undeclared in this scope at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        
-                        break;
-                      }
-                      case SPVM_OP_C_ID_MY: {
-                        SPVM_MY* my = op_cur->uv.my;
-                        
-                        // Redeclaration error if same name variable is declare in same block
-                        _Bool found = 0;
-                        int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(block_my_base_stack, block_my_base_stack->length - 1);
-                        {
-                          int32_t i;
-                          for (i = block_my_base; i < op_my_stack->length; i++) {
-                            SPVM_OP* op_bef_my = SPVM_LIST_fetch(op_my_stack, i);
-                            SPVM_MY* bef_my = op_bef_my->uv.my;
-                            if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
-                              // Temporaly variable is not duplicated
-                              if (my->op_name->uv.name[0] != '@') {
-                                found = 1;
-                              }
-                              break;
-                            }
-                          }
-                        }
-                        if (found) {
-                          SPVM_DUMPER_dump_ast(compiler, op_base);
-                          SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        else {
-                          SPVM_LIST_push(sub->op_mys, op_cur);
-                          SPVM_LIST_push(op_my_stack, op_cur);
-                        }
-                        
-                        // Type inference
-                        if (my->op_type == NULL) {
-                          if (my->try_type_inference) {
-                            SPVM_OP* op_term_type_inference = my->op_term_type_inference;
-                            
-                            SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
-                            
-                            if (inferenced_type) {
-                              my->op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_cur->file, op_cur->line);
-                              my->op_type->uv.type = inferenced_type;
-                            }
-                          }
-                        }
-                        
-                        // Type can't be detected
-                        if (my->op_type == NULL) {
-                          SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
                           
                           return;
                         }

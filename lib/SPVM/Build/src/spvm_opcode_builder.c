@@ -2325,30 +2325,34 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_ID_MY: {
-                    SPVM_MY* my = op_cur->uv.my;
-                    
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                    _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type);
-                    
-                    if (SPVM_TYPE_is_object_type(compiler, type) && !type_is_value_t) {
+                  case SPVM_OP_C_ID_VAR: {
+                    if (op_cur->uv.var->is_declaration) {
                       
-                      SPVM_OPCODE opcode;
-                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                      opcode.id = SPVM_OPCODE_C_ID_PUSH_MORTAL;
-                      opcode.operand0 = my->var_id;
+                      SPVM_OP* op_my = op_cur->uv.var->op_my;
+                      SPVM_MY* my = op_my->uv.my;
                       
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
+                      _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type);
                       
-                      int32_t my_var_id = my->var_id;
-                      SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_var_id);
-                      
-                      if (mortal_stack->length > mortal_stack_max) {
-                        mortal_stack_max = mortal_stack->length;
+                      if (SPVM_TYPE_is_object_type(compiler, type) && !type_is_value_t) {
+                        
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                        opcode.id = SPVM_OPCODE_C_ID_PUSH_MORTAL;
+                        opcode.operand0 = my->var_id;
+                        
+                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        
+                        int32_t my_var_id = my->var_id;
+                        SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_var_id);
+                        
+                        if (mortal_stack->length > mortal_stack_max) {
+                          mortal_stack_max = mortal_stack->length;
+                        }
+                        
+                        SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                        op_block_current->uv.block->have_object_var_decl = 1;
                       }
-                      
-                      SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                      op_block_current->uv.block->have_object_var_decl = 1;
                     }
                     
                     break;
