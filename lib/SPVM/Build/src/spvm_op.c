@@ -1404,8 +1404,10 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_my->uv.my = my;
     
     op_var->uv.var->op_my = op_my;
-
-    SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my);
+    
+    SPVM_OP* op_my_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_my->file, op_my->line);
+    SPVM_MY* my_tmp = SPVM_MY_new(compiler);
+    op_my_tmp->uv.my = my_tmp;
   }
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);

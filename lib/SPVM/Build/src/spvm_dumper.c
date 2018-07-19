@@ -83,7 +83,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
       if (var->op_my) {
-        printf(" (my->var_id:%d)", var->op_my->uv.my->var_id);
+        printf(" (my->var_id:%d) declaration : %d", var->op_my->uv.my->var_id, op_cur->uv.var->is_declaration);
       }
       else {
         printf(" (my->var_id:not yet resolved)");

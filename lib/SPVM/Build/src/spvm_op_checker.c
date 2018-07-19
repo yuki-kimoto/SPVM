@@ -2329,15 +2329,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                       break;
                     }
-                    case SPVM_OP_C_ID_MY: {
-                      SPVM_MY* my = op_cur->uv.my;
-                      
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                      _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type);
-                      
-                      if (SPVM_TYPE_is_object_type(compiler, type) && !type_is_value_t) {
-                        SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                        op_block_current->uv.block->have_object_var_decl = 1;
+                    case SPVM_OP_C_ID_VAR: {
+                      if (op_cur->uv.var->is_declaration) {
+                        SPVM_OP* op_my = op_cur->uv.var->op_my;
+                        SPVM_MY* my = op_my->uv.my;
+                        
+                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                        _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type);
+                        
+                        if (SPVM_TYPE_is_object_type(compiler, type) && !type_is_value_t) {
+                          SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                          op_block_current->uv.block->have_object_var_decl = 1;
+                        }
                       }
                       
                       break;
