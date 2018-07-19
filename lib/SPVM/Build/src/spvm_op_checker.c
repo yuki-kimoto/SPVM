@@ -1585,14 +1585,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
                             
-                            SPVM_OP* op_var_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
-                            op_var_inc->uv.var = op_var->uv.var;
+                            SPVM_OP* op_var_inc = SPVM_OP_new_op_var(compiler, op_var->uv.var->op_name);
+                            op_var_inc->uv.var->op_my = op_var->uv.var->op_my;
                             
                             SPVM_OP* op_inc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INC, op_cur->file, op_cur->line);
                             SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_var_inc);
                             
-                            SPVM_OP* op_var_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
-                            op_var_ret->uv.var = op_var_tmp->uv.var;
+                            SPVM_OP* op_var_ret = SPVM_OP_new_op_var(compiler, op_var_tmp->uv.var->op_name);
+                            op_var_ret->uv.var->op_my = op_var_tmp->uv.var->op_my;
                             SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
                             SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_inc);
                             SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
