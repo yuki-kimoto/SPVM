@@ -25,6 +25,90 @@ static inline int32_t SPVM_CORE_FUNC_cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+static inline int32_t SPVM_CORE_FUNC_csub(SPVM_ENV* env, SPVM_VALUE* stack) {
+  double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
+  double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
+  
+  double _Complex x_out = x_in1 - x_in2;
+  
+  stack[0].dval = creal(x_out);
+  stack[1].dval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_cmul(SPVM_ENV* env, SPVM_VALUE* stack) {
+  double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
+  double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
+  
+  double _Complex x_out = x_in1 * x_in2;
+  
+  stack[0].dval = creal(x_out);
+  stack[1].dval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_cdiv(SPVM_ENV* env, SPVM_VALUE* stack) {
+  double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
+  double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
+  
+  double _Complex x_out = x_in1 / x_in2;
+  
+  stack[0].dval = creal(x_out);
+  stack[1].dval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_caddf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
+  float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
+  
+  float _Complex x_out = x_in1 + x_in2;
+  
+  stack[0].fval = creal(x_out);
+  stack[1].fval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_csubf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
+  float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
+  
+  float _Complex x_out = x_in1 - x_in2;
+  
+  stack[0].fval = creal(x_out);
+  stack[1].fval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_cmulf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
+  float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
+  
+  float _Complex x_out = x_in1 * x_in2;
+  
+  stack[0].fval = creal(x_out);
+  stack[1].fval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
+static inline int32_t SPVM_CORE_FUNC_cdivf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
+  float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
+  
+  float _Complex x_out = x_in1 / x_in2;
+  
+  stack[0].fval = creal(x_out);
+  stack[1].fval = cimag(x_out);
+  
+  return SPVM_SUCCESS;
+}
+
 static inline int32_t SPVM_CORE_FUNC_new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
 static inline int32_t SPVM_CORE_FUNC_new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }

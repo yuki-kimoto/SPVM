@@ -1,9 +1,18 @@
 0.0360 2018-07-20
-  - add new_fcomplex core function
-  - add new_dcomplex_array core function
-  - add new_fcomplex_array core function
-  - add new_dcomplex_array core function
-  - fix array init multi dimention bugs
+  - Add Complex functions
+      add cadd
+      add csub
+      add cmul
+      add cdiv
+      add caddf
+      add csubf
+      add cmulf
+      add cdivf
+      add new_fcomplex function
+      add new_dcomplex function
+      add new_fcomplex_array function
+      add new_dcomplex_array function
+      fix array init multi dimention bugs
 0.0359 2018-07-16
   - SPVM::CORE become done native compile
   - add join function
