@@ -355,6 +355,23 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_new_op_var_from_op_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, const char* file, int32_t line) {
+  (void)compiler;
+  
+  SPVM_VAR* var = SPVM_VAR_new(compiler);
+  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
+  
+  SPVM_MY* my = op_my->uv.my;
+  
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = my->op_name->uv.name;
+  var->op_name = op_name;
+  var->op_my = op_my;
+  op_var->uv.var = var;
+  
+  return op_var;
+}
+
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   (void)compiler;
   
@@ -590,25 +607,6 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
   SPVM_LIST_push(compiler->op_constants, op_constant);
   
   return op_constant;
-}
-
-SPVM_OP* SPVM_OP_new_op_var_from_op_my(SPVM_COMPILER* compiler, SPVM_OP* op_my) {
-  (void)compiler;
-  
-  SPVM_VAR* var = SPVM_VAR_new(compiler);
-  SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_my->file, op_my->line);
-  
-  SPVM_MY* my = op_my->uv.my;
-  
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_my->file, op_my->line);
-  op_name->uv.name = my->op_name->uv.name;
-  var->op_name = op_name;
-  var->op_my = op_my;
-  op_var->uv.var = var;
-  
-  SPVM_OP_insert_child(compiler, op_var, op_var->last, op_my);
-  
-  return op_var;
 }
 
 SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub) {
