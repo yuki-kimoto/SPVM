@@ -1605,6 +1605,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->op_name);
         op_var->uv.var->op_my = op_my;
         op_var->uv.var->is_declaration = 1;
+
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
       }
     }
@@ -2005,8 +2006,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   // Assign left child is var and it has variable declaration, try type inference
   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     SPVM_OP* op_var = op_assign_to;
-    if (op_var->first && op_var->first->id == SPVM_OP_C_ID_MY) {
-      SPVM_OP* op_my = op_var->first;
+    if (op_var->uv.var->op_my && op_var->uv.var->op_my->id == SPVM_OP_C_ID_MY) {
+      SPVM_OP* op_my = op_var->uv.var->op_my;
       SPVM_MY* my = op_my->uv.my;
       my->try_type_inference = 1;
       my->op_term_type_inference = op_assign_from;
