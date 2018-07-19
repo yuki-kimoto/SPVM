@@ -16,6 +16,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Complex->test_cadd_min());
   ok(TestCase::Complex->test_csub());
   ok(TestCase::Complex->test_csub_min());
+  ok(TestCase::Complex->test_cmul());
+  ok(TestCase::Complex->test_cmul_min());
   ok(TestCase::Complex->test_new_fcomplex());
   ok(TestCase::Complex->test_new_dcomplex());
   ok(TestCase::Complex->test_new_fcomplex_array());
