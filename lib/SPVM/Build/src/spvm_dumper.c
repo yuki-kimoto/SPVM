@@ -87,7 +87,12 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);
-      printf(" (my->var_id:%d)", var->op_my->uv.my->var_id);
+      if (var->op_my) {
+        printf(" (my->var_id:%d)", var->op_my->uv.my->var_id);
+      }
+      else {
+        printf(" (my->var_id:not yet resolved)");
+      }
     }
     else if (id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
