@@ -1572,6 +1572,9 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   
   if (op_var->id == SPVM_OP_C_ID_VAR) {
     
+    // Declaration
+    op_var->uv.var->is_declaration = 1;
+    
     // Create my var information
     SPVM_MY* my = SPVM_MY_new(compiler);
     if (op_type) {

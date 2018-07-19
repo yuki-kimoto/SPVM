@@ -1577,8 +1577,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_var = op_cur->first;
                           
                             SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-                            SPVM_OP* op_var_from = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_cur->file, op_cur->line);
-                            op_var_from->uv.var = op_var->uv.var;
+                            SPVM_OP* op_var_from = SPVM_OP_new_op_var(compiler, op_var->uv.var->op_name);
+                            op_var_from->uv.var->op_my = op_var->uv.var->op_my;
                             
                             SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, op_sub, op_var->uv.var->op_my->uv.my->op_type->uv.type, op_cur->file, op_cur->line);
                       
