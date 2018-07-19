@@ -1379,11 +1379,6 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
-  // Variable declaration is argument
-  if (op_var->first) {
-    op_var->first->uv.my->is_arg = 1;
-  }
-  
   return op_var;
 }
 
