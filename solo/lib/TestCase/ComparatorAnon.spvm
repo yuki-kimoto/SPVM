@@ -1,0 +1,3 @@
+package TestCase::ComparatorAnon : interface {
+  sub : int ($self : self, $x : object, $y : object);
+}

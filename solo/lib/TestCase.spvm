@@ -10,6 +10,7 @@ package TestCase {
   use TestCase::ImplementInterface1;
   use TestCase::ImplementInterface2;
   use TestCase::Comparator;
+  use TestCase::ComparatorAnon;
   use TestCase::Pointer;
   use TestCase::Complex_d2;
   use TestCase::ComplexCalc;
@@ -57,6 +58,15 @@ SPVM::Test - SPVM test module
   }
   
   sub main : int ($mvar : int) {
+    {
+      my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
+        return $x1 * $x2;
+      };
+      
+      my $ret = $anon_sub->(4L, 5L);
+      print((string)$ret . "\n");
+    }
+    
     {
       my $test_case = new TestCase;
       my $ret = $test_case->(1, 2);
@@ -254,6 +264,38 @@ SPVM::Test - SPVM test module
       $minimals->[2]{x} = 2;
       
       sort_obj($minimals, $comparator);
+      print((string)$minimals->[0]{x} . " " . (string)$minimals->[1]{x} . " " . (string)$minimals->[2]{x} . "\n");
+    }
+
+    # sort anon
+    {
+      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+        
+        my $x1 = $minimal1->{x};
+        my $x2 = $minimal2->{x};
+        
+        if ($x1 > $x2) {
+          return 1;
+        }
+        elsif ($x1 < $x2) {
+          return -1;
+        }
+        else {
+          return 0;
+        }
+      };
+      
+      my $minimals = new TestCase::Minimal[3];
+      $minimals->[0] = new TestCase::Minimal;
+      $minimals->[0]{x} = 3;
+      $minimals->[1] = new TestCase::Minimal;
+      $minimals->[1]{x} = 1;
+      $minimals->[2] = new TestCase::Minimal;
+      $minimals->[2]{x} = 2;
+      
+      sort_obj_anon($minimals, $comparator);
       print((string)$minimals->[0]{x} . " " . (string)$minimals->[1]{x} . " " . (string)$minimals->[2]{x} . "\n");
     }
     
@@ -1494,6 +1536,24 @@ SPVM::Test - SPVM test module
       $change_cnt--;
     }
   }
+
+  sub sort_obj_anon : void ($values : object[], $comparator : TestCase::ComparatorAnon) {
+
+    my $change_cnt = @$values - 1;
+    while( $change_cnt > 0){
+      for (my $i = 0; $i < $change_cnt; $i++) {
+        my $ret = $comparator->($values->[$i], $values->[$i + 1]);
+        
+        if ($comparator->($values->[$i], $values->[$i + 1]) == 1) {
+          my $tmp_value = $values->[$i];
+          $values->[$i] = $values->[$i + 1];
+          $values->[$i + 1] = $tmp_value;
+        }
+      }
+      $change_cnt--;
+    }
+  }
+  
   sub receive_undef : void ($test_case : TestCase) {
     
   }
