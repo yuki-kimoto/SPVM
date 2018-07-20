@@ -757,7 +757,12 @@ call_sub
       SPVM_OP* op_assignable_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_assignable_terms);
     }
-
+  | assignable_term ARROW '(' opt_assignable_terms ')'
+    {
+      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, op_sub_name, $4);
+    }
+  
 opt_args
   :	/* Empty */
     {
