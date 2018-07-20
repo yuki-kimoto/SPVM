@@ -53,9 +53,15 @@ SPVM::Test - SPVM test module
   
   sub : int ($self : self, $x1 : int, $x2 : int) {
     
+    return $x1 + $x2;
   }
   
   sub main : int ($mvar : int) {
+    {
+      my $test_case = new TestCase;
+      my $ret = $test_case->(1, 2);
+      print((string)$ret . "\n");
+    }
     {
       my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
       print((string)$array->[7]);
