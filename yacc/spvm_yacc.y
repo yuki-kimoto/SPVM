@@ -356,11 +356,13 @@ sub
 anon_sub
   : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8);
+       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
+       $$ = SPVM_OP_build_sub(compiler, $2, op_sub_name, $4, $6, $1, $8);
      }
   | opt_descriptors SUB ':' type_or_void '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, NULL);
+       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
+       $$ = SPVM_OP_build_sub(compiler, $2, op_sub_name, $4, $6, $1, NULL);
      }
 
 enumeration

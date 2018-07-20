@@ -51,6 +51,10 @@ SPVM::Test - SPVM test module
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
+  sub : int ($self : self, $x1 : int, $x2 : int) {
+    
+  }
+  
   sub main : int ($mvar : int) {
     {
       my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
