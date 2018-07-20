@@ -1,6 +1,6 @@
 0.0361 2018-07-21
   - add two anon sub syntax
-    [First] Package is foo, sub name is anonymous
+    [First] Package is Foo, sub name is anonymous
     
       package Foo {
         sub : int ($self : self, $x1 : int, $x2 : int) {
