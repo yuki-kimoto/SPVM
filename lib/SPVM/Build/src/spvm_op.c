@@ -1317,6 +1317,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
       }
       
+      // If Subroutine is anon, sub must be method
+      if (strlen(sub_name) == 0 && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+        SPVM_yyerror_format(compiler, "Anon subroutine must be method at %s line %d\n", op_sub->file, op_sub->line);
+      }
+      
+      
       SPVM_OP* found_op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
       
       if (found_op_sub) {
