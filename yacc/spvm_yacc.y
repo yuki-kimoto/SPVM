@@ -26,7 +26,7 @@
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar var
+%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
@@ -152,6 +152,7 @@ declaration_in_package
   | enumeration
   | package_var ';'
   | use;
+  | anon_sub
 
 package_block
   : '{' opt_declarations_in_package '}'
@@ -352,6 +353,16 @@ sub
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
      }
 
+anon_sub
+  : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8);
+     }
+  | opt_descriptors SUB ':' type_or_void '(' opt_args ')' ';'
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, NULL);
+     }
+
 enumeration
   : ENUM enumeration_block
     {
@@ -550,6 +561,11 @@ new_object
   | NEW anon_package
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+    }
+  | anon_sub
+    {
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
+      $$ = SPVM_OP_build_new_object(compiler, op_new, $1, NULL);
     }
 
 array_init
