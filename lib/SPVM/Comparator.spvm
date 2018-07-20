@@ -1,0 +1,3 @@
+package SPVM::Comparator : interface {
+  sub : int ($self : self, $x1 : object, $x2 : object);
+}

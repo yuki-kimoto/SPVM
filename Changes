@@ -13,6 +13,12 @@
       my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
         return $x1 + $x2;
       }
+  - add SPVM::Comparator
+    This is used for object sort method
+  
+    package SPVM::Comparator : interface {
+      sub : int ($self : self, $x1 : object, $x2 : object);
+    }
 
 0.0360 2018-07-20
   - Add Complex functions

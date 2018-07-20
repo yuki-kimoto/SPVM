@@ -155,9 +155,7 @@ sub bind_to_perl {
       # Define SPVM subroutine
       no strict 'refs';
       
-      # Declare package
-      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.+)/;
-      $package_name = "$package_name";
+      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
       unless ($package_name_h->{$package_name}) {
         
         my $code = "package $package_name; our \@ISA = ('SPVM::Data');";

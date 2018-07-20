@@ -1106,8 +1106,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     package->is_anon = 1;
     
     // Anon package name
-    char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("@anon2147483647") + 1);
-    sprintf(name_package, "@anon%d", compiler->anon_package_length);
+    char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
+    sprintf(name_package, "anon%d", compiler->anon_package_length);
     compiler->anon_package_length++;
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
@@ -1116,6 +1116,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->op_type = op_type;
   
   const char* package_name = op_type->uv.type->basic_type->name;
+  
+  if (!package->is_anon && islower(package_name[0])) {
+    SPVM_yyerror_format(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+  }
+
   SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
 
   // Redeclaration package error
