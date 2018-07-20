@@ -101,6 +101,7 @@ lib/SPVM/Build/Util.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
+lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_d2.spvm
 lib/SPVM/Complex_f2.spvm
 lib/SPVM/CORE.native/CORE.c
@@ -131,6 +132,7 @@ ppport.h
 README
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Comparator.spvm
+solo/lib/TestCase/ComparatorAnon.spvm
 solo/lib/TestCase/Complex_d2.spvm
 solo/lib/TestCase/ComplexCalc.spvm
 solo/lib/TestCase/Destructor.spvm
