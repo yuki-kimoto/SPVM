@@ -566,8 +566,22 @@ new_object
     }
   | anon_sub
     {
+      // Package
+      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);
+      
+      // Create class block
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_list_declarations = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, $1);
+      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
+      
+      // Build package
+      SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+      
+      // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
-      $$ = SPVM_OP_build_new_object(compiler, op_new, $1, NULL);
+      
+      $$ = SPVM_OP_build_new_object(compiler, op_new, op_package, NULL);
     }
 
 array_init
