@@ -605,40 +605,6 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
-char* SPVM_CSOURCE_BUILDER_get_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
-  
-  if (dimension == 0) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_VOID:
-        assert(0);
-        break;
-      case SPVM_BASIC_TYPE_C_ID_BYTE:
-        return "SPVM_VALUE_byte";
-        break;
-      case SPVM_BASIC_TYPE_C_ID_SHORT:
-        return "SPVM_VALUE_short";
-        break;
-      case SPVM_BASIC_TYPE_C_ID_INT:
-        return "SPVM_VALUE_int";
-        break;
-      case SPVM_BASIC_TYPE_C_ID_LONG:
-        return "SPVM_VALUE_long";
-        break;
-      case SPVM_BASIC_TYPE_C_ID_FLOAT:
-        return "SPVM_VALUE_float";
-        break;
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-        return "SPVM_VALUE_double";
-        break;
-      default:
-        return "void*";
-    }
-  }
-  else {
-    return "void*";
-  }
-}
-
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   
@@ -2683,7 +2649,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_RETURN:
       {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(compiler, sub_return_basic_type_id, sub_return_type_dimension);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  memcpy(&stack[0], &");
         SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ", sizeof(SPVM_VALUE) * ");
