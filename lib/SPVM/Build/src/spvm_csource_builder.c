@@ -2696,9 +2696,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT:
       {
-        const char* return_type_name = SPVM_CSOURCE_BUILDER_get_type_name(compiler, sub_return_basic_type_id, sub_return_type_dimension);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  *(void**)&stack[0] = ");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, return_type_name, opcode->operand0);
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         
         // Increment ref count of return value not to release by decrement
