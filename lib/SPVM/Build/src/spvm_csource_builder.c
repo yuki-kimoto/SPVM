@@ -791,14 +791,133 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
   
-  // Initialize variables
-  if (var_alloc_length > 0) {
+  // Variable declaration
+  if (sub->op_mys->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  SPVM_VALUE vars[");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer , var_alloc_length);
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
-    SPVM_STRING_BUFFER_add(compiler, string_buffer , "  memset(vars, 0, sizeof(SPVM_VALUE) * ");
-    SPVM_STRING_BUFFER_add_int(compiler, string_buffer , var_alloc_length);
-    SPVM_STRING_BUFFER_add(compiler, string_buffer , ");\n");
+  }
+  
+  // Initialize variables with type information
+  if (sub->op_mys->length > 0) {
+    SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Initialize variables\n");
+  }
+  {
+    int32_t my_index;
+    for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
+      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
+      SPVM_MY* my = op_my->uv.my;
+      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
+      _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type);
+      _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type);
+      
+      // Value type
+      if (my_type_is_value_t) {
+        SPVM_OP* op_package = my_type->basic_type->op_package;
+        assert(op_package);
+        
+        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+        assert(op_first_field);
+        
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+        assert(field_type->dimension == 0);
+
+        switch (field_type->basic_type->id) {
+          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_short", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_INT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_int", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_LONG: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_float", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", my->var_id + offset);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+              break;
+            }
+            default:
+              assert(0);
+          }
+        }
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = NULL;\n");
+      }
+      // Numeric type
+      else {
+        switch (my_type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_short", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_int", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_float", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", my->var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = 0;\n");
+            break;
+          }
+          default:
+            assert(0);
+        }
+      }
+    }
+    SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
   }
   
   // Copy arguments to variables with type information
