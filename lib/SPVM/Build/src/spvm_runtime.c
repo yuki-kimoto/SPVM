@@ -2263,7 +2263,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
         *(void**)&stack[call_sub_arg_stack_top] = NULL;
-        call_sub_arg_stack_top += opcode->operand1;
+        call_sub_arg_stack_top++;
         
         break;
       case SPVM_OPCODE_C_ID_CAST: {

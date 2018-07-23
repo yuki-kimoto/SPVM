@@ -1,6 +1,21 @@
 package TestCase::CallSub {
   use TestCase::Minimal;
 
+  precompile sub sub_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
+    return $minimal;
+  }
+
+  precompile sub push_arg_undef : int () {
+  
+    my $minimal = sub_push_arg_undef(undef);
+    
+    if ($minimal == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   # Default return value empty
   precompile sub default_return_value_byte : int () {
     

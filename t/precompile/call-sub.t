@@ -22,6 +22,10 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+{
+  ok(TestCase::CallSub->push_arg_undef());
+}
+
 # call_sub array
 {
   # call_sub byte_array
@@ -86,6 +90,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::CallSub->call_void());
 }
+
+
 
 # call_sub return array
 {
