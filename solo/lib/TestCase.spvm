@@ -59,6 +59,17 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      my $z1 : TestCase::Complex_d2;
+      $z1->{re} = 0.5;
+      $z1->{im} = 0.25;
+      
+      my $z2 = $z1;
+      warn((string)$z1->{re} . " " . (string)$z1->{im});
+    }
+  }
+}
+__END__
+    {
       my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
         return $x1 * $x2;
       };
