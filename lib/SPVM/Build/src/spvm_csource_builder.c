@@ -576,14 +576,14 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    }\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    else {\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "      ");
   SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, field_type_name, out_index);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " = *(");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)field_type_name);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)&fields[");
   SPVM_STRING_BUFFER_add_field_index_name(compiler, string_buffer , field_package_name, field_name);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "];");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    }\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
@@ -602,7 +602,7 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    }\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    else {\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "      *(");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)field_type_name);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)&fields[");
@@ -2680,15 +2680,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG:
       {
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t width = ");
         SPVM_STRING_BUFFER_add_int(compiler, string_buffer , opcode->operand1);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    memcpy(&stack[call_sub_arg_stack_top], &");
         SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ", sizeof(SPVM_VALUE) * width);\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    call_sub_arg_stack_top += width;\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
