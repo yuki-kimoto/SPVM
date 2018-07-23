@@ -2674,7 +2674,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
+      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
       {
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    stack[call_sub_arg_stack_top] = ");
