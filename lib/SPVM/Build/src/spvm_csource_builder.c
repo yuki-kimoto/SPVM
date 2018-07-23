@@ -2733,6 +2733,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_CALL_SUB:
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
+        int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, rel_id);
         int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
@@ -2818,18 +2819,18 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
           int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " memcpy(&vars[");
-          SPVM_STRING_BUFFER_add_int(compiler, string_buffer , opcode->operand0);
+          SPVM_STRING_BUFFER_add_int(compiler, string_buffer , var_id);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "], &stack[0], sizeof(SPVM_VALUE) * ");
           SPVM_STRING_BUFFER_add_int(compiler, string_buffer , decl_sub_return_type_width);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "); ");
         }
         else if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
-          SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand0);
+          SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", var_id);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , ", stack[0].oval);");
         }
         else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
-          SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
+          SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, var_id);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " = stack[0]; ");
         }
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "}\n");
