@@ -2865,8 +2865,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           else {
                             _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type);
                             if (is_arg_type_is_value_type) {
-                              warn("AAAAAAAAAAAAA");
-
                               SPVM_OP* op_package = arg_type->basic_type->op_package;
                               assert(op_package);
                               
