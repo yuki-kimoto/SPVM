@@ -777,7 +777,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Call subroutine argument stack top
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  int32_t call_sub_arg_stack_top = 0;\n");
+  int32_t call_sub_arg_stack_top = 0;
 
   // Condition flag
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  register int32_t condition_flag;\n");
@@ -2675,25 +2675,87 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_byte", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_short", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_short", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_int", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_int", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_long", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_float", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_float", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_double", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
       {
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    stack[call_sub_arg_stack_top] = ");
-        SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_object", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_object", opcode->operand0);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    call_sub_arg_stack_top++;\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+        call_sub_arg_stack_top++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  *(void**)&stack[call_sub_arg_stack_top] = NULL;\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  call_sub_arg_stack_top++;\n");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_object", call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = NULL;\n");
+        call_sub_arg_stack_top++;
         
         break;
       }
@@ -2941,10 +3003,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         }
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    }\n");
         
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    call_sub_arg_stack_top -= ");
-        SPVM_STRING_BUFFER_add_int(compiler, string_buffer , decl_sub_args_length);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+
+        call_sub_arg_stack_top -=  decl_sub_args_length;
         
         break;
       }
