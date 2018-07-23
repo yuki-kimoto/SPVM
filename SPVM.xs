@@ -1100,14 +1100,14 @@ build_package_csource(...)
   int32_t package_id = op_package->uv.package->id;
   
   // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 0);
   
   // Build package csource
   SPVM_CSOURCE_BUILDER_build_package_csource(compiler, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
-  SPVM_STRING_BUFFER_free(string_buffer);
+  SPVM_STRING_BUFFER_free(compiler, string_buffer);
   
   XPUSHs(sv_package_csource);
   XSRETURN(1);
