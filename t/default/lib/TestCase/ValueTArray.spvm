@@ -230,4 +230,119 @@ package TestCase::ValueTArray {
     return 0;
   }
 
+  sub move_byte : int () {
+    my $nums1 = new TestCase::Point_b3[10];
+    $nums1->[9]{x} = (byte)INT8_MIN();
+    $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
+    $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
+    
+    my $nums2 = $nums1;
+    
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == INT8_MIN() && $y == (INT8_MIN() + 1) && $z == (INT8_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub move_short : int () {
+    
+    my $nums1 = new TestCase::Point_s3[10];
+    $nums1->[9]{x} = (short)INT16_MIN();
+    $nums1->[9]{y} = (short)(INT16_MIN() + 1);
+    $nums1->[9]{z} = (short)(INT16_MIN() + 2);
+    
+    my $nums2 = $nums1;
+    
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == INT16_MIN() && $y == (INT16_MIN() + 1) && $z == (INT16_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub move_int : int () {
+    my $nums1 = new TestCase::Point_i3[10];
+    $nums1->[9]{x} = INT32_MIN();
+    $nums1->[9]{y} = INT32_MIN() + 1;
+    $nums1->[9]{z} = INT32_MIN() + 2;
+    
+    my $nums2 = $nums1;
+    
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == INT32_MIN() && $y == (INT32_MIN() + 1) && $z == (INT32_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub move_long : int () {
+    my $nums1 = new TestCase::Point_l3[10];
+    $nums1->[9]{x} = INT64_MIN();
+    $nums1->[9]{y} = INT64_MIN() + 1;
+    $nums1->[9]{z} = INT64_MIN() + 2;
+    
+    my $nums2 = $nums1;
+
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == INT64_MIN() && $y == (INT64_MIN() + 1) && $z == (INT64_MIN() + 2)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub move_float : int () {
+    my $nums1 = new TestCase::Point_f3[10];
+    $nums1->[9]{x} = FLT_MIN();
+    $nums1->[9]{y} = FLT_MIN() + 0.25f;
+    $nums1->[9]{z} = FLT_MIN() + 0.5f;
+    
+    my $nums2 = $nums1;
+
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == FLT_MIN() && $y == (FLT_MIN() + 0.25) && $z == (FLT_MIN() + 0.5)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub move_double : int () {
+    my $nums1 = new TestCase::Point_d3[10];
+    $nums1->[9]{x} = DBL_MIN();
+    $nums1->[9]{y} = DBL_MIN() + 0.25;
+    $nums1->[9]{z} = DBL_MIN() + 0.5;
+    
+    my $nums2 = $nums1;
+
+    my $x = $nums2->[9]{x};
+    my $y = $nums2->[9]{y};
+    my $z = $nums2->[9]{z};
+    
+    if ($x == DBL_MIN() && $y == (DBL_MIN() + 0.25) && $z == (DBL_MIN() + 0.5)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
 }

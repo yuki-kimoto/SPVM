@@ -1595,10 +1595,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_MOVE_OBJECT:
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_VALUES:
-        warn("AAAAAAAAAAAAAA");
-        memcpy(&vars[opcode->operand0], &vars[opcode->operand1], sizeof(SPVM_VALUE) * opcode->operand2);
-        break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
         mortal_stack[mortal_stack_top] = opcode->operand0;
         mortal_stack_top++;

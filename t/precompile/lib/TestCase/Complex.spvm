@@ -2,6 +2,192 @@ package TestCase::Complex {
   use SPVM::Complex_f2;
   use SPVM::Complex_d2;
 
+  precompile sub test_cadd : int () {
+    my $z_in1 = new_dcomplex(0.25, 0.5);
+    my $z_in2 = new_dcomplex(0.5, 0.125);
+    my $z_out = cadd($z_in1, $z_in2);
+    
+    if ($z_out->{re} == 0.75 && $z_out->{im} == 0.625) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_cadd_min : int () {
+    my $z_in1 = new_dcomplex(DBL_MIN(), DBL_MIN());
+    my $z_in2 = new_dcomplex(0, 0);
+    my $z_out = cadd($z_in1, $z_in2);
+    
+    if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_csub : int () {
+    my $z_in1 = new_dcomplex(0.25, 0.5);
+    my $z_in2 = new_dcomplex(0.5, 0.125);
+    my $z_out = csub($z_in1, $z_in2);
+    
+    if ($z_out->{re} == -0.25 && $z_out->{im} == 0.375) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_csub_min : int () {
+    my $z_in1 = new_dcomplex(DBL_MIN(), DBL_MIN());
+    my $z_in2 = new_dcomplex(0, 0);
+    my $z_out = csub($z_in1, $z_in2);
+    
+    if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_cmul : int () {
+    my $z_in1 = new_dcomplex(0.25, 0.5);
+    my $z_in2 = new_dcomplex(0.5, 0.125);
+    my $z_out = cmul($z_in1, $z_in2);
+    
+    if ($z_out->{re} == 0.0625 && $z_out->{im} == 0.28125) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_cmul_min : int () {
+    my $z_in1 = new_dcomplex(DBL_MIN(), 0);
+    my $z_in2 = new_dcomplex(1, 1);
+    my $z_out = cmul($z_in1, $z_in2);
+    
+    if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_cdiv : int () {
+    my $z_in1 = new_dcomplex(0.25, 0.5);
+    my $z_in2 = new_dcomplex(0.5, 0.125);
+    my $z_out = cdiv($z_in1, $z_in2);
+    
+    if (($z_out->{re} - 0.70588) < 0.00001 && ($z_out->{im} - 0.82352) < 0.00001) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  precompile sub test_cdiv_min : int () {
+    my $z_in1 = new_dcomplex(DBL_MIN(), 0);
+    my $z_in2 = new_dcomplex(1, 0);
+    my $z_out = cdiv($z_in1, $z_in2);
+    
+    if ($z_out->{re} == DBL_MIN() && $z_out->{im} == 0) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_caddf : int () {
+    my $z_in1 = new_fcomplex(0.25, 0.5);
+    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_out = caddf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == 0.75 && $z_out->{im} == 0.625) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_caddf_min : int () {
+    my $z_in1 = new_fcomplex(FLT_MIN(), FLT_MIN());
+    my $z_in2 = new_fcomplex(0, 0);
+    my $z_out = caddf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_csubf : int () {
+    my $z_in1 = new_fcomplex(0.25, 0.5);
+    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_out = csubf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == -0.25 && $z_out->{im} == 0.375) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_csubf_min : int () {
+    my $z_in1 = new_fcomplex(FLT_MIN(), FLT_MIN());
+    my $z_in2 = new_fcomplex(0, 0);
+    my $z_out = csubf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_cmulf : int () {
+    my $z_in1 = new_fcomplex(0.25, 0.5);
+    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_out = cmulf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == 0.0625 && $z_out->{im} == 0.28125) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  precompile sub test_cmulf_min : int () {
+    my $z_in1 = new_fcomplex(FLT_MIN(), 0);
+    my $z_in2 = new_fcomplex(1, 1);
+    my $z_out = cmulf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  precompile sub test_cdivf : int () {
+    my $z_in1 = new_fcomplex(0.25, 0.5);
+    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_out = cdivf($z_in1, $z_in2);
+    
+    if (($z_out->{re} - 0.70588) < 0.00001 && ($z_out->{im} - 0.82352) < 0.00001) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  precompile sub test_cdivf_min : int () {
+    my $z_in1 = new_fcomplex(FLT_MIN(), 0);
+    my $z_in2 = new_fcomplex(1, 0);
+    my $z_out = cdivf($z_in1, $z_in2);
+    
+    if ($z_out->{re} == FLT_MIN() && $z_out->{im} == 0) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   precompile sub test_new_fcomplex_array : int () {
     my $z_array = new_fcomplex_array([(FLT_MIN(), 1), (2, 3), (4, 5)]);
 

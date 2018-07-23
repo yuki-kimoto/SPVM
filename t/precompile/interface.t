@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
   ok(TestCase::Interface->basic());
+  ok(TestCase::Interface->comparator());
 }
 
 # All object is freed
