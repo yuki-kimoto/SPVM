@@ -823,8 +823,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
         assert(field_type->dimension == 0);
 
-        switch (field_type->basic_type->id) {
-          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+          switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
               SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", my->var_id + offset);
@@ -945,8 +945,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
         assert(field_type->dimension == 0);
 
-        switch (field_type->basic_type->id) {
-          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+          switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
               SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", arg_my->var_id + offset);
@@ -2744,7 +2744,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type);
-        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type);
         
         // Declare subroutine return type id
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
@@ -2815,14 +2815,71 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Call subroutine
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    if (!exception_flag) {");
-        if (decl_sub_return_type_is_value_t) {
-          int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type);
-          int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , " memcpy(&vars[");
-          SPVM_STRING_BUFFER_add_int(compiler, string_buffer , var_id);
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , "], &stack[0], sizeof(SPVM_VALUE) * ");
-          SPVM_STRING_BUFFER_add_int(compiler, string_buffer , decl_sub_return_type_width);
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , "); ");
+        if (decl_sub_return_type_is_value_type) {
+          SPVM_OP* op_package = decl_sub_return_type->basic_type->op_package;
+          assert(op_package);
+          
+          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+          assert(op_first_field);
+          
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          assert(field_type->dimension == 0);
+
+          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+            switch (field_type->basic_type->id) {
+              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_byte", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_short", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_short", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_INT: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_int", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_int", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_long", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_float", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_float", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+                SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", var_id + offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+                SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_double", offset);
+                SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+                break;
+              }
+              default:
+                assert(0);
+            }
+          }
         }
         else if (decl_sub_return_type_is_object) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
@@ -2830,8 +2887,59 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , ", stack[0].oval);");
         }
         else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
-          SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, var_id);
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , " = stack[0]; ");
+          switch (decl_sub_return_basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_byte", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_byte", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_short", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_short", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_INT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_int", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_int", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_LONG: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_long", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_float", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_float", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+              SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", var_id);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+              SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_double", 0);
+              SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+              break;
+            }
+            default:
+              assert(0);
+          }
         }
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "}\n");
         
@@ -2924,8 +3032,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Value type
         if (sub_return_type_is_value_type) {
-          switch (sub_return_type->basic_type->id) {
-            for (int32_t offset = 0; offset < sub_return_type_width; offset++) {
+          for (int32_t offset = 0; offset < sub_return_type_width; offset++) {
+            switch (sub_return_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
                 SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "SPVM_VALUE_byte", offset);
