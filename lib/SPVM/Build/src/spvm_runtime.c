@@ -2226,17 +2226,39 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
-      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
-      {
-        memcpy(&stack[call_sub_arg_stack_top], &vars[opcode->operand0], sizeof(SPVM_VALUE));
+      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE: {
+        *(SPVM_VALUE_byte*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_byte*)&vars[opcode->operand0];
         call_sub_arg_stack_top++;
-        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT: {
+        *(SPVM_VALUE_short*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_short*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_INT: {
+        *(SPVM_VALUE_int*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_int*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG: {
+        *(SPVM_VALUE_long*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_long*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT: {
+        *(SPVM_VALUE_float*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_float*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE: {
+        *(SPVM_VALUE_double*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_double*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT: {
+        *(SPVM_VALUE_object*)&stack[call_sub_arg_stack_top] = *(SPVM_VALUE_object*)&vars[opcode->operand0];
+        call_sub_arg_stack_top++;
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
