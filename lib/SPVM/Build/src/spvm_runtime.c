@@ -2227,9 +2227,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG: {
-        int32_t width = opcode->operand1;
-        memcpy(&stack[call_sub_arg_stack_top], &vars[opcode->operand0], sizeof(SPVM_VALUE) * width);
-        call_sub_arg_stack_top += width;
+        memcpy(&stack[call_sub_arg_stack_top], &vars[opcode->operand0], sizeof(SPVM_VALUE));
+        call_sub_arg_stack_top++;
         
         break;
       }

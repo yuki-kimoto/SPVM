@@ -2682,8 +2682,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    memcpy(&stack[call_sub_arg_stack_top], &");
         SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ", sizeof(SPVM_VALUE) * width);\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    call_sub_arg_stack_top += width;\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ", sizeof(SPVM_VALUE));\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    call_sub_arg_stack_top++;\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
         break;
       }

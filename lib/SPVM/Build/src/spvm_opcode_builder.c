@@ -294,22 +294,46 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             if (SPVM_TYPE_is_undef_type(compiler, term_arg_type)) {
                               assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
+                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             else {
-                              opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+                              _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type);
+                              if (is_arg_type_is_value_type) {
 
-                              // Term of argument
-                              int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
-                              
-                              opcode.operand0 = var_id_arg;
-                              
-                              if (arg_index == 0) {
-                                first_arg_var_id = var_id_arg;
+                                SPVM_OP* op_package = arg_type->basic_type->op_package;
+                                assert(op_package);
+                                
+                                SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                                assert(op_first_field);
+                                
+                                SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+                                assert(field_type->dimension == 0);
+                                
+                                for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+                                  opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+
+                                  // Term of argument
+                                  int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                                  
+                                  opcode.operand0 = var_id_arg + offset;
+                                  
+                                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                                }
+                              }
+                              else {
+                                opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+
+                                // Term of argument
+                                int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                                
+                                opcode.operand0 = var_id_arg;
+                                
+                                if (arg_index == 0) {
+                                  first_arg_var_id = var_id_arg;
+                                }
+                                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                               }
                             }
-                            opcode.operand1 = SPVM_TYPE_get_width(compiler, arg_type);
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                            
                           }
                         }
 
@@ -2836,22 +2860,47 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           if (SPVM_TYPE_is_undef_type(compiler, term_arg_type)) {
                             assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           else {
-                            opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+                            _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type);
+                            if (is_arg_type_is_value_type) {
+                              warn("AAAAAAAAAAAAA");
 
-                            // Term of argument
-                            int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
-                            
-                            opcode.operand0 = var_id_arg;
-                            
-                            if (arg_index == 0) {
-                              first_arg_var_id = var_id_arg;
+                              SPVM_OP* op_package = arg_type->basic_type->op_package;
+                              assert(op_package);
+                              
+                              SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                              assert(op_first_field);
+                              
+                              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+                              assert(field_type->dimension == 0);
+                              
+                              for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+                                opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+
+                                // Term of argument
+                                int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                                
+                                opcode.operand0 = var_id_arg + offset;
+                                
+                                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                              }
+                            }
+                            else {
+                              opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG;
+
+                              // Term of argument
+                              int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                              
+                              opcode.operand0 = var_id_arg;
+                              
+                              if (arg_index == 0) {
+                                first_arg_var_id = var_id_arg;
+                              }
+                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                           }
-                          opcode.operand1 = SPVM_TYPE_get_width(compiler, arg_type);
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          
                         }
                       }
 
