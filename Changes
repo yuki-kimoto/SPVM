@@ -1,3 +1,5 @@
+0.0362 2018-07-23
+  - improve precompiled source code with more typing
 0.0361 2018-07-21
   - add two anon sub syntax
     [First] Package is Foo, sub name is anonymous
