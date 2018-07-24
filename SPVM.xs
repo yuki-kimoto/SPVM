@@ -1367,13 +1367,41 @@ call_sub(...)
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
 
+  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type);
+  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type);
+  
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;
   
   // Return count
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
-  if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+  if (return_type_is_value_type) {
+    
+  }
+  else if (return_type_is_object_type) {
+    excetpion_flag = env->call_sub(env, sub_id, stack);
+    if (!excetpion_flag) {
+      void* return_value = stack[0].oval;
+      sv_return_value = NULL;
+      if (return_value != NULL) {
+        env->inc_ref_count(env, return_value);
+        
+        if (return_type_dimension == 0) {
+          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
+        }
+        else if (return_type_dimension > 0) {
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
+        }
+      }
+      else {
+        sv_return_value = &PL_sv_undef;
+      }
+    }
+  }
+  else {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
         excetpion_flag = env->call_sub(env, sub_id, stack);
@@ -1423,28 +1451,6 @@ call_sub(...)
       }
       default:
         assert(0);
-    }
-  }
-  else {
-    excetpion_flag = env->call_sub(env, sub_id, stack);
-    if (!excetpion_flag) {
-      void* return_value = stack[0].oval;
-      sv_return_value = NULL;
-      if (return_value != NULL) {
-        env->inc_ref_count(env, return_value);
-        
-        if (return_type_dimension == 0) {
-          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
-          
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
-        }
-        else if (return_type_dimension > 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
-        }
-      }
-      else {
-        sv_return_value = &PL_sv_undef;
-      }
     }
   }
   
