@@ -1174,10 +1174,11 @@ call_sub(...)
 {
   (void)RETVAL;
   
-  int32_t stack_arg_start = 0;
   
   SV* sv_package_name = ST(0);
   SV* sv_sub_name = ST(1);
+
+  int32_t arg_start = 2;
 
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
@@ -1205,36 +1206,61 @@ call_sub(...)
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
   
-  stack_arg_start += 2;
   
   // Arguments
   {
     // If class method, first argument is ignored
     if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
-      stack_arg_start++;
+      arg_start++;
     }
     
     int32_t arg_index;
     // Check argument count
-    if (items - stack_arg_start != sub->op_args->length) {
+    if (items - arg_start != sub->op_args->length) {
       croak("Argument count is defferent");
     }
     
     int32_t arg_var_id = 0;
+    SPVM_VALUE* stack = runtime->stack;
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SV* sv_value = ST(arg_index + stack_arg_start);
+      SV* sv_value = ST(arg_index + arg_start);
       
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
-      int32_t arg_type_width = SPVM_TYPE_get_width(compiler, arg_type);
       
+      int32_t arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type);
+      int32_t arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type);
+
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
       
-      SPVM_VALUE* stack = runtime->stack;
-      
-      if (arg_type_dimension == 0 && arg_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && arg_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-        switch (arg_type->basic_type->id) {
+      if (arg_type_is_value_type) {
+        int32_t arg_type_width = SPVM_TYPE_get_width(compiler, arg_type);
+        arg_var_id += arg_type_width;
+      }
+      else if (arg_type_is_object_type) {
+        if (!SvOK(sv_value)) {
+          stack[arg_var_id].oval = NULL;
+        }
+        else {
+          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
+            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+            
+            _Bool check_cast = env->check_cast(env, arg_type->basic_type->id, arg_type->dimension, object);
+            if (!check_cast) {
+              croak("Can't cast %dth argument", arg_index);
+            }
+            
+            stack[arg_var_id].oval = object;
+          }
+          else {
+            croak("%dth argument must be SPVM::Data object", arg_index);
+          }
+        }
+        arg_var_id++;
+      }
+      else {
+        switch (arg_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
             stack[arg_var_id].bval = value;
@@ -1265,39 +1291,11 @@ call_sub(...)
             stack[arg_var_id].dval = value;
             break;
           }
+          default:
+            assert(0);
         }
+        arg_var_id++;
       }
-      else {
-        if (!SvOK(sv_value)) {
-          stack[arg_var_id].oval = NULL;
-        }
-        else {
-          if (sv_isobject(sv_value)) {
-            SV* sv_basic_object = sv_value;
-            if (sv_derived_from(sv_basic_object, "SPVM::Data")) {
-              
-              SPVM_OBJECT* basic_object = SPVM_XS_UTIL_get_object(sv_basic_object);
-              
-              if (!(basic_object->basic_type_id == arg_type->basic_type->id && basic_object->dimension == arg_type->dimension)) {
-                SPVM_TYPE* basic_object_type = SPVM_LIST_fetch(compiler->basic_types, basic_object->basic_type_id);
-                SV* sv_arg_type_name = SPVM_XS_UTIL_create_sv_type_name(arg_type->basic_type->id, arg_type->dimension);
-                SV* sv_basic_object_type = SPVM_XS_UTIL_create_sv_type_name(basic_object_type->basic_type->id, basic_object_type->dimension);
-                
-                croak("Argument basic_object type need %s, but %s", SvPV_nolen(sv_arg_type_name), SvPV_nolen(sv_basic_object_type));
-              }
-              
-              stack[arg_var_id].oval = basic_object;
-            }
-            else {
-              croak("Data must be derived from SPVM::Data");
-            }
-          }
-          else {
-            croak("Argument must be numeric value or SPVM::Data subclass");
-          }
-        }
-      }
-      arg_var_id += arg_type_width;
     }
   }
   
