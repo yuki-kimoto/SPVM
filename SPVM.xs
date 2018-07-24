@@ -1377,7 +1377,55 @@ call_sub(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
   if (return_type_is_value_type) {
+    excetpion_flag = env->call_sub(env, sub_id, stack);
     
+    SPVM_OP* op_package = return_type->basic_type->op_package;
+    assert(op_package);
+    
+    SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+    assert(op_first_field);
+    
+    SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+    assert(field_type->dimension == 0);
+    
+    HV* hv_value = sv_2mortal(newHV());
+    for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
+      SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+      const char* field_name = op_field->uv.field->op_name->uv.name;
+      
+      SV* sv_field_value = NULL;
+      switch (field_type->basic_type->id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+          break;
+        }
+        default:
+          assert(0);
+      }
+      
+      hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+      sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
+    }
   }
   else if (return_type_is_object_type) {
     excetpion_flag = env->call_sub(env, sub_id, stack);
