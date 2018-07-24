@@ -7,6 +7,7 @@ use warnings;
 use Test::More 'no_plan';
 
 use SPVM 'TestCase';
+use SPVM 'TestCase::Object';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -30,69 +31,31 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $memory_blocks_count = SPVM::get_memory_blocks_count();
     ok($memory_blocks_count > 0);
   }
-
-  # Create object
-  {
-    my $object = TestCase->new();
-    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set_x_string(SPVM::new_byte_array_bin("abc"));
-    ok(TestCase->spvm_object_set_object($object));
-  }
-  # Create object
-  {
-    my $object = TestCase->new();
-    $object->set_x_byte($BYTE_MAX);
-    $object->set_x_short($SHORT_MAX);
-    $object->set_x_int($INT_MAX);
-    $object->set_x_long($LONG_MAX);
-    $object->set_x_float($FLOAT_PRECICE);
-    $object->set_x_double($DOUBLE_PRECICE);
-    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
-    my $minimal = TestCase::Minimal->new;
-    $minimal->set_x(3);
-    $object->set_minimal($minimal);
-    
-    ok(TestCase->spvm_object_set($object));
-    
-    is($object->get_x_byte,$BYTE_MAX);
-    is($object->get_x_short, $SHORT_MAX);
-    is($object->get_x_int, $INT_MAX);
-    is($object->get_x_long, $LONG_MAX);
-    is($object->get_x_float, $FLOAT_PRECICE);
-    is($object->get_x_double, $DOUBLE_PRECICE);
-    is($object->get_minimal->get_x, 3);
-  }
 }
 
 # Field
 {
-  ok(TestCase->object_field_set_and_get());
+  ok(TestCase::Object->object_field_set_and_get());
 }
 
 # Field
 {
-  ok(TestCase->object_field_set_and_get());
-  ok(TestCase->object_field_set_and_get_again());
+  ok(TestCase::Object->object_field_set_and_get());
+  ok(TestCase::Object->object_field_set_and_get_again());
 }
 
 {
-  ok(TestCase->object_field_initialized_zero());
-}
-
-# Get object from freelist
-{
-  ok(TestCase->get_object_from_freelist());
+  ok(TestCase::Object->object_field_initialized_zero());
 }
 
 # Destructor
 {
-  ok(TestCase->destructor());
+  ok(TestCase::Object->destructor());
 }
 
 # isa
 {
-  ok(TestCase->isa_basic());
+  ok(TestCase::Object->isa_basic());
 }
 
 

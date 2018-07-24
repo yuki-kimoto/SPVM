@@ -1,3 +1,14 @@
+0.0363 2018-07-23
+  - simplify anon package syntax. You don't need to write "new package { ... }".
+      my $point = package {
+        has x : int;
+        has y : int;
+        sub clear : void ($self : self) {
+          $self->{x} = 0;
+          $self->{y} = 0;
+        }
+      };
+  
 0.0362 2018-07-23
   - improve precompiled source code with more typing
 0.0361 2018-07-21

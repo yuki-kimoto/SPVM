@@ -130,17 +130,6 @@ package TestCase {
     }
   }
   
-  precompile sub isa_basic : int () {
-    my $minimal = new TestCase::Minimal;
-    if ($minimal isa TestCase::Minimal) {
-      if (!($minimal isa TestCase)) {
-        return 1;
-      }
-    }
-    
-    return 0;
-  }
-  
   precompile sub package_var : int () {
     if ($TestCase::PACKAGE_VAR_INT == 0) {
       $TestCase::PACKAGE_VAR_INT = INT32_MAX();
@@ -300,23 +289,6 @@ package TestCase {
     return $value;
   }
 
-
-
-  precompile sub destructor : int () {
-    my $minimal = TestCase::Minimal->new();
-    destructor_call($minimal);
-    
-    if ($minimal->{x} == 3) {
-      return 1;
-    }
-    return 0;
-  }
-  
-  precompile sub destructor_call : int ($minimal: TestCase::Minimal) {
-    my $dest = TestCase::Destructor->new();
-    $dest->{minimal} = $minimal;
-  }
-  
   precompile sub weaken_target4_weaken_object_assign : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
@@ -705,109 +677,11 @@ package TestCase {
     return 0;
   }
   
-  # object field is initialized zero
-  precompile sub object_field_initialized_zero : int () {
-    my $obj = new TestCase;
-    if ($obj->{x_byte} == 0) {
-      if ($obj->{x_int} == 0) {
-        if ($obj->{x_string} == undef) {
-          return 1;
-        }
-      }
-    }
-    return 0;
-  }
-  
-  # object field set and get
-  precompile sub object_field_set_and_get : int () {
-    my $test_case = new TestCase;
-    
-    $test_case->{x_byte} = INT8_MAX();
-    $test_case->{x_short} = INT16_MAX();
-    $test_case->{x_int} = INT32_MAX();
-    $test_case->{x_long} = INT64_MAX();
-    $test_case->{x_float} = TestCase->FLOAT_PRECICE();
-    $test_case->{x_double} = TestCase->DOUBLE_PRECICE();
-    my $minimal = TestCase::Minimal->new();
-    $minimal->{x} = 3;
-    $test_case->{minimal} = $minimal;
-    if ((int)$test_case->{x_byte} == (int)INT8_MAX()) {
-      if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
-        if ($test_case->{x_int} == INT32_MAX()) {
-          if ($test_case->{x_long} == INT64_MAX()) {
-            if ($test_case->{x_float} == TestCase->FLOAT_PRECICE()) {
-              if ($test_case->{x_double} == TestCase->DOUBLE_PRECICE()) {
-                if ($test_case->{minimal}->{x} == 3) {
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return 0;
-  }
-
-  # object field set and get
-  precompile sub object_field_set_and_get_again : int () {
-    my $test_case = new TestCase;
-    
-    $test_case->{x_byte} = INT8_MAX();
-    $test_case->{x_short} = INT16_MAX();
-    $test_case->{x_int} = INT32_MAX();
-    $test_case->{x_long} = INT64_MAX();
-    $test_case->{x_float} = FLOAT_PRECICE();
-    $test_case->{x_double} = DOUBLE_PRECICE();
-    my $minimal = TestCase::Minimal->new();
-    $minimal->{x} = 3;
-    $test_case->{minimal} = $minimal;
-
-    $test_case->{x_byte} = INT8_MAX();
-    $test_case->{x_short} = INT16_MAX();
-    $test_case->{x_int} = INT32_MAX();
-    $test_case->{x_long} = INT64_MAX();
-    $test_case->{x_float} = FLOAT_PRECICE();
-    $test_case->{x_double} = DOUBLE_PRECICE();
-    $test_case->{minimal} = $minimal;
-
-    if ((int)$test_case->{x_byte} == (int)INT8_MAX()) {
-      if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
-        if ($test_case->{x_int} == INT32_MAX()) {
-          if ($test_case->{x_long} == INT64_MAX()) {
-            if ($test_case->{x_float} == FLOAT_PRECICE()) {
-              if ($test_case->{x_double} == DOUBLE_PRECICE()) {
-                if ($test_case->{minimal}->{x} == 3) {
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return 0;
-  }
-
   # new near small base_object_max_byte_size_use_memory_pool
   precompile sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
     my $block = new byte[0xFFF0];
     
     return 1;
-  }
-
-  precompile sub get_object_from_freelist  : int () {
-    get_object_from_freelist_check();
-    
-    my $result = new int[65];
-    $result->[64] = 0;
-    
-    return 1;
-  }
-  precompile sub get_object_from_freelist_check : int[] () {
-    my $result = new int[63];
-    my $true_result = new int[1];
-    return $true_result;
   }
 
   enum {

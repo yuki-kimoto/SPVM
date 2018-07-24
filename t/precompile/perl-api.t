@@ -31,6 +31,42 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Object
+{
+  # Create object
+  {
+    my $object = TestCase->new();
+    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set_x_string(SPVM::new_byte_array_bin("abc"));
+    ok(TestCase->spvm_object_set_object($object));
+  }
+  # Create object
+  {
+    my $object = TestCase->new();
+    $object->set_x_byte($BYTE_MAX);
+    $object->set_x_short($SHORT_MAX);
+    $object->set_x_int($INT_MAX);
+    $object->set_x_long($LONG_MAX);
+    $object->set_x_float($FLOAT_PRECICE);
+    $object->set_x_double($DOUBLE_PRECICE);
+    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
+    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x(3);
+    $object->set_minimal($minimal);
+    
+    ok(TestCase->spvm_object_set($object));
+    
+    is($object->get_x_byte,$BYTE_MAX);
+    is($object->get_x_short, $SHORT_MAX);
+    is($object->get_x_int, $INT_MAX);
+    is($object->get_x_long, $LONG_MAX);
+    is($object->get_x_float, $FLOAT_PRECICE);
+    is($object->get_x_double, $DOUBLE_PRECICE);
+    is($object->get_minimal->get_x, 3);
+  }
+}
+
 # time
 {
   cmp_ok(abs(time - SPVM::CORE->time()), '<', 2);
