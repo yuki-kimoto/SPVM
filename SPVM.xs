@@ -1206,6 +1206,7 @@ call_sub(...)
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
   
+  SPVM_VALUE* stack = runtime->stack;
   
   // Arguments
   {
@@ -1221,7 +1222,6 @@ call_sub(...)
     }
     
     int32_t arg_var_id = 0;
-    SPVM_VALUE* stack = runtime->stack;
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
       
@@ -1373,7 +1373,6 @@ call_sub(...)
   // Return count
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
-  SPVM_VALUE* stack = runtime->stack;
   if (return_type_dimension == 0 && return_basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
     switch (return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
