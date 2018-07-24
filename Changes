@@ -8,7 +8,7 @@
           $self->{y} = 0;
         }
       };
-  
+  - Perl API call_sub support value type arguments
 0.0362 2018-07-23
   - improve precompiled source code with more typing
 0.0361 2018-07-21

@@ -1246,8 +1246,6 @@ call_sub(...)
           
           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
           assert(field_type->dimension == 0);
-
-          SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
           
           for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
             SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
