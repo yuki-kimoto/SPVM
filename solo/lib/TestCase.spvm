@@ -235,7 +235,7 @@ SPVM::Test - SPVM test module
     
     # sort
     {
-      my $comparator = new package {
+      my $comparator = package {
         sub compare : int ($self : self, $object1 : object, $object2 : object) {
           my $minimal1 = (TestCase::Minimal)$object1;
           my $minimal2 = (TestCase::Minimal)$object2;
@@ -301,7 +301,7 @@ SPVM::Test - SPVM test module
     
     # Anon package
     {
-      my $point = new package {
+      my $point = package {
         has x : int;
         has y : int;
         sub clear : void ($self : self) {

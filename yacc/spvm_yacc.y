@@ -560,9 +560,12 @@ new_object
     {
       $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
     }
-  | NEW anon_package
+  | anon_package
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+      // New
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
+
+      $$ = SPVM_OP_build_new_object(compiler, op_new, $1, NULL);
     }
   | anon_sub
     {
