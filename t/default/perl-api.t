@@ -483,6 +483,13 @@ is_deeply(
   }
 }
 
+# Complex
+{
+  my $z3 = SPVM::CORE->cadd({re => 0.25, im => 0.5}, {re => 0.5, im => 0.125});
+  is_deeply($z3, {re => 0.75, im => 0.625});
+}
+
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

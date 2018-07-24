@@ -1235,7 +1235,7 @@ call_sub(...)
       int32_t arg_type_dimension = arg_type->dimension;
       
       if (arg_type_is_value_type) {
-        if (sv_isobject(sv_value) && sv_derived_from(sv_value, "HASH")) {
+        if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
           
           SPVM_OP* op_package = arg_type->basic_type->op_package;
@@ -1300,7 +1300,7 @@ call_sub(...)
           arg_var_id += op_package->uv.package->op_fields->length;
         }
         else {
-          croak("%dth argument must be hash reference", arg_index);
+          croak("%dth argument must be hash reference", arg_index + 1);
         }
       }
       else if (arg_type_is_object_type) {
@@ -1404,7 +1404,7 @@ call_sub(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+          sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
@@ -1416,7 +1416,7 @@ call_sub(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+          sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
           break;
         }
         default:
