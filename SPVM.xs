@@ -1370,8 +1370,6 @@ call_sub(...)
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;
   
-  PUSHMARK(SP);
-          
   // Return count
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
@@ -1450,8 +1448,6 @@ call_sub(...)
       }
     }
   }
-  SPAGAIN;
-  ax = (SP - PL_stack_base) + 1;
   
   // Exception
   if (excetpion_flag) {
