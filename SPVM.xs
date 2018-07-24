@@ -1745,3 +1745,38 @@ new_multi_array_len(...)
   XPUSHs(sv_array);
   XSRETURN(1);
 }
+
+SV*
+new_value_t_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_basic_type_name = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
+
+  int32_t length = (int32_t)SvIV(sv_length);
+
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_value_t_array_raw(env, basic_type->id, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
