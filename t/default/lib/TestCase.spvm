@@ -268,7 +268,7 @@ package TestCase {
     
     return 0;
   }
-  
+
   sub concat : string () {
     "a" . "b";
     

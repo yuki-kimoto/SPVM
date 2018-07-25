@@ -258,6 +258,18 @@ is_deeply(
   }
 }
 
+=pod
+{
+  {
+    my $sp_values = SPVM::new_value_t_array_len("Point_i3", 3);
+    $sp_values->set_element(1, {x => INT_MIN, y => 1, z => 2});
+    ok(TestCase->spvm_set_and_get_value_t_int($sp_values));
+    my $value = $sp_values->get_element(1);
+    is_deeply($value, $DOUBLE_PRECICE);
+  }
+}
+=cut
+
 # SPVM Functions
 {
   # to_elements

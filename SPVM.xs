@@ -564,82 +564,89 @@ get_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
 
   SV* sv_value;
   _Bool is_object = 0;
-  if (dimension == 1) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        // Get element
-        int8_t* elements = env->get_byte_array_elements(env, array);
-        int8_t value = elements[index];
-        sv_value = sv_2mortal(newSViv(value));
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        // Get element
-        int16_t* elements = env->get_short_array_elements(env, array);
-        int16_t value = elements[index];
-        sv_value = sv_2mortal(newSViv(value));
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        // Get element
-        int32_t* elements = env->get_int_array_elements(env, array);
-        int32_t value = elements[index];
-        sv_value = sv_2mortal(newSViv(value));
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        // Get element
-        int64_t* elements = env->get_long_array_elements(env, array);
-        int64_t value = elements[index];
-        sv_value = sv_2mortal(newSViv(value));
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        // Get element
-        float* elements = env->get_float_array_elements(env, array);
-        float value = elements[index];
-        sv_value = sv_2mortal(newSVnv(value));
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        // Get element
-        double* elements = env->get_double_array_elements(env, array);
-        double value = elements[index];
-        sv_value = sv_2mortal(newSVnv(value));
-        break;
-      }
-      default:
-        is_object = 1;
-    }
-  }
-  else if (dimension > 1) {
-    is_object = 1;
-  }
-  
-  if (is_object) {
-    // Element dimension
-    int32_t element_dimension = array->dimension - 1;
-    
-    // Element type id
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+  if (is_array_type) {
+    int32_t element_dimension = dimension - 1;
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
 
-    // Index
-    SPVM_OBJECT* value = env->get_object_array_element(env, array, index);
-    if (value != NULL) {
-      env->inc_ref_count(env, value);
+    if (element_type_is_value_type) {
+      assert(0);
     }
-    
-    if (element_dimension == 0) {
-      SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+    else if (element_type_is_object_type) {
       
-      sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
+      // Element type id
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+
+      // Index
+      SPVM_OBJECT* value = env->get_object_array_element(env, array, index);
+      if (value != NULL) {
+        env->inc_ref_count(env, value);
+      }
+      
+      int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension);
+      if (element_type_is_array_type) {
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
+      }
+      else {
+        SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+        sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
+      }
     }
-    else if (element_dimension > 0) {
-      sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
+    else {
+      switch (basic_type_id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          // Get element
+          int8_t* elements = env->get_byte_array_elements(env, array);
+          int8_t value = elements[index];
+          sv_value = sv_2mortal(newSViv(value));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          // Get element
+          int16_t* elements = env->get_short_array_elements(env, array);
+          int16_t value = elements[index];
+          sv_value = sv_2mortal(newSViv(value));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          // Get element
+          int32_t* elements = env->get_int_array_elements(env, array);
+          int32_t value = elements[index];
+          sv_value = sv_2mortal(newSViv(value));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          // Get element
+          int64_t* elements = env->get_long_array_elements(env, array);
+          int64_t value = elements[index];
+          sv_value = sv_2mortal(newSViv(value));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          // Get element
+          float* elements = env->get_float_array_elements(env, array);
+          float value = elements[index];
+          sv_value = sv_2mortal(newSVnv(value));
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          // Get element
+          double* elements = env->get_double_array_elements(env, array);
+          double value = elements[index];
+          sv_value = sv_2mortal(newSVnv(value));
+          break;
+        }
+        default:
+          assert(0);
+      }
     }
+  }
+  else {
+    croak("Argument must be array reference");
   }
   
   XPUSHs(sv_value);
