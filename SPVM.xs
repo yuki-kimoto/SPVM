@@ -153,10 +153,10 @@ set_elements(...)
     int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
     
     if (element_type_is_value_type) {
-      assert(0);
+
     }
     else if (element_type_is_object_type) {
-      assert(0);
+      
     }
     else {
       switch (basic_type_id) {
@@ -254,7 +254,10 @@ set_bin(...)
   SV* sv_array = ST(0);
   SV* sv_bin = ST(1);
   
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -344,11 +347,14 @@ set_element(...)
 {
   (void)RETVAL;
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
   SV* sv_array = ST(0);
   SV* sv_index = ST(1);
   SV* sv_value = ST(2);
+
+  // Environment
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -366,86 +372,91 @@ set_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
 
-  if (dimension == 1) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        // Value
-        int8_t value = (int8_t)SvIV(sv_value);
-        
-        // Set element
-        int8_t* elements = env->get_byte_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        // Value
-        int16_t value = (int16_t)SvIV(sv_value);
-        
-        // Set element
-        int16_t* elements = env->get_short_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        // Value
-        int32_t value = (int32_t)SvIV(sv_value);
-        
-        // Set element
-        int32_t* elements = env->get_int_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        // Value
-        int64_t value = (int64_t)SvIV(sv_value);
-        
-        // Set element
-        int64_t* elements = env->get_long_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        // Value
-        float value = (float)SvNV(sv_value);
-        
-        // Set element
-        float* elements = env->get_float_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        // Value
-        double value = (double)SvNV(sv_value);
-        
-        // Set element
-        double* elements = env->get_double_array_elements(env, array);
-        
-        elements[index] = value;
-        break;
-      }
-      default: {
-        // Get object
-        SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
-        
-        env->set_object_array_element(env, array, index, value);
+  if (is_array_type) {
+    int32_t element_dimension = dimension - 1;
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    
+    if (element_type_is_value_type) {
+      assert(0);
+    }
+    else if (element_type_is_object_type) {
+      // Get object
+      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+      
+      env->set_object_array_element(env, array, index, object);
+    }
+    else {
+      switch (basic_type_id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          // Value
+          int8_t value = (int8_t)SvIV(sv_value);
+          
+          // Set element
+          int8_t* elements = env->get_byte_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          // Value
+          int16_t value = (int16_t)SvIV(sv_value);
+          
+          // Set element
+          int16_t* elements = env->get_short_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          // Value
+          int32_t value = (int32_t)SvIV(sv_value);
+          
+          // Set element
+          int32_t* elements = env->get_int_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          // Value
+          int64_t value = (int64_t)SvIV(sv_value);
+          
+          // Set element
+          int64_t* elements = env->get_long_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          // Value
+          float value = (float)SvNV(sv_value);
+          
+          // Set element
+          float* elements = env->get_float_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          // Value
+          double value = (double)SvNV(sv_value);
+          
+          // Set element
+          double* elements = env->get_double_array_elements(env, array);
+          
+          elements[index] = value;
+          break;
+        }
+        default:
+          assert(0);
       }
     }
   }
-  else if (dimension > 1) {
-    
-    // Get object
-    SPVM_OBJECT* value = SPVM_XS_UTIL_get_object(sv_value);
-    
-    env->set_object_array_element(env, array, index, value);
-  }
   else {
-    assert(0);
+    croak("Argument is not array type");
   }
   
   XSRETURN(0);
@@ -457,12 +468,13 @@ get_element(...)
 {
   (void)RETVAL;
   
+  SV* sv_array = ST(0);
+  SV* sv_index = ST(1);
+
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
-  
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -570,7 +582,10 @@ to_elements(...)
   
   SV* sv_array = ST(0);
   
+  // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
