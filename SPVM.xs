@@ -156,7 +156,6 @@ set_elements(...)
 
     }
     else if (element_type_is_object_type) {
-      
     }
     else {
       switch (basic_type_id) {
@@ -359,12 +358,22 @@ set_element(...)
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
 
+  // Check undef
+  if (!SvOK(sv_array)) {
+    croak("Array nust not be NULL");
+  }
+  
+  // Check array object
+  if (!(sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Array must be SPVM::Data::Array object");
+  }
+
   // Array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
   // Length
   int32_t length = env->get_array_length(env, array);
-  
+   
   // Check range
   if (index < 0 || index > length - 1) {
     croak("Out of range)");
@@ -444,7 +453,10 @@ set_element(...)
       }
     }
     else if (element_type_is_object_type) {
-      if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
+      if (!SvOK(sv_value)) {
+        env->set_object_array_element(env, array, index, NULL);
+      }
+      else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
         SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
         
         int32_t check_cast = env->check_cast(env, basic_type_id, element_dimension, object);
@@ -551,6 +563,16 @@ get_element(...)
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
 
+  // Check undef
+  if (!SvOK(sv_array)) {
+    croak("Array nust not be NULL");
+  }
+  
+  // Check array object
+  if (!(sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Array must be SPVM::Data::Array object");
+  }
+
   // Array
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
@@ -593,16 +615,7 @@ get_element(...)
         SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
         const char* field_name = op_field->uv.field->op_name->uv.name;
 
-        SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
         SV* sv_field_value;
-        if (sv_field_value_ptr) {
-          sv_field_value = *sv_field_value_ptr;
-        }
-        else {
-          sv_field_value = sv_2mortal(newSViv(0));
-          warn("%s undefined value", field_name);
-        }
-        
         switch (field_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             SPVM_VALUE_byte field_value = ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index];
