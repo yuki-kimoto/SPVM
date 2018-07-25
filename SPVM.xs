@@ -121,14 +121,17 @@ set_elements(...)
   
   SV* sv_array = ST(0);
   SV* sv_values = ST(1);
+
+  // Environment
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
     croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -140,8 +143,12 @@ set_elements(...)
     croak("Elements length must be same as array length)");
   }
   
-  int32_t basic_type_id = array->basic_type_id;
+  int32_t basic_type_id  = array->basic_type_id;
   int32_t dimension = array->dimension;
+  int32_t element_dimension = dimension - 1;
+  
+  int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
+  int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
   
   if (dimension == 1) {
     switch (basic_type_id) {
