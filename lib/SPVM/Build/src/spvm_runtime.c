@@ -170,8 +170,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type);
-      if (SPVM_TYPE_is_object_type(compiler, arg_type) && !arg_type_is_value_t) {
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension);
+      if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension) && !arg_type_is_value_t) {
         SPVM_MY* my_arg = op_arg->uv.my;
         void* object = *(void**)&vars[my_arg->var_id];
         if (object != NULL) {
@@ -2299,8 +2299,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
-        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type);
-        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type);
+        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension);
+        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension);
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->op_args->length;
@@ -2485,8 +2485,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Croak
   if (!exception_flag) {
     
-    int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_type);
-    _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type);
+    int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
+    _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
     
     // Decrement ref count of return value
     if (sub_return_type_is_object && !sub_return_type_is_value_t) {

@@ -179,12 +179,10 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-_Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  assert(type);
-  
-  if (type->dimension == 0 && (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     return 1;
   }
   else {
@@ -192,12 +190,10 @@ _Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   }
 }
 
-_Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  assert(type);
-  
-  if (type->dimension == 0 && (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_LONG)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_LONG)) {
     return 1;
   }
   else {
@@ -205,10 +201,10 @@ _Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   }
 }
 
-_Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  if (type->dimension > 0 || (type->dimension == 0 && type->basic_type->id > SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
+  if (dimension > 0 || (dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
     return 1;
   }
   else {
@@ -216,38 +212,36 @@ _Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   }
 }
 
-_Bool SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  return type && type->dimension == 0 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT;
+  return dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT;
 }
 
-_Bool SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  _Bool is_package = (type->dimension == 0 && type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
+  _Bool is_package = (dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT);
   
   return is_package;
 }
 
-_Bool SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  return type && type->dimension == 1 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE;
+  return dimension == 1 && basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE;
 }
 
-_Bool SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  return type->dimension > 0;
+  return dimension > 0;
 }
 
-_Bool SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  assert(type);
-  
-  if (type->dimension == 1 && (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
+  if (dimension == 1 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE))
   {
     return 1;
   }
@@ -256,10 +250,10 @@ _Bool SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) 
   }
 }
 
-_Bool SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
-  if (type->dimension == 0 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
+  if (dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
     return 1;
   }
   else {
@@ -267,12 +261,14 @@ _Bool SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   }
 }
 
-_Bool SPVM_TYPE_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_value_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  
   int32_t is_value_t;
-  if (type->dimension == 0) {
-    const char* basic_type_name = type->basic_type->name;
+  if (dimension == 0) {
+    const char* basic_type_name = basic_type->name;
     SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (op_package) {
@@ -297,12 +293,14 @@ _Bool SPVM_TYPE_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return is_value_t;
 }
 
-_Bool SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
+
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
   int32_t is_value_array_type;
-  if (type->dimension == 1) {
-    const char* basic_type_name = type->basic_type->name;
+  if (dimension == 1) {
+    const char* basic_type_name = basic_type->name;
     SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (op_package) {
@@ -327,11 +325,13 @@ _Bool SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   return is_value_array_type;
 }
 
-_Bool SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+_Bool SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
+
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
   int32_t is_basic_type_value_t;
-  const char* basic_type_name = type->basic_type->name;
+  const char* basic_type_name = basic_type->name;
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
   
   // Package

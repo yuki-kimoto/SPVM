@@ -24,6 +24,7 @@
 #include "spvm_sub.h"
 #include "spvm_my.h"
 #include "spvm_type.h"
+#include "spvm_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
@@ -32,7 +33,6 @@
 #include "spvm_list.h"
 #include "spvm_csource_builder.h"
 #include "spvm_string_buffer.h"
-#include "spvm_basic_type.h"
 #include "spvm_use.h"
 
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
@@ -1228,8 +1228,8 @@ call_sub(...)
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       
-      int32_t arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type);
-      int32_t arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type);
+      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension);
+      _Bool arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension);
 
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
@@ -1365,8 +1365,8 @@ call_sub(...)
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
 
-  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type);
-  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type);
+  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type->basic_type->id, return_type->dimension);
+  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type->basic_type->id, return_type->dimension);
   
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;
