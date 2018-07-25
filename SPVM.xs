@@ -126,15 +126,21 @@ set_elements(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+
+  // Array must be SPVM::Data::Array object
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Array must be SPVM::Data::Array object)");
+  }
+
+  // Get object
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
+  // Values must be array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
     croak("Values must be array refenrece)");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
-  
-  // Get object
-  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
 
   int32_t length = env->get_array_length(env, array);
 
@@ -832,6 +838,11 @@ to_elements(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+
+  // Array must be SPVM::Data::Array object
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Array must be SPVM::Data::Array object)");
+  }
   
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
