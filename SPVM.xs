@@ -383,10 +383,21 @@ set_element(...)
       assert(0);
     }
     else if (element_type_is_object_type) {
-      // Get object
-      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-      
-      env->set_object_array_element(env, array, index, object);
+      if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
+        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+        
+        int32_t check_cast = env->check_cast(env, basic_type_id, element_dimension, object);
+        
+        if (check_cast) {
+          env->set_object_array_element(env, array, index, object);
+        }
+        else {
+          croak("Element must be cast");
+        }
+      }
+      else {
+        croak("Element must be SPVM::Data object");
+      }
     }
     else {
       switch (basic_type_id) {
