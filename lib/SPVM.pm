@@ -296,10 +296,6 @@ sub new_object {
 
 SPVM - Fast array and numeric operation, and provide easy way to C/C++ Binding
 
-B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
-
-Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30% of version 1.0.
-
 =head1 SYNOPSIS
 
   package MyMath {
@@ -488,6 +484,12 @@ L<chromatic|https://github.com/chromatic>
 L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
 
 =back
+
+=head1 NOTE
+
+B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
+
+Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30% of version 1.0.
 
 =head1 COPYRIGHT & LICENSE
 
