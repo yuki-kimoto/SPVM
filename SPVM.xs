@@ -1204,7 +1204,7 @@ call_sub(...)
   }
 
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
   
   SPVM_VALUE* stack = runtime->stack;
   

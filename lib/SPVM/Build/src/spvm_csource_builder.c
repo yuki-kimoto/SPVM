@@ -760,7 +760,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   int32_t sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, sub_return_type);
   int32_t sub_return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, sub_return_type);
 
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type);
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
   
   assert(sub->have_precompile_desc);
   

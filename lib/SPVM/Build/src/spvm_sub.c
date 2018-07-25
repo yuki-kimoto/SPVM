@@ -8,6 +8,7 @@
 #include "spvm_list.h"
 #include "spvm_op.h"
 #include "spvm_type.h"
+#include "spvm_basic_type.h"
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   SPVM_SUB* sub = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_SUB));
@@ -34,7 +35,7 @@ int32_t SPVM_SUB_get_var_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
       SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
-      int32_t width = SPVM_TYPE_get_width(compiler, type);
+      int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension);
       var_alloc_length += width;
     }
   }
@@ -50,7 +51,7 @@ int32_t SPVM_SUB_get_arg_alloc_length(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_arg);
-      int32_t width = SPVM_TYPE_get_width(compiler, type);
+      int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension);
       arg_alloc_length += width;
     }
   }

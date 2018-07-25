@@ -363,11 +363,14 @@ _Bool SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   return is_basic_type_value_t;
 }
 
-int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  assert(basic_type);
   
   int32_t width;
-  if (type->dimension == 0) {
-    const char* basic_type_name = type->basic_type->name;
+  if (dimension == 0) {
+    const char* basic_type_name = basic_type->name;
     SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (op_package) {

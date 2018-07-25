@@ -2287,7 +2287,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_MY* my = op_my->uv.my;
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
               
-              int32_t width = SPVM_TYPE_get_width(compiler, type);
+              int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension);
               if (my_var_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", op_my->file, op_my->line);
               }
