@@ -148,14 +148,103 @@ set_elements(...)
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
   
   if (is_array_type) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
     int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
     int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
     
     if (element_type_is_value_type) {
+      for (int32_t index = 0; index < length; index++) {
+        SV** sv_value_ptr = av_fetch(av_values, index, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
 
+        if (sv_derived_from(sv_value, "HASH")) {
+          SPVM_OP* op_package = basic_type->op_package;
+          assert(op_package);
+          
+          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+          assert(op_first_field);
+          
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          assert(field_type->dimension == 0);
+
+          void* elements = (void*)env->get_int_array_elements(env, array);
+          
+          HV* hv_value = (HV*)SvRV(sv_value);
+          int32_t field_length = op_package->uv.package->op_fields->length;
+          for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
+            SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+            const char* field_name = op_field->uv.field->op_name->uv.name;
+
+            SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
+            SV* sv_field_value;
+            if (sv_field_value_ptr) {
+              sv_field_value = *sv_field_value_ptr;
+            }
+            else {
+              sv_field_value = sv_2mortal(newSViv(0));
+              warn("%s undefined value", field_name);
+            }
+
+            switch (field_type->basic_type->id) {
+              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                ((SPVM_VALUE_short*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_short)SvIV(sv_field_value);
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_INT: {
+                ((SPVM_VALUE_int*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_int)SvIV(sv_field_value);
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                ((SPVM_VALUE_long*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_long)SvIV(sv_field_value);
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                ((SPVM_VALUE_float*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_float)SvNV(sv_field_value);
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                ((SPVM_VALUE_double*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_double)SvNV(sv_field_value);
+                break;
+              }
+              default:
+                assert(0);
+            }
+          }
+        }
+        else {
+          croak("Element must be hash reference");
+        }
+      }
     }
     else if (element_type_is_object_type) {
+      for (int32_t index = 0; index < length; index++) {
+        SV** sv_value_ptr = av_fetch(av_values, index, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        
+        if (!SvOK(sv_value)) {
+          env->set_object_array_element(env, array, index, NULL);
+        }
+        else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
+          SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+          
+          int32_t check_cast = env->check_cast(env, basic_type_id, element_dimension, object);
+          
+          if (check_cast) {
+            env->set_object_array_element(env, array, index, object);
+          }
+          else {
+            croak("Element must be cast");
+          }
+        }
+        else {
+          croak("Element must be SPVM::Data object");
+        }
+      }
     }
     else {
       switch (basic_type_id) {
