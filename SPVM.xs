@@ -352,6 +352,11 @@ set_bin(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
+
+  // Array must be SPVM::Data::Array object
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Array must be SPVM::Data::Array object)");
+  }
   
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
@@ -359,77 +364,91 @@ set_bin(...)
   int32_t length = env->get_array_length(env, array);
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
 
-  if (dimension == 1) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        // Check range
-        if ((int32_t)sv_len(sv_bin) != length) {
-          croak("Data total byte size must be same as array length)");
-        }
+  if (is_array_type) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    int32_t element_dimension = dimension - 1;
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    
+    if (element_type_is_value_type) {
+      assert(0);
+    }
+    else if (element_type_is_object_type) {
+      assert(0);
+    }
+    else {
+      switch (basic_type_id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          // Check range
+          if ((int32_t)sv_len(sv_bin) != length) {
+            croak("Data total byte size must be same as array length)");
+          }
 
-        int8_t* elements = env->get_byte_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length);
+          int8_t* elements = env->get_byte_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length);
+          }
+          break;
         }
-        break;
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          if ((int32_t)sv_len(sv_bin) != length * 2) {
+            croak("Data total byte size must be same as array length * 2)");
+          }
+          int16_t* elements = env->get_short_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length * 2);
+          }
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          if ((int32_t)sv_len(sv_bin) != length * 4) {
+            croak("Data total byte size must be same as array length * 4)");
+          }
+          int32_t* elements = env->get_int_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length * 4);
+          }
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          if ((int32_t)sv_len(sv_bin) != length * 8) {
+            croak("Data total byte size must be same as array length * 8)");
+          }
+          int64_t* elements = env->get_long_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length * 8);
+          }
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          if ((int32_t)sv_len(sv_bin) != length * 4) {
+            croak("Data total byte size must be same as array length * 4)");
+          }
+          float* elements = env->get_float_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length * 4);
+          }
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          if ((int32_t)sv_len(sv_bin) != length * 8) {
+            croak("Data total byte size must be same as array length * 8)");
+          }
+          double* elements = env->get_double_array_elements(env, array);
+          if (length > 0) {
+            memcpy(elements, SvPV_nolen(sv_bin), length * 8);
+          }
+          break;
+        }
+        default:
+          assert(0);
       }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        if ((int32_t)sv_len(sv_bin) != length * 2) {
-          croak("Data total byte size must be same as array length * 2)");
-        }
-        int16_t* elements = env->get_short_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length * 2);
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        if ((int32_t)sv_len(sv_bin) != length * 4) {
-          croak("Data total byte size must be same as array length * 4)");
-        }
-        int32_t* elements = env->get_int_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length * 4);
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        if ((int32_t)sv_len(sv_bin) != length * 8) {
-          croak("Data total byte size must be same as array length * 8)");
-        }
-        int64_t* elements = env->get_long_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length * 8);
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        if ((int32_t)sv_len(sv_bin) != length * 4) {
-          croak("Data total byte size must be same as array length * 4)");
-        }
-        float* elements = env->get_float_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length * 4);
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        if ((int32_t)sv_len(sv_bin) != length * 8) {
-          croak("Data total byte size must be same as array length * 8)");
-        }
-        double* elements = env->get_double_array_elements(env, array);
-        if (length > 0) {
-          memcpy(elements, SvPV_nolen(sv_bin), length * 8);
-        }
-        break;
-      }
-      default:
-        croak("Invalid type");
     }
   }
-  else if (dimension > 1) {
-    croak("Invalid type");
+  else {
+    croak("Argument must be array type");
   }
   
   XSRETURN(0);
