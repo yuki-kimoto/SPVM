@@ -222,6 +222,7 @@ t/default/lib/TestCase/Long.spvm
 t/default/lib/TestCase/Loop.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/NumericOperator.spvm
+t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/Point_b3.spvm
 t/default/lib/TestCase/Point_d3.spvm
 t/default/lib/TestCase/Point_f3.spvm
@@ -312,6 +313,7 @@ t/precompile/lib/TestCase/Long.spvm
 t/precompile/lib/TestCase/Loop.spvm
 t/precompile/lib/TestCase/Minimal.spvm
 t/precompile/lib/TestCase/NumericOperator.spvm
+t/precompile/lib/TestCase/Object.spvm
 t/precompile/lib/TestCase/Point_b3.spvm
 t/precompile/lib/TestCase/Point_d3.spvm
 t/precompile/lib/TestCase/Point_f3.spvm
