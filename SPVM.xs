@@ -145,92 +145,101 @@ set_elements(...)
   
   int32_t basic_type_id  = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t element_dimension = dimension - 1;
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
   
-  int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-  int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
-  
-  if (dimension == 1) {
-    switch (basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        int8_t* elements = env->get_byte_array_elements(env, array);
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (int8_t)SvIV(sv_value);
+  if (is_array_type) {
+    int32_t element_dimension = dimension - 1;
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    
+    if (element_type_is_value_type) {
+      assert(0);
+    }
+    else if (element_type_is_object_type) {
+      assert(0);
+    }
+    else {
+      switch (basic_type_id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          int8_t* elements = env->get_byte_array_elements(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (int8_t)SvIV(sv_value);
+            }
           }
+          break;
         }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        int16_t* elements = env->get_short_array_elements(env, array);
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          int16_t* elements = env->get_short_array_elements(env, array);
 
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (int16_t)SvIV(sv_value);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (int16_t)SvIV(sv_value);
+            }
           }
+          break;
         }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        int32_t* elements = env->get_int_array_elements(env, array);
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (int32_t)SvIV(sv_value);
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          int32_t* elements = env->get_int_array_elements(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (int32_t)SvIV(sv_value);
+            }
           }
+          break;
         }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        int64_t* elements = env->get_long_array_elements(env, array);
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (int64_t)SvIV(sv_value);
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          int64_t* elements = env->get_long_array_elements(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (int64_t)SvIV(sv_value);
+            }
           }
+          break;
         }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        float* elements = env->get_float_array_elements(env, array);
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (float)SvNV(sv_value);
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          float* elements = env->get_float_array_elements(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (float)SvNV(sv_value);
+            }
           }
+          break;
         }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        double* elements = env->get_double_array_elements(env, array);
-        {
-          int32_t i;
-          for (i = 0; i < length; i++) {
-            SV** sv_value_ptr = av_fetch(av_values, i, 0);
-            SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-            elements[i] = (double)SvNV(sv_value);
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          double* elements = env->get_double_array_elements(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV** sv_value_ptr = av_fetch(av_values, i, 0);
+              SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+              elements[i] = (double)SvNV(sv_value);
+            }
           }
+          break;
         }
-        break;
+        default:
+          croak("Invalid type");
       }
-      default:
-        croak("Invalid type");
     }
   }
-  else if (dimension > 1) {
-    croak("Invalid type");
+  else {
+    croak("Argument must be array type");
   }
   
   XSRETURN(0);
