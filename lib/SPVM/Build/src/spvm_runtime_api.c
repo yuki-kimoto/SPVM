@@ -575,20 +575,32 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, char* bytes, int32_t len
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-
+  // If lenght is less than 0, return NULL.
+  if (length < 0) {
+    return NULL;
+  }
+  
   // Create object
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
-  // Alloc body length + 1
-  object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_byte));
+  // Body byte size. Alloc length + 1
+  size_t body_byte_size = (length + 1) * sizeof(SPVM_VALUE_byte);
+  if (body_byte_size > SIZE_MAX) {
+    return NULL;
+  }
   
+  // Alloc body by 0
+  void* body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, body_byte_size);
+  if (body == NULL) {
+    return NULL;
+  }
+  
+  // Set object fields
+  object->body = body;
   object->dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-  
-  // Set array length
   object->elements_length = length;
-  
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
   
   return object;
