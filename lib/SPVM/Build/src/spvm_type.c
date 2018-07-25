@@ -179,17 +179,6 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-_Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2) {
-  (void)compiler;
-  
-  if (type1->basic_type->id == type2->basic_type->id && type1->dimension == type2->dimension) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
 _Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   (void)compiler;
   

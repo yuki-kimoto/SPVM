@@ -25,8 +25,6 @@ SPVM_TYPE* SPVM_TYPE_create_double_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_string_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler);
 
-_Bool SPVM_TYPE_equal(SPVM_COMPILER* compiler, SPVM_TYPE* type1, SPVM_TYPE* type2);
-
 _Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 _Bool SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
