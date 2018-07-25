@@ -853,7 +853,7 @@ to_elements(...)
   int32_t dimension = array->dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
   
-  SV* sv_values;
+  AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
@@ -864,13 +864,32 @@ to_elements(...)
       assert(0);
     }
     else if (element_type_is_object_type) {
-      assert(0);
+      for (int32_t index = 0; index < length; index++) {
+        // Element type id
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+
+        // Index
+        SPVM_OBJECT* value = env->get_object_array_element(env, array, index);
+        if (value != NULL) {
+          env->inc_ref_count(env, value);
+        }
+        
+        int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension);
+        SV* sv_value;
+        if (element_type_is_array_type) {
+          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
+        }
+        else {
+          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+          sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
+        }
+        av_push(av_values, sv_value);
+      }
     }
     else {
       switch (basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           int8_t* elements = env->get_byte_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -878,12 +897,10 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
           int16_t* elements = env->get_short_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -891,12 +908,10 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
           int32_t* elements = env->get_int_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -904,12 +919,10 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
           int64_t* elements = env->get_long_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -917,12 +930,10 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
           float* elements = env->get_float_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -930,12 +941,10 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
           double* elements = env->get_double_array_elements(env, array);
-          AV* av_values = (AV*)sv_2mortal((SV*)newAV());
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -943,7 +952,6 @@ to_elements(...)
               av_push(av_values, SvREFCNT_inc(sv_value));
             }
           }
-          sv_values = sv_2mortal(newRV_inc((SV*)av_values));
           break;
         }
         default:
@@ -954,6 +962,8 @@ to_elements(...)
   else {
     croak("Argument must be array type");
   }
+
+  SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
   XPUSHs(sv_values);
   XSRETURN(1);
@@ -1688,7 +1698,7 @@ call_sub(...)
     SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
     assert(field_type->dimension == 0);
     
-    HV* hv_value = sv_2mortal(newHV());
+    HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
     for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
       SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
       const char* field_name = op_field->uv.field->op_name->uv.name;
