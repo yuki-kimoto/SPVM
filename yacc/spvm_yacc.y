@@ -26,7 +26,7 @@
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub
+%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub ref deref
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
@@ -493,6 +493,16 @@ deref
   | DEREF '{' var '}'
     {
       $$ = SPVM_OP_build_deref(compiler, $1, $3);
+    }
+
+ref
+  : REF var
+    {
+      $$ = SPVM_OP_build_ref_var(compiler, $1, $2);
+    }
+  | REF '{' var '}'
+    {
+      $$ = SPVM_OP_build_ref_var(compiler, $1, $3);
     }
 
 term
