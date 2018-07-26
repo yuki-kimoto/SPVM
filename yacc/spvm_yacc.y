@@ -486,11 +486,11 @@ array_length
     }
 
 deref
-  : DEREF REF
+  : DEREF var
     {
       $$ = SPVM_OP_build_deref(compiler, $1, $2);
     }
-  | DEREF '{' REF '}'
+  | DEREF '{' var '}'
     {
       $$ = SPVM_OP_build_deref(compiler, $1, $3);
     }
