@@ -149,6 +149,7 @@ enum {
   SPVM_OP_C_ID_SCALAR,
   SPVM_OP_C_ID_ARRAY_FIELD_ACCESS,
   SPVM_OP_C_ID_REF,
+  SPVM_OP_C_ID_DEREF,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
