@@ -1027,11 +1027,11 @@ var
     }
   | REF var
     {
-      $$ = SPVM_OP_build_ref(compiler, $1, $2);
+      $$ = SPVM_OP_build_ref_var(compiler, $1, $2);
     }
   | REF '{' var '}'
     {
-      $$ = SPVM_OP_build_ref(compiler, $1, $3);
+      $$ = SPVM_OP_build_ref_var(compiler, $1, $3);
     }
 
 eval_block

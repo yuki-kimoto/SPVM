@@ -3207,14 +3207,14 @@ yyreduce:
   case 189:
 #line 1029 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_ref(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval));
+      (yyval.opval) = SPVM_OP_build_ref_var(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval));
     ;}
     break;
 
   case 190:
 #line 1033 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_ref(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_ref_var(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 

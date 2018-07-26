@@ -159,13 +159,13 @@ SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP
   return op_deref;
 }
 
-SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
+SPVM_OP* SPVM_OP_build_ref_var(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
   
-  if (op_var->uv.var->is_ref) {
+  if (op_var->uv.var->with_ref) {
     SPVM_yyerror_format(compiler, "Can't twice reference", op_ref->file, op_ref->line);
   }
   else {
-    op_var->uv.var->is_ref = 1;
+    op_var->uv.var->with_ref = 1;
   }
   
   return op_var;

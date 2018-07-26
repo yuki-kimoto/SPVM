@@ -1220,12 +1220,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_dist = op_cur->last;
                         SPVM_OP* op_term_src = op_cur->first;
                         
-                        if (op_term_dist->id == SPVM_OP_C_ID_VAR && op_term_dist->uv.var->is_ref) {
+                        if (op_term_dist->id == SPVM_OP_C_ID_VAR && op_term_dist->uv.var->with_ref) {
                           SPVM_yyerror_format(compiler, "Can't assign to reference at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
 
-                        if (op_term_src->id == SPVM_OP_C_ID_VAR && op_term_src->uv.var->is_ref) {
+                        if (op_term_src->id == SPVM_OP_C_ID_VAR && op_term_src->uv.var->with_ref) {
                           SPVM_yyerror_format(compiler, "Can't assign from reference at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
@@ -1783,7 +1783,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         if (op_cur->uv.var->is_declaration) {
                           
-                          if (op_cur->uv.var->is_ref) {
+                          if (op_cur->uv.var->with_ref) {
                             SPVM_yyerror_format(compiler, "Can't declaration reference at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           
@@ -1809,7 +1809,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             }
                           }
                           
-                          if (op_cur->uv.var->is_ref) {
+                          if (op_cur->uv.var->with_ref) {
                             SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                             if (!SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension)) {
                               SPVM_yyerror_format(compiler, "Can only reference to numeric type at %s line %d\n", op_cur->file, op_cur->line);
