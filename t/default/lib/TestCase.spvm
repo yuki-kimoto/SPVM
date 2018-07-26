@@ -281,6 +281,33 @@ package TestCase {
     
     return 0;
   }
+
+  sub spvm_new_value_t_array_int : int ($points : TestCase::Point_i3[]) {
+    
+    if ($points->[0]{x} == INT32_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
   
   sub concat : string () {
     "a" . "b";

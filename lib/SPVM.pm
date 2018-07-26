@@ -181,7 +181,7 @@ sub new_double_array {
 }
 
 sub new_object_array {
-  my $elements = shift;
+  my ($package_name, $elements) = @_;
   
   return undef unless defined $elements;
   
@@ -191,7 +191,7 @@ sub new_object_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::new_object_array_len($length);
+  my $array = SPVM::new_object_array_len($package_name, $length);
   
   $array->set_elements($elements);
   
@@ -199,7 +199,7 @@ sub new_object_array {
 }
 
 sub new_value_t_array {
-  my $elements = shift;
+  my ($package_name, $elements) = @_;
   
   return undef unless defined $elements;
   
@@ -209,8 +209,8 @@ sub new_value_t_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::new_value_t_array_len($length);
-  
+  my $array = SPVM::new_value_t_array_len($package_name, $length);
+
   $array->set_elements($elements);
   
   return $array;

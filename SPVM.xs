@@ -956,6 +956,7 @@ to_elements(...)
     int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
 
     if (element_type_is_value_type) {
+      
       for (int32_t index = 0; index < length; index++) {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
         
@@ -970,7 +971,7 @@ to_elements(...)
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
-        HV* hv_value = sv_2mortal(newHV());
+        HV* hv_value = (HV*)sv_2mortal(newHV());
         int32_t field_length = op_package->uv.package->op_fields->length;
         for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
@@ -1012,9 +1013,9 @@ to_elements(...)
               assert(0);
           }
           hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-          SV* sv_value = sv_2mortal(newRV_inc((SV*)hv_value));
-          av_push(av_values, sv_value);
         }
+        SV* sv_value = sv_2mortal(newRV_inc((SV*)hv_value));
+        av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
     else if (element_type_is_object_type) {
@@ -1037,7 +1038,7 @@ to_elements(...)
           SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
           sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
         }
-        av_push(av_values, sv_value);
+        av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
     else {

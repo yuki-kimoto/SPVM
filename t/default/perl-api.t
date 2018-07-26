@@ -271,6 +271,19 @@ is_deeply(
     my $value = $sp_values->get_element(1);
     is_deeply($value, {x => $INT_MIN, y => 1, z => 2});
   }
+
+  {
+    my $values = [
+      {x => $INT_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_value_t_array("TestCase::Point_i3", $values);
+    $sp_values->set_elements($values);
+    ok(TestCase->spvm_new_value_t_array_int($sp_values));
+    my $out_values = $sp_values->to_elements;
+    is_deeply($out_values, $values);
+  }
 }
 
 # SPVM Functions
