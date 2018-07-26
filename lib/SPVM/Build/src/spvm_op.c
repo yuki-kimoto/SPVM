@@ -154,6 +154,11 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "DEREF",
 };
 
+SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_ref) {
+  
+  return op_deref;
+}
+
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
