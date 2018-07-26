@@ -1429,6 +1429,11 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
     op_name->uv.name = op_var->uv.var->op_name->uv.name;
     my->op_name = op_name;
+    
+    // Ref
+    if (op_var->uv.var->with_ref) {
+      my->is_ref = 1;
+    }
 
     // Add my information to op
     op_my->uv.my = my;
