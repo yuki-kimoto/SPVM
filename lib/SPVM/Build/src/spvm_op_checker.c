@@ -1217,29 +1217,39 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_ASSIGN: {
-                        SPVM_OP* op_term_to = op_cur->last;
-                        SPVM_OP* op_term_from = op_cur->first;
+                        SPVM_OP* op_term_dist = op_cur->last;
+                        SPVM_OP* op_term_src = op_cur->first;
                         
-                        SPVM_TYPE* to_type = SPVM_OP_get_type(compiler, op_term_to);
-                        SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_term_from);
+                        if (op_term_dist->id == SPVM_OP_C_ID_VAR && op_term_dist->uv.var->is_ref) {
+                          SPVM_yyerror_format(compiler, "Can't assign to reference at %s line %d\n", op_cur->file, op_cur->line);
+                          break;
+                        }
+
+                        if (op_term_src->id == SPVM_OP_C_ID_VAR && op_term_src->uv.var->is_ref) {
+                          SPVM_yyerror_format(compiler, "Can't assign from reference at %s line %d\n", op_cur->file, op_cur->line);
+                          break;
+                        }
+                        
+                        SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
+                        SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
                         
                         // From type is undef
-                        if (from_type->dimension == 0 && from_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
+                        if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
                           // To type is undef
-                          if (to_type->dimension == 0 && to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) { 
-                            SPVM_yyerror_format(compiler, "undef can't be assigned to undef at %s line %d\n", op_cur->file, op_cur->line);
+                          if (dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) { 
+                            SPVM_yyerror_format(compiler, "undef can't be assigned dist undef at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           else {
-                            _Bool to_type_is_value_t = SPVM_TYPE_is_value_type(compiler, to_type->basic_type->id, to_type->dimension);
-                            if (to_type_is_value_t) {
-                              SPVM_yyerror_format(compiler, "undef can't be assigned to value_t type at %s line %d\n", op_cur->file, op_cur->line);
+                            _Bool dist_type_is_value_t = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension);
+                            if (dist_type_is_value_t) {
+                              SPVM_yyerror_format(compiler, "undef can't be assigned dist value_t type at %s line %d\n", op_cur->file, op_cur->line);
                             }
                           }
                         }
                         
-                        // Check if source value can be assigned to distination value
-                        // If needed, automatical numeric convertion op is added
-                        SPVM_OP_CHECKER_check_and_convert_type(compiler, op_term_to, op_term_from);
+                        // Check if source value can be assigned dist distination value
+                        // If needed, audistmatical numeric convertion op is added
+                        SPVM_OP_CHECKER_check_and_convert_type(compiler, op_term_dist, op_term_src);
                         
                         break;
                       }
