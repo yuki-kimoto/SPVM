@@ -364,7 +364,7 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-See also L<SPVM::Document::SPVMAPI>.
+See also L<SPVM::Document::PerlAPI>.
 
 =head2 C Extension using SPVM
 
@@ -437,9 +437,9 @@ print, warn, time
 
 L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>
 
-=head1 SPVM API
+=head1 SPVM Perl API
 
-L<SPVM::Document::SPVMAPI>
+L<SPVM::Document::PerlAPI>
 
 =head1 Native Interface
 

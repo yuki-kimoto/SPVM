@@ -1,10 +1,20 @@
 =head1 NAME
 
-SPVM::Document::SPVMAPI - SPVM API
+SPVM::Document::PerlAPI - SPVM Perl API
 
-=head1 What is SPVM API
+=head1 What is SPVM Perl API
 
-SPVM API is the API to manipulate SPVM data from Perl.
+SPVM Perl API is the API to convert Perl data to SPVM data, and SPVM data to Perl data.
+
+This api is Perl function called from Perl script.
+
+  use SPVM;
+  
+  # Create SVPM int array
+  my $spvm_nums = SPVM::new_int_array([1, 2, 3]);
+  
+  # Convert to perl array reference
+  my $nums = $spvm_nums->to_elements;
 
 =head1 Functions
 
