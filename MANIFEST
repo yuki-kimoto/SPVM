@@ -112,6 +112,7 @@ lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/Functions.pod
 lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeInterface.pod
+lib/SPVM/Document/PerlAPI.pod
 lib/SPVM/Document/SPVMAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
@@ -223,6 +224,7 @@ t/default/lib/TestCase/Loop.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
+t/default/lib/TestCase/PerlAPI.spvm
 t/default/lib/TestCase/Point_b3.spvm
 t/default/lib/TestCase/Point_d3.spvm
 t/default/lib/TestCase/Point_f3.spvm
