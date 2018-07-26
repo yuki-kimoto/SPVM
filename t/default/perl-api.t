@@ -284,6 +284,16 @@ is_deeply(
     my $out_values = $sp_values->to_elements;
     is_deeply($out_values, $values);
   }
+
+  {
+    my $bin = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $sp_values = SPVM::new_value_t_array_len("TestCase::Point_i3", 3);
+    $sp_values->set_bin($bin);
+    ok(TestCase->spvm_new_value_t_array_bin_int($sp_values));
+    my $out_bin = $sp_values->to_bin;
+    is_deeply($out_bin, $bin);
+  }
+
 }
 
 # SPVM Functions

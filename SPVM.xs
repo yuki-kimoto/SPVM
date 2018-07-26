@@ -384,7 +384,7 @@ set_bin(...)
 
       int32_t field_length = op_package->uv.package->op_fields->length;
       
-      switch (basic_type_id) {
+      switch (field_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           // Check range
           if ((int32_t)sv_len(sv_bin) != field_length * length) {
@@ -393,7 +393,7 @@ set_bin(...)
 
           int8_t* elements = env->get_byte_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length);
           }
           break;
         }
@@ -403,7 +403,7 @@ set_bin(...)
           }
           int16_t* elements = env->get_short_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length * 2);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length * 2);
           }
           break;
         }
@@ -413,7 +413,7 @@ set_bin(...)
           }
           int32_t* elements = env->get_int_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length * 4);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length * 4);
           }
           break;
         }
@@ -423,7 +423,7 @@ set_bin(...)
           }
           int64_t* elements = env->get_long_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length * 8);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length * 8);
           }
           break;
         }
@@ -433,7 +433,7 @@ set_bin(...)
           }
           float* elements = env->get_float_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length * 4);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length * 4);
           }
           break;
         }
@@ -443,7 +443,7 @@ set_bin(...)
           }
           double* elements = env->get_double_array_elements(env, array);
           if (length > 0) {
-            memcpy(elements, SvPV_nolen(sv_bin), length * 8);
+            memcpy(elements, SvPV_nolen(sv_bin), field_length * length * 8);
           }
           break;
         }
@@ -1170,7 +1170,7 @@ to_bin(...)
 
       int32_t field_length = op_package->uv.package->op_fields->length;
 
-      switch (basic_type_id) {
+      switch (field_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           int8_t* elements = env->get_byte_array_elements(env, array);
           
