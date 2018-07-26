@@ -28,13 +28,6 @@ If you get perl values, you can use C<get_elements> methods.
 
   my $values = $array->get_elements;
 
-=head2 new_byte_array_bin
-
-Create byte array from B<not decoded> Perl string.
-This function is faster than C<new_byte_array_string> because the data is not encoded.
-
-  my $array = SPVM::new_byte_array_bin("AGTCAGTC");
-
 =head2 new_byte_array_string
 
 Create byte array from B<decoded> Perl string.

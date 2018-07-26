@@ -17,6 +17,8 @@ use FindBin;
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
+use SPVM 'TestCase::Point_i3';
+
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -37,7 +39,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $object = TestCase->new();
     $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    $object->set_x_string(SPVM::new_byte_array_bin("abc"));
+    my $sp_values = SPVM::new_byte_array_len(3);
+    $sp_values->set_bin("abc");
+    $object->set_x_string($sp_values);
     ok(TestCase->spvm_object_set_object($object));
   }
   # Create object
@@ -258,6 +262,17 @@ is_deeply(
   }
 }
 
+# value_t array
+{
+  {
+    my $sp_values = SPVM::new_value_t_array_len("TestCase::Point_i3", 3);
+    $sp_values->set_element(1, {x => $INT_MIN, y => 1, z => 2});
+    ok(TestCase->spvm_set_and_get_value_t_int($sp_values));
+    my $value = $sp_values->get_element(1);
+    is_deeply($value, {x => $INT_MIN, y => 1, z => 2});
+  }
+}
+
 # SPVM Functions
 {
   # to_elements
@@ -375,49 +390,52 @@ is_deeply(
   # new_xxx_array_bin
   {
     {
-      my $sp_values = SPVM::new_byte_array_bin("abc");
+      my $sp_values = SPVM::new_byte_array_len(3);
+      $sp_values->set_bin("abc");
       ok(TestCase->spvm_new_byte_array_bin($sp_values));
     }
     {
       my $bin = pack('c3', 97, 98, $BYTE_MAX);
-      
-      my $sp_values = SPVM::new_byte_array_bin($bin);
+      my $sp_values = SPVM::new_byte_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_byte_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('c3', 97, 98, $BYTE_MAX);
-      
-      my $sp_values = SPVM::new_byte_array_bin($bin);
+      my $sp_values = SPVM::new_byte_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_byte_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('s3', 97, 98, $SHORT_MAX);
       
-      my $sp_values = SPVM::new_short_array_bin($bin);
+      my $sp_values = SPVM::new_short_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_short_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('l3', 97, 98, $INT_MAX);
       
-      my $sp_values = SPVM::new_int_array_bin($bin);
+      my $sp_values = SPVM::new_int_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_int_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('q3', 97, 98, $LONG_MAX);
-      
-      my $sp_values = SPVM::new_long_array_bin($bin);
+      my $sp_values = SPVM::new_long_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_long_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('f3', 97, 98, $FLOAT_PRECICE);
-      
-      my $sp_values = SPVM::new_float_array_bin($bin);
+      my $sp_values = SPVM::new_float_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_float_array_bin_pack($sp_values));
     }
     {
       my $bin = pack('d3', 97, 98, $DOUBLE_PRECICE);
-      
-      my $sp_values = SPVM::new_double_array_bin($bin);
+      my $sp_values = SPVM::new_double_array_len(3);
+      $sp_values->set_bin($bin);
       ok(TestCase->spvm_new_double_array_bin_pack($sp_values));
     }
   }
@@ -482,6 +500,13 @@ is_deeply(
     is($values->to_string, "あいうえお");
   }
 }
+
+# Complex
+{
+  my $z3 = SPVM::CORE->cadd({re => 0.25, im => 0.5}, {re => 0.5, im => 0.125});
+  is_deeply($z3, {re => 0.75, im => 0.625});
+}
+
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

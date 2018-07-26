@@ -76,26 +76,16 @@ sub new_byte_array {
   return $array;
 }
 
-sub new_byte_array_bin {
-  my $bin = shift;
-  
-  my $length = length $bin;
-  
-  my $array = SPVM::new_byte_array_len($length);
-  
-  $array->set_bin($bin);
-  
-  return $array;
-}
-
-
 sub new_byte_array_string {
   my $string = shift;
   
   # Encode internal string to UTF-8 string
   my $bin = Encode::encode('UTF-8', $string);
   
-  my $array = SPVM::new_byte_array_bin($bin);
+  my $length = length $bin;
+  
+  my $array = SPVM::new_byte_array_len($length);
+  $array->set_bin($bin);
   
   return $array;
 }
@@ -118,24 +108,6 @@ sub new_short_array {
   return $array;
 }
 
-sub new_short_array_bin {
-  my $bin = shift;
-  
-  my $byte_length = length $bin;
-  
-  unless ($byte_length % 2 == 0) {
-    confess("bin byte length must be divide by 2");
-  }
-  
-  my $length = int($byte_length / 2);
-  
-  my $array = SPVM::new_short_array_len($length);
-  
-  $array->set_bin($bin);
-  
-  return $array;
-}
-
 sub new_int_array {
   my $elements = shift;
 
@@ -150,24 +122,6 @@ sub new_int_array {
   my $array = SPVM::new_int_array_len($length);
   
   $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_int_array_bin {
-  my $bin = shift;
-  
-  my $byte_length = length $bin;
-  
-  unless ($byte_length % 4 == 0) {
-    confess("bin byte length must be divide by 4");
-  }
-  
-  my $length = int($byte_length / 4);
-  
-  my $array = SPVM::new_int_array_len($length);
-  
-  $array->set_bin($bin);
   
   return $array;
 }
@@ -190,24 +144,6 @@ sub new_long_array {
   return $array;
 }
 
-sub new_long_array_bin {
-  my $bin = shift;
-  
-  my $byte_length = length $bin;
-  
-  unless ($byte_length % 8 == 0) {
-    confess("bin byte length must be divide by 8");
-  }
-  
-  my $length = $byte_length / 8;
-  
-  my $array = SPVM::new_long_array_len($length);
-  
-  $array->set_bin($bin);
-  
-  return $array;
-}
-
 sub new_float_array {
   my $elements = shift;
 
@@ -226,24 +162,6 @@ sub new_float_array {
   return $array;
 }
 
-sub new_float_array_bin {
-  my $bin = shift;
-  
-  my $byte_length = length $bin;
-  
-  unless ($byte_length % 4 == 0) {
-    confess("bin byte length must be divide by 4");
-  }
-  
-  my $length = $byte_length / 4;
-  
-  my $array = SPVM::new_float_array_len($length);
-  
-  $array->set_bin($bin);
-  
-  return $array;
-}
-
 sub new_double_array {
   my $elements = shift;
   
@@ -258,24 +176,6 @@ sub new_double_array {
   my $array = SPVM::new_double_array_len($length);
   
   $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_double_array_bin {
-  my $bin = shift;
-  
-  my $byte_length = length $bin;
-  
-  unless ($byte_length % 8 == 0) {
-    confess("bin byte length must be divide by 8");
-  }
-  
-  my $length = $byte_length / 8;
-  
-  my $array = SPVM::new_double_array_len($length);
-  
-  $array->set_bin($bin);
   
   return $array;
 }

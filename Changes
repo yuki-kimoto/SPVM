@@ -1,4 +1,4 @@
-0.0363 2018-07-23
+0.0363 2018-07-26
   - simplify anon package syntax. You don't need to write "new package { ... }".
       my $point = package {
         has x : int;
@@ -9,6 +9,15 @@
         }
       };
   - Perl API call_sub support value type arguments
+  - add SPVM::new_object_array
+  - add SPVM::new_value_t_array
+  - remove SPVM::new_byte_array_bin
+  - remove SPVM::new_short_array_bin
+  - remove SPVM::new_int_array_bin
+  - remove SPVM::new_long_array_bin
+  - remove SPVM::new_float_array_bin
+  - remove SPVM::new_double_array_bin
+  
 0.0362 2018-07-23
   - improve precompiled source code with more typing
 0.0361 2018-07-21
