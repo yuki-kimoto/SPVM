@@ -280,6 +280,42 @@ sub new_double_array_bin {
   return $array;
 }
 
+sub new_object_array {
+  my $elements = shift;
+  
+  return undef unless defined $elements;
+  
+  if (ref $elements ne 'ARRAY') {
+    confess "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array = SPVM::new_object_array_len($length);
+  
+  $array->set_elements($elements);
+  
+  return $array;
+}
+
+sub new_value_t_array {
+  my $elements = shift;
+  
+  return undef unless defined $elements;
+  
+  if (ref $elements ne 'ARRAY') {
+    confess "Argument must be array reference";
+  }
+  
+  my $length = @$elements;
+  
+  my $array = SPVM::new_value_t_array_len($length);
+  
+  $array->set_elements($elements);
+  
+  return $array;
+}
+
 sub new_object {
   my $package_name = shift;
   
