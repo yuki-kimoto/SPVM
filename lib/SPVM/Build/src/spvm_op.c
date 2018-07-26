@@ -150,6 +150,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "COMPILE",
   "SCALAR",
   "ARRAY_FIELD_ACCESS",
+  "REF",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
