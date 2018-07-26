@@ -1808,6 +1808,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                             }
                           }
+                          
+                          if (op_cur->uv.var->is_ref) {
+                            SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                            if (!SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension)) {
+                              SPVM_yyerror_format(compiler, "Can only reference to numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                          }
+                          
                           if (found) {
                             SPVM_yyerror_format(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, op_my->file, op_my->line);
                             
