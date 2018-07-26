@@ -638,12 +638,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Can receive only numeric type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "< left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "< right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -671,12 +671,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                                         
                         // Can receive only numeric type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "<= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "<= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -704,12 +704,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Can receive only numeric type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "> left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "> right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -737,12 +737,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Can receive only numeric type
-                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension) && !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, ">= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, ">= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1220,13 +1220,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_dist = op_cur->last;
                         SPVM_OP* op_term_src = op_cur->first;
                         
-                        if (op_term_dist->id == SPVM_OP_C_ID_VAR && op_term_dist->uv.var->with_ref) {
+                        if (op_term_dist->id == SPVM_OP_C_ID_VAR && op_term_dist->uv.var->op_my->uv.my->is_ref) {
                           SPVM_yyerror_format(compiler, "Can't assign to reference at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
 
-                        if (op_term_src->id == SPVM_OP_C_ID_VAR && op_term_src->uv.var->with_ref) {
-                          SPVM_yyerror_format(compiler, "Can't assign from reference at %s line %d\n", op_cur->file, op_cur->line);
+                        if (op_term_src->id == SPVM_OP_C_ID_VAR && op_term_src->uv.var->op_my->uv.my->is_ref) {
+                          SPVM_yyerror_format(compiler, "Can't assign reference at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
                         
@@ -1307,7 +1307,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         
                         // Must be numeric type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1335,7 +1335,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         
                         // Must be numeric type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1364,14 +1364,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
 
                         // Left value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "+ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
 
                         // Right value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1401,14 +1401,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
 
                         // Left value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "- operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
 
                         // Right value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1438,14 +1438,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Left value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "* operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
 
                         // Right value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "* operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1475,14 +1475,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
 
                         // Left value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "/ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
 
                         // Right value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "/ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -1512,14 +1512,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
 
                         // Left value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension)) {
                           SPVM_yyerror_format(compiler, "%% operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
 
                         // Right value must not be object type
-                        if (SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension)) {
                           SPVM_yyerror_format(compiler, "%% operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;

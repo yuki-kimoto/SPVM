@@ -976,7 +976,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
-      if (var->op_my->uv.my->op_type) {
+      if (var->op_my->uv.my->is_ref) {
+        type = SPVM_TYPE_create_ref_type(compiler);
+      }
+      else if (var->op_my->uv.my->op_type) {
         type = var->op_my->uv.my->op_type->uv.type;
       }
       break;

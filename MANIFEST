@@ -113,7 +113,6 @@ lib/SPVM/Document/Functions.pod
 lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeInterface.pod
 lib/SPVM/Document/PerlAPI.pod
-lib/SPVM/Document/SPVMAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/Example.native/Example.c
