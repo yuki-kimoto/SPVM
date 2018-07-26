@@ -1780,7 +1780,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       // Add my var
                       case SPVM_OP_C_ID_VAR: {
+                        
                         if (op_cur->uv.var->is_declaration) {
+                          
+                          if (op_cur->uv.var->is_ref) {
+                            SPVM_yyerror_format(compiler, "Can't declaration reference at %s line %d\n", op_cur->file, op_cur->line);
+                          }
                           
                           SPVM_OP* op_my = op_cur->uv.var->op_my;
                           
