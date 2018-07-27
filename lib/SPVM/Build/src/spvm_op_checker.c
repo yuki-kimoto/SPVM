@@ -292,12 +292,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               type_element->dimension = type_term_element->dimension;
                               type_element->is_const = type_term_element->is_const;
                               op_type_element->uv.type = type_element;
-
-                              if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                                SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                              
+                              if (!SPVM_TYPE_is_numeric_type(compiler, type_element->basic_type->id, type_element->dimension)) {
+                                if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                  SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                                }
+                                op_type_element->uv.type->sub_rel_id = sub->op_types->length;
+                                SPVM_LIST_push(sub->op_types, op_type_element);
                               }
-                              op_type_element->uv.type->sub_rel_id = sub->op_types->length;
-                              SPVM_LIST_push(sub->op_types, op_type_element);
                                                       
                               // Create array type
                               SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
@@ -306,11 +308,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               type_new->is_const = type_term_element->is_const;
                               op_type_new->uv.type= type_new;
 
-                              if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                                SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                              if (!SPVM_TYPE_is_numeric_type(compiler, type_new->basic_type->id, type_new->dimension)) {
+                                if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                  SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
+                                }
+                                op_type_new->uv.type->sub_rel_id = sub->op_types->length;
+                                SPVM_LIST_push(sub->op_types, op_type_new);
                               }
-                              op_type_new->uv.type->sub_rel_id = sub->op_types->length;
-                              SPVM_LIST_push(sub->op_types, op_type_new);
                               
                               op_var_tmp_new->uv.var->op_my->uv.my->op_type = op_type_new;
                             }
@@ -921,17 +925,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           
-                          if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                          if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension)) {
+                            if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                              SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                            op_type->uv.type->sub_rel_id = sub->op_types->length;
+                            SPVM_LIST_push(sub->op_types, op_type);
                           }
-                          op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                          if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
-                          }
-                          op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                          SPVM_LIST_push(sub->op_types, op_type);
                         }
                         else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
                           // Constant string
@@ -1001,17 +1001,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                        if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension)) {
+                          if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                          }
+                          op_type->uv.type->sub_rel_id = sub->op_types->length;
+                          SPVM_LIST_push(sub->op_types, op_type);
                         }
-                        op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                        if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                        SPVM_LIST_push(sub->op_types, op_type);
                         
                         break;
                       }
@@ -2120,18 +2116,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           return;
                         }
-
-                        if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                        if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension)) {
+                          if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                          }
+                          op_type->uv.type->sub_rel_id = sub->op_types->length;
+                          SPVM_LIST_push(sub->op_types, op_type);
                         }
-                        op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                        if (sub->op_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        op_type->uv.type->sub_rel_id = sub->op_types->length;
-
-                        SPVM_LIST_push(sub->op_types, op_type);
                       }
                       break;
                     }
