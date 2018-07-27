@@ -1,7 +1,6 @@
 package TestCase {
   sub ref_arg : int (\$num1 : int, \$num2 : double) {
     my $foo = 1;
-    my $bar = \$foo;
   }
   sub main : int ($mvar : int) {
     
