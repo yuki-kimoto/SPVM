@@ -1596,6 +1596,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
         break;
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
+        assert(mortal_stack_top < sub->mortal_stack_max);
         mortal_stack[mortal_stack_top] = opcode->operand0;
         mortal_stack_top++;
         

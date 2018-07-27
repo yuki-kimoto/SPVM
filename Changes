@@ -17,7 +17,7 @@
   - remove SPVM::new_long_array_bin
   - remove SPVM::new_float_array_bin
   - remove SPVM::new_double_array_bin
-  
+  - fix mortal stack length overflow bug
 0.0362 2018-07-23
   - improve precompiled source code with more typing
 0.0361 2018-07-21

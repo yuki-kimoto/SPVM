@@ -155,7 +155,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_OP* op_cur = op_base;
           _Bool finish = 0;
           
-          int32_t mortal_stack_max = 0;
+          int32_t mortal_stack_top_max = 0;
           
           while (op_cur) {
             int32_t opcode_length = opcode_array->length - sub->opcode_base;
@@ -2463,8 +2463,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t my_var_id = my->var_id;
                         SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_var_id);
                         
-                        if (mortal_stack->length > mortal_stack_max) {
-                          mortal_stack_max = mortal_stack->length;
+                        if (mortal_stack->length - 1 > mortal_stack_top_max) {
+                          mortal_stack_top_max = mortal_stack->length;
                         }
                         
                         SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
@@ -3130,7 +3130,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           sub->opcode_length = opcode_array->length - sub->opcode_base;
           
-          sub->mortal_stack_max = mortal_stack_max;
+          sub->mortal_stack_max = mortal_stack_top_max + 1;
           
           // Free list
           SPVM_LIST_free(if_eq_or_if_ne_goto_opcode_rel_index_stack);
