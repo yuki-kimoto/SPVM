@@ -3130,7 +3130,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           sub->opcode_length = opcode_array->length - sub->opcode_base;
           
-          sub->mortal_stack_max = mortal_stack_top_max + 1;
+          sub->mortal_stack_length = mortal_stack_top_max + 1;
           
           // Free list
           SPVM_LIST_free(if_eq_or_if_ne_goto_opcode_rel_index_stack);

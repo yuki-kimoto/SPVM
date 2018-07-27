@@ -769,9 +769,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // Block start
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " {\n");
   
-  if (sub->mortal_stack_max > 0) {
+  if (sub->mortal_stack_length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  int32_t mortal_stack[");
-    SPVM_STRING_BUFFER_add_int(compiler, string_buffer , sub->mortal_stack_max);
+    SPVM_STRING_BUFFER_add_int(compiler, string_buffer , sub->mortal_stack_length);
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  int32_t mortal_stack_top = 0;\n");
   }
@@ -2098,7 +2098,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
-        if (sub->mortal_stack_max > 0) {
+        if (sub->mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(compiler, string_buffer , original_mortal_stack_top);

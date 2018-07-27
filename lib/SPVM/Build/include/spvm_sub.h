@@ -29,7 +29,7 @@ struct SPVM_sub {
   int32_t id;
   int32_t rel_id;
   int32_t eval_stack_max_length;
-  int32_t mortal_stack_max;
+  int32_t mortal_stack_length;
   int8_t call_type_id;
   _Bool have_native_desc;
   _Bool have_precompile_desc;
