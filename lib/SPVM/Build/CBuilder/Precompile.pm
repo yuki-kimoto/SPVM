@@ -108,15 +108,14 @@ sub create_shared_lib_dist {
     is_cached => \$is_cached,
   );
   
-  unless ($is_cached) {
-    $self->create_shared_lib(
-      package_name => $package_name,
-      input_dir => $work_dir,
-      work_dir => $work_dir,
-      output_dir => $output_dir,
-      sub_names => $sub_names,
-    );
-  }
+  $self->create_shared_lib(
+    package_name => $package_name,
+    input_dir => $work_dir,
+    work_dir => $work_dir,
+    output_dir => $output_dir,
+    sub_names => $sub_names,
+    is_cached => $is_cached,
+  );
 }
 
 sub create_shared_lib_runtime {
@@ -146,16 +145,15 @@ sub create_shared_lib_runtime {
     is_cached => \$is_cached,
   );
   
-  unless ($is_cached) {
-    $self->create_shared_lib(
-      package_name => $package_name,
-      input_dir => $work_dir,
-      work_dir => $work_dir,
-      output_dir => $output_dir,
-      quiet => 1,
-      sub_names => $sub_names,
-    );
-  }
+  $self->create_shared_lib(
+    package_name => $package_name,
+    input_dir => $work_dir,
+    work_dir => $work_dir,
+    output_dir => $output_dir,
+    quiet => 1,
+    sub_names => $sub_names,
+    is_cached => $is_cached,
+  );
 }
 
 1;

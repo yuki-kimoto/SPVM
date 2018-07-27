@@ -97,7 +97,7 @@ sub create_shared_lib {
   
   # Package name
   my $package_name = $opt{package_name};
-  
+
   # Build directory
   my $work_dir = $opt{work_dir};
   unless (defined $work_dir && -d $work_dir) {
@@ -108,6 +108,15 @@ sub create_shared_lib {
   my $output_dir = $opt{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Output directory must be specified for " . $self->category . " build";
+  }
+
+  # shared lib file
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
+
+  # Return if source code is chaced and exists shared lib file
+  if ($opt{is_cached} && -f $shared_lib_file) {
+    return;
   }
   
   my $sub_names = $opt{sub_names};
@@ -213,10 +222,6 @@ sub create_shared_lib {
   # Create shared lib blib directory
   my $shared_lib_dir = "$output_dir/$package_path";
   mkpath $shared_lib_dir;
-  
-  # shared lib blib file
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
   
   # Move shared library file to blib directory
   move($tmp_shared_lib_file, $shared_lib_file)
