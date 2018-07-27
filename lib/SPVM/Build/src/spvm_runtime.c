@@ -2476,6 +2476,61 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_END_SUB: {
         goto label_END_SUB;
       }
+      case SPVM_OPCODE_C_ID_WIDE: {
+        // Operand 3 is operation code for wide operation
+        switch (255 + opcode->operand3) {
+          case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_INT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_LONG: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_FLOAT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_SHORT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_LONG: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_FLOAT: {
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
+            
+            break;
+          }
+          default:
+            assert(0);
+        }
+      }
     }
     opcode_rel_index++;
   }
