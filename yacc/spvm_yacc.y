@@ -19,7 +19,7 @@
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE REF ISA
 %token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT BYTE_REF SHORT_REF INT_REF LONG_REF FLOAT_REF DOUBLE_REF
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -522,6 +522,7 @@ assignable_term
   | my_var
   | binop
   | unop
+  | deref
 
 expression
   : LAST
