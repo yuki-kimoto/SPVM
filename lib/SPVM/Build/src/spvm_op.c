@@ -975,8 +975,29 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
-      if (var->op_my->uv.my->is_ref) {
-        type = SPVM_TYPE_create_ref_type(compiler);
+      if (var->with_ref) {
+        SPVM_TYPE* deref_type = type = var->op_my->uv.my->op_type->uv.type;
+        assert(deref_type->dimension == 0);
+        switch (deref_type->basic_type->id) {
+          SPVM_BASIC_TYPE_C_ID_BYTE: 
+            type = SPVM_TYPE_create_byte_ref_type(compiler);
+            break;
+          SPVM_BASIC_TYPE_C_ID_SHORT: 
+            type = SPVM_TYPE_create_short_ref_type(compiler);
+            break;
+          SPVM_BASIC_TYPE_C_ID_INT: 
+            type = SPVM_TYPE_create_int_ref_type(compiler);
+            break;
+          SPVM_BASIC_TYPE_C_ID_LONG: 
+            type = SPVM_TYPE_create_long_ref_type(compiler);
+            break;
+          SPVM_BASIC_TYPE_C_ID_FLOAT: 
+            type = SPVM_TYPE_create_float_ref_type(compiler);
+            break;
+          SPVM_BASIC_TYPE_C_ID_DOUBLE: 
+            type = SPVM_TYPE_create_double_ref_type(compiler);
+            break;
+        }
       }
       else if (var->op_my->uv.my->op_type) {
         type = var->op_my->uv.my->op_type->uv.type;
