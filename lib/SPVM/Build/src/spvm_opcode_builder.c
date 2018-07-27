@@ -216,7 +216,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     
                     if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
-                      SPVM_TYPE* type_to = SPVM_OP_get_type(compiler, op_assign_dist);
+                      SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
                       
                       // Skip if same variable assignment
                       if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
@@ -757,9 +757,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
+                        assert(type_dist->dimension == 0);
                         
-                        switch (type_to->basic_type->id) {
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_ADD_INT;
                             break;
@@ -791,8 +791,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_SUBTRACT_INT;
                             break;
@@ -824,8 +824,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_MULTIPLY_INT;
                             break;
@@ -857,8 +857,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_DIVIDE_INT;
                             break;
@@ -886,8 +886,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         
                         // Check croak
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
@@ -898,8 +898,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_REMAINDER_INT;
                             break;
@@ -927,8 +927,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         // Check croak
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
@@ -942,8 +942,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_LEFT_SHIFT_INT;
                             break;
@@ -971,8 +971,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_RIGHT_SHIFT_INT;
                             break;
@@ -1000,8 +1000,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_RIGHT_SHIFT_UNSIGNED_INT;
                             break;
@@ -1029,8 +1029,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_BIT_AND_INT;
                             break;
@@ -1056,8 +1056,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_BIT_OR_INT;
                             break;
@@ -1083,8 +1083,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_BIT_XOR_INT;
                             break;
@@ -1110,8 +1110,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_COMPLEMENT_INT;
                             break;
@@ -1135,8 +1135,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                        
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_MOVE_INT;
                             break;
@@ -1166,8 +1166,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                        
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_NEGATE_INT;
                             break;
@@ -1201,8 +1201,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                         opcode.operand0 = var_id_out;
 
-                        assert(type_to->dimension == 0);
-                        switch (type_to->basic_type->id) {
+                        assert(type_dist->dimension == 0);
+                        switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_BYTE:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_BYTE;
                             *(SPVM_VALUE_byte*)&opcode.operand1 = *(SPVM_VALUE_byte*)&constant->value;
@@ -1671,10 +1671,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
-                        _Bool type_to_is_value_t = SPVM_TYPE_is_value_type(compiler, type_to->basic_type->id, type_to->dimension);
+                        _Bool type_dist_is_value_t = SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension);
 
-                        if (type_to_is_value_t) {
-                          SPVM_OP* op_package = type_to->basic_type->op_package;
+                        if (type_dist_is_value_t) {
+                          SPVM_OP* op_package = type_dist->basic_type->op_package;
                           assert(op_package);
                           
                           SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
@@ -1729,8 +1729,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          if (type_to->dimension == 0) {
-                            switch (type_to->basic_type->id) {
+                          if (type_dist->dimension == 0) {
+                            switch (type_dist->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE:
                                 opcode.id = SPVM_OPCODE_C_ID_MOVE_BYTE;
                                 break;
