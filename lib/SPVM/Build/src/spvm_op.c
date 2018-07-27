@@ -151,6 +151,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "SCALAR",
   "ARRAY_FIELD_ACCESS",
   "REF",
+  "DEREF",
 };
 
 SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_ref) {
