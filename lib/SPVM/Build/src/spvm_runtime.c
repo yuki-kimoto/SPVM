@@ -2481,51 +2481,51 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Operand 3 is operation code for wide operation
         switch (255 + opcode->operand3) {
           case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
-            
+            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
-            
+            *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_GET_DEREF_INT: {
-            
+            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_GET_DEREF_LONG: {
-            
+            *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_GET_DEREF_FLOAT: {
-            
+            *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE: {
-            
+            *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)*(void**)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
-            
+            *(SPVM_VALUE_byte*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_SHORT: {
-            
+            *(SPVM_VALUE_short*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
-            
+            *(SPVM_VALUE_int*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_LONG: {
-            
+            *(SPVM_VALUE_long*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_FLOAT: {
-            
+            *(SPVM_VALUE_float*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&vars[opcode->operand1];
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
-            
+            *(SPVM_VALUE_double*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&vars[opcode->operand1];
             break;
           }
           default:
