@@ -52,11 +52,6 @@ SPVM::Test - SPVM test module
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
   
-  sub : int ($self : self, $x1 : int, $x2 : int) {
-    
-    return $x1 + $x2;
-  }
-  
   sub main : int ($mvar : int) {
     {
       my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
@@ -1557,6 +1552,11 @@ SPVM::Test - SPVM test module
   sub receive_undef : void ($test_case : TestCase) {
     
   }
+  sub : int ($self : self, $x1 : int, $x2 : int) {
+    
+    return $x1 + $x2;
+  }
+  
 
 }
 
