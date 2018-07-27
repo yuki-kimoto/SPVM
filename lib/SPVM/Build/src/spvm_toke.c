@@ -774,13 +774,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          // Deference
-          if (cur_token_ptr == compiler->bufptr - 1) {
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEREF);
-            yylvalp->opval = op;
-            return '\\';
-          }
-          
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
           memcpy(var_name, cur_token_ptr, str_len);
