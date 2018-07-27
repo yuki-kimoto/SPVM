@@ -1670,7 +1670,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                       }
-                      else if (op_assign_from->id == SPVM_OP_C_ID_VAR || op_assign_from->id == SPVM_OP_C_ID_ASSIGN) {
+                      else if (op_assign_from->id == SPVM_OP_C_ID_VAR) {
                         _Bool type_to_is_value_t = SPVM_TYPE_is_value_type(compiler, type_to->basic_type->id, type_to->dimension);
 
                         if (type_to_is_value_t) {
