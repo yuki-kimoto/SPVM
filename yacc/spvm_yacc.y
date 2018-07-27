@@ -18,7 +18,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE REF ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
@@ -26,7 +26,7 @@
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
 %type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub
+%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub deref
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
 %type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
@@ -483,6 +483,16 @@ array_length
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
+    }
+
+deref
+  : DEREF var
+    {
+      $$ = SPVM_OP_build_deref(compiler, $1, $2);
+    }
+  | DEREF '{' var '}'
+    {
+      $$ = SPVM_OP_build_deref(compiler, $1, $3);
     }
 
 term
