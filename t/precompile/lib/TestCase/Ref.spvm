@@ -1,0 +1,17 @@
+package TestCase::Ref {
+  precompile sub basic : int () {
+    my $num = 4;
+    
+    my $num_ref = \$num;
+    
+    my $num2 = $$num_ref;
+    
+    $$num_ref = 5;
+    
+    if ($num2 == 4 && $num == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+}
