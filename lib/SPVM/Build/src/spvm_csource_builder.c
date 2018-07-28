@@ -63,6 +63,13 @@ void SPVM_CSOURCE_BUILDER_add_operand(SPVM_COMPILER* compiler, SPVM_STRING_BUFFE
   SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, var_index);
 }
 
+void SPVM_CSOURCE_BUILDER_add_operand_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "*(");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)type_name);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)*(void**)&");
+  SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, var_index);
+}
+
 void SPVM_CSOURCE_BUILDER_add_stack(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t var_index) {
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "*(");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)type_name);
@@ -557,6 +564,22 @@ void SPVM_CSOURCE_BUILDER_add_value_t_array_field_store(SPVM_COMPILER* compiler,
 void SPVM_CSOURCE_BUILDER_add_move(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t out_index, int32_t in_index) {
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
   SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, type_name, out_index);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+  SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, type_name, in_index);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+}
+
+void SPVM_CSOURCE_BUILDER_add_get_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t out_index, int32_t in_index) {
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+  SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, type_name, out_index);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+  SPVM_CSOURCE_BUILDER_add_operand_deref(compiler, string_buffer, type_name, in_index);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+}
+
+void SPVM_CSOURCE_BUILDER_add_set_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t out_index, int32_t in_index) {
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+  SPVM_CSOURCE_BUILDER_add_operand_deref(compiler, string_buffer, type_name, out_index);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
   SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, type_name, in_index);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
@@ -3271,6 +3294,69 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add_int(compiler, string_buffer , default_opcode_rel_index);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+      }
+      case SPVM_OPCODE_C_ID_REF: {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "*(void**)&");
+        SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = &");
+        SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_WIDE: {
+        // Operand 3 is operation code for wide operation
+        switch (255 + opcode->operand3) {
+          case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_INT: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_LONG: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_FLOAT: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE: {
+            SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_SHORT: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_LONG: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_FLOAT: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
+            SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
+            break;
+          }
+          default:
+            assert(0);
+        }
       }
     }
     opcode_index++;
