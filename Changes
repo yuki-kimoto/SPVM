@@ -1,3 +1,33 @@
+0.0363 2018-07-28
+  - support numeric reference type
+    add byte_ref, short_ref, int_ref, long_ref, float_ref, double_ref type
+    add reference \ and derefence $$num syntax
+    
+    sub main : int ($mvar : int) {
+      {
+        my $out : double;
+        ref_sum(0.25, 0.5, \$out);
+        
+        print((string)$out);
+      }
+      {
+        my $num = 4;
+        
+        my $num_ref = \$num;
+        
+        my $num2 = $$num_ref;
+        
+        $$num_ref = 5;
+        
+        print((string)$num2);
+        print((string)$num);
+      }
+    }
+
+    sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double_ref) {
+      $$x_out = $x_in1 + $x_in2;
+    }
+    
 0.0363 2018-07-26
   - simplify anon package syntax. You don't need to write "new package { ... }".
       my $point = package {
