@@ -2207,6 +2207,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_ARRAY_ACCESS:
                       case SPVM_OP_C_ID_SWITCH_CONDITION:
                       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+                      case SPVM_OP_C_ID_REF:
+                      case SPVM_OP_C_ID_DEREF:
                         create_tmp_var = 1;
                         break;
                       case SPVM_OP_C_ID_CONSTANT: {
