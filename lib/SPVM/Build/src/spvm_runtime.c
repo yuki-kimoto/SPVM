@@ -2513,6 +2513,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
+            warn("CCCCCCCCCCCCCCC");
             *(SPVM_VALUE_int*)*(void**)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
             break;
           }

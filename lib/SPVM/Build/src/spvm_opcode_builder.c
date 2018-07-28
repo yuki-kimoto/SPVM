@@ -784,6 +784,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       else if (op_assign_src->id == SPVM_OP_C_ID_REF) {
+                        
+                        warn("FFFFFFFFFFFFF");
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
@@ -1900,6 +1902,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (op_assign_dist->id == SPVM_OP_C_ID_DEREF) {
+                      warn("EEEEEEEEEEEEEEEEEEE");
+                      
                       SPVM_OP* op_deref = op_assign_dist;
 
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_deref->first);

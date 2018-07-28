@@ -1765,9 +1765,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_REF: {
+                        
                         SPVM_OP* op_var = op_cur->first;
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
-                        if (!SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension)) {
+                        SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
+                        if (!SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension)) {
                           SPVM_yyerror_format(compiler, "Refernece target must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
@@ -1775,9 +1776,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_DEREF: {
                         SPVM_OP* op_var = op_cur->first;
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
+                        SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
                         
-                        if (!SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension)) {
+                        if (!SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension)) {
                           SPVM_yyerror_format(compiler, "Dereference target must be numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         

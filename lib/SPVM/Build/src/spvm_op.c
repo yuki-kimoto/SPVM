@@ -164,14 +164,14 @@ SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP
   
   SPVM_OP_insert_child(compiler, op_deref, op_deref->last, op_var);
 
-  return op_var;
+  return op_deref;
 }
 
 SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
   
   SPVM_OP_insert_child(compiler, op_ref, op_ref->last, op_var);
   
-  return op_var;
+  return op_ref;
 }
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {

@@ -738,6 +738,7 @@ binop
     {
       $$ = $2;
     }
+  | deref ASSIGN assignable_term
 
 relative_term
   : assignable_term REL assignable_term
