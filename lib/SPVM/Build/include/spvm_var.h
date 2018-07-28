@@ -7,7 +7,6 @@ struct SPVM_var {
   SPVM_OP* op_name;
   SPVM_OP* op_my;
   _Bool is_declaration;
-  _Bool with_ref;
 };
 
 SPVM_VAR* SPVM_VAR_new(SPVM_COMPILER* compiler);

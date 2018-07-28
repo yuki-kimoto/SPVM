@@ -160,19 +160,16 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "DOUBLE_REF",
 };
 
-SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_ref) {
+SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
   
-  return op_deref;
+  SPVM_OP_insert_child(compiler, op_deref, op_deref->last, op_var);
+
+  return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_ref_var(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
+SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
   
-  if (op_var->uv.var->with_ref) {
-    SPVM_yyerror_format(compiler, "Can't twice reference", op_ref->file, op_ref->line);
-  }
-  else {
-    op_var->uv.var->with_ref = 1;
-  }
+  SPVM_OP_insert_child(compiler, op_ref, op_ref->last, op_var);
   
   return op_var;
 }
@@ -982,33 +979,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
-      if (var->with_ref) {
-        SPVM_TYPE* deref_type = type = var->op_my->uv.my->op_type->uv.type;
-        assert(deref_type->dimension == 0);
-        switch (deref_type->basic_type->id) {
-          SPVM_BASIC_TYPE_C_ID_BYTE: 
-            type = SPVM_TYPE_create_byte_ref_type(compiler);
-            break;
-          SPVM_BASIC_TYPE_C_ID_SHORT: 
-            type = SPVM_TYPE_create_short_ref_type(compiler);
-            break;
-          SPVM_BASIC_TYPE_C_ID_INT: 
-            type = SPVM_TYPE_create_int_ref_type(compiler);
-            break;
-          SPVM_BASIC_TYPE_C_ID_LONG: 
-            type = SPVM_TYPE_create_long_ref_type(compiler);
-            break;
-          SPVM_BASIC_TYPE_C_ID_FLOAT: 
-            type = SPVM_TYPE_create_float_ref_type(compiler);
-            break;
-          SPVM_BASIC_TYPE_C_ID_DOUBLE: 
-            type = SPVM_TYPE_create_double_ref_type(compiler);
-            break;
-        }
-      }
-      else if (var->op_my->uv.my->op_type) {
-        type = var->op_my->uv.my->op_type->uv.type;
-      }
+      type = var->op_my->uv.my->op_type->uv.type;
       break;
     }
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
@@ -1460,11 +1431,6 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_name->uv.name = op_var->uv.var->op_name->uv.name;
     my->op_name = op_name;
     
-    // Ref
-    if (op_var->uv.var->with_ref) {
-      my->is_ref = 1;
-    }
-
     // Add my information to op
     op_my->uv.my = my;
     
