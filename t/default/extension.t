@@ -50,6 +50,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 }
 
+# Ref
+{
+  ok(TestCase::Extension->ref());
+}
+
 # Native Exception
 {
   is(TestCase::Extension2->mul(2, 3), 6);
@@ -62,6 +67,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Pointer->struct_test());
 }
+
 
 # Clear exception
 SPVM::set_exception_undef();

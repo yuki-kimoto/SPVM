@@ -5,6 +5,18 @@
 #include <spvm_native.h>
 
 
+int32_t SPVM_NATIVE_TestCase__Extension__native_ref_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  double x_in1 = stack[0].dval;
+  double x_in2 = stack[1].dval;
+  
+  *stack[2].dptr = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__native_set_byte_field(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

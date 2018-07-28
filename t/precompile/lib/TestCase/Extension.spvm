@@ -1,6 +1,20 @@
 package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
+  
+  native sub native_ref_sum : double ($x_in : double, $x_in2 : double, $x_out : double_ref);
+  precompile sub ref : int () {
+    my $out : double;
+    my $out_ref = \$out;
+    
+    native_ref_sum(0.25, 0.5, $out_ref);
+    
+    if ($$out_ref == 0.75) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
   precompile sub set_byte_field : int () {
     my $simple = new TestCase::Simple;

@@ -51,6 +51,10 @@ SPVM::Test - SPVM test module
   sub LONG_MIN : long () { return -9223372036854775808L; }
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
+
+  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double_ref) {
+    $$x_out = $x_in1 + $x_in2;
+  }
   
   sub : int ($self : self, $x1 : int, $x2 : int) {
     
@@ -58,6 +62,12 @@ SPVM::Test - SPVM test module
   }
   
   sub main : int ($mvar : int) {
+    {
+      my $out : double;
+      ref_sum(0.25, 0.5, \$out);
+      
+      print((string)$out);
+    }
     {
       my $num = 4;
       
