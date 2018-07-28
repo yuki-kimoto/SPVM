@@ -739,6 +739,9 @@ binop
       $$ = $2;
     }
   | deref ASSIGN assignable_term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
 
 relative_term
   : assignable_term REL assignable_term

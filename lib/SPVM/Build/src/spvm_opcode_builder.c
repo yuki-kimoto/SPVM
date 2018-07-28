@@ -747,27 +747,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         assert(type->dimension == 0);
                         switch (type->basic_type->id) {
-                          case SPVM_BASIC_TYPE_C_ID_BYTE_REF:
+                          case SPVM_BASIC_TYPE_C_ID_BYTE:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_BYTE - 255;
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_SHORT_REF:
+                          case SPVM_BASIC_TYPE_C_ID_SHORT:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_SHORT - 255;
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_INT_REF:
+                          case SPVM_BASIC_TYPE_C_ID_INT:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_INT - 255;
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_LONG_REF:
+                          case SPVM_BASIC_TYPE_C_ID_LONG:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_LONG - 255;
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_FLOAT_REF:
+                          case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_FLOAT - 255;
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_DOUBLE_REF:
+                          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             opcode.id = SPVM_OPCODE_C_ID_WIDE;
                             opcode.operand3 = SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE - 255;
                             break;
@@ -1901,7 +1901,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (op_assign_dist->id == SPVM_OP_C_ID_DEREF) {
-                      
                       SPVM_OP* op_deref = op_assign_dist;
 
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_deref->first);

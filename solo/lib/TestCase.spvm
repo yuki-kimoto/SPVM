@@ -59,6 +59,19 @@ SPVM::Test - SPVM test module
   
   sub main : int ($mvar : int) {
     {
+      my $num = 4;
+      
+      my $num_ref = \$num;
+      
+      my $num2 = $$num_ref;
+      
+      $$num_ref = 5;
+      
+      print((string)$num2);
+      print((string)$num);
+    }
+
+    {
       my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
         return $x1 * $x2;
       };

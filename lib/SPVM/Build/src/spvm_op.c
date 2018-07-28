@@ -854,6 +854,12 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->last);
   }
+  else if (op->id == SPVM_OP_C_ID_REF) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->first);
+  }
+  else if (op->id == SPVM_OP_C_ID_DEREF) {
+    op_var = SPVM_OP_get_target_op_var(compiler, op->first);
+  }
   else {
     assert(0);
   }

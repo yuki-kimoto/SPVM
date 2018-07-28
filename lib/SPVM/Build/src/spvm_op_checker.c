@@ -1226,9 +1226,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_yyerror_format(compiler, "undef can't be assigned dist undef at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           else {
-                            _Bool dist_type_is_value_t = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension);
-                            if (dist_type_is_value_t) {
+                            _Bool dist_type_is_value_type = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension);
+                            _Bool dist_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension);
+                            if (dist_type_is_value_type) {
                               SPVM_yyerror_format(compiler, "undef can't be assigned dist value_t type at %s line %d\n", op_cur->file, op_cur->line);
+                              return;
+                            }
+                            else if (dist_type_is_numeric_ref_type) {
+                              SPVM_yyerror_format(compiler, "undef can't be assigned dist numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
+                              return;
                             }
                           }
                         }
