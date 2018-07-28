@@ -2477,6 +2477,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_END_SUB: {
         goto label_END_SUB;
       }
+      case SPVM_OPCODE_C_ID_REF:
+        *(void**)&vars[opcode->operand0] = &vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_ID_WIDE: {
         // Operand 3 is operation code for wide operation
         switch (255 + opcode->operand3) {
