@@ -739,6 +739,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
+                      else if (op_assign_src->id == SPVM_OP_C_ID_REF) {
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                        
+                        opcode.id = SPVM_OPCODE_C_ID_REF;
+                        
+                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
+                        int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
+                        
+                        opcode.operand0 = var_id_out;
+                        opcode.operand1 = var_id_in;
+                        
+                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                      }
                       else if (op_assign_src->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
                         // VAR = EXCEPTION_VAR
                         SPVM_OPCODE opcode;
