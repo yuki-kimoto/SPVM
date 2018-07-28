@@ -22,7 +22,7 @@ union SPVM_value {
   int64_t* lptr;
   float* fptr;
   double* dptr;
-  SPVM_VALUE* vaval;
+  SPVM_VALUE* vptr;
 };
 
 typedef int8_t SPVM_VALUE_byte;
