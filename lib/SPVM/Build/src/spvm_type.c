@@ -266,6 +266,17 @@ _Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   }
 }
 
+_Bool SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
+  (void)compiler;
+  
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE_REF && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 _Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension) {
   (void)compiler;
   
