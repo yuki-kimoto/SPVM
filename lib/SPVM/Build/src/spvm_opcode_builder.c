@@ -1841,6 +1841,47 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                     }
+                    else if (op_assign_dist->id == SPVM_OP_C_ID_DEREF) {
+                      SPVM_OP* op_deref = op_assign_dist;
+
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_deref->first);
+
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                      
+                      assert(type->dimension == 0);
+                      if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_BYTE - 255;
+                      }
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_SHORT - 255;
+                      }
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_INT - 255;
+                      }
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_LONG - 255;
+                      }
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_FLOAT - 255;
+                      }
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE_REF) {
+                        opcode.id = SPVM_OPCODE_C_ID_WIDE;
+                        opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE - 255;
+                      }
+                                        
+                      int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
+                      int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
+                      
+                      opcode.operand0 = var_id_out;
+                      opcode.operand1 = var_id_in;
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
                     else if (op_assign_dist->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
                       
                       SPVM_TYPE* from_type = SPVM_OP_get_type(compiler, op_assign_src);
