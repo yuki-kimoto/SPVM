@@ -983,6 +983,48 @@ basic_type
       
       $$ = op_type;
     }
+  | BYTE_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_byte_ref_type(compiler);
+      
+      $$ = op_type;
+    }
+  | SHORT_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_short_ref_type(compiler);
+      
+      $$ = op_type;
+    }
+  | INT_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_int_ref_type(compiler);
+      
+      $$ = op_type;
+    }
+  | LONG_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_long_ref_type(compiler);
+      
+      $$ = op_type;
+    }
+  | FLOAT_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_float_ref_type(compiler);
+      
+      $$ = op_type;
+    }
+  | DOUBLE_REF
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
+      op_type->uv.type = SPVM_TYPE_create_double_ref_type(compiler);
+      
+      $$ = op_type;
+    }
 
 array_type
   : basic_type '[' ']'
