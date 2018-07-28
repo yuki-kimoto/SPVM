@@ -778,7 +778,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (cur_token_ptr == compiler->bufptr - 1) {
             SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEREF);
             yylvalp->opval = op;
-            return '\\';
+            return DEREF;
           }
           
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
