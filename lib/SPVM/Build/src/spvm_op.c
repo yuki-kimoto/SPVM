@@ -935,7 +935,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CAST:
     case SPVM_OP_C_ID_ARRAY_INIT:
-    case SPVM_OP_C_ID_DEREF:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;
@@ -1059,6 +1058,34 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
         default:
           assert(0);
       }
+      break;
+    }
+    case SPVM_OP_C_ID_DEREF: {
+      SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op->first);
+      assert(term_type->dimension == 0);
+      switch (term_type->basic_type->id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE_REF:
+          type = SPVM_TYPE_create_byte_type(compiler);
+          break;
+        case SPVM_BASIC_TYPE_C_ID_SHORT_REF:
+          type = SPVM_TYPE_create_short_type(compiler);
+          break;
+        case SPVM_BASIC_TYPE_C_ID_INT_REF:
+          type = SPVM_TYPE_create_int_type(compiler);
+          break;
+        case SPVM_BASIC_TYPE_C_ID_LONG_REF:
+          type = SPVM_TYPE_create_long_type(compiler);
+          break;
+        case SPVM_BASIC_TYPE_C_ID_FLOAT_REF:
+          type = SPVM_TYPE_create_float_type(compiler);
+          break;
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE_REF:
+          type = SPVM_TYPE_create_double_type(compiler);
+          break;
+        default:
+          assert(0);
+      }
+      break;
     }
   }
   
