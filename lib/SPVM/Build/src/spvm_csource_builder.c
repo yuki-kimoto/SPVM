@@ -780,10 +780,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
   
   int32_t sub_return_type_dimension = sub_return_type->dimension;
-  int32_t sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
-  int32_t sub_return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
+  int32_t sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
+  int32_t sub_return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
 
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   assert(sub->have_precompile_desc);
   
@@ -832,8 +832,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
       SPVM_MY* my = op_my->uv.my;
       SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
-      _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension);
-      _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension);
+      _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+      _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       
       // Value type
       if (my_type_is_value_t) {
@@ -898,7 +898,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       // Numeric type
       else {
-        _Bool my_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, my_type->basic_type->id, my_type->dimension);
+        _Bool my_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
         
         if (my_type_is_numeric_ref_type) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -963,8 +963,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_MY* arg_my = op_arg->uv.my;
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension);
-      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension);
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       
       // Value type
       if (arg_type_is_value_t) {
@@ -1107,9 +1107,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
-      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension);
+      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       
-      if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension) && !arg_type_is_value_t) {
+      if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) && !arg_type_is_value_t) {
         SPVM_MY* my_arg = op_arg->uv.my;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (");
@@ -2829,8 +2829,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
-        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension);
-        int32_t decl_sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension);
+        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
+        int32_t decl_sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         
         // Declare subroutine return type id
         int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
@@ -3373,7 +3373,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   // No exception
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (!exception_flag) {\n");
-  _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
+  _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   if (sub_return_type_is_object_type && !sub_return_type_is_value_type) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }

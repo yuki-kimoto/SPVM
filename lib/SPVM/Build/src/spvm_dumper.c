@@ -100,7 +100,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_TYPE) {
       if (op_cur->uv.type) {
         printf(" ");
-        SPVM_TYPE_fprint_type_name(compiler, stdout, op_cur->uv.type->basic_type->id, op_cur->uv.type->dimension);
+        SPVM_TYPE_fprint_type_name(compiler, stdout, op_cur->uv.type->basic_type->id, op_cur->uv.type->dimension, op_cur->uv.type->flag);
       }
       else {
         printf(" \"Unknown\"");
@@ -335,7 +335,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      return_type => ");
-    SPVM_TYPE_fprint_type_name(compiler, stdout, sub->op_return_type->uv.type->basic_type->id, sub->op_return_type->uv.type->dimension);
+    SPVM_TYPE_fprint_type_name(compiler, stdout, sub->op_return_type->uv.type->basic_type->id, sub->op_return_type->uv.type->dimension, sub->op_return_type->uv.type->flag);
     printf("\n");
     printf("      is_enum => %d\n", sub->is_enum);
     printf("      have_native_desc => %d\n", sub->have_native_desc);
@@ -421,7 +421,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     
     SPVM_TYPE* type = field->op_type->uv.type;
     printf("      type => ");
-    SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
+    SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension, type->flag);
     printf("\n");
     printf("      index => \"%" PRId32 "\"\n", field->index);
   }
@@ -452,7 +452,7 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     printf("          name => %s\n", my->op_name->uv.name);
     printf("          type => ");
     SPVM_TYPE* type = my->op_type->uv.type;
-    SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension);
+    SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension, type->flag);
     printf("\n");
     printf("          var_id => %d\n", my->var_id);
   }

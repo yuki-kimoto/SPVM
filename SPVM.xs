@@ -151,13 +151,13 @@ set_elements(...)
   
   int32_t basic_type_id  = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
   
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
     
     if (element_type_is_value_type) {
       for (int32_t index = 0; index < length; index++) {
@@ -364,13 +364,13 @@ set_bin(...)
   int32_t length = env->get_array_length(env, array);
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
     
     if (element_type_is_value_type) {
       SPVM_OP* op_package = basic_type->op_package;
@@ -571,13 +571,13 @@ set_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
     
     if (element_type_is_value_type) {
       if (sv_derived_from(sv_value, "HASH")) {
@@ -776,14 +776,14 @@ get_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   SV* sv_value;
   _Bool is_object = 0;
   if (is_array_type) {
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
 
     if (element_type_is_value_type) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
@@ -855,7 +855,7 @@ get_element(...)
         env->inc_ref_count(env, value);
       }
       
-      int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension);
+      int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension, 0);
       if (element_type_is_array_type) {
         sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
       }
@@ -946,14 +946,14 @@ to_elements(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
 
     if (element_type_is_value_type) {
       
@@ -1029,7 +1029,7 @@ to_elements(...)
           env->inc_ref_count(env, value);
         }
         
-        int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension);
+        int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension, 0);
         SV* sv_value;
         if (element_type_is_array_type) {
           sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
@@ -1149,14 +1149,14 @@ to_bin(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension);
+  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
   
   SV* sv_bin;
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension);
+    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_dimension, 0);
 
     if (element_type_is_value_type) {
       SPVM_OP* op_package = basic_type->op_package;
@@ -1743,7 +1743,7 @@ call_sub(...)
   }
 
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension);
+  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   SPVM_VALUE* stack = runtime->stack;
   
@@ -1767,8 +1767,8 @@ call_sub(...)
       SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
       
-      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension);
-      _Bool arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension);
+      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
@@ -1904,8 +1904,8 @@ call_sub(...)
   // Return type id
   SPVM_TYPE* return_type = sub->op_return_type->uv.type;
 
-  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type->basic_type->id, return_type->dimension);
-  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type->basic_type->id, return_type->dimension);
+  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);
+  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);
   
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;
