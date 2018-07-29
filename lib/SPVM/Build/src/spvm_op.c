@@ -2107,9 +2107,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       my->op_term_type_inference = op_assign_from;
     }
   }
-
-  // SPVM_DUMPER_dump_ast(compiler, op_assign);
-  
   
   return op_assign;
 }
