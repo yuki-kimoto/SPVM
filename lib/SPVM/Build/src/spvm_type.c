@@ -447,29 +447,23 @@ _Bool SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, int32_t basic_
 
 int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-  assert(basic_type);
+  _Bool is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, dimension, flag);
   
   int32_t width;
-  if (dimension == 0) {
+  if (is_value_type) {
+    
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    assert(basic_type);
+    
     const char* basic_type_name = basic_type->name;
-    SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type_name, strlen(basic_type_name));
+    SPVM_OP* op_package = basic_type->op_package;
+    
+    assert(op_package);
+    
     // Package
-    if (op_package) {
-      SPVM_PACKAGE* package = op_package->uv.package;
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-        width = package->op_fields->length;
-      }
-      else {
-        width = 1;
-      }
-    }
-    // Numeric type
-    else {
-      width = 1;
-    }
+    SPVM_PACKAGE* package = op_package->uv.package;
+    width = package->op_fields->length;
   }
-  // Array
   else {
     width = 1;
   }
