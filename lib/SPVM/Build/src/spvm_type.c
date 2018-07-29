@@ -185,6 +185,7 @@ SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
@@ -197,6 +198,7 @@ SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
@@ -210,6 +212,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
@@ -223,6 +226,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
@@ -236,6 +240,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
@@ -249,6 +254,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE_REF);
   type->dimension = 0;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   assert(type);
   
