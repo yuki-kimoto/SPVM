@@ -915,7 +915,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type->basic_type = basic_type;
       assert(first_type->dimension > 0);
       type->dimension = first_type->dimension - 1;
-      type->is_const = first_type->is_const;
+      if (first_type->flag & SPVM_TYPE_C_FLAG_CONST) {
+        type->flag |= SPVM_TYPE_C_FLAG_CONST;
+      }
       break;
     }
     case SPVM_OP_C_ID_ADD:
@@ -2193,7 +2195,7 @@ SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_typ
     SPVM_yyerror_format(compiler, "const only can specify byte array at %s line %d\n", op_type->file, op_type->line);
   }
   
-  type->is_const = 1;
+  type->flag |= SPVM_TYPE_C_FLAG_CONST;
   
   return op_type;
 }
@@ -2204,7 +2206,9 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
   type->dimension = op_type_child->uv.type->dimension + 1;
   type->basic_type = op_type_child->uv.type->basic_type;
-  type->is_const = op_type_child->uv.type->is_const;
+  if (op_type_child->uv.type->flag & SPVM_TYPE_C_FLAG_CONST) {
+    type->flag |= SPVM_TYPE_C_FLAG_CONST;
+  }
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_child->file, op_type_child->line);

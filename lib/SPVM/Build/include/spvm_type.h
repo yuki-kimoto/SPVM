@@ -5,10 +5,15 @@
 
 #include "spvm_base.h"
 
+enum {
+  SPVM_TYPE_C_FLAG_CONST = 1,
+  SPVM_TYPE_C_FLAG_REF = 2,
+};
+
 struct SPVM_type {
-  int32_t dimension;
   SPVM_BASIC_TYPE* basic_type;
-  _Bool is_const;
+  int32_t dimension;
+  int32_t flag;
   int32_t sub_rel_id;
 };
 

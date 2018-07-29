@@ -290,7 +290,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
                               type_element->basic_type = type_term_element->basic_type;
                               type_element->dimension = type_term_element->dimension;
-                              type_element->is_const = type_term_element->is_const;
+                              if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
+                              }
                               op_type_element->uv.type = type_element;
                               
                               if (!SPVM_TYPE_is_numeric_type(compiler, type_element->basic_type->id, type_element->dimension)) {
@@ -305,7 +307,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
                               type_new->basic_type = type_term_element->basic_type;
                               type_new->dimension = type_term_element->dimension + 1;
-                              type_new->is_const = type_term_element->is_const;
+                              if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
+                              }
                               op_type_new->uv.type= type_new;
 
                               if (!SPVM_TYPE_is_numeric_type(compiler, type_new->basic_type->id, type_new->dimension)) {
@@ -2674,7 +2678,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
           SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
         // Const check
-        if (!assign_to_type->is_const && assign_from_type->is_const) {
+        if (!(assign_to_type->flag & SPVM_TYPE_C_FLAG_CONST) && (assign_from_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
           SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_assign_from->file, op_assign_from->line);
         }
       }
