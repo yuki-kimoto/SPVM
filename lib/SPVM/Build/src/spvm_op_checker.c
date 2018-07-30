@@ -2698,36 +2698,24 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
 
   SPVM_LIST* op_types = compiler->op_types;
   
-  // Resolve types
-  {
-    int32_t i;
-    for (i = 0; i < op_types->length; i++) {
-      SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
+  // Check type names
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_fetch(op_types, i);
+    
+    SPVM_TYPE* type = op_type->uv.type;
+    
+    // Check type name
+    if (type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+      // Basic type name
+      const char* basic_type_name = type->basic_type->name;
       
-      SPVM_TYPE* type = op_type->uv.type;
-      
-      // Default core type is ok
-      if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID
-        || (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)
-        || type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT)
-      {
-        // Nothing
-      }
-      else {
-        const char* basic_type_name = type->basic_type->name;
+      // Unknonw package
+      SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
+      SPVM_OP* op_found_package = SPVM_HASH_fetch(op_package_symtable, basic_type_name, strlen(basic_type_name));
+      if (!op_found_package) {
+        SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
         
-        // Package
-        SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-        SPVM_OP* op_found_package = SPVM_HASH_fetch(op_package_symtable, basic_type_name, strlen(basic_type_name));
-        
-        if (op_found_package) {
-          // Nothing
-        }
-        else {
-          SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
-          
-          return;
-        }
+        return;
       }
     }
   }
