@@ -747,9 +747,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '\\':
         compiler->bufptr++;
-        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REF);
-        yylvalp->opval = op;
-        return REF;
+        return BACKSLASH;
       default:
         /* Variable */
         if (ch == '$') {

@@ -64,15 +64,15 @@
      CROAK = 280,
      VAR_NAME = 281,
      INTERFACE = 282,
-     REF = 283,
-     ISA = 284,
-     SWITCH = 285,
-     CASE = 286,
-     DEFAULT = 287,
-     EVAL = 288,
-     WEAKEN = 289,
-     PRECOMPILE = 290,
-     DEREF = 291,
+     ISA = 283,
+     SWITCH = 284,
+     CASE = 285,
+     DEFAULT = 286,
+     EVAL = 287,
+     WEAKEN = 288,
+     PRECOMPILE = 289,
+     DEREF = 290,
+     BACKSLASH = 291,
      UNDEF = 292,
      VOID = 293,
      BYTE = 294,
@@ -135,15 +135,15 @@
 #define CROAK 280
 #define VAR_NAME 281
 #define INTERFACE 282
-#define REF 283
-#define ISA 284
-#define SWITCH 285
-#define CASE 286
-#define DEFAULT 287
-#define EVAL 288
-#define WEAKEN 289
-#define PRECOMPILE 290
-#define DEREF 291
+#define ISA 283
+#define SWITCH 284
+#define CASE 285
+#define DEFAULT 286
+#define EVAL 287
+#define WEAKEN 288
+#define PRECOMPILE 289
+#define DEREF 290
+#define BACKSLASH 291
 #define UNDEF 292
 #define VOID 293
 #define BYTE 294

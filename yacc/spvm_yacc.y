@@ -17,8 +17,8 @@
 %}
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
-%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE REF ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF
+%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF BACKSLASH
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT BYTE_REF SHORT_REF INT_REF LONG_REF FLOAT_REF DOUBLE_REF
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
@@ -496,13 +496,15 @@ deref
     }
 
 ref
-  : REF var
+  : BACKSLASH var
     {
-      $$ = SPVM_OP_build_ref(compiler, $1, $2);
+      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
+      $$ = SPVM_OP_build_ref(compiler, op_ref, $2);
     }
-  | REF '{' var '}'
+  | BACKSLASH '{' var '}'
     {
-      $$ = SPVM_OP_build_ref(compiler, $1, $3);
+      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
+      $$ = SPVM_OP_build_ref(compiler, op_ref, $3);
     }
 
 term
