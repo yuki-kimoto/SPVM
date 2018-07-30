@@ -1931,27 +1931,27 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
                       assert(type->dimension == 0);
-                      if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE_REF) {
+                      if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_BYTE - 255;
                       }
-                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT_REF) {
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_SHORT - 255;
                       }
-                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT_REF) {
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_INT - 255;
                       }
-                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG_REF) {
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_LONG - 255;
                       }
-                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT_REF) {
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_FLOAT - 255;
                       }
-                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE_REF) {
+                      else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE - 255;
                       }

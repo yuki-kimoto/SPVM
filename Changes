@@ -1,3 +1,6 @@
+0.0365 2018-07-30
+  - add reference type syntax to foo\
+
 0.0364 2018-07-28
   - support numeric reference type
     add byte_ref, short_ref, int_ref, long_ref, float_ref, double_ref type

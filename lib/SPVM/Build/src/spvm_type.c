@@ -223,21 +223,21 @@ SPVM_TYPE* SPVM_TYPE_create_object_type(SPVM_COMPILER* compiler) {
 SPVM_TYPE* SPVM_TYPE_create_byte_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE_REF);
-  type->dimension = 0;
-  type->flag |= SPVM_TYPE_C_FLAG_REF;
-  
-  assert(type);
-  
-  return type;
-}
+    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+    type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_BYTE);
+    type->dimension = 0;
+    type->flag |= SPVM_TYPE_C_FLAG_REF;
+    
+    assert(type);
+    
+    return type;
+  }
 
 SPVM_TYPE* SPVM_TYPE_create_short_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT_REF);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_SHORT);
   type->dimension = 0;
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
@@ -251,7 +251,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT_REF);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_INT);
   type->dimension = 0;
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
@@ -265,7 +265,7 @@ SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG_REF);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_LONG);
   type->dimension = 0;
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
@@ -279,7 +279,7 @@ SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT_REF);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_FLOAT);
   type->dimension = 0;
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
@@ -293,7 +293,7 @@ SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE_REF);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_DOUBLE);
   type->dimension = 0;
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
@@ -316,7 +316,7 @@ _Bool SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 _Bool SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE_REF && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE_REF) && (flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && (flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {

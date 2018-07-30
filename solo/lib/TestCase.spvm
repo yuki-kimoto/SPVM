@@ -52,7 +52,7 @@ SPVM::Test - SPVM test module
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
-  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double_ref) {
+  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double\) {
     $$x_out = $x_in1 + $x_in2;
   }
   
