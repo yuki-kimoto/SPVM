@@ -8,8 +8,8 @@
 
 const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "unknown",
-  "void",
   "undef",
+  "void",
   "byte",
   "short",
   "int",
@@ -21,14 +21,9 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
 
 const char* const SPVM_BASIC_TYPE_C_CATEGORY_NAMES[] = {
   "unknown",
-  "void",
   "undef",
-  "byte_ref",
-  "short_ref",
-  "int_ref",
-  "long_ref",
-  "float_ref",
-  "double_ref",
+  "void",
+  "numeric_ref",
   "numeric",
   "any_object",
   "class",

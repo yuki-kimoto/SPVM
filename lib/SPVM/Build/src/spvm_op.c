@@ -1680,6 +1680,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   
   if (strcmp(sub->op_name->uv.name, "DESTROY") == 0) {
     sub->is_destructor = 1;
+    
     // DESTROY return type must be void
     if (!(sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
       SPVM_yyerror_format(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
