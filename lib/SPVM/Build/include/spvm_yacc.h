@@ -83,30 +83,24 @@
      DOUBLE = 299,
      STRING = 300,
      OBJECT = 301,
-     BYTE_REF = 302,
-     SHORT_REF = 303,
-     INT_REF = 304,
-     LONG_REF = 305,
-     FLOAT_REF = 306,
-     DOUBLE_REF = 307,
-     SPECIAL_ASSIGN = 308,
-     ASSIGN = 309,
-     OR = 310,
-     AND = 311,
-     BIT_XOR = 312,
-     BIT_OR = 313,
-     BIT_AND = 314,
-     REL = 315,
-     SHIFT = 316,
-     REMAINDER = 317,
-     DIVIDE = 318,
-     MULTIPLY = 319,
-     UMINUS = 320,
-     SCALAR = 321,
-     NOT = 322,
-     DEC = 323,
-     INC = 324,
-     ARROW = 325
+     SPECIAL_ASSIGN = 302,
+     ASSIGN = 303,
+     OR = 304,
+     AND = 305,
+     BIT_XOR = 306,
+     BIT_OR = 307,
+     BIT_AND = 308,
+     REL = 309,
+     SHIFT = 310,
+     REMAINDER = 311,
+     DIVIDE = 312,
+     MULTIPLY = 313,
+     UMINUS = 314,
+     SCALAR = 315,
+     NOT = 316,
+     DEC = 317,
+     INC = 318,
+     ARROW = 319
    };
 #endif
 /* Tokens.  */
@@ -154,30 +148,24 @@
 #define DOUBLE 299
 #define STRING 300
 #define OBJECT 301
-#define BYTE_REF 302
-#define SHORT_REF 303
-#define INT_REF 304
-#define LONG_REF 305
-#define FLOAT_REF 306
-#define DOUBLE_REF 307
-#define SPECIAL_ASSIGN 308
-#define ASSIGN 309
-#define OR 310
-#define AND 311
-#define BIT_XOR 312
-#define BIT_OR 313
-#define BIT_AND 314
-#define REL 315
-#define SHIFT 316
-#define REMAINDER 317
-#define DIVIDE 318
-#define MULTIPLY 319
-#define UMINUS 320
-#define SCALAR 321
-#define NOT 322
-#define DEC 323
-#define INC 324
-#define ARROW 325
+#define SPECIAL_ASSIGN 302
+#define ASSIGN 303
+#define OR 304
+#define AND 305
+#define BIT_XOR 306
+#define BIT_OR 307
+#define BIT_AND 308
+#define REL 309
+#define SHIFT 310
+#define REMAINDER 311
+#define DIVIDE 312
+#define MULTIPLY 313
+#define UMINUS 314
+#define SCALAR 315
+#define NOT 316
+#define DEC 317
+#define INC 318
+#define ARROW 319
 
 
 

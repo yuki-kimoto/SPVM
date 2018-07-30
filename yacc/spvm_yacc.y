@@ -19,7 +19,7 @@
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
 %token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF BACKSLASH
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT BYTE_REF SHORT_REF INT_REF LONG_REF FLOAT_REF DOUBLE_REF
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -998,48 +998,6 @@ basic_type
     {
       SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
       op_type->uv.type = SPVM_TYPE_create_string_type(compiler);
-      
-      $$ = op_type;
-    }
-  | BYTE_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_byte_ref_type(compiler);
-      
-      $$ = op_type;
-    }
-  | SHORT_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_short_ref_type(compiler);
-      
-      $$ = op_type;
-    }
-  | INT_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_int_ref_type(compiler);
-      
-      $$ = op_type;
-    }
-  | LONG_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_long_ref_type(compiler);
-      
-      $$ = op_type;
-    }
-  | FLOAT_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_float_ref_type(compiler);
-      
-      $$ = op_type;
-    }
-  | DOUBLE_REF
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, $1->file, $1->line);
-      op_type->uv.type = SPVM_TYPE_create_double_ref_type(compiler);
       
       $$ = op_type;
     }

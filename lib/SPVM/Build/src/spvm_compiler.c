@@ -121,60 +121,6 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
 
-  // Add byte_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_BYTE_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add short_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_SHORT_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add int_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_INT_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add long_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_LONG_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add float_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_FLOAT_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
-  // Add double_ref basic_type
-  {
-     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_DOUBLE_REF;
-     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
-     SPVM_LIST_push(compiler->basic_types, basic_type);
-     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
-  }
-
   // Add byte basic_type
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
