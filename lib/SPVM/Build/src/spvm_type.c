@@ -99,6 +99,10 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   return type;
 }
 
+_Bool SPVM_TYPE_is_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  return flag & SPVM_TYPE_C_FLAG_REF;
+}
+
 SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
