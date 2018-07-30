@@ -25,7 +25,7 @@
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
-%type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type
+%type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type ref_type
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub deref ref
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
@@ -938,6 +938,7 @@ type
   : basic_type
   | array_type
   | const_array_type
+  | ref_type
 
 basic_type
   : NAME
@@ -1041,6 +1042,12 @@ basic_type
       op_type->uv.type = SPVM_TYPE_create_double_ref_type(compiler);
       
       $$ = op_type;
+    }
+
+ref_type
+  : basic_type BACKSLASH
+    {
+      $$ = SPVM_OP_build_ref_type(compiler, $1);
     }
 
 array_type

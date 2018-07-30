@@ -2197,6 +2197,27 @@ SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_typ
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_original) {
+  
+  // Type
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = op_type_original->uv.type->basic_type;
+  type->dimension = op_type_original->uv.type->dimension;
+  type->flag |= SPVM_TYPE_C_FLAG_REF;
+  
+  // Type OP
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_original->file, op_type_original->line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_original);
+  
+  op_type->uv.type = type;
+  op_type->file = op_type_original->file;
+  op_type->line = op_type_original->line;
+  
+  SPVM_LIST_push(compiler->op_types, op_type);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_term_length) {
   
   // Type
