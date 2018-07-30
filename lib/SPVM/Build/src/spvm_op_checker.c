@@ -2704,23 +2704,26 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     
     SPVM_TYPE* type = op_type->uv.type;
     
+    // Basic type name
+    const char* basic_type_name = type->basic_type->name;
+
     // Check if type name is package
     if (type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-      // Basic type name
-      const char* basic_type_name = type->basic_type->name;
       
       // Unknonw package
       SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
       SPVM_OP* op_found_package = SPVM_HASH_fetch(op_package_symtable, basic_type_name, strlen(basic_type_name));
       if (!op_found_package) {
         SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
-        
-        return;
       }
     }
     
-    // Reference type must be numeric type or value type
-    
+    // Reference type must be numeric refernce type or value reference type
+    if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+        SPVM_yyerror_format(compiler, "Reference type must be numeric refernce type or value_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
+      }
+    }
   }
 }
 
