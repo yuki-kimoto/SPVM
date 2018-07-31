@@ -2558,154 +2558,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  env->set_exception(env, NULL);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
-      {
-        int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-        const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-
-        char* package_var_access_type = NULL;
-        switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
-            package_var_access_type = "SPVM_VALUE_byte";
-            break;
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
-            package_var_access_type = "SPVM_VALUE_short";
-            break;
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
-            package_var_access_type = "SPVM_VALUE_int";
-            break;
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
-            package_var_access_type = "SPVM_VALUE_long";
-            break;
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
-            package_var_access_type = "float";
-            break;
-          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
-            package_var_access_type = "double";
-            break;
-        }
-        
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    ");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, package_var_access_type, opcode->operand0);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = *(");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , package_var_access_type);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
-        SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "]");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-        const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ", *(void**)");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
-        SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "]);\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
-      {
-        int32_t rel_id = opcode->operand0;
-        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-        const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-
-        char* package_var_access_type = NULL;
-        switch (opcode->id) {
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
-            package_var_access_type = "SPVM_VALUE_byte";
-            break;
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
-            package_var_access_type = "SPVM_VALUE_short";
-            break;
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
-            package_var_access_type = "SPVM_VALUE_int";
-            break;
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
-            package_var_access_type = "SPVM_VALUE_long";
-            break;
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
-            package_var_access_type = "float";
-            break;
-          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
-            package_var_access_type = "double";
-            break;
-        }
-        
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , package_var_access_type);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
-        SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "]");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, package_var_access_type, opcode->operand1);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
-        int32_t rel_id = opcode->operand0;
-        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-        const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
-        SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "],\n");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand1);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ");");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
-        int32_t rel_id = opcode->operand0;
-        SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-        SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-        const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
-        const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
-
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
-        SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "], NULL);\n");
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
       {
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -3314,7 +3166,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_WIDE: {
         // Operand 3 is operation code for wide operation
-        switch (255 + opcode->operand3) {
+        int32_t wide_opcode_id = 255 + opcode->operand3;
+        switch (wide_opcode_id) {
           case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
             SPVM_CSOURCE_BUILDER_add_get_deref(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
             break;
@@ -3361,6 +3214,154 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           }
           case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
             SPVM_CSOURCE_BUILDER_add_set_deref(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
+          {
+            int32_t rel_id = opcode->operand1;
+            SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+
+            char* package_var_access_type = NULL;
+            switch (wide_opcode_id) {
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE:
+                package_var_access_type = "SPVM_VALUE_byte";
+                break;
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT:
+                package_var_access_type = "SPVM_VALUE_short";
+                break;
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT:
+                package_var_access_type = "SPVM_VALUE_int";
+                break;
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG:
+                package_var_access_type = "SPVM_VALUE_long";
+                break;
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
+                package_var_access_type = "float";
+                break;
+              case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
+                package_var_access_type = "double";
+                break;
+            }
+            
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "    ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, package_var_access_type, opcode->operand0);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , " = *(");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , package_var_access_type);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
+            SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "]");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
+            int32_t rel_id = opcode->operand1;
+            SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , ", *(void**)");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
+            SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "]);\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
+          {
+            int32_t rel_id = opcode->operand0;
+            SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+
+            char* package_var_access_type = NULL;
+            switch (wide_opcode_id) {
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE:
+                package_var_access_type = "SPVM_VALUE_byte";
+                break;
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT:
+                package_var_access_type = "SPVM_VALUE_short";
+                break;
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT:
+                package_var_access_type = "SPVM_VALUE_int";
+                break;
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG:
+                package_var_access_type = "SPVM_VALUE_long";
+                break;
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
+                package_var_access_type = "float";
+                break;
+              case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
+                package_var_access_type = "double";
+                break;
+            }
+            
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , package_var_access_type);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "*)");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
+            SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "]");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, package_var_access_type, opcode->operand1);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
+            int32_t rel_id = opcode->operand0;
+            SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
+            SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "],\n");
+            SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", opcode->operand1);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , ");");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
+            int32_t rel_id = opcode->operand0;
+            SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
+            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
+            SPVM_STRING_BUFFER_add_package_var_id_name(compiler, string_buffer , package_var_package_name, package_var_name);
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "], NULL);\n");
+            SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
+            
             break;
           }
           default:
