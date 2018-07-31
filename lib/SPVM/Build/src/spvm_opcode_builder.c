@@ -2194,7 +2194,65 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
                       
                       _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
-                      if (is_value_access) {
+                      _Bool is_value_ref_access = SPVM_TYPE_is_value_ref_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
+                      if (is_value_ref_access) {
+                        
+                        // $VAR = $VAR_OBJECT->[INDEX]{NAME}
+                        SPVM_OP* op_array_field_access = op_assign_src;
+                        SPVM_OP* op_term_object = op_array_field_access->first;
+                        SPVM_OP* op_term_index = op_array_field_access->last;
+                        
+                        // Call field
+                        SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
+                        SPVM_FIELD* field = array_field_access->field;
+                        
+                        // Array type
+                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
+                        SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
+                        
+                        // Element type
+                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_field_access);
+                        SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
+
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                        switch (from_type->basic_type->id) {
+                          case SPVM_BASIC_TYPE_C_ID_BYTE:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_BYTE;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_SHORT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_SHORT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_INT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_INT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_LONG:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_LONG;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_FLOAT;
+                            break;
+                          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                            opcode.id = SPVM_OPCODE_C_ID_VALUE_T_DEREF_SET_FIELD_DOUBLE;
+                            break;
+                          default:
+                            assert(0);
+                        }
+                        
+                        // Field absolute name symbol
+                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
+                        int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                        
+                        int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                        int32_t offset = field->index;
+
+                        opcode.operand0 = var_id_out;
+                        opcode.operand1 = var_id_in;
+                        opcode.operand3 = (offset << 4) + unit;
+
+                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                      }
+                      else if (is_value_access) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
