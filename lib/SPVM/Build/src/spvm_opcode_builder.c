@@ -498,15 +498,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         // Field absolute name symbol
                         int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
-                        int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
-                        int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                        int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                        int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                         
                         int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
                         int32_t offset = field->index;
 
                         opcode.operand0 = var_id_out;
-                        opcode.operand1 = index_term_object;
-                        opcode.operand2 = index_term_index;
+                        opcode.operand1 = var_id_invocant;
+                        opcode.operand2 = var_id_index;
                         opcode.operand3 = (offset << 4) + unit;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -526,10 +526,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
                         
-                        _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
-                        _Bool is_value_ref_access = SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                        _Bool invocant_is_value_type = SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                        _Bool invocant_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
                         
-                        if (is_value_ref_access) {
+                        if (invocant_is_value_ref_type) {
                           // $VAR = $VAR_OBJECT->[INDEX]{NAME}
                           SPVM_OP* op_array_field_access = op_assign_src;
                           SPVM_OP* op_term_invocant = op_array_field_access->first;
@@ -585,7 +585,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
-                        else if (is_value_access) {
+                        else if (invocant_is_value_type) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
@@ -662,10 +662,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           // Field absolute name symbol
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
-                          int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
 
                           opcode.operand0 = var_id_out;
-                          opcode.operand1 = index_term_object;
+                          opcode.operand1 = var_id_invocant;
                           opcode.operand2 = field_access->sub_rel_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -725,12 +725,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                           int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = index_term_array;
-                          opcode.operand2 = index_term_index;
+                          opcode.operand2 = var_id_index;
                           opcode.operand3 = unit;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -772,11 +772,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = index_term_array;
-                          opcode.operand2 = index_term_index;
+                          opcode.operand2 = var_id_index;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2161,12 +2161,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
 
                         int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                        int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                        int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                         int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                         int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
                         
                         opcode.operand0 = index_term_array;
-                        opcode.operand1 = index_term_index;
+                        opcode.operand1 = var_id_index;
                         opcode.operand2 = var_id_in;
                         opcode.operand3 = unit;
 
@@ -2185,10 +2185,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.id = SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF;
                           
                           int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                           
                           opcode.operand0 = index_term_array;
-                          opcode.operand1 = index_term_index;
+                          opcode.operand1 = var_id_index;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                           SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, op_sub, op_cur->line);
@@ -2225,11 +2225,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           
                           int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
-                          int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                          int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                           int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                           
                           opcode.operand0 = index_term_array;
-                          opcode.operand1 = index_term_index;
+                          opcode.operand1 = var_id_index;
                           opcode.operand2 = var_id_in;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2350,9 +2350,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.id = SPVM_OPCODE_C_ID_WIDE;
                           opcode.operand3 = SPVM_OPCODE_C_ID_SET_FIELD_UNDEF - 255;
                           
-                          int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
 
-                          opcode.operand0 = index_term_object;
+                          opcode.operand0 = var_id_invocant;
                           opcode.operand1 = field_access->sub_rel_id;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -2397,10 +2397,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.operand3 = SPVM_OPCODE_C_ID_SET_FIELD_OBJECT - 255;
                           }
                           
-                          int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
                           int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                           
-                          opcode.operand0 = index_term_object;
+                          opcode.operand0 = var_id_invocant;
                           opcode.operand1 = field_access->sub_rel_id;
                           opcode.operand2 = var_id_in;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -2450,15 +2450,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         opcode.id = SPVM_OPCODE_C_ID_VALUE_T_ARRAY_FIELD_STORE_DOUBLE;
                       }
                       
-                      int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                      int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
                       int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
-                      int32_t index_term_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
+                      int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
 
                       int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
                       int32_t offset = field->index;
                       
-                      opcode.operand0 = index_term_object;
-                      opcode.operand1 = index_term_index;
+                      opcode.operand0 = var_id_invocant;
+                      opcode.operand1 = var_id_index;
                       opcode.operand2 = var_id_in;
                       opcode.operand3 = (offset << 4) + unit;
                       
@@ -2569,9 +2569,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.id = SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT;
                       
                       SPVM_OP* op_term_invocant = op_cur->first;
-                      int32_t index_term_object = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                      int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
 
-                      opcode.operand0 = index_term_object;
+                      opcode.operand0 = var_id_invocant;
                       opcode.operand1 = op_cur->uv.field_access->sub_rel_id;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
