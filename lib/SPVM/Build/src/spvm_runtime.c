@@ -1628,6 +1628,60 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_BYTE: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&value_ref[offset];
+
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_SHORT: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&value_ref[offset];
+
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_INT: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&value_ref[offset];
+
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_LONG: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&value_ref[offset];
+
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_FLOAT: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&value_ref[offset];
+
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_DOUBLE: {
+        SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[opcode->operand1];
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        
+        *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&value_ref[offset];
+
+        break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_BYTE:
         *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
         break;
