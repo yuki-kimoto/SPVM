@@ -52,16 +52,19 @@ SPVM::Test - SPVM test module
   sub FLOAT_PRECICE : float () { return 32767f; }
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
-  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double\) {
-    $$x_out = $x_in1 + $x_in2;
-  }
-  
-  sub : int ($self : self, $x1 : int, $x2 : int) {
-    
-    return $x1 + $x2;
-  }
-  
   sub main : int ($mvar : int) {
+    {
+      my $z1 : TestCase::Complex_d2;
+      $z1->{re} = 0.25;
+      $z1->{im} = 0.5;
+      
+      my $z1_ref = \$z1;
+      
+      my $z2 = $$z1_ref;
+      
+      
+    }
+    
     {
       my $out : double;
       ref_sum(0.25, 0.5, \$out);
@@ -1580,6 +1583,15 @@ SPVM::Test - SPVM test module
   sub receive_undef : void ($test_case : TestCase) {
     
   }
+  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double\) {
+    $$x_out = $x_in1 + $x_in2;
+  }
+  
+  sub : int ($self : self, $x1 : int, $x2 : int) {
+    
+    return $x1 + $x2;
+  }
+  
 
 }
 

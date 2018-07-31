@@ -1064,7 +1064,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           type = SPVM_TYPE_create_double_ref_type(compiler);
           break;
         default:
-          assert(0);
+          assert(SPVM_TYPE_is_value_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
+          type = SPVM_TYPE_new(compiler);
+          type->basic_type = term_type->basic_type;
+          type->dimension = term_type->dimension;
+          type->flag = term_type->flag | SPVM_TYPE_C_FLAG_REF;
       }
       break;
     }
@@ -1091,7 +1095,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           type = SPVM_TYPE_create_double_type(compiler);
           break;
         default:
-          assert(0);
+          assert(SPVM_TYPE_is_value_ref_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
+          type = SPVM_TYPE_new(compiler);
+          type->basic_type = term_type->basic_type;
+          type->dimension = term_type->dimension;
+          type->flag = term_type->flag & ~SPVM_TYPE_C_FLAG_REF;
       }
       break;
     }
