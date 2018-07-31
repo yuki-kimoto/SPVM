@@ -522,7 +522,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Call field
                         SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
                         
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field_access);
 
                         SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
                         
@@ -589,7 +589,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          switch (type->basic_type->id) {
+                          switch (field_type->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_BYTE:
                               opcode.id = SPVM_OPCODE_C_ID_MOVE_BYTE;
                               break;
@@ -624,8 +624,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         else {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                          if (type->dimension == 0) {
-                            switch (type->basic_type->id) {
+                          if (field_type->dimension == 0) {
+                            switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE:
                                 opcode.id = SPVM_OPCODE_C_ID_WIDE;
                                 opcode.operand3 = SPVM_OPCODE_C_ID_GET_FIELD_BYTE - 255;
