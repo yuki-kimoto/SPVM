@@ -524,10 +524,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field_access);
 
-                        SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
+                        SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
                         
-                        _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
-                        _Bool is_value_ref_access = SPVM_TYPE_is_value_ref_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
+                        _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                        _Bool is_value_ref_access = SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
                         
                         if (is_value_ref_access) {
                           // $VAR = $VAR_OBJECT->[INDEX]{NAME}
