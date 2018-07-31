@@ -2236,29 +2236,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                       
-                      SPVM_TYPE* field_access_type = SPVM_OP_get_type(compiler, op_field_access->uv.field_access->field->op_package);
+                      SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
                       
-                      _Bool is_value_access = SPVM_TYPE_is_value_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
-                      _Bool is_value_ref_access = SPVM_TYPE_is_value_ref_type(compiler, field_access_type->basic_type->id, field_access_type->dimension, field_access_type->flag);
-                      if (is_value_ref_access) {
+                      _Bool invocant_is_value_type = SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                      _Bool invocant_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                      if (invocant_is_value_type) {
+                        SPVM_FIELD* field = field_access->field;
                         
-                        // $VAR = $VAR_OBJECT->[INDEX]{NAME}
-                        SPVM_OP* op_array_field_access = op_assign_src;
-                        SPVM_OP* op_term_invocant = op_array_field_access->first;
-                        SPVM_OP* op_term_index = op_array_field_access->last;
-                        
-                        // Call field
-                        SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
-                        SPVM_FIELD* field = array_field_access->field;
-                        
-                        // Array type
-                        SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
-                        SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
-                        
-                        // Element type
-                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_field_access);
-                        SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
-
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         switch (src_type->basic_type->id) {
@@ -2283,21 +2267,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           default:
                             assert(0);
                         }
+
+                        int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                        int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                         
-                        // Field absolute name symbol
-                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_term_index);
-                        
-                        int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                        int32_t unit = invocant_type->basic_type->op_package->uv.package->op_fields->length;
                         int32_t offset = field->index;
 
-                        opcode.operand0 = var_id_out;
+                        opcode.operand0 = var_id_invocant;
                         opcode.operand1 = var_id_in;
                         opcode.operand3 = (offset << 4) + unit;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
-                      else if (is_value_access) {
+                      else if (invocant_is_value_ref_type) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
