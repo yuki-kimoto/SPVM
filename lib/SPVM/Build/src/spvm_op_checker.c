@@ -1788,8 +1788,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_var = op_cur->first;
                         SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
                         
-                        if (!SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag)) {
-                          SPVM_yyerror_format(compiler, "Dereference target must be numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
+                        if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_value_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+                          SPVM_yyerror_format(compiler, "Dereference target must be numeric reference type or value reference type at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
                         break;
