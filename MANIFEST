@@ -133,7 +133,6 @@ README
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/ComparatorAnon.spvm
-solo/lib/TestCase/Complex_d2.spvm
 solo/lib/TestCase/ComplexCalc.spvm
 solo/lib/TestCase/Destructor.spvm
 solo/lib/TestCase/EnumA.spvm
