@@ -24,6 +24,30 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(TestCase::Ref->value_ref_deref_set_field_byte());
     ok(TestCase::Ref->test_pass_value_ref_byte());
   }
+
+  # short
+  {
+    ok(TestCase::Ref->value_ref_deref_short());
+    ok(TestCase::Ref->value_ref_deref_get_field_short());
+    ok(TestCase::Ref->value_ref_deref_set_field_short());
+    ok(TestCase::Ref->test_pass_value_ref_short());
+  }
+
+  # int
+  {
+    ok(TestCase::Ref->value_ref_deref_int());
+    ok(TestCase::Ref->value_ref_deref_get_field_int());
+    ok(TestCase::Ref->value_ref_deref_set_field_int());
+    ok(TestCase::Ref->test_pass_value_ref_int());
+  }
+
+  # long
+  {
+    ok(TestCase::Ref->value_ref_deref_long());
+    ok(TestCase::Ref->value_ref_deref_get_field_long());
+    ok(TestCase::Ref->value_ref_deref_set_field_long());
+    ok(TestCase::Ref->test_pass_value_ref_long());
+  }
   
   # double
   {
