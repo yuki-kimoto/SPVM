@@ -14,6 +14,7 @@ package TestCase {
   use TestCase::Pointer;
   use TestCase::Complex_d2;
   use TestCase::ComplexCalc;
+  use SPVM::Complex_d2;
 
 =pod
 
@@ -53,6 +54,26 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($mvar : int) {
+    {
+      my $z : SPVM::Complex_d2;
+      
+      $z->{re} = 0.25;
+      $z->{im} = 0.5;
+      
+      my $z_ref = \$z;
+      
+      my $z_re = $z_ref->{re};
+      my $z_im = $z_ref->{im};
+      
+      print((string)$z_re . " " . (string)$z_im . "\n");
+      
+      my $out : SPVM::Complex_d2;
+      
+      ref_sum_complex($z, $z, \$out);
+      
+      print((string)$out->{re} . " " . (string)$out->{im} . "\n");
+    }
+    
     {
       my $z1 : TestCase::Complex_d2;
       $z1->{re} = 0.25;
@@ -1592,7 +1613,10 @@ SPVM::Test - SPVM test module
     return $x1 + $x2;
   }
   
-
+  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : SPVM::Complex_d2\) {
+    $x_out->{re} = $x_in1->{re} + $x_in2->{re};
+    $x_out->{im} = $x_in1->{im} + $x_in2->{im};
+  }
 }
 
 =head1 NAME
