@@ -12,7 +12,6 @@ package TestCase {
   use TestCase::Comparator;
   use TestCase::ComparatorAnon;
   use TestCase::Pointer;
-  use TestCase::Complex_d2;
   use TestCase::ComplexCalc;
   use SPVM::Complex_d2;
 
@@ -75,7 +74,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : TestCase::Complex_d2;
+      my $z1 : SPVM::Complex_d2;
       $z1->{re} = 0.25;
       $z1->{im} = 0.5;
       
@@ -129,7 +128,7 @@ SPVM::Test - SPVM test module
       
     }
     {
-      my $nums1 = new TestCase::Complex_d2[10];
+      my $nums1 = new SPVM::Complex_d2[10];
       $nums1->[9]{re} = 5;
       $nums1->[9]{im} = 9;
       
@@ -150,11 +149,11 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : TestCase::Complex_d2;
+      my $z1 : SPVM::Complex_d2;
       $z1->{re} = 0.5;
       $z1->{im} = 0.25;
       
-      my $z2 : TestCase::Complex_d2;
+      my $z2 : SPVM::Complex_d2;
       $z2->{re} = 1.0;
       $z2->{im} = 0.5;
       
@@ -168,7 +167,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : TestCase::Complex_d2;
+      my $z : SPVM::Complex_d2;
       $z->{re} = 0.5;
       $z->{im} = 0.25;
       
