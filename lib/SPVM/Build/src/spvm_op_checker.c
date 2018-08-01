@@ -3008,6 +3008,36 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
     }
 
+    // Check subroutines
+    {
+      // Argument limit check
+      int32_t i;
+      for (i = 0; i < package->op_subs->length; i++) {
+        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
+        SPVM_SUB* sub = op_sub->uv.sub;
+        
+        int32_t arg_allow_count = 0;
+        for (int32_t arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+          SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
+
+          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+          
+          _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+          _Bool is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+          
+          if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
+            arg_allow_count += arg_type->basic_type->op_package->uv.package->op_fields->length;
+          }
+          else {
+            arg_allow_count++;
+          }
+        }
+        if (arg_allow_count > 255) {
+          SPVM_yyerror_format(compiler, "Over argument limit at %s line %d\n", op_sub->file, op_sub->line);
+        }
+      }
+    }
+
     // Register sub signature
     {
       int32_t i;
