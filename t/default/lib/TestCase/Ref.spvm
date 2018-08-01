@@ -21,7 +21,23 @@ package TestCase::Ref {
     
     return 0;
   }
-  
+
+  sub numeric_ref_deref_short : int () {
+    my $num1 = (short)INT16_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (short)(INT16_MIN() + 1);
+    
+    if ($num2 == INT16_MIN() && $num1 == INT16_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   sub numeric_ref_deref_int : int () {
     my $num1 = 4;
     
@@ -38,6 +54,54 @@ package TestCase::Ref {
     return 0;
   }
 
+  sub numeric_ref_deref_long : int () {
+    my $num1 = (long)INT64_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (long)(INT64_MIN() + 1);
+    
+    if ($num2 == INT64_MIN() && $num1 == INT64_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_float : int () {
+    my $num1 = (float)FLT_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (float)(FLT_MIN() + 1);
+    
+    if ($num2 == FLT_MIN() && $num1 == FLT_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_double : int () {
+    my $num1 = (double)DBL_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (double)(DBL_MIN() + 1);
+    
+    if ($num2 == DBL_MIN() && $num1 == DBL_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub value_ref_deref_byte : int () {
     my $point1 : TestCase::Point_b3;
     
