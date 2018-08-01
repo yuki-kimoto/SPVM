@@ -5,6 +5,22 @@ package TestCase::Ref {
   use TestCase::Point_l3;
   use TestCase::Point_f3;
   use TestCase::Point_d3;
+
+  sub numeric_ref_deref_byte : int () {
+    my $num1 = (byte)INT8_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (byte)(INT8_MIN() + 1);
+    
+    if ($num2 == INT8_MIN() && $num1 == INT8_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
   sub numeric_ref_deref_int : int () {
     my $num1 = 4;

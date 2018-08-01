@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Numeric reference dereference
 {
+  ok(TestCase::Ref->numeric_ref_deref_byte());
   ok(TestCase::Ref->numeric_ref_deref_int());
 }
 
