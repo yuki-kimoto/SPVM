@@ -3117,6 +3117,11 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
         SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
         
+        // Ref
+        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
+          length += 1;
+        }
+        
         // TYPE
         length += strlen(type_arg_sub->basic_type->name);
         
@@ -3174,6 +3179,12 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
       else {
         SPVM_OP* op_arg_sub = SPVM_LIST_fetch(sub->op_args, arg_index);
         SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, op_arg_sub);
+        
+        // Ref
+        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
+          *bufptr = '&';
+          bufptr += 1;
+        }
         
         // TYPE
         memcpy(bufptr, type_arg_sub->basic_type->name, strlen(type_arg_sub->basic_type->name));
