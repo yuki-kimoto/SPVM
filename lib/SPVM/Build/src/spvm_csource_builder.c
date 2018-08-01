@@ -539,8 +539,26 @@ void SPVM_CSOURCE_BUILDER_add_value_t_deref(SPVM_COMPILER* compiler, SPVM_STRING
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer, out_var_id);
     SPVM_STRING_BUFFER_add(compiler, string_buffer, " + ");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
-    SPVM_STRING_BUFFER_add(compiler, string_buffer, "] = *(SPVM_VALUE_byte*)&value_ref[offset];\n");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "] = *(SPVM_VALUE_byte*)&value_ref[");
+    SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "];\n");
   }
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
+}
+
+void SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_var_id, int32_t ref_var_id, int32_t unit, int32_t offset) {
+
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[");
+  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, ref_var_id);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(SPVM_VALUE_byte*)&vars[");
+  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, out_var_id);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, " + ");
+  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "] = *(SPVM_VALUE_byte*)&value_ref[");
+  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "];\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
 }
 
@@ -3034,6 +3052,42 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_VALUE_T_DEREF_DOUBLE: {
         SPVM_CSOURCE_BUILDER_add_value_t_deref(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1, opcode->operand3);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_BYTE: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_SHORT: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_INT: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_LONG: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_FLOAT: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_T_DEREF_GET_FIELD_DOUBLE: {
+        int32_t unit = opcode->operand3 & 0xF;
+        int32_t offset = opcode->operand3 >> 4;
+        SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1, unit, offset);
         break;
       }
       case SPVM_OPCODE_C_ID_WIDE: {
