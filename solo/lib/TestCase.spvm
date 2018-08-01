@@ -81,8 +81,6 @@ SPVM::Test - SPVM test module
       my $z1_ref = \$z1;
       
       my $z2 = $$z1_ref;
-      
-      
     }
     
     {

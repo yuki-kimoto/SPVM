@@ -530,58 +530,69 @@ void SPVM_CSOURCE_BUILDER_add_value_t_array_store(SPVM_COMPILER* compiler, SPVM_
 
 void SPVM_CSOURCE_BUILDER_add_value_t_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_var_id, int32_t ref_var_id, int32_t unit) {
 
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, ref_var_id);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
   for (int32_t offset = 0; offset < unit; offset++) {
-    SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(SPVM_VALUE_byte*)&vars[");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&vars[");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer, out_var_id);
     SPVM_STRING_BUFFER_add(compiler, string_buffer, " + ");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
-    SPVM_STRING_BUFFER_add(compiler, string_buffer, "] = *(SPVM_VALUE_byte*)&value_ref[");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "] ");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer,  " = ");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "*(");
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+    SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&value_ref[");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
     SPVM_STRING_BUFFER_add(compiler, string_buffer, "];\n");
   }
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_add_value_t_deref_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t out_var_id, int32_t ref_var_id, int32_t unit, int32_t offset) {
 
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, ref_var_id);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(SPVM_VALUE_byte*)&vars[");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&vars[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, out_var_id);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, " + ");
-  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, "] = *(SPVM_VALUE_byte*)&value_ref[");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "]");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, " = ");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*(");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&value_ref[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
   SPVM_STRING_BUFFER_add(compiler, string_buffer, "];\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_add_value_t_deref_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t ref_var_id, int32_t in_var_id, int32_t unit, int32_t offset) {
-
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_VALUE* value_ref = *(SPVM_VALUE**)&vars[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, ref_var_id);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*(SPVM_VALUE_byte*)&value_ref[");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "    *(");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&value_ref[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, "]\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "]");
   SPVM_STRING_BUFFER_add(compiler, string_buffer, " = ");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    *(SPVM_VALUE_byte*)&vars[");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "*(");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)element_type_name);
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "*)&vars[");
   SPVM_STRING_BUFFER_add_int(compiler, string_buffer, in_var_id);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, " + ");
-  SPVM_STRING_BUFFER_add_int(compiler, string_buffer, offset);
-  SPVM_STRING_BUFFER_add(compiler, string_buffer, "];");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer, "];\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_add_value_t_array_field_store(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* element_type_name, int32_t array_index, int32_t index_index, int32_t in_index, int32_t unit, int32_t offset) {
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "    void* array = ");
   SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", array_index);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
@@ -608,9 +619,9 @@ void SPVM_CSOURCE_BUILDER_add_value_t_array_field_store(SPVM_COMPILER* compiler,
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
   SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, element_type_name, in_index);
   SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      } \n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    } \n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  } \n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "      }\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "    }\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_add_move(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* type_name, int32_t out_index, int32_t in_index) {
@@ -886,9 +897,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
       _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+      _Bool my_type_is_ref = SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       
       // Value type
-      if (my_type_is_value_t) {
+      // Object type
+      if (my_type_is_ref) {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", my->var_id);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = NULL;\n");
+      }
+      else if (my_type_is_value_t) {
         SPVM_OP* op_package = my_type->basic_type->op_package;
         assert(op_package);
         
@@ -1017,9 +1035,18 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_ref = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       
+      // Ref type
+      if (arg_type_is_ref) {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", arg_my->var_id);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , " = ");
+        SPVM_CSOURCE_BUILDER_add_stack(compiler, string_buffer, "void*", arg_my->var_id);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
+      }
       // Value type
-      if (arg_type_is_value_t) {
+      else if (arg_type_is_value_t) {
         SPVM_OP* op_package = arg_type->basic_type->op_package;
         assert(op_package);
         
@@ -3041,11 +3068,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
       }
       case SPVM_OPCODE_C_ID_REF: {
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , "*(void**)&");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  *(void**)&");
         SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , " = &");
         SPVM_CSOURCE_BUILDER_add_var(compiler, string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_T_DEREF_BYTE: {
