@@ -1,10 +1,40 @@
-0.0365 2018-07-30
+0.0365 2018-08-01
   - add reference type syntax to type\. You can write the double\ like.
     
     sub sum : double ($x_in : double, $x_in2 : double, $x_out : double\);
 
   - remove byte_ref, short_ref, int_ref, long_ref, float_ref, double_ref type
+  
+  - add value ref type support.
+    For example, you can pass value type ref to subroutine.
 
+      sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : TestCase::Point_d3\) {
+        $x_out->{x} = $x_in1->{x} + $x_in2->{x};
+        $x_out->{y} = $x_in1->{y} + $x_in2->{y};
+        $x_out->{z} = $x_in1->{z} + $x_in2->{z};
+      }
+
+      sub test_pass_value_ref_double : int () {
+        my $point_out : TestCase::Point_d3;
+        
+        my $point1 : TestCase::Point_d3;
+        $point1->{x} = 0.25;
+        $point1->{y} = 0.5;
+        $point1->{z} = 0.125;
+
+        my $point2 : TestCase::Point_d3;
+        $point2->{x} = 0.25;
+        $point2->{y} = 0.5;
+        $point2->{z} = 0.125;
+        
+        pass_value_ref_double($point1, $point2, \$point_out);
+        
+        if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
+          return 1;
+        }
+        return 0;
+      }
+  
 0.0364 2018-07-28
   - support numeric reference type
     add byte_ref, short_ref, int_ref, long_ref, float_ref, double_ref type

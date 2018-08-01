@@ -14,6 +14,7 @@ package TestCase {
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
   use SPVM::Complex_d2;
+  use TestCase::Point_d3;
 
 =pod
 
@@ -53,6 +54,22 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($mvar : int) {
+    {
+      my $point1 : TestCase::Point_d3;
+      
+      $point1->{x} = DBL_MIN();
+      $point1->{y} = 0.5;
+      $point1->{z} = 0.125;
+      
+      my $point1_ref = \$point1;
+      
+      my $point2 = $$point1_ref;
+      
+      if ($point2->{x} == DBL_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+        1;
+      }
+    }
+
     {
       my $z : SPVM::Complex_d2;
       

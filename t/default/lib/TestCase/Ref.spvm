@@ -17,6 +17,23 @@ package TestCase::Ref {
     return 0;
   }
 
+  sub value_ref_deref_double : int () {
+    my $point1 : TestCase::Point_d3;
+    
+    $point1->{x} = DBL_MIN();
+    $point1->{y} = 0.5;
+    $point1->{z} = 0.125;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == DBL_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+
   sub value_ref_deref_get_field_double : int () {
     my $point : TestCase::Point_d3;
     
