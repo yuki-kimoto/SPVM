@@ -11,8 +11,9 @@ use SPVM 'TestCase::Ref';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Numeric reference dereference
 {
-  ok(TestCase::Ref->basic());
+  ok(TestCase::Ref->numeric_ref_deref_int());
 }
 
 # Value reference dereference

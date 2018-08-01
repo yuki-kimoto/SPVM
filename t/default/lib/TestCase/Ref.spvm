@@ -6,16 +6,16 @@ package TestCase::Ref {
   use TestCase::Point_f3;
   use TestCase::Point_d3;
   
-  sub basic : int () {
-    my $num = 4;
+  sub numeric_ref_deref_int : int () {
+    my $num1 = 4;
     
-    my $num_ref = \$num;
+    my $num1_ref = \$num1;
     
-    my $num2 = $$num_ref;
+    my $num2 = $$num1_ref;
     
-    $$num_ref = 5;
+    $$num1_ref = 5;
     
-    if ($num2 == 4 && $num == 5) {
+    if ($num2 == 4 && $num1 == 5) {
       return 1;
     }
     
