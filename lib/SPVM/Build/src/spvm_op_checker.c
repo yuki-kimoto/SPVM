@@ -1259,6 +1259,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           _Bool is_invalid = 0;
                           
+                          // Can't return refernece type
+                          if (SPVM_TYPE_is_ref_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag)) {
+                            SPVM_yyerror_format(compiler, "Can't return reference type at %s line %d\n", op_cur->file, op_cur->line);
+                          }
                           
                           // Undef
                           if (op_term->id == SPVM_OP_C_ID_UNDEF) {
