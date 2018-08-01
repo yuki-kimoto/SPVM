@@ -51,9 +51,6 @@ struct SPVM_runtime {
   // Package variables
   SPVM_VALUE* package_vars;
   
-  // arguments and return values stack
-  SPVM_VALUE* stack;
-  
   SPVM_OBJECT** mortal_stack;
   
   int32_t mortal_stack_top;

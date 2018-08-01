@@ -2716,8 +2716,6 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   // Free exception
   SPVM_RUNTIME_API_set_exception(runtime->env, NULL);
   
-  free(runtime->stack);
-  
   free(runtime->package_vars);
   
   free(runtime);

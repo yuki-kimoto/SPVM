@@ -34,6 +34,7 @@
 #include "spvm_csource_builder.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
+#include "spvm_limit.h"
 
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
@@ -799,7 +800,7 @@ get_element(...)
 
       void* elements = (void*)env->get_int_array_elements(env, array);
       
-      HV* hv_value = sv_2mortal(newHV());
+      HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       int32_t field_length = op_package->uv.package->op_fields->length;
       for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
         SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
@@ -971,7 +972,7 @@ to_elements(...)
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
-        HV* hv_value = (HV*)sv_2mortal(newHV());
+        HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = op_package->uv.package->op_fields->length;
         for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
           SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
@@ -1745,7 +1746,7 @@ call_sub(...)
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
-  SPVM_VALUE* stack = runtime->stack;
+  SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
   
   // Arguments
   {
@@ -1846,6 +1847,9 @@ call_sub(...)
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
           }
+        }
+        else {
+          assert(0);
         }
       }
       else if (arg_type_is_value_type) {

@@ -9,6 +9,9 @@ enum {
 
   // valut_t field count max
   SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX = 16,
+
+  // valut_t field count max
+  SPVM_LIMIT_C_STACK_MAX = UINT8_MAX,
 };
 
 #endif
