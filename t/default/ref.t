@@ -49,6 +49,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(TestCase::Ref->test_pass_value_ref_long());
   }
   
+  # float
+  {
+    ok(TestCase::Ref->value_ref_deref_float());
+    ok(TestCase::Ref->value_ref_deref_get_field_float());
+    ok(TestCase::Ref->value_ref_deref_set_field_float());
+    ok(TestCase::Ref->test_pass_value_ref_float());
+  }
+
   # double
   {
     ok(TestCase::Ref->value_ref_deref_double());

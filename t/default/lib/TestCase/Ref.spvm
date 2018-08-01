@@ -351,6 +351,84 @@ package TestCase::Ref {
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
   }
 
+  sub value_ref_deref_float : int () {
+    my $point1 : TestCase::Point_f3;
+    
+    $point1->{x} = FLT_MIN();
+    $point1->{y} = 0.5;
+    $point1->{z} = 0.125;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == FLT_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_float : int () {
+    my $point : TestCase::Point_f3;
+    
+    $point->{x} = FLT_MIN();
+    $point->{y} = 0.5;
+    $point->{z} = 0.125;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == FLT_MIN() && $point_y == 0.5 && $point_z == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_float : int () {
+    my $point : TestCase::Point_f3;
+
+    my $point_ref = \$point;
+    
+    $point_ref->{x} = FLT_MIN();
+    $point_ref->{y} = 0.5;
+    $point_ref->{z} = 0.125;
+    
+    if ($point->{x} == FLT_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_float : int () {
+    my $point_out : TestCase::Point_f3;
+    
+    my $point1 : TestCase::Point_f3;
+    $point1->{x} = 0.25;
+    $point1->{y} = 0.5;
+    $point1->{z} = 0.125;
+
+    my $point2 : TestCase::Point_f3;
+    $point2->{x} = 0.25;
+    $point2->{y} = 0.5;
+    $point2->{z} = 0.125;
+    
+    pass_value_ref_float($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_f3, $x_in2 : TestCase::Point_f3, $x_out : TestCase::Point_f3\) {
+    $x_out->{x} = $x_in1->{x} + $x_in2->{x};
+    $x_out->{y} = $x_in1->{y} + $x_in2->{y};
+    $x_out->{z} = $x_in1->{z} + $x_in2->{z};
+  }
+
   sub value_ref_deref_get_field_double : int () {
     my $point : TestCase::Point_d3;
     
