@@ -389,11 +389,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return SPECIAL_ASSIGN;
         }
-        /* Bit and */
+        /* AMPERSAND - Bit and or type reference*/
         else {
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_AND);
           yylvalp->opval = op;
-          return BIT_AND;
+          return AMPERSAND;
         }
       
       /* Comment */

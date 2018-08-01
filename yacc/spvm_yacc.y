@@ -19,7 +19,7 @@
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
 %token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF BACKSLASH
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT AMPERSAND
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -712,7 +712,7 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | assignable_term BIT_AND assignable_term
+  | assignable_term AMPERSAND assignable_term %prec BIT_AND
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
@@ -1003,9 +1003,9 @@ basic_type
     }
 
 ref_type
-  : basic_type BACKSLASH
+  : AMPERSAND basic_type
     {
-      $$ = SPVM_OP_build_ref_type(compiler, $1);
+      $$ = SPVM_OP_build_ref_type(compiler, $2);
     }
 
 array_type

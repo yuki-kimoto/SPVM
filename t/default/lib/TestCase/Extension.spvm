@@ -2,7 +2,7 @@ package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
   
-  native sub native_ref_sum : double ($x_in : double, $x_in2 : double, $x_out : double\);
+  native sub native_ref_sum : double ($x_in : double, $x_in2 : double, $x_out : &double);
   sub ref : int () {
     my $out : double;
     my $out_ref = \$out;

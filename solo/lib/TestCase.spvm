@@ -1618,7 +1618,7 @@ SPVM::Test - SPVM test module
   sub receive_undef : void ($test_case : TestCase) {
     
   }
-  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double\) {
+  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : &double) {
     $$x_out = $x_in1 + $x_in2;
   }
   
@@ -1627,7 +1627,7 @@ SPVM::Test - SPVM test module
     return $x1 + $x2;
   }
   
-  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : SPVM::Complex_d2\) {
+  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : &SPVM::Complex_d2) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }

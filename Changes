@@ -1,14 +1,14 @@
 0.0365 2018-08-01
   - add reference type syntax to type\. You can write the double\ like.
     
-    sub sum : double ($x_in : double, $x_in2 : double, $x_out : double\);
+    sub sum : double ($x_in : double, $x_in2 : double, $x_out : &double);
 
   - remove byte_ref, short_ref, int_ref, long_ref, float_ref, double_ref type
   
   - add value ref type support.
     For example, you can pass value type ref to subroutine.
 
-      sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : TestCase::Point_d3\) {
+      sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : &TestCase::Point_d3) {
         $x_out->{x} = $x_in1->{x} + $x_in2->{x};
         $x_out->{y} = $x_in1->{y} + $x_in2->{y};
         $x_out->{z} = $x_in1->{z} + $x_in2->{z};
