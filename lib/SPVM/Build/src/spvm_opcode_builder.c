@@ -299,8 +299,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             else {
                               _Bool is_arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
                               _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-                              _Bool is_arg_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-                              if (is_arg_type_is_value_type) {
+                              _Bool is_arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                              
+                              if (is_arg_type_is_ref_type) {
+                                opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
+
+                                // Term of argument
+                                int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                                
+                                opcode.operand0 = var_id_arg;
+                                
+                                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                              }
+                              else if (is_arg_type_is_value_type) {
 
                                 SPVM_OP* op_package = arg_type->basic_type->op_package;
                                 assert(op_package);
@@ -349,19 +360,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               // Object type
                               else if (is_arg_type_is_object_type) {
-                                opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
-                                // Term of argument
-                                int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
-                                
-                                opcode.operand0 = var_id_arg;
-                                
-                                if (arg_index == 0) {
-                                  first_arg_var_id = var_id_arg;
-                                }
-                                SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                              }
-                              // Numeric reference type
-                              else if (is_arg_type_is_numeric_ref_type) {
                                 opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
                                 // Term of argument
                                 int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
@@ -3222,7 +3220,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           else {
                             _Bool is_arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
                             _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-                            if (is_arg_type_is_value_type) {
+                            _Bool is_arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                            
+                            if (is_arg_type_is_ref_type) {
+                              opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT;
+
+                              // Term of argument
+                              int32_t var_id_arg = SPVM_OP_get_my_var_id(compiler, op_term_arg);
+                              
+                              opcode.operand0 = var_id_arg;
+                              
+                              SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                            }
+                            else if (is_arg_type_is_value_type) {
                               SPVM_OP* op_package = arg_type->basic_type->op_package;
                               assert(op_package);
                               
