@@ -30,40 +30,91 @@ my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
+my $FLT_MIN = POSIX::FLT_MIN();
+my $DBL_MIN = POSIX::DBL_MIN();
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+
+# Argument is value reference and numeric reference mixed
+{
+  {
+    my $point1 = {x => $BYTE_MIN, y => 1, z => 2};
+    my $value1 = 6;
+    my $point2 = {x => 3, y => 4, z => 5};
+    my $value2 = 7;
+    TestCase::PerlAPI->call_sub_value_ref_numeric_ref_mixed_arg(\$point1, \$value1, \$point2, \$value2);
+    is_deeply($point1, {x => $BYTE_MIN + 1, y => 2, z => 3});
+    is($value1, 7);
+    is_deeply($point2, {x => 4, y => 5, z => 6});
+    is($value2, 8);
+  }
+}
+
+# Argument is value reference
+{
+  {
+    my $point = {x => $BYTE_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_byte(\$point);
+    is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $SHORT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_short(\$point);
+    is_deeply($point, {x => $SHORT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $INT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_int(\$point);
+    is_deeply($point, {x => $INT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $LONG_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_long(\$point);
+    is_deeply($point, {x => $LONG_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $FLT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_float(\$point);
+    is_deeply($point, {x => $FLT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $DBL_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_double(\$point);
+    is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
+  }
+}
 
 # Argument is numeric reference
 {
   {
     my $num_byte = $BYTE_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_byte(\$num_byte);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_byte(\$num_byte);
     is($num_byte, $BYTE_MIN + 1);
   }
   {
     my $num_short = $SHORT_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_short(\$num_short);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_short(\$num_short);
     is($num_short, $SHORT_MIN + 1);
   }
   {
     my $num_int = $INT_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_int(\$num_int);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_int(\$num_int);
     is($num_int, $INT_MIN + 1);
   }
   {
     my $num_long = $LONG_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_long(\$num_long);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_long(\$num_long);
     is($num_long, $LONG_MIN + 1);
   }
   {
     my $num_float = POSIX::FLT_MIN();
-    TestCase::PerlAPI->call_sub_ref_arg_float(\$num_float);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_float(\$num_float);
     is($num_float, POSIX::FLT_MIN() + 1);
   }
   {
     my $num_double = POSIX::DBL_MIN();
-    TestCase::PerlAPI->call_sub_ref_arg_double(\$num_double);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_double(\$num_double);
     is($num_double, POSIX::DBL_MIN() + 1);
   }
 }
