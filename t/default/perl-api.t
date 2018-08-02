@@ -36,6 +36,21 @@ my $DBL_MIN = POSIX::DBL_MIN();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Argument is value reference and numeric reference mixed
+{
+  {
+    my $point1 = {x => $BYTE_MIN, y => 1, z => 2};
+    my $value1 = 6;
+    my $point2 = {x => 3, y => 4, z => 5};
+    my $value2 = 7;
+    TestCase::PerlAPI->call_sub_value_ref_numeric_ref_mixed_arg(\$point1, \$value1, \$point2, \$value2);
+    is_deeply($point1, {x => $BYTE_MIN + 1, y => 2, z => 3});
+    is($value1, 7);
+    is_deeply($point2, {x => 4, y => 5, z => 6});
+    is($value2, 8);
+  }
+}
+
 # Argument is value reference
 {
   {
