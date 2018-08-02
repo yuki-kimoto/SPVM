@@ -1750,8 +1750,7 @@ call_sub(...)
   int32_t ref_stack_top = 0;
   SPVM_VALUE ref_stack[SPVM_LIMIT_C_STACK_MAX];
 
-  int32_t ref_stack_base_stack_top = 0;
-  int32_t ref_stack_base_stack[SPVM_LIMIT_C_STACK_MAX];
+  int32_t ref_stack_ids[SPVM_LIMIT_C_STACK_MAX];
   
   // Arguments
   _Bool args_contain_ref = 0;
@@ -1788,8 +1787,7 @@ call_sub(...)
         
         if (arg_type_is_numeric_ref_type) {
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
-          ref_stack_base_stack[arg_var_id] = ref_stack_top;
-          ref_stack_base_stack_top++;
+          ref_stack_ids[arg_index] = ref_stack_top;
 
           ref_stack_top++;
           arg_var_id++;
@@ -1798,8 +1796,7 @@ call_sub(...)
           int32_t fields_length = arg_type->basic_type->op_package->uv.package->op_fields->length;
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
 
-          ref_stack_base_stack[arg_var_id] = ref_stack_top;
-          ref_stack_base_stack_top++;
+          ref_stack_ids[arg_index] = ref_stack_top;
 
           ref_stack_top += fields_length;
           arg_var_id++;
@@ -2088,6 +2085,8 @@ call_sub(...)
       int32_t arg_type_dimension = arg_type->dimension;
       
       if (arg_type_is_ref_type) {
+        int32_t ref_stack_id = ref_stack_ids[arg_index];
+        
         _Bool arg_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
@@ -2098,42 +2097,35 @@ call_sub(...)
           
           switch (arg_basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE : {
-              int8_t value = (int8_t)SvIV(sv_value_deref);
-              stack[arg_var_id].bval = value;
+              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
               break;
             }
             case  SPVM_BASIC_TYPE_C_ID_SHORT : {
-              int16_t value = (int16_t)SvIV(sv_value_deref);
-              stack[arg_var_id].sval = value;
+              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].sval);
               break;
             }
             case  SPVM_BASIC_TYPE_C_ID_INT : {
-              int32_t value = (int32_t)SvIV(sv_value_deref);
-              stack[arg_var_id].ival = value;
+              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].ival);
               break;
             }
             case  SPVM_BASIC_TYPE_C_ID_LONG : {
-              int64_t value = (int64_t)SvIV(sv_value_deref);
-              stack[arg_var_id].lval = value;
+              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].lval);
               break;
             }
             case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
-              float value = (float)SvNV(sv_value_deref);
-              stack[arg_var_id].fval = value;
+              sv_setnv(sv_value_deref, ref_stack[ref_stack_id].fval);
               break;
             }
             case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
-              double value = (double)SvNV(sv_value_deref);
-              stack[arg_var_id].dval = value;
+              sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
               break;
             }
             default:
               assert(0);
           }
-          arg_var_id++;
         }
         else if (arg_type_is_value_ref_type) {
-          
+          assert(0);
         }
         else {
           assert(0);
