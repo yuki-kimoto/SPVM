@@ -34,6 +34,15 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Argument is numeric reference
+{
+  {
+    my $num_int;
+    TestCase::PerlAPI->call_sub_ref_arg(\$num_int);
+    is($num_int, $INT_MIN);
+  }
+}
+
 # Object
 {
   # Create object
