@@ -190,7 +190,6 @@ set_elements(...)
             }
             else {
               sv_field_value = sv_2mortal(newSViv(0));
-              warn("%s undefined value", field_name);
             }
 
             switch (field_type->basic_type->id) {
@@ -606,7 +605,6 @@ set_element(...)
           }
           else {
             sv_field_value = sv_2mortal(newSViv(0));
-            warn("%s undefined value", field_name);
           }
 
           switch (field_type->basic_type->id) {
@@ -1852,13 +1850,11 @@ call_sub(...)
               }
               else {
                 sv_field_value = sv_2mortal(newSViv(0));
-                warn("%s undefined value", field_name);
               }
               switch (field_type->basic_type->id) {
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   ref_stack[ref_stack_top + field_index].bval = value;
-                  warn("AAAAAAAAAAAAAAAAA %d %d", ref_stack_top, field_index);
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_SHORT: {
@@ -1931,7 +1927,6 @@ call_sub(...)
             }
             else {
               sv_field_value = sv_2mortal(newSViv(0));
-              warn("%s undefined value", field_name);
             }
             switch (field_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {

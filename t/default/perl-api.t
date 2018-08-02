@@ -30,6 +30,8 @@ my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
+my $FLT_MIN = POSIX::FLT_MIN();
+my $DBL_MIN = POSIX::DBL_MIN();
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
@@ -40,6 +42,31 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $point = {x => $BYTE_MIN, y => 1, z => 2};
     TestCase::PerlAPI->call_sub_value_ref_arg_byte(\$point);
     is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $SHORT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_short(\$point);
+    is_deeply($point, {x => $SHORT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $INT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_int(\$point);
+    is_deeply($point, {x => $INT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $LONG_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_long(\$point);
+    is_deeply($point, {x => $LONG_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $FLT_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_float(\$point);
+    is_deeply($point, {x => $FLT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $DBL_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_double(\$point);
+    is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
   }
 }
 
