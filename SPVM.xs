@@ -2226,7 +2226,54 @@ call_sub(...)
           }
         }
         else if (arg_type_is_value_ref_type) {
-          assert(0);
+          assert(sv_derived_from(sv_value, "HASH"));
+          
+          HV* hv_value = (HV*)SvRV(sv_value);
+          
+          SPVM_OP* op_package = arg_type->basic_type->op_package;
+          assert(op_package);
+          
+          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+          assert(op_first_field);
+          
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          assert(field_type->dimension == 0);
+          
+          for (int32_t field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
+            SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+            const char* field_name = op_field->uv.field->op_name->uv.name;
+            
+            SV* sv_field_value;
+            switch (field_type->basic_type->id) {
+              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_INT: {
+                sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+                break;
+              }
+              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
+                break;
+              }
+              default:
+                assert(0);
+            }
+            hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
         }
         else {
           assert(0);
