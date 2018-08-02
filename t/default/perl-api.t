@@ -38,32 +38,32 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   {
     my $num_byte = $BYTE_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_byte(\$num_byte);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_byte(\$num_byte);
     is($num_byte, $BYTE_MIN + 1);
   }
   {
     my $num_short = $SHORT_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_short(\$num_short);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_short(\$num_short);
     is($num_short, $SHORT_MIN + 1);
   }
   {
     my $num_int = $INT_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_int(\$num_int);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_int(\$num_int);
     is($num_int, $INT_MIN + 1);
   }
   {
     my $num_long = $LONG_MIN;
-    TestCase::PerlAPI->call_sub_ref_arg_long(\$num_long);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_long(\$num_long);
     is($num_long, $LONG_MIN + 1);
   }
   {
     my $num_float = POSIX::FLT_MIN();
-    TestCase::PerlAPI->call_sub_ref_arg_float(\$num_float);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_float(\$num_float);
     is($num_float, POSIX::FLT_MIN() + 1);
   }
   {
     my $num_double = POSIX::DBL_MIN();
-    TestCase::PerlAPI->call_sub_ref_arg_double(\$num_double);
+    TestCase::PerlAPI->call_sub_numeric_ref_arg_double(\$num_double);
     is($num_double, POSIX::DBL_MIN() + 1);
   }
 }
