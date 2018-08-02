@@ -1786,6 +1786,42 @@ call_sub(...)
         _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {
+          SV* sv_value_deref = SvRV(sv_value);
+          switch (arg_type->basic_type->id) {
+            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+              int8_t value = (int8_t)SvIV(sv_value_deref);
+              ref_stack[ref_stack_top].bval = value;
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+              int16_t value = (int16_t)SvIV(sv_value_deref);
+              ref_stack[ref_stack_top].sval = value;
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_INT: {
+              int32_t value = (int32_t)SvIV(sv_value_deref);
+              ref_stack[ref_stack_top].ival = value;
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_LONG: {
+              int64_t value = (int64_t)SvIV(sv_value_deref);
+              ref_stack[ref_stack_top].lval = value;
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+              float value = (float)SvNV(sv_value_deref);
+              ref_stack[ref_stack_top].fval = value;
+              break;
+            }
+            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+              double value = (double)SvNV(sv_value_deref);
+              ref_stack[ref_stack_top].dval = value;
+              break;
+            }
+            default:
+              assert(0);
+          }
+
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
 
