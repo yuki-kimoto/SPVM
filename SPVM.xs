@@ -1829,8 +1829,8 @@ call_sub(...)
           arg_var_id++;
         }
         else if (arg_type_is_value_ref_type) {
-          if (sv_derived_from(sv_value, "HASH")) {
-            HV* hv_value = (HV*)SvRV(sv_value);
+          if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+            HV* hv_value = (HV*)SvRV(SvRV(sv_value));
             
             SPVM_OP* op_package = arg_type->basic_type->op_package;
             assert(op_package);
@@ -1858,6 +1858,7 @@ call_sub(...)
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   ref_stack[ref_stack_top + field_index].bval = value;
+                  warn("AAAAAAAAAAAAAAAAA %d %d", ref_stack_top, field_index);
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_SHORT: {
@@ -1891,7 +1892,7 @@ call_sub(...)
             }
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
           }
 
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -2192,8 +2193,6 @@ call_sub(...)
         _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {
-          assert(sv_derived_from(sv_value, "SCALAR"));
-          
           SV* sv_value_deref = SvRV(sv_value);
           
           switch (arg_basic_type_id) {
@@ -2226,9 +2225,9 @@ call_sub(...)
           }
         }
         else if (arg_type_is_value_ref_type) {
-          assert(sv_derived_from(sv_value, "HASH"));
+          int32_t ref_stack_id = ref_stack_ids[arg_index];
           
-          HV* hv_value = (HV*)SvRV(sv_value);
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           
           SPVM_OP* op_package = arg_type->basic_type->op_package;
           assert(op_package);
@@ -2246,27 +2245,27 @@ call_sub(...)
             SV* sv_field_value;
             switch (field_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
+                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].bval));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].sval));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_INT: {
-                sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
+                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].ival));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_LONG: {
-                sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
+                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].lval));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+                sv_field_value = sv_2mortal(newSVnv(ref_stack[ref_stack_id + field_index].fval));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
+                sv_field_value = sv_2mortal(newSVnv(ref_stack[ref_stack_id + field_index].dval));
                 break;
               }
               default:

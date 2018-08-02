@@ -34,6 +34,15 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Argument is value reference
+{
+  {
+    my $point = {x => $BYTE_MIN, y => 1, z => 2};
+    TestCase::PerlAPI->call_sub_value_ref_arg_byte(\$point);
+    is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
+  }
+}
+
 # Argument is numeric reference
 {
   {
