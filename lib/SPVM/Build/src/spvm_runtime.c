@@ -1935,23 +1935,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], env->get_exception(env));
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
-        
-        env->set_exception(env, *(void**)&vars[opcode->operand0]);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
-        
-        env->set_exception(env, NULL);
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_GOTO:
         opcode_rel_index = opcode->operand0;
         continue;
@@ -2222,6 +2205,281 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_REF:
         *(void**)&vars[opcode->operand0] = &vars[opcode->operand1];
         break;
+      case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[field_index];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
+        int32_t rel_id = opcode->operand2;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          void* object_field = *(SPVM_VALUE_object*)&fields[field_index];;
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object_field);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
+        void* object = *(void**)&vars[opcode->operand0];
+        
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_byte*)&fields[field_index] = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_short*)&fields[field_index] = *(SPVM_VALUE_short*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_int*)&fields[field_index] = *(SPVM_VALUE_int*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_long*)&fields[field_index] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_float*)&fields[field_index] = *(SPVM_VALUE_float*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+        
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          *(SPVM_VALUE_double*)&fields[field_index] = *(SPVM_VALUE_double*)&vars[opcode->operand2];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, *(void**)&vars[opcode->operand2]);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
+        void* object = *(void**)&vars[opcode->operand0];
+
+        int32_t rel_id = opcode->operand1;
+        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        int32_t field_index = op_field_access->uv.field_access->field->index;
+
+        if (__builtin_expect(object == NULL, 0)) {
+          void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, NULL);
+        }
+        break;
+      }
+      default:
+        assert(0);
       case SPVM_OPCODE_C_ID_WIDE: {
         // Operand 3 is operation code for wide operation
         switch (255 + opcode->operand3) {
@@ -2408,281 +2666,23 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             
             break;
           }
-          case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
+          case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], env->get_exception(env));
             
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[field_index];
-            }
             break;
           }
-          case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
-
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[field_index];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
+          case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
             
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[field_index];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
+            env->set_exception(env, *(void**)&vars[opcode->operand0]);
             
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[field_index];
-            }
             break;
           }
-          case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
+          case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
             
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[field_index];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
+            env->set_exception(env, NULL);
             
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[field_index];
-            }
             break;
           }
-          case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-            int32_t rel_id = opcode->operand2;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            void* object = *(void**)&vars[opcode->operand1];
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              void* object_field = *(SPVM_VALUE_object*)&fields[field_index];;
-              SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object_field);
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
-            void* object = *(void**)&vars[opcode->operand0];
-            
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_byte*)&fields[field_index] = *(SPVM_VALUE_byte*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_short*)&fields[field_index] = *(SPVM_VALUE_short*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_int*)&fields[field_index] = *(SPVM_VALUE_int*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_long*)&fields[field_index] = *(SPVM_VALUE_long*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_float*)&fields[field_index] = *(SPVM_VALUE_float*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-            
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              *(SPVM_VALUE_double*)&fields[field_index] = *(SPVM_VALUE_double*)&vars[opcode->operand2];
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
-              SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, *(void**)&vars[opcode->operand2]);
-            }
-            break;
-          }
-          case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
-            void* object = *(void**)&vars[opcode->operand0];
-
-            int32_t rel_id = opcode->operand1;
-            SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-            int32_t field_index = op_field_access->uv.field_access->field->index;
-
-            if (__builtin_expect(object == NULL, 0)) {
-              void* exception = env->new_string_raw(env, "Object must be not undef.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-              void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
-              SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, NULL);
-            }
-            break;
-          }
-          default:
-            assert(0);
         }
       }
     }
