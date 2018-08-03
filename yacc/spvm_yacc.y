@@ -29,7 +29,7 @@
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub deref ref
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
-%type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement normal_statement_for_end eval_block
+%type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement eval_block
 
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -279,14 +279,10 @@ normal_statement
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line);
     }
 
-normal_statement_for_end
-  : assignable_term
-  | expression
-
 for_statement
-  : FOR '(' normal_statement term ';' normal_statement_for_end ')' block
+  : FOR '(' term ';' term ';' term ')' block
     {
-      $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $4, $6, $8);
+      $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $5, $7, $9);
     }
 
 while_statement
