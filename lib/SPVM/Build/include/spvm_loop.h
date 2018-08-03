@@ -19,7 +19,7 @@ struct SPVM_loop {
   int32_t condition_check_start_opcode_index;
   int32_t goto_loop_top_opcode_index;
   _Bool loop_var_is_int;
-  _Bool can_info;
+  _Bool can_loop_expansion;
 };
 
 SPVM_LOOP* SPVM_LOOP_new(SPVM_COMPILER* compiler);

@@ -33,6 +33,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_loop.h"
 
 void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
@@ -247,6 +248,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // [START]Postorder traversal position
                   if (!op_cur->no_need_check) {
                     switch (op_cur->id) {
+                      case SPVM_OP_C_ID_LOOP: {
+                        // Check if can loop expansion
+                        SPVM_OP* op_term_init = op_cur->uv.loop->op_term_init;
+                        
+                        _Bool exists_loop_variable = 0;
+                        if (op_term_init->id == SPVM_OP_C_ID_ASSIGN && op_term_init->last->id == SPVM_OP_C_ID_VAR) {
+                          exists_loop_variable = 1;
+                        }
+                        
+                        _Bool loop_variable_is_int = 0;
+                        if (op_term_init) {
+                          SPVM_TYPE* type_term_init = SPVM_OP_get_type(compiler, op_term_init);
+                          if (type_term_init) {
+                            if (SPVM_TYPE_is_int_type(compiler, type_term_init->basic_type->id, type_term_init->dimension, type_term_init->flag)) {
+                              warn("BBBBBBBBBBBBBB");
+                              loop_variable_is_int = 1;
+                            }
+                          }
+                        }
+                        
+                        break;
+                      }
                       case SPVM_OP_C_ID_ARRAY_INIT: {
                         SPVM_OP* op_array_init = op_cur;
                         
