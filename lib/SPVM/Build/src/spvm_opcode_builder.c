@@ -170,10 +170,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             // [START]Preorder traversal position
             switch (op_cur->id) {
               case SPVM_OP_C_ID_LOOP: {
-                // FOR_LOOP_START
+                // FOR_BLOCK_START
                 SPVM_OPCODE opcode;
                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_START;
+                opcode.id = SPVM_OPCODE_C_ID_FOR_BLOCK_START;
                 
                 // Add loop info
                 SPVM_LOOP* loop = op_cur->uv.loop;
@@ -185,6 +185,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 SPVM_LIST_push(loop_stack, loop);
 
                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                
+                break;
+              }
+              case SPVM_OP_C_ID_LOOP_INCREMENT: {
+                SPVM_LOOP* loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
+                loop->loop_increment_start_opcode_rel_index = opcode_array->length - 1;
                 
                 break;
               }
@@ -231,10 +237,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 // [START]Postorder traversal position
                 switch (op_cur->id) {
                   case SPVM_OP_C_ID_LOOP: {
-                    // FOR_LOOP_END
+                    // FOR_BLOCK_END
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_END;
+                    opcode.id = SPVM_OPCODE_C_ID_FOR_BLOCK_END;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     
                     // Pop loop info stack
@@ -2741,9 +2747,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     int32_t loop_first_goto_jump_opcode_rel_index = opcode_array->length - sub_opcode_base;
                     loop_first_goto->operand0 = loop_first_goto_jump_opcode_rel_index;
                     
-                    // Loop info
+                    // Loop
                     SPVM_LOOP* cur_loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
                     cur_loop->loop_first_goto_opcode_rel_index = loop_first_goto_opcode_rel_index;
+                    
+                    
+                    
                     
                     break;
                   }
