@@ -249,22 +249,53 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (!op_cur->no_need_check) {
                     switch (op_cur->id) {
                       case SPVM_OP_C_ID_LOOP: {
+                        SPVM_LOOP* loop = op_cur->uv.loop;
+                        
                         // Check if can loop expansion
-                        SPVM_OP* op_term_init = op_cur->uv.loop->op_term_init;
-                        
-                        _Bool exists_loop_variable = 0;
-                        if (op_term_init->id == SPVM_OP_C_ID_ASSIGN && op_term_init->last->id == SPVM_OP_C_ID_VAR) {
-                          exists_loop_variable = 1;
-                        }
-                        
-                        _Bool loop_variable_is_int = 0;
-                        if (op_term_init) {
-                          SPVM_TYPE* type_term_init = SPVM_OP_get_type(compiler, op_term_init);
-                          if (type_term_init) {
-                            if (SPVM_TYPE_is_int_type(compiler, type_term_init->basic_type->id, type_term_init->dimension, type_term_init->flag)) {
-                              warn("BBBBBBBBBBBBBB");
-                              loop_variable_is_int = 1;
+                        {
+                          // Exists loop variable
+                          SPVM_OP* op_term_init = op_cur->uv.loop->op_term_init;
+                          _Bool exists_loop_variable = 0;
+                          if (op_term_init->id == SPVM_OP_C_ID_ASSIGN && op_term_init->last->id == SPVM_OP_C_ID_VAR) {
+                            exists_loop_variable = 1;
+                            loop->op_var_loop = op_term_init->last;
+                          }
+                          
+                          // Loop variable is int
+                          _Bool loop_variable_is_int = 0;
+                          if (op_term_init) {
+                            SPVM_TYPE* type_term_init = SPVM_OP_get_type(compiler, op_term_init);
+                            if (type_term_init) {
+                              if (SPVM_TYPE_is_int_type(compiler, type_term_init->basic_type->id, type_term_init->dimension, type_term_init->flag)) {
+                                loop_variable_is_int = 1;
+                              }
                             }
+                          }
+                          
+                          // Increment is ADD, SUBTRUCT, POST_INC, POST_DEC, PRE_INC, POST_INC
+                          _Bool is_add_subtruct_operation = 0;
+                          SPVM_OP* op_loop_increment = op_cur->uv.loop->op_loop_increment;
+                          SPVM_OP* op_term_increment = op_loop_increment->first;
+                          if (op_term_increment->id == SPVM_OP_C_ID_INC || op_term_increment->id == SPVM_OP_C_ID_DEC) {
+                            is_add_subtruct_operation = 1;
+                          }
+                          else if (op_term_increment->id == SPVM_OP_C_ID_ASSIGN) {
+                            SPVM_OP* op_term_increment_first = op_term_increment->first;
+                            SPVM_OP* op_term_increment_last = op_term_increment->last;
+                            if (op_term_increment_last->id ==  SPVM_OP_C_ID_VAR) {
+                              if (op_term_increment_first->id == SPVM_OP_C_ID_ADD || op_term_increment_first->id == SPVM_OP_C_ID_SUBTRACT) {
+                                if (op_term_increment_first->first->id == SPVM_OP_C_ID_VAR || op_term_increment_first->first->id == SPVM_OP_C_ID_CONSTANT) {
+                                  if (op_term_increment_first->last->id == SPVM_OP_C_ID_VAR || op_term_increment_first->last->id == SPVM_OP_C_ID_CONSTANT) {
+                                    is_add_subtruct_operation = 1;
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          
+                          // Create for statement in csource builder
+                          if (exists_loop_variable && loop_variable_is_int && is_add_subtruct_operation) {
+                            loop->create_for_statement = 1;
                           }
                         }
                         

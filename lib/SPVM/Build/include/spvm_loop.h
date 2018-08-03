@@ -10,6 +10,7 @@ struct SPVM_loop {
   SPVM_OP* op_block_statements;
   SPVM_OP* op_loop_increment;
   SPVM_OP* op_condition;
+  SPVM_OP* op_var_loop;
 
   int32_t loop_first_goto_opcode_rel_index;
 
@@ -19,7 +20,7 @@ struct SPVM_loop {
   int32_t condition_check_start_opcode_index;
   int32_t goto_loop_top_opcode_index;
   _Bool loop_var_is_int;
-  _Bool can_loop_expansion;
+  _Bool create_for_statement;
 };
 
 SPVM_LOOP* SPVM_LOOP_new(SPVM_COMPILER* compiler);
