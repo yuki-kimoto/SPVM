@@ -14,6 +14,7 @@ struct SPVM_loop {
 
   int32_t loop_first_goto_opcode_rel_index;
   int32_t loop_increment_start_opcode_rel_index;
+  int32_t loop_condition_start_opcode_rel_index;
 
   int32_t sub_rel_id;
   int32_t loop_var_id;

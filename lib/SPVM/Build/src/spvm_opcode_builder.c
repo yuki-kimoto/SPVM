@@ -169,6 +169,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             
             // [START]Preorder traversal position
             switch (op_cur->id) {
+              case SPVM_OP_C_ID_CONDITION:
+              case SPVM_OP_C_ID_CONDITION_NOT:
+              {
+                if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
+                  SPVM_LOOP* loop = SPVM_LIST_fetch(loop_stack, loop_stack->length - 1);
+                  loop->loop_condition_start_opcode_rel_index = opcode_array->length - 1;
+                }
+                
+                break;
+              }
               case SPVM_OP_C_ID_LOOP: {
                 // FOR_BLOCK_START
                 SPVM_OPCODE opcode;

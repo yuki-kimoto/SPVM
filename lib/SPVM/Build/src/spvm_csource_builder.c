@@ -3186,7 +3186,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add_int(compiler, string_buffer, loop->loop_first_goto_opcode_rel_index);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // loop_increment_start_opcode_rel_index: ");
-        SPVM_STRING_BUFFER_add_int(compiler, string_buffer, loop->loop_increment_start_opcode_rel_index );
+        SPVM_STRING_BUFFER_add_int(compiler, string_buffer, loop->loop_increment_start_opcode_rel_index);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // loop_condition_start_opcode_rel_index: ");
+        SPVM_STRING_BUFFER_add_int(compiler, string_buffer, loop->loop_condition_start_opcode_rel_index);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
         
         break;
