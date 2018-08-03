@@ -37,6 +37,7 @@
 #include "spvm_core_func_bind.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_loop.h"
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
@@ -713,6 +714,8 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_for->file, op_for->line);
   op_loop->flag |= SPVM_OP_C_FLAG_LOOP_FOR;
   
+  SPVM_LOOP* loop = SPVM_LOOP_new(compiler);
+  
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
@@ -735,6 +738,8 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
   
+  op_loop->uv.loop = loop;
+  
   return op_loop;
 }
 
@@ -742,6 +747,8 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_while->file, op_while->line);
+
+  SPVM_LOOP* loop = SPVM_LOOP_new(compiler);
   
   // Init statement. This is null.
   SPVM_OP* op_term_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
@@ -769,6 +776,8 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
+
+  op_loop->uv.loop = loop;
   
   return op_loop;
 }

@@ -176,7 +176,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_START;
                 
                 // Add loop info
-                SPVM_LOOP* loop = SPVM_LOOP_new(compiler);
+                SPVM_LOOP* loop = op_cur->uv.loop;
                 loop->sub_rel_id = sub->loops->length;
                 opcode.operand0 = loop->sub_rel_id;
                 SPVM_LIST_push(sub->loops, loop);
