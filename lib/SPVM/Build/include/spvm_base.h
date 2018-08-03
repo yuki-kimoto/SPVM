@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_loop_expansion.h
+struct SPVM_loop_expansion;
+typedef struct SPVM_loop_expansion SPVM_LOOP_EXPANSION;
+
 // spvm_array_field_access.h
 struct SPVM_array_field_access;
 typedef struct SPVM_array_field_access SPVM_ARRAY_FIELD_ACCESS;
