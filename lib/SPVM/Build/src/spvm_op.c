@@ -737,7 +737,12 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
-  
+
+  loop->op_term_init = op_term_init;
+  loop->op_block_statements = op_block_statements;
+  loop->op_loop_increment = op_loop_increment;
+  loop->op_condition = op_condition;
+    
   op_loop->uv.loop = loop;
   
   return op_loop;
@@ -776,6 +781,11 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
+  
+  loop->op_term_init = op_term_init;
+  loop->op_block_statements = op_block_statements;
+  loop->op_loop_increment = op_loop_increment;
+  loop->op_condition = op_condition;
 
   op_loop->uv.loop = loop;
   

@@ -6,6 +6,11 @@
 #include "spvm_base.h"
 
 struct SPVM_loop {
+  SPVM_OP* op_term_init;
+  SPVM_OP* op_block_statements;
+  SPVM_OP* op_loop_increment;
+  SPVM_OP* op_condition;
+
   int32_t loop_first_goto_opcode_rel_index;
 
   int32_t sub_rel_id;
