@@ -256,10 +256,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           // Exists loop variable
                           SPVM_OP* op_term_init = op_cur->uv.loop->op_term_init;
                           _Bool exists_loop_variable = 0;
+                          _Bool is_loop_var_assign_constant_or_var = 0;
                           if (op_term_init->id == SPVM_OP_C_ID_ASSIGN && op_term_init->last->id == SPVM_OP_C_ID_VAR) {
                             exists_loop_variable = 1;
                             loop->op_var_loop = op_term_init->last;
+                            // CONSTANT or VAR initialization
+                            if (op_term_init->first->id == SPVM_OP_C_ID_VAR || op_term_init->first->id == SPVM_OP_C_ID_CONSTANT) {
+                              is_loop_var_assign_constant_or_var = 1;
+                            }
                           }
+                          
                           
                           // Loop variable is int
                           _Bool loop_variable_is_int = 0;
@@ -294,7 +300,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           
                           // Create for statement in csource builder
-                          if (exists_loop_variable && loop_variable_is_int && is_add_subtruct_operation) {
+                          if (exists_loop_variable && is_loop_var_assign_constant_or_var && loop_variable_is_int && is_add_subtruct_operation) {
                             loop->create_for_statement = 1;
                           }
                         }
