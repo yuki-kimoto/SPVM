@@ -75,6 +75,7 @@ lib/SPVM/Build/src/spvm_field_access.c
 lib/SPVM/Build/src/spvm_hash.c
 lib/SPVM/Build/src/spvm_hash_func.c
 lib/SPVM/Build/src/spvm_list.c
+lib/SPVM/Build/src/spvm_loop_expansion.h
 lib/SPVM/Build/src/spvm_my.c
 lib/SPVM/Build/src/spvm_op.c
 lib/SPVM/Build/src/spvm_op_checker.c
