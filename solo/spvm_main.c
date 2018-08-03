@@ -342,7 +342,7 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  SPVM_VALUE* stack = runtime->stack;
+  SPVM_VALUE stack[255];
   stack[0].ival = 2;
   
   // Run

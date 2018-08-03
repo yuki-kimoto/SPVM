@@ -4,9 +4,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// spvm_loop_expansion.h
-struct SPVM_loop_expansion;
-typedef struct SPVM_loop_expansion SPVM_LOOP_EXPANSION;
+// spvm_loop_info.h
+struct SPVM_loop_info;
+typedef struct SPVM_loop_info SPVM_LOOP_INFO;
 
 // spvm_array_field_access.h
 struct SPVM_array_field_access;

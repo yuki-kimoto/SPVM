@@ -36,6 +36,7 @@
 #include "spvm_yacc_util.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_loop_info.h"
 
 void SPVM_OPCODE_BUILDER_push_if_croak(
   SPVM_COMPILER* compiler,
@@ -122,6 +123,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           
           // Switch stack
           SPVM_LIST* switch_info_stack = SPVM_LIST_new(0);
+
+          // Loop info stack
+          SPVM_LIST* loop_info_stack = SPVM_LIST_new(0);
           
           // Block stack
           SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
@@ -172,6 +176,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                   opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_START;
                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                  
+                  // Add loop info
+                  SPVM_LOOP_INFO* loop_info = SPVM_LOOP_INFO_new(compiler);
+                  loop_info->sub_rel_id = sub->loop_infos->length;
+                  SPVM_LIST_push(sub->loop_infos, loop_info);
+                  
+                  // Push loop info stack
+                  SPVM_LIST_push(loop_info_stack, loop_info);
                 }
                 
                 break;
@@ -225,6 +237,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_END;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                      
+                      // Pop loop info stack
+                      SPVM_LIST_pop(loop_info_stack);
                     }
                     
                     break;
