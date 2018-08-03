@@ -229,6 +229,7 @@ struct SPVM_op {
     SPVM_PACKAGE_VAR_ACCESS* package_var_access;
     SPVM_BLOCK* block;
     SPVM_DESCRIPTOR* descriptor;
+    SPVM_LOOP* loop;
   } uv;
   int32_t id;
   int32_t flag;

@@ -5,8 +5,8 @@
 #include <stdlib.h>
 
 // spvm_loop_info.h
-struct SPVM_loop_info;
-typedef struct SPVM_loop_info SPVM_LOOP_INFO;
+struct SPVM_loop;
+typedef struct SPVM_loop SPVM_LOOP;
 
 // spvm_array_field_access.h
 struct SPVM_array_field_access;

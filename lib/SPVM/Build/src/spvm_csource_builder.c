@@ -39,6 +39,7 @@
 #include "spvm_case_info.h"
 #include "spvm_var.h"
 #include "spvm_call_sub.h"
+#include "spvm_loop.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   (void)compiler;
@@ -3172,6 +3173,25 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t unit = opcode->operand3 & 0xF;
         int32_t offset = opcode->operand3 >> 4;
         SPVM_CSOURCE_BUILDER_add_value_t_deref_set_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1, unit, offset);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_FOR_LOOP_START:
+      {
+        int32_t loop_rel_id = opcode->operand0;
+        SPVM_LOOP* loop = SPVM_LIST_fetch(sub->loops, loop_rel_id);
+        
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  /* for (term; term; term;) */ {\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    (void)1;\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // loop_first_goto_opcode_rel_index: ");
+        SPVM_STRING_BUFFER_add_int(compiler, string_buffer, loop->loop_first_goto_opcode_rel_index);
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_FOR_LOOP_END:
+      {
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "    (void)1;\n");
+        SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_WIDE: {

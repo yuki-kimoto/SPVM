@@ -45,7 +45,7 @@ struct SPVM_sub {
   SPVM_LIST* op_call_subs;
   SPVM_LIST* op_constants;
   SPVM_LIST* op_switch_infos;
-  SPVM_LIST* loop_infos;
+  SPVM_LIST* loops;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
