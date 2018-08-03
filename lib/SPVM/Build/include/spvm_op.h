@@ -173,8 +173,14 @@ enum {
 
 enum {
   // Assign flag
-  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
+  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1,
 };
+
+enum {
+  // LOOP flag
+  SPVM_OP_C_FLAG_LOOP_FOR = 1,
+};
+
 
 enum {
   // Special assign flag

@@ -165,6 +165,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             
             // [START]Preorder traversal position
             switch (op_cur->id) {
+              case SPVM_OP_C_ID_LOOP: {
+                if (op_cur->flag & SPVM_OP_C_FLAG_LOOP_FOR) {
+                  // FOR_LOOP_START
+                  SPVM_OPCODE opcode;
+                  memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                  opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_START;
+                  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                }
+                
+                break;
+              }
               case SPVM_OP_C_ID_BLOCK: { // Preorder
                 
                 // Push block
@@ -207,6 +218,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               while (1) {
                 // [START]Postorder traversal position
                 switch (op_cur->id) {
+                  case SPVM_OP_C_ID_LOOP: {
+                    if (op_cur->flag & SPVM_OP_C_FLAG_LOOP_FOR) {
+                      // FOR_LOOP_START
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                      opcode.id = SPVM_OPCODE_C_ID_FOR_LOOP_END;
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
+                    
+                    break;
+                  }
                   case SPVM_OP_C_ID_ASSIGN: {
                     SPVM_OP* op_assign_dist = op_cur->last;
                     SPVM_OP* op_assign_src = op_cur->first;

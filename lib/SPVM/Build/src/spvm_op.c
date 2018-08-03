@@ -711,6 +711,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_for->file, op_for->line);
+  op_loop->flag |= SPVM_OP_C_FLAG_LOOP_FOR;
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
