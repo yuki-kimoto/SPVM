@@ -26,11 +26,12 @@
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
+%type <opval> opt_declarations declarations declaration
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> my_var field  array_init
-%type <opval> block enumeration_block  eval_block sub opt_declarations_in_package call_sub unop binop isa
-%type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
+%type <opval> block enumeration_block  eval_block sub call_sub unop binop isa
+%type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
 %type <opval> type field_name sub_name  anon_package opt_enumeration_values array_type ref_type
 %type <opval> expression  var anon_sub deref ref
@@ -118,12 +119,12 @@ anon_package
       $$ = SPVM_OP_build_package(compiler, $1, NULL, $3, $2);
     }
 
-opt_declarations_in_package
+opt_declarations
   :	/* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	declarations_in_package
+  |	declarations
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -134,8 +135,8 @@ opt_declarations_in_package
       }
     }
 
-declarations_in_package
-  : declarations_in_package declaration_in_package
+declarations
+  : declarations declaration
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -149,9 +150,9 @@ declarations_in_package
       
       $$ = op_list;
     }
-  | declaration_in_package
+  | declaration
 
-declaration_in_package
+declaration
   : field
   | sub
   | enumeration
@@ -160,7 +161,7 @@ declaration_in_package
   | anon_sub
 
 package_block
-  : '{' opt_declarations_in_package '}'
+  : '{' opt_declarations '}'
     {
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
