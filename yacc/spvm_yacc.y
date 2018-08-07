@@ -18,7 +18,7 @@
 
 %token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
 %token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE DEREF BACKSLASH
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE BACKSLASH
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT AMPERSAND
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
@@ -41,7 +41,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> NOT '~' '@' SCALAR UMINUS
+%right <opval> NOT '~' '@' SCALAR UMINUS REF DEREF
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
 %left <opval> ARROW

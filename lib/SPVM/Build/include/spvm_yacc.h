@@ -71,37 +71,38 @@
      EVAL = 287,
      WEAKEN = 288,
      PRECOMPILE = 289,
-     DEREF = 290,
-     BACKSLASH = 291,
-     UNDEF = 292,
-     VOID = 293,
-     BYTE = 294,
-     SHORT = 295,
-     INT = 296,
-     LONG = 297,
-     FLOAT = 298,
-     DOUBLE = 299,
-     STRING = 300,
-     OBJECT = 301,
-     AMPERSAND = 302,
-     SPECIAL_ASSIGN = 303,
-     ASSIGN = 304,
-     OR = 305,
-     AND = 306,
-     BIT_XOR = 307,
-     BIT_OR = 308,
-     BIT_AND = 309,
-     REL = 310,
-     SHIFT = 311,
-     REMAINDER = 312,
-     DIVIDE = 313,
-     MULTIPLY = 314,
-     UMINUS = 315,
-     SCALAR = 316,
-     NOT = 317,
-     DEC = 318,
-     INC = 319,
-     ARROW = 320
+     BACKSLASH = 290,
+     UNDEF = 291,
+     VOID = 292,
+     BYTE = 293,
+     SHORT = 294,
+     INT = 295,
+     LONG = 296,
+     FLOAT = 297,
+     DOUBLE = 298,
+     STRING = 299,
+     OBJECT = 300,
+     AMPERSAND = 301,
+     SPECIAL_ASSIGN = 302,
+     ASSIGN = 303,
+     OR = 304,
+     AND = 305,
+     BIT_XOR = 306,
+     BIT_OR = 307,
+     BIT_AND = 308,
+     REL = 309,
+     SHIFT = 310,
+     REMAINDER = 311,
+     DIVIDE = 312,
+     MULTIPLY = 313,
+     DEREF = 314,
+     REF = 315,
+     UMINUS = 316,
+     SCALAR = 317,
+     NOT = 318,
+     DEC = 319,
+     INC = 320,
+     ARROW = 321
    };
 #endif
 /* Tokens.  */
@@ -137,37 +138,38 @@
 #define EVAL 287
 #define WEAKEN 288
 #define PRECOMPILE 289
-#define DEREF 290
-#define BACKSLASH 291
-#define UNDEF 292
-#define VOID 293
-#define BYTE 294
-#define SHORT 295
-#define INT 296
-#define LONG 297
-#define FLOAT 298
-#define DOUBLE 299
-#define STRING 300
-#define OBJECT 301
-#define AMPERSAND 302
-#define SPECIAL_ASSIGN 303
-#define ASSIGN 304
-#define OR 305
-#define AND 306
-#define BIT_XOR 307
-#define BIT_OR 308
-#define BIT_AND 309
-#define REL 310
-#define SHIFT 311
-#define REMAINDER 312
-#define DIVIDE 313
-#define MULTIPLY 314
-#define UMINUS 315
-#define SCALAR 316
-#define NOT 317
-#define DEC 318
-#define INC 319
-#define ARROW 320
+#define BACKSLASH 290
+#define UNDEF 291
+#define VOID 292
+#define BYTE 293
+#define SHORT 294
+#define INT 295
+#define LONG 296
+#define FLOAT 297
+#define DOUBLE 298
+#define STRING 299
+#define OBJECT 300
+#define AMPERSAND 301
+#define SPECIAL_ASSIGN 302
+#define ASSIGN 303
+#define OR 304
+#define AND 305
+#define BIT_XOR 306
+#define BIT_OR 307
+#define BIT_AND 308
+#define REL 309
+#define SHIFT 310
+#define REMAINDER 311
+#define DIVIDE 312
+#define MULTIPLY 313
+#define DEREF 314
+#define REF 315
+#define UMINUS 316
+#define SCALAR 317
+#define NOT 318
+#define DEC 319
+#define INC 320
+#define ARROW 321
 
 
 
