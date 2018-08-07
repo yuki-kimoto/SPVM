@@ -28,19 +28,19 @@
 %type <opval> opt_packages packages package anon_package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg
+%type <opval> sub anon_sub opt_args args arg has use 
+%type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> my_var field  array_init
+%type <opval> my_var array_init
 %type <opval> block eval_block call_sub unop binop isa
-%type <opval> opt_assignable_terms assignable_terms assignable_term use term logical_term relative_term
+%type <opval> opt_assignable_terms assignable_terms assignable_term term logical_term relative_term
 %type <opval> weaken_field package_var invocant list_assignable_terms
 %type <opval> expression deref ref
-%type <opval> field_access array_access convert_type  new_object basic_type array_length
+%type <opval> field_access array_access convert_type new_object array_length
 %type <opval> array_type_with_length const_array_type
-%type <opval> opt_descriptors opt_colon_descriptors descriptors type_or_void  
 %type <opval> field_name sub_name 
-%type <opval> type array_type ref_type var
+%type <opval> type basic_type array_type ref_type type_or_void var
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> OR
@@ -110,15 +110,23 @@ use
     }
 
 package
-  : PACKAGE basic_type opt_colon_descriptors package_block
+  : PACKAGE basic_type package_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $4, $3);
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $3, NULL);
+    }
+  | PACKAGE basic_type ':' opt_descriptors package_block
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
     }
 
 anon_package
-  : PACKAGE opt_colon_descriptors package_block
+  : PACKAGE package_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, NULL, $3, $2);
+      $$ = SPVM_OP_build_package(compiler, $1, NULL, $2, NULL);
+    }
+  | PACKAGE ':' opt_descriptors package_block
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, NULL, $4, $3);
     }
 
 opt_declarations
@@ -155,7 +163,7 @@ declarations
   | declaration
 
 declaration
-  : field
+  : has
   | sub
   | enumeration
   | package_var ';'
@@ -347,10 +355,10 @@ else_statement
       $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
     }
 
-field
+has
   : HAS field_name ':' opt_descriptors type ';'
     {
-      $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_has(compiler, $1, $2, $4, $5);
     }
 
 sub
@@ -891,23 +899,6 @@ invocant
   : var ':' SELF
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
-    }
-
-opt_colon_descriptors
-  :	/* Empty */
-    {
-      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-    }
-  |	':' descriptors
-    {
-      if ($2->id == SPVM_OP_C_ID_LIST) {
-        $$ = $2;
-      }
-      else {
-        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
-        $$ = op_list;
-      }
     }
 
 opt_descriptors
