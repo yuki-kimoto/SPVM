@@ -35,7 +35,6 @@
 %type <opval> expression
 %type <opval> block eval_block call_sub unop binop 
 %type <opval> term opt_assignable_terms assignable_terms assignable_term logical_term relative_term
-%type <opval> list_assignable_terms
 %type <opval> array_access field_access weaken_field package_var convert_type array_length 
 %type <opval> deref ref
 %type <opval> new array_init isa
@@ -438,7 +437,7 @@ assignable_terms
       
       $$ = op_list;
     }
-  | assignable_terms ',' list_assignable_terms
+  | assignable_terms ',' '(' assignable_terms ')'
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -449,8 +448,8 @@ assignable_terms
         SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
       }
       
-      if ($3->id == SPVM_OP_C_ID_LIST) {
-        SPVM_OP* op_term = $3->first;
+      if ($4->id == SPVM_OP_C_ID_LIST) {
+        SPVM_OP* op_term = $4->first;
         while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
           SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
@@ -458,7 +457,7 @@ assignable_terms
         }
       }
       else {
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $4);
       }
       
       $$ = op_list;
@@ -467,21 +466,15 @@ assignable_terms
     {
       $$ = $1;
     }
-  | list_assignable_terms
+  | '(' assignable_terms ')'
     {
-      $$ = $1;
+      $$ = $2;
     }
   | assignable_term
     {
       $$ = $1;
     }
 
-list_assignable_terms
-  : '(' assignable_terms ')'
-    {
-      $$ = $2;
-    }
-    
 array_length
   : '@' assignable_term
     {
