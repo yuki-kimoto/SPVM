@@ -25,16 +25,18 @@
 %token <opval> AMPERSAND
 
 %type <opval> grammar
-%type <opval> opt_statements statements statement
-%type <opval> my_var field if_statement else_statement array_init
-%type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
+%type <opval> opt_packages packages package package_block
+%type <opval> opt_statements statements statement normal_statement if_statement else_statement 
+%type <opval> for_statement while_statement switch_statement case_statement default_statement
+%type <opval> my_var field  array_init
+%type <opval> block enumeration_block  eval_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
-%type <opval> type field_name sub_name package anon_package declarations_in_grammar opt_enumeration_values array_type ref_type
-%type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub deref ref
-%type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
-%type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
-%type <opval> opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement eval_block
+%type <opval> type field_name sub_name  anon_package opt_enumeration_values array_type ref_type
+%type <opval> expression  var anon_sub deref ref
+%type <opval> field_access array_access convert_type enumeration new_object basic_type array_length
+%type <opval> array_type_with_length const_array_type
+%type <opval> opt_descriptors opt_colon_descriptors descriptors type_or_void  
 
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -57,19 +59,19 @@
 %%
 
 grammar
-  : opt_declarations_in_grammar
+  : opt_packages
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
 
       compiler->op_grammar = $$;
     }
 
-opt_declarations_in_grammar
+opt_packages
   :	/* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	declarations_in_grammar
+  |	packages
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -81,8 +83,8 @@ opt_declarations_in_grammar
       }
     }
   
-declarations_in_grammar
-  : declarations_in_grammar declaration_in_grammar
+packages
+  : packages package
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -96,10 +98,7 @@ declarations_in_grammar
       
       $$ = op_list;
     }
-  | declaration_in_grammar
-
-declaration_in_grammar
-  : package
+  | package
 
 use
   : USE basic_type ';'
