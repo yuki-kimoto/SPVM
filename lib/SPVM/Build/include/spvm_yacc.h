@@ -43,66 +43,64 @@
      HAS = 259,
      SUB = 260,
      PACKAGE = 261,
-     IF = 262,
-     ELSIF = 263,
-     ELSE = 264,
-     RETURN = 265,
-     FOR = 266,
-     WHILE = 267,
-     USE = 268,
-     NEW = 269,
-     OUR = 270,
-     SELF = 271,
-     CONST = 272,
-     LAST = 273,
-     NEXT = 274,
-     NAME = 275,
-     CONSTANT = 276,
-     ENUM = 277,
-     DESCRIPTOR = 278,
-     CORETYPE = 279,
-     CROAK = 280,
-     VAR_NAME = 281,
-     INTERFACE = 282,
-     ISA = 283,
-     SWITCH = 284,
-     CASE = 285,
-     DEFAULT = 286,
-     EVAL = 287,
-     WEAKEN = 288,
-     PRECOMPILE = 289,
-     BACKSLASH = 290,
-     UNDEF = 291,
-     VOID = 292,
-     BYTE = 293,
-     SHORT = 294,
-     INT = 295,
-     LONG = 296,
-     FLOAT = 297,
-     DOUBLE = 298,
-     STRING = 299,
-     OBJECT = 300,
-     AMPERSAND = 301,
-     SPECIAL_ASSIGN = 302,
-     ASSIGN = 303,
-     OR = 304,
-     AND = 305,
-     BIT_XOR = 306,
-     BIT_OR = 307,
-     BIT_AND = 308,
-     REL = 309,
-     SHIFT = 310,
-     REMAINDER = 311,
-     DIVIDE = 312,
-     MULTIPLY = 313,
-     DEREF = 314,
-     REF = 315,
-     UMINUS = 316,
-     SCALAR = 317,
-     NOT = 318,
-     DEC = 319,
-     INC = 320,
-     ARROW = 321
+     OUR = 262,
+     SELF = 263,
+     IF = 264,
+     ELSIF = 265,
+     ELSE = 266,
+     FOR = 267,
+     WHILE = 268,
+     LAST = 269,
+     NEXT = 270,
+     NAME = 271,
+     CONSTANT = 272,
+     ENUM = 273,
+     DESCRIPTOR = 274,
+     CORETYPE = 275,
+     CROAK = 276,
+     VAR_NAME = 277,
+     INTERFACE = 278,
+     ISA = 279,
+     SWITCH = 280,
+     CASE = 281,
+     DEFAULT = 282,
+     EVAL = 283,
+     WEAKEN = 284,
+     UNDEF = 285,
+     VOID = 286,
+     BYTE = 287,
+     SHORT = 288,
+     INT = 289,
+     LONG = 290,
+     FLOAT = 291,
+     DOUBLE = 292,
+     STRING = 293,
+     OBJECT = 294,
+     RETURN = 295,
+     USE = 296,
+     NEW = 297,
+     CONST = 298,
+     AMPERSAND = 299,
+     SPECIAL_ASSIGN = 300,
+     ASSIGN = 301,
+     OR = 302,
+     AND = 303,
+     BIT_XOR = 304,
+     BIT_OR = 305,
+     BIT_AND = 306,
+     REL = 307,
+     SHIFT = 308,
+     REMAINDER = 309,
+     DIVIDE = 310,
+     MULTIPLY = 311,
+     DEREF = 312,
+     REF = 313,
+     UMINUS = 314,
+     SCALAR = 315,
+     NOT = 316,
+     DEC = 317,
+     INC = 318,
+     ARROW = 319
    };
 #endif
 /* Tokens.  */
@@ -110,66 +108,64 @@
 #define HAS 259
 #define SUB 260
 #define PACKAGE 261
-#define IF 262
-#define ELSIF 263
-#define ELSE 264
-#define RETURN 265
-#define FOR 266
-#define WHILE 267
-#define USE 268
-#define NEW 269
-#define OUR 270
-#define SELF 271
-#define CONST 272
-#define LAST 273
-#define NEXT 274
-#define NAME 275
-#define CONSTANT 276
-#define ENUM 277
-#define DESCRIPTOR 278
-#define CORETYPE 279
-#define CROAK 280
-#define VAR_NAME 281
-#define INTERFACE 282
-#define ISA 283
-#define SWITCH 284
-#define CASE 285
-#define DEFAULT 286
-#define EVAL 287
-#define WEAKEN 288
-#define PRECOMPILE 289
-#define BACKSLASH 290
-#define UNDEF 291
-#define VOID 292
-#define BYTE 293
-#define SHORT 294
-#define INT 295
-#define LONG 296
-#define FLOAT 297
-#define DOUBLE 298
-#define STRING 299
-#define OBJECT 300
-#define AMPERSAND 301
-#define SPECIAL_ASSIGN 302
-#define ASSIGN 303
-#define OR 304
-#define AND 305
-#define BIT_XOR 306
-#define BIT_OR 307
-#define BIT_AND 308
-#define REL 309
-#define SHIFT 310
-#define REMAINDER 311
-#define DIVIDE 312
-#define MULTIPLY 313
-#define DEREF 314
-#define REF 315
-#define UMINUS 316
-#define SCALAR 317
-#define NOT 318
-#define DEC 319
-#define INC 320
-#define ARROW 321
+#define OUR 262
+#define SELF 263
+#define IF 264
+#define ELSIF 265
+#define ELSE 266
+#define FOR 267
+#define WHILE 268
+#define LAST 269
+#define NEXT 270
+#define NAME 271
+#define CONSTANT 272
+#define ENUM 273
+#define DESCRIPTOR 274
+#define CORETYPE 275
+#define CROAK 276
+#define VAR_NAME 277
+#define INTERFACE 278
+#define ISA 279
+#define SWITCH 280
+#define CASE 281
+#define DEFAULT 282
+#define EVAL 283
+#define WEAKEN 284
+#define UNDEF 285
+#define VOID 286
+#define BYTE 287
+#define SHORT 288
+#define INT 289
+#define LONG 290
+#define FLOAT 291
+#define DOUBLE 292
+#define STRING 293
+#define OBJECT 294
+#define RETURN 295
+#define USE 296
+#define NEW 297
+#define CONST 298
+#define AMPERSAND 299
+#define SPECIAL_ASSIGN 300
+#define ASSIGN 301
+#define OR 302
+#define AND 303
+#define BIT_XOR 304
+#define BIT_OR 305
+#define BIT_AND 306
+#define REL 307
+#define SHIFT 308
+#define REMAINDER 309
+#define DIVIDE 310
+#define MULTIPLY 311
+#define DEREF 312
+#define REF 313
+#define UMINUS 314
+#define SCALAR 315
+#define NOT 316
+#define DEC 317
+#define INC 318
+#define ARROW 319
 
 
 

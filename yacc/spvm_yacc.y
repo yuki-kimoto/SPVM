@@ -16,10 +16,12 @@
   #include "spvm_list.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE IF ELSIF ELSE RETURN FOR WHILE USE NEW OUR SELF CONST
-%token <opval> LAST NEXT NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN PRECOMPILE BACKSLASH
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT AMPERSAND
+%token <opval> MY HAS SUB PACKAGE OUR SELF 
+%token <opval> IF ELSIF ELSE FOR WHILE LAST NEXT 
+%token <opval> NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
+%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
+%token <opval> RETURN USE NEW CONST  AMPERSAND
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -492,12 +494,12 @@ deref
     }
 
 ref
-  : BACKSLASH var
+  : REF var
     {
       SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
       $$ = SPVM_OP_build_ref(compiler, op_ref, $2);
     }
-  | BACKSLASH '{' var '}'
+  | REF '{' var '}'
     {
       SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
       $$ = SPVM_OP_build_ref(compiler, op_ref, $3);
