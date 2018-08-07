@@ -32,12 +32,12 @@
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> my_var array_init
+%type <opval> my_var 
 %type <opval> block eval_block call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term term logical_term relative_term
 %type <opval> weaken_field package_var invocant list_assignable_terms
 %type <opval> expression deref ref
-%type <opval> field_access array_access convert_type new_object array_length
+%type <opval> field_access array_access convert_type new array_init array_length
 %type <opval> array_type_with_length const_array_type
 %type <opval> field_name sub_name 
 %type <opval> type basic_type array_type ref_type type_or_void var
@@ -546,7 +546,7 @@ assignable_term
   | field_access
   | array_access
   | convert_type
-  | new_object
+  | new
   | array_init
   | array_length
   | my_var
@@ -589,25 +589,25 @@ isa
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
 
-new_object
+new
   : NEW basic_type
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
   | NEW array_type_with_length
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2, NULL);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
   | NEW array_type '{' opt_assignable_terms '}'
     {
-      $$ = SPVM_OP_build_new_object(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, $4);
     }
   | anon_package
     {
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
 
-      $$ = SPVM_OP_build_new_object(compiler, op_new, $1, NULL);
+      $$ = SPVM_OP_build_new(compiler, op_new, $1, NULL);
     }
   | anon_sub
     {
@@ -626,7 +626,7 @@ new_object
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_new_object(compiler, op_new, op_package, NULL);
+      $$ = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
     }
 
 array_init

@@ -664,7 +664,7 @@ static const char *const yytname[] =
   "if_statement", "else_statement", "has", "sub", "anon_sub",
   "enumeration", "my_var", "package_var", "opt_assignable_terms",
   "assignable_terms", "list_assignable_terms", "array_length", "deref",
-  "ref", "term", "assignable_term", "expression", "isa", "new_object",
+  "ref", "term", "assignable_term", "expression", "isa", "new",
   "array_init", "convert_type", "field_access", "weaken_field", "unop",
   "binop", "relative_term", "logical_term", "array_access", "call_sub",
   "opt_args", "args", "arg", "invocant", "opt_descriptors", "descriptors",
@@ -2625,21 +2625,21 @@ yyreduce:
   case 112:
 #line 594 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_new_object(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_new(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL);
     ;}
     break;
 
   case 113:
 #line 598 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_new_object(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_new(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL);
     ;}
     break;
 
   case 114:
 #line 602 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_new_object(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(2) - (5)].opval), (yyvsp[(4) - (5)].opval));
+      (yyval.opval) = SPVM_OP_build_new(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(2) - (5)].opval), (yyvsp[(4) - (5)].opval));
     ;}
     break;
 
@@ -2649,7 +2649,7 @@ yyreduce:
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
 
-      (yyval.opval) = SPVM_OP_build_new_object(compiler, op_new, (yyvsp[(1) - (1)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_new(compiler, op_new, (yyvsp[(1) - (1)].opval), NULL);
     ;}
     break;
 
@@ -2671,7 +2671,7 @@ yyreduce:
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, (yyvsp[(1) - (1)].opval)->file, (yyvsp[(1) - (1)].opval)->line);
       
-      (yyval.opval) = SPVM_OP_build_new_object(compiler, op_new, op_package, NULL);
+      (yyval.opval) = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
     ;}
     break;
 
