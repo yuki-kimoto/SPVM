@@ -16,14 +16,13 @@
   #include "spvm_list.h"
 %}
 
-%token <opval> MY HAS SUB PACKAGE OUR SELF 
-%token <opval> IF ELSIF ELSE FOR WHILE LAST NEXT 
-%token <opval> NAME VAR_NAME CONSTANT ENUM  CORETYPE
-%token <opval> SWITCH CASE DEFAULT EVAL
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
+%token <opval> DESCRIPTOR CONST
+%token <opval> IF ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
+%token <opval> NAME VAR_NAME CONSTANT
+%token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> RETURN USE NEW CONST  AMPERSAND
-%token <opval> DESCRIPTOR
-%token <opval> WEAKEN CROAK
+%token <opval> AMPERSAND
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
