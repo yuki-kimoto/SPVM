@@ -28,7 +28,7 @@
 %type <opval> opt_packages packages package anon_package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use 
+%type <opval> sub anon_sub opt_args args arg invocant has use our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -36,7 +36,7 @@
 %type <opval> expression
 %type <opval> unop binop
 %type <opval> call_sub
-%type <opval> array_access field_access weaken_field package_var convert_type array_length 
+%type <opval> array_access field_access weaken_field convert_type array_length 
 %type <opval> deref ref
 %type <opval> new array_init isa
 %type <opval> my_var var
@@ -169,7 +169,7 @@ declaration
   : has
   | sub
   | enumeration
-  | package_var ';'
+  | our ';'
   | use
   | anon_sub
 
@@ -239,6 +239,12 @@ enumeration_value
   | NAME ASSIGN CONSTANT
     {
       $$ = SPVM_OP_build_enumeration_value(compiler, $1, $3);
+    }
+
+our
+  : OUR var ':' type
+    {
+      $$ = SPVM_OP_build_our(compiler, $2, $4);
     }
 
 has
@@ -398,12 +404,6 @@ my_var
   | MY var
     {
       $$ = SPVM_OP_build_my(compiler, $1, $2, NULL);
-    }
-
-package_var
-  : OUR var ':' type
-    {
-      $$ = SPVM_OP_build_package_var(compiler, $2, $4);
     }
 
 opt_normal_terms
