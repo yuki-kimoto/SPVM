@@ -18,10 +18,12 @@
 
 %token <opval> MY HAS SUB PACKAGE OUR SELF 
 %token <opval> IF ELSIF ELSE FOR WHILE LAST NEXT 
-%token <opval> NAME CONSTANT ENUM DESCRIPTOR CORETYPE CROAK VAR_NAME INTERFACE ISA
-%token <opval> SWITCH CASE DEFAULT EVAL WEAKEN
+%token <opval> NAME VAR_NAME CONSTANT ENUM  CORETYPE
+%token <opval> SWITCH CASE DEFAULT EVAL
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> RETURN USE NEW CONST  AMPERSAND
+%token <opval> DESCRIPTOR
+%token <opval> WEAKEN CROAK
 
 %type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
@@ -43,6 +45,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
+%nonassoc <opval> ISA
 %right <opval> NOT '~' '@' SCALAR UMINUS REF DEREF
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
