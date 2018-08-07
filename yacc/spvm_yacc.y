@@ -32,13 +32,15 @@
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
+%type <opval> block eval_block
 %type <opval> expression
-%type <opval> block eval_block call_sub unop binop 
-%type <opval> term opt_assignable_terms assignable_terms assignable_term logical_term relative_term
+%type <opval> unop binop
+%type <opval> call_sub
 %type <opval> array_access field_access weaken_field package_var convert_type array_length 
 %type <opval> deref ref
 %type <opval> new array_init isa
 %type <opval> my_var var
+%type <opval> term opt_assignable_terms assignable_terms assignable_term logical_term relative_term
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length const_array_type ref_type  type_or_void
 
