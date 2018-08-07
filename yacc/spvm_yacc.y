@@ -25,20 +25,22 @@
 %token <opval> AMPERSAND
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block
+%type <opval> opt_packages packages package anon_package package_block
 %type <opval> opt_declarations declarations declaration
+%type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
+%type <opval> sub anon_sub opt_args args arg
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> my_var field  array_init
-%type <opval> block enumeration_block  eval_block sub call_sub unop binop isa
-%type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use term logical_term relative_term
-%type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
-%type <opval> type field_name sub_name  anon_package opt_enumeration_values array_type ref_type
-%type <opval> expression  var anon_sub deref ref
-%type <opval> field_access array_access convert_type enumeration new_object basic_type array_length
+%type <opval> block eval_block call_sub unop binop isa
+%type <opval> opt_assignable_terms assignable_terms assignable_term use term logical_term relative_term
+%type <opval> weaken_field package_var invocant list_assignable_terms
+%type <opval> expression deref ref
+%type <opval> field_access array_access convert_type  new_object basic_type array_length
 %type <opval> array_type_with_length const_array_type
 %type <opval> opt_descriptors opt_colon_descriptors descriptors type_or_void  
-
+%type <opval> field_name sub_name 
+%type <opval> type array_type ref_type var
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> OR
