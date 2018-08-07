@@ -24,7 +24,9 @@
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND
 
-%type <opval> grammar opt_statements statements statement my_var field if_statement else_statement array_init
+%type <opval> grammar
+%type <opval> opt_statements statements statement
+%type <opval> my_var field if_statement else_statement array_init
 %type <opval> block enumeration_block package_block sub opt_declarations_in_package call_sub unop binop isa
 %type <opval> opt_assignable_terms assignable_terms assignable_term args arg opt_args use declaration_in_package declarations_in_package term logical_term relative_term
 %type <opval> enumeration_values enumeration_value weaken_field package_var invocant list_assignable_terms
@@ -32,7 +34,7 @@
 %type <opval> for_statement while_statement expression opt_declarations_in_grammar var anon_sub deref ref
 %type <opval> field_access array_access convert_type enumeration new_object basic_type array_length declaration_in_grammar
 %type <opval> switch_statement case_statement default_statement array_type_with_length const_array_type
-%type <opval> ';' opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement eval_block
+%type <opval> opt_descriptors opt_colon_descriptors descriptors type_or_void normal_statement eval_block
 
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -277,10 +279,16 @@ block
 
 normal_statement
   : assignable_term ';'
+    {
+      $$ = $1;
+    }
   | expression ';'
+    {
+      $$ = $1;
+    }
   | ';'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, $1->file, $1->line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
 
 for_statement
