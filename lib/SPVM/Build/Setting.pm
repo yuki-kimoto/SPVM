@@ -74,11 +74,11 @@ sub get_ccflags {
   return $self->{ccflags};
 }
 
-sub add_ccflag {
-  my ($self, $ccflag) = @_;
+sub add_ccflags {
+  my ($self, $ccflags) = @_;
   
-  push @{$self->{ccflags}}, $ccflag;
-  
+  $self->{ccflags} .= " $ccflags";
+    
   return $self;
 }
 
@@ -127,12 +127,12 @@ sub set_std {
   my $ccflags = $self->get_ccflags;
   
   # Remove -std=foo section
-  for my $ccflag (@$ccflags) {
-    $ccflag =~ s/-std=[^ ]+//g;
-  }
+  $ccflags =~ s/-std=[^ ]+//g;
+  
+  $ccflags .= " -std=$spec";
   
   # Add -std=foo section
-  $self->add_ccflag("-std=$spec");
+  $self->set_ccflags($ccflags);
   
   return $self;
 }
