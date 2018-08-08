@@ -153,7 +153,7 @@ sub create_shared_lib {
       or confess "Can't parser $config_file: $!$@";
   }
   else {
-    $build_setting = SPVM::Build::Util::default_build_setting;
+    $build_setting = SPVM::Build::Util::new_core_build_setting;
   }
   
   # CBuilder settings

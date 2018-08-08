@@ -124,6 +124,22 @@ sub get_config {
   }
 }
 
+sub set_std {
+  my ($self, $spec) = @_;
+  
+  my $extra_compiler_flags = $self->get_extra_compiler_flags;
+  
+  # Remove -std=foo section
+  for my $extra_compiler_flag (@$extra_compiler_flags) {
+    $extra_compiler_flag =~ s/-std=[^ ]+//g;
+  }
+  
+  # Add -std=foo section
+  $self->add_extra_compiler_flag("-std=$spec");
+  
+  return $self;
+}
+
 =head1 NAME
 
 SPVM::Build::Setting;

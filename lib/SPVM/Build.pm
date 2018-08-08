@@ -44,7 +44,7 @@ sub new {
     info => $self->{info},
   );
   
-  $self->{setting} ||= SPVM::Build::Util::default_build_setting;
+  $self->{setting} ||= SPVM::Build::Util::new_build_setting;
   
   return $self;
 }
