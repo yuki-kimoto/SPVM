@@ -42,7 +42,7 @@ if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
   die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
 }
 
-my $build_setting = SPVM::Build::Util::new_core_build_setting();
+my $build_setting = SPVM::Build::Util::new_default_build_setting();
 $optimize ||= $build_setting->get_config('optimize');
 my $ccflags = join(' ', @{$build_setting->get_extra_compiler_flags});
 

@@ -164,7 +164,7 @@ sub convert_package_name_to_shared_lib_dir {
   return $shared_lib_dir;
 }
 
-sub new_core_build_setting {
+sub new_default_build_setting {
   my $build_setting = SPVM::Build::Setting->new;
   
   $build_setting->add_extra_compiler_flag("$Config{ccflags}");
@@ -176,19 +176,6 @@ sub new_core_build_setting {
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
     $build_setting->add_extra_compiler_flag("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
   }
-  
-  # Config
-  $build_setting->set_optimize('-O3');
-  
-  return $build_setting;
-}
-
-sub new_build_setting {
-  my $build_setting = SPVM::Build::Setting->new;
-  
-  $build_setting->set_std('c99');
-  
-  $build_setting->add_extra_compiler_flag("-Wall -Wextra");
   
   # Config
   $build_setting->set_optimize('-O3');
