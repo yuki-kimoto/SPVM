@@ -11,7 +11,7 @@ sub new {
   
   $self->{config} = {};
 
-  $self->{extra_compiler_flags} = [];
+  $self->{ccflags} = [];
 
   $self->{extra_linker_flags} = [];
 
@@ -42,24 +42,24 @@ sub add_include_dir {
   return $self;
 }
 
-sub set_extra_compiler_flags {
-  my ($self, $extra_compiler_flags) = @_;
+sub set_ccflags {
+  my ($self, $ccflags) = @_;
   
-  $self->{extra_compiler_flags} = $extra_compiler_flags;
+  $self->{ccflags} = $ccflags;
   
   return $self;
 }
 
-sub get_extra_compiler_flags {
+sub get_ccflags {
   my $self = shift;
   
-  return $self->{extra_compiler_flags};
+  return $self->{ccflags};
 }
 
-sub add_extra_compiler_flag {
-  my ($self, $extra_compiler_flag) = @_;
+sub add_ccflag {
+  my ($self, $ccflag) = @_;
   
-  push @{$self->{extra_compiler_flags}}, $extra_compiler_flag;
+  push @{$self->{ccflags}}, $ccflag;
   
   return $self;
 }
@@ -128,15 +128,15 @@ sub get_config {
 sub set_std {
   my ($self, $spec) = @_;
   
-  my $extra_compiler_flags = $self->get_extra_compiler_flags;
+  my $ccflags = $self->get_ccflags;
   
   # Remove -std=foo section
-  for my $extra_compiler_flag (@$extra_compiler_flags) {
-    $extra_compiler_flag =~ s/-std=[^ ]+//g;
+  for my $ccflag (@$ccflags) {
+    $ccflag =~ s/-std=[^ ]+//g;
   }
   
   # Add -std=foo section
-  $self->add_extra_compiler_flag("-std=$spec");
+  $self->add_ccflag("-std=$spec");
   
   return $self;
 }
@@ -163,28 +163,6 @@ sub get_optimize {
   my ($self, $optimize) = @_;
   
   return $self->get_config(optimize => $optimize);
-}
-
-sub set_ccflags {
-  my ($self, $ccflags) = @_;
-  
-  $self->{ccflags} = $ccflags;
-  
-  return $self;
-}
-
-sub get_ccflags {
-  my $self = shift;
-  
-  return $self->{ccflags};
-}
-
-sub add_ccflag {
-  my ($self, $ccflag) = @_;
-  
-  push @{$self->{ccflags}}, $ccflag;
-  
-  return $self;
 }
 
 sub set_cppflags {
@@ -241,30 +219,6 @@ sub add_ldflag {
   push @{$self->{ldflags}}, $ldflag;
   
   return $self;
-}
-
-sub get_original_cc {
-  return $Config{cc};
-}
-
-sub get_original_ccflags {
-  return $Config{ccflags};
-}
-
-sub get_original_optimize {
-  return $Config{optimize};
-}
-
-sub get_original_cppflags {
-  return $Config{cppflags};
-}
-
-sub get_original_ld {
-  return $Config{ld};
-}
-
-sub get_original_ldflags {
-  return $Config{ldflags};
 }
 
 =pod

@@ -44,7 +44,7 @@ if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
 
 my $build_setting = SPVM::Build::Util::new_default_build_setting();
 $optimize ||= $build_setting->get_config('optimize');
-my $ccflags = join(' ', @{$build_setting->get_extra_compiler_flags});
+my $ccflags = join(' ', @{$build_setting->get_ccflags});
 
 my @csource_files;
 push @csource_files, 'SPVM.c';
