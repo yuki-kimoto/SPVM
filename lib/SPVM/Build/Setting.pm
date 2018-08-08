@@ -176,6 +176,28 @@ sub get_optimize {
   return $self->get_config(optimize => $optimize);
 }
 
+sub set_ccflags {
+  my ($self, $ccflags) = @_;
+  
+  $self->{ccflags} = $ccflags;
+  
+  return $self;
+}
+
+sub get_ccflags {
+  my $self = shift;
+  
+  return $self->{ccflags};
+}
+
+sub add_ccflag {
+  my ($self, $extra_compiler_flag) = @_;
+  
+  push @{$self->{ccflags}}, $extra_compiler_flag;
+  
+  return $self;
+}
+
 =head1 NAME
 
 SPVM::Build::Setting;
