@@ -195,7 +195,6 @@ sub create_shared_lib {
       source => $src_file,
       object_file => $object_file,
       include_dirs => $include_dirs,
-      extra_compiler_flags => $ccflags,
     );
     push @$object_files, $object_file;
   }
@@ -221,7 +220,6 @@ sub create_shared_lib {
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
-    extra_linker_flags => $ldflags,
   );
   
 
