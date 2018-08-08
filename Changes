@@ -1,3 +1,6 @@
+0.0366 2018-08-08
+  - separate SPVM::Build::Util::default_build_setting method to new_core_build_setting and new_build_setting 
+    In native compile, using perl information is not good, so I separate to tow build settings.
 0.0365 2018-08-01
   - add reference type syntax to type\. You can write the double\ like.
     

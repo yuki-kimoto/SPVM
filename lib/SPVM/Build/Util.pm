@@ -167,6 +167,8 @@ sub convert_package_name_to_shared_lib_dir {
 sub new_core_build_setting {
   my $build_setting = SPVM::Build::Setting->new;
   
+  $build_setting->add_extra_compiler_flag("$Config{ccflags}");
+
   $build_setting->set_std('c99');
 
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
