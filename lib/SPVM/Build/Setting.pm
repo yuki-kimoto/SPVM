@@ -13,7 +13,7 @@ sub new {
 
   $self->{ccflags} = [];
 
-  $self->{extra_linker_flags} = [];
+  $self->{ldflags} = [];
 
   $self->{include_dirs} = [];
   
@@ -60,28 +60,6 @@ sub add_ccflag {
   my ($self, $ccflag) = @_;
   
   push @{$self->{ccflags}}, $ccflag;
-  
-  return $self;
-}
-
-sub set_extra_linker_flags {
-  my ($self, $extra_linker_flags) = @_;
-  
-  $self->{extra_linker_flags} = $extra_linker_flags;
-  
-  return $self;
-}
-
-sub get_extra_linker_flags {
-  my $self = shift;
-  
-  return $self->{extra_linker_flags};
-}
-
-sub add_extra_linker_flag {
-  my ($self, $extra_linker_flag) = @_;
-  
-  push @{$self->{extra_linker_flags}}, $extra_linker_flag;
   
   return $self;
 }
