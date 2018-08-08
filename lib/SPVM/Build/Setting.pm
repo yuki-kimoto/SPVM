@@ -11,31 +11,7 @@ sub new {
   
   $self->{config} = {};
 
-  $self->{include_dirs} = [];
-  
   return bless $self, $class;
-}
-
-sub set_include_dirs {
-  my ($self, $include_dirs) = @_;
-  
-  $self->{include_dirs} = $include_dirs;
-  
-  return $self;
-}
-
-sub get_include_dirs {
-  my $self = shift;
-  
-  return $self->{include_dirs};
-}
-
-sub add_include_dir {
-  my ($self, $include_dir) = @_;
-  
-  push @{$self->{include_dirs}}, $include_dir;
-  
-  return $self;
 }
 
 sub _cmd_options_to_array_options {
