@@ -159,7 +159,7 @@ sub create_shared_lib {
   # CBuilder settings
   my $include_dirs = [@{$build_setting->get_include_dirs}];
   my $ccflags = $build_setting->get_ccflags;
-  my $ldflags = [@{$build_setting->get_ldflags}];
+  my $ldflags = $build_setting->get_ldflags;
   
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user settings
@@ -221,7 +221,7 @@ sub create_shared_lib {
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
-    extra_linker_flags => join(' ', @$ldflags),
+    extra_linker_flags => $ldflags,
   );
   
 

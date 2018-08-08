@@ -11,8 +11,6 @@ sub new {
   
   $self->{config} = {};
 
-  $self->{ldflags} = [];
-
   $self->{include_dirs} = [];
   
   return bless $self, $class;
@@ -209,10 +207,10 @@ sub get_ldflags {
   return $self->{ldflags};
 }
 
-sub add_ldflag {
-  my ($self, $ldflag) = @_;
+sub add_ldflags {
+  my ($self, $ldflags) = @_;
   
-  push @{$self->{ldflags}}, $ldflag;
+  $self->{ldflags} .= " $ldflags";
   
   return $self;
 }
