@@ -2,6 +2,7 @@ package SPVM::Build::Setting;
 
 use strict;
 use warnings;
+use Config;
 
 sub new {
   my $class = shift;
@@ -152,18 +153,6 @@ sub get_cc {
   return $self->get_config(cc => $cc);
 }
 
-sub set_ld {
-  my ($self, $ld) = @_;
-  
-  return $self->set_config(ld => $ld);
-}
-
-sub get_ld {
-  my ($self, $ld) = @_;
-  
-  return $self->get_config(ld => $ld);
-}
-
 sub set_optimize {
   my ($self, $optimize) = @_;
   
@@ -191,12 +180,113 @@ sub get_ccflags {
 }
 
 sub add_ccflag {
-  my ($self, $extra_compiler_flag) = @_;
+  my ($self, $ccflag) = @_;
   
-  push @{$self->{ccflags}}, $extra_compiler_flag;
+  push @{$self->{ccflags}}, $ccflag;
   
   return $self;
 }
+
+sub set_cppflags {
+  my ($self, $cppflags) = @_;
+  
+  $self->{cppflags} = $cppflags;
+  
+  return $self;
+}
+
+sub get_cppflags {
+  my $self = shift;
+  
+  return $self->{cppflags};
+}
+
+sub add_cppflag {
+  my ($self, $cppflag) = @_;
+  
+  push @{$self->{cppflags}}, $cppflag;
+  
+  return $self;
+}
+
+sub set_ld {
+  my ($self, $ld) = @_;
+  
+  return $self->set_config(ld => $ld);
+}
+
+sub get_ld {
+  my ($self, $ld) = @_;
+  
+  return $self->get_config(ld => $ld);
+}
+
+sub set_ldflags {
+  my ($self, $ldflags) = @_;
+  
+  $self->{ldflags} = $ldflags;
+  
+  return $self;
+}
+
+sub get_ldflags {
+  my $self = shift;
+  
+  return $self->{ldflags};
+}
+
+sub add_ldflag {
+  my ($self, $ldflag) = @_;
+  
+  push @{$self->{ldflags}}, $ldflag;
+  
+  return $self;
+}
+
+sub get_original_cc {
+  return $Config{cc};
+}
+
+sub get_original_ccflags {
+  return $Config{ccflags};
+}
+
+sub get_original_optimize {
+  return $Config{optimize};
+}
+
+sub get_original_cppflags {
+  return $Config{cppflags};
+}
+
+sub get_original_ld {
+  return $Config{ld};
+}
+
+sub get_original_ldflags {
+  return $Config{ldflags};
+}
+
+=pod
+ Compiler:
+    cc='cc', ccflags ='-fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64',
+    optimize='-O2',
+    cppflags='-fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include'
+    ccversion='', gccversion='4.1.2 20080704 (Red Hat 4.1.2-52)', gccosandvers=''
+    intsize=4, longsize=8, ptrsize=8, doublesize=8, byteorder=12345678
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=16
+    ivtype='long', ivsize=8, nvtype='double', nvsize=8, Off_t='off_t', lseeksize=8
+    alignbytes=8, prototype=define
+    
+  Linker and Libraries:
+    ld='cc', ldflags =' -fstack-protector -L/usr/local/lib'
+    libpth=/usr/include/oracle/11.2/client64 /usr/local/lib /usr/lib /lib /lib64 /usr/lib64 /usr/local/lib64
+    libs=-lnsl -ldl -lm -lcrypt -lutil -lc
+    perllibs=-lnsl -ldl -lm -lcrypt -lutil -lc
+    libc=libc-2.5.so, so=so, useshrplib=false, libperl=libperl.a
+    gnulibc_version='2.5'
+=cut
+
 
 =head1 NAME
 

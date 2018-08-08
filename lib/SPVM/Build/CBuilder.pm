@@ -160,7 +160,13 @@ sub create_shared_lib {
   my $include_dirs = [@{$build_setting->get_include_dirs}];
   my $extra_compiler_flags = [@{$build_setting->get_extra_compiler_flags}];
   my $extra_linker_flags = [@{$build_setting->get_extra_linker_flags}];
-  my $conifg = {%{$build_setting->get_config}};
+  
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user settings
+  my $config = {
+    %Config,
+    %{$build_setting->get_config}
+  };
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build.pm"};
@@ -170,7 +176,7 @@ sub create_shared_lib {
   push @$include_dirs, $input_src_dir;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $conifg);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
