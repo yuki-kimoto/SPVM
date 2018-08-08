@@ -61,7 +61,7 @@ sub _array_options_to_cmd_options {
 sub set_ccflags {
   my ($self, $ccflags) = @_;
   
-  $self->{ccflags} = $ccflags;
+  $self->{config}{ccflags} = $ccflags;
   
   return $self;
 }
@@ -69,13 +69,13 @@ sub set_ccflags {
 sub get_ccflags {
   my $self = shift;
   
-  return $self->{ccflags};
+  return $self->{config}{ccflags};
 }
 
 sub add_ccflags {
   my ($self, $ccflags) = @_;
   
-  $self->{ccflags} .= " $ccflags";
+  $self->{config}{ccflags} .= " $ccflags";
     
   return $self;
 }
@@ -196,7 +196,7 @@ sub get_ld {
 sub set_ldflags {
   my ($self, $ldflags) = @_;
   
-  $self->{ldflags} = $ldflags;
+  $self->{config}{ldflags} = $ldflags;
   
   return $self;
 }
@@ -204,13 +204,13 @@ sub set_ldflags {
 sub get_ldflags {
   my $self = shift;
   
-  return $self->{ldflags};
+  return $self->{config}{ldflags};
 }
 
 sub add_ldflags {
   my ($self, $ldflags) = @_;
   
-  $self->{ldflags} .= " $ldflags";
+  $self->{config}{ldflags} .= " $ldflags";
   
   return $self;
 }
