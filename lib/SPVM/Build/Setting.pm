@@ -11,8 +11,6 @@ sub new {
   
   $self->{config} = {};
 
-  $self->{ccflags} = [];
-
   $self->{ldflags} = [];
 
   $self->{include_dirs} = [];
@@ -40,6 +38,26 @@ sub add_include_dir {
   push @{$self->{include_dirs}}, $include_dir;
   
   return $self;
+}
+
+sub _cmd_options_to_array_options {
+  my ($self, $cmd_options) = @_;
+  
+  my @array_options;
+  
+  if (defined $cmd_options) {
+    @array_options = split(/ +/, $cmd_options);
+  }
+  
+  return \@array_options;
+}
+
+sub _array_options_to_cmd_options {
+  my ($self, $array_options) = @_;
+  
+  my $cmd_options = join(' ', @$array_options);
+  
+  return $cmd_options;
 }
 
 sub set_ccflags {
