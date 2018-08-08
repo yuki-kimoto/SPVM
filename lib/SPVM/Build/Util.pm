@@ -178,7 +178,7 @@ sub new_core_build_setting {
   }
   
   # Config
-  $build_setting->set_config(optimize => '-O3');
+  $build_setting->set_optimize('-O3');
   
   return $build_setting;
 }
@@ -191,7 +191,7 @@ sub new_build_setting {
   $build_setting->add_extra_compiler_flag("-Wall -Wextra");
   
   # Config
-  $build_setting->set_config(optimize => '-O3');
+  $build_setting->set_optimize('-O3');
   
   return $build_setting;
 }

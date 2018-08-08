@@ -140,6 +140,42 @@ sub set_std {
   return $self;
 }
 
+sub set_cc {
+  my ($self, $cc) = @_;
+  
+  return $self->set_config(cc => $cc);
+}
+
+sub get_cc {
+  my ($self, $cc) = @_;
+  
+  return $self->get_config(cc => $cc);
+}
+
+sub set_ld {
+  my ($self, $ld) = @_;
+  
+  return $self->set_config(ld => $ld);
+}
+
+sub get_ld {
+  my ($self, $ld) = @_;
+  
+  return $self->get_config(ld => $ld);
+}
+
+sub set_optimize {
+  my ($self, $optimize) = @_;
+  
+  return $self->set_config(optimize => $optimize);
+}
+
+sub get_optimize {
+  my ($self, $optimize) = @_;
+  
+  return $self->get_config(optimize => $optimize);
+}
+
 =head1 NAME
 
 SPVM::Build::Setting;
