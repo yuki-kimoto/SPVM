@@ -192,5 +192,92 @@ sub new_default_build_config {
   return $build_config;
 }
 
+=head1 NAME
+
+SPVM::Build::Util - Build Utilities
+
+B<Create defaulgt build config>
+
+  use SPVM::Build::Util;
+
+  my $build_config = SPVM::Build::Util::new_default_build_config();
+
+  $build_config->set_optimize('-O3');
+  
+
+B<Add Build shared library make rule in Makefile.PL>
+
+  sub MY::postamble {
+
+    my $make_rule = '';
+    
+    # Native compile make rule
+    $make_rule .= SPVM::Build::Util::create_make_rule_native('Foo');
+    
+    # Precompile make rule
+    $make_rule .= SPVM::Build::Util::create_make_rule_precompile('Foo');
+    
+    return $make_rule;
+  }
+
+=head1 DESCRIPTION
+
+SPVM::Build::Util is building utilities.
+
+=head1 FUNCTIONS
+
+=head2 new_default_build_config
+  
+  my $build_config = SPVM::Build::Util::new_default_build_config;
+
+Create defaulgt build config. This is L<SPVM::Build::Config> object.
+
+This function is used in native config file.
+
+  # Foo.native/Foo.config
+  use strict;
+  use warnings;
+
+  use SPVM::Build::Util;
+
+  my $build_config = SPVM::Build::Util::new_default_build_config();
+
+  $build_config->set_config(optimize => '-O2');
+
+  $build_config;
+
+=head2 create_make_rule_native
+
+Create native compile make rule.
+
+This is used in Makefile.PL of your distributed module.
+  
+  # Makefile.PL
+  sub MY::postamble {
+
+    my $make_rule = '';
+    
+    # Native compile make rule
+    $make_rule .= SPVM::Build::Util::create_make_rule_native('Foo');
+    
+    return $make_rule;
+  }
+
+=head2 create_make_rule_precompile
+
+Create precompile make rule.
+
+This is used in Makefile.PL of your distributed module.
+
+  sub MY::postamble {
+
+    my $make_rule = '';
+    
+    # Precompile make rule
+    $make_rule .= SPVM::Build::Util::create_make_rule_precompile('Foo');
+    
+    return $make_rule;
+  }
+
 1;
 
