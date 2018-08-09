@@ -146,6 +146,33 @@ sub add_ldflags {
   return $self;
 }
 
+sub set_lddflags {
+  my ($self, $lddflags) = @_;
+  
+  $self->set_config(lddflags => $lddflags);
+  
+  return $self;
+}
+
+sub get_lddflags {
+  my $self = shift;
+  
+  return $self->get_config('lddflags');
+}
+
+sub add_lddflags {
+  my ($self, $new_lddflags) = @_;
+  
+  my $lddflags = $self->get_config('lddflags');
+  
+  $lddflags .= " $new_lddflags";
+  
+  $self->set_config('lddflags' => $lddflags);
+  
+  return $self;
+}
+
+
 =head1 NAME
 
 SPVM::Build::Config - build config
