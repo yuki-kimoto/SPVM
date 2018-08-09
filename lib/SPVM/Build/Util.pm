@@ -192,6 +192,8 @@ sub new_default_build_config {
   return $build_config;
 }
 
+1;
+
 =head1 NAME
 
 SPVM::Build::Util - Build Utilities
@@ -278,6 +280,4 @@ This is used in Makefile.PL of your distributed module.
     
     return $make_rule;
   }
-
-1;
 
