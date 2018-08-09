@@ -1,3 +1,0 @@
-package Comparator {
-  precompile sub compare : int ($self : self, $x : int, $y : int);
-}

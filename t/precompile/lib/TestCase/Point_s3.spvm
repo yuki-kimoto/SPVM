@@ -1,5 +1,0 @@
-package TestCase::Point_s3 : value_t {
-  has x : short;
-  has y : short;
-  has z : short;
-}

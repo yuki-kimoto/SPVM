@@ -1,8 +1,0 @@
-package TestCase::CompileError::AssignIncompatibleType::DifferentObject {
-  use TestCase::Minimal;
-  use TestCase::Simple;
-
-  precompile sub main : int () {
-    my $minimal : TestCase::Minimal = new TestCase::Simple;
-  }
-}

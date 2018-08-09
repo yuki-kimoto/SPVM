@@ -69,6 +69,11 @@ WriteMakefile(
     DEFINE => "@defines -o \$@",
 );
 
+# Create precompile test
+my $create_precompile_test_cmd = 'perl t/copy_default_to_precompile.pl';
+system('perl t/copy_default_to_precompile.pl') == 0
+  or die "Can't execute $create_precompile_test_cmd: $!";
+
 # Add Build shared library make rule
 sub MY::postamble {
 

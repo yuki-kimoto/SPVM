@@ -5,6 +5,8 @@ use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath', 'rmtree';
 use File::Find;
 
+mkpath 't/precompile';
+
 # remove and copy test files for Precompile
 my @old_precompile_test_files = glob 't/precompile/*';
 for my $old_precompile_test_file (@old_precompile_test_files) {
