@@ -1,5 +1,5 @@
 0.0366 2018-08-08
-  - rename separate SPVM::Build::Util::default_build_setting method to new_default_build_setting
+  - rename SPVM::Build::Setting to SPVM::Build::Config and many methods is added and changed.
 0.0365 2018-08-01
   - add reference type syntax to type\. You can write the double\ like.
     
