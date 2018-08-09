@@ -7,7 +7,7 @@ use Config;
 use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 
-use SPVM::Build::Setting;
+use SPVM::Build::Config;
 
 # SPVM::Build::tUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Build::Config.
@@ -164,27 +164,27 @@ sub convert_package_name_to_shared_lib_dir {
   return $shared_lib_dir;
 }
 
-sub new_default_build_setting {
-  my $build_setting = SPVM::Build::Setting->new;
+sub new_default_build_config {
+  my $build_config = SPVM::Build::Config->new;
   
   my $default_config = {%Config};
   
-  $build_setting->replace_all_config($default_config);
+  $build_config->replace_all_config($default_config);
   
-  $build_setting->add_ccflags("$Config{ccflags}");
+  $build_config->add_ccflags("$Config{ccflags}");
 
-  $build_setting->set_std('c99');
+  $build_config->set_std('c99');
 
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $build_setting->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
+    $build_config->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
   }
   
   # Config
-  $build_setting->set_optimize('-O3');
+  $build_config->set_optimize('-O3');
   
-  return $build_setting;
+  return $build_config;
 }
 
 1;

@@ -9,7 +9,7 @@ use Carp 'confess';
 use SPVM::Build::CBuilder::Native;
 use SPVM::Build::CBuilder::Precompile;
 use SPVM::Build::Util;
-use SPVM::Build::Setting;
+use SPVM::Build::Config;
 use SPVM::Build::Info;
 
 use File::Path 'rmtree';
@@ -44,7 +44,7 @@ sub new {
     info => $self->{info},
   );
   
-  $self->{setting} ||= SPVM::Build::Util::new_default_build_setting;
+  $self->{config} ||= SPVM::Build::Util::new_default_build_config;
   
   return $self;
 }

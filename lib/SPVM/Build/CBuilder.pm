@@ -146,29 +146,29 @@ sub create_shared_lib {
   my $config_file = "$input_config_dir/$package_base_name.config";
   
   # Config
-  my $build_setting;
+  my $build_config;
   if (-f $config_file) {
-    $build_setting = do $config_file
+    $build_config = do $config_file
       or confess "Can't parser $config_file: $!$@";
   }
   else {
-    $build_setting = SPVM::Build::Util::new_default_build_setting;
+    $build_config = SPVM::Build::Util::new_default_build_config;
   }
   
-  # CBuilder settings
-  my $ccflags = $build_setting->get_ccflags;
-  my $ldflags = $build_setting->get_ldflags;
+  # CBuilder configs
+  my $ccflags = $build_config->get_ccflags;
+  my $ldflags = $build_config->get_ldflags;
   
   # Default include path
   my $env_header_include_dir = $INC{"SPVM/Build.pm"};
   $env_header_include_dir =~ s/\.pm$//;
   $env_header_include_dir .= '/include';
-  $build_setting->add_ccflags("-I$input_src_dir");
-  $build_setting->add_ccflags("-I$env_header_include_dir");
+  $build_config->add_ccflags("-I$input_src_dir");
+  $build_config->add_ccflags("-I$env_header_include_dir");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user settings
-  my $config = $build_setting->to_hash;
+  # and overwrite user configs
+  my $config = $build_config->to_hash;
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);

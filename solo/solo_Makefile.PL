@@ -22,10 +22,10 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_setting = SPVM::Build::Util::default_build_setting;
-$optimize ||= $build_setting->get_config('optimize');
+my $build_config = SPVM::Build::Util::default_build_config;
+$optimize ||= $build_config->get_config('optimize');
 
-my $ccflags = "$Config{ccflags} " . join(' ', @{$build_setting->get_extra_compiler_flags});
+my $ccflags = "$Config{ccflags} " . join(' ', @{$build_config->get_extra_compiler_flags});
 
 my $src_dir = "lib/SPVM/Build/src";
 my @csource_files = glob "$src_dir/*.c";

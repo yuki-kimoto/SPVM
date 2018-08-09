@@ -1,4 +1,4 @@
-package SPVM::Build::Setting;
+package SPVM::Build::Config;
 
 use strict;
 use warnings;
@@ -169,11 +169,11 @@ sub add_ldflags {
 
 =head1 NAME
 
-SPVM::Build::Setting;
+SPVM::Build::Config;
 
 =head1 DESCRIPTION
 
-L<ExtUtils::CBuilder> setting of C<new>, C<compile>, C<link> methods.
+L<ExtUtils::CBuilder> config of C<new>, C<compile>, C<link> methods.
 
 =cut
 
