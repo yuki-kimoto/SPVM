@@ -1359,7 +1359,7 @@ SPVM::Test - SPVM test module
     # my $error : String = "Error";
     # croak $error;
     
-    return $mvar + 3;
+    return 0;
   }
 
   # Call void function

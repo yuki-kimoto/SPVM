@@ -349,16 +349,18 @@ int main(int argc, char *argv[])
   // Run
   int32_t exception_flag = env->call_sub(env, sub_id, stack);
   
+  int32_t status_code;
   if (exception_flag) {
     SPVM_RUNTIME_API_print(env, runtime->exception);
     printf("\n");
+    status_code = 255;
   }
   else {
-    printf("TEST return_value: %" PRId32 "\n", stack[0].ival);
+    status_code = stack[0].ival;
   }
   
   SPVM_RUNTIME_free(runtime);
   
-  return 0;
+  return status_code;
 }
 
