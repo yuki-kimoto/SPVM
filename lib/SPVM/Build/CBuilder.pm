@@ -160,11 +160,7 @@ sub create_shared_lib {
   my $ldflags = $build_config->get_ldflags;
   
   # Default include path
-  my $env_header_include_dir = $INC{"SPVM/Build.pm"};
-  $env_header_include_dir =~ s/\.pm$//;
-  $env_header_include_dir .= '/include';
   $build_config->add_ccflags("-I$input_src_dir");
-  $build_config->add_ccflags("-I$env_header_include_dir");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs

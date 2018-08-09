@@ -171,6 +171,12 @@ sub new_default_build_config {
   my $default_config = {%Config};
   $build_config->replace_all_config($default_config);
   
+  # Default include path
+  my $env_header_include_dir = $INC{"SPVM/Build/Util.pm"};
+  $env_header_include_dir =~ s/\/Util\.pm$//;
+  $env_header_include_dir .= '/include';
+  $build_config->add_ccflags("-I$env_header_include_dir");
+  
   # C99
   $build_config->set_std('c99');
   

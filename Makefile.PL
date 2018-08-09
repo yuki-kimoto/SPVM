@@ -60,7 +60,6 @@ WriteMakefile(
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
        AUTHOR         => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
-    INC               => '-Ilib/SPVM/Build/include', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
     C => [@csource_files],
