@@ -201,86 +201,73 @@ Set C<ccflags>.
 
 Get C<ccflags>.
 
-sub add_ccflags {
-  my ($self, $new_ccflags) = @_;
-  
-  my $ccflags = $build_config->get_config('ccflags');
-  
-  $ccflags .= " $new_ccflags";
-  
-  $build_config->set_config('ccflags' => $ccflags);
-  
-  return $self;
-}
+=head2 add_ccflags
 
-sub set_std {
-  my ($self, $spec) = @_;
-  
-  my $ccflags = $build_config->get_ccflags;
-  
-  # Remove -std=foo section
-  $ccflags =~ s/-std=[^ ]+//g;
-  
-  $ccflags .= " -std=$spec";
-  
-  # Add -std=foo section
-  $build_config->set_ccflags($ccflags);
-  
-  return $self;
-}
+  $build_config->add_ccflags($ccflags);
 
-sub set_cc {
-  my ($self, $cc) = @_;
-  
-  return $build_config->set_config(cc => $cc);
-}
+Add C<ccflags> after current C<ccflags>.
 
-sub get_cc {
-  my ($self, $cc) = @_;
-  
-  return $build_config->get_config(cc => $cc);
-}
+=head2 set_std
 
-sub set_optimize {
-  my ($self, $optimize) = @_;
-  
-  return $build_config->set_config(optimize => $optimize);
-}
+  $build_config->set_std('c99');
 
-sub get_optimize {
-  my ($self, $optimize) = @_;
-  
-  return $build_config->get_config(optimize => $optimize);
-}
+Set C<std>.
 
-sub set_ld {
-  my ($self, $ld) = @_;
-  
-  return $build_config->set_config(ld => $ld);
-}
+Internally, remove C<-std=old> and add C<-std=new> after C<ccflags>.
 
-sub get_ld {
-  my ($self, $ld) = @_;
-  
-  return $build_config->get_config(ld => $ld);
-}
+=head2 set_cc
 
-sub set_ldflags {
-  my ($self, $ldflags) = @_;
-  
-  $build_config->set_config(ldflags => $ldflags);
-  
-  return $self;
-}
+  $build_config->set_cc($cc);
 
-sub get_ldflags {
-  my $self = shift;
-  
-  return $build_config->get_config('ldflags');
-}
+Set C<cc>.
 
-sub add_ldflags {
+=head2 get_cc
 
+  my $cc = $build_config->get_cc;
+
+Get C<cc>.
+
+=head2 set_optimize
+
+  $build_config->set_optimize($optimize);
+
+Set C<optimize>.
+
+=head2 get_optimize
+
+  my $optimize = $build_config->get_optimize;
+
+Get C<optimize>.
+
+=head2 set_ld
+
+  $build_config->set_ld($ld);
+
+Set C<ld>.
+
+=head2 get_ld
+
+  my $ld = $build_config->get_ld;
+
+Get C<ld>.
+
+=head2 set_ldflags
+
+  $build_config->set_ldflags($ldflags);
+
+Set C<ldflags>.
+
+=head2 get_ldflags
+
+  my $ldflags = $build_config->get_ldflags;
+
+Get C<ldflags>.
+
+=head2 add_ldflags
+
+  $build_config->add_ldflags($ldflags);
+
+Add C<ldflags> after current C<ldflags>.
 
 =cut
 
