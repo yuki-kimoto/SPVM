@@ -14,30 +14,24 @@ sub new {
   return bless $self, $class;
 }
 
-sub _cmd_options_to_array_options {
-  my ($self, $cmd_options) = @_;
+sub replace_all_config {
+  my ($self, $config) = @_;
   
-  my @array_options;
-  
-  if (defined $cmd_options) {
-    @array_options = split(/ +/, $cmd_options);
-  }
-  
-  return \@array_options;
+  $self->{config} = $config;
 }
 
-sub _array_options_to_cmd_options {
-  my ($self, $array_options) = @_;
+sub to_hash {
+  my $self = shift;
   
-  my $cmd_options = join(' ', @$array_options);
+  my $hash_config = {%{$self->{config}}};
   
-  return $cmd_options;
+  return $hash_config;
 }
 
 sub set_ccflags {
   my ($self, $ccflags) = @_;
   
-  $self->{config}{ccflags} = $ccflags;
+  $self->set_config(ccflags => $ccflags);
   
   return $self;
 }
@@ -45,54 +39,33 @@ sub set_ccflags {
 sub get_ccflags {
   my $self = shift;
   
-  return $self->{config}{ccflags};
+  return $self->get_config('ccflags');
 }
 
 sub add_ccflags {
-  my ($self, $ccflags) = @_;
+  my ($self, $new_ccflags) = @_;
   
-  $self->{config}{ccflags} .= " $ccflags";
-    
-  return $self;
-}
-
-sub set_config {
-  my ($self, %key_values) = @_;
+  my $ccflags = $self->get_config('ccflags');
   
-  my $config = $self->{config};
+  $ccflags .= " $new_ccflags";
   
-  for my $key (keys %key_values) {
-    my $value = $key_values{$key};
-    $config->{$key} = $value;
-  }
-  
-  return $self;
-}
-
-sub add_config {
-  my ($self, %key_values) = @_;
-  
-  my $config = $self->{config};
-
-  for my $key (keys %key_values) {
-    my $value = $key_values{$key};
-    $config->{$key} .= " $value";
-  }
+  $self->set_config('ccflags' => $ccflags);
   
   return $self;
 }
 
 sub get_config {
-  my $self = shift;
+  my ($self, $name) = @_;
   
-  my $config = $self->{config};
+  return $self->{config}{$name};
+}
 
-  if (@_) {
-    return $config->{$_[0]};
-  }
-  else {
-    return $config;
-  }
+sub set_config {
+  my ($self, $name, $value) = @_;
+  
+  $self->{config}{$name} = $value;
+  
+  return $self;
 }
 
 sub set_std {
@@ -135,28 +108,6 @@ sub get_optimize {
   return $self->get_config(optimize => $optimize);
 }
 
-sub set_cppflags {
-  my ($self, $cppflags) = @_;
-  
-  $self->{cppflags} = $cppflags;
-  
-  return $self;
-}
-
-sub get_cppflags {
-  my $self = shift;
-  
-  return $self->{cppflags};
-}
-
-sub add_cppflag {
-  my ($self, $cppflag) = @_;
-  
-  push @{$self->{cppflags}}, $cppflag;
-  
-  return $self;
-}
-
 sub set_ld {
   my ($self, $ld) = @_;
   
@@ -172,7 +123,7 @@ sub get_ld {
 sub set_ldflags {
   my ($self, $ldflags) = @_;
   
-  $self->{config}{ldflags} = $ldflags;
+  $self->set_config(ldflags => $ldflags);
   
   return $self;
 }
@@ -180,13 +131,17 @@ sub set_ldflags {
 sub get_ldflags {
   my $self = shift;
   
-  return $self->{config}{ldflags};
+  return $self->get_config('ldflags');
 }
 
 sub add_ldflags {
-  my ($self, $ldflags) = @_;
+  my ($self, $new_ldflags) = @_;
   
-  $self->{config}{ldflags} .= " $ldflags";
+  my $ldflags = $self->get_config('ldflags');
+  
+  $ldflags .= " $new_ldflags";
+  
+  $self->set_config('ldflags' => $ldflags);
   
   return $self;
 }

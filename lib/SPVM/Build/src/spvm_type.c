@@ -345,7 +345,7 @@ _Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
 _Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  if (dimension > 0 || (dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  if (dimension > 0 || ((dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))) {
     return 1;
   }
   else {

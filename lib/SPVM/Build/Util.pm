@@ -167,6 +167,10 @@ sub convert_package_name_to_shared_lib_dir {
 sub new_default_build_setting {
   my $build_setting = SPVM::Build::Setting->new;
   
+  my $default_config = {%Config};
+  
+  $build_setting->replace_all_config($default_config);
+  
   $build_setting->add_ccflags("$Config{ccflags}");
 
   $build_setting->set_std('c99');

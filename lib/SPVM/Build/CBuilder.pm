@@ -7,7 +7,6 @@ use Carp 'croak', 'confess';
 use SPVM::Build::Util;
 
 use ExtUtils::CBuilder;
-use Config;
 use File::Copy 'move';
 use File::Path 'mkpath';
 use DynaLoader;
@@ -169,10 +168,7 @@ sub create_shared_lib {
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user settings
-  my $config = {
-    %Config,
-    %{$build_setting->get_config}
-  };
+  my $config = $build_setting->to_hash;
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
@@ -196,8 +192,6 @@ sub create_shared_lib {
     );
     push @$object_files, $object_file;
   }
-  
-  my $dlext = $Config{dlext};
   
   my $cfunc_names = [];
   for my $sub_name (@$sub_names) {
