@@ -15,6 +15,17 @@ use Getopt::Long 'GetOptions';
 use File::Basename 'basename';
 use File::Copy 'copy';
 
+# SPVM only support 64bit integer Perl
+my $ivsize = $Config{ivsize};
+if ($ivsize < 8) {
+  die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
+}
+
+# SPVM only support NetBSD 7+
+if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
+  die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
+}
+
 my @defines;
 my $optimize;
 
@@ -29,17 +40,6 @@ GetOptions(
 # Add -
 if ($optimize) {
   $optimize = "$optimize";
-}
-
-# SPVM only support 64bit integer Perl
-my $ivsize = $Config{ivsize};
-if ($ivsize < 8) {
-  die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
-}
-
-# SPVM only support NetBSD 7+
-if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
-  die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
 }
 
 my $build_config = SPVM::Build::Util::new_default_build_config();
@@ -59,9 +59,8 @@ WriteMakefile(
     LICENSE           => 'perl_5',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
-       AUTHOR         => 'A. U. Thor <kimoto@sakura.ne.jp>') : ()),
-    LIBS              => ['-lm'], # e.g., '-lm'
-    INC               => '-I. -Ilib/SPVM/Build/include', # e.g., '-I. -I/usr/include/other'
+       AUTHOR         => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
+    INC               => '-Ilib/SPVM/Build/include', # e.g., '-I. -I/usr/include/other'
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
     C => [@csource_files],
@@ -71,29 +70,18 @@ WriteMakefile(
     DEFINE => "@defines -o \$@",
 );
 
-
 # Add Build shared library make rule
 sub MY::postamble {
 
   my $make_rule = '';
   
-  my @native_package_names = qw(
-    SPVM::Example
-    SPVM::CORE
-  );
+  # Native compile make rule
+  $make_rule .= SPVM::Build::Util::create_make_rule_native('SPVM::CORE');
+  $make_rule .= SPVM::Build::Util::create_make_rule_native('SPVM::Example');
   
-  for my $native_package_name (@native_package_names) {
-    $make_rule .= SPVM::Build::Util::create_make_rule_native($native_package_name);
-  }
-
-  my @precompile_package_names = qw(
-    SPVM::Example
-  );
+  # Precompile make rule
+  $make_rule .= SPVM::Build::Util::create_make_rule_precompile('SPVM::Example');
   
-  for my $precompile_package_name (@precompile_package_names) {
-    $make_rule .= SPVM::Build::Util::create_make_rule_precompile($precompile_package_name);
-  }
-
   return $make_rule;
 }
 
