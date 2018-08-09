@@ -17,10 +17,11 @@
 #include "spvm_runtime_api.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_csource_builder.h"
-#include "spvm_core_func.h"
 #include "spvm_package.h"
 
 #include <spvm_native.h>
+
+#include "spvm_core_func.h"
 
 void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
   (void)compiler;

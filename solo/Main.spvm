@@ -1,14 +1,12 @@
 package Main {
 
-  sub main : int () {
+  sub main : void ($args : string[]) {
     my $num1 = 2;
     my $num2 = 5;
     
     my $num3 = sum($num1, $num2);
     
     print($num3 . "\n");
-    
-    return 0;
   }
 
   sub sum : int ($num1 : int, $num2 : int) {
