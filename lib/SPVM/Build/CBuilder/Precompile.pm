@@ -83,7 +83,7 @@ sub create_csource {
 }
 
 sub create_shared_lib_dist {
-  my ($self, $package_name) = @_;
+  my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
 
@@ -93,7 +93,6 @@ sub create_shared_lib_dist {
   my $output_dir = 'blib/lib';
   
   my $category = $self->category;
-  my $sub_names = $self->get_sub_names($package_name);
   
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
@@ -119,7 +118,7 @@ sub create_shared_lib_dist {
 }
 
 sub create_shared_lib_runtime {
-  my ($self, $package_name) = @_;
+  my ($self, $package_name, $sub_names) = @_;
 
   # Output directory
   my $build_dir = $self->{build_dir};
@@ -133,8 +132,6 @@ sub create_shared_lib_runtime {
   mkpath $input_dir;
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
-  
-  my $sub_names = $self->get_sub_names($package_name);
   
   my $is_cached;
   $self->create_csource(

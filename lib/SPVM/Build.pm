@@ -110,8 +110,10 @@ sub create_shared_lib_native_dist {
   $self->use($package_name);
   
   $self->compile_spvm;
+
+  my $sub_names = $self->info->get_native_sub_names($package_name);
   
-  $self->cbuilder_native->create_shared_lib_dist($package_name);
+  $self->cbuilder_native->create_shared_lib_dist($package_name, $sub_names);
 }
 
 sub create_shared_lib_precompile_dist {
@@ -123,8 +125,10 @@ sub create_shared_lib_precompile_dist {
   unless ($compile_success) {
     die "Compile error";
   }
+
+  my $sub_names = $self->info->get_precompile_sub_names($package_name);
   
-  $self->cbuilder_precompile->create_shared_lib_dist($package_name);
+  $self->cbuilder_precompile->create_shared_lib_dist($package_name, $sub_names);
 }
 
 sub build_precompile {

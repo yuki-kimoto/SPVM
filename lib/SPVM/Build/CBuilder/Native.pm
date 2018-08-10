@@ -37,7 +37,7 @@ sub get_sub_names {
 }
 
 sub create_shared_lib_dist {
-  my ($self, $package_name) = @_;
+  my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
 
@@ -47,7 +47,6 @@ sub create_shared_lib_dist {
   my $output_dir = 'blib/lib';
 
   my $category = $self->category;
-  my $sub_names = $self->get_sub_names($package_name);
   
   # Build shared library
   $self->create_shared_lib(
@@ -60,7 +59,7 @@ sub create_shared_lib_dist {
 }
 
 sub create_shared_lib_runtime {
-  my ($self, $package_name) = @_;
+  my ($self, $package_name, $sub_names) = @_;
   
   my $package_load_path = $self->info->get_package_load_path($package_name);
   my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
@@ -76,8 +75,6 @@ sub create_shared_lib_runtime {
   
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
-  
-  my $sub_names = $self->get_sub_names($package_name);
   
   $self->create_shared_lib(
     package_name => $package_name,

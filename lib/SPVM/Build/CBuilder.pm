@@ -46,7 +46,7 @@ sub build {
 
       # Try runtime compile if shared library is not found
       unless (-f $shared_lib_path) {
-        $self->create_shared_lib_runtime($package_name);
+        $self->create_shared_lib_runtime($package_name, $sub_names);
 
         # Build directory
         my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
