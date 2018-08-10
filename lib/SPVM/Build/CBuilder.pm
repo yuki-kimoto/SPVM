@@ -60,20 +60,20 @@ sub build {
     
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
-      my $shared_lib_path = $self->get_installed_shared_lib_path($package_name);
+      my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
 
       # Try runtime compile if shared library is not found
       unless (-f $shared_lib_path) {
         $self->create_shared_lib_runtime($package_name, $sub_names);
 
-        $shared_lib_path = $self->get_build_dir_shared_lib_path($package_name);
+        $shared_lib_path = $self->get_shared_lib_path_runtime($package_name);
       }
       $self->bind_subs($shared_lib_path, $package_name, $sub_names);
     }
   }
 }
 
-sub get_build_dir_shared_lib_path {
+sub get_shared_lib_path_runtime {
   my ($self, $package_name) = @_;
   
   my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
@@ -247,7 +247,7 @@ sub create_shared_lib {
   return $shared_lib_file;
 }
 
-sub get_installed_shared_lib_path {
+sub get_shared_lib_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
