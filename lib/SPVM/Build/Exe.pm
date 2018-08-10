@@ -1,4 +1,4 @@
-package SPVM::Build::CC;
+package SPVM::Build::Exe;
 
 use strict;
 use warnings;

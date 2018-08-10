@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use SPVM::Build::CC;
+use SPVM::Build::Exe;
 use SPVM::Build::Util;
 
 SPVM::Build::Util::getopt
@@ -18,10 +18,10 @@ die SPVM::Build::Util::extract_usage if $help || !(my $package_name = shift);
 
 push @INC, @include_dirs;
 
-my $cc = SPVM::Build::CC->new;
-$cc->build_dir($build_dir);
-$cc->output_file($output_file);
-$cc->create_exe_file($package_name);
+my $build_exe = SPVM::Build::Exe->new;
+$build_exe->build_dir($build_dir);
+$build_exe->output_file($output_file);
+$build_exe->create_exe_file($package_name);
 
 =encoding utf8
 
