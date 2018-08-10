@@ -119,6 +119,19 @@ sub bind_subs {
 sub build_shared_lib {
   my ($self, %opt) = @_;
   
+  # Compile source file and create object files
+  my $object_files = $self->compile_objects(%opt);
+  
+  # Link object files and create shared library
+  $self->link_shared_lib(
+    %opt,
+    objects => $object_files,
+  );
+}
+
+sub compile_objects {
+  my ($self, %opt) = @_;
+
   # Package name
   my $package_name = $opt{package_name};
 
@@ -211,18 +224,7 @@ sub build_shared_lib {
     push @$object_files, $object_file;
   }
   
-  # Link object files and create shared library
-  my $sub_names = $opt{sub_names};
-  $self->link_shared_lib(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    work_dir => $work_dir,
-    output_dir => $output_dir,
-    sub_names => $sub_names,
-    objects => $object_files,
-  );
-  
-  return $shared_lib_file;
+  return $object_files;
 }
 
 sub link_shared_lib {
