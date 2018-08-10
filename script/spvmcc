@@ -33,7 +33,7 @@ spvmcc - SPVM compiler to create exe file
 
   Usage: spvmcc [OPTIONS] [PACKAGE]
 
-    spvmcc -Ilib -Bspvm_build -o my_app My::App
+    spvmcc -Ilib -Bspvmcc_build -o my_app My::App
 
   Options:
     -h, --help                     Show this message

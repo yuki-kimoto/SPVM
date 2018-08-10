@@ -34,7 +34,15 @@ sub create_exe_file {
   unless ($compile_success) {
     croak "Compile error";
   }
+
+  # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+  $build->build_precompile;
   
+  # Build native packages - Compile C source codes and link them to SPVM native subroutine
+  $build->build_native;
+  
+  # Build exe file
+  $self->build_exe;
 }
 
 
