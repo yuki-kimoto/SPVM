@@ -10,9 +10,12 @@ SPVM::Build::Util::getopt
   'h|help'      => \my $help,
   'v|version'   => \my $show_version,
   'o|output=s'  => \my $output_file,
+  'I|include=s'  => \my @include_dirs,
 ;
 
 die SPVM::Build::Util::extract_usage if $help || !(my $package_name = shift);
+
+push @INC, @include_dirs;
 
 my $cc = SPVM::Build::CC->new;
 $cc->output_file($output_file);
@@ -34,6 +37,7 @@ spvmcc - SPVM compiler to create exe file
     -h, --help                     Show this message
     -v, --version                  Version
     -o, --output <file>            Output file
+    -I, --include <directory>      Add package search path
 
 =head1 DESCRIPTION
 
