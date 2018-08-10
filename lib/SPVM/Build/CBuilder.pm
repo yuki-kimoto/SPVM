@@ -180,7 +180,6 @@ sub build_shared_lib {
   
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;
-  my $ldflags = $build_config->get_ldflags;
   
   # Default include path
   $build_config->add_ccflags("-I$input_src_dir");
@@ -212,36 +211,16 @@ sub build_shared_lib {
     push @$object_files, $object_file;
   }
   
-  my $cfunc_names = [];
+  # Link object files and create shared library
   my $sub_names = $opt{sub_names};
-  for my $sub_name (@$sub_names) {
-    my $category = $self->category;
-    my $category_uc = uc $category;
-    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
-    $cfunc_name =~ s/:/_/g;
-    push @$cfunc_names, $cfunc_name;
-  }
-  
-  # This is dummy to suppress boot strap function
-  # This is bad hack
-  unless (@$cfunc_names) {
-    push @$cfunc_names, '';
-  }
-  
-  my $tmp_shared_lib_file = $cbuilder->link(
-    objects => $object_files,
+  $self->link_shared_lib(
     package_name => $package_name,
-    dl_func_list => $cfunc_names,
+    input_dir => $input_dir,
+    work_dir => $work_dir,
+    output_dir => $output_dir,
+    sub_names => $sub_names,
+    objects => $object_files,
   );
-  
-
-  # Create shared lib blib directory
-  my $shared_lib_dir = "$output_dir/$package_path";
-  mkpath $shared_lib_dir;
-  
-  # Move shared library file to blib directory
-  move($tmp_shared_lib_file, $shared_lib_file)
-    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
   
   return $shared_lib_file;
 }
