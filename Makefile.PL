@@ -67,6 +67,7 @@ WriteMakefile(
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
     clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib t/spvm_build/src t/spvm_build/work t/spvm_build/lib @object_files"},
     DEFINE => "@defines -o \$@",
+    EXE_FILES => ['script/spvmcc'],
 );
 
 # Create precompile test

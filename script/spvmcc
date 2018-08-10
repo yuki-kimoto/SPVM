@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use SPVM::Build::CC;
+
+SPVM::Build::CC->create_exe_file;
+
+=encoding utf8
+
+=head1 NAME
+
+spvmcc - SPVM compiler to create exe file
+
+=head1 SYNOPSIS
+
+  $ spvmcc -o my_app My::App
+
+=head1 DESCRIPTION
+
+spvmcc is SPVM compiler to create exe file.
+
+Created exe file is executed by itself.
