@@ -269,9 +269,8 @@ void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
   }
 }
 
-int main(int argc, char *argv[])
-{
-  if (argc < 2) {
+int main(int argc, char *argv[]) {
+  if (argc < 1) {
     fprintf(stderr, "Not script\n");
     exit(1);
   }
@@ -342,9 +341,16 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Can't find entry point subroutine\n");
     exit(EXIT_FAILURE);
   }
-
+  
+  // Enter scope
+  int32_t scope_id = env->enter_scope(env);
+  
+  // new byte[][args_length] object
+  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
+  void* args = env->new_multi_array(env, arg_type_basic_id, 1, argc);
+  
   SPVM_VALUE stack[255];
-  stack[0].ival = 2;
+  stack[0].oval = NULL;
   
   // Run
   int32_t exception_flag = env->call_sub(env, sub_id, stack);
@@ -358,6 +364,9 @@ int main(int argc, char *argv[])
   else {
     status_code = stack[0].ival;
   }
+  
+  // Leave scope
+  env->leave_scope(env, scope_id);
   
   SPVM_RUNTIME_free(runtime);
   

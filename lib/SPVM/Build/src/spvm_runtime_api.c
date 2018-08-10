@@ -525,7 +525,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type
 SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_multi_array(env, basic_type_id, element_dimension, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_multi_array_raw(env, basic_type_id, element_dimension, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
@@ -736,6 +736,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   object->elements_length = length;
   
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
+  
   
   return object;
 }
