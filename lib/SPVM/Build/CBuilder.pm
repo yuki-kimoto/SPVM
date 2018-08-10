@@ -66,15 +66,22 @@ sub build {
       unless (-f $shared_lib_path) {
         $self->create_shared_lib_runtime($package_name, $sub_names);
 
-        # Build directory
-        my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-        my $build_dir = $self->{build_dir};
-        my $output_dir = "$build_dir/lib";
-        $shared_lib_path = "$output_dir/$shared_lib_rel_file";
+        $shared_lib_path = $self->get_build_dir_shared_lib_path($package_name);
       }
       $self->bind_subs($shared_lib_path, $package_name, $sub_names);
     }
   }
+}
+
+sub get_build_dir_shared_lib_path {
+  my ($self, $package_name) = @_;
+  
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $build_dir = $self->{build_dir};
+  my $output_dir = "$build_dir/lib";
+  my $shared_lib_path = "$output_dir/$shared_lib_rel_file";
+  
+  return $shared_lib_path;
 }
 
 sub create_cfunc_name {
