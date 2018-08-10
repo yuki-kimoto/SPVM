@@ -1,8 +1,22 @@
 #!/usr/bin/env perl
 
-use SPVM::Build::CC;
+use strict;
+use warnings;
 
-SPVM::Build::CC->create_exe_file;
+use SPVM::Build::CC;
+use SPVM::Build::Util;
+
+SPVM::Build::Util::getopt
+  'h|help'      => \my $help,
+  'v|version'   => \my $show_version,
+  'o|output=s'  => \my $output_file,
+;
+
+die SPVM::Build::Util::extract_usage if $help || !(my $package_name = shift);
+
+my $cc = SPVM::Build::CC->new;
+$cc->output_file($output_file);
+$cc->create_exe_file;
 
 =encoding utf8
 
@@ -12,7 +26,14 @@ spvmcc - SPVM compiler to create exe file
 
 =head1 SYNOPSIS
 
-  $ spvmcc -o my_app My::App
+  Usage: spvmcc [OPTIONS] [PACKAGE]
+
+    spvmcc -o my_app My::App
+
+  Options:
+    -h, --help                     Show this message
+    -v, --version                  Version
+    -o, --output <file>            Output file
 
 =head1 DESCRIPTION
 

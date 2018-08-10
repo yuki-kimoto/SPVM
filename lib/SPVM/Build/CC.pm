@@ -3,6 +3,7 @@ package SPVM::Build::CC;
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
+use Pod::Usage 'pod2usage';
 
 use SPVM::Build::Util;
 
