@@ -74,7 +74,7 @@ sub create_csource {
   }
 }
 
-sub create_shared_lib_dist {
+sub build_shared_lib_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
@@ -99,7 +99,7 @@ sub create_shared_lib_dist {
     is_cached => \$is_cached,
   );
   
-  $self->create_shared_lib(
+  $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $work_dir,
     work_dir => $work_dir,
@@ -109,7 +109,7 @@ sub create_shared_lib_dist {
   );
 }
 
-sub create_shared_lib_runtime {
+sub build_shared_lib_runtime {
   my ($self, $package_name, $sub_names) = @_;
 
   # Output directory
@@ -134,7 +134,7 @@ sub create_shared_lib_runtime {
     is_cached => \$is_cached,
   );
   
-  $self->create_shared_lib(
+  $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $work_dir,
     work_dir => $work_dir,

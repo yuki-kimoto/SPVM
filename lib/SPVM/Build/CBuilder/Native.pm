@@ -28,7 +28,7 @@ sub new {
   return $self;
 }
 
-sub create_shared_lib_dist {
+sub build_shared_lib_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
@@ -41,7 +41,7 @@ sub create_shared_lib_dist {
   my $category = $self->category;
   
   # Build shared library
-  $self->create_shared_lib(
+  $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
@@ -50,7 +50,7 @@ sub create_shared_lib_dist {
   );
 }
 
-sub create_shared_lib_runtime {
+sub build_shared_lib_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $package_load_path = $self->info->get_package_load_path($package_name);
@@ -68,7 +68,7 @@ sub create_shared_lib_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  $self->create_shared_lib(
+  $self->build_shared_lib(
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,

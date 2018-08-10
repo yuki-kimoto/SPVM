@@ -64,7 +64,7 @@ sub build {
 
       # Try runtime compile if shared library is not found
       unless (-f $shared_lib_path) {
-        $self->create_shared_lib_runtime($package_name, $sub_names);
+        $self->build_shared_lib_runtime($package_name, $sub_names);
 
         $shared_lib_path = $self->get_shared_lib_path_runtime($package_name);
       }
@@ -116,7 +116,7 @@ sub bind_subs {
   }
 }
 
-sub create_shared_lib {
+sub build_shared_lib {
   my ($self, %opt) = @_;
   
   # Package name
