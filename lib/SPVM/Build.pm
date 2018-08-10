@@ -49,6 +49,29 @@ sub new {
   return $self;
 }
 
+sub build_spvm {
+  my $self = shift;
+  
+  # Compile SPVM source code
+  my $compile_success = $self->compile_spvm();
+  
+  if ($compile_success) {
+    # Build run-time
+    $self->build_runtime;
+    
+    # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+    $self->build_precompile;
+    
+    # Build native packages - Compile C source codes and link them to SPVM native subroutine
+    $self->build_native;
+    
+    # Bind SPVM to Perl
+    $self->bind_to_perl;
+  }
+  
+  return $compile_success;
+}
+
 sub use {
   my ($self, $package_name) = @_;
   
@@ -79,29 +102,6 @@ sub cbuilder_precompile {
   my $self = shift;
   
   return $self->{cbuilder_precompile};
-}
-
-sub build_spvm {
-  my $self = shift;
-  
-  # Compile SPVM source code
-  my $compile_success = $self->compile_spvm();
-  
-  if ($compile_success) {
-    # Build run-time
-    $self->build_runtime;
-    
-    # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
-    $self->build_precompile;
-    
-    # Build native packages - Compile C source codes and link them to SPVM native subroutine
-    $self->build_native;
-    
-    # Bind SPVM to Perl
-    $self->bind_to_perl;
-  }
-  
-  return $compile_success;
 }
 
 sub create_shared_lib_native_dist {

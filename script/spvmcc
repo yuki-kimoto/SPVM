@@ -21,7 +21,7 @@ push @INC, @include_dirs;
 my $cc = SPVM::Build::CC->new;
 $cc->build_dir($build_dir);
 $cc->output_file($output_file);
-$cc->create_exe_file;
+$cc->create_exe_file($package_name);
 
 =encoding utf8
 
