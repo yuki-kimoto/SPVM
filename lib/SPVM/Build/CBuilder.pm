@@ -143,8 +143,6 @@ sub create_shared_lib {
     return;
   }
   
-  my $sub_names = $opt{sub_names};
-  
   # Quiet output
   my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
  
@@ -215,6 +213,7 @@ sub create_shared_lib {
   }
   
   my $cfunc_names = [];
+  my $sub_names = $opt{sub_names};
   for my $sub_name (@$sub_names) {
     my $category = $self->category;
     my $category_uc = uc $category;
@@ -229,6 +228,103 @@ sub create_shared_lib {
     push @$cfunc_names, '';
   }
   
+  my $tmp_shared_lib_file = $cbuilder->link(
+    objects => $object_files,
+    package_name => $package_name,
+    dl_func_list => $cfunc_names,
+  );
+  
+
+  # Create shared lib blib directory
+  my $shared_lib_dir = "$output_dir/$package_path";
+  mkpath $shared_lib_dir;
+  
+  # Move shared library file to blib directory
+  move($tmp_shared_lib_file, $shared_lib_file)
+    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
+  
+  return $shared_lib_file;
+}
+
+sub link_shared_lib {
+  my ($self, %opt) = @_;
+
+  my $object_files = $opt{objects};
+
+  # Package name
+  my $package_name = $opt{package_name};
+
+  # Build directory
+  my $work_dir = $opt{work_dir};
+  unless (defined $work_dir && -d $work_dir) {
+    confess "Work directory must be specified for " . $self->category . " build";
+  }
+  
+  # Output directory
+  my $output_dir = $opt{output_dir};
+  unless (defined $output_dir && -d $output_dir) {
+    confess "Output directory must be specified for " . $self->category . " build";
+  }
+
+  # shared lib file
+  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
+
+  # Return if source code is chaced and exists shared lib file
+  if ($opt{is_cached} && -f $shared_lib_file) {
+    return;
+  }
+  
+  # Quiet output
+  my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
+ 
+  my $input_dir = $opt{input_dir};
+  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $input_src_dir = "$input_dir/$package_path";
+  
+  my $work_object_dir = "$work_dir/$package_path";
+  mkpath $work_object_dir;
+  
+  # Config file
+  my $package_base_name = $package_name;
+  $package_base_name =~ s/^.+:://;
+  my $input_config_dir = $input_src_dir;
+  my $config_file = "$input_config_dir/$package_base_name.config";
+  
+  # Config
+  my $build_config;
+  if (-f $config_file) {
+    $build_config = do $config_file
+      or confess "Can't parser $config_file: $!$@";
+  }
+  else {
+    $build_config = SPVM::Build::Util::new_default_build_config;
+  }
+  
+  # CBuilder configs
+  my $ldflags = $build_config->get_ldflags;
+
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user configs
+  my $config = $build_config->to_hash;
+  
+  my $cfunc_names = [];
+  my $sub_names = $opt{sub_names};
+  for my $sub_name (@$sub_names) {
+    my $category = $self->category;
+    my $category_uc = uc $category;
+    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
+    $cfunc_name =~ s/:/_/g;
+    push @$cfunc_names, $cfunc_name;
+  }
+  
+  # This is dummy to suppress boot strap function
+  # This is bad hack
+  unless (@$cfunc_names) {
+    push @$cfunc_names, '';
+  }
+  
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
     package_name => $package_name,
