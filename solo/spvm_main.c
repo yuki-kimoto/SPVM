@@ -347,10 +347,16 @@ int main(int argc, char *argv[]) {
   
   // new byte[][args_length] object
   int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* args = env->new_multi_array(env, arg_type_basic_id, 1, argc);
+  void* cmd_args_obj = env->new_multi_array(env, arg_type_basic_id, 1, argc);
+  
+  // Set command line arguments
+  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
+    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
+    env->set_object_array_element(env, cmd_args_obj, arg_index, cmd_arg_obj);
+  }
   
   SPVM_VALUE stack[255];
-  stack[0].oval = NULL;
+  stack[0].oval = cmd_args_obj;
   
   // Run
   int32_t exception_flag = env->call_sub(env, sub_id, stack);

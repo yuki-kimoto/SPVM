@@ -54,6 +54,10 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    print($args->[0] . "\n");
+    print($args->[1] . "\n");
+    print($args->[2] . "\n");
+    
     {
       my $point1 : TestCase::Point_d3;
       
