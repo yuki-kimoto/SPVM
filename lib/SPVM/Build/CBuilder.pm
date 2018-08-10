@@ -44,9 +44,14 @@ sub build {
     my $category = $self->{category};
     my $sub_names;
     if ($build_all_sub) {
-      $sub_names = $self->info->get_sub_names($package_name)
+      if ($category eq 'precompile') {
+        $sub_names = $self->info->get_sub_names($package_name);
+      }
+      else {
+        croak "Can't specify all_subs option in $category";
+      }
     }
-    else if ($category eq 'native') {
+    elsif ($category eq 'native') {
       $sub_names = $self->info->get_native_sub_names($package_name)
     }
     elsif ($category eq 'precompile') {
