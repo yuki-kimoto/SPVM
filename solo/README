@@ -1,17 +1,17 @@
 SPVM solo test command
 
    # Normal run
-   yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/spvm_main TestCase foo bar
+   yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/spvmrt TestCase foo bar
 
    # Debug run - Print AST, package information, operaion codes
-   yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make -f solo/Makefile && ./solo/spvm_main TestCase foo bar
+   yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make -f solo/Makefile && ./solo/spvmrt TestCase foo bar
 
    # Parser Debug run - Print yacc result
-   yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/spvm_main TestCase foo bar
+   yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/spvmrt TestCase foo bar
 
 See batcktrace of core dump
 
-  gdb solo/spvm_main core.*
+  gdb solo/spvmrt core.*
 
 What is solo test command?
 
@@ -23,11 +23,11 @@ What is solo test command?
   
   If you use the above solo test commands, you can create
   
-    solo/spvm_main
+    solo/spvmrt
   
-  "solo/spvm_main" can execute SPVM module by the following way.
+  "solo/spvmrt" can execute SPVM module by the following way.
   
-    ./solo/spvm_main TestCase
+    ./solo/spvmrt TestCase
 
 See core dump
 

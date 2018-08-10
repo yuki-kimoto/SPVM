@@ -41,8 +41,8 @@ my $ldcmd = "cc $ldflags";
 my $makefile = <<"EOS";
 
 all:
-	$cccmd -o solo/spvm_main.o solo/spvm_main.c
-	$ldcmd -o solo/spvm_main -lm -o solo/spvm_main solo/spvm_main.o @object_files
+	$cccmd -o solo/spvmrt.o solo/spvmrt.c
+	$ldcmd -o solo/spvmrt -lm -o solo/spvmrt solo/spvmrt.o @object_files
 
 test:
 	$cccmd -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o
@@ -51,7 +51,7 @@ test:
 	solo/t/spvm_t_hash
 
 clean:
-	rm -rf solo/spvm_main
+	rm -rf solo/spvmrt
 EOS
 
 my $makefile_file = 'solo/Makefile';
