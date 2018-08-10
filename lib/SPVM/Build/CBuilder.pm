@@ -34,12 +34,25 @@ sub category {
 }
 
 sub build {
-  my $self = shift;
+  my ($self, $opt) = @_;
+  
+  my $build_all_sub = $opt->{all_sub};
   
   my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $sub_names = $self->get_sub_names($package_name);
+    my $category = $self->{category};
+    my $sub_names;
+    if ($build_all_sub) {
+      $sub_names = $self->info->get_sub_names($package_name)
+    }
+    else if ($category eq 'native') {
+      $sub_names = $self->info->get_native_sub_names($package_name)
+    }
+    elsif ($category eq 'precompile') {
+      $sub_names = $self->info->get_precompile_sub_names($package_name)
+    }
+    
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
       my $shared_lib_path = $self->get_installed_shared_lib_path($package_name);

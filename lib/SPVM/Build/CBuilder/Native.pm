@@ -28,14 +28,6 @@ sub new {
   return $self;
 }
 
-sub get_sub_names {
-  my ($self, $package_name) = @_;
-  
-  my $sub_names = $self->info->get_native_sub_names($package_name);
-  
-  return $sub_names;
-}
-
 sub create_shared_lib_dist {
   my ($self, $package_name, $sub_names) = @_;
   

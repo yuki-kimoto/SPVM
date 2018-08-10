@@ -25,14 +25,6 @@ sub new {
   return $self;
 }
 
-sub get_sub_names {
-  my ($self, $package_name) = @_;
-  
-  my $sub_names = $self->info->get_precompile_sub_names($package_name);
-  
-  return $sub_names;
-}
-
 sub create_csource {
   my ($self, %opt) = @_;
   
