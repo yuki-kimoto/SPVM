@@ -34,7 +34,6 @@
 #include "spvm_csource_builder.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
-#include "spvm_core_func_bind.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 

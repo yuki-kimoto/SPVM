@@ -18,7 +18,6 @@ lib/SPVM/Build/include/spvm_compiler.h
 lib/SPVM/Build/include/spvm_compiler_allocator.h
 lib/SPVM/Build/include/spvm_constant.h
 lib/SPVM/Build/include/spvm_core_func.h
-lib/SPVM/Build/include/spvm_core_func_bind.h
 lib/SPVM/Build/include/spvm_csource_builder.h
 lib/SPVM/Build/include/spvm_descriptor.h
 lib/SPVM/Build/include/spvm_dumper.h
@@ -157,10 +156,13 @@ solo/lib/TestCase/Pointer.spvm
 solo/lib/TestCase/Simple.spvm
 solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
+solo/main
+solo/main.c
 solo/README
 solo/solo_Makefile.PL
 SPVM.xs
 spvm_build/.gitkeep
+spvmcc_build/.gitkeep
 t/compile-error.t
 t/copy_default_to_precompile.pl
 t/default/array.t
