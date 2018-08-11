@@ -117,32 +117,32 @@ sub bind_subs {
 }
 
 sub build_shared_lib {
-  my ($self, %opt) = @_;
+  my ($self, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile_objects(%opt);
+  my $object_files = $self->compile_objects($opt);
   
   # Link object files and create shared library
-  $self->link_shared_lib(
-    %opt,
+  $self->link_shared_lib({
+    %$opt,
     objects => $object_files,
-  );
+  });
 }
 
 sub compile_objects {
-  my ($self, %opt) = @_;
+  my ($self, $opt) = @_;
 
   # Package name
-  my $package_name = $opt{package_name};
+  my $package_name = $opt->{package_name};
 
   # Build directory
-  my $work_dir = $opt{work_dir};
+  my $work_dir = $opt->{work_dir};
   unless (defined $work_dir && -d $work_dir) {
     confess "Work directory must be specified for " . $self->category . " build";
   }
   
   # Output directory
-  my $output_dir = $opt{output_dir};
+  my $output_dir = $opt->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Output directory must be specified for " . $self->category . " build";
   }
@@ -152,14 +152,14 @@ sub compile_objects {
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
   # Return if source code is chaced and exists shared lib file
-  if ($opt{is_cached} && -f $shared_lib_file) {
+  if ($opt->{is_cached} && -f $shared_lib_file) {
     return;
   }
   
   # Quiet output
-  my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
+  my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
  
-  my $input_dir = $opt{input_dir};
+  my $input_dir = $opt->{input_dir};
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   
@@ -228,21 +228,21 @@ sub compile_objects {
 }
 
 sub link_shared_lib {
-  my ($self, %opt) = @_;
+  my ($self, $opt) = @_;
 
-  my $object_files = $opt{objects};
+  my $object_files = $opt->{objects};
 
   # Package name
-  my $package_name = $opt{package_name};
+  my $package_name = $opt->{package_name};
 
   # Build directory
-  my $work_dir = $opt{work_dir};
+  my $work_dir = $opt->{work_dir};
   unless (defined $work_dir && -d $work_dir) {
     confess "Work directory must be specified for " . $self->category . " build";
   }
   
   # Output directory
-  my $output_dir = $opt{output_dir};
+  my $output_dir = $opt->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
     confess "Output directory must be specified for " . $self->category . " build";
   }
@@ -252,14 +252,14 @@ sub link_shared_lib {
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
   # Return if source code is chaced and exists shared lib file
-  if ($opt{is_cached} && -f $shared_lib_file) {
+  if ($opt->{is_cached} && -f $shared_lib_file) {
     return;
   }
   
   # Quiet output
-  my $quiet = defined $opt{quiet} ? $opt{quiet} : 0;
+  my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
  
-  my $input_dir = $opt{input_dir};
+  my $input_dir = $opt->{input_dir};
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   
@@ -290,7 +290,7 @@ sub link_shared_lib {
   my $config = $build_config->to_hash;
   
   my $cfunc_names = [];
-  my $sub_names = $opt{sub_names};
+  my $sub_names = $opt->{sub_names};
   for my $sub_name (@$sub_names) {
     my $category = $self->category;
     my $category_uc = uc $category;

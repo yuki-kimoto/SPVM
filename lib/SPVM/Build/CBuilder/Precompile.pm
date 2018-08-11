@@ -26,18 +26,18 @@ sub new {
 }
 
 sub create_csource {
-  my ($self, %opt) = @_;
+  my ($self, $opt) = @_;
   
-  my $package_name = $opt{package_name};
+  my $package_name = $opt->{package_name};
   
-  my $input_dir = $opt{input_dir};
+  my $input_dir = $opt->{input_dir};
 
-  my $work_dir = $opt{work_dir};
+  my $work_dir = $opt->{work_dir};
   mkpath $work_dir;
   
-  my $output_dir = $opt{output_dir};
+  my $output_dir = $opt->{output_dir};
   
-  my $is_cached_ref = $opt{is_cached};
+  my $is_cached_ref = $opt->{is_cached};
   
   my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
   my $work_src_dir = "$work_dir/$package_path";
@@ -99,14 +99,14 @@ sub build_shared_lib_dist {
     is_cached => \$is_cached,
   );
   
-  $self->build_shared_lib(
+  $self->build_shared_lib({
     package_name => $package_name,
     input_dir => $work_dir,
     work_dir => $work_dir,
     output_dir => $output_dir,
     sub_names => $sub_names,
     is_cached => $is_cached,
-  );
+  });
 }
 
 sub build_shared_lib_runtime {
@@ -126,15 +126,15 @@ sub build_shared_lib_runtime {
   mkpath $output_dir;
   
   my $is_cached;
-  $self->create_csource(
+  $self->create_csource({
     package_name => $package_name,
     input_dir => $input_dir,
     work_dir => $work_dir,
     output_dir => $work_dir,
     is_cached => \$is_cached,
-  );
+  });
   
-  $self->build_shared_lib(
+  $self->build_shared_lib({
     package_name => $package_name,
     input_dir => $work_dir,
     work_dir => $work_dir,
@@ -142,7 +142,7 @@ sub build_shared_lib_runtime {
     quiet => 1,
     sub_names => $sub_names,
     is_cached => $is_cached,
-  );
+  });
 }
 
 1;
