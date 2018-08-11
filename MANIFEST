@@ -17,7 +17,6 @@ lib/SPVM/Build/include/spvm_case_info.h
 lib/SPVM/Build/include/spvm_compiler.h
 lib/SPVM/Build/include/spvm_compiler_allocator.h
 lib/SPVM/Build/include/spvm_constant.h
-lib/SPVM/Build/include/spvm_core_func.h
 lib/SPVM/Build/include/spvm_csource_builder.h
 lib/SPVM/Build/include/spvm_descriptor.h
 lib/SPVM/Build/include/spvm_dumper.h

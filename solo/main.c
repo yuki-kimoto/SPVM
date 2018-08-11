@@ -21,7 +21,7 @@
 
 #include <spvm_native.h>
 
-#include "spvm_core_func.h"
+#include "SPVM/CORE.native/CORE.c"
 
 void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
   (void)compiler;
@@ -38,223 +38,223 @@ void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
         switch (sub_name[0]) {
           case 'a':
             if (strcmp(sub_name, "acos") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_acos;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__acos;
             }
             else if (strcmp(sub_name, "asin") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_asin;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__asin;
             }
             else if (strcmp(sub_name, "atan") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_atan;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__atan;
             }
             else if (strcmp(sub_name, "atan2") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_atan2;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__atan2;
             }
             else if (strcmp(sub_name, "acosh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_acosh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__acosh;
             }
             else if (strcmp(sub_name, "asinh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_asinh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__asinh;
             }
             else if (strcmp(sub_name, "atanh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_atanh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__atanh;
             }
             else if (strcmp(sub_name, "abs") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_abs;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__abs;
             }
             break;
           case 'c':
             if (strcmp(sub_name, "cos") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_cos;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__cos;
             }
             else if (strcmp(sub_name, "cosh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_cosh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__cosh;
             }
             else if (strcmp(sub_name, "cbrt") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_cbrt;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__cbrt;
             }
             else if (strcmp(sub_name, "ceil") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_ceil;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__ceil;
             }
             break;
           case 'e':
               if (strcmp(sub_name, "exp") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_exp;
+                sub->native_address = SPVM_NATIVE_SPVM__CORE__exp;
               }
               else if (strcmp(sub_name, "exp2") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_exp2;
+                sub->native_address = SPVM_NATIVE_SPVM__CORE__exp2;
               }
               else if (strcmp(sub_name, "expm1") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_expm1;
+                sub->native_address = SPVM_NATIVE_SPVM__CORE__expm1;
               }
               else if (strcmp(sub_name, "erf") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_erf;
+                sub->native_address = SPVM_NATIVE_SPVM__CORE__erf;
               }
               else if (strcmp(sub_name, "erfc") == 0) {
-                sub->native_address = SPVM_CORE_FUNC_erfc;
+                sub->native_address = SPVM_NATIVE_SPVM__CORE__erfc;
               }
             break;
           case 'f':
             if (strcmp(sub_name, "fabs") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_fabs;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__fabs;
             }
             else if (strcmp(sub_name, "floor") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_floor;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__floor;
             }
             break;
           case 'h':
             if (strcmp(sub_name, "hypot") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_hypot;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__hypot;
             }
             break;
           case 'i':
             if (strcmp(sub_name, "isinff") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isinff;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isinff;
             }
             else if (strcmp(sub_name, "isfinitef") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isfinitef;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinitef;
             }
             else if (strcmp(sub_name, "isnanf") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isnanf;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isnanf;
             }
             else if (strcmp(sub_name, "isinf") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isinf;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isinf;
             }
             else if (strcmp(sub_name, "isfinite") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isfinite;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinite;
             }
             else if (strcmp(sub_name, "isnan") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_isnan;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__isnan;
             }
             break;
           case 'l':
             if (strcmp(sub_name, "log") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_log;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__log;
             }
             else if (strcmp(sub_name, "log10") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_log10;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__log10;
             }
             else if (strcmp(sub_name, "log1p") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_log1p;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__log1p;
             }
             else if (strcmp(sub_name, "labs") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_labs;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__labs;
             }
             else if (strcmp(sub_name, "lgamma") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_lgamma;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__lgamma;
             }
             break;
           case 'n':
             if (strcmp(sub_name, "nearbyint") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_nearbyint;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__nearbyint;
             }
             break;
           case 'p':
             if (strcmp(sub_name, "pow") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_pow;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__pow;
             }
             break;
           case 'r':
             if (strcmp(sub_name, "round") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_round;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__round;
             }
             else if (strcmp(sub_name, "remainder") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_remainder;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__remainder;
             }
             break;
           case 's':
             if (strcmp(sub_name, "sin") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_sin;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__sin;
             }
             else if (strcmp(sub_name, "sinh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_sinh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__sinh;
             }
             else if (strcmp(sub_name, "sqrt") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_sqrt;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__sqrt;
             }
             break;
           case 't':
             if (strcmp(sub_name, "time") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_time;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__time;
             }
             else if (strcmp(sub_name, "tan") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_tan;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__tan;
             }
             else if (strcmp(sub_name, "tanh") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_tanh;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__tanh;
             }
             else if (strcmp(sub_name, "tgamma") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_tgamma;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__tgamma;
             }
             break;
           case 'w':
             if (strcmp(sub_name, "warn") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_warn;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__warn;
             }
             break;
           case 'D':
             if (strcmp(sub_name, "DBL_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_DBL_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
             }
             else if (strcmp(sub_name, "DBL_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_DBL_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
             }
             break;
           case 'E':
             if (strcmp(sub_name, "E") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_E;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__E;
             }
             break;
           case 'F':
             if (strcmp(sub_name, "FLT_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_FLT_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
             }
             else if (strcmp(sub_name, "FLT_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_FLT_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
             }
             break;
           case 'I':
             if (strcmp(sub_name, "INFINITYF") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INFINITYF;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITYF;
             }
             else if (strcmp(sub_name, "INFINITY") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INFINITY;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITY;
             }
             else if (strcmp(sub_name, "INT8_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT8_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
             }
             else if (strcmp(sub_name, "INT8_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT8_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
             }
             else if (strcmp(sub_name, "INT16_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT16_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
             }
             else if (strcmp(sub_name, "INT16_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT16_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
             }
             else if (strcmp(sub_name, "INT32_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT32_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
             }
             else if (strcmp(sub_name, "INT32_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT32_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
             }
             else if (strcmp(sub_name, "INT64_MIN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT64_MIN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
             }
             else if (strcmp(sub_name, "INT64_MAX") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_INT64_MAX;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
             }
             break;
           case 'N':
             if (strcmp(sub_name, "NANF") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_NANF;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__NANF;
             }
             else if (strcmp(sub_name, "NAN") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_NAN;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__NAN;
             }
             break;
           case 'P':
             if (strcmp(sub_name, "PI") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_PI;
+              sub->native_address = SPVM_NATIVE_SPVM__CORE__PI;
             }
             break;
           default:
@@ -311,8 +311,8 @@ int main(int argc, char *argv[]) {
   
   // Bind native subroutine
   {
-    SPVM_OP* op_sub_CORE__print = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
-    op_sub_CORE__print->uv.sub->native_address = SPVM_CORE_FUNC_print;
+    SPVM_OP* op_sub_SPVM__CORE__print = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
+    op_sub_SPVM__CORE__print->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__print;
   }
   
   // Create run-time
