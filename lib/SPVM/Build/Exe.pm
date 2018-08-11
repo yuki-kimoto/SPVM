@@ -17,8 +17,24 @@ use DynaLoader;
 
 use File::Basename 'dirname', 'basename';
 
+sub new {
+  my $class = shift;
+  
+  my $self = {@_};
+  
+  return bless $self, $class;
+}
+
+sub build_dir {
+  return $self->{build_dir};
+}
+
+sub output_file {
+  return $self->{output_file};
+}
+
 sub create_exe_file {
-  my $package_name = shift;
+  my ($self, $package_name) = @_;
   
   # New SPVM::Build object
   my $build = SPVM::Build->new;
@@ -34,12 +50,26 @@ sub create_exe_file {
   unless ($compile_success) {
     croak "Compile error";
   }
-
+  
+  my $build_dir = $self->build_dir;
+  
+  my $cbuilder_native = SPVM::Build::CBuilder::Native->new(
+    build_dir => $build_dir,
+    compiler => $build->compiler,
+    info => $build->info,
+  );
+  
+  my $cbuilder_precompile = SPVM::Build::CBuilder::Precompile->new(
+    build_dir => $build_dir,
+    compiler => $build->compiler,
+    info => $build->info,
+  );
+  
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
-  $build->build_precompile({all_subs => 1});
+  $cbuilder_native->build({all_subs => 1});
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
-  $build->build_native;
+  $cbuilder_precompile->build;
   
   # Build exe file
   $self->build_exe;
