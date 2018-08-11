@@ -53,11 +53,17 @@ struct SPVM_compiler {
   // Class loading stack
   SPVM_LIST* op_use_stack;
 
+  // Anonimous package length
+  int32_t anon_package_length;
+
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   
   // Constants
   SPVM_LIST* op_constants;
+
+  // Types
+  SPVM_LIST* op_types;
 
   // Packages
   SPVM_LIST* op_packages;
@@ -65,17 +71,11 @@ struct SPVM_compiler {
   // OP package symtable
   SPVM_HASH* op_package_symtable;
   
-  // Anonimous package length
-  int32_t anon_package_length;
-  
   // Single types
   SPVM_LIST* basic_types;
   
   // Resolved type symbol table
   SPVM_HASH* basic_type_symtable;
-  
-  // Types
-  SPVM_LIST* op_types;
 
   // OP our symtable
   SPVM_LIST* op_package_vars;
