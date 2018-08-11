@@ -270,13 +270,9 @@ void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc < 1) {
-    fprintf(stderr, "Not script\n");
-    exit(1);
-  }
   
   // Package name
-  const char* start_package_name = argv[1];
+  const char* start_package_name = "TestCase";
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
