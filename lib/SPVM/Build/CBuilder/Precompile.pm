@@ -26,9 +26,7 @@ sub new {
 }
 
 sub create_csource {
-  my ($self, $opt) = @_;
-  
-  my $package_name = $opt->{package_name};
+  my ($self, $package_name, $opt) = @_;
   
   my $input_dir = $opt->{input_dir};
 
@@ -92,11 +90,13 @@ sub build_shared_lib_dist {
 
   my $is_cached;
   $self->create_csource(
-    package_name => $package_name,
-    input_dir => $input_dir,
-    work_dir => $work_dir,
-    output_dir => $work_dir,
-    is_cached => \$is_cached,
+    $package_name,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $work_dir,
+      is_cached => \$is_cached,
+    }
   );
   
   $self->build_shared_lib({
@@ -126,13 +126,15 @@ sub build_shared_lib_runtime {
   mkpath $output_dir;
   
   my $is_cached;
-  $self->create_csource({
-    package_name => $package_name,
-    input_dir => $input_dir,
-    work_dir => $work_dir,
-    output_dir => $work_dir,
-    is_cached => \$is_cached,
-  });
+  $self->create_csource(
+    $package_name,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $work_dir,
+      is_cached => \$is_cached,
+    }
+  );
   
   $self->build_shared_lib({
     package_name => $package_name,
