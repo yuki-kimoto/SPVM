@@ -41,13 +41,15 @@ sub build_shared_lib_dist {
   my $category = $self->category;
   
   # Build shared library
-  $self->build_shared_lib({
-    package_name => $package_name,
-    input_dir => $input_dir,
-    work_dir => $work_dir,
-    output_dir => $output_dir,
-    sub_names => $sub_names,
-  });
+  $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $output_dir,
+    }
+  );
 }
 
 sub build_shared_lib_runtime {
