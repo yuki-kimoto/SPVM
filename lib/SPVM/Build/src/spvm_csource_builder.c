@@ -755,7 +755,7 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER
   
   // API header
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "#include <spvm_native.h>\n");
-  SPVM_STRING_BUFFER_add(compiler, string_buffer , "#include <spvm_core_func.h>\n");
+  SPVM_STRING_BUFFER_add(compiler, string_buffer , "#include <SPVM/CORE.native/CORE.c>\n");
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
   
   // Inline macro function
@@ -2640,7 +2640,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         }
         // Inline expansion is done in native core function
         else if (strcmp(decl_sub->op_package->uv.package->op_name->uv.name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_CORE_FUNC_");
+          SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
         }
