@@ -68,14 +68,16 @@ sub build_shared_lib_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  $self->build_shared_lib({
-    package_name => $package_name,
-    input_dir => $input_dir,
-    work_dir => $work_dir,
-    output_dir => $output_dir,
-    quiet => 1,
-    sub_names => $sub_names,
-  });
+  $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $output_dir,
+      quiet => 1,
+    }
+  );
 }
 
 1;

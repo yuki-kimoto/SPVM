@@ -117,23 +117,22 @@ sub bind_subs {
 }
 
 sub build_shared_lib {
-  my ($self, $opt) = @_;
+  my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile_objects($opt);
+  my $object_files = $self->compile_objects($package_name, $sub_names, $opt);
   
   # Link object files and create shared library
-  $self->link_shared_lib({
-    %$opt,
-    objects => $object_files,
-  });
+  $self->link_shared_lib(
+    $package_name,
+    $sub_names,
+    $object_files,
+    $opt
+  );
 }
 
 sub compile_objects {
-  my ($self, $opt) = @_;
-
-  # Package name
-  my $package_name = $opt->{package_name};
+  my ($self, $package_name, $sub_names, $opt) = @_;
 
   # Build directory
   my $work_dir = $opt->{work_dir};
@@ -228,12 +227,7 @@ sub compile_objects {
 }
 
 sub link_shared_lib {
-  my ($self, $opt) = @_;
-
-  my $object_files = $opt->{objects};
-
-  # Package name
-  my $package_name = $opt->{package_name};
+  my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
 
   # Build directory
   my $work_dir = $opt->{work_dir};
@@ -290,7 +284,6 @@ sub link_shared_lib {
   my $config = $build_config->to_hash;
   
   my $cfunc_names = [];
-  my $sub_names = $opt->{sub_names};
   for my $sub_name (@$sub_names) {
     my $category = $self->category;
     my $category_uc = uc $category;
