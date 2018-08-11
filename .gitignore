@@ -36,3 +36,5 @@ solo/t/spvm_t_list
 solo/spvmrt
 solo/Makefile
 t/precompile
+spvmcc_build/*
+!spvmcc_build/.gitkeep

@@ -32,3 +32,4 @@ SPVM-.*
 ^solo/spvmrt
 ^solo/Makefile
 ^t/precompile
+^spvmcc_build/[^\.]
