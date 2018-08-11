@@ -101,15 +101,10 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Temporary buffer
-  char tmp_buffer[UINT16_MAX];
-  
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   
   SPVM_RUNTIME* runtime;
-  
-  _Bool do_compile_only;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

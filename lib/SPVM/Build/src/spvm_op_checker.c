@@ -109,6 +109,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve packages
   SPVM_OP_CHECKER_resolve_packages(compiler);
+
+  // Temporary buffer
+  char tmp_buffer[UINT16_MAX];
   
   // Check trees
   int32_t sub_id = 0;
@@ -875,14 +878,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                               
                               if (!(index_type->dimension == 0 && index_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && index_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT)) {
-                                char* type_name = compiler->tmp_buffer;
+                                char* type_name = tmp_buffer;
                                 SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
                                 SPVM_yyerror_format(compiler, "new operator can't create array which don't have int length \"%s\" at %s line %d\n", type_name, op_cur->file, op_cur->line);
                                 return;
                               }
                             }
                             else {
-                              char* type_name = compiler->tmp_buffer;
+                              char* type_name = tmp_buffer;
                               SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
                               SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type_name, op_cur->file, op_cur->line);
                               return;
@@ -2011,7 +2014,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_FIELD* field = op_cur->uv.field_access->field;
                         
                         if (!field) {
-                          char* type_name = compiler->tmp_buffer;
+                          char* type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
                           SPVM_yyerror_format(compiler, "Unknown field %s::%s at %s line %d\n",
                             type_name, op_name->uv.name, op_cur->file, op_cur->line);
@@ -2020,7 +2023,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         if (field->is_private) {
                           if (strcmp(type->basic_type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
-                            char* type_name = compiler->tmp_buffer;
+                            char* type_name = tmp_buffer;
                             SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
                             SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
                               type_name, op_name->uv.name, op_cur->file, op_cur->line);
@@ -2127,7 +2130,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (!is_convertable) {
-                          char* dist_type_name = compiler->tmp_buffer;
+                          char* dist_type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                           SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", dist_type_name, op_cur->file, op_cur->line);
                           
