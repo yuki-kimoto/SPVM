@@ -320,7 +320,6 @@ int main(int argc, char *argv[]) {
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
-  compiler->runtime = runtime;
   
   SPVM_ENV* env = runtime->env;
 
