@@ -35,6 +35,12 @@ struct SPVM_compiler {
   // Temporary variable length
   int32_t tmp_var_length;
   
+  // AST grammar
+  SPVM_OP* op_grammar;
+  
+  // Syntax error count
+  int32_t error_count;
+  
   // Current case statements in switch statement
   SPVM_LIST* cur_op_cases;
 
@@ -46,6 +52,9 @@ struct SPVM_compiler {
 
   // Class loading stack
   SPVM_LIST* op_use_stack;
+
+  // Operation codes
+  SPVM_OPCODE_ARRAY* opcode_array;
   
   // Constants
   SPVM_LIST* op_constants;
@@ -91,15 +100,6 @@ struct SPVM_compiler {
 
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
-  
-  // AST grammar
-  SPVM_OP* op_grammar;
-  
-  // Syntax error count
-  int32_t error_count;
-  
-  // Operation codes
-  SPVM_OPCODE_ARRAY* opcode_array;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
