@@ -26,7 +26,6 @@
 void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
   (void)compiler;
   
-  // Bind native subroutine
   {
     int32_t i;
     for (i = 0; i < op_subs->length; i++) {
@@ -150,10 +149,7 @@ void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
             }
             break;
           case 'p':
-            if (strcmp(sub_name, "print") == 0) {
-              sub->native_address = SPVM_CORE_FUNC_print;
-            }
-            else if (strcmp(sub_name, "pow") == 0) {
+            if (strcmp(sub_name, "pow") == 0) {
               sub->native_address = SPVM_CORE_FUNC_pow;
             }
             break;
@@ -311,6 +307,12 @@ int main(int argc, char *argv[]) {
     if (strcmp(package_name, "SPVM::CORE") == 0) {
       SPVM_MAIN_bind_core_func(compiler, package->op_subs);
     }
+  }
+  
+  // Bind native subroutine
+  {
+    SPVM_OP* op_sub_CORE__print = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
+    op_sub_CORE__print->uv.sub->native_address = SPVM_CORE_FUNC_print;
   }
   
   // Create run-time
