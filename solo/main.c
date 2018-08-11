@@ -23,248 +23,6 @@
 
 #include "SPVM/CORE.native/CORE.c"
 
-void SPVM_MAIN_bind_core_func(SPVM_COMPILER* compiler, SPVM_LIST* op_subs) {
-  (void)compiler;
-  
-  {
-    int32_t i;
-    for (i = 0; i < op_subs->length; i++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, i);
-      SPVM_SUB* sub = op_sub->uv.sub;
-      
-      if (sub->have_native_desc) {
-        // Sub abs name
-        const char* sub_name = sub->op_name->uv.name;
-        switch (sub_name[0]) {
-          case 'a':
-            if (strcmp(sub_name, "acos") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__acos;
-            }
-            else if (strcmp(sub_name, "asin") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__asin;
-            }
-            else if (strcmp(sub_name, "atan") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__atan;
-            }
-            else if (strcmp(sub_name, "atan2") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__atan2;
-            }
-            else if (strcmp(sub_name, "acosh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__acosh;
-            }
-            else if (strcmp(sub_name, "asinh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__asinh;
-            }
-            else if (strcmp(sub_name, "atanh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__atanh;
-            }
-            else if (strcmp(sub_name, "abs") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__abs;
-            }
-            break;
-          case 'c':
-            if (strcmp(sub_name, "cos") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__cos;
-            }
-            else if (strcmp(sub_name, "cosh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__cosh;
-            }
-            else if (strcmp(sub_name, "cbrt") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__cbrt;
-            }
-            else if (strcmp(sub_name, "ceil") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__ceil;
-            }
-            break;
-          case 'e':
-              if (strcmp(sub_name, "exp") == 0) {
-                sub->native_address = SPVM_NATIVE_SPVM__CORE__exp;
-              }
-              else if (strcmp(sub_name, "exp2") == 0) {
-                sub->native_address = SPVM_NATIVE_SPVM__CORE__exp2;
-              }
-              else if (strcmp(sub_name, "expm1") == 0) {
-                sub->native_address = SPVM_NATIVE_SPVM__CORE__expm1;
-              }
-              else if (strcmp(sub_name, "erf") == 0) {
-                sub->native_address = SPVM_NATIVE_SPVM__CORE__erf;
-              }
-              else if (strcmp(sub_name, "erfc") == 0) {
-                sub->native_address = SPVM_NATIVE_SPVM__CORE__erfc;
-              }
-            break;
-          case 'f':
-            if (strcmp(sub_name, "fabs") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__fabs;
-            }
-            else if (strcmp(sub_name, "floor") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__floor;
-            }
-            break;
-          case 'h':
-            if (strcmp(sub_name, "hypot") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__hypot;
-            }
-            break;
-          case 'i':
-            if (strcmp(sub_name, "isinff") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isinff;
-            }
-            else if (strcmp(sub_name, "isfinitef") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinitef;
-            }
-            else if (strcmp(sub_name, "isnanf") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isnanf;
-            }
-            else if (strcmp(sub_name, "isinf") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isinf;
-            }
-            else if (strcmp(sub_name, "isfinite") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinite;
-            }
-            else if (strcmp(sub_name, "isnan") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__isnan;
-            }
-            break;
-          case 'l':
-            if (strcmp(sub_name, "log") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__log;
-            }
-            else if (strcmp(sub_name, "log10") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__log10;
-            }
-            else if (strcmp(sub_name, "log1p") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__log1p;
-            }
-            else if (strcmp(sub_name, "labs") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__labs;
-            }
-            else if (strcmp(sub_name, "lgamma") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__lgamma;
-            }
-            break;
-          case 'n':
-            if (strcmp(sub_name, "nearbyint") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__nearbyint;
-            }
-            break;
-          case 'p':
-            if (strcmp(sub_name, "pow") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__pow;
-            }
-            break;
-          case 'r':
-            if (strcmp(sub_name, "round") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__round;
-            }
-            else if (strcmp(sub_name, "remainder") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__remainder;
-            }
-            break;
-          case 's':
-            if (strcmp(sub_name, "sin") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__sin;
-            }
-            else if (strcmp(sub_name, "sinh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__sinh;
-            }
-            else if (strcmp(sub_name, "sqrt") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__sqrt;
-            }
-            break;
-          case 't':
-            if (strcmp(sub_name, "time") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__time;
-            }
-            else if (strcmp(sub_name, "tan") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__tan;
-            }
-            else if (strcmp(sub_name, "tanh") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__tanh;
-            }
-            else if (strcmp(sub_name, "tgamma") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__tgamma;
-            }
-            break;
-          case 'w':
-            if (strcmp(sub_name, "warn") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__warn;
-            }
-            break;
-          case 'D':
-            if (strcmp(sub_name, "DBL_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
-            }
-            else if (strcmp(sub_name, "DBL_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
-            }
-            break;
-          case 'E':
-            if (strcmp(sub_name, "E") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__E;
-            }
-            break;
-          case 'F':
-            if (strcmp(sub_name, "FLT_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
-            }
-            else if (strcmp(sub_name, "FLT_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
-            }
-            break;
-          case 'I':
-            if (strcmp(sub_name, "INFINITYF") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITYF;
-            }
-            else if (strcmp(sub_name, "INFINITY") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITY;
-            }
-            else if (strcmp(sub_name, "INT8_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
-            }
-            else if (strcmp(sub_name, "INT8_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
-            }
-            else if (strcmp(sub_name, "INT16_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
-            }
-            else if (strcmp(sub_name, "INT16_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
-            }
-            else if (strcmp(sub_name, "INT32_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
-            }
-            else if (strcmp(sub_name, "INT32_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
-            }
-            else if (strcmp(sub_name, "INT64_MIN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
-            }
-            else if (strcmp(sub_name, "INT64_MAX") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
-            }
-            break;
-          case 'N':
-            if (strcmp(sub_name, "NANF") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__NANF;
-            }
-            else if (strcmp(sub_name, "NAN") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__NAN;
-            }
-            break;
-          case 'P':
-            if (strcmp(sub_name, "PI") == 0) {
-              sub->native_address = SPVM_NATIVE_SPVM__CORE__PI;
-            }
-            break;
-          default:
-            assert(0);
-        }
-      }
-    }
-  }
-}
-
 int main(int argc, char *argv[]) {
   
   // Package name
@@ -299,20 +57,132 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   
-  for (int32_t package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-    SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-    SPVM_PACKAGE* package = op_package->uv.package;
-    const char* package_name = package->op_name->uv.name;
-    
-    if (strcmp(package_name, "SPVM::CORE") == 0) {
-      SPVM_MAIN_bind_core_func(compiler, package->op_subs);
-    }
-  }
-  
   // Bind native subroutine
   {
     SPVM_OP* op_sub_SPVM__CORE__print = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
     op_sub_SPVM__CORE__print->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__print;
+    SPVM_OP* op_sub_SPVM__CORE__acos = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::acos", strlen("SPVM::CORE::acos"));
+    op_sub_SPVM__CORE__acos->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__acos;
+    SPVM_OP* op_sub_SPVM__CORE__asin = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::asin", strlen("SPVM::CORE::asin"));
+    op_sub_SPVM__CORE__asin->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__asin;
+    SPVM_OP* op_sub_SPVM__CORE__atan = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::atan", strlen("SPVM::CORE::atan"));
+    op_sub_SPVM__CORE__atan->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__atan;
+    SPVM_OP* op_sub_SPVM__CORE__atan2 = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::atan2", strlen("SPVM::CORE::atan2"));
+    op_sub_SPVM__CORE__atan2->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__atan2;
+    SPVM_OP* op_sub_SPVM__CORE__acosh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::acosh", strlen("SPVM::CORE::acosh"));
+    op_sub_SPVM__CORE__acosh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__acosh;
+    SPVM_OP* op_sub_SPVM__CORE__asinh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::asinh", strlen("SPVM::CORE::asinh"));
+    op_sub_SPVM__CORE__asinh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__asinh;
+    SPVM_OP* op_sub_SPVM__CORE__atanh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::atanh", strlen("SPVM::CORE::atanh"));
+    op_sub_SPVM__CORE__atanh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__atanh;
+    SPVM_OP* op_sub_SPVM__CORE__abs = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::abs", strlen("SPVM::CORE::abs"));
+    op_sub_SPVM__CORE__abs->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__abs;
+    SPVM_OP* op_sub_SPVM__CORE__cos = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::cos", strlen("SPVM::CORE::cos"));
+    op_sub_SPVM__CORE__cos->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__cos;
+    SPVM_OP* op_sub_SPVM__CORE__cosh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::cosh", strlen("SPVM::CORE::cosh"));
+    op_sub_SPVM__CORE__cosh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__cosh;
+    SPVM_OP* op_sub_SPVM__CORE__cbrt = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::cbrt", strlen("SPVM::CORE::cbrt"));
+    op_sub_SPVM__CORE__cbrt->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__cbrt;
+    SPVM_OP* op_sub_SPVM__CORE__ceil = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::ceil", strlen("SPVM::CORE::ceil"));
+    op_sub_SPVM__CORE__ceil->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__ceil;
+    SPVM_OP* op_sub_SPVM__CORE__exp = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::exp", strlen("SPVM::CORE::exp"));
+    op_sub_SPVM__CORE__exp->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__exp;
+    SPVM_OP* op_sub_SPVM__CORE__exp2 = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::exp2", strlen("SPVM::CORE::exp2"));
+    op_sub_SPVM__CORE__exp2->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__exp2;
+    SPVM_OP* op_sub_SPVM__CORE__expm1 = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::expm1", strlen("SPVM::CORE::expm1"));
+    op_sub_SPVM__CORE__expm1->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__expm1;
+    SPVM_OP* op_sub_SPVM__CORE__erf = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::erf", strlen("SPVM::CORE::erf"));
+    op_sub_SPVM__CORE__erf->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__erf;
+    SPVM_OP* op_sub_SPVM__CORE__erfc = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::erfc", strlen("SPVM::CORE::erfc"));
+    op_sub_SPVM__CORE__erfc->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__erfc;
+    SPVM_OP* op_sub_SPVM__CORE__fabs = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::fabs", strlen("SPVM::CORE::fabs"));
+    op_sub_SPVM__CORE__fabs->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__fabs;
+    SPVM_OP* op_sub_SPVM__CORE__floor = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::floor", strlen("SPVM::CORE::floor"));
+    op_sub_SPVM__CORE__floor->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__floor;
+    SPVM_OP* op_sub_SPVM__CORE__hypot = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::hypot", strlen("SPVM::CORE::hypot"));
+    op_sub_SPVM__CORE__hypot->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__hypot;
+    SPVM_OP* op_sub_SPVM__CORE__isinff = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isinff", strlen("SPVM::CORE::isinff"));
+    op_sub_SPVM__CORE__isinff->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isinff;
+    SPVM_OP* op_sub_SPVM__CORE__isfinitef = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isfinitef", strlen("SPVM::CORE::isfinitef"));
+    op_sub_SPVM__CORE__isfinitef->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinitef;
+    SPVM_OP* op_sub_SPVM__CORE__isnanf = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isnanf", strlen("SPVM::CORE::isnanf"));
+    op_sub_SPVM__CORE__isnanf->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isnanf;
+    SPVM_OP* op_sub_SPVM__CORE__isinf = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isinf", strlen("SPVM::CORE::isinf"));
+    op_sub_SPVM__CORE__isinf->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isinf;
+    SPVM_OP* op_sub_SPVM__CORE__isfinite = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isfinite", strlen("SPVM::CORE::isfinite"));
+    op_sub_SPVM__CORE__isfinite->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isfinite;
+    SPVM_OP* op_sub_SPVM__CORE__isnan = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::isnan", strlen("SPVM::CORE::isnan"));
+    op_sub_SPVM__CORE__isnan->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__isnan;
+    SPVM_OP* op_sub_SPVM__CORE__log = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::log", strlen("SPVM::CORE::log"));
+    op_sub_SPVM__CORE__log->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__log;
+    SPVM_OP* op_sub_SPVM__CORE__log10 = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::log10", strlen("SPVM::CORE::log10"));
+    op_sub_SPVM__CORE__log10->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__log10;
+    SPVM_OP* op_sub_SPVM__CORE__log1p = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::log1p", strlen("SPVM::CORE::log1p"));
+    op_sub_SPVM__CORE__log1p->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__log1p;
+    SPVM_OP* op_sub_SPVM__CORE__labs = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::labs", strlen("SPVM::CORE::labs"));
+    op_sub_SPVM__CORE__labs->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__labs;
+    SPVM_OP* op_sub_SPVM__CORE__lgamma = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::lgamma", strlen("SPVM::CORE::lgamma"));
+    op_sub_SPVM__CORE__lgamma->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__lgamma;
+    SPVM_OP* op_sub_SPVM__CORE__nearbyint = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::nearbyint", strlen("SPVM::CORE::nearbyint"));
+    op_sub_SPVM__CORE__nearbyint->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__nearbyint;
+    SPVM_OP* op_sub_SPVM__CORE__pow = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::pow", strlen("SPVM::CORE::pow"));
+    op_sub_SPVM__CORE__pow->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__pow;
+    SPVM_OP* op_sub_SPVM__CORE__round = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::round", strlen("SPVM::CORE::round"));
+    op_sub_SPVM__CORE__round->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__round;
+    SPVM_OP* op_sub_SPVM__CORE__remainder = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::remainder", strlen("SPVM::CORE::remainder"));
+    op_sub_SPVM__CORE__remainder->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__remainder;
+    SPVM_OP* op_sub_SPVM__CORE__sin = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::sin", strlen("SPVM::CORE::sin"));
+    op_sub_SPVM__CORE__sin->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__sin;
+    SPVM_OP* op_sub_SPVM__CORE__sinh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::sinh", strlen("SPVM::CORE::sinh"));
+    op_sub_SPVM__CORE__sinh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__sinh;
+    SPVM_OP* op_sub_SPVM__CORE__sqrt = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::sqrt", strlen("SPVM::CORE::sqrt"));
+    op_sub_SPVM__CORE__sqrt->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__sqrt;
+    SPVM_OP* op_sub_SPVM__CORE__time = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::time", strlen("SPVM::CORE::time"));
+    op_sub_SPVM__CORE__time->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__time;
+    SPVM_OP* op_sub_SPVM__CORE__tan = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::tan", strlen("SPVM::CORE::tan"));
+    op_sub_SPVM__CORE__tan->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__tan;
+    SPVM_OP* op_sub_SPVM__CORE__tanh = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::tanh", strlen("SPVM::CORE::tanh"));
+    op_sub_SPVM__CORE__tanh->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__tanh;
+    SPVM_OP* op_sub_SPVM__CORE__tgamma = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::tgamma", strlen("SPVM::CORE::tgamma"));
+    op_sub_SPVM__CORE__tgamma->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__tgamma;
+    SPVM_OP* op_sub_SPVM__CORE__warn = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::warn", strlen("SPVM::CORE::warn"));
+    op_sub_SPVM__CORE__warn->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__warn;
+    SPVM_OP* op_sub_SPVM__CORE__DBL_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::DBL_MAX", strlen("SPVM::CORE::DBL_MAX"));
+    op_sub_SPVM__CORE__DBL_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__DBL_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::DBL_MIN", strlen("SPVM::CORE::DBL_MIN"));
+    op_sub_SPVM__CORE__DBL_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__E = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::E", strlen("SPVM::CORE::E"));
+    op_sub_SPVM__CORE__E->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__E;
+    SPVM_OP* op_sub_SPVM__CORE__FLT_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::FLT_MAX", strlen("SPVM::CORE::FLT_MAX"));
+    op_sub_SPVM__CORE__FLT_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__FLT_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::FLT_MIN", strlen("SPVM::CORE::FLT_MIN"));
+    op_sub_SPVM__CORE__FLT_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__INFINITYF = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INFINITYF", strlen("SPVM::CORE::INFINITYF"));
+    op_sub_SPVM__CORE__INFINITYF->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITYF;
+    SPVM_OP* op_sub_SPVM__CORE__INFINITY = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INFINITY", strlen("SPVM::CORE::INFINITY"));
+    op_sub_SPVM__CORE__INFINITY->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INFINITY;
+    SPVM_OP* op_sub_SPVM__CORE__INT8_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT8_MIN", strlen("SPVM::CORE::INT8_MIN"));
+    op_sub_SPVM__CORE__INT8_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__INT8_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT8_MAX", strlen("SPVM::CORE::INT8_MAX"));
+    op_sub_SPVM__CORE__INT8_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__INT16_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT16_MIN", strlen("SPVM::CORE::INT16_MIN"));
+    op_sub_SPVM__CORE__INT16_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__INT16_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT16_MAX", strlen("SPVM::CORE::INT16_MAX"));
+    op_sub_SPVM__CORE__INT16_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__INT32_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT32_MIN", strlen("SPVM::CORE::INT32_MIN"));
+    op_sub_SPVM__CORE__INT32_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__INT32_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT32_MAX", strlen("SPVM::CORE::INT32_MAX"));
+    op_sub_SPVM__CORE__INT32_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__INT64_MIN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT64_MIN", strlen("SPVM::CORE::INT64_MIN"));
+    op_sub_SPVM__CORE__INT64_MIN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
+    SPVM_OP* op_sub_SPVM__CORE__INT64_MAX = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::INT64_MAX", strlen("SPVM::CORE::INT64_MAX"));
+    op_sub_SPVM__CORE__INT64_MAX->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
+    SPVM_OP* op_sub_SPVM__CORE__NANF = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::NANF", strlen("SPVM::CORE::NANF"));
+    op_sub_SPVM__CORE__NANF->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__NANF;
+    SPVM_OP* op_sub_SPVM__CORE__NAN = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::NAN", strlen("SPVM::CORE::NAN"));
+    op_sub_SPVM__CORE__NAN->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__NAN;
+    SPVM_OP* op_sub_SPVM__CORE__PI = SPVM_HASH_fetch(compiler->op_sub_symtable, "SPVM::CORE::PI", strlen("SPVM::CORE::PI"));
+    op_sub_SPVM__CORE__PI->uv.sub->native_address = SPVM_NATIVE_SPVM__CORE__PI;
   }
   
   // Create run-time
