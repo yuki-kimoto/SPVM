@@ -103,8 +103,6 @@ struct SPVM_compiler {
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
-  
-  SPVM_RUNTIME* runtime;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
