@@ -297,7 +297,6 @@ int main(int argc, char *argv[]) {
   strncpy(start_sub_name, start_package_name, start_package_name_length);
   strncpy(start_sub_name + start_package_name_length, "::main", 6);
   start_sub_name[start_sub_name_length] = '\0';
-  compiler->start_sub_name = start_sub_name;
 
   SPVM_LIST_push(compiler->module_include_pathes, "lib");
   SPVM_LIST_push(compiler->module_include_pathes, "solo/lib");

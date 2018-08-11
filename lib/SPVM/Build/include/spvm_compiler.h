@@ -95,9 +95,6 @@ struct SPVM_compiler {
   // AST grammar
   SPVM_OP* op_grammar;
   
-  // Entry point subroutine name
-  const char* start_sub_name;
-  
   // Syntax error count
   int32_t error_count;
   
