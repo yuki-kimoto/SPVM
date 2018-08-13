@@ -48,8 +48,7 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
   
   int32_t exception_flag = 0;
   if (sub->have_native_desc) {
@@ -81,8 +80,7 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine is Precompile
   assert(sub->is_compiled);
@@ -100,8 +98,7 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine is native
   assert(sub->have_native_desc);
@@ -119,8 +116,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_COMPILER* compiler = runtime->compiler;
 
   // Subroutine
-  SPVM_OP* op_sub = SPVM_LIST_fetch(compiler->op_subs, sub_id);
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
@@ -2020,8 +2016,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
 
         // Declare subroutine
-        SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
-        SPVM_SUB* decl_sub = op_sub_decl->uv.sub;
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
@@ -2071,15 +2066,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         if (exception_flag) {
           exception_flag = 0;
           
-          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-          SPVM_SUB* sub = op_sub->uv.sub;
+          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
-          int32_t line = op_sub->line + rel_line;
+          int32_t line = sub->op_sub->line + rel_line;
           
           const char* sub_name = sub->op_name->uv.name;
           const char* package_name = sub->op_package->uv.package->op_name->uv.name;
-          const char* file = op_sub->file;
+          const char* file = sub->op_sub->file;
           
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
@@ -2090,15 +2084,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
-          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-          SPVM_SUB* sub = op_sub->uv.sub;
+          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
-          int32_t line = op_sub->line + rel_line;
+          int32_t line = sub->op_sub->line + rel_line;
           
           const char* sub_name = sub->op_name->uv.name;
           const char* package_name = sub->op_package->uv.package->op_name->uv.name;
-          const char* file = op_sub->file;
+          const char* file = sub->op_sub->file;
 
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));

@@ -10,6 +10,7 @@ enum {
 
 // Method information
 struct SPVM_sub {
+  SPVM_OP* op_sub;
   void* native_address;
   void* precompile_address;
   SPVM_OP* op_name;

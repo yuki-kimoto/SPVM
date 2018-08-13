@@ -706,7 +706,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
   assert(op_package);
   
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_LIST* op_subs = package->op_subs;
+  SPVM_LIST* subs = package->subs;
   
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_build_head(compiler, string_buffer);
@@ -715,9 +715,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "// Function Declarations\n");
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
+    for (sub_index = 0; sub_index < subs->length; sub_index++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       const char* sub_name = sub->op_name->uv.name;
       if (sub->have_precompile_desc) {
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "// [SIG]");
@@ -734,9 +733,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "// Function Implementations\n");
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < op_subs->length; sub_index++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
+    for (sub_index = 0; sub_index < subs->length; sub_index++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       const char* sub_name = sub->op_name->uv.name;
       if (sub->have_precompile_desc) {
         SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, package_name, sub_name);
@@ -805,8 +803,7 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
   assert(sub->have_precompile_desc);
   
@@ -837,8 +834,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
@@ -2574,8 +2570,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, rel_id);
         int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
 
-        SPVM_OP* op_sub_decl = SPVM_LIST_fetch(compiler->op_subs, decl_sub_id);
-        SPVM_SUB* decl_sub = op_sub_decl->uv.sub;
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
@@ -2786,15 +2781,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
-        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-        SPVM_SUB* sub = op_sub->uv.sub;
+        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
-        int32_t line = op_sub->line + rel_line;
+        int32_t line = sub->op_sub->line + rel_line;
         
         const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
-        const char* file = op_sub->file;
+        const char* file = sub->op_sub->file;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    const char* sub_package_name = \"");
@@ -2819,15 +2813,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
-        SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, opcode->operand1);
-        SPVM_SUB* sub = op_sub->uv.sub;
+        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
-        int32_t line = op_sub->line + rel_line;
+        int32_t line = sub->op_sub->line + rel_line;
         
         const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
-        const char* file = op_sub->file;
+        const char* file = sub->op_sub->file;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    const char* sub_package_name = \"");

@@ -18,8 +18,8 @@ struct SPVM_package {
   SPVM_HASH* op_field_symtable;
   SPVM_LIST* op_package_vars;
   SPVM_HASH* op_package_var_symtable;
-  SPVM_LIST* op_subs;
-  SPVM_HASH* op_sub_symtable;
+  SPVM_LIST* subs;
+  SPVM_HASH* sub_symtable;
   SPVM_LIST* object_field_indexes;
   SPVM_LIST* sub_signatures;
   SPVM_HASH* sub_signature_symtable;
@@ -28,7 +28,7 @@ struct SPVM_package {
   SPVM_LIST* package_var_signatures;
   SPVM_HASH* package_var_signature_symtable;
   SPVM_HASH* has_interface_cache_symtable;
-  SPVM_OP* op_sub_destructor;
+  SPVM_SUB* sub_destructor;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;

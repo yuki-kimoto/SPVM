@@ -84,10 +84,10 @@ struct SPVM_compiler {
   SPVM_HASH* op_package_var_symtable;
 
   // Subroutine ops
-  SPVM_LIST* op_subs;
+  SPVM_LIST* subs;
   
   // Subroutine absolute name symbol table
-  SPVM_HASH* op_sub_symtable;
+  SPVM_HASH* sub_symtable;
 
   // Field ops
   SPVM_LIST* op_fields;

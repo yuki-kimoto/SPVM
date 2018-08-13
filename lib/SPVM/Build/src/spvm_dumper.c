@@ -213,9 +213,8 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
       }
       {
         int32_t j;
-        for (j = 0; j < package->op_subs->length; j++) {
-          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, j);
-          SPVM_SUB* sub = op_sub->uv.sub;
+        for (j = 0; j < package->subs->length; j++) {
+          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_sub(compiler, sub);
         }
@@ -245,9 +244,8 @@ void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* 
       
       {
         int32_t j;
-        for (j = 0; j < package->op_subs->length; j++) {
-          SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, j);
-          SPVM_SUB* sub = op_sub->uv.sub;
+        for (j = 0; j < package->subs->length; j++) {
+          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_sub_opcode_array(compiler, sub);
         }

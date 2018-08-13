@@ -1287,10 +1287,9 @@ get_subs(...)
   AV* av_subs = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
+    for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
       
-      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
 
       // Subroutine name
       const char* sub_name = sub->op_name->uv.name;
@@ -1357,10 +1356,9 @@ get_sub_names(...)
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < package->op_subs->length; sub_index++) {
+    for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
       
-      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, sub_index);
-      SPVM_SUB* sub = op_sub->uv.sub;
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       
       // Subroutine name
       const char* sub_name = sub->op_name->uv.name;
@@ -1609,8 +1607,7 @@ bind_sub(...)
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Set native address to subroutine
-  SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, native_sub_name, strlen(native_sub_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, native_sub_name, strlen(native_sub_name));
   
   sub->native_address = native_address;
   
@@ -1668,8 +1665,7 @@ bind_sub(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
-  SPVM_SUB* sub = op_sub->uv.sub;
+  SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
   
   sub->precompile_address = sub_precompile_address;
   sub->is_compiled = 1;
@@ -1728,11 +1724,10 @@ call_sub(...)
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
   SPVM_PACKAGE* package = op_package->uv.package;
-  SPVM_OP* op_sub = SPVM_HASH_fetch(package->op_sub_symtable, sub_name, strlen(sub_name));
-  if (op_sub == NULL) {
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  if (sub == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
-  SPVM_SUB* sub = op_sub->uv.sub;
   const char* sub_signature = sub->signature;
   int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
   if (sub_id < 0) {

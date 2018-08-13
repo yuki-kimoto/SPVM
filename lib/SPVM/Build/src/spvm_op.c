@@ -1018,8 +1018,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_SUB: {
       SPVM_CALL_SUB* call_sub = op->uv.call_sub;
       const char* abs_name = call_sub->sub->abs_name;
-      SPVM_OP* op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, abs_name, strlen(abs_name));
-      SPVM_SUB* sub = op_sub->uv.sub;
+      SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, abs_name, strlen(abs_name));
       type = sub->op_return_type->uv.type;
       break;
     }
@@ -1267,14 +1266,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_LIST_push(package->op_fields, op_decl);
     }
     else if (op_decl->id == SPVM_OP_C_ID_SUB) {
-      SPVM_LIST_push(package->op_subs, op_decl);
+      SPVM_LIST_push(package->subs, op_decl->uv.sub);
     }
     else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
       SPVM_OP* op_enum_block = op_decl->first;
       SPVM_OP* op_enumeration_values = op_enum_block->first;
       SPVM_OP* op_sub = op_enumeration_values->first;
       while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
-        SPVM_LIST_push(package->op_subs, op_sub);
+        SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
     }
     else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
@@ -1368,10 +1367,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Subroutine declarations
   {
     int32_t i;
-    for (i = 0; i < package->op_subs->length; i++) {
-      SPVM_OP* op_sub = SPVM_LIST_fetch(package->op_subs, i);
+    for (i = 0; i < package->subs->length; i++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
 
-      SPVM_SUB* sub = op_sub->uv.sub;
       sub->rel_id = i;
       
       SPVM_OP* op_name_sub = sub->op_name;
@@ -1386,7 +1384,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_arg_first_type = NULL;
         if (op_arg_first->uv.my->op_type) {
           if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
-            op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+            op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, sub->op_sub->file, sub->op_sub->line);
             op_arg_first_type->uv.type = op_type->uv.type;
             op_arg_first->uv.my->op_type = op_arg_first_type;
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
@@ -1396,7 +1394,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         else {
-          op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_sub->file, op_sub->line);
+          op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, sub->op_sub->file, sub->op_sub->line);
           op_arg_first_type->uv.type = op_type->uv.type;
           op_arg_first->uv.my->op_type = op_arg_first_type;
         }
@@ -1407,22 +1405,22 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       // Subroutine in interface package must be method
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-        SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", op_sub->file, op_sub->line);
+        SPVM_yyerror_format(compiler, "Subroutine in interface package must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
       }
       
       // If Subroutine is anon, sub must be method
       if (strlen(sub_name) == 0 && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-        SPVM_yyerror_format(compiler, "Anon subroutine must be method at %s line %d\n", op_sub->file, op_sub->line);
+        SPVM_yyerror_format(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
       }
       
       
-      SPVM_OP* found_op_sub = SPVM_HASH_fetch(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+      SPVM_SUB* found_sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
       
-      if (found_op_sub) {
-        SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, op_sub->file, op_sub->line);
+      if (found_sub) {
+        SPVM_yyerror_format(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, sub->op_sub->file, sub->op_sub->line);
       }
-      else if (package->op_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-        SPVM_yyerror_format(compiler, "Too many sub declarations at %s line %d\n", sub_name, op_sub->file, op_sub->line);
+      else if (package->subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+        SPVM_yyerror_format(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
         
       }
       // Unknown sub
@@ -1433,17 +1431,17 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         sub->op_package = op_package;
         
         if (sub->is_destructor) {
-          package->op_sub_destructor = op_sub;
+          package->sub_destructor = sub;
         }
         
-        assert(op_sub->file);
+        assert(sub->op_sub->file);
         
-        sub->file_name = op_sub->file;
+        sub->file_name = sub->op_sub->file;
         
-        SPVM_LIST_push(compiler->op_subs, op_sub);
-        SPVM_HASH_insert(compiler->op_sub_symtable, sub_abs_name, strlen(sub_abs_name), op_sub);
+        SPVM_LIST_push(compiler->subs, sub);
+        SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
         
-        SPVM_HASH_insert(package->op_sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), op_sub);
+        SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
       }
     }
   }
@@ -1756,7 +1754,9 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   
   // Save block
   sub->op_block = op_block;
-
+  
+  sub->op_sub = op_sub;
+  
   op_sub->uv.sub = sub;
   
   return op_sub;
