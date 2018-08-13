@@ -66,10 +66,10 @@ struct SPVM_compiler {
   SPVM_LIST* op_types;
 
   // Packages
-  SPVM_LIST* op_packages;
+  SPVM_LIST* packages;
   
   // OP package symtable
-  SPVM_HASH* op_package_symtable;
+  SPVM_HASH* package_symtable;
   
   // Single types
   SPVM_LIST* basic_types;

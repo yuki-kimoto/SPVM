@@ -11,12 +11,12 @@ enum {
 // Method information
 struct SPVM_sub {
   SPVM_OP* op_sub;
+  SPVM_PACKAGE* package;
   void* native_address;
   void* precompile_address;
   SPVM_OP* op_name;
   SPVM_OP* op_return_type;
   SPVM_OP* op_block;
-  SPVM_OP* op_package;
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;
   SPVM_LIST* object_arg_ids;

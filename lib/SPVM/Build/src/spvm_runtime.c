@@ -123,8 +123,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   // Package
-  SPVM_OP* op_package = sub->op_package;
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = sub->package;
 
   // Operation codes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
@@ -2072,7 +2071,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->op_sub->line + rel_line;
           
           const char* sub_name = sub->op_name->uv.name;
-          const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+          const char* package_name = sub->package->op_name->uv.name;
           const char* file = sub->op_sub->file;
           
           // Exception stack trace
@@ -2090,7 +2089,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->op_sub->line + rel_line;
           
           const char* sub_name = sub->op_name->uv.name;
-          const char* package_name = sub->op_package->uv.package->op_name->uv.name;
+          const char* package_name = sub->package->op_name->uv.name;
           const char* file = sub->op_sub->file;
 
           // Exception stack trace

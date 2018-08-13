@@ -117,16 +117,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   int32_t sub_id = 0;
   {
     int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      SPVM_LIST* subs = op_package->uv.package->subs;
+    for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+      SPVM_LIST* subs = package->subs;
       {
         int32_t sub_index;
         for (sub_index = 0; sub_index < subs->length; sub_index++) {
           
           SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
-          SPVM_OP* op_package = sub->op_package;
-          SPVM_PACKAGE* package = op_package->uv.package;
+          SPVM_PACKAGE* package = sub->package;
           SPVM_TYPE* package_type = package->op_type->uv.type;
           
           // Set subroutine id
@@ -892,9 +891,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             // valut_t array dimension must be 1
                             SPVM_BASIC_TYPE* basic_type = type->basic_type;
-                            SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-                            if (op_package) {
-                              SPVM_PACKAGE* package = op_package->uv.package;
+                            SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
+                            if (package) {
                               if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                                 if (type->dimension != 1) {
                                   SPVM_yyerror_format(compiler, "Can't create multi dimention array of valut_t type at %s line %d\n", op_cur->file, op_cur->line);
@@ -908,9 +906,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           // Object type
                           else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
-                            assert(op_package);
-                            SPVM_PACKAGE* package = op_package->uv.package;
+                            SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                             
                             if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                               SPVM_yyerror_format(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
@@ -922,7 +918,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_yyerror_format(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
                             }
                             else if (package->is_private) {
-                              if (strcmp(package->op_name->uv.name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                              if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
                                 SPVM_yyerror_format(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
                               }
                             }
@@ -1892,7 +1888,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CALL_SUB: {
                         
                         // Check sub name
-                        SPVM_OP_CHECKER_resolve_call_sub(compiler, op_cur, op_package);
+                        SPVM_OP_CHECKER_resolve_call_sub(compiler, op_cur, package->op_package);
                         
                         SPVM_OP* op_list_args = op_cur->last;
                         
@@ -1975,7 +1971,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
                         
                         // Check field name
-                        SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, op_package);
+                        SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, package->op_package);
                         if (!op_cur->uv.package_var_access->op_package_var) {
                           SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
                             op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
@@ -2000,9 +1996,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
-                        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                        SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                         
-                        if (!(type && op_package)) {
+                        if (!(type && package)) {
                           SPVM_yyerror_format(compiler, "Invalid invoker at %s line %d\n", op_cur->file, op_cur->line);
                           return;
                         }
@@ -2021,7 +2017,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (field->is_private) {
-                          if (strcmp(type->basic_type->name, sub->op_package->uv.package->op_name->uv.name) != 0) {
+                          if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
                             char* type_name = tmp_buffer;
                             SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
                             SPVM_yyerror_format(compiler, "Can't access to private field %s::%s at %s line %d\n",
@@ -2300,7 +2296,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           assert(sub->file_name);
           
           // Add op my if need
-          if (sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+          if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
             int32_t arg_index;
             for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
               SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
@@ -2436,7 +2432,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
     
     printf("\n[Packages]\n");
-    SPVM_DUMPER_dump_packages(compiler, compiler->op_packages);
+    SPVM_DUMPER_dump_packages(compiler, compiler->packages);
   }
 #endif
 }
@@ -2516,7 +2512,7 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_typ
         if (src_type_dimension == 0) {
           // Source basic type is value type
           SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
-          SPVM_PACKAGE* src_base_package = src_basic_type->op_package->uv.package;
+          SPVM_PACKAGE* src_base_package = src_basic_type->package;
           if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
             check_cast = 0;
           }
@@ -2542,13 +2538,11 @@ _Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_typ
           else {
             SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_basic_type_id);
             SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
-            SPVM_OP* op_dist_package = dist_basic_type->op_package;
-            SPVM_OP* op_src_package = src_basic_type->op_package;
+            SPVM_PACKAGE* dist_package = dist_basic_type->package;
+            SPVM_PACKAGE* src_package = src_basic_type->package;
             
             // Dist basic type and source basic type is package
-            if (op_dist_package && op_src_package) {
-              SPVM_PACKAGE* dist_package = op_dist_package->uv.package;
-              SPVM_PACKAGE* src_package = op_src_package->uv.package;
+            if (dist_package && src_package) {
               
               // Dist base type is interface
               if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
@@ -2715,9 +2709,9 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     if (type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
       
       // Unknonw package
-      SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
-      SPVM_OP* op_found_package = SPVM_HASH_fetch(op_package_symtable, basic_type_name, strlen(basic_type_name));
-      if (!op_found_package) {
+      SPVM_HASH* package_symtable = compiler->package_symtable;
+      SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, basic_type_name, strlen(basic_type_name));
+      if (!found_package) {
         SPVM_yyerror_format(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
       }
     }
@@ -2807,8 +2801,7 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   SPVM_OP* op_name = field_access->op_name;
   
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_term);
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
   const char* field_name = op_name->uv.name;
   
   SPVM_OP* found_op_field = SPVM_HASH_fetch(
@@ -2865,9 +2858,8 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
         basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_ANY_OBJECT;
       }
       else {
-        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-        if (op_package) {
-          SPVM_PACKAGE* package = op_package->uv.package;
+        SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
+        if (package) {
           if (package->category == SPVM_PACKAGE_C_CATEGORY_CLASS) {
             basic_type->category = SPVM_BASIC_TYPE_C_CATEGORY_NUMERIC;
           }
@@ -2883,7 +2875,7 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
-          basic_type->op_package = op_package;
+          basic_type->package = package;
         }
       }
     }
@@ -2892,30 +2884,29 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
 
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
   int32_t package_index;
-  for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-    SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
+  for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     
-    SPVM_PACKAGE* package = op_package->uv.package;
     const char* package_name = package->op_name->uv.name;
     
     // value_t package limitation
     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
       // Can't have subroutines
       if (package->subs->length > 0) {
-        SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", op_package->file, op_package->line);
+        SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       // Can't have package variables
       if (package->op_package_vars->length > 0) {
-        SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", op_package->file, op_package->line);
+        SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       
       // At least have one field
       if (package->op_fields->length == 0) {
-        SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", op_package->file, op_package->line);
+        SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       // Max fields length is 16
       else if (package->op_fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
-        SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", op_package->file, op_package->line);
+        SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       else {
         SPVM_LIST* op_fields = package->op_fields;
@@ -2965,11 +2956,11 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
             char* found_pos_ptr = strstr(package_name, tail_name);
             if (found_pos_ptr) {
               if (*(found_pos_ptr + tail_name_length) != '\0') {
-                SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+                SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, package->op_package->file, package->op_package->line);
               }
             }
             else {
-              SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, op_package->file, op_package->line);
+              SPVM_yyerror_format(compiler, "package name must end with %s at %s line %d\n", tail_name, package->op_package->file, package->op_package->line);
             }
           }
         }
@@ -2979,8 +2970,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // Check fields
     {
       int32_t field_index;
-      for (field_index = 0; field_index < op_package->uv.package->op_fields->length; field_index++) {
-        SPVM_OP* op_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, field_index);
+      for (field_index = 0; field_index < package->op_fields->length; field_index++) {
+        SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
         SPVM_FIELD* field = op_field->uv.field;
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
 
@@ -3001,8 +2992,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // valut_t can't become package variable
     {
       int32_t package_var_index;
-      for (package_var_index = 0; package_var_index < op_package->uv.package->op_package_vars->length; package_var_index++) {
-        SPVM_OP* op_package_var = SPVM_LIST_fetch(op_package->uv.package->op_package_vars, package_var_index);
+      for (package_var_index = 0; package_var_index < package->op_package_vars->length; package_var_index++) {
+        SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, package_var_index);
         SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, op_package_var);
         _Bool is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
         
@@ -3029,7 +3020,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           _Bool is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
           
           if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
-            arg_allow_count += arg_type->basic_type->op_package->uv.package->op_fields->length;
+            arg_allow_count += arg_type->basic_type->package->op_fields->length;
           }
           else {
             arg_allow_count++;
@@ -3049,8 +3040,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         
         const char* sub_signature = SPVM_OP_CHECKER_create_sub_signature(compiler, sub);
         sub->signature = sub_signature;
-        SPVM_LIST_push(sub->op_package->uv.package->sub_signatures, (char*)sub_signature);
-        SPVM_HASH_insert(sub->op_package->uv.package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
+        SPVM_LIST_push(sub->package->sub_signatures, (char*)sub_signature);
+        SPVM_HASH_insert(sub->package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
       }
     }
 

@@ -86,9 +86,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
   {
     int32_t package_index;
-    for (package_index = 0; package_index < compiler->op_packages->length; package_index++) {
-      SPVM_OP* op_package = SPVM_LIST_fetch(compiler->op_packages, package_index);
-      SPVM_PACKAGE* package = op_package->uv.package;
+    for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
       SPVM_LIST* subs = package->subs;
       {
         int32_t sub_index;
@@ -291,7 +290,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             
                             if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
-                              assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
+                              assert(!sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                               opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
@@ -312,16 +311,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               else if (is_arg_type_is_value_type) {
 
-                                SPVM_OP* op_package = arg_type->basic_type->op_package;
-                                assert(op_package);
+                                SPVM_PACKAGE* package = arg_type->basic_type->package;
+                                assert(package);
                                 
-                                SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                                SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
                                 assert(op_first_field);
                                 
                                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
                                 assert(field_type->dimension == 0);
                                 
-                                for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+                                for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
                                   switch (field_type->basic_type->id) {
                                     case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                       opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
@@ -420,7 +419,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         opcode.operand0 = var_id_out;
 
-                        if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                        if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                           opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
                           opcode.operand1 = call_sub->sub_rel_id;
                           opcode.operand2 = first_arg_var_id;
@@ -498,7 +497,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
                         int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                         
-                        int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                        int32_t unit = array_basic_type->package->op_fields->length;
                         int32_t offset = field->index;
 
                         opcode.operand0 = var_id_out;
@@ -559,7 +558,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
                           
-                          int32_t unit = invocant_type->basic_type->op_package->uv.package->op_fields->length;
+                          int32_t unit = invocant_type->basic_type->package->op_fields->length;
                           int32_t offset = field->index;
 
                           opcode.operand0 = var_id_out;
@@ -661,9 +660,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         _Bool is_value_t_array = 0;
                         SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
-                        SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, array_basic_type->name, strlen(array_basic_type->name));
-                        if (op_package) {
-                          SPVM_PACKAGE* package = op_package->uv.package;
+                        SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
+                        if (package) {
                           if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                             assert(array_type->dimension == 1);
                             is_value_t_array = 1;
@@ -671,7 +669,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         
                         if (is_value_t_array) {
-                          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
                           
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_first_field);
                           
@@ -703,7 +701,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
-                          int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                          int32_t unit = array_basic_type->package->op_fields->length;
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = index_term_array;
@@ -817,7 +815,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         _Bool is_value_t_array = SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
 
                         if (is_value_t_array) {
-                          SPVM_OP* op_first_field = SPVM_LIST_fetch(src_type->basic_type->op_package->uv.package->op_fields, 0);
+                          SPVM_OP* op_first_field = SPVM_LIST_fetch(src_type->basic_type->package->op_fields, 0);
                         
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_first_field);
 
@@ -846,7 +844,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
-                          int32_t unit = src_type->basic_type->op_package->uv.package->op_fields->length;
+                          int32_t unit = src_type->basic_type->package->op_fields->length;
                           
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -1765,9 +1763,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   _Bool is_value_t_array = 0;
                                   
                                   SPVM_BASIC_TYPE* basic_type = type->basic_type;
-                                  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-                                  if (op_package) {
-                                    SPVM_PACKAGE* package = op_package->uv.package;
+                                  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
+                                  if (package) {
                                     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                                       assert(type->dimension == 1);
                                       is_value_t_array = 1;
@@ -1851,16 +1848,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         // Value type
                         if (type_dist_is_value_type) {
-                          SPVM_OP* op_package = type_dist->basic_type->op_package;
-                          assert(op_package);
+                          SPVM_PACKAGE* package = type_dist->basic_type->package;
+                          assert(package);
                           
-                          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
                           assert(op_first_field);
                           
                           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
                           assert(field_type->dimension == 0);
                           
-                          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+                          for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -2101,9 +2098,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       _Bool is_value_t_array = 0;
                       SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
-                      SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, array_basic_type->name, strlen(array_basic_type->name));
-                      if (op_package) {
-                        SPVM_PACKAGE* package = op_package->uv.package;
+                      SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
+                      if (package) {
                         if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                           assert(array_type->dimension == 1);
                           is_value_t_array = 1;
@@ -2111,7 +2107,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       if (is_value_t_array) {
-                        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
                       
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_first_field);
 
@@ -2141,7 +2137,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t index_term_array = SPVM_OP_get_my_var_id(compiler, op_term_array);
                         int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
                         int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
-                        int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                        int32_t unit = array_basic_type->package->op_fields->length;
                         
                         opcode.operand0 = index_term_array;
                         opcode.operand1 = var_id_index;
@@ -2261,7 +2257,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
                         int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                         
-                        int32_t unit = invocant_type->basic_type->op_package->uv.package->op_fields->length;
+                        int32_t unit = invocant_type->basic_type->package->op_fields->length;
                         int32_t offset = field->index;
 
                         opcode.operand0 = var_id_invocant;
@@ -2406,7 +2402,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                       int32_t var_id_index = SPVM_OP_get_my_var_id(compiler, op_term_index);
 
-                      int32_t unit = array_basic_type->op_package->uv.package->op_fields->length;
+                      int32_t unit = array_basic_type->package->op_fields->length;
                       int32_t offset = field->index;
                       
                       opcode.operand0 = var_id_invocant;
@@ -3195,7 +3191,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
                           if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
-                            assert(!sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
+                            assert(!sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
                             opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF;
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
@@ -3215,16 +3211,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             else if (is_arg_type_is_value_type) {
-                              SPVM_OP* op_package = arg_type->basic_type->op_package;
-                              assert(op_package);
+                              SPVM_PACKAGE* package = arg_type->basic_type->package;
+                              assert(package);
                               
-                              SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+                              SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
                               assert(op_first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
                               assert(field_type->dimension == 0);
                               
-                              for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+                              for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
                                 switch (field_type->basic_type->id) {
                                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                     opcode.id = SPVM_OPCODE_C_ID_PUSH_ARG_BYTE;
@@ -3311,7 +3307,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
-                      if (sub_call_sub->op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                      if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         opcode.id = SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD;
                         opcode.operand1 = call_sub->sub_rel_id;
                         opcode.operand2 = first_arg_var_id;
@@ -3446,7 +3442,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
   printf("\n[OP codes]\n");
-  SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->op_packages);
+  SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->packages);
 #endif
   
 }

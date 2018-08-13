@@ -69,9 +69,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             assert(package_name);
             
-            SPVM_OP* found_op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+            SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
             
-            if (found_op_package) {
+            if (found_package) {
               continue;
             }
             else {

@@ -178,14 +178,12 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants
   }
 }
 
-void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) {
+void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
   {
     int32_t i;
-    for (i = 0; i < op_packages->length; i++) {
+    for (i = 0; i < packages->length; i++) {
       printf("package[%" PRId32 "]\n", i);
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, i);
-      SPVM_PACKAGE* package = op_package->uv.package;
-      
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(packages, i);
       
       if (package->op_name) {
         printf("  name => \"%s\"\n", package->op_name->uv.name);
@@ -223,13 +221,12 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) 
   }
 }
 
-void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* op_packages) {
+void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
   {
     int32_t i;
-    for (i = 0; i < op_packages->length; i++) {
+    for (i = 0; i < packages->length; i++) {
       printf("package[%" PRId32 "]\n", i);
-      SPVM_OP* op_package = SPVM_LIST_fetch(op_packages, i);
-      SPVM_PACKAGE* package = op_package->uv.package;
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(packages, i);
       
       if (package->op_name) {
         printf("  name => \"%s\"\n", package->op_name->uv.name);

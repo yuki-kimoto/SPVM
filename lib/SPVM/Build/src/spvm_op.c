@@ -1209,11 +1209,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_yyerror_format(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
 
-  SPVM_HASH* op_package_symtable = compiler->op_package_symtable;
+  SPVM_HASH* package_symtable = compiler->package_symtable;
 
   // Redeclaration package error
-  SPVM_OP* found_op_package = SPVM_HASH_fetch(op_package_symtable, package_name, strlen(package_name));
-  if (found_op_package) {
+  SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, package_name, strlen(package_name));
+  if (found_package) {
     SPVM_yyerror_format(compiler, "redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
     return NULL;
   }
@@ -1428,7 +1428,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         // Bind standard functions
         sub->abs_name = sub_abs_name;
         
-        sub->op_package = op_package;
+        sub->package = package;
         
         if (sub->is_destructor) {
           package->sub_destructor = sub;
@@ -1449,10 +1449,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Set package
   op_package->uv.package = package;
   
+  package->op_package = op_package;
+  
   // Add package
-  package->id = compiler->op_packages->length;
-  SPVM_LIST_push(compiler->op_packages, op_package);
-  SPVM_HASH_insert(compiler->op_package_symtable, package_name, strlen(package_name), op_package);
+  package->id = compiler->packages->length;
+  SPVM_LIST_push(compiler->packages, package);
+  SPVM_HASH_insert(compiler->package_symtable, package_name, strlen(package_name), package);
 
   return op_package;
 }

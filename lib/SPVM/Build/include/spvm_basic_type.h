@@ -38,7 +38,7 @@ struct SPVM_basic_type {
   const char* name;
   int32_t id;
   int32_t category;
-  SPVM_OP* op_package;
+  SPVM_PACKAGE* package;
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);

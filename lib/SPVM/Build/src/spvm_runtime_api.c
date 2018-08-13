@@ -771,8 +771,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
 
   // valut_t array dimension must be 1
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
   int32_t fields_length = package->op_fields->length;
   SPVM_OP* op_field_first = SPVM_LIST_fetch(package->op_fields, 0);
   int32_t field_basic_type_id = op_field_first->uv.field->op_type->uv.type->basic_type->id;
@@ -825,8 +824,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
-  SPVM_OP* op_package = basic_type->op_package;
-  if (!op_package) {
+  SPVM_PACKAGE* package = basic_type->package;
+  if (!package) {
     return NULL;
   }
 
@@ -834,7 +833,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  int32_t fields_length = op_package->uv.package->op_fields->length;
+  int32_t fields_length = package->op_fields->length;
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
 
   object->basic_type_id = basic_type->id;
@@ -846,7 +845,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (op_package->uv.package->sub_destructor) {
+  if (package->sub_destructor) {
     object->has_destructor = 1;
   }
   
@@ -861,8 +860,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
 
-  SPVM_OP* op_package = basic_type->op_package;
-  if (!op_package) {
+  SPVM_PACKAGE* package = basic_type->package;
+  if (!package) {
     return NULL;
   }
 
@@ -880,7 +879,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (op_package->uv.package->sub_destructor) {
+  if (package->sub_destructor) {
     object->has_destructor = 1;
   }
   
@@ -1014,10 +1013,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     SPVM_COMPILER* compiler = runtime->compiler;
 
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-    SPVM_OP* op_package = basic_type->op_package;
+    SPVM_PACKAGE* package = basic_type->package;
     _Bool is_pointer = 0;
-    if (op_package) {
-      if (op_package->uv.package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+    if (package) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
         is_pointer = 1;
       }
     }
@@ -1035,7 +1034,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     else if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT) {
-      SPVM_PACKAGE* package = op_package->uv.package;
       
       if (object->has_destructor) {
         if (object->in_destroy) {
@@ -1112,13 +1110,13 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Package
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
-  if (!op_package) {
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  if (!package) {
     return -1;
   }
   
   // Field
-  SPVM_FIELD* field = SPVM_HASH_fetch(op_package->uv.package->field_signature_symtable, signature, strlen(signature));
+  SPVM_FIELD* field = SPVM_HASH_fetch(package->field_signature_symtable, signature, strlen(signature));
   
   if (!field) {
     return -2;
@@ -1137,13 +1135,13 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   SPVM_COMPILER* compiler = runtime->compiler;
   
   // Package
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
-  if (!op_package) {
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  if (!package) {
     return -1;
   }
   
   // Field
-  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(op_package->uv.package->package_var_signature_symtable, signature, strlen(signature));
+  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_signature_symtable, signature, strlen(signature));
   
   if (!package_var) {
     return -2;
@@ -1160,12 +1158,10 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
-  if (op_package == NULL) {
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  if (package == NULL) {
     return -1;
   }
-  
-  SPVM_PACKAGE* package = op_package->uv.package;
   
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
@@ -1184,11 +1180,10 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, basic_type->name, strlen(basic_type->name));  
-  if (op_package == NULL) {
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));  
+  if (package == NULL) {
     return -1;
   }
-  SPVM_PACKAGE* package = op_package->uv.package;
   
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {

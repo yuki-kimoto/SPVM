@@ -701,11 +701,8 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
 }
 
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   
-  assert(op_package);
-  
-  SPVM_PACKAGE* package = op_package->uv.package;
   SPVM_LIST* subs = package->subs;
   
   // Head part - include and define
@@ -801,8 +798,7 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
   assert(sub->have_precompile_desc);
@@ -832,8 +828,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
-  SPVM_OP* op_package = SPVM_HASH_fetch(compiler->op_package_symtable, package_name, strlen(package_name));
-  SPVM_PACKAGE* package = op_package->uv.package;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   
   // Subroutine return type
@@ -849,7 +844,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   assert(sub->have_precompile_desc);
   
-  SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->op_package->uv.package->op_name->uv.name, sub->op_name->uv.name);
+  SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->package->op_name->uv.name, sub->op_name->uv.name);
 
   // Block start
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " {\n");
@@ -906,16 +901,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_STRING_BUFFER_add(compiler, string_buffer , " = NULL;\n");
       }
       else if (my_type_is_value_t) {
-        SPVM_OP* op_package = my_type->basic_type->op_package;
-        assert(op_package);
+        SPVM_PACKAGE* package = my_type->basic_type->package;
+        assert(package);
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
         assert(op_first_field);
         
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
         assert(field_type->dimension == 0);
 
-        for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
           switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -1046,16 +1041,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       // Value type
       else if (arg_type_is_value_t) {
-        SPVM_OP* op_package = arg_type->basic_type->op_package;
-        assert(op_package);
+        SPVM_PACKAGE* package = arg_type->basic_type->package;
+        assert(package);
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
         assert(op_first_field);
         
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
         assert(field_type->dimension == 0);
 
-        for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
           switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -1292,7 +1287,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (call_sub_index = 0; call_sub_index < sub->op_call_subs->length; call_sub_index++) {
       SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, call_sub_index);
       SPVM_SUB* sub = op_call_sub->uv.call_sub->sub;
-      const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
+      const char* sub_package_name = sub->package->op_name->uv.name;
       const char* sub_signature = sub->signature;
       const char* sub_name = sub->op_name->uv.name;
       
@@ -2592,7 +2587,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t call_sub_id = ");
-          SPVM_STRING_BUFFER_add_sub_id_name(compiler, string_buffer , decl_sub->op_package->uv.package->op_name->uv.name, decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add_sub_id_name(compiler, string_buffer , decl_sub->package->op_name->uv.name, decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
@@ -2604,7 +2599,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "\");\n");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    if (call_sub_id < 0) {\n");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->op_package->uv.package->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->package->op_name->uv.name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " ");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "\", 0);\n");
@@ -2618,7 +2613,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
 
         // Subroutine inline expantion in same package
-        if (decl_sub->op_package->uv.package->id == sub->op_package->uv.package->id && decl_sub->have_precompile_desc) {
+        if (decl_sub->package->id == sub->package->id && decl_sub->have_precompile_desc) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_PRECOMPILE_");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->abs_name);
           {
@@ -2634,7 +2629,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
         }
         // Inline expansion is done in native core function
-        else if (strcmp(decl_sub->op_package->uv.package->op_name->uv.name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
+        else if (strcmp(decl_sub->package->op_name->uv.name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->op_name->uv.name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
@@ -2647,16 +2642,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // Call subroutine
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    if (!exception_flag) {\n");
         if (decl_sub_return_type_is_value_type) {
-          SPVM_OP* op_package = decl_sub_return_type->basic_type->op_package;
-          assert(op_package);
+          SPVM_PACKAGE* package = decl_sub_return_type->basic_type->package;
+          assert(package);
           
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(op_package->uv.package->op_fields, 0);
+          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
           assert(op_first_field);
           
           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
           assert(field_type->dimension == 0);
 
-          for (int32_t offset = 0; offset < op_package->uv.package->op_fields->length; offset++) {
+          for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
             switch (field_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 SPVM_STRING_BUFFER_add(compiler, string_buffer , "      ");
@@ -2786,7 +2781,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = sub->op_sub->line + rel_line;
         
-        const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_package_name = sub->package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
         const char* file = sub->op_sub->file;
         
@@ -2818,7 +2813,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_line = opcode->operand2;
         int32_t line = sub->op_sub->line + rel_line;
         
-        const char* sub_package_name = sub->op_package->uv.package->op_name->uv.name;
+        const char* sub_package_name = sub->package->op_name->uv.name;
         const char* sub_name = sub->op_name->uv.name;
         const char* file = sub->op_sub->file;
         
