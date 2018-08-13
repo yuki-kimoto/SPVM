@@ -24,8 +24,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   // Package variables
-  package->op_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   package->sub_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->sub_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
@@ -37,8 +37,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  package->op_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return package;

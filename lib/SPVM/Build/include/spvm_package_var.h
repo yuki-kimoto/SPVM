@@ -5,7 +5,8 @@
 
 // Field information
 struct SPVM_package_var {
-  SPVM_OP* op_package;
+  SPVM_OP* op_package_var;
+  SPVM_PACKAGE* package;
   SPVM_OP* op_var;
   SPVM_OP* op_type;
   int32_t id;

@@ -1972,7 +1972,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Check field name
                         SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, package->op_package);
-                        if (!op_cur->uv.package_var_access->op_package_var) {
+                        if (!op_cur->uv.package_var_access->package_var) {
                           SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
                             op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                           
@@ -2827,10 +2827,10 @@ void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP
     abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
   }
   
-  SPVM_OP* op_package_var = SPVM_HASH_fetch(compiler->op_package_var_symtable, abs_name, strlen(abs_name));
+  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(compiler->package_var_symtable, abs_name, strlen(abs_name));
   
-  if (op_package_var) {
-    op_package_var_access->uv.package_var_access->op_package_var = op_package_var;
+  if (package_var) {
+    op_package_var_access->uv.package_var_access->package_var = package_var;
   }
 }
 
@@ -2896,7 +2896,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_yyerror_format(compiler, "value_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       // Can't have package variables
-      if (package->op_package_vars->length > 0) {
+      if (package->package_vars->length > 0) {
         SPVM_yyerror_format(compiler, "value_t package can't have package variables at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       
@@ -2992,13 +2992,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // valut_t can't become package variable
     {
       int32_t package_var_index;
-      for (package_var_index = 0; package_var_index < package->op_package_vars->length; package_var_index++) {
-        SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, package_var_index);
-        SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, op_package_var);
+      for (package_var_index = 0; package_var_index < package->package_vars->length; package_var_index++) {
+        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, package_var_index);
+        SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, package_var->op_package_var);
         _Bool is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
         
         if (is_value_t) {
-          SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", op_package_var->file, op_package_var->line);
+          SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
         }
       }
     }
@@ -3062,14 +3062,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // Register package_var signature
     {
       int32_t i;
-      for (i = 0; i < package->op_package_vars->length; i++) {
-        SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, i);
-        SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
+      for (i = 0; i < package->package_vars->length; i++) {
+        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
         
         const char* package_var_signature = SPVM_OP_CHECKER_create_package_var_signature(compiler, package_var);
         package_var->signature = package_var_signature;
-        SPVM_LIST_push(package_var->op_package->uv.package->package_var_signatures, (char*)package_var_signature);
-        SPVM_HASH_insert(package_var->op_package->uv.package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
+        SPVM_LIST_push(package_var->package->package_var_signatures, (char*)package_var_signature);
+        SPVM_HASH_insert(package_var->package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
       }
     }
 

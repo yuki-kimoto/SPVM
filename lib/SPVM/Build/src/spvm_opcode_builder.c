@@ -1966,7 +1966,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                        int32_t package_var_access_id = package_var_access->op_package_var->uv.package_var->id;
+                        int32_t package_var_access_id = package_var_access->package_var->id;
                         opcode.id = SPVM_OPCODE_C_ID_WIDE;
                         opcode.operand3 = SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF - 255;
                         opcode.operand0 = package_var_access->sub_rel_id;
@@ -2014,7 +2014,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand3 = SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT - 255;
                         }
                                           
-                        int32_t package_var_access_id = package_var_access->op_package_var->uv.package_var->id;
+                        int32_t package_var_access_id = package_var_access->package_var->id;
                         int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
                         
                         opcode.operand0 = package_var_access->sub_rel_id;

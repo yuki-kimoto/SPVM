@@ -990,7 +990,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
-      SPVM_PACKAGE_VAR* package_var = op->uv.package_var_access->op_package_var->uv.package_var;
+      SPVM_PACKAGE_VAR* package_var = op->uv.package_var_access->package_var;
       if (package_var->op_type) {
         type = package_var->op_type->uv.type;
       }
@@ -1280,7 +1280,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
-      SPVM_LIST_push(package->op_package_vars, op_decl);
+      SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
     }
     else if (op_decl->id == SPVM_OP_C_ID_USE) {
       // Static import
@@ -1332,34 +1332,32 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package variable declarations
   {
     int32_t i;
-    for (i = 0; i < package->op_package_vars->length; i++) {
-      SPVM_OP* op_package_var = SPVM_LIST_fetch(package->op_package_vars, i);
-      
-      SPVM_PACKAGE_VAR* package_var = op_package_var->uv.package_var;
+    for (i = 0; i < package->package_vars->length; i++) {
+      SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
       package_var->rel_id = i;
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_abs_name = SPVM_OP_create_abs_name(compiler, package_name, package_var_name);
       package_var->abs_name = package_var_abs_name;
       
-      SPVM_OP* found_op_package_var = SPVM_HASH_fetch(package->op_package_var_symtable, package_var_name, strlen(package_var_name));
+      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
       
-      if (found_op_package_var) {
-        SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, op_package_var->file, op_package_var->line);
+      if (found_package_var) {
+        SPVM_yyerror_format(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, package_var->op_package_var->file, package_var->op_package_var->line);
       }
-      else if (package->op_package_vars->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-        SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", op_package_var->file, op_package_var->line);
+      else if (package->package_vars->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+        SPVM_yyerror_format(compiler, "Too many package variable declarations at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
         
       }
       else {
         const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_name);
-        package_var->id = compiler->op_package_vars->length;
-        SPVM_LIST_push(compiler->op_package_vars, op_package_var);
-        SPVM_HASH_insert(compiler->op_package_var_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), op_package_var);
+        package_var->id = compiler->package_vars->length;
+        SPVM_LIST_push(compiler->package_vars, package_var);
+        SPVM_HASH_insert(compiler->package_var_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), package_var);
 
-        SPVM_HASH_insert(package->op_package_var_symtable, package_var_name, strlen(package_var_name), op_package_var);
+        SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
         
         // Add op package
-        package_var->op_package = op_package;
+        package_var->package = package;
       }
     }
   }
@@ -1541,6 +1539,8 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   package_var->op_var = op_var;
   package_var->op_type = op_type;
+  package_var->op_package_var = op_package_var;
+
   op_package_var->uv.package_var = package_var;
   
   return op_package_var;

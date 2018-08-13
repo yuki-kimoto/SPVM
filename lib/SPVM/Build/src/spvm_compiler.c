@@ -48,8 +48,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->op_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->op_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
@@ -81,7 +81,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_RUNTIME_API_set_runtime(env, runtime);
   
   // Initialize Package Variables
-  runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->op_package_vars->length + 1));
+  runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_vars->length + 1));
 
   runtime->mortal_stack_capacity = 1;
 

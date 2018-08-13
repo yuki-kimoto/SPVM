@@ -1245,8 +1245,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     int32_t package_var_access_index;
     for (package_var_access_index = 0; package_var_access_index < sub->op_package_var_accesses->length; package_var_access_index++) {
       SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, package_var_access_index);
-      SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-      const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+      SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+      const char* package_var_package_name = package_var->package->op_name->uv.name;
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_signature = package_var->signature;
       
@@ -3375,8 +3375,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           {
             int32_t rel_id = opcode->operand1;
             SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+            const char* package_var_package_name = package_var->package->op_name->uv.name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             char* package_var_access_type = NULL;
@@ -3418,8 +3418,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
             int32_t rel_id = opcode->operand1;
             SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+            const char* package_var_package_name = package_var->package->op_name->uv.name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3442,8 +3442,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           {
             int32_t rel_id = opcode->operand0;
             SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+            const char* package_var_package_name = package_var->package->op_name->uv.name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             char* package_var_access_type = NULL;
@@ -3485,8 +3485,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
             int32_t rel_id = opcode->operand0;
             SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+            const char* package_var_package_name = package_var->package->op_name->uv.name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3502,8 +3502,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
             int32_t rel_id = opcode->operand0;
             SPVM_OP* op_package_var_access = SPVM_LIST_fetch(sub->op_package_var_accesses, rel_id);
-            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->op_package_var->uv.package_var;
-            const char* package_var_package_name = package_var->op_package->uv.package->op_name->uv.name;
+            SPVM_PACKAGE_VAR* package_var = op_package_var_access->uv.package_var_access->package_var;
+            const char* package_var_package_name = package_var->package->op_name->uv.name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
