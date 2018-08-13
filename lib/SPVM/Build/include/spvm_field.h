@@ -5,7 +5,8 @@
 
 // Field information
 struct SPVM_field {
-  SPVM_OP* op_package;
+  SPVM_OP* op_field;
+  SPVM_PACKAGE* package;
   SPVM_OP* op_name;
   SPVM_OP* op_type;
   const char* abs_name;

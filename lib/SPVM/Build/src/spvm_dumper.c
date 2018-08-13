@@ -199,12 +199,11 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
       
       // Field information
       printf("  fields\n");
-      SPVM_LIST* op_fields = package->op_fields;
+      SPVM_LIST* fields = package->fields;
       {
         int32_t j;
-        for (j = 0; j < op_fields->length; j++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, j);
-          SPVM_FIELD* field = op_field->uv.field;
+        for (j = 0; j < fields->length; j++) {
+          SPVM_FIELD* field = SPVM_LIST_fetch(fields, j);
           printf("    field%" PRId32 "\n", j);
           SPVM_DUMPER_dump_field(compiler, field);
         }

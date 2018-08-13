@@ -20,8 +20,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_PACKAGE));
   
   // Fields
-  package->op_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->op_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   // Package variables
   package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

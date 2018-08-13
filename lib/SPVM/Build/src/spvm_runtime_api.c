@@ -772,9 +772,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   // valut_t array dimension must be 1
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
-  int32_t fields_length = package->op_fields->length;
-  SPVM_OP* op_field_first = SPVM_LIST_fetch(package->op_fields, 0);
-  int32_t field_basic_type_id = op_field_first->uv.field->op_type->uv.type->basic_type->id;
+  int32_t fields_length = package->fields->length;
+  SPVM_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
+  int32_t field_basic_type_id = field_first->op_type->uv.type->basic_type->id;
 
   int32_t unit_size;
   if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
@@ -833,7 +833,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_OBJECT* object = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  int32_t fields_length = package->op_fields->length;
+  int32_t fields_length = package->fields->length;
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
 
   object->basic_type_id = basic_type->id;

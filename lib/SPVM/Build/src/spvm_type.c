@@ -536,7 +536,7 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
     
     assert(package);
     
-    width = package->op_fields->length;
+    width = package->fields->length;
   }
   else {
     width = 1;

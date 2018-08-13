@@ -2078,7 +2078,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
                           SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
-                            field->op_package->uv.package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                            field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                           
                           break;
                         }
@@ -2804,13 +2804,13 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
   const char* field_name = op_name->uv.name;
   
-  SPVM_OP* found_op_field = SPVM_HASH_fetch(
-    package->op_field_symtable,
+  SPVM_FIELD* found_field = SPVM_HASH_fetch(
+    package->field_symtable,
     field_name,
     strlen(field_name)
   );
-  if (found_op_field) {
-    op_field_access->uv.field_access->field = found_op_field->uv.field;
+  if (found_field) {
+    op_field_access->uv.field_access->field = found_field;
   }
 }
 
@@ -2901,28 +2901,28 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
       
       // At least have one field
-      if (package->op_fields->length == 0) {
+      if (package->fields->length == 0) {
         SPVM_yyerror_format(compiler, "value_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       // Max fields length is 16
-      else if (package->op_fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
+      else if (package->fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
         SPVM_yyerror_format(compiler, "Too many fields at %s line %d\n", package->op_package->file, package->op_package->line);
       }
       else {
-        SPVM_LIST* op_fields = package->op_fields;
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(op_fields, 0);
-        SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, op_first_field);
+        SPVM_LIST* fields = package->fields;
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(fields, 0);
+        SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-          SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", op_first_field->file, op_first_field->line);
+          SPVM_yyerror_format(compiler, "value_t package must have numeric field at %s line %d\n", first_field->op_field->file, first_field->op_field->line);
         }
         else {
           int32_t field_index;
           _Bool numeric_field_error = 0;
-          for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-            SPVM_OP* op_field = SPVM_LIST_fetch(op_fields, field_index);
-            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+          for (field_index = 0; field_index < package->fields->length; field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_fetch(fields, field_index);
+            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
             if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-              SPVM_yyerror_format(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, op_field->file, op_field->line);
+              SPVM_yyerror_format(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, field->op_field->file, field->op_field->line);
               numeric_field_error = 1;
             }
           }
@@ -2931,22 +2931,22 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
             char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
             switch (first_field_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE:
-                sprintf(tail_name, "_b%d", op_fields->length);
+                sprintf(tail_name, "_b%d", fields->length);
                 break;
               case SPVM_BASIC_TYPE_C_ID_SHORT:
-                sprintf(tail_name, "_s%d", op_fields->length);
+                sprintf(tail_name, "_s%d", fields->length);
                 break;
               case SPVM_BASIC_TYPE_C_ID_INT:
-                sprintf(tail_name, "_i%d", op_fields->length);
+                sprintf(tail_name, "_i%d", fields->length);
                 break;
               case SPVM_BASIC_TYPE_C_ID_LONG:
-                sprintf(tail_name, "_l%d", op_fields->length);
+                sprintf(tail_name, "_l%d", fields->length);
                 break;
               case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                sprintf(tail_name, "_f%d", op_fields->length);
+                sprintf(tail_name, "_f%d", fields->length);
                 break;
               case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                sprintf(tail_name, "_d%d", op_fields->length);
+                sprintf(tail_name, "_d%d", fields->length);
                 break;
               default:
                 assert(0);
@@ -2970,15 +2970,14 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // Check fields
     {
       int32_t field_index;
-      for (field_index = 0; field_index < package->op_fields->length; field_index++) {
-        SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-        SPVM_FIELD* field = op_field->uv.field;
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field);
+      for (field_index = 0; field_index < package->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
         // valut_t can't become field
         _Bool is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
         if (is_value_t) {
-          SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", op_field->file, op_field->line);
+          SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
         }
         else {
           // Add object field indexes
@@ -3020,7 +3019,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           _Bool is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
           
           if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
-            arg_allow_count += arg_type->basic_type->package->op_fields->length;
+            arg_allow_count += arg_type->basic_type->package->fields->length;
           }
           else {
             arg_allow_count++;
@@ -3048,14 +3047,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     // Register field signature
     {
       int32_t i;
-      for (i = 0; i < package->op_fields->length; i++) {
-        SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
-        SPVM_FIELD* field = op_field->uv.field;
+      for (i = 0; i < package->fields->length; i++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
         
         const char* field_signature = SPVM_OP_CHECKER_create_field_signature(compiler, field);
         field->signature = field_signature;
-        SPVM_LIST_push(field->op_package->uv.package->field_signatures, (char*)field_signature);
-        SPVM_HASH_insert(field->op_package->uv.package->field_signature_symtable, field_signature, strlen(field_signature), field);
+        SPVM_LIST_push(field->package->field_signatures, (char*)field_signature);
+        SPVM_HASH_insert(field->package->field_signature_symtable, field_signature, strlen(field_signature), field);
       }
     }
 

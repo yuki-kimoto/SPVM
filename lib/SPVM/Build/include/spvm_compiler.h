@@ -90,10 +90,10 @@ struct SPVM_compiler {
   SPVM_HASH* sub_symtable;
 
   // Field ops
-  SPVM_LIST* op_fields;
+  SPVM_LIST* fields;
   
   // Field absolute name symbol table
-  SPVM_HASH* op_field_symtable;
+  SPVM_HASH* field_symtable;
 
   // Method signature
   SPVM_LIST* signatures;

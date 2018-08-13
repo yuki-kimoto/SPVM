@@ -650,7 +650,7 @@ void SPVM_CSOURCE_BUILDER_add_set_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUF
 
 void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_OP* op_field_access) {
   SPVM_FIELD* field = op_field_access->uv.field_access->field;
-  const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+  const char* field_package_name = field->package->op_name->uv.name;
   const char* field_name = field->op_name->uv.name;
 
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -676,7 +676,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
 
 void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_OP* op_field_access, int32_t in_index) {
   SPVM_FIELD* field = op_field_access->uv.field_access->field;
-  const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+  const char* field_package_name = field->package->op_name->uv.name;
   const char* field_name = field->op_name->uv.name;
 
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -904,13 +904,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE* package = my_type->basic_type->package;
         assert(package);
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-        assert(op_first_field);
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        assert(first_field);
         
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         assert(field_type->dimension == 0);
 
-        for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < package->fields->length; offset++) {
           switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -1044,13 +1044,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_PACKAGE* package = arg_type->basic_type->package;
         assert(package);
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-        assert(op_first_field);
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        assert(first_field);
         
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         assert(field_type->dimension == 0);
 
-        for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
+        for (int32_t offset = 0; offset < package->fields->length; offset++) {
           switch (field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
@@ -1205,7 +1205,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (field_access_index = 0; field_access_index < sub->op_field_accesses->length; field_access_index++) {
       SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, field_access_index);
       SPVM_FIELD* field = op_field_access->uv.field_access->field;
-      const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+      const char* field_package_name = field->package->op_name->uv.name;
       const char* field_signature = field->signature;
       const char* field_name = field->op_name->uv.name;
       
@@ -2394,7 +2394,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -2645,13 +2645,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_PACKAGE* package = decl_sub_return_type->basic_type->package;
           assert(package);
           
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-          assert(op_first_field);
+          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          assert(first_field);
           
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
           assert(field_type->dimension == 0);
 
-          for (int32_t offset = 0; offset < package->op_fields->length; offset++) {
+          for (int32_t offset = 0; offset < package->fields->length; offset++) {
             switch (field_type->basic_type->id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 SPVM_STRING_BUFFER_add(compiler, string_buffer , "      ");
@@ -3192,7 +3192,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand2;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3262,7 +3262,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3292,7 +3292,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
         SPVM_FIELD* field = op_field_access->uv.field_access->field;
-        const char* field_package_name = field->op_package->uv.package->op_name->uv.name;
+        const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");

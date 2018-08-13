@@ -1263,7 +1263,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
-      SPVM_LIST_push(package->op_fields, op_decl);
+      SPVM_LIST_push(package->fields, op_decl->uv.field);
     }
     else if (op_decl->id == SPVM_OP_C_ID_SUB) {
       SPVM_LIST_push(package->subs, op_decl->uv.sub);
@@ -1293,38 +1293,35 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Field declarations
   {
     int32_t i;
-    for (i = 0; i < package->op_fields->length; i++) {
+    for (i = 0; i < package->fields->length; i++) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
         SPVM_yyerror_format(compiler, "Pointer package can't have field at %s line %d\n", op_decl->file, op_decl->line);
         continue;
       }
 
-      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, i);
-      
-      SPVM_FIELD* field = op_field->uv.field;
+      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
       field->index = i;
       const char* field_name = field->op_name->uv.name;
       const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
       field->abs_name = field_abs_name;
       
-      SPVM_OP* found_op_field = SPVM_HASH_fetch(package->op_field_symtable, field_name, strlen(field_name));
+      SPVM_FIELD* found_field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
       
-      if (found_op_field) {
-        SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, op_field->file, op_field->line);
+      if (found_field) {
+        SPVM_yyerror_format(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, field->op_field->file, field->op_field->line);
       }
-      else if (package->op_fields->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-        SPVM_yyerror_format(compiler, "Too many field declarations at %s line %d\n", op_field->file, op_field->line);
-        
+      else if (package->fields->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+        SPVM_yyerror_format(compiler, "Too many field declarations at %s line %d\n", field->op_field->file, field->op_field->line);
       }
       else {
-        field->id = compiler->op_fields->length;
-        SPVM_LIST_push(compiler->op_fields, op_field);
-        SPVM_HASH_insert(compiler->op_field_symtable, field_abs_name, strlen(field_abs_name), op_field);
+        field->id = compiler->fields->length;
+        SPVM_LIST_push(compiler->fields, field);
+        SPVM_HASH_insert(compiler->field_symtable, field_abs_name, strlen(field_abs_name), field);
         
-        SPVM_HASH_insert(package->op_field_symtable, field_name, strlen(field_name), op_field);
+        SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
         
         // Add op package
-        field->op_package = op_package;
+        field->package = package;
       }
     }
   }
@@ -1600,6 +1597,8 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
         SPVM_yyerror_format(compiler, "Invalid field descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
   }
+  
+  field->op_field = op_field;
   
   return op_field;
 }

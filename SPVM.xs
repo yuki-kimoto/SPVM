@@ -169,19 +169,19 @@ set_elements(...)
           SPVM_PACKAGE* package = basic_type->package;
           assert(package);
           
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-          assert(op_first_field);
+          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          assert(first_field);
           
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
           assert(field_type->dimension == 0);
 
           void* elements = (void*)env->get_int_array_elements(env, array);
           
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t field_length = package->op_fields->length;
-          for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-            SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-            const char* field_name = op_field->uv.field->op_name->uv.name;
+          int32_t field_length = package->fields->length;
+          for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            const char* field_name = field->op_name->uv.name;
 
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -376,13 +376,13 @@ set_bin(...)
       SPVM_PACKAGE* package = basic_type->package;
       assert(package);
       
-      SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-      assert(op_first_field);
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      assert(first_field);
       
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       assert(field_type->dimension == 0);
 
-      int32_t field_length = package->op_fields->length;
+      int32_t field_length = package->fields->length;
       
       switch (field_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -584,19 +584,19 @@ set_element(...)
         SPVM_PACKAGE* package = basic_type->package;
         assert(package);
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-        assert(op_first_field);
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        assert(first_field);
         
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         assert(field_type->dimension == 0);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)SvRV(sv_value);
-        int32_t field_length = package->op_fields->length;
-        for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-          const char* field_name = op_field->uv.field->op_name->uv.name;
+        int32_t field_length = package->fields->length;
+        for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          const char* field_name = field->op_name->uv.name;
 
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -789,19 +789,19 @@ get_element(...)
       
       SPVM_PACKAGE* package = basic_type->package;
       
-      SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-      assert(op_first_field);
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      assert(first_field);
       
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       assert(field_type->dimension == 0);
 
       void* elements = (void*)env->get_int_array_elements(env, array);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      int32_t field_length = package->op_fields->length;
-      for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-        SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-        const char* field_name = op_field->uv.field->op_name->uv.name;
+      int32_t field_length = package->fields->length;
+      for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+        const char* field_name = field->op_name->uv.name;
 
         SV* sv_field_value;
         switch (field_type->basic_type->id) {
@@ -960,19 +960,19 @@ to_elements(...)
         
         SPVM_PACKAGE* package = basic_type->package;
         
-        SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-        assert(op_first_field);
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        assert(first_field);
         
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         assert(field_type->dimension == 0);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-        int32_t field_length = package->op_fields->length;
-        for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-          SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-          const char* field_name = op_field->uv.field->op_name->uv.name;
+        int32_t field_length = package->fields->length;
+        for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          const char* field_name = field->op_name->uv.name;
 
           SV* sv_field_value;
           switch (field_type->basic_type->id) {
@@ -1159,13 +1159,13 @@ to_bin(...)
       SPVM_PACKAGE* package = basic_type->package;
       assert(package);
       
-      SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-      assert(op_first_field);
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      assert(first_field);
       
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       assert(field_type->dimension == 0);
 
-      int32_t field_length = package->op_fields->length;
+      int32_t field_length = package->fields->length;
 
       switch (field_type->basic_type->id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -1820,15 +1820,15 @@ call_sub(...)
             SPVM_PACKAGE* package = arg_type->basic_type->package;
             assert(package);
             
-            SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-            assert(op_first_field);
+            SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+            assert(first_field);
             
-            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
             assert(field_type->dimension == 0);
             
-            for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-              SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-              const char* field_name = op_field->uv.field->op_name->uv.name;
+            for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+              SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+              const char* field_name = field->op_name->uv.name;
 
               SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
               SV* sv_field_value;
@@ -1882,7 +1882,7 @@ call_sub(...)
 
           ref_stack_ids[arg_index] = ref_stack_top;
 
-          int32_t fields_length = arg_type->basic_type->package->op_fields->length;
+          int32_t fields_length = arg_type->basic_type->package->fields->length;
           ref_stack_top += fields_length;
           arg_var_id++;
         }
@@ -1897,15 +1897,15 @@ call_sub(...)
           SPVM_PACKAGE* package = arg_type->basic_type->package;
           assert(package);
           
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-          assert(op_first_field);
+          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          assert(first_field);
           
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
           assert(field_type->dimension == 0);
           
-          for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-            SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-            const char* field_name = op_field->uv.field->op_name->uv.name;
+          for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            const char* field_name = field->op_name->uv.name;
 
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -1950,7 +1950,7 @@ call_sub(...)
                 assert(0);
             }
           }
-          arg_var_id += package->op_fields->length;
+          arg_var_id += package->fields->length;
         }
         else {
           croak("%dth argument must be hash reference", arg_index + 1);
@@ -2035,16 +2035,16 @@ call_sub(...)
     SPVM_PACKAGE* package = return_type->basic_type->package;
     assert(package);
     
-    SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-    assert(op_first_field);
+    SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+    assert(first_field);
     
-    SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+    SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
     assert(field_type->dimension == 0);
     
     HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-    for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-      SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-      const char* field_name = op_field->uv.field->op_name->uv.name;
+    for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+      const char* field_name = field->op_name->uv.name;
       
       SV* sv_field_value = NULL;
       switch (field_type->basic_type->id) {
@@ -2214,15 +2214,15 @@ call_sub(...)
           SPVM_PACKAGE* package = arg_type->basic_type->package;
           assert(package);
           
-          SPVM_OP* op_first_field = SPVM_LIST_fetch(package->op_fields, 0);
-          assert(op_first_field);
+          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          assert(first_field);
           
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_first_field);
+          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
           assert(field_type->dimension == 0);
           
-          for (int32_t field_index = 0; field_index < package->op_fields->length; field_index++) {
-            SPVM_OP* op_field = SPVM_LIST_fetch(package->op_fields, field_index);
-            const char* field_name = op_field->uv.field->op_name->uv.name;
+          for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            const char* field_name = field->op_name->uv.name;
             
             SV* sv_field_value;
             switch (field_type->basic_type->id) {
