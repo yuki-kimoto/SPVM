@@ -3025,7 +3025,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           int32_t case_index;
           for (case_index = 0; case_index < cases_length; case_index++) {
             SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, case_index);
-            int32_t match = op_case->uv.case_info->op_constant->uv.constant->value.ival;
+            int32_t match = op_case->uv.case_info->constant->value.ival;
             int32_t opcode_rel_index = op_case->uv.case_info->opcode_rel_index;
             
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "    case ");

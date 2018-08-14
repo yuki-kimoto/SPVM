@@ -434,6 +434,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           for (i = 0; i < length; i++) {
                             SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
                             SPVM_OP* op_constant = op_case->first;
+                            SPVM_CONSTANT* constant = op_constant->uv.constant;
 
                             if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
                               SPVM_yyerror_format(compiler, "case value must be constant at %s line %d\n", op_cur->file, op_cur->line);
@@ -443,7 +444,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
                               SPVM_yyerror_format(compiler, "case value must be int constant at %s line %d\n", op_case->file, op_case->line);
                             }
-                            op_case->uv.case_info->op_constant = op_constant;
+                            op_case->uv.case_info->constant = constant;
                           }
                         }
                         
