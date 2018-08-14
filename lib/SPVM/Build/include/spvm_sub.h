@@ -15,7 +15,7 @@ struct SPVM_sub {
   void* native_address;
   void* precompile_address;
   SPVM_OP* op_name;
-  SPVM_OP* op_return_type;
+  SPVM_TYPE* return_type;
   SPVM_OP* op_block;
   SPVM_OP* op_constant;
   SPVM_LIST* op_args;

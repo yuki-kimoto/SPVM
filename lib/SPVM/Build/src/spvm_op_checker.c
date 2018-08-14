@@ -40,7 +40,8 @@ void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM
   
   SPVM_TYPE* dist_type;
   if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_INT) {
-    dist_type = SPVM_TYPE_create_int_type(compiler);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_int_type(compiler, op_term->file, op_term->line);
+    dist_type = op_dist_type->uv.type;
   }
   else {
     return;
@@ -65,16 +66,20 @@ void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op
   
   SPVM_TYPE* dist_type;
   if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
-    dist_type = SPVM_TYPE_create_double_type(compiler);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_double_type(compiler, op_first->file, op_first->line);
+    dist_type = op_dist_type->uv.type;
   }
   else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT)) {
-    dist_type = SPVM_TYPE_create_float_type(compiler);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_float_type(compiler, op_first->file, op_first->line);
+    dist_type = op_dist_type->uv.type;
   }
   else if ((first_type->dimension == 0 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) || (last_type->dimension == 0 && last_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
-    dist_type = SPVM_TYPE_create_long_type(compiler);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_long_type(compiler, op_first->file, op_first->line);
+    dist_type = op_dist_type->uv.type;
   }
   else {
-    dist_type = SPVM_TYPE_create_int_type(compiler);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_int_type(compiler, op_first->file, op_first->line);
+    dist_type = op_dist_type->uv.type;
   }
   
   if (!(first_type->basic_type->id == dist_type->basic_type->id && first_type->dimension == dist_type->dimension)) {
@@ -1248,7 +1253,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         if (op_term) {
                           SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_term);
-                          SPVM_TYPE* sub_return_type = SPVM_OP_get_type(compiler, sub->op_return_type);
+                          SPVM_TYPE* sub_return_type = SPVM_OP_get_type(compiler, sub->return_type->op_type);
                           
                           _Bool is_invalid = 0;
                           
@@ -1259,7 +1264,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           // Undef
                           if (op_term->id == SPVM_OP_C_ID_UNDEF) {
-                            if (sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
+                            if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                               is_invalid = 1;
                             }
                             else {
@@ -1271,7 +1276,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (op_term->id == SPVM_OP_C_ID_CALL_SUB) {
                             SPVM_CALL_SUB* call_sub = op_term->uv.call_sub;
                             SPVM_SUB* sub = call_sub->sub;
-                            if (sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
+                            if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                               SPVM_yyerror_format(compiler, "Can't return value of void subroutine at %s line %d\n", op_cur->file, op_cur->line);
                             }
                           }
@@ -1283,7 +1288,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           // Empty
                           else {
-                            if (!(sub->op_return_type->uv.type->dimension == 0 && sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
+                            if (!(sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
                               is_invalid = 1;
                             }
                           }
@@ -3072,10 +3077,10 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
     length += 1;
 
     // Return type basic type
-    length += strlen(sub->op_return_type->uv.type->basic_type->name);
+    length += strlen(sub->return_type->basic_type->name);
     
     // Return type dimension
-    length += sub->op_return_type->uv.type->dimension * 2;
+    length += sub->return_type->dimension * 2;
     
     // )
     length += 1;
@@ -3127,11 +3132,11 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
     bufptr += 1;
 
     // Return type
-    memcpy(bufptr, sub->op_return_type->uv.type->basic_type->name, strlen(sub->op_return_type->uv.type->basic_type->name));
-    bufptr += strlen(sub->op_return_type->uv.type->basic_type->name);
+    memcpy(bufptr, sub->return_type->basic_type->name, strlen(sub->return_type->basic_type->name));
+    bufptr += strlen(sub->return_type->basic_type->name);
     
     int32_t dim_index;
-    for (dim_index = 0; dim_index < sub->op_return_type->uv.type->dimension; dim_index++) {
+    for (dim_index = 0; dim_index < sub->return_type->dimension; dim_index++) {
       memcpy(bufptr, "[]", 2);
       bufptr += 2;
     }

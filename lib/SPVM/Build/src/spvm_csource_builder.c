@@ -832,7 +832,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   
   // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+  SPVM_TYPE* sub_return_type = sub->return_type;
   
   int32_t sub_return_basic_type_id = sub_return_type->basic_type->id;
   
@@ -2567,7 +2567,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         
         // Declare subroutine return type
-        SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
+        SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         int32_t decl_sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         

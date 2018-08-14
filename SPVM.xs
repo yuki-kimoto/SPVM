@@ -1727,7 +1727,7 @@ call_sub(...)
     croak("Subroutine not found %s %s", package_name, sub_signature);
   }
 
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+  SPVM_TYPE* sub_return_type = sub->return_type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
@@ -2018,7 +2018,7 @@ call_sub(...)
   }
   
   // Return type id
-  SPVM_TYPE* return_type = sub->op_return_type->uv.type;
+  SPVM_TYPE* return_type = sub->return_type;
 
   int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);
   int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);

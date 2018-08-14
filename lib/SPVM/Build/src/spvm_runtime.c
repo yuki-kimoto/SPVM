@@ -119,7 +119,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+  SPVM_TYPE* sub_return_type = sub->return_type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   // Package
@@ -2017,7 +2017,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         
         // Declare subroutine return type
-        SPVM_TYPE* decl_sub_return_type = decl_sub->op_return_type->uv.type;
+        SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
         int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         

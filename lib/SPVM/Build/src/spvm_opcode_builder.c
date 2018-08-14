@@ -136,7 +136,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Check sub information
           assert(sub->id > -1);
           assert(sub->op_name);
-          assert(sub->op_return_type);
+          assert(sub->return_type);
           assert(sub->abs_name);
           assert(sub->file_name);
           
@@ -3167,7 +3167,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_SUB* sub_call_sub = SPVM_HASH_fetch(compiler->sub_symtable, call_sub_abs_name, strlen(call_sub_abs_name));
                     
-                    if (sub_call_sub->op_return_type->uv.type->dimension == 0 && sub_call_sub->op_return_type->uv.type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
+                    if (sub_call_sub->return_type->dimension == 0 && sub_call_sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                       int32_t first_arg_var_id = -1;
 
                       SPVM_OP* op_term_args = op_cur->last;
@@ -3340,15 +3340,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        if (sub->op_return_type->uv.type->dimension == 0) {
-                          switch (sub->op_return_type->uv.type->basic_type->id) {
+                        if (sub->return_type->dimension == 0) {
+                          switch (sub->return_type->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_BYTE:
                             case SPVM_BASIC_TYPE_C_ID_SHORT:
                             case SPVM_BASIC_TYPE_C_ID_INT:
                             case SPVM_BASIC_TYPE_C_ID_LONG:
                             case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                              SPVM_TYPE* sub_return_type = sub->op_return_type->uv.type;
+                              SPVM_TYPE* sub_return_type = sub->return_type;
                               opcode.id = SPVM_OPCODE_C_ID_RETURN;
                               break;
                             }

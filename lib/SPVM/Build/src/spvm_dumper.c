@@ -329,7 +329,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      return_type => ");
-    SPVM_TYPE_fprint_type_name(compiler, stdout, sub->op_return_type->uv.type->basic_type->id, sub->op_return_type->uv.type->dimension, sub->op_return_type->uv.type->flag);
+    SPVM_TYPE_fprint_type_name(compiler, stdout, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
     printf("\n");
     printf("      is_enum => %d\n", sub->is_enum);
     printf("      have_native_desc => %d\n", sub->have_native_desc);
