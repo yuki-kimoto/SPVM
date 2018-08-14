@@ -4,6 +4,7 @@
 #include "spvm_base.h"
 
 struct SPVM_my {
+  SPVM_OP* op_my;
   SPVM_OP* op_type;
   SPVM_OP* op_name;
   int32_t var_id;

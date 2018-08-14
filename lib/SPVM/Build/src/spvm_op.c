@@ -1734,12 +1734,15 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     SPVM_OP* op_my_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_my->file, op_my->line);
     SPVM_MY* my_tmp = SPVM_MY_new(compiler);
     op_my_tmp->uv.my = my_tmp;
+    
+    my->op_my = op_my;
   }
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);
     SPVM_yyerror_format(compiler, "Invalid lexical variable name %s at %s line %d\n", name, op_var->file, op_var->line);
-    
   }
+  
+  
   
   return op_var;
 }
