@@ -1278,15 +1278,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
 
   // Get sub id
-  if (sub->op_call_subs->length > 0) {
+  if (sub->info_call_subs->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Get sub id\n");
   }
   {
     SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
     int32_t call_sub_index;
-    for (call_sub_index = 0; call_sub_index < sub->op_call_subs->length; call_sub_index++) {
-      SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, call_sub_index);
-      SPVM_SUB* sub = op_call_sub->uv.call_sub->sub;
+    for (call_sub_index = 0; call_sub_index < sub->info_call_subs->length; call_sub_index++) {
+      SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, call_sub_index);
+      SPVM_SUB* sub = call_sub->sub;
       const char* sub_package_name = sub->package->op_name->uv.name;
       const char* sub_signature = sub->signature;
       const char* sub_name = sub->op_name->uv.name;
@@ -1887,8 +1887,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        SPVM_VALUE_long value = *(SPVM_VALUE_long*)&op_constant->uv.constant->value;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
+        SPVM_VALUE_long value = *(SPVM_VALUE_long*)&constant->value;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
         SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_long", opcode->operand0);
@@ -1907,8 +1907,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        SPVM_VALUE_double value = *(SPVM_VALUE_double*)&op_constant->uv.constant->value;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
+        SPVM_VALUE_double value = *(SPVM_VALUE_double*)&constant->value;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  ");
         SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "SPVM_VALUE_double", opcode->operand0);
@@ -2351,8 +2351,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        SPVM_CONSTANT* constant = op_constant->uv.constant;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
 
         const char* name = constant->value.oval;
         int32_t length = constant->string_length;
@@ -2562,8 +2561,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       {
         int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, rel_id);
-        int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
+        SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, rel_id);
+        int32_t decl_sub_id = call_sub->sub->id;
 
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         

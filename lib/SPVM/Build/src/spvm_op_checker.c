@@ -402,17 +402,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (add_constant) {
-                          if (sub->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          if (sub->info_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                             SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
                           }
-                          op_cur->uv.constant->sub_rel_id = sub->op_constants->length;
-                          SPVM_LIST_push(sub->op_constants, op_cur);
-
-                          if (sub->op_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                            SPVM_yyerror_format(compiler, "Too many constant at %s line %d\n", op_cur->file, op_cur->line);
-                          }
-                          op_cur->uv.constant->sub_rel_id = sub->op_constants->length;
-                          SPVM_LIST_push(sub->op_constants, op_cur);
+                          op_cur->uv.constant->sub_rel_id = sub->info_constants->length;
+                          SPVM_LIST_push(sub->info_constants, op_cur->uv.constant);
                         }
                         
                         break;
@@ -1950,17 +1944,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           sub->call_sub_arg_stack_max = call_sub_args_count;
                         }
 
-                        if (sub->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        if (sub->info_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        op_cur->uv.call_sub->sub_rel_id = sub->op_call_subs->length;
-                        SPVM_LIST_push(sub->op_call_subs, op_cur);
-                        
-                        if (sub->op_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        op_cur->uv.call_sub->sub_rel_id = sub->op_call_subs->length;
-                        SPVM_LIST_push(sub->op_call_subs, op_cur);
+                        op_cur->uv.call_sub->sub_rel_id = sub->info_call_subs->length;
+                        SPVM_LIST_push(sub->info_call_subs, op_cur->uv.call_sub);
                         
                         if (call_sub->sub->is_destructor) {
                           SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);

@@ -683,8 +683,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&op_constant->uv.constant->value;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
+        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&constant->value;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT:
@@ -692,8 +692,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&op_constant->uv.constant->value;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
+        *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&constant->value;
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {
@@ -1888,8 +1888,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_constant = SPVM_LIST_fetch(sub->op_constants, rel_id);
-        SPVM_CONSTANT* constant = op_constant->uv.constant;
+        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
         
         void* string = env->new_string_raw(env, constant->value.oval, constant->string_length);
         
@@ -2011,8 +2010,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_call_sub = SPVM_LIST_fetch(sub->op_call_subs, rel_id);
-        int32_t decl_sub_id = op_call_sub->uv.call_sub->sub->id;
+        SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, rel_id);
+        int32_t decl_sub_id = call_sub->sub->id;
 
         // Declare subroutine
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
