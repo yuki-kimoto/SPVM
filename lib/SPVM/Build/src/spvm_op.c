@@ -543,6 +543,8 @@ SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, con
 
   SPVM_LIST_push(compiler->op_constants, op_constant);
   
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -557,6 +559,8 @@ SPVM_OP* SPVM_OP_new_op_constant_short(SPVM_COMPILER* compiler, int16_t value, c
 
   SPVM_LIST_push(compiler->op_constants, op_constant);
 
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -571,6 +575,8 @@ SPVM_OP* SPVM_OP_new_op_constant_int(SPVM_COMPILER* compiler, int32_t value, con
 
   SPVM_LIST_push(compiler->op_constants, op_constant);
 
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -585,6 +591,8 @@ SPVM_OP* SPVM_OP_new_op_constant_long(SPVM_COMPILER* compiler, int64_t value, co
 
   SPVM_LIST_push(compiler->op_constants, op_constant);
 
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -599,6 +607,8 @@ SPVM_OP* SPVM_OP_new_op_constant_float(SPVM_COMPILER* compiler, float value, con
 
   SPVM_LIST_push(compiler->op_constants, op_constant);
 
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -613,6 +623,8 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   
   SPVM_LIST_push(compiler->op_constants, op_constant);
   
+  constant->op_constant = op_constant;
+  
   return op_constant;
 }
 
@@ -626,6 +638,8 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
   op_constant->uv.constant = constant;
   
   SPVM_LIST_push(compiler->op_constants, op_constant);
+  
+  constant->op_constant = op_constant;
   
   return op_constant;
 }

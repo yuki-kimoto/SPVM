@@ -5,6 +5,7 @@
 #include "spvm_native.h"
 
 struct SPVM_constant {
+  SPVM_OP* op_constant;
   SPVM_TYPE* type;
   SPVM_VALUE value;
   int32_t string_length;
