@@ -812,6 +812,17 @@ SPVM_OP* SPVM_OP_new_op_double_ref_type(SPVM_COMPILER* compiler, const char* fil
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
+  SPVM_TYPE* type = SPVM_TYPE_create_any_object_type(compiler);
+  
+  type->op_type = op_type;
+  
+  op_type->uv.type = type;
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub) {
   (void)compiler;
   

@@ -38,6 +38,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_ref_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_long_ref_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler);
 
 _Bool SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 _Bool SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
