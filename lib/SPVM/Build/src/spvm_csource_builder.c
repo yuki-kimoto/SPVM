@@ -648,8 +648,8 @@ void SPVM_CSOURCE_BUILDER_add_set_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_OP* op_field_access) {
-  SPVM_FIELD* field = op_field_access->uv.field_access->field;
+void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_FIELD_ACCESS* field_access) {
+  SPVM_FIELD* field = field_access->field;
   const char* field_package_name = field->package->op_name->uv.name;
   const char* field_name = field->op_name->uv.name;
 
@@ -674,8 +674,8 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_OP* op_field_access, int32_t in_index) {
-  SPVM_FIELD* field = op_field_access->uv.field_access->field;
+void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD_ACCESS* field_access, int32_t in_index) {
+  SPVM_FIELD* field = field_access->field;
   const char* field_package_name = field->package->op_name->uv.name;
   const char* field_name = field->op_name->uv.name;
 
@@ -1196,15 +1196,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Get field index
-  if (sub->op_field_accesses->length > 0) {
+  if (sub->info_field_accesses->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Get field index\n");
   }
   {
     SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
     int32_t field_access_index;
-    for (field_access_index = 0; field_access_index < sub->op_field_accesses->length; field_access_index++) {
-      SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, field_access_index);
-      SPVM_FIELD* field = op_field_access->uv.field_access->field;
+    for (field_access_index = 0; field_access_index < sub->info_field_accesses->length; field_access_index++) {
+      SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, field_access_index);
+      SPVM_FIELD* field = field_access->field;
       const char* field_package_name = field->package->op_name->uv.name;
       const char* field_signature = field->signature;
       const char* field_name = field->op_name->uv.name;
@@ -2391,8 +2391,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
+        SPVM_FIELD* field = field_access->field;
         const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
@@ -3146,50 +3146,50 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1, op_field_access);
+        SPVM_CSOURCE_BUILDER_add_get_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, opcode->operand1, field_access);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
+        SPVM_FIELD* field = field_access->field;
         const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
@@ -3215,51 +3215,51 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_byte", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_short", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
         
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_int", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_long", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_float", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
 
-        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, op_field_access, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_add_set_field(compiler, string_buffer , "SPVM_VALUE_double", opcode->operand0, field_access, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
+        SPVM_FIELD* field = field_access->field;
         const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 
@@ -3288,8 +3288,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_field_access = SPVM_LIST_fetch(sub->op_field_accesses, rel_id);
-        SPVM_FIELD* field = op_field_access->uv.field_access->field;
+        SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
+        SPVM_FIELD* field = field_access->field;
         const char* field_package_name = field->package->op_name->uv.name;
         const char* field_name = field->op_name->uv.name;
 

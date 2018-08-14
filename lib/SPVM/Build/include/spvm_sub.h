@@ -41,7 +41,7 @@ struct SPVM_sub {
   _Bool is_static;
   _Bool is_return_type_object;
   SPVM_LIST* op_package_var_accesses;
-  SPVM_LIST* op_field_accesses;
+  SPVM_LIST* info_field_accesses;
   SPVM_LIST* info_types;
   SPVM_LIST* info_call_subs;
   SPVM_LIST* info_constants;
