@@ -2186,6 +2186,8 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     type->basic_type = new_basic_type;
   }
   
+  type->op_type = op_type;
+  
   return op_type;
 }
 
@@ -2201,6 +2203,8 @@ SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_typ
   }
   
   type->flag |= SPVM_TYPE_C_FLAG_CONST;
+
+  type->op_type = op_type;
   
   return op_type;
 }
@@ -2222,6 +2226,8 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   op_type->line = op_type_original->line;
   
   SPVM_LIST_push(compiler->op_types, op_type);
+
+  type->op_type = op_type;
   
   return op_type;
 }
@@ -2254,6 +2260,8 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   
   SPVM_LIST_push(compiler->op_types, op_type);
   
+  type->op_type = op_type;
+
   return op_type;
 }
 

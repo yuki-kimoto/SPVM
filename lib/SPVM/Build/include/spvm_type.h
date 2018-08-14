@@ -11,6 +11,7 @@ enum {
 };
 
 struct SPVM_type {
+  SPVM_OP* op_type;
   SPVM_BASIC_TYPE* basic_type;
   int32_t dimension;
   int32_t flag;
