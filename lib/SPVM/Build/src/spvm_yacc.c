@@ -3298,7 +3298,7 @@ yyreduce:
   case 192:
 #line 1048 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_new_op_void(compiler, compiler->cur_file, compiler->cur_line);
+      (yyval.opval) = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
     ;}
     break;
 

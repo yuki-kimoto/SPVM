@@ -1046,7 +1046,7 @@ type_or_void
   : type
   | VOID
     {
-      $$ = SPVM_OP_new_op_void(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
     }
 
 field_name : NAME
