@@ -644,6 +644,17 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
   return op_constant;
 }
 
+SPVM_OP* SPVM_OP_new_op_int_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
+  SPVM_TYPE* type = SPVM_TYPE_create_int_type(compiler);
+  
+  type->op_type = op_type;
+  
+  op_type->uv.type = type;
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub) {
   (void)compiler;
   
@@ -912,9 +923,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_ISA:
-      type = SPVM_TYPE_create_int_type(compiler);
+    case SPVM_OP_C_ID_ISA: {
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
+      type = op_type->uv.type;
       break;
+    }
     case SPVM_OP_C_ID_CONCAT:
       type = SPVM_TYPE_create_string_type(compiler);
       break;
