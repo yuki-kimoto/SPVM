@@ -883,23 +883,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_TYPE* constant_type;
           
           if (*compiler->bufptr == 'L')  {
-            constant_type = SPVM_TYPE_create_long_type(compiler);
+            SPVM_OP* op_constant_type = SPVM_OP_new_op_long_type(compiler, compiler->cur_file, compiler->cur_line);
+            constant_type = op_constant_type->uv.type;
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'f')  {
-            constant_type = SPVM_TYPE_create_float_type(compiler);
+            SPVM_OP* op_constant_type = SPVM_OP_new_op_float_type(compiler, compiler->cur_file, compiler->cur_line);
+            constant_type = op_constant_type->uv.type;
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'd')  {
-            constant_type = SPVM_TYPE_create_double_type(compiler);
+            SPVM_OP* op_constant_type = SPVM_OP_new_op_double_type(compiler, compiler->cur_file, compiler->cur_line);
+            constant_type = op_constant_type->uv.type;
             compiler->bufptr++;
           }
           else {
             if (is_floating_number) {
-              constant_type = SPVM_TYPE_create_double_type(compiler);
+              SPVM_OP* op_constant_type = SPVM_OP_new_op_double_type(compiler, compiler->cur_file, compiler->cur_line);
+              constant_type = op_constant_type->uv.type;
             }
             else {
-              constant_type = SPVM_TYPE_create_int_type(compiler);
+              SPVM_OP* op_constant_type = SPVM_OP_new_op_int_type(compiler, compiler->cur_file, compiler->cur_line);
+              constant_type = op_constant_type->uv.type;
             }
           }
           
