@@ -291,9 +291,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t basic_type_id = op_type->uv.type->basic_type->id;
-        int32_t dimension = op_type->uv.type->dimension;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t basic_type_id = type->basic_type->id;
+        int32_t dimension = type->dimension;
         
         condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_dimension_byte_offset) == dimension);
         
@@ -1767,8 +1767,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t basic_type_id = op_type->uv.type->basic_type->id;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t basic_type_id = type->basic_type->id;
         
         void* object = env->new_object_raw(env, basic_type_id);
         
@@ -1845,8 +1845,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t basic_type_id = op_type->uv.type->basic_type->id;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t basic_type_id = type->basic_type->id;
         
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
@@ -1859,9 +1859,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t basic_type_id = op_type->uv.type->basic_type->id;
-        int32_t element_dimension = op_type->uv.type->dimension - 1;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t basic_type_id = type->basic_type->id;
+        int32_t element_dimension = type->dimension - 1;
         
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
@@ -1874,8 +1874,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t basic_type_id = op_type->uv.type->basic_type->id;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t basic_type_id = type->basic_type->id;
         
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
@@ -1990,9 +1990,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         void* object = *(void**)&vars[opcode->operand1];
 
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        int32_t cast_basic_type_id = op_type->uv.type->basic_type->id;
-        int32_t cast_type_dimension = op_type->uv.type->dimension;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        int32_t cast_basic_type_id = type->basic_type->id;
+        int32_t cast_type_dimension = type->dimension;
         
         _Bool can_cast = env->check_cast(env, cast_basic_type_id, cast_type_dimension, object);
         if (can_cast) {

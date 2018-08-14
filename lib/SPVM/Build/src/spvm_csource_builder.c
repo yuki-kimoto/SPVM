@@ -1319,15 +1319,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
 
   // Get basic type id
-  if (sub->op_types->length > 0) {
+  if (sub->info_types->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Get basic type id\n");
   }
   {
     SPVM_HASH* basic_type_symtable = SPVM_HASH_new(1);
     int32_t type_index;
-    for (type_index = 0; type_index < sub->op_types->length; type_index++) {
-      SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, type_index);
-      SPVM_BASIC_TYPE* basic_type = op_type->uv.type->basic_type;
+    for (type_index = 0; type_index < sub->info_types->length; type_index++) {
+      SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, type_index);
+      SPVM_BASIC_TYPE* basic_type = type->basic_type;
       const char* basic_type_name = basic_type->name;
       
       SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(basic_type_symtable, basic_type_name, strlen(basic_type_name));
@@ -1481,9 +1481,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       case SPVM_OPCODE_C_ID_ISA:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* basic_type_name = op_type->uv.type->basic_type->name;
-        int32_t dimension = op_type->uv.type->dimension;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* basic_type_name = type->basic_type->name;
+        int32_t dimension = type->dimension;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t basic_type_id = ");
@@ -2226,8 +2226,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* basic_type_name = op_type->uv.type->basic_type->name;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* basic_type_name = type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t basic_type_id = ");
@@ -2292,8 +2292,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         break;
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* basic_type_name = op_type->uv.type->basic_type->name;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* basic_type_name = type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t basic_type_id = ");
@@ -2310,9 +2310,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* basic_type_name = op_type->uv.type->basic_type->name;
-        int32_t element_dimension = op_type->uv.type->dimension - 1;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* basic_type_name = type->basic_type->name;
+        int32_t element_dimension = type->dimension - 1;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t basic_type_id = ");
@@ -2333,8 +2333,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
         int32_t rel_id = opcode->operand1;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* basic_type_name = op_type->uv.type->basic_type->name;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* basic_type_name = type->basic_type->name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t basic_type_id = ");
@@ -2527,9 +2527,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       }
       case SPVM_OPCODE_C_ID_CAST: {
         int32_t rel_id = opcode->operand2;
-        SPVM_OP* op_type = SPVM_LIST_fetch(sub->op_types, rel_id);
-        const char* cast_basic_type_name = op_type->uv.type->basic_type->name;
-        int32_t cast_type_dimension = op_type->uv.type->dimension;
+        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
+        const char* cast_basic_type_name = type->basic_type->name;
+        int32_t cast_type_dimension = type->dimension;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t cast_basic_type_id = ");
