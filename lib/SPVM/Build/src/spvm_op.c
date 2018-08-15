@@ -1561,9 +1561,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
           op_arg_first->uv.my->op_type = op_arg_first_type;
         }
-        if (op_arg_first->uv.my->op_type) {
-          SPVM_LIST_push(compiler->op_types, op_arg_first->uv.my->op_type);
-        }
       }
       
       // Subroutine in interface package must be method
