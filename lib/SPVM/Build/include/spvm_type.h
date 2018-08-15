@@ -16,6 +16,7 @@ struct SPVM_type {
   int32_t dimension;
   int32_t flag;
   int32_t sub_rel_id;
+  _Bool is_self;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
@@ -62,5 +63,7 @@ void SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic
 void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+
+SPVM_TYPE* SPVM_TYPE_clone_type(SPVM_COMPILER* compiler, SPVM_TYPE* type);
 
 #endif

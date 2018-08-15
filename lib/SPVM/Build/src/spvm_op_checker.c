@@ -2685,6 +2685,10 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     
     SPVM_TYPE* type = op_type->uv.type;
     
+    if (type->is_self) {
+      continue;
+    }
+    
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
 

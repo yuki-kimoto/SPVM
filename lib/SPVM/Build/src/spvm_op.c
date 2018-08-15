@@ -1556,19 +1556,16 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (sub->args->length > 0) {
         SPVM_MY* arg_my_first = SPVM_LIST_fetch(sub->args, 0);
         SPVM_OP* op_arg_first_type = NULL;
-        if (arg_my_first->op_type) {
-          if (arg_my_first->op_type->id == SPVM_OP_C_ID_SELF) {
-            op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
-            arg_my_first->op_type = op_arg_first_type;
-            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
-          }
-          else {
-            op_arg_first_type = arg_my_first->op_type;
-          }
+        if (arg_my_first->op_type->uv.type->is_self) {
+          SPVM_TYPE* arg_invocant_type = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+          op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, sub->op_sub->file, sub->op_sub->line);
+          arg_my_first->op_type = op_arg_first_type;
+          sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
+          assert(arg_invocant_type->basic_type);
         }
         else {
-          op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
-          arg_my_first->op_type = op_arg_first_type;
+          op_arg_first_type = arg_my_first->op_type;
+          assert(op_arg_first_type->uv.type->basic_type);
         }
       }
       
@@ -1826,7 +1823,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         // Call type
         SPVM_OP* op_type = op_arg->uv.var->my->op_type;
         if (op_type) {
-          if (op_type->id == SPVM_OP_C_ID_SELF) {
+          if (op_type->uv.type->is_self) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
           else {

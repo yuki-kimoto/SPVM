@@ -347,7 +347,11 @@ arg
 invocant
   : var ':' SELF
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3);
+      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+      type->is_self = 1;
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, $3->file, $3->line);
+      
+      $$ = SPVM_OP_build_arg(compiler, $1, op_type);
     }
 
 opt_descriptors
