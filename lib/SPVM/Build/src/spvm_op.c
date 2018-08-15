@@ -159,6 +159,14 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "DOUBLE_REF",
 };
 
+SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line) {
+  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  op_my->uv.my = my;
+  my->op_my = op_my;
+  
+  return op_my;
+}
+
 SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   op_type->uv.type = type;
@@ -193,7 +201,8 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
+  SPVM_MY* my = SPVM_MY_new(compiler);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
   SPVM_OP* op_type = NULL;
   if (type) {
     op_type = SPVM_OP_new_op_type(compiler, type, file, line);
@@ -1634,7 +1643,8 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_var->file, op_var->line);
+  SPVM_MY* my = SPVM_MY_new(compiler);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_var->file, op_var->line);
   
   op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
@@ -1649,7 +1659,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_var->uv.var->is_declaration = 1;
     
     // Create my var information
-    SPVM_MY* my = SPVM_MY_new(compiler);
+    SPVM_MY* my = op_my->uv.my;
     if (op_type) {
       my->op_type = op_type;
     }
@@ -1659,23 +1669,12 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_name->uv.name = op_var->uv.var->op_name->uv.name;
     my->op_name = op_name;
     
-    // Add my information to op
-    op_my->uv.my = my;
-    
-    op_var->uv.var->op_my = op_my;
-    
-    SPVM_OP* op_my_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_my->file, op_my->line);
-    SPVM_MY* my_tmp = SPVM_MY_new(compiler);
-    op_my_tmp->uv.my = my_tmp;
-    
-    my->op_my = op_my;
+    op_var->uv.var->op_my = my->op_my;
   }
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);
     SPVM_yyerror_format(compiler, "Invalid lexical variable name %s at %s line %d\n", name, op_var->file, op_var->line);
   }
-  
-  
   
   return op_var;
 }

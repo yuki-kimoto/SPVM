@@ -22,6 +22,7 @@
 #include "spvm_type.h"
 #include "spvm_use.h"
 #include "spvm_basic_type.h"
+#include "spvm_my.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -1173,7 +1174,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               case 'm' :
                 if (strcmp(keyword, "my") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MY);
+                  SPVM_MY* my = SPVM_MY_new(compiler);
+                  yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
                   return MY;
                 }
                 break;
