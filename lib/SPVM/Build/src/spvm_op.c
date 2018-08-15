@@ -211,7 +211,7 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
 
   // Add op mys
   if (op_sub) {
-    SPVM_LIST_push(op_sub->uv.sub->op_mys, op_my);
+    SPVM_LIST_push(op_sub->uv.sub->mys, my);
   }
   
   return op_var;
@@ -397,9 +397,9 @@ SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_
   SPVM_OP* op_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = original_op_var->uv.var->op_my->uv.my->op_name->uv.name;
+  op_name->uv.name = original_op_var->uv.var->my->op_name->uv.name;
   var->op_name = op_name;
-  var->op_my = original_op_var->uv.var->op_my;
+  var->my = original_op_var->uv.var->my;
   op_var->uv.var = var;
   
   assert(original_op_var->uv.var != op_var->uv.var);
@@ -1018,7 +1018,7 @@ int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->op_my->uv.my->var_id;
+  return op_var->uv.var->my->var_id;
 }
 
 
@@ -1140,7 +1140,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_VAR: {
       SPVM_VAR* var = op->uv.var;
-      type = var->op_my->uv.my->op_type->uv.type;
+      type = var->my->op_type->uv.type;
       break;
     }
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
@@ -1553,22 +1553,22 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       // Method check
       
       // Set first argument type if not set
-      if (sub->op_args->length > 0) {
-        SPVM_OP* op_arg_first = SPVM_LIST_fetch(sub->op_args, 0);
+      if (sub->args->length > 0) {
+        SPVM_MY* arg_my_first = SPVM_LIST_fetch(sub->args, 0);
         SPVM_OP* op_arg_first_type = NULL;
-        if (op_arg_first->uv.my->op_type) {
-          if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
+        if (arg_my_first->op_type) {
+          if (arg_my_first->op_type->id == SPVM_OP_C_ID_SELF) {
             op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
-            op_arg_first->uv.my->op_type = op_arg_first_type;
+            arg_my_first->op_type = op_arg_first_type;
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
           else {
-            op_arg_first_type = op_arg_first->uv.my->op_type;
+            op_arg_first_type = arg_my_first->op_type;
           }
         }
         else {
           op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
-          op_arg_first->uv.my->op_type = op_arg_first_type;
+          arg_my_first->op_type = op_arg_first_type;
         }
       }
       
@@ -1669,7 +1669,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
     op_name->uv.name = op_var->uv.var->op_name->uv.name;
     my->op_name = op_name;
     
-    op_var->uv.var->op_my = my->op_my;
+    op_var->uv.var->my = my;
   }
   else {
     const char* name = SPVM_OP_get_var_name(compiler, op_var);
@@ -1824,7 +1824,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       if (sub_index == 0) {
         // Call type
-        SPVM_OP* op_type = op_arg->uv.var->op_my->uv.my->op_type;
+        SPVM_OP* op_type = op_arg->uv.var->my->op_type;
         if (op_type) {
           if (op_type->id == SPVM_OP_C_ID_SELF) {
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
@@ -1834,7 +1834,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
           }
         }
       }
-      SPVM_LIST_push(sub->op_args, op_arg->uv.var->op_my);
+      SPVM_LIST_push(sub->args, op_arg->uv.var->my);
       sub_index++;
     }
   }
@@ -1843,7 +1843,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (sub->have_native_desc) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_LIST_push(sub->op_mys, op_arg->uv.var->op_my);
+      SPVM_LIST_push(sub->mys, op_arg->uv.var->my);
     }
   }
 
@@ -1864,13 +1864,12 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     SPVM_OP* op_list_statement = op_block->first;
     {
       int32_t i;
-      for (i = sub->op_args->length - 1; i >= 0; i--) {
-        SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, i);
-        assert(op_arg);
-        SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, op_arg->file, op_arg->line);
-        op_my->uv.my = op_arg->uv.my;
+      for (i = sub->args->length - 1; i >= 0; i--) {
+        SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, i);
+        assert(arg_my);
+        SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, arg_my, arg_my->op_my->file, arg_my->op_my->line);
         SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_my->uv.my->op_name);
-        op_var->uv.var->op_my = op_my;
+        op_var->uv.var->my = arg_my;
         op_var->uv.var->is_declaration = 1;
 
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
@@ -2274,9 +2273,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   // Assign left child is var and it has variable declaration, try type inference
   if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
     SPVM_OP* op_var = op_assign_to;
-    if (op_var->uv.var->op_my && op_var->uv.var->op_my->id == SPVM_OP_C_ID_MY) {
-      SPVM_OP* op_my = op_var->uv.var->op_my;
-      SPVM_MY* my = op_my->uv.my;
+    if (op_var->uv.var->my && op_var->uv.var->my->op_my->id == SPVM_OP_C_ID_MY) {
+      SPVM_MY* my = op_var->uv.var->my;
       my->try_type_inference = 1;
       my->op_term_type_inference = op_assign_from;
     }

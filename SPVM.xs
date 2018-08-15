@@ -1747,16 +1747,16 @@ call_sub(...)
     
     int32_t arg_index;
     // Check argument count
-    if (items - arg_start != sub->op_args->length) {
+    if (items - arg_start != sub->args->length) {
       croak("Argument count is defferent");
     }
     
     int32_t arg_var_id = 0;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
       
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
       _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
@@ -2157,11 +2157,11 @@ call_sub(...)
   
   if (args_contain_ref) {
     int32_t arg_var_id = 0;
-    for (int32_t arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
+    for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
       
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
       _Bool arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 

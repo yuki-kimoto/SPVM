@@ -5,7 +5,7 @@
 
 struct SPVM_var {
   SPVM_OP* op_name;
-  SPVM_OP* op_my;
+  SPVM_MY* my;
   _Bool is_declaration;
 };
 

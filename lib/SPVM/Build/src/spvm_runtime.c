@@ -162,13 +162,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // If arg is object, increment reference count
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_TYPE* arg_type = arg_my->op_type->uv.type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) && !arg_type_is_value_t) {
-        SPVM_MY* my_arg = op_arg->uv.my;
-        void* object = *(void**)&vars[my_arg->var_id];
+        void* object = *(void**)&vars[arg_my->var_id];
         if (object != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }
@@ -2022,7 +2021,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         
         // Declare subroutine argument length
-        int32_t decl_sub_args_length = decl_sub->op_args->length;
+        int32_t decl_sub_args_length = decl_sub->args->length;
         
         // Call subroutine id
         int32_t call_sub_id;

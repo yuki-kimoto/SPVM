@@ -873,22 +873,21 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
   
   // Variable declaration
-  if (sub->op_mys->length > 0) {
+  if (sub->mys->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  SPVM_VALUE vars[");
     SPVM_STRING_BUFFER_add_int(compiler, string_buffer , var_alloc_length);
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "];\n");
   }
   
   // Initialize variables with type information
-  if (sub->op_mys->length > 0) {
+  if (sub->mys->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Initialize variables\n");
   }
   {
     int32_t my_index;
-    for (my_index = 0; my_index < sub->op_mys->length; my_index++) {
-      SPVM_OP* op_my = SPVM_LIST_fetch(sub->op_mys, my_index);
-      SPVM_MY* my = op_my->uv.my;
-      SPVM_TYPE* my_type = op_my->uv.my->op_type->uv.type;
+    for (my_index = 0; my_index < sub->mys->length; my_index++) {
+      SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
+      SPVM_TYPE* my_type = my->op_type->uv.type;
       _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       _Bool my_type_is_ref = SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
@@ -1018,15 +1017,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   }
   
   // Copy arguments to variables with type information
-  if (sub->op_args->length > 0) {
+  if (sub->args->length > 0) {
     SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // Copy arguments to variables\n");
   }
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_MY* arg_my = op_arg->uv.my;
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_TYPE* arg_type = arg_my->op_type->uv.type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_ref = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
@@ -1177,18 +1175,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   // If arg is object, increment reference count
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->op_args->length; arg_index++) {
-      SPVM_OP* op_arg = SPVM_LIST_fetch(sub->op_args, arg_index);
-      SPVM_TYPE* arg_type = op_arg->uv.my->op_type->uv.type;
+    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_TYPE* arg_type = arg_my->op_type->uv.type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       
       if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) && !arg_type_is_value_t) {
-        SPVM_MY* my_arg = op_arg->uv.my;
-        
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", my_arg->var_id);
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", arg_my->var_id);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
-        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", my_arg->var_id);
+        SPVM_CSOURCE_BUILDER_add_operand(compiler, string_buffer, "void*", arg_my->var_id);
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "); }\n");
       }
     }
@@ -2576,7 +2572,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
         
         // Declare subroutine argument length
-        int32_t decl_sub_args_length = decl_sub->op_args->length;
+        int32_t decl_sub_args_length = decl_sub->args->length;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  // ");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->abs_name);

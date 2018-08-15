@@ -272,15 +272,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_args = op_assign_src->last;
                         SPVM_OP* op_term_arg = op_term_args->first;
 
-                        SPVM_LIST* op_args = sub_call_sub->op_args;
+                        SPVM_LIST* args = sub_call_sub->args;
                         {
                           int32_t arg_index;
-                          for (arg_index = 0; arg_index < sub_call_sub->op_args->length; arg_index++) {
-                            SPVM_OP* op_arg = SPVM_LIST_fetch(op_args, arg_index);
-                            SPVM_MY* my_arg = op_arg->uv.my;
+                          for (arg_index = 0; arg_index < sub_call_sub->args->length; arg_index++) {
+                            SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
                             
                             // Argument type
-                            SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+                            SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
 
                             // Term argment type
                             op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
@@ -2723,10 +2722,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_VAR: {
                     if (op_cur->uv.var->is_declaration) {
                       
-                      SPVM_OP* op_my = op_cur->uv.var->op_my;
-                      SPVM_MY* my = op_my->uv.my;
+                      SPVM_MY* my = op_cur->uv.var->my;
                       
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_my);
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
                       _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
                       
                       if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_value_t) {
@@ -2756,7 +2754,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_DEC:
                   {
                     SPVM_VAR* var = op_cur->first->uv.var;
-                    SPVM_MY* my = var->op_my->uv.my;
+                    SPVM_MY* my = var->my;
                     
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                     SPVM_OPCODE opcode;
@@ -3173,15 +3171,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_args = op_cur->last;
                       SPVM_OP* op_term_arg = op_term_args->first;
 
-                      SPVM_LIST* op_args = sub_call_sub->op_args;
+                      SPVM_LIST* args = sub_call_sub->args;
                       {
                         int32_t arg_index;
-                        for (arg_index = 0; arg_index < sub_call_sub->op_args->length; arg_index++) {
-                          SPVM_OP* op_arg = SPVM_LIST_fetch(op_args, arg_index);
-                          SPVM_MY* my_arg = op_arg->uv.my;
+                        for (arg_index = 0; arg_index < sub_call_sub->args->length; arg_index++) {
+                          SPVM_MY* arg_my = SPVM_LIST_fetch(args, arg_index);
                           
                           // Argument type
-                          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, op_arg);
+                          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
                           
                           // Term argment type
                           op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);

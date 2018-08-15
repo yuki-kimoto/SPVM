@@ -18,9 +18,9 @@ struct SPVM_sub {
   SPVM_TYPE* return_type;
   SPVM_OP* op_block;
   SPVM_OP* op_constant;
-  SPVM_LIST* op_args;
+  SPVM_LIST* args;
   SPVM_LIST* object_arg_ids;
-  SPVM_LIST* op_mys;
+  SPVM_LIST* mys;
   const char* abs_name;
   const char* file_name;
   const char* signature;
