@@ -165,6 +165,8 @@ SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const cha
   
   type->op_type = op_type;
   
+  SPVM_LIST_push(compiler->op_types, op_type);
+  
   return op_type;
 }
 
@@ -194,8 +196,7 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   SPVM_OP* op_type = NULL;
   if (type) {
-    op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-    op_type->uv.type = type;
+    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   }
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
 
@@ -355,12 +356,7 @@ SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_
 
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
-  SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
-  
-  op_type_new->uv.type = op_type->uv.type;
-  
-  // Add types
-  SPVM_LIST_push(compiler->op_types, op_type_new);
+  SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, op_type->uv.type, op_type->file, op_type->line);
   
   return op_type_new;
 }
@@ -661,180 +657,113 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, i
 }
 
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  
-  // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  
   SPVM_TYPE* type = SPVM_TYPE_create_void_type(compiler);
-
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_byte_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_byte_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_short_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_short_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_int_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_int_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_long_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_long_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_float_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_float_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_double_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_double_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_string_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_string_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_undef_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_undef_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_byte_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_byte_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_short_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_short_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_int_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_int_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_long_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_long_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_float_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_float_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_double_ref_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_double_ref_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, NULL, -1);
   SPVM_TYPE* type = SPVM_TYPE_create_any_object_type(compiler);
-  
-  type->op_type = op_type;
-  
-  op_type->uv.type = type;
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
   return op_type;
 }
@@ -1620,8 +1549,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_arg_first_type = NULL;
         if (op_arg_first->uv.my->op_type) {
           if (op_arg_first->uv.my->op_type->id == SPVM_OP_C_ID_SELF) {
-            op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, sub->op_sub->file, sub->op_sub->line);
-            op_arg_first_type->uv.type = op_type->uv.type;
+            op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
             op_arg_first->uv.my->op_type = op_arg_first_type;
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
@@ -1630,8 +1558,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         else {
-          op_arg_first_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, sub->op_sub->file, sub->op_sub->line);
-          op_arg_first_type->uv.type = op_type->uv.type;
+          op_arg_first_type = SPVM_OP_new_op_type(compiler, op_type->uv.type, sub->op_sub->file, sub->op_sub->line);
           op_arg_first->uv.my->op_type = op_arg_first_type;
         }
         if (op_arg_first->uv.my->op_type) {
@@ -2047,8 +1974,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_sub->line = op_name->line;
   
   // Type
-  SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
-  op_return_type->uv.type = op_constant->uv.constant->type;
+  SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
   
   // Build subroutine
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block);
@@ -2397,14 +2323,9 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   const char* name = op_name->uv.name;
   
   // Type op
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
-  
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-  op_type->uv.type = type;
-  
-  // Add types
-  SPVM_LIST_push(compiler->op_types, op_type);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
   
   // Add basic type
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, name, strlen(name));
@@ -2452,14 +2373,8 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   type->flag |= SPVM_TYPE_C_FLAG_REF;
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_original->file, op_type_original->line);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_original->file, op_type_original->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_original);
-  
-  op_type->uv.type = type;
-  op_type->file = op_type_original->file;
-  op_type->line = op_type_original->line;
-  
-  SPVM_LIST_push(compiler->op_types, op_type);
 
   type->op_type = op_type;
   
@@ -2477,7 +2392,7 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
   }
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type_child->file, op_type_child->line);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_child);
   
   if (op_term_length) {
@@ -2487,14 +2402,6 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
     SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_type_child->file, op_type_child->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
   }
-  
-  op_type->uv.type = type;
-  op_type->file = op_type_child->file;
-  op_type->line = op_type_child->line;
-  
-  SPVM_LIST_push(compiler->op_types, op_type);
-  
-  type->op_type = op_type;
 
   return op_type;
 }
