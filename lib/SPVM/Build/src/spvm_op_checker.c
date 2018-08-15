@@ -260,7 +260,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
 
                         SPVM_OP* op_type_new = NULL;
-                        SPVM_OP* op_type_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+                        SPVM_OP* op_type_element = NULL;
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -293,7 +293,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
                                 type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
                               }
-                              op_type_element->uv.type = type_element;
+                              op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
                               
                               if (!SPVM_TYPE_is_numeric_type(compiler, type_element->basic_type->id, type_element->dimension, type_element->flag)) {
                                 if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
