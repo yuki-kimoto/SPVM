@@ -259,10 +259,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
                         SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-                        SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
                         
                         SPVM_OP* op_type_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-                        SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -346,6 +344,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           length = index;
                         }
+
+                        SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
+                        SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
 
                         SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
                         SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
