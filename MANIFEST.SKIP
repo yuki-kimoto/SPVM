@@ -29,7 +29,7 @@ SPVM-.*
 ^SPVM-
 ^solo/t/spvm_t_hash
 ^solo/t/spvm_t_list
-^solo/spvmrt
+^solo/main
 ^solo/Makefile
 ^t/precompile
 ^spvmcc_build/[^\.]
