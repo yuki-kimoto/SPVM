@@ -258,8 +258,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         int32_t line = op_list_elements->line;
                         
                         SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
-                        SPVM_OP* op_type_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-                        
+
+                        SPVM_OP* op_type_new = NULL;
                         SPVM_OP* op_type_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
@@ -310,7 +310,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
                                 type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
                               }
-                              op_type_new->uv.type= type_new;
+                              op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
 
                               if (!SPVM_TYPE_is_numeric_type(compiler, type_new->basic_type->id, type_new->dimension, type_new->flag)) {
                                 if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
@@ -344,7 +344,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           length = index;
                         }
-
+                        
                         SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
                         SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
 
