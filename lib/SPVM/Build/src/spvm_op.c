@@ -159,6 +159,15 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "DOUBLE_REF",
 };
 
+SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  op_type->uv.type = type;
+  
+  type->op_type = op_type;
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
   
   SPVM_OP_insert_child(compiler, op_deref, op_deref->last, op_var);

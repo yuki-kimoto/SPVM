@@ -234,6 +234,8 @@ struct SPVM_op {
   _Bool no_need_check;
 };
 
+SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
+
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);
