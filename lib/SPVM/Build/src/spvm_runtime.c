@@ -8,35 +8,39 @@
 #include <stddef.h>
 
 #include "spvm_native.h"
-#include "spvm_runtime_api.h"
-#include "spvm_opcode.h"
-#include "spvm_object.h"
-#include "spvm_type.h"
+
+#include "spvm_list.h"
+#include "spvm_hash.h"
+
 #include "spvm_runtime.h"
-#include "spvm_opcode.h"
+#include "spvm_runtime_api.h"
+
 #include "spvm_opcode_array.h"
+#include "spvm_opcode.h"
+
+#include "spvm_object.h"
+
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_allocator.h"
 
-#include "spvm_package.h"
-#include "spvm_sub.h"
-#include "spvm_package.h"
-#include "spvm_type.h"
-#include "spvm_field.h"
-#include "spvm_compiler.h"
-#include "spvm_my.h"
-#include "spvm_list.h"
-#include "spvm_opcode_array.h"
-#include "spvm_constant.h"
-#include "spvm_hash.h"
-#include "spvm_basic_type.h"
-#include "spvm_package_var.h"
-#include "spvm_package_var_access.h"
-#include "spvm_field_access.h"
-#include "spvm_call_sub.h"
-#include "spvm_constant.h"
 #include "spvm_switch_info.h"
 #include "spvm_case_info.h"
+
+#include "spvm_compiler.h"
+#include "spvm_my.h"
+#include "spvm_constant.h"
+#include "spvm_opcode_array.h"
+
+#include "spvm_call_sub.h"
+#include "spvm_package_var_access.h"
+#include "spvm_field_access.h"
+#include "spvm_type.h"
+
+#include "spvm_package.h"
+#include "spvm_package_var.h"
+#include "spvm_sub.h"
+#include "spvm_basic_type.h"
+#include "spvm_field.h"
 
 int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   (void)env;
