@@ -320,7 +320,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                                 SPVM_LIST_push(sub->info_types, op_type_new->uv.type);
                               }
                               
-                              op_var_tmp_new->uv.var->my->op_type = op_type_new;
+                              op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
                             }
                             
                             SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -1596,7 +1596,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                             SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->op_type->uv.type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
                       
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -1692,7 +1692,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                             SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->op_type->uv.type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
                       
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -1828,20 +1828,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           
                           // Type inference
-                          if (my->op_type == NULL) {
+                          if (my->type == NULL) {
                             if (my->try_type_inference) {
                               SPVM_OP* op_term_type_inference = my->op_term_type_inference;
                               
                               SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
                               
                               if (inferenced_type) {
-                                my->op_type = SPVM_OP_new_op_type(compiler, inferenced_type, my->op_my->file, my->op_my->line);
+                                SPVM_OP* op_inferenced_type = SPVM_OP_new_op_type(compiler, inferenced_type, my->op_my->file, my->op_my->line);
+                                my->type = op_inferenced_type->uv.type;
                               }
                             }
                           }
                           
                           // Type can't be detected
-                          if (my->op_type == NULL) {
+                          if (my->type == NULL) {
                             SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
                             
                             return;

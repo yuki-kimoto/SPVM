@@ -5,7 +5,7 @@
 
 struct SPVM_my {
   SPVM_OP* op_my;
-  SPVM_OP* op_type;
+  SPVM_TYPE* type;
   SPVM_OP* op_name;
   int32_t var_id;
   SPVM_OP* op_term_type_inference;

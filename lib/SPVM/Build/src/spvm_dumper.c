@@ -442,7 +442,7 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     printf("\n");
     printf("          name => %s\n", my->op_name->uv.name);
     printf("          type => ");
-    SPVM_TYPE* type = my->op_type->uv.type;
+    SPVM_TYPE* type = my->type;
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension, type->flag);
     printf("\n");
     printf("          var_id => %d\n", my->var_id);

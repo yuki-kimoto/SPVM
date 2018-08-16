@@ -887,7 +887,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     int32_t my_index;
     for (my_index = 0; my_index < sub->mys->length; my_index++) {
       SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
-      SPVM_TYPE* my_type = my->op_type->uv.type;
+      SPVM_TYPE* my_type = my->type;
       _Bool my_type_is_value_t = SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       _Bool my_type_is_object_type = SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
       _Bool my_type_is_ref = SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
@@ -1024,7 +1024,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     int32_t arg_index;
     for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-      SPVM_TYPE* arg_type = arg_my->op_type->uv.type;
+      SPVM_TYPE* arg_type = arg_my->type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_ref = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
@@ -1177,7 +1177,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     int32_t arg_index;
     for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-      SPVM_TYPE* arg_type = arg_my->op_type->uv.type;
+      SPVM_TYPE* arg_type = arg_my->type;
       _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       
       if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) && !arg_type_is_value_t) {
