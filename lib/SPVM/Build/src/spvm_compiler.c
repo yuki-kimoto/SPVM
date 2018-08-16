@@ -112,7 +112,7 @@ void SPVM_COMPILER_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIM
 }
 
 void SPVM_COMPILER_build_runtime_basic_types(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
-  for (size_t i = 0; i < runtime->portable_basic_types_length; i += runtime->portable_basic_types_unit) {
+  for (size_t i = 0; i < runtime->portable_basic_types_unit * runtime->portable_basic_types_length; i += runtime->portable_basic_types_unit) {
     int32_t* portable_basic_type = (int32_t*)&runtime->portable_basic_types[i];
     
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new(compiler);
@@ -127,6 +127,8 @@ void SPVM_COMPILER_build_runtime_basic_types(SPVM_COMPILER* compiler, SPVM_RUNTI
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
       runtime_basic_type->package = package;
     }
+    
+    SPVM_LIST_push(runtime->runtime_basic_types, runtime_basic_type);
   }
 }
 
