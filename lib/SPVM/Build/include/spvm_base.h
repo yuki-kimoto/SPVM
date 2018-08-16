@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_runtime_basic_type.h
+struct SPVM_runtime_basic_type;
+typedef struct SPVM_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
+
 // spvm_array_field_access.h
 struct SPVM_array_field_access;
 typedef struct SPVM_array_field_access SPVM_ARRAY_FIELD_ACCESS;

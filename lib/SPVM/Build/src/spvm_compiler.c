@@ -26,6 +26,7 @@
 #include "spvm_op_checker.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
+#include "spvm_runtime_basic_type.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -72,18 +73,14 @@ int32_t SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME*
   
   int32_t id = runtime->strings_length;
   if (runtime->strings_length >= runtime->strings_capacity) {
-  warn("AAAAAAAAA");
     int32_t new_strings_capacity = runtime->strings_capacity * 2;
     char** new_strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_strings_capacity);
     memcpy(new_strings, runtime->strings, sizeof(char*) * runtime->strings_length);
-  warn("BBBBBBBBBB");
     free(runtime->strings);
-  warn("CCCCCCCCCC");
     runtime->strings = new_strings;
     runtime->strings_capacity = new_strings_capacity;
   }
   
-  warn("DDDDDDDDD %d", runtime->strings_length);
   runtime->strings[runtime->strings_length] = string;
   runtime->strings_length++;
   
@@ -112,6 +109,32 @@ void SPVM_COMPILER_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIM
     new_portable_basic_type[3] = -1;
   }
   runtime->portable_basic_types_length++;
+}
+
+void SPVM_COMPILER_build_runtime_basic_types(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+  for (size_t i = 0; i < runtime->portable_basic_types_length; i += runtime->portable_basic_types_unit) {
+    int32_t* portable_basic_type = (int32_t*)&runtime->portable_basic_types[i];
+    
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new(compiler);
+    runtime_basic_type->name = runtime->strings[portable_basic_type[0]];
+    runtime_basic_type->id = portable_basic_type[1];
+    runtime_basic_type->category = portable_basic_type[2];
+    int32_t package_id = portable_basic_type[3];
+    if (package_id < 0) {
+      runtime_basic_type->package = NULL;
+    }
+    else {
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+      runtime_basic_type->package = package;
+    }
+  }
+}
+
+void SPVM_COMPILER_build_runtime_basic_type_symtable(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->runtime_basic_types->length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
+    SPVM_HASH_insert(runtime->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
+  }
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
@@ -149,6 +172,14 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
     SPVM_COMPILER_push_portable_basic_type(compiler, runtime, basic_type);
   }
   
+  runtime->runtime_basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+
+  runtime->runtime_basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  
+  // Build runtime basic types and basic type symtable
+  SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
+  SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
+
   return runtime;
 }
 

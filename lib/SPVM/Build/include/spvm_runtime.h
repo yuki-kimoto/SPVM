@@ -73,6 +73,9 @@ struct SPVM_runtime {
 
   int32_t* portable_basic_types;
   
+  SPVM_LIST* runtime_basic_types;
+  
+  SPVM_HASH* runtime_basic_type_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
