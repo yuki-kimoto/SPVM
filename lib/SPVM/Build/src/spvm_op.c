@@ -1738,6 +1738,8 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   // Name
   field->op_name = op_name_field;
   
+  field->name = op_name_field->uv.name;
+  
   // Type
   field->type = op_type->uv.type;
   
