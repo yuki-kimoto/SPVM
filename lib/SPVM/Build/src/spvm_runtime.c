@@ -25,7 +25,6 @@
 #include "spvm_field.h"
 #include "spvm_compiler.h"
 #include "spvm_my.h"
-#include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
 #include "spvm_constant.h"
