@@ -427,15 +427,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-                        SPVM_LIST* op_cases = switch_info->op_cases;
-                        int32_t length = op_cases->length;
+                        SPVM_LIST* cases = switch_info->cases;
+                        int32_t length = cases->length;
                         
                         // Check case type
                         {
                           int32_t i;
                           for (i = 0; i < length; i++) {
-                            SPVM_OP* op_case = SPVM_LIST_fetch(op_cases, i);
-                            SPVM_OP* op_constant = op_case->first;
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(cases, i);
+                            SPVM_OP* op_constant = case_info->op_case_info->first;
                             SPVM_CONSTANT* constant = op_constant->uv.constant;
 
                             if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
@@ -444,9 +444,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
                             if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
-                              SPVM_yyerror_format(compiler, "case value must be int constant at %s line %d\n", op_case->file, op_case->line);
+                              SPVM_yyerror_format(compiler, "case value must be int constant at %s line %d\n", case_info->op_case_info->file, case_info->op_case_info->line);
                             }
-                            op_case->uv.case_info->constant = constant;
+                            case_info->constant = constant;
                           }
                         }
                         
@@ -466,8 +466,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         if (op_switch_stack->length > 0) {
                           SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
                           SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
-                          op_cur->uv.case_info->index = switch_info->op_cases->length;
-                          SPVM_LIST_push(switch_info->op_cases, op_cur);
+                          op_cur->uv.case_info->index = switch_info->cases->length;
+                          SPVM_LIST_push(switch_info->cases, op_cur->uv.case_info);
                         }
                         break;
                       }

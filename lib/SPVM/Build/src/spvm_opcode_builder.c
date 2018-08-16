@@ -2435,7 +2435,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode_switch_info.operand1 = 0;
                     
                     // Case count
-                    int32_t cases_length = switch_info->op_cases->length;
+                    int32_t cases_length = switch_info->cases->length;
                     opcode_switch_info.operand2 = switch_info->sub_rel_id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
@@ -2450,13 +2450,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Pop switch information
                     SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
                     
-                    int32_t cases_length = (int32_t) switch_info->op_cases->length;
+                    int32_t cases_length = (int32_t) switch_info->cases->length;
                     
                     {
                       int32_t i;
                       for (i = 0; i < cases_length; i++) {
-                        SPVM_OP* op_case = SPVM_LIST_fetch(switch_info->op_cases, i);
-                        SPVM_LIST_push(switch_info->op_cases_ordered, op_case);
+                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                        SPVM_LIST_push(switch_info->cases_ordered, case_info);
                       }
                     }
                     // sort by asc order
@@ -2466,14 +2466,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t j;
                         {
                           for (j = i + 1; j < cases_length; j++) {
-                            SPVM_OP* op_case_i = SPVM_LIST_fetch(switch_info->op_cases_ordered, i);
-                            SPVM_OP* op_case_j = SPVM_LIST_fetch(switch_info->op_cases_ordered, j);
-                            int32_t match_i = op_case_i->uv.case_info->constant->value.ival;
-                            int32_t match_j = op_case_j->uv.case_info->constant->value.ival;
+                            SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->cases_ordered, i);
+                            SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->cases_ordered, j);
+                            int32_t match_i = case_i->constant->value.ival;
+                            int32_t match_j = case_j->constant->value.ival;
                             
                             if (match_i > match_j) {
-                              SPVM_LIST_store(switch_info->op_cases_ordered, i, op_case_j);
-                              SPVM_LIST_store(switch_info->op_cases_ordered, j, op_case_i);
+                              SPVM_LIST_store(switch_info->cases_ordered, i, case_j);
+                              SPVM_LIST_store(switch_info->cases_ordered, j, case_i);
                             }
                           }
                         }

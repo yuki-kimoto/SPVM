@@ -2133,24 +2133,24 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand2;
         SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(sub->info_switch_infos, rel_id);
-        SPVM_LIST* op_cases = switch_info->op_cases_ordered;
+        SPVM_LIST* cases = switch_info->cases_ordered;
         
         // default offset
         int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
         
         // cases length
-        int32_t cases_length = op_cases->length;
+        int32_t cases_length = cases->length;
         
         if (cases_length > 0) {
           
-          SPVM_OP* op_case_min = SPVM_LIST_fetch(op_cases, 0);
-          SPVM_OP* op_case_max = SPVM_LIST_fetch(op_cases, op_cases->length - 1);
+          SPVM_CASE_INFO* case_min = SPVM_LIST_fetch(cases, 0);
+          SPVM_CASE_INFO* case_max = SPVM_LIST_fetch(cases, cases->length - 1);
           
           // min
-          int32_t min = op_case_min->uv.case_info->constant->value.ival;
+          int32_t min = case_min->constant->value.ival;
           
           // max
-          int32_t max = op_case_max->uv.case_info->constant->value.ival;
+          int32_t max = case_max->constant->value.ival;
           
           if (*(SPVM_VALUE_int*)&vars[opcode->operand0] >= min && *(SPVM_VALUE_int*)&vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
@@ -2163,8 +2163,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_OP* op_case_half = SPVM_LIST_fetch(op_cases, cur_half_pos);
-              int32_t cur_half = op_case_half->uv.case_info->constant->value.ival;
+              SPVM_CASE_INFO* case_half = SPVM_LIST_fetch(cases, cur_half_pos);
+              int32_t cur_half = case_half->constant->value.ival;
               
               if (*(SPVM_VALUE_int*)&vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;
@@ -2173,7 +2173,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
                 cur_max_pos = cur_half_pos - 1;
               }
               else {
-                opcode_rel_index = op_case_half->uv.case_info->opcode_rel_index;
+                opcode_rel_index = case_half->opcode_rel_index;
                 break;
               }
             }
