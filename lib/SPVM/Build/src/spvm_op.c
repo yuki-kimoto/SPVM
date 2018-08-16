@@ -1681,6 +1681,8 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   const char* name = SPVM_OP_get_var_name(compiler, op_var);
   
+  package_var->name = op_var->uv.var->op_name->uv.name;
+  
   _Bool invalid_name = 0;
   if (op_var->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
     invalid_name = 1;

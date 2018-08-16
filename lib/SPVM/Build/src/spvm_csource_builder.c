@@ -1243,7 +1243,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, package_var_access_index);
       SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
       const char* package_var_package_name = package_var->package->name;
-      const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+      const char* package_var_name = package_var->name;
       const char* package_var_signature = package_var->signature;
       
       SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name));
@@ -3371,7 +3371,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
             const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+            const char* package_var_name = package_var->name;
 
             char* package_var_access_type = NULL;
             switch (wide_opcode_id) {
@@ -3414,7 +3414,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
             const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+            const char* package_var_name = package_var->name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
@@ -3438,7 +3438,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var =package_var_access->package_var;
             const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+            const char* package_var_name = package_var->name;
 
             char* package_var_access_type = NULL;
             switch (wide_opcode_id) {
@@ -3481,7 +3481,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
             const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+            const char* package_var_name = package_var->name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
@@ -3498,7 +3498,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
             const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+            const char* package_var_name = package_var->name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_byte_offset))[");
