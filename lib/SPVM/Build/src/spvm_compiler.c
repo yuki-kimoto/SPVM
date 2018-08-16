@@ -67,6 +67,20 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
+void SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string) {
+  
+  if (runtime->strings_length > runtime->strings_capacity) {
+    int32_t new_capacity = runtime->strings_capacity * 2;
+    const char** new_strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime->strings_capacity);
+    memcpy(new_strings, runtime->strings, runtime->strings_length);
+    free(runtime->strings);
+    runtime->strings = new_strings;
+  }
+  
+  runtime->strings[runtime->strings_length] = string;
+  runtime->strings_length++;
+}
+
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
@@ -86,6 +100,10 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->mortal_stack_capacity = 1;
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+  
+  runtime->strings_capacity = 32;
+  
+  runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime->strings_capacity);
   
   return runtime;
 }

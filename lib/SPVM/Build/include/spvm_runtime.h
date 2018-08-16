@@ -58,6 +58,12 @@ struct SPVM_runtime {
   int32_t mortal_stack_capacity;
 
   int32_t memory_blocks_count;
+  
+  const char** strings;
+  
+  int32_t strings_capacity;
+  
+  int32_t strings_length;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
