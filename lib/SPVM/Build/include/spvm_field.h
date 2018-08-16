@@ -6,9 +6,9 @@
 // Field information
 struct SPVM_field {
   SPVM_OP* op_field;
-  SPVM_PACKAGE* package;
   SPVM_OP* op_name;
-  SPVM_OP* op_type;
+  SPVM_PACKAGE* package;
+  SPVM_TYPE* type;
   const char* abs_name;
   const char* signature;
   int32_t id;

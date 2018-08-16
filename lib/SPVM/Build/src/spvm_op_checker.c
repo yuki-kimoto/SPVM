@@ -2969,7 +2969,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
         else {
           // Add object field indexes
-          if (SPVM_TYPE_is_object_type(compiler, field->op_type->uv.type->basic_type->id, field->op_type->uv.type->dimension, field->op_type->uv.type->flag)) {
+          if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
             SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
           }
         }
@@ -3200,10 +3200,10 @@ const char* SPVM_OP_CHECKER_create_field_signature(SPVM_COMPILER* compiler, SPVM
     length += 1;
 
     // Return type basic type
-    length += strlen(field->op_type->uv.type->basic_type->name);
+    length += strlen(field->type->basic_type->name);
     
     // Return type dimension
-    length += field->op_type->uv.type->dimension * 2;
+    length += field->type->dimension * 2;
     
     // )
     length += 1;
@@ -3222,11 +3222,11 @@ const char* SPVM_OP_CHECKER_create_field_signature(SPVM_COMPILER* compiler, SPVM
     bufptr += 1;
 
     // Return type
-    memcpy(bufptr, field->op_type->uv.type->basic_type->name, strlen(field->op_type->uv.type->basic_type->name));
-    bufptr += strlen(field->op_type->uv.type->basic_type->name);
+    memcpy(bufptr, field->type->basic_type->name, strlen(field->type->basic_type->name));
+    bufptr += strlen(field->type->basic_type->name);
     
     int32_t dim_index;
-    for (dim_index = 0; dim_index < field->op_type->uv.type->dimension; dim_index++) {
+    for (dim_index = 0; dim_index < field->type->dimension; dim_index++) {
       memcpy(bufptr, "[]", 2);
       bufptr += 2;
     }

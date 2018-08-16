@@ -18,7 +18,7 @@ SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
 int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
   (void)compiler;
   
-  SPVM_TYPE* field_type = field->op_type->uv.type;
+  SPVM_TYPE* field_type = field->type;
   
   int32_t byte_size;
   if (field_type->dimension == 0 && field_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && field_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {

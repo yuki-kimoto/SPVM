@@ -1178,18 +1178,18 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_FIELD_ACCESS: {
       SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
       SPVM_FIELD* field = field_access->field;
-      type = field->op_type->uv.type;
+      type = field->type;
       break;
     }
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
       SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
       SPVM_FIELD* field = array_field_access->field;
-      type = field->op_type->uv.type;
+      type = field->type;
       break;
     }
     case SPVM_OP_C_ID_FIELD: {
       SPVM_FIELD* field = op->uv.field;
-      type = field->op_type->uv.type;
+      type = field->type;
       break;
     }
     case SPVM_OP_C_ID_REF: {
@@ -1739,7 +1739,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   field->op_name = op_name_field;
   
   // Type
-  field->op_type = op_type;
+  field->type = op_type->uv.type;
   
   // Set field informaiton
   op_field->uv.field = field;

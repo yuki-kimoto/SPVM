@@ -410,7 +410,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     
     printf("      index => \"%" PRId32 "\"\n", field->index);
     
-    SPVM_TYPE* type = field->op_type->uv.type;
+    SPVM_TYPE* type = field->type;
     printf("      type => ");
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension, type->flag);
     printf("\n");

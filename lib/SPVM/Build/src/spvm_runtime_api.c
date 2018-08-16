@@ -774,7 +774,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
   int32_t fields_length = package->fields->length;
   SPVM_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
-  int32_t field_basic_type_id = field_first->op_type->uv.type->basic_type->id;
+  int32_t field_basic_type_id = field_first->type->basic_type->id;
 
   int32_t unit_size;
   if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
