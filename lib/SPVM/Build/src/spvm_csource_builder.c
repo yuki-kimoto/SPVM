@@ -650,7 +650,7 @@ void SPVM_CSOURCE_BUILDER_add_set_deref(SPVM_COMPILER* compiler, SPVM_STRING_BUF
 
 void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_FIELD_ACCESS* field_access) {
   SPVM_FIELD* field = field_access->field;
-  const char* field_package_name = field->package->op_name->uv.name;
+  const char* field_package_name = field->package->name;
   const char* field_name = field->op_name->uv.name;
 
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -676,7 +676,7 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
 
 void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD_ACCESS* field_access, int32_t in_index) {
   SPVM_FIELD* field = field_access->field;
-  const char* field_package_name = field->package->op_name->uv.name;
+  const char* field_package_name = field->package->name;
   const char* field_name = field->op_name->uv.name;
 
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -714,7 +714,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
-      const char* sub_name = sub->op_name->uv.name;
+      const char* sub_name = sub->name;
       if (sub->have_precompile_desc) {
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)sub->signature);
@@ -732,7 +732,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
-      const char* sub_name = sub->op_name->uv.name;
+      const char* sub_name = sub->name;
       if (sub->have_precompile_desc) {
         SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, package_name, sub_name);
       }
@@ -844,7 +844,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   assert(sub->have_precompile_desc);
   
-  SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->package->op_name->uv.name, sub->op_name->uv.name);
+  SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->package->name, sub->name);
 
   // Block start
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " {\n");
@@ -1201,7 +1201,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (field_access_index = 0; field_access_index < sub->info_field_accesses->length; field_access_index++) {
       SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, field_access_index);
       SPVM_FIELD* field = field_access->field;
-      const char* field_package_name = field->package->op_name->uv.name;
+      const char* field_package_name = field->package->name;
       const char* field_signature = field->signature;
       const char* field_name = field->op_name->uv.name;
       
@@ -1242,7 +1242,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (package_var_access_index = 0; package_var_access_index < sub->info_package_var_accesses->length; package_var_access_index++) {
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, package_var_access_index);
       SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
-      const char* package_var_package_name = package_var->package->op_name->uv.name;
+      const char* package_var_package_name = package_var->package->name;
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_signature = package_var->signature;
       
@@ -1283,9 +1283,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
     for (call_sub_index = 0; call_sub_index < sub->info_call_subs->length; call_sub_index++) {
       SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, call_sub_index);
       SPVM_SUB* sub = call_sub->sub;
-      const char* sub_package_name = sub->package->op_name->uv.name;
+      const char* sub_package_name = sub->package->name;
       const char* sub_signature = sub->signature;
-      const char* sub_name = sub->op_name->uv.name;
+      const char* sub_name = sub->name;
       
       SPVM_FIELD* found_sub = SPVM_HASH_fetch(sub_abs_name_symtable, sub->abs_name, strlen(sub->abs_name));
       if (!found_sub) {
@@ -2389,7 +2389,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
         SPVM_FIELD* field = field_access->field;
-        const char* field_package_name = field->package->op_name->uv.name;
+        const char* field_package_name = field->package->name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -2582,7 +2582,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    int32_t call_sub_id = ");
-          SPVM_STRING_BUFFER_add_sub_id_name(compiler, string_buffer , decl_sub->package->op_name->uv.name, decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add_sub_id_name(compiler, string_buffer , decl_sub->package->name, decl_sub->name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , ";\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
@@ -2594,7 +2594,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "\");\n");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    if (call_sub_id < 0) {\n");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->package->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->package->name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , " ");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->signature);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "\", 0);\n");
@@ -2624,9 +2624,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
         }
         // Inline expansion is done in native core function
-        else if (strcmp(decl_sub->package->op_name->uv.name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
+        else if (strcmp(decl_sub->package->name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
-          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->op_name->uv.name);
+          SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
         }
         // Call subroutine
@@ -2774,11 +2774,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
-        int32_t line = sub->op_sub->line + rel_line;
+        int32_t line = sub->line + rel_line;
         
-        const char* sub_package_name = sub->package->op_name->uv.name;
-        const char* sub_name = sub->op_name->uv.name;
-        const char* file = sub->op_sub->file;
+        const char* sub_package_name = sub->package->name;
+        const char* sub_name = sub->name;
+        const char* file = sub->file;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    const char* sub_package_name = \"");
@@ -2806,11 +2806,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
-        int32_t line = sub->op_sub->line + rel_line;
+        int32_t line = sub->line + rel_line;
         
-        const char* sub_package_name = sub->package->op_name->uv.name;
-        const char* sub_name = sub->op_name->uv.name;
-        const char* file = sub->op_sub->file;
+        const char* sub_package_name = sub->package->name;
+        const char* sub_name = sub->name;
+        const char* file = sub->file;
         
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "    const char* sub_package_name = \"");
@@ -3186,7 +3186,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand2;
         SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
         SPVM_FIELD* field = field_access->field;
-        const char* field_package_name = field->package->op_name->uv.name;
+        const char* field_package_name = field->package->name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3256,7 +3256,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
         SPVM_FIELD* field = field_access->field;
-        const char* field_package_name = field->package->op_name->uv.name;
+        const char* field_package_name = field->package->name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3286,7 +3286,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
         int32_t rel_id = opcode->operand1;
         SPVM_FIELD_ACCESS* field_access = SPVM_LIST_fetch(sub->info_field_accesses, rel_id);
         SPVM_FIELD* field = field_access->field;
-        const char* field_package_name = field->package->op_name->uv.name;
+        const char* field_package_name = field->package->name;
         const char* field_name = field->op_name->uv.name;
 
         SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3370,7 +3370,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             int32_t rel_id = opcode->operand1;
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
-            const char* package_var_package_name = package_var->package->op_name->uv.name;
+            const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             char* package_var_access_type = NULL;
@@ -3413,7 +3413,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             int32_t rel_id = opcode->operand1;
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
-            const char* package_var_package_name = package_var->package->op_name->uv.name;
+            const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3437,7 +3437,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             int32_t rel_id = opcode->operand0;
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var =package_var_access->package_var;
-            const char* package_var_package_name = package_var->package->op_name->uv.name;
+            const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             char* package_var_access_type = NULL;
@@ -3480,7 +3480,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             int32_t rel_id = opcode->operand0;
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
-            const char* package_var_package_name = package_var->package->op_name->uv.name;
+            const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");
@@ -3497,7 +3497,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
             int32_t rel_id = opcode->operand0;
             SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_LIST_fetch(sub->info_package_var_accesses, rel_id);
             SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
-            const char* package_var_package_name = package_var->package->op_name->uv.name;
+            const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
 
             SPVM_STRING_BUFFER_add(compiler, string_buffer , "  {\n");

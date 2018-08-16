@@ -11,18 +11,13 @@ enum {
 // Method information
 struct SPVM_sub {
   SPVM_OP* op_sub;
-  SPVM_PACKAGE* package;
   void* native_address;
   void* precompile_address;
   SPVM_OP* op_name;
-  SPVM_TYPE* return_type;
   SPVM_OP* op_block;
   SPVM_OP* op_constant;
-  SPVM_LIST* args;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
-  const char* abs_name;
-  const char* file_name;
   const char* signature;
   int32_t opcode_base;
   int32_t opcode_length;
@@ -46,6 +41,14 @@ struct SPVM_sub {
   SPVM_LIST* info_call_subs;
   SPVM_LIST* info_constants;
   SPVM_LIST* info_switch_infos;
+  
+  SPVM_TYPE* return_type;
+  SPVM_LIST* args;
+  const char* file;
+  int32_t line;
+  const char* name;
+  const char* abs_name;
+  SPVM_PACKAGE* package;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

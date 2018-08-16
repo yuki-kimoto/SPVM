@@ -36,6 +36,7 @@ struct SPVM_package {
   _Bool is_private;
   _Bool is_anon;
   int32_t category;
+  const char* name;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

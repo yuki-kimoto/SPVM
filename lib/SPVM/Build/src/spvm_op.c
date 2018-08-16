@@ -1397,6 +1397,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   package->op_name = op_name_package;
+  
+  package->name = op_name_package->uv.name;
 
   // Package is interface
   int32_t duplicate_descriptors = 0;
@@ -1600,8 +1602,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         assert(sub->op_sub->file);
         
-        sub->file_name = sub->op_sub->file;
-        
         SPVM_LIST_push(compiler->subs, sub);
         SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
         
@@ -1786,6 +1786,10 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   // Create sub information
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   sub->op_name = op_name_sub;
+  
+  sub->file = op_sub->file;
+  sub->line = op_sub->line;
+  sub->name = sub->op_name->uv.name;
   
   // Descriptors
   SPVM_OP* op_descriptor = op_descriptors->first;

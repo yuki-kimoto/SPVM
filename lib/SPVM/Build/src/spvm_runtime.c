@@ -2066,11 +2066,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
-          int32_t line = sub->op_sub->line + rel_line;
+          int32_t line = sub->line + rel_line;
           
-          const char* sub_name = sub->op_name->uv.name;
-          const char* package_name = sub->package->op_name->uv.name;
-          const char* file = sub->op_sub->file;
+          const char* sub_name = sub->name;
+          const char* package_name = sub->package->name;
+          const char* file = sub->file;
           
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
@@ -2084,11 +2084,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
-          int32_t line = sub->op_sub->line + rel_line;
+          int32_t line = sub->line + rel_line;
           
-          const char* sub_name = sub->op_name->uv.name;
-          const char* package_name = sub->package->op_name->uv.name;
-          const char* file = sub->op_sub->file;
+          const char* sub_name = sub->name;
+          const char* package_name = sub->package->name;
+          const char* file = sub->file;
 
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));

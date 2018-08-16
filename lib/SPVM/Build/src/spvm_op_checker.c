@@ -2280,7 +2280,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          assert(sub->file_name);
+          assert(sub->file);
           
           // Add op my if need
           if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
