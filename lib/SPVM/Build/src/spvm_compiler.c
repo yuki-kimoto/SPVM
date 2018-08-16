@@ -67,18 +67,51 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
-void SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string) {
+int32_t SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string) {
   
-  if (runtime->strings_length > runtime->strings_capacity) {
-    int32_t new_capacity = runtime->strings_capacity * 2;
-    const char** new_strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime->strings_capacity);
-    memcpy(new_strings, runtime->strings, runtime->strings_length);
+  
+  int32_t id = runtime->strings_length;
+  if (runtime->strings_length >= runtime->strings_capacity) {
+  warn("AAAAAAAAA");
+    int32_t new_strings_capacity = runtime->strings_capacity * 2;
+    char** new_strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_strings_capacity);
+    memcpy(new_strings, runtime->strings, sizeof(char*) * runtime->strings_length);
+  warn("BBBBBBBBBB");
     free(runtime->strings);
+  warn("CCCCCCCCCC");
     runtime->strings = new_strings;
+    runtime->strings_capacity = new_strings_capacity;
   }
   
+  warn("DDDDDDDDD %d", runtime->strings_length);
   runtime->strings[runtime->strings_length] = string;
   runtime->strings_length++;
+  
+  return id;
+}
+
+void SPVM_COMPILER_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type) {
+  
+  if (runtime->portable_basic_types_length >= runtime->portable_basic_types_capacity) {
+    int32_t new_portable_basic_types_capacity = runtime->portable_basic_types_capacity * 2;
+    int32_t* new_portable_basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_basic_types_unit * new_portable_basic_types_capacity);
+    memcpy(new_portable_basic_types, runtime->portable_basic_types, sizeof(int32_t) * runtime->portable_basic_types_unit * runtime->portable_basic_types_length);
+    free(runtime->portable_basic_types);
+    runtime->portable_basic_types = new_portable_basic_types;
+    runtime->portable_basic_types_capacity = new_portable_basic_types_capacity;
+  }
+  
+  int32_t* new_portable_basic_type = (int32_t*)&runtime->portable_basic_types[runtime->portable_basic_types_unit * runtime->portable_basic_types_length];
+  new_portable_basic_type[0] = SPVM_COMPILER_push_runtime_string(compiler, runtime, basic_type->name);
+  new_portable_basic_type[1] = basic_type->id;
+  new_portable_basic_type[2] = basic_type->category;
+  if (basic_type->package) {
+    new_portable_basic_type[3] = basic_type->package->id;
+  }
+  else {
+    new_portable_basic_type[3] = -1;
+  }
+  runtime->portable_basic_types_length++;
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
@@ -103,7 +136,18 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->strings_capacity = 32;
   
-  runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(runtime->strings_capacity);
+  runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * runtime->strings_capacity);
+  
+  runtime->portable_basic_types_capacity = 8;
+
+  runtime->portable_basic_types_unit = 4;
+  
+  // Portable basic type
+  runtime->portable_basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_basic_types_unit * runtime->portable_basic_types_capacity);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_COMPILER_push_portable_basic_type(compiler, runtime, basic_type);
+  }
   
   return runtime;
 }
