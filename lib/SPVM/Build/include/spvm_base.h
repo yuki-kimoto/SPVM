@@ -8,6 +8,10 @@
 struct SPVM_runtime_package;
 typedef struct SPVM_runtime_package SPVM_RUNTIME_PACKAGE;
 
+// spvm_runtime_sub.h
+struct SPVM_runtime_sub;
+typedef struct SPVM_runtime_sub SPVM_RUNTIME_SUB;
+
 // spvm_runtime_package_var.h
 struct SPVM_runtime_package_var;
 typedef struct SPVM_runtime_package_var SPVM_RUNTIME_PACKAGE_VAR;

@@ -11,22 +11,36 @@ enum {
 // Method information
 struct SPVM_sub {
   SPVM_OP* op_sub;
-  void* native_address;
-  void* precompile_address;
   SPVM_OP* op_name;
   SPVM_OP* op_block;
   SPVM_OP* op_constant;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
-  const char* signature;
   int32_t opcode_base;
   int32_t opcode_length;
   int32_t call_sub_arg_stack_max;
-  int32_t id;
   int32_t rel_id;
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
   int8_t call_type_id;
+  SPVM_LIST* info_package_var_accesses;
+  SPVM_LIST* info_field_accesses;
+  SPVM_LIST* info_types;
+  SPVM_LIST* info_call_subs;
+  SPVM_LIST* info_constants;
+  SPVM_LIST* info_switch_infos;
+  
+  int32_t id;
+  void* precompile_address;
+  void* native_address;
+  SPVM_TYPE* return_type;
+  SPVM_LIST* args;
+  const char* file;
+  int32_t line;
+  const char* name;
+  const char* abs_name;
+  const char* signature;
+  SPVM_PACKAGE* package;
   _Bool have_native_desc;
   _Bool have_precompile_desc;
   _Bool is_enum;
@@ -35,20 +49,6 @@ struct SPVM_sub {
   _Bool is_core;
   _Bool is_static;
   _Bool is_return_type_object;
-  SPVM_LIST* info_package_var_accesses;
-  SPVM_LIST* info_field_accesses;
-  SPVM_LIST* info_types;
-  SPVM_LIST* info_call_subs;
-  SPVM_LIST* info_constants;
-  SPVM_LIST* info_switch_infos;
-  
-  SPVM_TYPE* return_type;
-  SPVM_LIST* args;
-  const char* file;
-  int32_t line;
-  const char* name;
-  const char* abs_name;
-  SPVM_PACKAGE* package;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
