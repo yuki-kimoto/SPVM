@@ -116,7 +116,7 @@ void SPVM_COMPILER_build_runtime_basic_types(SPVM_COMPILER* compiler, SPVM_RUNTI
   for (size_t i = 0; i < runtime->portable_basic_types_unit * runtime->portable_basic_types_length; i += runtime->portable_basic_types_unit) {
     int32_t* portable_basic_type = (int32_t*)&runtime->portable_basic_types[i];
     
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new(compiler);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new();
     runtime_basic_type->name = runtime->strings[portable_basic_type[0]];
     runtime_basic_type->id = portable_basic_type[1];
     runtime_basic_type->category = portable_basic_type[2];

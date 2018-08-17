@@ -17,6 +17,6 @@ struct SPVM_runtime_field {
   const char* name;
 };
 
-SPVM_RUNTIME_FIELD* SPVM_RUNTIME_FIELD_new(SPVM_COMPILER* compiler);
+SPVM_RUNTIME_FIELD* SPVM_RUNTIME_FIELD_new();
 
 #endif

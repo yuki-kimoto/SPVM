@@ -12,6 +12,6 @@ struct SPVM_runtime_basic_type {
   SPVM_PACKAGE* package;
 };
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_BASIC_TYPE_new(SPVM_COMPILER* compiler);
+SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_BASIC_TYPE_new();
 
 #endif

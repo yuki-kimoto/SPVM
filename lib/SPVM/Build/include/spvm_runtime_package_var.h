@@ -16,6 +16,6 @@ struct SPVM_runtime_package_var {
   int32_t type_flag;
 };
 
-SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_PACKAGE_VAR_new(SPVM_COMPILER* compiler);
+SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_PACKAGE_VAR_new();
 
 #endif
