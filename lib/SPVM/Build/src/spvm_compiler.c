@@ -19,6 +19,7 @@
 #include "spvm_runtime_api.h"
 #include "spvm_sub.h"
 #include "spvm_field.h"
+#include "spvm_package_var.h"
 #include "spvm_native.h"
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
@@ -28,6 +29,7 @@
 #include "spvm_object.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_field.h"
+#include "spvm_runtime_package_var.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -218,7 +220,7 @@ void SPVM_COMPILER_build_runtime_field_symtable(SPVM_COMPILER* compiler, SPVM_RU
   }
 }
 
-void SPVM_COMPILER_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_FIELD* package_var) {
+void SPVM_COMPILER_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_PACKAGE_VAR* package_var) {
   
   if (runtime->portable_package_vars_length >= runtime->portable_package_vars_capacity) {
     int32_t new_portable_package_vars_capacity = runtime->portable_package_vars_capacity * 2;
@@ -235,14 +237,14 @@ void SPVM_COMPILER_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTI
   new_portable_package_var[1] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->name);
   new_portable_package_var[2] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->abs_name);
   new_portable_package_var[3] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->signature);
-  if (package_var->type->basic_type) {
-    new_portable_package_var[4] = package_var->type->basic_type->id;
+  if (package_var->op_type->uv.type->basic_type) {
+    new_portable_package_var[4] = package_var->op_type->uv.type->basic_type->id;
   }
   else {
     new_portable_package_var[4] = -1;
   }
-  new_portable_package_var[5] = package_var->type->dimension;
-  new_portable_package_var[6] = package_var->type->flag;
+  new_portable_package_var[5] = package_var->op_type->uv.type->dimension;
+  new_portable_package_var[6] = package_var->op_type->uv.type->flag;
   if (package_var->package) {
     new_portable_package_var[7] = package_var->package->id;
   }
@@ -257,7 +259,7 @@ void SPVM_COMPILER_build_runtime_package_vars(SPVM_COMPILER* compiler, SPVM_RUNT
   for (size_t i = 0; i < runtime->portable_package_vars_unit * runtime->portable_package_vars_length; i += runtime->portable_package_vars_unit) {
     int32_t* portable_package_var = (int32_t*)&runtime->portable_package_vars[i];
     
-    SPVM_RUNTIME_FIELD* runtime_package_var = SPVM_RUNTIME_FIELD_new(compiler);
+    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_RUNTIME_PACKAGE_VAR_new(compiler);
     runtime_package_var->id = portable_package_var[0];
     runtime_package_var->name = runtime->strings[portable_package_var[1]];
     runtime_package_var->abs_name = runtime->strings[portable_package_var[2]];
@@ -267,7 +269,7 @@ void SPVM_COMPILER_build_runtime_package_vars(SPVM_COMPILER* compiler, SPVM_RUNT
       runtime_package_var->runtime_basic_type = NULL;
     }
     else {
-      SPVM_RUNTIME_FIELD* runtime_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
+      SPVM_RUNTIME_PACKAGE_VAR* runtime_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
       runtime_package_var->runtime_basic_type = runtime_basic_type;
     }
     runtime_package_var->type_dimension = portable_package_var[5];
@@ -287,7 +289,7 @@ void SPVM_COMPILER_build_runtime_package_vars(SPVM_COMPILER* compiler, SPVM_RUNT
 
 void SPVM_COMPILER_build_runtime_package_var_symtable(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
   for (int32_t package_var_id = 0; package_var_id < runtime->runtime_package_vars->length; package_var_id++) {
-    SPVM_RUNTIME_FIELD* runtime_package_var = SPVM_LIST_fetch(runtime->runtime_package_vars, package_var_id);
+    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_LIST_fetch(runtime->runtime_package_vars, package_var_id);
     SPVM_HASH_insert(runtime->runtime_package_var_symtable, runtime_package_var->name, strlen(runtime_package_var->name), runtime_package_var);
   }
 }
@@ -346,8 +348,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_build_runtime_fields(compiler, runtime);
   SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
 
-/*  
-
   // Portable package_vars
   runtime->portable_package_vars_capacity = 8;
   runtime->portable_package_vars_unit = 8;
@@ -362,7 +362,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
   SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
-*/
+
   return runtime;
 }
 
