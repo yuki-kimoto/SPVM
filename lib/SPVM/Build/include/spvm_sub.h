@@ -8,6 +8,17 @@ enum {
   SPVM_SUB_C_CALL_TYPE_ID_METHOD,
 };
 
+enum {
+  SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC = 1,
+  SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC = 2,
+  SPVM_SUB_C_FLAG_IS_ENUM = 4,
+  SPVM_SUB_C_FLAG_IS_DESTRUCTOR = 8,
+  SPVM_SUB_C_FLAG_IS_COMPILED = 16,
+  SPVM_SUB_C_FLAG_IS_CORE = 32,
+  SPVM_SUB_C_FLAG_IS_STATIC = 64, 
+  SPVM_SUB_C_FLAG_IS_RETURN_TYPE_OBJECT = 128,
+};
+
 // Method information
 struct SPVM_sub {
   SPVM_OP* op_sub;
@@ -41,14 +52,6 @@ struct SPVM_sub {
   const char* abs_name;
   const char* signature;
   SPVM_PACKAGE* package;
-  _Bool have_native_desc;
-  _Bool have_precompile_desc;
-  _Bool is_enum;
-  _Bool is_destructor;
-  _Bool is_compiled;
-  _Bool is_core;
-  _Bool is_static;
-  _Bool is_return_type_object;
   int32_t flag;
 };
 

@@ -331,8 +331,8 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      return_type => ");
     SPVM_TYPE_fprint_type_name(compiler, stdout, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
     printf("\n");
-    printf("      is_enum => %d\n", sub->is_enum);
-    printf("      have_native_desc => %d\n", sub->have_native_desc);
+    printf("      is_enum => %d\n", (sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) ? 1 : 0);
+    printf("      have_native_desc => %d\n", (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) ? 1 : 0);
     printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     
@@ -347,7 +347,7 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
       }
     }
     
-    if (!sub->have_native_desc) {
+    if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
       printf("      mys\n");
       SPVM_LIST* mys = sub->mys;
       {
@@ -381,7 +381,7 @@ void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
     printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     
-    if (!sub->have_native_desc) {
+    if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
       printf("      mys\n");
       SPVM_LIST* mys = sub->mys;
       {

@@ -1598,7 +1598,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         sub->package = package;
         
-        if (sub->is_destructor) {
+        if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
           package->sub_destructor = sub;
         }
         
@@ -1802,22 +1802,22 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
     
     if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
-      sub->have_native_desc = 1;
+      sub->flag |= SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
     }
     else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_PRECOMPILE) {
-      sub->have_precompile_desc = 1;
+      sub->flag |= SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
     }
     else {
       SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
     }
   }
 
-  if (sub->have_native_desc && sub->have_precompile_desc) {
+  if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC)) {
     SPVM_yyerror_format(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
   }
 
   // Native subroutine can't have block
-  if (sub->have_native_desc && op_block) {
+  if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && op_block) {
     SPVM_yyerror_format(compiler, "Native subroutine can't have block", op_block->file, op_block->line);
   }
   
@@ -1844,7 +1844,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
   
   // Native my vars is same as arguments
-  if (sub->have_native_desc) {
+  if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       SPVM_LIST_push(sub->mys, op_arg->uv.var->my);
@@ -1855,7 +1855,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   sub->return_type = op_return_type->uv.type;
   
   if (strcmp(sub->op_name->uv.name, "DESTROY") == 0) {
-    sub->is_destructor = 1;
+    sub->flag |= SPVM_SUB_C_FLAG_IS_DESTRUCTOR;
     
     // DESTROY return type must be void
     if (!(sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
@@ -1982,7 +1982,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_sub->uv.sub->op_constant = op_constant;
   
   // Subroutine is constant
-  op_sub->uv.sub->is_enum = 1;
+  op_sub->uv.sub->flag |= SPVM_SUB_C_FLAG_IS_ENUM;
   op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
   
   return op_sub;

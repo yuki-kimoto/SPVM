@@ -135,7 +135,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           
           // Destructor must receive own package object
-          if (sub->is_destructor) {
+          if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
             // DESTROY argument must be 0
             _Bool error = 0;
             if (sub->args->length != 1) {
@@ -166,12 +166,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->have_native_desc)) {
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             SPVM_yyerror_format(compiler, "Interface sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
           }
           
           // Check subroutine
-          if (!sub->have_native_desc) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             int32_t eval_block_stack_length = 0;
             int32_t loop_block_stack_length = 0;
             
@@ -1928,7 +1928,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Constant subroutine
-                        if (call_sub->sub->is_enum) {
+                        if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
                           // Replace sub to constant
                           op_cur->id = SPVM_OP_C_ID_CONSTANT;
                           op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;
@@ -1949,7 +1949,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         op_cur->uv.call_sub->sub_rel_id = sub->info_call_subs->length;
                         SPVM_LIST_push(sub->info_call_subs, op_cur->uv.call_sub);
                         
-                        if (call_sub->sub->is_destructor) {
+                        if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
                           SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
@@ -2162,7 +2162,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           
           // Create temporary variables for not assigned values
-          if (!sub->have_native_desc) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
             SPVM_OP* op_cur = op_base;
@@ -2310,7 +2310,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
 
           // Add more information for opcode building
-          if (!sub->have_native_desc) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Block stack
             SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
             

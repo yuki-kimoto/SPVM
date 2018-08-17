@@ -718,7 +718,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       const char* sub_name = sub->name;
-      if (sub->have_precompile_desc) {
+      if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)sub->signature);
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "\n");
@@ -736,7 +736,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       const char* sub_name = sub->name;
-      if (sub->have_precompile_desc) {
+      if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
         SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, package_name, sub_name);
       }
     }
@@ -804,7 +804,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
-  assert(sub->have_precompile_desc);
+  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
   // Subroutine name
   const char* sub_abs_name = sub->abs_name;
@@ -845,7 +845,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
-  assert(sub->have_precompile_desc);
+  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
   SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->package->name, sub->name);
 
@@ -2611,7 +2611,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
 
 
         // Subroutine inline expantion in same package
-        if (decl_sub->package->id == sub->package->id && decl_sub->have_precompile_desc) {
+        if (decl_sub->package->id == sub->package->id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_PRECOMPILE_");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->abs_name);
           {
@@ -2627,7 +2627,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");
         }
         // Inline expansion is done in native core function
-        else if (strcmp(decl_sub->package->name, "SPVM::CORE") == 0 && decl_sub->have_native_desc) {
+        else if (strcmp(decl_sub->package->name, "SPVM::CORE") == 0 && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
           SPVM_STRING_BUFFER_add(compiler, string_buffer , (char*)decl_sub->name);
           SPVM_STRING_BUFFER_add(compiler, string_buffer , "(env, stack);\n");

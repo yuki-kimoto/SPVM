@@ -1301,15 +1301,15 @@ get_subs(...)
       SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
 
       // Subroutine is_enum
-      int32_t sub_is_enum = sub->is_enum;
+      int32_t sub_is_enum = sub->flag & SPVM_SUB_C_FLAG_IS_ENUM;
       SV* sv_sub_is_enum = sv_2mortal(newSViv(sub_is_enum));
 
       // Subroutine have_native_desc
-      int32_t sub_have_native_desc = sub->have_native_desc;
+      int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
       SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
 
       // Subroutine have_precompile_desc
-      int32_t sub_have_precompile_desc = sub->have_precompile_desc;
+      int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
       SV* sv_sub_have_precompile_desc = sv_2mortal(newSViv(sub_have_precompile_desc));
 
       // Subroutine
@@ -1661,8 +1661,8 @@ bind_sub(...)
   
   SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
   
+  sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   sub->precompile_address = sub_precompile_address;
-  sub->is_compiled = 1;
   
   XSRETURN(0);
 }

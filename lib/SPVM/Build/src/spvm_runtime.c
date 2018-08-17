@@ -54,12 +54,12 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
   
   int32_t exception_flag = 0;
-  if (sub->have_native_desc) {
+  if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
     int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
     exception_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, stack);
     SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
   }
-  else if (sub->is_compiled) {
+  else if (sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED) {
     exception_flag = SPVM_RUNTIME_call_sub_precompile(env, sub_id, stack);
   }
   else {
@@ -86,7 +86,7 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine is Precompile
-  assert(sub->is_compiled);
+  assert(sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED);
   
   // Call precompile subroutine
   int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub->precompile_address;
@@ -104,7 +104,7 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Subroutine is native
-  assert(sub->have_native_desc);
+  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC);
 
   // Call native subrotuine
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub->native_address;
