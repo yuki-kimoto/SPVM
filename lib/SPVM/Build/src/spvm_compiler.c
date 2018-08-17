@@ -329,11 +329,11 @@ void SPVM_COMPILER_build_runtime_subs(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     
     SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new(compiler);
     runtime_sub->id = portable_sub[0];
-    runtime_sub->flag = portable_sub[2];
-    runtime_sub->name = runtime->strings[portable_sub[3]];
-    runtime_sub->abs_name = runtime->strings[portable_sub[4]];
-    runtime_sub->signature = runtime->strings[portable_sub[5]];
-    int32_t package_id = portable_sub[6];
+    runtime_sub->flag = portable_sub[1];
+    runtime_sub->name = runtime->strings[portable_sub[2]];
+    runtime_sub->abs_name = runtime->strings[portable_sub[3]];
+    runtime_sub->signature = runtime->strings[portable_sub[4]];
+    int32_t package_id = portable_sub[5];
     if (package_id < 0) {
       runtime_sub->package = NULL;
     }
@@ -421,6 +421,21 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
   SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
+
+  // Portable subs
+  runtime->portable_subs_capacity = 8;
+  runtime->portable_subs_unit = 6;
+  runtime->portable_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_subs_unit * runtime->portable_subs_capacity);
+  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
+    SPVM_BASIC_TYPE* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+    SPVM_COMPILER_push_portable_sub(compiler, runtime, sub);
+  }
+  
+  // Build runtime sub infos
+  runtime->runtime_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->runtime_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  SPVM_COMPILER_build_runtime_subs(compiler, runtime);
+  SPVM_COMPILER_build_runtime_sub_symtable(compiler, runtime);
 
   return runtime;
 }
