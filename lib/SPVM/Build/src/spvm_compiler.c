@@ -242,42 +242,34 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * runtime->strings_capacity);
   
-  runtime->portable_basic_types_capacity = 8;
-
-  runtime->portable_basic_types_unit = 4;
-  
   // Portable basic type
+  runtime->portable_basic_types_capacity = 8;
+  runtime->portable_basic_types_unit = 4;
   runtime->portable_basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_basic_types_unit * runtime->portable_basic_types_capacity);
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_COMPILER_push_portable_basic_type(compiler, runtime, basic_type);
   }
   
+  // Build runtime basic type infos
   runtime->runtime_basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-
   runtime->runtime_basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  
-  // Build runtime basic types and basic type symtable
   SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
   SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
-
-
-  runtime->portable_fields_capacity = 8;
-
-  runtime->portable_fields_unit = 10;
   
-  // Portable basic type
+  // Portable fields
+  runtime->portable_fields_capacity = 8;
+  runtime->portable_fields_unit = 10;
   runtime->portable_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_fields_unit * runtime->portable_fields_capacity);
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_BASIC_TYPE* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_COMPILER_push_portable_field(compiler, runtime, field);
   }
   
+  
+  // Build runtime field infos
   runtime->runtime_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  
   runtime->runtime_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  
-  // Build runtime fields and field symtable
   SPVM_COMPILER_build_runtime_fields(compiler, runtime);
   SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
   
