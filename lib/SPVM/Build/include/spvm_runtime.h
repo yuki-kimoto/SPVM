@@ -72,6 +72,14 @@ struct SPVM_runtime {
   int32_t portable_basic_types_length;
 
   int32_t* portable_basic_types;
+
+  int32_t portable_fields_unit;
+  
+  int32_t portable_fields_capacity;
+  
+  int32_t portable_fields_length;
+
+  int32_t* portable_fields;
   
   SPVM_LIST* runtime_basic_types;
   

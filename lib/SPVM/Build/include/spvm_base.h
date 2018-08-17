@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_runtime_field.h
+struct SPVM_runtime_field;
+typedef struct SPVM_runtime_field SPVM_RUNTIME_FIELD;
+
 // spvm_runtime_basic_type.h
 struct SPVM_runtime_basic_type;
 typedef struct SPVM_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
