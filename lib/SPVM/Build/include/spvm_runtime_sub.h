@@ -10,9 +10,9 @@ struct SPVM_runtime_sub {
   const char* name;
   const char* abs_name;
   const char* signature;
+  SPVM_PACKAGE* package;
   void* precompile_address;
   void* native_address;
-  SPVM_PACKAGE* package;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

@@ -49,6 +49,7 @@ struct SPVM_sub {
   _Bool is_core;
   _Bool is_static;
   _Bool is_return_type_object;
+  int32_t flag;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
