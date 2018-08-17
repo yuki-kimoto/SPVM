@@ -111,4 +111,10 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string);
 void SPVM_COMPILER_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
 
+int32_t SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string);
+void SPVM_COMPILER_push_portable_field(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_FIELD* field);
+
+void SPVM_COMPILER_build_runtime_fields(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+void SPVM_COMPILER_build_runtime_basic_type_symtable(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime);
+
 #endif
