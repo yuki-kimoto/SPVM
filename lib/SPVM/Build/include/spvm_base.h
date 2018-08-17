@@ -4,7 +4,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-// spvm_runtime_field.h
+// spvm_runtime_package.h
+struct SPVM_runtime_package;
+typedef struct SPVM_runtime_package SPVM_RUNTIME_PACKAGE;
+
+// spvm_runtime_package_var.h
 struct SPVM_runtime_package_var;
 typedef struct SPVM_runtime_package_var SPVM_RUNTIME_PACKAGE_VAR;
 

@@ -1,10 +1,10 @@
-#ifndef SPVM_RUNTIME_PACKAGE_VAR_H
-#define SPVM_RUNTIME_PACKAGE_VAR_H
+#ifndef SPVM_RUNTIME_package_H
+#define SPVM_RUNTIME_package_H
 
 #include "spvm_base.h"
 
 // Field information
-struct SPVM_runtime_package_var {
+struct SPVM_runtime_package {
   int32_t id;
   const char* name;
   const char* abs_name;
@@ -15,6 +15,6 @@ struct SPVM_runtime_package_var {
   SPVM_PACKAGE* package;
 };
 
-SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_PACKAGE_VAR_new();
+SPVM_RUNTIME_package* SPVM_RUNTIME_package_new();
 
 #endif

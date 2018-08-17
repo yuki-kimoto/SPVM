@@ -73,6 +73,14 @@ struct SPVM_runtime {
 
   int32_t* portable_basic_types;
 
+  int32_t portable_packages_unit;
+  
+  int32_t portable_packages_capacity;
+  
+  int32_t portable_packages_length;
+
+  int32_t* portable_packages;
+
   int32_t portable_fields_unit;
   
   int32_t portable_fields_capacity;
@@ -80,6 +88,22 @@ struct SPVM_runtime {
   int32_t portable_fields_length;
 
   int32_t* portable_fields;
+
+  int32_t portable_package_vars_unit;
+  
+  int32_t portable_package_vars_capacity;
+  
+  int32_t portable_package_vars_length;
+
+  int32_t* portable_package_vars;
+
+  int32_t portable_subs_unit;
+  
+  int32_t portable_subs_capacity;
+  
+  int32_t portable_subs_length;
+
+  int32_t* portable_subs;
   
   SPVM_LIST* runtime_basic_types;
   
