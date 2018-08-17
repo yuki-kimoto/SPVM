@@ -6,7 +6,6 @@
 // Field information
 struct SPVM_runtime_package_var {
   int32_t id;
-  int32_t rel_id;
   const char* name;
   const char* abs_name;
   const char* signature;

@@ -85,9 +85,21 @@ struct SPVM_runtime {
   
   SPVM_HASH* runtime_basic_type_symtable;
 
+  SPVM_LIST* runtime_packages;
+  
+  SPVM_HASH* runtime_package_symtable;
+
   SPVM_LIST* runtime_fields;
   
   SPVM_HASH* runtime_field_symtable;
+
+  SPVM_LIST* runtime_package_vars;
+  
+  SPVM_HASH* runtime_package_var_symtable;
+
+  SPVM_LIST* runtime_subs;
+  
+  SPVM_HASH* runtime_sub_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
