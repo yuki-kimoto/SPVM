@@ -8,7 +8,7 @@ struct SPVM_package_var {
   SPVM_OP* op_package_var;
   SPVM_PACKAGE* package;
   SPVM_OP* op_var;
-  SPVM_OP* op_type;
+  SPVM_TYPE* type;
   int32_t id;
   int32_t rel_id;
   const char* abs_name;

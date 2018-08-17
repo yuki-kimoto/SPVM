@@ -3253,10 +3253,10 @@ const char* SPVM_OP_CHECKER_create_package_var_signature(SPVM_COMPILER* compiler
     length += 1;
 
     // Return type basic type
-    length += strlen(package_var->op_type->uv.type->basic_type->name);
+    length += strlen(package_var->type->basic_type->name);
     
     // Return type dimension
-    length += package_var->op_type->uv.type->dimension * 2;
+    length += package_var->type->dimension * 2;
     
     // )
     length += 1;
@@ -3275,11 +3275,11 @@ const char* SPVM_OP_CHECKER_create_package_var_signature(SPVM_COMPILER* compiler
     bufptr += 1;
 
     // Return type
-    memcpy(bufptr, package_var->op_type->uv.type->basic_type->name, strlen(package_var->op_type->uv.type->basic_type->name));
-    bufptr += strlen(package_var->op_type->uv.type->basic_type->name);
+    memcpy(bufptr, package_var->type->basic_type->name, strlen(package_var->type->basic_type->name));
+    bufptr += strlen(package_var->type->basic_type->name);
     
     int32_t dim_index;
-    for (dim_index = 0; dim_index < package_var->op_type->uv.type->dimension; dim_index++) {
+    for (dim_index = 0; dim_index < package_var->type->dimension; dim_index++) {
       memcpy(bufptr, "[]", 2);
       bufptr += 2;
     }

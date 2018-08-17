@@ -237,14 +237,14 @@ void SPVM_COMPILER_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTI
   new_portable_package_var[1] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->name);
   new_portable_package_var[2] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->abs_name);
   new_portable_package_var[3] = SPVM_COMPILER_push_runtime_string(compiler, runtime, package_var->signature);
-  if (package_var->op_type->uv.type->basic_type) {
-    new_portable_package_var[4] = package_var->op_type->uv.type->basic_type->id;
+  if (package_var->type->basic_type) {
+    new_portable_package_var[4] = package_var->type->basic_type->id;
   }
   else {
     new_portable_package_var[4] = -1;
   }
-  new_portable_package_var[5] = package_var->op_type->uv.type->dimension;
-  new_portable_package_var[6] = package_var->op_type->uv.type->flag;
+  new_portable_package_var[5] = package_var->type->dimension;
+  new_portable_package_var[6] = package_var->type->flag;
   if (package_var->package) {
     new_portable_package_var[7] = package_var->package->id;
   }

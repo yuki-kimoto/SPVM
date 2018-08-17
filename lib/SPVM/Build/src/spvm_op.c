@@ -1147,15 +1147,15 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
       SPVM_PACKAGE_VAR* package_var = op->uv.package_var_access->package_var;
-      if (package_var->op_type) {
-        type = package_var->op_type->uv.type;
+      if (package_var->type) {
+        type = package_var->type;
       }
       break;
     }
     case SPVM_OP_C_ID_PACKAGE_VAR: {
       SPVM_PACKAGE_VAR* package_var = op->uv.package_var;
-      if (package_var->op_type) {
-        type = package_var->op_type->uv.type;
+      if (package_var->type) {
+        type = package_var->type;
       }
       break;
     }
@@ -1701,7 +1701,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   }
   
   package_var->op_var = op_var;
-  package_var->op_type = op_type;
+  package_var->type = op_type->uv.type;
   package_var->op_package_var = op_package_var;
 
   op_package_var->uv.package_var = package_var;
