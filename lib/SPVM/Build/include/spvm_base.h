@@ -5,6 +5,10 @@
 #include <stdlib.h>
 
 // spvm_runtime_field.h
+struct SPVM_runtime_package_var;
+typedef struct SPVM_runtime_package_var SPVM_RUNTIME_PACKAGE_VAR;
+
+// spvm_runtime_field.h
 struct SPVM_runtime_field;
 typedef struct SPVM_runtime_field SPVM_RUNTIME_FIELD;
 

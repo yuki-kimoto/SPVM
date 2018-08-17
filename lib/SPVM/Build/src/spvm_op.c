@@ -1756,10 +1756,9 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
     
     switch (descriptor->id) {
       case SPVM_DESCRIPTOR_C_ID_PRIVATE:
-        field->is_private = 1;
+        field->flag |= SPVM_FIELD_C_FLAG_PRIVATE;
         break;
       case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-        field->is_private = 0;
         break;
       default:
         SPVM_yyerror_format(compiler, "Invalid field descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);

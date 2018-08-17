@@ -3,18 +3,22 @@
 
 #include "spvm_base.h"
 
+enum {
+  SPVM_FIELD_C_FLAG_PRIVATE = 1,
+};
+
 // Field information
 struct SPVM_field {
   SPVM_OP* op_field;
   SPVM_OP* op_name;
   SPVM_PACKAGE* package;
   SPVM_TYPE* type;
-  int32_t id;
-  int32_t index;
-  _Bool is_private;
   const char* abs_name;
   const char* signature;
   const char* name;
+  int32_t id;
+  int32_t index;
+  int32_t flag;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

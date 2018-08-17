@@ -2003,7 +2003,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
                         
-                        if (field->is_private) {
+                        if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
                           if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
                             char* type_name = tmp_buffer;
                             SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
