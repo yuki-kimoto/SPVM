@@ -33,7 +33,7 @@
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package_var.h"
 
 
 
@@ -1151,16 +1151,15 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Package
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->runtime_package_symtable, package_name, strlen(package_name));
   if (!package) {
     return -1;
   }
   
   // Field
-  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_signature_symtable, signature, strlen(signature));
+  SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_signature_symtable, signature, strlen(signature));
   
   if (!package_var) {
     return -2;
