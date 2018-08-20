@@ -335,7 +335,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
   for (size_t i = 0; i < runtime->portable_packages_unit * runtime->portable_packages_length; i += runtime->portable_packages_unit) {
     int32_t* portable_package = (int32_t*)&runtime->portable_packages[i];
     
-    SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_SUB_new(compiler);
+    SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new(compiler);
     runtime_package->id = portable_package[0];
     runtime_package->name = runtime->strings[portable_package[1]];
     runtime_package->destructor_sub_id = portable_package[2];
@@ -348,6 +348,69 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     SPVM_RUNTIME_SUB* runtime_package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
     SPVM_HASH_insert(runtime->runtime_package_symtable, runtime_package->name, strlen(runtime_package->name), runtime_package);
   }
+  
+  // Register field info to package
+  for (int32_t field_id = 0; field_id < runtime->runtime_fields->length; field_id++) {
+    SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->runtime_fields, field_id);
+    
+    int32_t package_id = field->package_id;
+    
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    
+    if (package->fields == NULL) {
+      package->fields = SPVM_LIST_new(0);
+    }
+
+    if (package->field_symtable == NULL) {
+      package->field_symtable = SPVM_HASH_new(0);
+    }
+
+    if (package->field_signatures == NULL) {
+      package->field_signatures = SPVM_LIST_new(0);
+    }
+
+    if (package->field_signature_symtable == NULL) {
+      package->field_signature_symtable = SPVM_HASH_new(0);
+    }
+    
+    SPVM_LIST_push(package->fields, field);
+    SPVM_HASH_insert(package->field_symtable, field->name, strlen(field->name), field);
+    
+    SPVM_LIST_push(package->field_signatures, field->signature);
+    SPVM_HASH_insert(package->field_signature_symtable, field->signature, strlen(field->signature), field);
+  }
+
+  // Register package_var info to package
+  for (int32_t package_var_id = 0; package_var_id < runtime->runtime_package_vars->length; package_var_id++) {
+    SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_LIST_fetch(runtime->runtime_package_vars, package_var_id);
+    
+    int32_t package_id = package_var->package_id;
+    
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    
+    if (package->package_vars == NULL) {
+      package->package_vars = SPVM_LIST_new(0);
+    }
+
+    if (package->package_var_symtable == NULL) {
+      package->package_var_symtable = SPVM_HASH_new(0);
+    }
+
+    if (package->package_var_signatures == NULL) {
+      package->package_var_signatures = SPVM_LIST_new(0);
+    }
+
+    if (package->package_var_signature_symtable == NULL) {
+      package->package_var_signature_symtable = SPVM_HASH_new(0);
+    }
+    
+    SPVM_LIST_push(package->package_vars, package_var);
+    SPVM_HASH_insert(package->package_var_symtable, package_var->name, strlen(package_var->name), package_var);
+    
+    SPVM_LIST_push(package->package_var_signatures, package_var->signature);
+    SPVM_HASH_insert(package->package_var_signature_symtable, package_var->signature, strlen(package_var->signature), package_var);
+  }
+
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
