@@ -359,14 +359,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_SUB_new(compiler);
     runtime_package->id = portable_package[0];
     runtime_package->name = runtime->strings[portable_package[1]];
-    int32_t destructor_sub_id = portable_package[2];
-    if (destructor_sub_id < 0) {
-      runtime_package->runtime_sub_destructor = NULL;
-    }
-    else {
-      SPVM_RUNTIME_SUB* runtime_sub_destructor = SPVM_LIST_fetch(runtime->runtime_subs, destructor_sub_id);
-      runtime_package->runtime_sub_destructor = runtime_sub_destructor;
-    }
+    runtime_package->destructor_sub_id = portable_package[2];
     
     SPVM_LIST_push(runtime->runtime_packages, runtime_package);
   }

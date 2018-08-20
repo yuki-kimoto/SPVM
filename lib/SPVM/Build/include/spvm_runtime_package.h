@@ -7,7 +7,7 @@
 struct SPVM_runtime_package {
   int32_t id;
   const char* name;
-  SPVM_RUNTIME_SUB* runtime_sub_destructor;
+  int32_t destructor_sub_id;
   SPVM_LIST* package_vars;
   SPVM_HASH* package_var_symtable;
   SPVM_LIST* package_var_signatures;
