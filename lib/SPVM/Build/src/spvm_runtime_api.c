@@ -1126,16 +1126,15 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, const char* package_name
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Package
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->runtime_package_symtable, package_name, strlen(package_name));
   if (!package) {
     return -1;
   }
   
   // Field
-  SPVM_FIELD* field = SPVM_HASH_fetch(package->field_signature_symtable, signature, strlen(signature));
+  SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(package->field_signature_symtable, signature, strlen(signature));
   
   if (!field) {
     return -2;
