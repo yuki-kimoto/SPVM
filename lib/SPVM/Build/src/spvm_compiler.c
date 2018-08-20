@@ -320,14 +320,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_sub->name = runtime->strings[portable_sub[2]];
     runtime_sub->abs_name = runtime->strings[portable_sub[3]];
     runtime_sub->signature = runtime->strings[portable_sub[4]];
-    int32_t package_id = portable_sub[5];
-    if (package_id < 0) {
-      runtime_sub->package = NULL;
-    }
-    else {
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
-      runtime_sub->package = package;
-    }
+    runtime_sub->package_id = portable_sub[5];
     
     SPVM_LIST_push(runtime->runtime_subs, runtime_sub);
   }

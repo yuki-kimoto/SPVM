@@ -10,7 +10,7 @@ struct SPVM_runtime_sub {
   const char* name;
   const char* abs_name;
   const char* signature;
-  SPVM_PACKAGE* package;
+  int32_t package_id;
   void* precompile_address;
   void* native_address;
 };
