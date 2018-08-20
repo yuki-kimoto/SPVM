@@ -30,6 +30,10 @@
 #include "spvm_package_var.h"
 
 #include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_basic_type.h"
 
 
 
@@ -865,12 +869,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
 
-  SPVM_PACKAGE* package;
+  SPVM_RUNTIME_PACKAGE* package;
   if (basic_type->package_id < 0) {
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+    package = SPVM_LIST_fetch(runtime->runtime_packages, basic_type->package_id);
   }
   if (!package) {
     return NULL;
@@ -890,7 +894,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->sub_destructor) {
+  if (package->destructor_sub_id >= 0) {
     object->has_destructor = 1;
   }
   
