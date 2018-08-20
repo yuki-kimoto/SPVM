@@ -406,6 +406,19 @@ void SPVM_COMPILER_build_runtime_package_symtable(SPVM_COMPILER* compiler, SPVM_
   }
 }
 
+void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+  SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
+  SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_fields(compiler, runtime);
+  SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
+  SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_subs(compiler, runtime);
+  SPVM_COMPILER_build_runtime_sub_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_packages(compiler, runtime);
+  SPVM_COMPILER_build_runtime_package_symtable(compiler, runtime);
+}
+
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
@@ -495,16 +508,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
-  SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
-  SPVM_COMPILER_build_runtime_fields(compiler, runtime);
-  SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
-  SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
-  SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
-  SPVM_COMPILER_build_runtime_subs(compiler, runtime);
-  SPVM_COMPILER_build_runtime_sub_symtable(compiler, runtime);
-  SPVM_COMPILER_build_runtime_packages(compiler, runtime);
-  SPVM_COMPILER_build_runtime_package_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_info(compiler, runtime);
 
   return runtime;
 }
