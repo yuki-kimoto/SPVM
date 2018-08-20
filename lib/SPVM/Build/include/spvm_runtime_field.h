@@ -11,10 +11,10 @@ struct SPVM_runtime_field {
   const char* name;
   const char* abs_name;
   const char* signature;
-  SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type;
+  int32_t basic_type_id;
   int32_t type_dimension;
   int32_t type_flag;
-  SPVM_PACKAGE* package;
+  int32_t package_id;
 };
 
 SPVM_RUNTIME_FIELD* SPVM_RUNTIME_FIELD_new();
