@@ -823,7 +823,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
   
-  SPVM_PACKAGE* package = basic_type->package;
+  SPVM_PACKAGE* package;
+  if (basic_type->package_id < 0) {
+    package = NULL;
+  }
+  else {
+    package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+  }
   if (!package) {
     return NULL;
   }
@@ -859,7 +865,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
 
-  SPVM_PACKAGE* package = basic_type->package;
+  SPVM_PACKAGE* package;
+  if (basic_type->package_id < 0) {
+    package = NULL;
+  }
+  else {
+    package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+  }
   if (!package) {
     return NULL;
   }
@@ -1012,7 +1024,13 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     SPVM_COMPILER* compiler = runtime->compiler;
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, object->basic_type_id);
-    SPVM_PACKAGE* package = basic_type->package;
+    SPVM_PACKAGE* package;
+    if (basic_type->package_id < 0) {
+      package = NULL;
+    }
+    else {
+      package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+    }
     _Bool is_pointer = 0;
     if (package) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
