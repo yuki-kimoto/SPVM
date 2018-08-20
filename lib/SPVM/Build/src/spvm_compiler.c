@@ -442,8 +442,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime basic type infos
   runtime->runtime_basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
-  SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
 
   // Portable fields
   runtime->portable_fields_capacity = 8;
@@ -457,8 +455,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime field infos
   runtime->runtime_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  SPVM_COMPILER_build_runtime_fields(compiler, runtime);
-  SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
 
   // Portable package_vars
   runtime->portable_package_vars_capacity = 8;
@@ -472,8 +468,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime package_var infos
   runtime->runtime_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
-  SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
 
   // Portable subs
   runtime->portable_subs_capacity = 8;
@@ -487,8 +481,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime sub infos
   runtime->runtime_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  SPVM_COMPILER_build_runtime_subs(compiler, runtime);
-  SPVM_COMPILER_build_runtime_sub_symtable(compiler, runtime);
 
   // Portable packages
   runtime->portable_packages_capacity = 8;
@@ -502,6 +494,15 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime package infos
   runtime->runtime_packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+
+  SPVM_COMPILER_build_runtime_basic_types(compiler, runtime);
+  SPVM_COMPILER_build_runtime_basic_type_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_fields(compiler, runtime);
+  SPVM_COMPILER_build_runtime_field_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_package_vars(compiler, runtime);
+  SPVM_COMPILER_build_runtime_package_var_symtable(compiler, runtime);
+  SPVM_COMPILER_build_runtime_subs(compiler, runtime);
+  SPVM_COMPILER_build_runtime_sub_symtable(compiler, runtime);
   SPVM_COMPILER_build_runtime_packages(compiler, runtime);
   SPVM_COMPILER_build_runtime_package_symtable(compiler, runtime);
 
