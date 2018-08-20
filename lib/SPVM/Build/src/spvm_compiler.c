@@ -296,24 +296,10 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_package_var->name = runtime->strings[portable_package_var[1]];
     runtime_package_var->abs_name = runtime->strings[portable_package_var[2]];
     runtime_package_var->signature = runtime->strings[portable_package_var[3]];
-    int32_t basic_type_id = portable_package_var[4];
-    if (basic_type_id < 0) {
-      runtime_package_var->runtime_basic_type = NULL;
-    }
-    else {
-      SPVM_RUNTIME_PACKAGE_VAR* runtime_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
-      runtime_package_var->runtime_basic_type = runtime_basic_type;
-    }
+    runtime_package_var->basic_type_id = portable_package_var[4];
     runtime_package_var->type_dimension = portable_package_var[5];
     runtime_package_var->type_flag = portable_package_var[6];
-    int32_t package_id = portable_package_var[7];
-    if (package_id < 0) {
-      runtime_package_var->package = NULL;
-    }
-    else {
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
-      runtime_package_var->package = package;
-    }
+    runtime_package_var->package_id = portable_package_var[7];
     
     SPVM_LIST_push(runtime->runtime_package_vars, runtime_package_var);
   }
