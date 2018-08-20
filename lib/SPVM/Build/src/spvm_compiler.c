@@ -411,6 +411,37 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     SPVM_HASH_insert(package->package_var_signature_symtable, package_var->signature, strlen(package_var->signature), package_var);
   }
 
+  // Register sub info to package
+  for (int32_t sub_id = 0; sub_id < runtime->runtime_subs->length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
+    
+    int32_t package_id = sub->package_id;
+    
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    
+    if (package->subs == NULL) {
+      package->subs = SPVM_LIST_new(0);
+    }
+
+    if (package->sub_symtable == NULL) {
+      package->sub_symtable = SPVM_HASH_new(0);
+    }
+
+    if (package->sub_signatures == NULL) {
+      package->sub_signatures = SPVM_LIST_new(0);
+    }
+
+    if (package->sub_signature_symtable == NULL) {
+      package->sub_signature_symtable = SPVM_HASH_new(0);
+    }
+    
+    SPVM_LIST_push(package->subs, sub);
+    SPVM_HASH_insert(package->sub_symtable, sub->name, strlen(sub->name), sub);
+    
+    SPVM_LIST_push(package->sub_signatures, sub->signature);
+    SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
+  }
+
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
