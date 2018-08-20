@@ -1196,15 +1196,14 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, object->basic_type_id);
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));  
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->runtime_package_symtable, basic_type->name, strlen(basic_type->name));  
   if (package == NULL) {
     return -1;
   }
   
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
     return -1;
   }
