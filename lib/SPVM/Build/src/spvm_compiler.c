@@ -345,8 +345,22 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
 
   // build package symtable
   for (int32_t package_id = 0; package_id < runtime->runtime_packages->length; package_id++) {
-    SPVM_RUNTIME_SUB* runtime_package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
-    SPVM_HASH_insert(runtime->runtime_package_symtable, runtime_package->name, strlen(runtime_package->name), runtime_package);
+    
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    SPVM_HASH_insert(runtime->runtime_package_symtable, package->name, strlen(package->name), package);
+    
+    package->fields = SPVM_LIST_new(0);
+    package->field_symtable = SPVM_HASH_new(0);
+    package->field_signatures = SPVM_LIST_new(0);
+    package->field_signature_symtable = SPVM_HASH_new(0);
+    package->package_vars = SPVM_LIST_new(0);
+    package->package_var_symtable = SPVM_HASH_new(0);
+    package->package_var_signatures = SPVM_LIST_new(0);
+    package->package_var_signature_symtable = SPVM_HASH_new(0);
+    package->subs = SPVM_LIST_new(0);
+    package->sub_symtable = SPVM_HASH_new(0);
+    package->sub_signatures = SPVM_LIST_new(0);
+    package->sub_signature_symtable = SPVM_HASH_new(0);
   }
   
   // Register field info to package
@@ -356,22 +370,6 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     int32_t package_id = field->package_id;
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
-    
-    if (package->fields == NULL) {
-      package->fields = SPVM_LIST_new(0);
-    }
-
-    if (package->field_symtable == NULL) {
-      package->field_symtable = SPVM_HASH_new(0);
-    }
-
-    if (package->field_signatures == NULL) {
-      package->field_signatures = SPVM_LIST_new(0);
-    }
-
-    if (package->field_signature_symtable == NULL) {
-      package->field_signature_symtable = SPVM_HASH_new(0);
-    }
     
     SPVM_LIST_push(package->fields, field);
     SPVM_HASH_insert(package->field_symtable, field->name, strlen(field->name), field);
@@ -388,22 +386,6 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
     
-    if (package->package_vars == NULL) {
-      package->package_vars = SPVM_LIST_new(0);
-    }
-
-    if (package->package_var_symtable == NULL) {
-      package->package_var_symtable = SPVM_HASH_new(0);
-    }
-
-    if (package->package_var_signatures == NULL) {
-      package->package_var_signatures = SPVM_LIST_new(0);
-    }
-
-    if (package->package_var_signature_symtable == NULL) {
-      package->package_var_signature_symtable = SPVM_HASH_new(0);
-    }
-    
     SPVM_LIST_push(package->package_vars, package_var);
     SPVM_HASH_insert(package->package_var_symtable, package_var->name, strlen(package_var->name), package_var);
     
@@ -418,22 +400,6 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     int32_t package_id = sub->package_id;
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
-    
-    if (package->subs == NULL) {
-      package->subs = SPVM_LIST_new(0);
-    }
-
-    if (package->sub_symtable == NULL) {
-      package->sub_symtable = SPVM_HASH_new(0);
-    }
-
-    if (package->sub_signatures == NULL) {
-      package->sub_signatures = SPVM_LIST_new(0);
-    }
-
-    if (package->sub_signature_symtable == NULL) {
-      package->sub_signature_symtable = SPVM_HASH_new(0);
-    }
     
     SPVM_LIST_push(package->subs, sub);
     SPVM_HASH_insert(package->sub_symtable, sub->name, strlen(sub->name), sub);

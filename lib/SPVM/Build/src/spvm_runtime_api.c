@@ -822,16 +822,15 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
   
-  SPVM_PACKAGE* package;
+  SPVM_RUNTIME_PACKAGE* package;
   if (basic_type->package_id < 0) {
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+    package = SPVM_LIST_fetch(runtime->runtime_packages, basic_type->package_id);
   }
   if (!package) {
     return NULL;
@@ -853,7 +852,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->sub_destructor) {
+  if (package->destructor_sub_id >= 0) {
     object->has_destructor = 1;
   }
   
