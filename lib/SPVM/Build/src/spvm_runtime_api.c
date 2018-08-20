@@ -770,14 +770,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   (void)env;
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // valut_t array dimension must be 1
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->runtime_package_symtable, basic_type->name, strlen(basic_type->name));
   int32_t fields_length = package->fields->length;
-  SPVM_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
-  int32_t field_basic_type_id = field_first->type->basic_type->id;
+  SPVM_RUNTIME_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
+  int32_t field_basic_type_id = field_first->basic_type_id;
 
   int32_t unit_size;
   if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
