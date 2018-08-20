@@ -1175,14 +1175,13 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   (void)env;
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->runtime_package_symtable, package_name, strlen(package_name));
   if (package == NULL) {
     return -1;
   }
   
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
     return -1;
   }
