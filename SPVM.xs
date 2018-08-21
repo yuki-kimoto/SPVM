@@ -36,6 +36,8 @@
 #include "spvm_use.h"
 #include "spvm_limit.h"
 
+#include "spvm_runtime_sub.h"
+
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
   SV* sv_env = get_sv("SPVM::ENV", 0);
@@ -1589,7 +1591,10 @@ bind_sub(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_native_sub_name = ST(1);
   SV* sv_native_address = ST(2);
-  
+
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
@@ -1602,6 +1607,7 @@ bind_sub(...)
   
   // Set native address to subroutine
   SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->runtime_sub_symtable, native_sub_name, strlen(native_sub_name));
   
   sub->native_address = native_address;
   
@@ -1654,15 +1660,22 @@ bind_sub(...)
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
-  
+
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->runtime_sub_symtable, sub_abs_name, strlen(sub_abs_name));
   
   sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   sub->precompile_address = sub_precompile_address;
+  
+  runtime_sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
+  runtime_sub->precompile_address = sub_precompile_address;
   
   XSRETURN(0);
 }

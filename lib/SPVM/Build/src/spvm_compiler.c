@@ -329,7 +329,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
   // build sub symtable
   for (int32_t sub_id = 0; sub_id < runtime->runtime_subs->length; sub_id++) {
     SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
-    SPVM_HASH_insert(runtime->runtime_sub_symtable, runtime_sub->name, strlen(runtime_sub->name), runtime_sub);
+    SPVM_HASH_insert(runtime->runtime_sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
   }
 
   // build packages
@@ -517,8 +517,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   SPVM_COMPILER_build_runtime_info(compiler, runtime);
-  
-  SPVM_COMPILER_bind_subs(compiler, runtime);
 
   return runtime;
 }
