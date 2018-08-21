@@ -355,6 +355,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     package->field_symtable = SPVM_HASH_new(0);
     package->field_signatures = SPVM_LIST_new(0);
     package->field_signature_symtable = SPVM_HASH_new(0);
+    package->object_field_indexes = SPVM_LIST_new(0);
     package->package_vars = SPVM_LIST_new(0);
     package->package_var_symtable = SPVM_HASH_new(0);
     package->package_var_signatures = SPVM_LIST_new(0);
@@ -379,6 +380,10 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     
     SPVM_LIST_push(package->field_signatures, field->signature);
     SPVM_HASH_insert(package->field_signature_symtable, field->signature, strlen(field->signature), field);
+    
+    if (SPVM_TYPE_is_object_type(compiler, field->basic_type_id, field->type_dimension, field->type_flag)) {
+      SPVM_LIST_push(package->object_field_indexes, field->index);
+    }
   }
 
   // Register package_var info to package
