@@ -42,16 +42,20 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_package_var.h"
+
 int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   (void)env;
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
-  
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
   
   int32_t exception_flag = 0;
   if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
@@ -80,10 +84,9 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
 
   // Subroutine is Precompile
   assert(sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED);

@@ -415,7 +415,16 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
   }
+}
 
+void SPVM_COMPILER_bind_subs(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
+  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
+    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_index);
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
+    
+    runtime_sub->precompile_address = sub->precompile_address;
+    runtime_sub->native_address = sub->native_address;
+  }
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
@@ -508,6 +517,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   SPVM_COMPILER_build_runtime_info(compiler, runtime);
+  
+  SPVM_COMPILER_bind_subs(compiler, runtime);
 
   return runtime;
 }
