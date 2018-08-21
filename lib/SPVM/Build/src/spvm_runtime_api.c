@@ -1157,12 +1157,12 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     SPVM_COMPILER* compiler = runtime->compiler;
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, object->basic_type_id);
-    SPVM_PACKAGE* package;
+    SPVM_RUNTIME_PACKAGE* package;
     if (basic_type->package_id < 0) {
       package = NULL;
     }
     else {
-      package = SPVM_LIST_fetch(compiler->packages, basic_type->package_id);
+      package = SPVM_LIST_fetch(runtime->runtime_packages, basic_type->package_id);
     }
     _Bool is_pointer = 0;
     if (package) {
@@ -1194,7 +1194,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           SPVM_VALUE args[1];
           args[0].oval = object;
           object->in_destroy = 1;
-          SPVM_RUNTIME_call_sub(env, package->sub_destructor->id, args);
+          SPVM_RUNTIME_call_sub(env, package->destructor_sub_id, args);
           object->in_destroy = 0;
           
           if (object->ref_count < 0) {
