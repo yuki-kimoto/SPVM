@@ -7,26 +7,17 @@
 #include <stddef.h>
 #include <inttypes.h>
 
+#include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_object.h"
-#include "spvm_runtime.h"
 #include "spvm_native.h"
 #include "spvm_global.h"
-#include "spvm_type.h"
+
+#include "spvm_list.h"
 #include "spvm_hash.h"
+
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_allocator.h"
-#include "spvm_package.h"
-#include "spvm_sub.h"
-#include "spvm_package.h"
-#include "spvm_type.h"
-#include "spvm_field.h"
-#include "spvm_compiler.h"
-#include "spvm_my.h"
-#include "spvm_list.h"
-#include "spvm_op_checker.h"
-#include "spvm_basic_type.h"
-#include "spvm_package_var.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
@@ -34,10 +25,9 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 
-
-
-
-
+// Only use constant
+#include "spvm_package.h"
+#include "spvm_basic_type.h"
 
 static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_array_length,
@@ -1154,7 +1144,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   // If reference count is zero, free address.
   if (object->ref_count == 0) {
     SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-    SPVM_COMPILER* compiler = runtime->compiler;
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, object->basic_type_id);
     SPVM_RUNTIME_PACKAGE* package;
