@@ -23,7 +23,6 @@
 #include "spvm_field.h"
 #include "spvm_compiler.h"
 #include "spvm_my.h"
-#include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_op_checker.h"
 #include "spvm_basic_type.h"
@@ -182,13 +181,146 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
   runtime->mortal_stack_top = original_mortal_stack_top;
 }
 
-int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, SPVM_OBJECT* object) {
+int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, SPVM_RUNTIME_PACKAGE* interface) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
+  // When left package is interface, right package have all methods which left package have
+  assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
+  assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
   
-  return SPVM_OP_CHECKER_check_cast(compiler, cast_basic_type_id, cast_type_dimension, object->basic_type_id, object->dimension);
+  SPVM_LIST* subs_interface = interface->subs;
+  SPVM_LIST* subs_package = package->subs;
+  
+  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface->name, strlen(interface->name));
+  
+  int32_t is_cached = has_interface_cache & 1;
+  int32_t has_interface;
+  if (is_cached) {
+    has_interface = has_interface_cache & 2;
+  }
+  else {
+    has_interface = 1;
+    
+    {
+      int32_t sub_index_interface;
+      for (sub_index_interface = 0; sub_index_interface < subs_interface->length; sub_index_interface++) {
+        SPVM_RUNTIME_SUB* sub_interface = SPVM_LIST_fetch(subs_interface, sub_index_interface);
+        
+        _Bool found = 0;
+        {
+          int32_t sub_index_package;
+          for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
+            SPVM_RUNTIME_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
+            
+            if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
+              found = 1;
+            }
+          }
+        }
+        if (!found) {
+          has_interface = 0;
+          break;
+        }
+      }
+    }
+    
+    // 1 bit : is cached
+    // 2 bit : has interface
+    int32_t new_has_interface_cache = 0;
+    new_has_interface_cache |= 1;
+    if (has_interface) {
+      new_has_interface_cache |= 2;
+    }
+    
+    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->name, strlen(interface->name), (void*)(intptr_t)new_has_interface_cache);
+  }
+  
+  return has_interface;
+}
+
+int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, int32_t dist_type_dimension, SPVM_OBJECT* object) {
+  (void)env;
+  
+  int32_t src_basic_type_id = object->basic_type_id;
+  int32_t src_type_dimension = object->dimension;
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  _Bool check_cast;
+  
+  // Dist type is same as source type
+  if (dist_basic_type_id == src_basic_type_id && dist_type_dimension == src_type_dimension) {
+    check_cast = 1;
+  }
+  // Dist type is difference from source type
+  else {
+    // Dist type dimension is less than or equal to source type dimension
+    if (dist_type_dimension <= src_type_dimension) {
+      // Dist basic type is any object
+      if (dist_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+        if (src_type_dimension == 0) {
+          // Source basic type is value type
+          SPVM_RUNTIME_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, src_basic_type_id);
+          SPVM_RUNTIME_PACKAGE* src_base_package = SPVM_LIST_fetch(runtime->runtime_packages, src_basic_type->package_id);
+          if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+            check_cast = 0;
+          }
+          // Source basic type is not value type
+          else {
+            check_cast = 1;
+          }
+        }
+        // Source type is array
+        else {
+          check_cast = 1;
+        }
+      }
+      // Dist basic type is object (except for any object)
+      else {
+        // Dist type dimension is equal to source type dimension
+        if (dist_type_dimension == src_type_dimension) {
+          // Dist basic type is same as source basic type
+          if (dist_basic_type_id == src_basic_type_id) {
+            check_cast = 1;
+          }
+          // Dist basic type is different from source basic type
+          else {
+            SPVM_RUNTIME_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, dist_basic_type_id);
+            SPVM_RUNTIME_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, src_basic_type_id);
+            SPVM_RUNTIME_PACKAGE* dist_package = SPVM_LIST_fetch(runtime->runtime_basic_types, dist_basic_type->package_id);
+            SPVM_RUNTIME_PACKAGE* src_package = SPVM_LIST_fetch(runtime->runtime_basic_types, src_basic_type->package_id);
+            
+            // Dist basic type and source basic type is package
+            if (dist_package && src_package) {
+              
+              // Dist base type is interface
+              if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                check_cast = SPVM_RUNTIME_API_has_interface(env, src_package, dist_package);
+              }
+              // Dist base type is not interface
+              else {
+                check_cast = 0;
+              }
+            }
+            // Dist basic type is not package or source basic type is not package
+            else {
+              check_cast = 0;
+            }
+          }
+        }
+        // Dist type dimension is different from source type dimension
+        else {
+          check_cast = 0;
+        }
+      }
+    }
+    // Dist type dimension is greater than source type dimension
+    else if (dist_type_dimension > src_type_dimension) {
+      check_cast = 0;
+    }
+  }
+  
+  return check_cast;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
@@ -863,7 +995,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   (void)env;
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
 

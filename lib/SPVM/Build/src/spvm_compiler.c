@@ -237,6 +237,7 @@ void SPVM_COMPILER_push_portable_package(SPVM_COMPILER* compiler, SPVM_RUNTIME* 
   else {
     new_portable_package[2] = -1;
   }
+  new_portable_package[3] = package->category;
   
   runtime->portable_packages_length++;
 }
@@ -339,6 +340,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_package->id = portable_package[0];
     runtime_package->name = runtime->strings[portable_package[1]];
     runtime_package->destructor_sub_id = portable_package[2];
+    runtime_package->category = portable_package[3];
     
     SPVM_LIST_push(runtime->runtime_packages, runtime_package);
   }
@@ -361,6 +363,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     package->sub_symtable = SPVM_HASH_new(0);
     package->sub_signatures = SPVM_LIST_new(0);
     package->sub_signature_symtable = SPVM_HASH_new(0);
+    package->has_interface_cache_symtable = SPVM_HASH_new(0);
   }
   
   // Register field info to package
@@ -488,7 +491,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
 
   // Portable packages
   runtime->portable_packages_capacity = 8;
-  runtime->portable_packages_unit = 3;
+  runtime->portable_packages_unit = 4;
   runtime->portable_packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_packages_unit * runtime->portable_packages_capacity);
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_BASIC_TYPE* package = SPVM_LIST_fetch(compiler->packages, package_id);
