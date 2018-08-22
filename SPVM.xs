@@ -1610,7 +1610,6 @@ bind_sub(...)
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->runtime_sub_symtable, native_sub_name, strlen(native_sub_name));
   
   sub->native_address = native_address;
-  runtime_sub->native_address = native_address;
   
   XSRETURN(0);
 }
