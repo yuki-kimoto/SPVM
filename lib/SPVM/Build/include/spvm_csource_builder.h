@@ -32,7 +32,7 @@
 #define SPVM_CSOURCE_BUILDER_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 
 
-void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer);
+void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer);
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name);
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name);
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name);

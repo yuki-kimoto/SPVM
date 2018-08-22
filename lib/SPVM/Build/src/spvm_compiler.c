@@ -517,6 +517,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   SPVM_COMPILER_build_runtime_info(compiler, runtime);
+  
+  compiler->runtime = runtime;
 
   return runtime;
 }

@@ -715,7 +715,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_LIST* subs = package->subs;
   
   // Head part - include and define
-  SPVM_CSOURCE_BUILDER_build_head(compiler, string_buffer);
+  SPVM_CSOURCE_BUILDER_build_head(compiler->runtime, string_buffer);
   
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "// Function Declarations\n");
@@ -750,8 +750,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "\n");
 }
 
-void SPVM_CSOURCE_BUILDER_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer) {
-  (void)compiler;
+void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer) {
+  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Include header
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "#ifndef SPVM_CSOURCE_BUILDER_H\n");
