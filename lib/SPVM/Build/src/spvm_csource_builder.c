@@ -43,6 +43,12 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_package_var.h"
+
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   (void)compiler;
   
