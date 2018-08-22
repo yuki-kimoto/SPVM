@@ -1630,6 +1630,8 @@ build_package_csource(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   int32_t package_id = package->id;
@@ -1638,7 +1640,7 @@ build_package_csource(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 0);
   
   // Build package csource
-  SPVM_CSOURCE_BUILDER_build_package_csource(compiler, string_buffer, package_name);
+  SPVM_CSOURCE_BUILDER_build_package_csource(runtime, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   

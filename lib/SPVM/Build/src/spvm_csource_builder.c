@@ -709,13 +709,15 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
+void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   
   SPVM_LIST* subs = package->subs;
   
   // Head part - include and define
-  SPVM_CSOURCE_BUILDER_build_head(compiler->runtime, string_buffer);
+  SPVM_CSOURCE_BUILDER_build_head(runtime, string_buffer);
   
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "// Function Declarations\n");
@@ -728,7 +730,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(compiler, string_buffer, (char*)sub->signature);
         SPVM_STRING_BUFFER_add(compiler, string_buffer, "\n");
-        SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, package_name, sub_name);
+        SPVM_CSOURCE_BUILDER_build_sub_declaration(runtime, string_buffer, package_name, sub_name);
         SPVM_STRING_BUFFER_add(compiler, string_buffer, ";\n\n");
       }
     }
@@ -743,7 +745,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_COMPILER* compiler, SPVM_ST
       SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       const char* sub_name = sub->name;
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
-        SPVM_CSOURCE_BUILDER_build_sub_implementation(compiler, string_buffer, package_name, sub_name);
+        SPVM_CSOURCE_BUILDER_build_sub_implementation(runtime, string_buffer, package_name, sub_name);
       }
     }
   }
@@ -806,7 +808,9 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* 
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "#endif\n");
 }
 
-void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
@@ -836,7 +840,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_COMPILER* compiler, SPVM_ST
   SPVM_STRING_BUFFER_add(compiler, string_buffer , "(SPVM_ENV* env, SPVM_VALUE* stack)");
 }
 
-void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   
@@ -853,7 +859,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_COMPILER* compiler, SPVM
   
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
-  SPVM_CSOURCE_BUILDER_build_sub_declaration(compiler, string_buffer, sub->package->name, sub->name);
+  SPVM_CSOURCE_BUILDER_build_sub_declaration(runtime, string_buffer, sub->package->name, sub->name);
 
   // Block start
   SPVM_STRING_BUFFER_add(compiler, string_buffer , " {\n");
