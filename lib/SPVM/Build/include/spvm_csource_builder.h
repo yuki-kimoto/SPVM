@@ -37,7 +37,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_RUNTIME* runtime, SPVM_STRI
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name);
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name);
 
-void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_FIELD_ACCESS* field_access);
-void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD_ACCESS* field_access, int32_t in_index);
+void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_FIELD_ACCESS* field_access);
+void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD_ACCESS* field_access, int32_t in_index);
 
 #endif
