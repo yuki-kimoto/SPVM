@@ -165,9 +165,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Copy arguments to variables
   if (vars) {
-    int32_t arg_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
-    if (arg_alloc_length > 0) {
-      memcpy(vars, stack, sizeof(SPVM_VALUE) * arg_alloc_length);
+    int32_t args_alloc_length = sub->args_alloc_length;
+    if (args_alloc_length > 0) {
+      memcpy(vars, stack, sizeof(SPVM_VALUE) * args_alloc_length);
     }
   }
   
@@ -2029,8 +2029,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
-        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
-        int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->args->length;
@@ -2053,6 +2051,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
+          int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
+          int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
           if (decl_sub_return_type_is_value_t) {
             int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
             int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;

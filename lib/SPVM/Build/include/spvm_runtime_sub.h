@@ -15,6 +15,7 @@ struct SPVM_runtime_sub {
   void* native_address;
   const char* file;
   int32_t line;
+  int32_t args_alloc_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

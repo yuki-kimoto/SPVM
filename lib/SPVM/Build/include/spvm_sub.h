@@ -16,7 +16,8 @@ enum {
   SPVM_SUB_C_FLAG_IS_COMPILED = 16,
   SPVM_SUB_C_FLAG_IS_CORE = 32,
   SPVM_SUB_C_FLAG_IS_STATIC = 64, 
-  SPVM_SUB_C_FLAG_IS_RETURN_TYPE_OBJECT = 128,
+  SPVM_SUB_C_FLAG_IS_RETURN_OBJECT_TYPE = 128,
+  SPVM_SUB_C_FLAG_IS_RETURN_VALUE_TYPE = 256,
 };
 
 // Method information
@@ -53,6 +54,7 @@ struct SPVM_sub {
   const char* signature;
   SPVM_PACKAGE* package;
   int32_t flag;
+  int32_t args_alloc_length;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

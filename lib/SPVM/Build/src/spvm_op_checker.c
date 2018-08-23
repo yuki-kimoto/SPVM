@@ -2992,11 +2992,11 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
 
     // Check subroutines
     {
-      // Argument limit check
       int32_t i;
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         
+        // Argument limit check
         int32_t arg_allow_count = 0;
         for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
           SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
@@ -3016,6 +3016,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         if (arg_allow_count > 255) {
           SPVM_yyerror_format(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
+        
+        int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
+        sub->args_alloc_length = args_alloc_length;
       }
     }
 
