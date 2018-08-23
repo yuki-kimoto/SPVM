@@ -101,10 +101,9 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Constant pool sub
-  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
 
   // Subroutine is native
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC);
