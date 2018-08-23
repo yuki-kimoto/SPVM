@@ -2075,13 +2075,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         if (exception_flag) {
           exception_flag = 0;
           
-          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = sub->name;
-          const char* package_name = sub->package->name;
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->runtime_packages, sub->package_id);
+          const char* package_name = sub_runtime_package->name;
           const char* file = sub->file;
           
           // Exception stack trace
