@@ -112,7 +112,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars), // runtime_package_vars_byte_offset
 };
 
-_Bool SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
@@ -142,6 +142,17 @@ _Bool SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32
   }
   
   return is_value_t;
+}
+
+int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  if (dimension > 0 || ((dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
