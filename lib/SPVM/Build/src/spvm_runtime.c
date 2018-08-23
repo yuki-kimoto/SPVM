@@ -124,12 +124,18 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Subroutine
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
+  // Runtime subroutine
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
+
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->return_type;
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   // Package
   SPVM_PACKAGE* package = sub->package;
+
+  // Runtime package
+  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_LIST_fetch(runtime->runtime_packages, runtime_sub->package_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
@@ -2087,13 +2093,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
-          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = sub->name;
-          const char* package_name = sub->package->name;
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->runtime_packages, sub->package_id);
+          const char* package_name = sub_runtime_package->name;
           const char* file = sub->file;
 
           // Exception stack trace

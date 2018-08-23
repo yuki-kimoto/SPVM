@@ -13,6 +13,8 @@ struct SPVM_runtime_sub {
   int32_t package_id;
   void* precompile_address;
   void* native_address;
+  const char* file;
+  int32_t line;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
