@@ -1607,7 +1607,7 @@ bind_sub(...)
   
   // Set native address to subroutine
   SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, native_sub_name, strlen(native_sub_name));
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->runtime_sub_symtable, native_sub_name, strlen(native_sub_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
   
   sub->native_address = native_address;
   runtime_sub->native_address = native_address;
@@ -1672,7 +1672,7 @@ bind_sub(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->runtime_sub_symtable, sub_abs_name, strlen(sub_abs_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));
   
   sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   sub->precompile_address = sub_precompile_address;

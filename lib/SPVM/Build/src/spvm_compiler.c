@@ -263,13 +263,13 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_basic_type->category = portable_basic_type[2];
     runtime_basic_type->package_id = portable_basic_type[3];
     
-    SPVM_LIST_push(runtime->runtime_basic_types, runtime_basic_type);
+    SPVM_LIST_push(runtime->basic_types, runtime_basic_type);
   }
   
   // build runtime basic type symtable
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->runtime_basic_types->length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
-    SPVM_HASH_insert(runtime->runtime_basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types->length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
   
   // build_runtime fields
@@ -288,13 +288,13 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_field->type_flag = portable_field[8];
     runtime_field->package_id = portable_field[9];
     
-    SPVM_LIST_push(runtime->runtime_fields, runtime_field);
+    SPVM_LIST_push(runtime->fields, runtime_field);
   }
   
   // build runtime field symtable
-  for (int32_t field_id = 0; field_id < runtime->runtime_fields->length; field_id++) {
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_LIST_fetch(runtime->runtime_fields, field_id);
-    SPVM_HASH_insert(runtime->runtime_field_symtable, runtime_field->name, strlen(runtime_field->name), runtime_field);
+  for (int32_t field_id = 0; field_id < runtime->fields->length; field_id++) {
+    SPVM_RUNTIME_FIELD* runtime_field = SPVM_LIST_fetch(runtime->fields, field_id);
+    SPVM_HASH_insert(runtime->field_symtable, runtime_field->name, strlen(runtime_field->name), runtime_field);
   }
 
   // build package variables
@@ -311,13 +311,13 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_package_var->type_flag = portable_package_var[6];
     runtime_package_var->package_id = portable_package_var[7];
     
-    SPVM_LIST_push(runtime->runtime_package_vars, runtime_package_var);
+    SPVM_LIST_push(runtime->package_vars, runtime_package_var);
   }
 
   // build package variable symtable
-  for (int32_t package_var_id = 0; package_var_id < runtime->runtime_package_vars->length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_LIST_fetch(runtime->runtime_package_vars, package_var_id);
-    SPVM_HASH_insert(runtime->runtime_package_var_symtable, runtime_package_var->name, strlen(runtime_package_var->name), runtime_package_var);
+  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars->length; package_var_id++) {
+    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_LIST_fetch(runtime->package_vars, package_var_id);
+    SPVM_HASH_insert(runtime->package_var_symtable, runtime_package_var->name, strlen(runtime_package_var->name), runtime_package_var);
   }
 
   // build subs
@@ -339,13 +339,13 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_sub->return_type_dimension = portable_sub[11];
     runtime_sub->return_type_flag = portable_sub[12];
     
-    SPVM_LIST_push(runtime->runtime_subs, runtime_sub);
+    SPVM_LIST_push(runtime->subs, runtime_sub);
   }
 
   // build sub symtable
-  for (int32_t sub_id = 0; sub_id < runtime->runtime_subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
-    SPVM_HASH_insert(runtime->runtime_sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
+  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
+    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+    SPVM_HASH_insert(runtime->sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
   }
 
   // build packages
@@ -358,14 +358,14 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
     
-    SPVM_LIST_push(runtime->runtime_packages, runtime_package);
+    SPVM_LIST_push(runtime->packages, runtime_package);
   }
 
   // build package symtable
-  for (int32_t package_id = 0; package_id < runtime->runtime_packages->length; package_id++) {
+  for (int32_t package_id = 0; package_id < runtime->packages->length; package_id++) {
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
-    SPVM_HASH_insert(runtime->runtime_package_symtable, package->name, strlen(package->name), package);
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
+    SPVM_HASH_insert(runtime->package_symtable, package->name, strlen(package->name), package);
     
     package->fields = SPVM_LIST_new(0);
     package->field_symtable = SPVM_HASH_new(0);
@@ -384,12 +384,12 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
   }
   
   // Register field info to package
-  for (int32_t field_id = 0; field_id < runtime->runtime_fields->length; field_id++) {
-    SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->runtime_fields, field_id);
+  for (int32_t field_id = 0; field_id < runtime->fields->length; field_id++) {
+    SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
     
     int32_t package_id = field->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->fields, field);
     SPVM_HASH_insert(package->field_symtable, field->name, strlen(field->name), field);
@@ -403,12 +403,12 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
   }
 
   // Register package_var info to package
-  for (int32_t package_var_id = 0; package_var_id < runtime->runtime_package_vars->length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_LIST_fetch(runtime->runtime_package_vars, package_var_id);
+  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars->length; package_var_id++) {
+    SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_LIST_fetch(runtime->package_vars, package_var_id);
     
     int32_t package_id = package_var->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->package_vars, package_var);
     SPVM_HASH_insert(package->package_var_symtable, package_var->name, strlen(package_var->name), package_var);
@@ -418,12 +418,12 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
   }
 
   // Register sub info to package
-  for (int32_t sub_id = 0; sub_id < runtime->runtime_subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_id);
+  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
     
     int32_t package_id = sub->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->subs, sub);
     SPVM_HASH_insert(package->sub_symtable, sub->name, strlen(sub->name), sub);
@@ -435,7 +435,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
 
 void SPVM_COMPILER_bind_subs(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
   for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->runtime_subs, sub_index);
+    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_index);
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
     
     runtime_sub->precompile_address = sub->precompile_address;
@@ -457,7 +457,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   SPVM_RUNTIME_API_set_runtime(env, runtime);
   
   // Initialize Package Variables
-  runtime->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_vars->length + 1));
+  runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_vars->length + 1));
 
   runtime->mortal_stack_capacity = 1;
 
@@ -477,8 +477,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime basic type infos
-  runtime->runtime_basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->runtime_basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Portable fields
   runtime->portable_fields_capacity = 8;
@@ -490,8 +490,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime field infos
-  runtime->runtime_fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->runtime_field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Portable package_vars
   runtime->portable_package_vars_capacity = 8;
@@ -503,8 +503,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime package_var infos
-  runtime->runtime_package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->runtime_package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Portable subs
   runtime->portable_subs_capacity = 8;
@@ -516,8 +516,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime sub infos
-  runtime->runtime_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->runtime_sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Portable packages
   runtime->portable_packages_capacity = 8;
@@ -529,8 +529,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime package infos
-  runtime->runtime_packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->runtime_package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   SPVM_COMPILER_build_runtime_info(compiler, runtime);
   

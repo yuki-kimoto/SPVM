@@ -123,6 +123,6 @@ struct SPVM_env {
   void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* signature);
-  void* runtime_package_vars_byte_offset;
+  void* runtime_package_vars_heap_byte_offset;
 };
 #endif
