@@ -2025,17 +2025,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t decl_sub_id = call_sub->sub->id;
 
         // Declare subroutine
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
+        SPVM_RUNTIME_SUB* decl_sub = SPVM_LIST_fetch(runtime->runtime_subs, decl_sub_id);
         
-        // Declare subroutine return type
-        SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
-
-        int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
-        int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
-        int32_t decl_sub_return_type_flag = decl_sub_return_type->flag;
-        
-        // Declare subroutine argument length
-        int32_t decl_sub_args_length = decl_sub->args->length;
+        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
+        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
+        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         
         // Call subroutine id
         int32_t call_sub_id;
