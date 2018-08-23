@@ -125,10 +125,15 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
   // Runtime subroutine
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  
+  int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
+  int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
+  int32_t sub_return_type_flag = runtime_sub->return_type_flag;
+  
+  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, runtime_sub->return_basic_type_id, runtime_sub->return_type_dimension, runtime_sub->return_type_flag);
 
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->return_type;
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   // Package
   SPVM_PACKAGE* package = sub->package;
@@ -2693,11 +2698,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Croak
   if (!exception_flag) {
     
-    int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
-    _Bool sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
+    int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
+    int32_t sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
     
     // Decrement ref count of return value
-    if (sub_return_type_is_object && !sub_return_type_is_value_t) {
+    if (sub_return_type_is_object && !sub_return_type_is_value_type) {
       if (*(void**)&stack[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
       }

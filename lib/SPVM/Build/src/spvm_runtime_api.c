@@ -112,16 +112,42 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
 };
 
+int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+
+  _Bool is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, dimension, flag);
+  
+  int32_t width;
+  if (is_value_type) {
+    
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = basic_type_id >= 0 ? SPVM_LIST_fetch(runtime->basic_types, basic_type_id) : NULL;
+    assert(basic_type);
+    
+    const char* basic_type_name = basic_type->name;
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? SPVM_LIST_fetch(runtime->packages, basic_type->package_id) : NULL;
+    
+    assert(package);
+    
+    width = package->fields->length;
+  }
+  else {
+    width = 1;
+  }
+  
+  return width;
+}
+
 int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = basic_type_id >= 0 ? SPVM_LIST_fetch(runtime->basic_types, basic_type_id) : NULL;
   
   int32_t is_value_t;
   if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, basic_type->package_id);
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? SPVM_LIST_fetch(runtime->packages, basic_type->package_id) : NULL;
     // Package
     if (package) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
