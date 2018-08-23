@@ -28,6 +28,7 @@
 // Only use constant
 #include "spvm_package.h"
 #include "spvm_basic_type.h"
+#include "spvm_type.h"
 
 static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_array_length,
@@ -110,6 +111,38 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_package_var_id,
   (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars), // runtime_package_vars_byte_offset
 };
+
+_Bool SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->runtime_basic_types, basic_type_id);
+  
+  int32_t is_value_t;
+  if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    const char* basic_type_name = basic_type->name;
+    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->runtime_packages, basic_type->package_id);
+    // Package
+    if (package) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+        is_value_t = 1;
+      }
+      else {
+        is_value_t = 0;
+      }
+    }
+    // Numeric type
+    else {
+      is_value_t = 0;
+    }
+  }
+  // Array
+  else {
+    is_value_t = 0;
+  }
+  
+  return is_value_t;
+}
 
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
   return (SPVM_ENV*)SPVM_ENV_RUNTIME;
