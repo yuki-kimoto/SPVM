@@ -16,6 +16,7 @@ struct SPVM_runtime_sub {
   const char* file;
   int32_t line;
   int32_t args_alloc_length;
+  int32_t vars_alloc_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

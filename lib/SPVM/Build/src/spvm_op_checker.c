@@ -2309,6 +2309,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
+        
+          int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
+          sub->args_alloc_length = args_alloc_length;
+
+          int32_t vars_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
+          sub->vars_alloc_length = vars_alloc_length;
+
           // Add more information for opcode building
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Block stack
@@ -3016,9 +3023,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         if (arg_allow_count > 255) {
           SPVM_yyerror_format(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
-        
-        int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
-        sub->args_alloc_length = args_alloc_length;
       }
     }
 

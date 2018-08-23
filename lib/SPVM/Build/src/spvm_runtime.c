@@ -158,9 +158,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Variables
   SPVM_VALUE* vars = NULL;
-  int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
-  if (var_alloc_length > 0) {
-    vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * var_alloc_length);
+  
+  int32_t vars_alloc_length = sub->vars_alloc_length;
+  if (vars_alloc_length > 0) {
+    vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * vars_alloc_length);
   }
   
   // Copy arguments to variables
@@ -2046,7 +2047,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           assert(0);
         }
         
-        call_sub_arg_stack_top -= SPVM_SUB_get_arg_alloc_length(compiler, decl_sub);
+        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);

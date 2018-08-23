@@ -890,14 +890,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
-  int32_t arg_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
-
-  int32_t var_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
+  int32_t vars_alloc_length = sub->vars_alloc_length;
   
   // Variable declaration
   if (sub->mys->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, var_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   

@@ -55,6 +55,7 @@ struct SPVM_sub {
   SPVM_PACKAGE* package;
   int32_t flag;
   int32_t args_alloc_length;
+  int32_t vars_alloc_length;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
