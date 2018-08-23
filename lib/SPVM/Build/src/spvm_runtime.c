@@ -2029,6 +2029,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         // Declare subroutine return type
         SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
+
+        int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
+        int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
+        int32_t decl_sub_return_type_flag = decl_sub_return_type->flag;
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->args->length;
@@ -2051,18 +2055,16 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
+          int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+          int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
-            int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
+            int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
             memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
           }
           else if (decl_sub_return_type_is_object) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], stack[0].oval);
           }
           else {
-            int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
             if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
               vars[opcode->operand0] = stack[0];
             }

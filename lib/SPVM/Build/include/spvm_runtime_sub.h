@@ -17,6 +17,9 @@ struct SPVM_runtime_sub {
   int32_t line;
   int32_t args_alloc_length;
   int32_t vars_alloc_length;
+  int32_t return_basic_type_id;
+  int32_t return_type_dimension;
+  int32_t return_type_flag;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
