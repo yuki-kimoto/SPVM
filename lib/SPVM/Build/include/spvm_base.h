@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_runtime_arg.h
+struct SPVM_runtime_arg;
+typedef struct SPVM_runtime_arg SPVM_RUNTIME_ARG;
+
 // spvm_runtime_package.h
 struct SPVM_runtime_package;
 typedef struct SPVM_runtime_package SPVM_RUNTIME_PACKAGE;
