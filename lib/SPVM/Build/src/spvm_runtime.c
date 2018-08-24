@@ -120,7 +120,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
   SPVM_COMPILER* compiler = runtime->compiler;
 
-  // Subroutine
+  // Runtime subroutine
   SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
   // Runtime subroutine
@@ -132,12 +132,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, runtime_sub->return_basic_type_id, runtime_sub->return_type_dimension, runtime_sub->return_type_flag);
 
-  // Subroutine return type
-  SPVM_TYPE* sub_return_type = sub->return_type;
-  
-  // Package
-  SPVM_PACKAGE* package = sub->package;
-
   // Runtime package
   SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_LIST_fetch(runtime->packages, runtime_sub->package_id);
 
@@ -146,7 +140,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   register int32_t opcode_rel_index = 0;
   
   // Operation code base
-  int32_t sub_opcode_base = sub->opcode_base;
+  int32_t sub_opcode_base = runtime_sub->opcode_base;
 
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
@@ -163,14 +157,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Variables
   SPVM_VALUE* vars = NULL;
   
-  int32_t vars_alloc_length = sub->vars_alloc_length;
+  int32_t vars_alloc_length = runtime_sub->vars_alloc_length;
   if (vars_alloc_length > 0) {
     vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * vars_alloc_length);
   }
   
   // Copy arguments to variables
   if (vars) {
-    int32_t args_alloc_length = sub->args_alloc_length;
+    int32_t args_alloc_length = runtime_sub->args_alloc_length;
     if (args_alloc_length > 0) {
       memcpy(vars, stack, sizeof(SPVM_VALUE) * args_alloc_length);
     }

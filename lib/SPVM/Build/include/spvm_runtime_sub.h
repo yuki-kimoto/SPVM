@@ -20,6 +20,7 @@ struct SPVM_runtime_sub {
   int32_t return_basic_type_id;
   int32_t return_type_dimension;
   int32_t return_type_flag;
+  int32_t opcode_base;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
