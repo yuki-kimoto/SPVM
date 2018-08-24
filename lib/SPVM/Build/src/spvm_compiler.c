@@ -32,6 +32,8 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
+#include "spvm_runtime_arg.h"
+#include "spvm_my.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -90,6 +92,26 @@ int32_t SPVM_COMPILER_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME*
   runtime->strings_length++;
   
   return id;
+}
+
+void SPVM_COMPILER_push_portable_arg(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_MY* my) {
+  
+  if (runtime->portable_args_length >= runtime->portable_args_capacity) {
+    int32_t new_portable_args_capacity = runtime->portable_args_capacity * 2;
+    int32_t* new_portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_args_unit * new_portable_args_capacity);
+    memcpy(new_portable_args, runtime->portable_args, sizeof(int32_t) * runtime->portable_args_unit * runtime->portable_args_length);
+    free(runtime->portable_args);
+    runtime->portable_args = new_portable_args;
+    runtime->portable_args_capacity = new_portable_args_capacity;
+  }
+  
+  int32_t* new_portable_arg = (int32_t*)&runtime->portable_args[runtime->portable_args_unit * runtime->portable_args_length];
+  new_portable_arg[0] = my->var_id;
+  new_portable_arg[1] = my->type->basic_type->id;
+  new_portable_arg[2] = my->type->dimension;
+  new_portable_arg[3] = my->type->flag;
+
+  runtime->portable_args_length++;
 }
 
 void SPVM_COMPILER_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type) {
@@ -267,11 +289,24 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     
     SPVM_LIST_push(runtime->basic_types, runtime_basic_type);
   }
-  
+
   // build runtime basic type symtable
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types->length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
     SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
+  }
+
+  // build runtime arg types
+  for (size_t i = 0; i < runtime->portable_args_unit * runtime->portable_args_length; i += runtime->portable_args_unit) {
+    int32_t* portable_arg = (int32_t*)&runtime->portable_args[i];
+    
+    SPVM_RUNTIME_ARG* runtime_arg = SPVM_RUNTIME_ARG_new();
+    runtime_arg->var_id = portable_arg[0];
+    runtime_arg->basic_type_id = portable_arg[1];
+    runtime_arg->type_dimension = portable_arg[2];
+    runtime_arg->type_flag = portable_arg[3];
+    
+    SPVM_LIST_push(runtime->args, runtime_arg);
   }
   
   // build_runtime fields
@@ -386,7 +421,7 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     package->sub_signature_symtable = SPVM_HASH_new(0);
     package->has_interface_cache_symtable = SPVM_HASH_new(0);
   }
-  
+
   // Register field info to package
   for (int32_t field_id = 0; field_id < runtime->fields->length; field_id++) {
     SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
@@ -435,6 +470,8 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
   }
+
+
 }
 
 void SPVM_COMPILER_bind_subs(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {

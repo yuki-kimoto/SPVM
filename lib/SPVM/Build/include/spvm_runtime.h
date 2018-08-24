@@ -104,6 +104,14 @@ struct SPVM_runtime {
   int32_t portable_subs_length;
 
   int32_t* portable_subs;
+
+  int32_t portable_args_unit;
+  
+  int32_t portable_args_capacity;
+  
+  int32_t portable_args_length;
+
+  int32_t* portable_args;
   
   SPVM_LIST* basic_types;
   
@@ -124,6 +132,8 @@ struct SPVM_runtime {
   SPVM_LIST* subs;
   
   SPVM_HASH* sub_symtable;
+
+  SPVM_LIST* args;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
