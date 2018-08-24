@@ -188,7 +188,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Mortal stack
   int32_t* mortal_stack = NULL;
-  if (sub->mortal_stack_length > 0) {
+  if (runtime_sub->mortal_stack_length > 0) {
     mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(int32_t) * runtime_sub->mortal_stack_length);
   }
   int32_t mortal_stack_top = 0;
