@@ -222,6 +222,7 @@ void SPVM_COMPILER_push_portable_sub(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
   new_portable_sub[11] = sub->return_type->dimension;
   new_portable_sub[12] = sub->return_type->flag;
   new_portable_sub[13] = sub->opcode_base;
+  new_portable_sub[14] = sub->mortal_stack_length;
   
   runtime->portable_subs_length++;
 }
@@ -340,7 +341,8 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_sub->return_type_dimension = portable_sub[11];
     runtime_sub->return_type_flag = portable_sub[12];
     runtime_sub->opcode_base = portable_sub[13];
-    
+    runtime_sub->mortal_stack_length = portable_sub[14];
+
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
 
@@ -510,7 +512,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
 
   // Portable subs
   runtime->portable_subs_capacity = 8;
-  runtime->portable_subs_unit = 14;
+  runtime->portable_subs_unit = 15;
   runtime->portable_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_subs_unit * runtime->portable_subs_capacity);
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_BASIC_TYPE* sub = SPVM_LIST_fetch(compiler->subs, sub_id);

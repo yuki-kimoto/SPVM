@@ -21,6 +21,7 @@ struct SPVM_runtime_sub {
   int32_t return_type_dimension;
   int32_t return_type_flag;
   int32_t opcode_base;
+  int32_t mortal_stack_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
