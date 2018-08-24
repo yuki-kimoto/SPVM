@@ -116,5 +116,6 @@ void SPVM_COMPILER_push_portable_field(SPVM_COMPILER* compiler, SPVM_RUNTIME* ru
 void SPVM_COMPILER_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_PACKAGE_VAR* package_var);
 void SPVM_COMPILER_push_portable_sub(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_SUB* sub);
 void SPVM_COMPILER_push_portable_package(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_PACKAGE* package);
+void SPVM_COMPILER_push_portable_arg(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_MY* my);
 
 #endif

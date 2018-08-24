@@ -245,7 +245,15 @@ void SPVM_COMPILER_push_portable_sub(SPVM_COMPILER* compiler, SPVM_RUNTIME* runt
   new_portable_sub[12] = sub->return_type->flag;
   new_portable_sub[13] = sub->opcode_base;
   new_portable_sub[14] = sub->mortal_stack_length;
-  
+  new_portable_sub[15] = runtime->portable_args_length;
+  new_portable_sub[16] = sub->args->length;
+
+  SPVM_MY* my = sub->args;
+  for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
+    SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
+    SPVM_COMPILER_push_portable_arg(compiler, runtime, my);
+  }
+
   runtime->portable_subs_length++;
 }
 
@@ -377,6 +385,8 @@ void SPVM_COMPILER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* run
     runtime_sub->return_type_flag = portable_sub[12];
     runtime_sub->opcode_base = portable_sub[13];
     runtime_sub->mortal_stack_length = portable_sub[14];
+    runtime_sub->arg_ids_base = portable_sub[15];
+    runtime_sub->arg_ids_length = portable_sub[16];
 
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
@@ -546,6 +556,14 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   // Build runtime package_var infos
   runtime->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   runtime->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  
+  
+  // Portable args
+  runtime->portable_args_capacity = 8;
+  runtime->portable_args_unit = 4;
+  runtime->portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_args_unit * runtime->portable_args_capacity);
+
+  runtime->args = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   // Portable subs
   runtime->portable_subs_capacity = 8;
