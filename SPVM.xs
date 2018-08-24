@@ -37,6 +37,7 @@
 #include "spvm_limit.h"
 
 #include "spvm_runtime_sub.h"
+#include "spvm_runtime_builder.h"
 
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
@@ -1548,7 +1549,7 @@ build_runtime(...)
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler);
   
   // Set ENV
   SPVM_ENV* env = runtime->env;

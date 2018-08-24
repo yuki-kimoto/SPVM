@@ -12,6 +12,7 @@
 #include "spvm_sub.h"
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_sub.h"
+#include "spvm_runtime_builder.h"
 
 #include <spvm_native.h>
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[]) {
   }
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_COMPILER_new_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler);
   
   // Bind native subroutine
   {
