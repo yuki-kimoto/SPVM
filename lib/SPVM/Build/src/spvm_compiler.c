@@ -528,8 +528,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime basic type infos
-  runtime->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->basic_types = SPVM_LIST_new(0);
+  runtime->basic_type_symtable = SPVM_HASH_new(0);
 
   // Portable fields
   runtime->portable_fields_capacity = 8;
@@ -541,8 +541,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime field infos
-  runtime->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->field_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->fields = SPVM_LIST_new(0);
+  runtime->field_symtable = SPVM_HASH_new(0);
 
   // Portable package_vars
   runtime->portable_package_vars_capacity = 8;
@@ -554,8 +554,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime package_var infos
-  runtime->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->package_vars = SPVM_LIST_new(0);
+  runtime->package_var_symtable = SPVM_HASH_new(0);
   
   
   // Portable args
@@ -563,7 +563,7 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   runtime->portable_args_unit = 4;
   runtime->portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * runtime->portable_args_unit * runtime->portable_args_capacity);
 
-  runtime->args = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  runtime->args = SPVM_LIST_new(0);
 
   // Portable subs
   runtime->portable_subs_capacity = 8;
@@ -575,8 +575,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime sub infos
-  runtime->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->subs = SPVM_LIST_new(0);
+  runtime->sub_symtable = SPVM_HASH_new(0);
 
   // Portable packages
   runtime->portable_packages_capacity = 8;
@@ -588,8 +588,8 @@ SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler) {
   }
   
   // Build runtime package infos
-  runtime->packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  runtime->package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  runtime->packages = SPVM_LIST_new(0);
+  runtime->package_symtable = SPVM_HASH_new(0);
 
   SPVM_COMPILER_build_runtime_info(compiler, runtime);
   
