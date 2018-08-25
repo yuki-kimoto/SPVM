@@ -19,8 +19,8 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
 
   sub->info_package_var_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_sub_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  sub->info_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
-  sub->info_field_accesses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

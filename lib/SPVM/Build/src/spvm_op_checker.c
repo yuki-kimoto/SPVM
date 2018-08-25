@@ -1947,7 +1947,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         op_cur->uv.call_sub->sub_rel_id = sub->info_sub_ids->length;
-                        SPVM_LIST_push(sub->info_sub_ids, op_cur->uv.call_sub->sub->id);
+                        SPVM_LIST_push(sub->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
                         
                         if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
                           SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
@@ -1970,7 +1970,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         op_cur->uv.package_var_access->sub_rel_id = sub->info_package_var_ids->length;
-                        SPVM_LIST_push(sub->info_package_var_ids, (void*)op_cur->uv.package_var_access->package_var->id);
+                        SPVM_LIST_push(sub->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
                         
                         break;
                       }
@@ -2012,11 +2012,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                         }
                         
-                        if (sub->info_field_accesses->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        if (sub->info_field_ids->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        op_cur->uv.field_access->sub_rel_id = sub->info_field_accesses->length;
-                        SPVM_LIST_push(sub->info_field_accesses, op_cur->uv.field_access);
+                        op_cur->uv.field_access->sub_rel_id = sub->info_field_ids->length;
+                        SPVM_LIST_push(sub->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
                         
                         // If invocker is array access and array access object is value_t, this op become array field access
                         if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {

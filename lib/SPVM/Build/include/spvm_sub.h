@@ -37,7 +37,7 @@ struct SPVM_sub {
   int8_t call_type_id;
   SPVM_LIST* info_package_var_ids;
   SPVM_LIST* info_sub_ids;
-  SPVM_LIST* info_field_accesses;
+  SPVM_LIST* info_field_ids;
   SPVM_LIST* info_types;
   SPVM_LIST* info_constants;
   SPVM_LIST* info_switch_infos;
