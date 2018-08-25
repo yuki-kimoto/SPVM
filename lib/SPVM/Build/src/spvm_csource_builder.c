@@ -1293,15 +1293,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
 
   // Get sub id
-  if (sub->info_call_subs->length > 0) {
+  if (sub->info_sub_ids->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
   }
   {
     SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
-    int32_t call_sub_index;
-    for (call_sub_index = 0; call_sub_index < sub->info_call_subs->length; call_sub_index++) {
-      SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, call_sub_index);
-      SPVM_SUB* sub = call_sub->sub;
+    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < sub->info_sub_ids->length; info_sub_ids_index++) {
+      int32_t sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, info_sub_ids_index);
+      SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
       const char* sub_package_name = sub->package->name;
       const char* sub_signature = sub->signature;
       const char* sub_name = sub->name;
@@ -2576,8 +2575,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       {
         int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
-        SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, rel_id);
-        int32_t decl_sub_id = call_sub->sub->id;
+        int32_t decl_sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, rel_id);
 
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
         

@@ -1943,11 +1943,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           sub->call_sub_arg_stack_max = call_sub_args_count;
                         }
 
-                        if (sub->info_call_subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                        if (sub->info_sub_ids->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        op_cur->uv.call_sub->sub_rel_id = sub->info_call_subs->length;
-                        SPVM_LIST_push(sub->info_call_subs, op_cur->uv.call_sub);
+                        op_cur->uv.call_sub->sub_rel_id = sub->info_sub_ids->length;
+                        SPVM_LIST_push(sub->info_sub_ids, op_cur->uv.call_sub->sub->id);
                         
                         if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
                           SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);

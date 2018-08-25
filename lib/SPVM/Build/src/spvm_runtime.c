@@ -2020,8 +2020,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {
         int32_t rel_id = opcode->operand1;
-        SPVM_CALL_SUB* call_sub = SPVM_LIST_fetch(sub->info_call_subs, rel_id);
-        int32_t decl_sub_id = call_sub->sub->id;
+        int32_t decl_sub_id = SPVM_LIST_fetch(sub->info_sub_ids, rel_id);
 
         // Declare subroutine
         SPVM_RUNTIME_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
