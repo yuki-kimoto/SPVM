@@ -64,10 +64,10 @@ void SPVM_LIST_push(SPVM_LIST* array, void* value) {
 }
 
 void* SPVM_LIST_fetch(SPVM_LIST* array, int32_t index) {
-  
   assert(array);
   assert(index >= 0);
   assert(index < array->length);
+  
   
   return *(void**)&array->values[index];
 }

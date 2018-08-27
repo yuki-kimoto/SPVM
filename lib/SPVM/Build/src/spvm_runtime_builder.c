@@ -123,7 +123,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_LIST_push(runtime->args, runtime_arg);
   }
-
+  
   // build runtime package_var_id package_var_ids
   for (size_t i = 0; i < portable->info_package_var_ids_unit * portable->info_package_var_ids_length; i += portable->info_package_var_ids_unit) {
     int32_t info_package_var_id = portable->info_package_var_ids[i];

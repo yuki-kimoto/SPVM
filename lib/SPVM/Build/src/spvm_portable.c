@@ -319,6 +319,12 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
     SPVM_PORTABLE_push_arg(portable, my);
   }
+  
+  for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids->length; info_package_var_ids_index++) {
+    int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, info_package_var_ids_index);
+    
+    SPVM_PORTABLE_push_info_package_var_id(portable, info_package_var_id);
+  }
 
   portable->subs_length++;
 }
