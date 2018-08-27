@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_portable.h
+struct SPVM_portable;
+typedef struct SPVM_portable SPVM_PORTABLE;
+
 // spvm_runtime_info_switch_info.h
 struct SPVM_runtime_info_switch_info;
 typedef struct SPVM_runtime_info_switch_info SPVM_RUNTIME_INFO_SWITCH_INFO;

@@ -101,6 +101,8 @@ struct SPVM_compiler {
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
   
+  SPVM_PORTABLE* portable;
+  
   SPVM_RUNTIME* runtime;
 };
 
