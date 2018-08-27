@@ -50,6 +50,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   
   compiler->runtime = runtime;
   
+  // Copy portable strings to runtime strings
   SPVM_LIST* strings = SPVM_LIST_new(portable->strings_length);
   for (int32_t i = 0; i < portable->strings_length; i++) {
     char* string = portable->strings[i];
@@ -66,9 +67,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(env, runtime);
   
-  // Initialize Package Variables
-  runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_vars->length + 1));
-
   runtime->mortal_stack_capacity = 1;
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
@@ -289,6 +287,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
   }
+
+  // Initialize Package Variables
+  runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars->length + 1));
 
   return runtime;
 }
