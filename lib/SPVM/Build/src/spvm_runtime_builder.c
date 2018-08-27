@@ -139,17 +139,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
   runtime->packages = SPVM_LIST_new(0);
   runtime->package_symtable = SPVM_HASH_new(0);
 
-  SPVM_RUNTIME_BUILDER_build_runtime_info(compiler, runtime);
-  
-  compiler->runtime = runtime;
-
-  return runtime;
-}
-
-void SPVM_RUNTIME_BUILDER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
-  
-  SPVM_PORTABLE* portable = compiler->portable;
-
   // build runtime basic types
   for (size_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i += portable->basic_types_unit) {
     int32_t* portable_basic_type = (int32_t*)&portable->basic_types[i];
@@ -345,6 +334,8 @@ void SPVM_RUNTIME_BUILDER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTI
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
   }
+  
+  compiler->runtime = runtime;
 
-
+  return runtime;
 }
