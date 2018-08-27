@@ -80,6 +80,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_var_symtable = SPVM_HASH_new(0);
   
   runtime->args = SPVM_LIST_new(0);
+  runtime->info_package_var_ids = SPVM_LIST_new(0);
+  runtime->info_field_ids = SPVM_LIST_new(0);
+  runtime->info_sub_ids = SPVM_LIST_new(0);
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
@@ -108,7 +111,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
 
-  // build runtime arg types
+  // build runtime arg args
   for (size_t i = 0; i < portable->args_unit * portable->args_length; i += portable->args_unit) {
     int32_t* portable_arg = (int32_t*)&portable->args[i];
     
@@ -119,6 +122,27 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_arg->type_flag = portable_arg[3];
     
     SPVM_LIST_push(runtime->args, runtime_arg);
+  }
+
+  // build runtime package_var_id package_var_ids
+  for (size_t i = 0; i < portable->info_package_var_ids_unit * portable->info_package_var_ids_length; i += portable->info_package_var_ids_unit) {
+    int32_t info_package_var_id = portable->info_package_var_ids[i];
+    
+    SPVM_LIST_push(runtime->info_package_var_ids, info_package_var_id);
+  }
+
+  // build runtime field_id field_ids
+  for (size_t i = 0; i < portable->info_field_ids_unit * portable->info_field_ids_length; i += portable->info_field_ids_unit) {
+    int32_t info_field_id = portable->info_field_ids[i];
+    
+    SPVM_LIST_push(runtime->info_field_ids, info_field_id);
+  }
+
+  // build runtime sub_id sub_ids
+  for (size_t i = 0; i < portable->info_sub_ids_unit * portable->info_sub_ids_length; i += portable->info_sub_ids_unit) {
+    int32_t info_sub_id = portable->info_sub_ids[i];
+    
+    SPVM_LIST_push(runtime->info_sub_ids, info_sub_id);
   }
   
   // build_runtime fields

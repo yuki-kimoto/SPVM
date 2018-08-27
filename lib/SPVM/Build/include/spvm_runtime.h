@@ -82,6 +82,12 @@ struct SPVM_runtime {
   SPVM_HASH* sub_symtable;
 
   SPVM_LIST* args;
+
+  SPVM_LIST* info_package_var_ids;
+
+  SPVM_LIST* info_field_ids;
+
+  SPVM_LIST* info_sub_ids;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
