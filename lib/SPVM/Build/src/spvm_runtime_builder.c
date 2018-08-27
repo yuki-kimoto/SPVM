@@ -58,19 +58,13 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
-  runtime->strings_capacity = 32;
-  
-  runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * runtime->strings_capacity);
-
   compiler->runtime = runtime;
   
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
-  /*
   runtime->strings = portable->strings;
   runtime->strings_capacity = portable->strings_capacity;
   runtime->strings_length = portable->strings_length;
-  */
   
   // Build runtime basic type infos
   runtime->basic_types = SPVM_LIST_new(0);
