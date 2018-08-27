@@ -35,6 +35,7 @@
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_arg.h"
+#include "spvm_runtime_info_type.h"
 #include "spvm_my.h"
 #include "spvm_portable.h"
 
@@ -83,6 +84,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->info_package_var_ids = SPVM_LIST_new(0);
   runtime->info_field_ids = SPVM_LIST_new(0);
   runtime->info_sub_ids = SPVM_LIST_new(0);
+  runtime->info_types = SPVM_LIST_new(0);
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
@@ -122,6 +124,18 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_arg->type_flag = portable_arg[3];
     
     SPVM_LIST_push(runtime->args, runtime_arg);
+  }
+
+  // build runtime info_type info_types
+  for (size_t i = 0; i < portable->info_types_unit * portable->info_types_length; i += portable->info_types_unit) {
+    int32_t* portable_info_type = (int32_t*)&portable->info_types[i];
+    
+    SPVM_RUNTIME_INFO_TYPE* runtime_info_type = SPVM_RUNTIME_INFO_TYPE_new();
+    runtime_info_type->basic_type_id = portable_info_type[0];
+    runtime_info_type->dimension = portable_info_type[1];
+    runtime_info_type->flag = portable_info_type[2];
+    
+    SPVM_LIST_push(runtime->info_types, runtime_info_type);
   }
   
   // build runtime package_var_id package_var_ids

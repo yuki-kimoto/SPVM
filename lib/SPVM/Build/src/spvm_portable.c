@@ -92,6 +92,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_sub_ids_unit = 1;
   portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_unit * portable->info_sub_ids_capacity);
 
+  // Portable info_types
+  portable->info_types_capacity = 8;
+  portable->info_types_unit = 3;
+  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * portable->info_types_capacity);
+
   // Portable subs
   portable->subs_capacity = 8;
   portable->subs_unit = 23;
@@ -155,6 +160,25 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_arg[3] = my->type->flag;
 
   portable->args_length++;
+}
+
+void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type) {
+
+  if (portable->info_types_length >= portable->info_types_capacity) {
+    int32_t new_portable_info_types_capacity = portable->info_types_capacity * 2;
+    int32_t* new_portable_info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * new_portable_info_types_capacity);
+    memcpy(new_portable_info_types, portable->info_types, sizeof(int32_t) * portable->info_types_unit * portable->info_types_length);
+    free(portable->info_types);
+    portable->info_types = new_portable_info_types;
+    portable->info_types_capacity = new_portable_info_types_capacity;
+  }
+  
+  int32_t* new_portable_info_type = (int32_t*)&portable->info_types[portable->info_types_unit * portable->info_types_length];
+  new_portable_info_type[0] = info_type->basic_type->id;
+  new_portable_info_type[1] = info_type->dimension;
+  new_portable_info_type[2] = info_type->flag;
+
+  portable->info_types_length++;
 }
 
 void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id) {
@@ -370,6 +394,12 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     int32_t info_sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, info_sub_ids_index);
     
     SPVM_PORTABLE_push_info_sub_id(portable, info_sub_id);
+  }
+
+  SPVM_TYPE* info_types = sub->info_types;
+  for (int32_t info_type_id = 0; info_type_id < sub->info_types->length; info_type_id++) {
+    SPVM_TYPE* info_type = SPVM_LIST_fetch(sub->info_types, info_type_id);
+    SPVM_PORTABLE_push_info_type(portable, info_type);
   }
 
   portable->subs_length++;

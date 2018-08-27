@@ -88,6 +88,8 @@ struct SPVM_runtime {
   SPVM_LIST* info_field_ids;
 
   SPVM_LIST* info_sub_ids;
+  
+  SPVM_LIST* info_types;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
