@@ -8,6 +8,10 @@
 struct SPVM_portable;
 typedef struct SPVM_portable SPVM_PORTABLE;
 
+// spvm_runtime_info_case_info.h
+struct SPVM_runtime_info_case_info;
+typedef struct SPVM_runtime_info_case_info SPVM_RUNTIME_INFO_CASE_INFO;
+
 // spvm_runtime_info_switch_info.h
 struct SPVM_runtime_info_switch_info;
 typedef struct SPVM_runtime_info_switch_info SPVM_RUNTIME_INFO_SWITCH_INFO;
