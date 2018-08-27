@@ -1922,7 +1922,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         exception_flag = env->weaken_object_field(env, object, field_index);
@@ -2207,7 +2207,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t rel_id = opcode->operand2;
 
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2226,7 +2226,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2245,7 +2245,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2264,7 +2264,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2283,7 +2283,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2302,7 +2302,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2321,7 +2321,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         void* object = *(void**)&vars[opcode->operand1];
@@ -2343,7 +2343,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2362,7 +2362,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2381,7 +2381,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2400,7 +2400,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2419,7 +2419,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2438,7 +2438,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -2457,7 +2457,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -2477,7 +2477,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
 
         int32_t rel_id = opcode->operand1;
         int32_t field_id = (intptr_t)SPVM_LIST_fetch(runtime->info_field_ids, runtime_sub->info_field_ids_base + rel_id);
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
         int32_t field_index = field->index;
 
         if (__builtin_expect(object == NULL, 0)) {
