@@ -348,14 +348,3 @@ void SPVM_RUNTIME_BUILDER_build_runtime_info(SPVM_COMPILER* compiler, SPVM_RUNTI
 
 
 }
-
-void SPVM_RUNTIME_BUILDER_bind_subs(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime) {
-  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_index);
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
-    
-    runtime_sub->precompile_address = sub->precompile_address;
-    runtime_sub->native_address = sub->native_address;
-  }
-}
-
