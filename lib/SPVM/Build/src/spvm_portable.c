@@ -28,6 +28,9 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
 #include "spvm_my.h"
+#include "spvm_switch_info.h"
+#include "spvm_case_info.h"
+#include "spvm_constant.h"
 
 
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
@@ -57,6 +60,8 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->subs_unit = 25;
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
+
+  portable->info_switch_info_ints_capacity = 8;
   
   return portable;
 }
@@ -101,6 +106,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * portable->info_types_capacity);
+
+  // Portable packages
+  portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
@@ -180,6 +188,33 @@ void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type)
   new_portable_info_type[2] = info_type->flag;
 
   portable->info_types_length++;
+}
+
+void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_INFO* info_switch_info) {
+  
+  SPVM_LIST* case_infos = info_switch_info->cases_ordered;
+  int32_t max_extend_length = 1 + case_infos->length * 2;
+  
+  if (portable->info_switch_info_ints_length + max_extend_length >= portable->info_switch_info_ints_capacity) {
+    int32_t new_portable_info_switch_info_ints_capacity = (portable->info_switch_info_ints_capacity + max_extend_length) * 2;
+    int32_t* new_portable_info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_switch_info_ints_capacity);
+    memcpy(new_portable_info_switch_info_ints, portable->info_switch_info_ints, sizeof(int32_t) * portable->info_switch_info_ints_length);
+    free(portable->info_switch_info_ints);
+    portable->info_switch_info_ints = new_portable_info_switch_info_ints;
+    portable->info_switch_info_ints_capacity = new_portable_info_switch_info_ints_capacity;
+  }
+  
+  int32_t* new_portable_info_switch_info_ints = (int32_t*)&portable->info_switch_info_ints[portable->info_switch_info_ints_length];
+  new_portable_info_switch_info_ints[0] = info_switch_info->default_opcode_rel_index;
+  portable->info_switch_info_ints_length++;
+  
+  for (int32_t case_info_index = 0; case_info_index < case_infos->length; case_info_index++) {
+    SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, case_info_index);
+    
+    new_portable_info_switch_info_ints[case_info_index] = case_info->constant->value.ival;
+    new_portable_info_switch_info_ints[case_info_index + 1] = case_info->opcode_rel_index;
+    portable->info_switch_info_ints_length += 2;
+  }
 }
 
 void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id) {
@@ -403,6 +438,12 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   for (int32_t info_type_id = 0; info_type_id < sub->info_types->length; info_type_id++) {
     SPVM_TYPE* info_type = SPVM_LIST_fetch(sub->info_types, info_type_id);
     SPVM_PORTABLE_push_info_type(portable, info_type);
+  }
+
+  SPVM_TYPE* info_switch_infos = sub->info_switch_infos;
+  for (int32_t info_switch_info_id = 0; info_switch_info_id < sub->info_switch_infos->length; info_switch_info_id++) {
+    SPVM_TYPE* info_switch_info = SPVM_LIST_fetch(sub->info_switch_infos, info_switch_info_id);
+    SPVM_PORTABLE_push_info_switch_info(portable, info_switch_info);
   }
 
   portable->subs_length++;
