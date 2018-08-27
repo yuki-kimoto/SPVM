@@ -215,6 +215,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_sub->mortal_stack_length = portable_sub[14];
     runtime_sub->arg_ids_base = portable_sub[15];
     runtime_sub->arg_ids_length = portable_sub[16];
+    runtime_sub->info_package_var_ids_base = portable_sub[17];
+    runtime_sub->info_package_var_ids_length = portable_sub[18];
+    runtime_sub->info_field_ids_base = portable_sub[19];
+    runtime_sub->info_field_ids_length = portable_sub[20];
+    runtime_sub->info_sub_ids_base = portable_sub[21];
+    runtime_sub->info_sub_ids_length = portable_sub[22];
 
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }

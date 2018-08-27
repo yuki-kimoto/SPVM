@@ -24,6 +24,12 @@ struct SPVM_runtime_sub {
   int32_t mortal_stack_length;
   int32_t arg_ids_base;
   int32_t arg_ids_length;
+  int32_t info_package_var_ids_base;
+  int32_t info_package_var_ids_length;
+  int32_t info_field_ids_base;
+  int32_t info_field_ids_length;
+  int32_t info_sub_ids_base;
+  int32_t info_sub_ids_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
