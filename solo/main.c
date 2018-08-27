@@ -51,9 +51,12 @@ int main(int argc, char *argv[]) {
   if (compiler->error_count > 0) {
     exit(1);
   }
+
+  // Build portable info
+  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler, portable);
   
   // Bind native subroutine
   {

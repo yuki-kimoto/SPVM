@@ -110,7 +110,13 @@ int32_t SPVM_PORTABLE_push_string(SPVM_PORTABLE* portable, const char* string) {
     portable->strings_capacity = new_strings_capacity;
   }
   
-  portable->strings[portable->strings_length] = string;
+  int32_t string_length = (int32_t)strlen(string);
+  
+  char* new_string = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
+  memcpy(new_string, string, string_length);
+  new_string[string_length] = '\0';
+  
+  portable->strings[portable->strings_length] = new_string;
   portable->strings_length++;
   
   return id;

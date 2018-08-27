@@ -38,10 +38,8 @@
 #include "spvm_my.h"
 #include "spvm_portable.h"
 
-SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
+SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable) {
 
-  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
-  
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
   SPVM_ENV* env = (SPVM_ENV*)SPVM_RUNTIME_API_get_env_runtime();

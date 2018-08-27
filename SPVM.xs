@@ -1548,8 +1548,11 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
+  // Build portable info
+  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
+  
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler, portable);
   
   // Set ENV
   SPVM_ENV* env = runtime->env;
