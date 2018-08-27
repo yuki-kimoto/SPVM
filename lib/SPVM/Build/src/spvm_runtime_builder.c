@@ -75,10 +75,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_PORTABLE_push_basic_type(compiler, runtime, basic_type);
   }
   
-  // Build runtime basic type infos
-  runtime->basic_types = SPVM_LIST_new(0);
-  runtime->basic_type_symtable = SPVM_HASH_new(0);
-
   // Portable fields
   portable->fields_capacity = 8;
   portable->fields_unit = 10;
@@ -88,10 +84,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_PORTABLE_push_field(compiler, runtime, field);
   }
   
-  // Build runtime field infos
-  runtime->fields = SPVM_LIST_new(0);
-  runtime->field_symtable = SPVM_HASH_new(0);
-
   // Portable package_vars
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
@@ -101,17 +93,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_PORTABLE_push_package_var(compiler, runtime, package_var);
   }
   
-  // Build runtime package_var infos
-  runtime->package_vars = SPVM_LIST_new(0);
-  runtime->package_var_symtable = SPVM_HASH_new(0);
-  
   
   // Portable args
   portable->args_capacity = 8;
   portable->args_unit = 4;
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->args_unit * portable->args_capacity);
-
-  runtime->args = SPVM_LIST_new(0);
 
   // Portable subs
   portable->subs_capacity = 8;
@@ -122,10 +108,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_PORTABLE_push_sub(compiler, runtime, sub);
   }
   
-  // Build runtime sub infos
-  runtime->subs = SPVM_LIST_new(0);
-  runtime->sub_symtable = SPVM_HASH_new(0);
-
   // Portable packages
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
@@ -134,11 +116,28 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(compiler, runtime, package);
   }
+
+  // Build runtime basic type infos
+  runtime->basic_types = SPVM_LIST_new(0);
+  runtime->basic_type_symtable = SPVM_HASH_new(0);
+
+  // Build runtime field infos
+  runtime->fields = SPVM_LIST_new(0);
+  runtime->field_symtable = SPVM_HASH_new(0);
+
+  // Build runtime package_var infos
+  runtime->package_vars = SPVM_LIST_new(0);
+  runtime->package_var_symtable = SPVM_HASH_new(0);
   
+  runtime->args = SPVM_LIST_new(0);
+  // Build runtime sub infos
+  runtime->subs = SPVM_LIST_new(0);
+  runtime->sub_symtable = SPVM_HASH_new(0);
+
   // Build runtime package infos
   runtime->packages = SPVM_LIST_new(0);
   runtime->package_symtable = SPVM_HASH_new(0);
-
+  
   // build runtime basic types
   for (size_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i += portable->basic_types_unit) {
     int32_t* portable_basic_type = (int32_t*)&portable->basic_types[i];
