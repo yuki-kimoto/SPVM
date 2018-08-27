@@ -38,7 +38,7 @@
 #include "spvm_my.h"
 #include "spvm_portable.h"
 
-SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable) {
+SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
 
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
@@ -46,10 +46,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   
   runtime->env = env;
 
-  runtime->compiler = compiler;
-  
-  compiler->runtime = runtime;
-  
   // Copy portable strings to runtime strings
   SPVM_LIST* strings = SPVM_LIST_new(portable->strings_length);
   for (int32_t i = 0; i < portable->strings_length; i++) {
@@ -128,7 +124,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   for (size_t i = 0; i < portable->fields_unit * portable->fields_length; i += portable->fields_unit) {
     int32_t* portable_field = (int32_t*)&portable->fields[i];
     
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_RUNTIME_FIELD_new(compiler);
+    SPVM_RUNTIME_FIELD* runtime_field = SPVM_RUNTIME_FIELD_new();
     runtime_field->id = portable_field[0];
     runtime_field->index = portable_field[1];
     runtime_field->flag = portable_field[2];
@@ -153,7 +149,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   for (size_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i += portable->package_vars_unit) {
     int32_t* portable_package_var = (int32_t*)&portable->package_vars[i];
     
-    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_RUNTIME_PACKAGE_VAR_new(compiler);
+    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_RUNTIME_PACKAGE_VAR_new();
     runtime_package_var->id = portable_package_var[0];
     runtime_package_var->name = SPVM_LIST_fetch(runtime->strings, portable_package_var[1]);
     runtime_package_var->abs_name = SPVM_LIST_fetch(runtime->strings, portable_package_var[2]);
@@ -176,7 +172,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   for (size_t i = 0; i < portable->subs_unit * portable->subs_length; i += portable->subs_unit) {
     int32_t* portable_sub = (int32_t*)&portable->subs[i];
     
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new(compiler);
+    SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new();
     runtime_sub->id = portable_sub[0];
     runtime_sub->flag = portable_sub[1];
     runtime_sub->name = SPVM_LIST_fetch(runtime->strings, portable_sub[2]);
@@ -208,7 +204,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   for (size_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
     int32_t* portable_package = (int32_t*)&portable->packages[i];
     
-    SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new(compiler);
+    SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new();
     runtime_package->id = portable_package[0];
     runtime_package->name = SPVM_LIST_fetch(runtime->strings, portable_package[1]);
     runtime_package->destructor_sub_id = portable_package[2];
@@ -253,7 +249,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     SPVM_LIST_push(package->field_signatures, field->signature);
     SPVM_HASH_insert(package->field_signature_symtable, field->signature, strlen(field->signature), field);
     
-    if (SPVM_TYPE_is_object_type(compiler, field->basic_type_id, field->type_dimension, field->type_flag)) {
+    if (SPVM_RUNTIME_API_is_object_type(env, field->basic_type_id, field->type_dimension, field->type_flag)) {
       SPVM_LIST_push(package->object_field_indexes, field->index);
     }
   }

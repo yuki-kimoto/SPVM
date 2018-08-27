@@ -100,8 +100,6 @@ struct SPVM_compiler {
 
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
-  
-  SPVM_RUNTIME* runtime;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

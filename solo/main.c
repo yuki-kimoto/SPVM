@@ -56,7 +56,9 @@ int main(int argc, char *argv[]) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(compiler, portable);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
+
+  runtime->compiler = compiler;
   
   // Bind native subroutine
   {
