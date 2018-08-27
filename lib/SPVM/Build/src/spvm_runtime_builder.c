@@ -80,6 +80,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_var_symtable = SPVM_HASH_new(0);
   
   runtime->args = SPVM_LIST_new(0);
+  
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
   runtime->sub_symtable = SPVM_HASH_new(0);
