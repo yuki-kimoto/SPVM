@@ -61,62 +61,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
   runtime->strings_capacity = 32;
   
   runtime->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * runtime->strings_capacity);
-  
-  compiler->portable = SPVM_PORTABLE_new();
-  
-  SPVM_PORTABLE* portable = compiler->portable;
-  
-  // Portable basic type
-  portable->basic_types_capacity = 8;
-  portable->basic_types_unit = 4;
-  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->basic_types_unit * portable->basic_types_capacity);
-  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-    SPVM_PORTABLE_push_basic_type(compiler, runtime, basic_type);
-  }
-  
-  // Portable fields
-  portable->fields_capacity = 8;
-  portable->fields_unit = 10;
-  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->fields_unit * portable->fields_capacity);
-  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
-    SPVM_BASIC_TYPE* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_PORTABLE_push_field(compiler, runtime, field);
-  }
-  
-  // Portable package_vars
-  portable->package_vars_capacity = 8;
-  portable->package_vars_unit = 8;
-  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->package_vars_unit * portable->package_vars_capacity);
-  for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
-    SPVM_BASIC_TYPE* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
-    SPVM_PORTABLE_push_package_var(compiler, runtime, package_var);
-  }
-  
-  
-  // Portable args
-  portable->args_capacity = 8;
-  portable->args_unit = 4;
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->args_unit * portable->args_capacity);
 
-  // Portable subs
-  portable->subs_capacity = 8;
-  portable->subs_unit = 17;
-  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
-  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
-    SPVM_BASIC_TYPE* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
-    SPVM_PORTABLE_push_sub(compiler, runtime, sub);
-  }
+  compiler->runtime = runtime;
   
-  // Portable packages
-  portable->packages_capacity = 8;
-  portable->packages_unit = 4;
-  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->packages_unit * portable->packages_capacity);
-  for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
-    SPVM_BASIC_TYPE* package = SPVM_LIST_fetch(compiler->packages, package_id);
-    SPVM_PORTABLE_push_package(compiler, runtime, package);
-  }
-
+  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
+  
   // Build runtime basic type infos
   runtime->basic_types = SPVM_LIST_new(0);
   runtime->basic_type_symtable = SPVM_HASH_new(0);
@@ -333,8 +282,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
   }
-  
-  compiler->runtime = runtime;
 
   return runtime;
 }
