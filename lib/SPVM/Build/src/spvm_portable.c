@@ -99,7 +99,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable subs
   portable->subs_capacity = 8;
-  portable->subs_unit = 23;
+  portable->subs_unit = 25;
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_BASIC_TYPE* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
@@ -371,6 +371,8 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[20] = sub->info_field_ids->length;
   new_portable_sub[21] = portable->info_sub_ids_length;
   new_portable_sub[22] = sub->info_sub_ids->length;
+  new_portable_sub[23] = portable->info_types_length;
+  new_portable_sub[24] = sub->info_types->length;
   
   SPVM_MY* my = sub->args;
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {

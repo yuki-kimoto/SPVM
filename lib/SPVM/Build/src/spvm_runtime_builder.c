@@ -235,6 +235,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_sub->info_field_ids_length = portable_sub[20];
     runtime_sub->info_sub_ids_base = portable_sub[21];
     runtime_sub->info_sub_ids_length = portable_sub[22];
+    runtime_sub->info_types_base = portable_sub[23];
+    runtime_sub->info_types_length = portable_sub[24];
 
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
