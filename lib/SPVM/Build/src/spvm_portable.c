@@ -42,9 +42,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
-  compiler->portable = SPVM_PORTABLE_new();
-  
-  SPVM_PORTABLE* portable = compiler->portable;
+  SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
   
   // Portable basic type
   portable->basic_types_capacity = 8;

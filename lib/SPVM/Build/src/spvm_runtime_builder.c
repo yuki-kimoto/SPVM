@@ -39,6 +39,8 @@
 #include "spvm_portable.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
+
+  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
@@ -47,6 +49,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
   runtime->env = env;
 
   runtime->compiler = compiler;
+  
+  compiler->runtime = runtime;
+
+  runtime->strings = portable->strings;
+  runtime->strings_capacity = portable->strings_capacity;
+  runtime->strings_length = portable->strings_length;
   
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(env, runtime);
@@ -57,14 +65,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
   runtime->mortal_stack_capacity = 1;
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
-  
-  compiler->runtime = runtime;
-  
-  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
-  
-  runtime->strings = portable->strings;
-  runtime->strings_capacity = portable->strings_capacity;
-  runtime->strings_length = portable->strings_length;
   
   // Build runtime basic type infos
   runtime->basic_types = SPVM_LIST_new(0);
