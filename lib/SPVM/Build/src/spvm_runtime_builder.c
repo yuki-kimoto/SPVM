@@ -49,10 +49,19 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
   runtime->compiler = compiler;
   
   compiler->runtime = runtime;
-
-  runtime->strings = portable->strings;
-  runtime->strings_capacity = portable->strings_capacity;
-  runtime->strings_length = portable->strings_length;
+  
+  SPVM_LIST* strings = SPVM_LIST_new(portable->strings_length);
+  for (int32_t i = 0; i < portable->strings_length; i++) {
+    char* string = portable->strings[i];
+    int32_t string_length = (int32_t)strlen(string);
+    
+    char* new_string = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
+    memcpy(new_string, string, string_length);
+    new_string[string_length] = '\0';
+    
+    SPVM_LIST_push(strings, new_string);
+  }
+  runtime->strings = strings;
   
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(env, runtime);
@@ -90,7 +99,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     int32_t* portable_basic_type = (int32_t*)&portable->basic_types[i];
     
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new();
-    runtime_basic_type->name = runtime->strings[portable_basic_type[0]];
+    runtime_basic_type->name = SPVM_LIST_fetch(runtime->strings, portable_basic_type[0]);
     runtime_basic_type->id = portable_basic_type[1];
     runtime_basic_type->category = portable_basic_type[2];
     runtime_basic_type->package_id = portable_basic_type[3];
@@ -125,9 +134,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     runtime_field->id = portable_field[0];
     runtime_field->index = portable_field[1];
     runtime_field->flag = portable_field[2];
-    runtime_field->name = runtime->strings[portable_field[3]];
-    runtime_field->abs_name = runtime->strings[portable_field[4]];
-    runtime_field->signature = runtime->strings[portable_field[5]];
+    runtime_field->name = SPVM_LIST_fetch(runtime->strings, portable_field[3]);
+    runtime_field->abs_name = SPVM_LIST_fetch(runtime->strings, portable_field[4]);
+    runtime_field->signature = SPVM_LIST_fetch(runtime->strings, portable_field[5]);
     runtime_field->basic_type_id = portable_field[6];
     runtime_field->type_dimension = portable_field[7];
     runtime_field->type_flag = portable_field[8];
@@ -148,9 +157,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     
     SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = SPVM_RUNTIME_PACKAGE_VAR_new(compiler);
     runtime_package_var->id = portable_package_var[0];
-    runtime_package_var->name = runtime->strings[portable_package_var[1]];
-    runtime_package_var->abs_name = runtime->strings[portable_package_var[2]];
-    runtime_package_var->signature = runtime->strings[portable_package_var[3]];
+    runtime_package_var->name = SPVM_LIST_fetch(runtime->strings, portable_package_var[1]);
+    runtime_package_var->abs_name = SPVM_LIST_fetch(runtime->strings, portable_package_var[2]);
+    runtime_package_var->signature = SPVM_LIST_fetch(runtime->strings, portable_package_var[3]);
     runtime_package_var->basic_type_id = portable_package_var[4];
     runtime_package_var->type_dimension = portable_package_var[5];
     runtime_package_var->type_flag = portable_package_var[6];
@@ -172,11 +181,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new(compiler);
     runtime_sub->id = portable_sub[0];
     runtime_sub->flag = portable_sub[1];
-    runtime_sub->name = runtime->strings[portable_sub[2]];
-    runtime_sub->abs_name = runtime->strings[portable_sub[3]];
-    runtime_sub->signature = runtime->strings[portable_sub[4]];
+    runtime_sub->name = SPVM_LIST_fetch(runtime->strings, portable_sub[2]);
+    runtime_sub->abs_name = SPVM_LIST_fetch(runtime->strings, portable_sub[3]);
+    runtime_sub->signature = SPVM_LIST_fetch(runtime->strings, portable_sub[4]);
     runtime_sub->package_id = portable_sub[5];
-    runtime_sub->file = runtime->strings[portable_sub[6]];
+    runtime_sub->file = SPVM_LIST_fetch(runtime->strings, portable_sub[6]);
     runtime_sub->line = portable_sub[7];
     runtime_sub->args_alloc_length = portable_sub[8];
     runtime_sub->vars_alloc_length = portable_sub[9];
@@ -203,7 +212,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler, SPVM_P
     
     SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new(compiler);
     runtime_package->id = portable_package[0];
-    runtime_package->name = runtime->strings[portable_package[1]];
+    runtime_package->name = SPVM_LIST_fetch(runtime->strings, portable_package[1]);
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
     

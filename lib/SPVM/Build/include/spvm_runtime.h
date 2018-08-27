@@ -59,11 +59,7 @@ struct SPVM_runtime {
 
   int32_t memory_blocks_count;
   
-  char** strings;
-  
-  int32_t strings_capacity;
-  
-  int32_t strings_length;
+  SPVM_LIST* strings;
   
   SPVM_LIST* basic_types;
   
