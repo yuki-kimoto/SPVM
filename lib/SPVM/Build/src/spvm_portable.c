@@ -57,10 +57,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_types_capacity = 8;
   portable->info_types_unit = 3;
   portable->subs_capacity = 8;
-  portable->subs_unit = 25;
+  portable->subs_unit = 27;
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
-
+  
   portable->info_switch_info_ints_capacity = 8;
   
   return portable;
@@ -215,6 +215,7 @@ void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_IN
     new_portable_info_switch_info_ints[case_info_index + 1] = case_info->opcode_rel_index;
     portable->info_switch_info_ints_length += 2;
   }
+  portable->info_switch_infos_length++;
 }
 
 void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id) {
@@ -409,6 +410,8 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[22] = sub->info_sub_ids->length;
   new_portable_sub[23] = portable->info_types_length;
   new_portable_sub[24] = sub->info_types->length;
+  new_portable_sub[25] = portable->info_switch_infos_length;
+  new_portable_sub[26] = sub->info_switch_infos->length;
   
   SPVM_MY* my = sub->args;
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
