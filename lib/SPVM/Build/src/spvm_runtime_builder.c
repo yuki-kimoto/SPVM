@@ -66,6 +66,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
+  /*
+  runtime->strings = portable->strings;
+  runtime->strings_capacity = portable->strings_capacity;
+  runtime->strings_length = portable->strings_length;
+  */
+  
   // Build runtime basic type infos
   runtime->basic_types = SPVM_LIST_new(0);
   runtime->basic_type_symtable = SPVM_HASH_new(0);

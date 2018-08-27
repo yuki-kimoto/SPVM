@@ -5,6 +5,10 @@
 
 // Field information
 struct SPVM_portable {
+  char** strings;
+  int32_t strings_capacity;
+  int32_t strings_length;
+
   int32_t basic_types_unit;
   int32_t basic_types_capacity;
   int32_t basic_types_length;
