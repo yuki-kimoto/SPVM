@@ -212,8 +212,8 @@ void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_IN
   for (int32_t case_info_index = 0; case_info_index < case_infos->length; case_info_index++) {
     SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, case_info_index);
     
-    new_portable_info_switch_info_ints[case_info_index] = case_info->constant->value.ival;
-    new_portable_info_switch_info_ints[case_info_index + 1] = case_info->opcode_rel_index;
+    new_portable_info_switch_info_ints[2 + (2 * case_info_index)] = case_info->constant->value.ival;
+    new_portable_info_switch_info_ints[2 + (2 * case_info_index) + 1] = case_info->opcode_rel_index;
     portable->info_switch_info_ints_length += 2;
   }
   portable->info_switch_infos_length++;

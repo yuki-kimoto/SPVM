@@ -87,6 +87,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->info_field_ids = SPVM_LIST_new(0);
   runtime->info_sub_ids = SPVM_LIST_new(0);
   runtime->info_types = SPVM_LIST_new(0);
+  runtime->info_switch_infos = SPVM_LIST_new(0);
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
@@ -160,6 +161,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     }
     
     info_switch_info_ints_index += 2 + case_infos_length * 2;
+    
+    SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
   }
   
   // build runtime package_var_id package_var_ids

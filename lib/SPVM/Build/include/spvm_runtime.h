@@ -90,6 +90,8 @@ struct SPVM_runtime {
   SPVM_LIST* info_sub_ids;
   
   SPVM_LIST* info_types;
+  
+  SPVM_LIST* info_switch_infos;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
