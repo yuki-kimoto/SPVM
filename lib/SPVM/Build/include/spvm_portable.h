@@ -71,10 +71,6 @@ struct SPVM_portable {
   
   int32_t opcodes_length;
   int64_t* opcodes;
-
-  int32_t info_longs_capacity;
-  int32_t info_longs_length;
-  int64_t* info_longs;
 };
 
 SPVM_PORTABLE* SPVM_PORTABLE_new();
