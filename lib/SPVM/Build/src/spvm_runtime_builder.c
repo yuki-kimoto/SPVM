@@ -180,12 +180,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_field_ids, info_field_id);
   }
 
-  // build runtime sub_id sub_ids
-  for (size_t i = 0; i < portable->info_sub_ids_unit * portable->info_sub_ids_length; i += portable->info_sub_ids_unit) {
-    int32_t info_sub_id = portable->info_sub_ids[i];
-    
-    SPVM_LIST_push(runtime->info_sub_ids, info_sub_id);
-  }
+  runtime->info_sub_ids = portable->info_sub_ids;
+  runtime->opcodes = portable->opcodes;
 
   // build runtime long longs
   for (size_t i = 0; i < portable->info_longs_length; i++) {
@@ -370,9 +366,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
 
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars->length + 1));
-  
-  
-  runtime->opcodes = portable->opcodes;
   
   return runtime;
 }
