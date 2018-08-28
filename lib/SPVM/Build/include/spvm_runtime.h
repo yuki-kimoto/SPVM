@@ -81,8 +81,6 @@ struct SPVM_runtime {
   
   SPVM_HASH* sub_symtable;
 
-  SPVM_LIST* args;
-
   SPVM_LIST* info_switch_infos;
   
   SPVM_OPCODE* opcodes;
@@ -96,6 +94,8 @@ struct SPVM_runtime {
   int32_t* info_field_ids;
 
   SPVM_RUNTIME_INFO_TYPE* info_types;
+
+  SPVM_RUNTIME_ARG* args;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

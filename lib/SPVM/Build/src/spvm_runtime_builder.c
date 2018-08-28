@@ -82,8 +82,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_vars = SPVM_LIST_new(0);
   runtime->package_var_symtable = SPVM_HASH_new(0);
   
-  runtime->args = SPVM_LIST_new(0);
-  runtime->info_types = SPVM_LIST_new(0);
   runtime->info_switch_infos = SPVM_LIST_new(0);
   runtime->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_longs_length + 1);
   
@@ -114,19 +112,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
 
-  // build runtime arg args
-  for (size_t i = 0; i < portable->args_unit * portable->args_length; i += portable->args_unit) {
-    int32_t* portable_arg = (int32_t*)&portable->args[i];
-    
-    SPVM_RUNTIME_ARG* runtime_arg = SPVM_RUNTIME_ARG_new();
-    runtime_arg->var_id = portable_arg[0];
-    runtime_arg->basic_type_id = portable_arg[1];
-    runtime_arg->type_dimension = portable_arg[2];
-    runtime_arg->type_flag = portable_arg[3];
-    
-    SPVM_LIST_push(runtime->args, runtime_arg);
-  }
-
+  runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;
