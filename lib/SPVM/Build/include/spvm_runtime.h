@@ -83,8 +83,6 @@ struct SPVM_runtime {
 
   SPVM_LIST* args;
 
-  SPVM_LIST* info_package_var_ids;
-
   SPVM_LIST* info_field_ids;
 
   SPVM_LIST* info_types;
@@ -96,6 +94,8 @@ struct SPVM_runtime {
   int64_t* info_longs;
 
   int32_t* info_sub_ids;
+
+  int32_t* info_package_var_ids;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -166,13 +166,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
   }
   
-  // build runtime package_var_id package_var_ids
-  for (size_t i = 0; i < portable->info_package_var_ids_unit * portable->info_package_var_ids_length; i += portable->info_package_var_ids_unit) {
-    int32_t info_package_var_id = portable->info_package_var_ids[i];
-    
-    SPVM_LIST_push(runtime->info_package_var_ids, info_package_var_id);
-  }
-
   // build runtime field_id field_ids
   for (size_t i = 0; i < portable->info_field_ids_unit * portable->info_field_ids_length; i += portable->info_field_ids_unit) {
     int32_t info_field_id = portable->info_field_ids[i];
@@ -180,6 +173,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_field_ids, info_field_id);
   }
 
+  runtime->info_package_var_ids = portable->info_package_var_ids;
   runtime->info_sub_ids = portable->info_sub_ids;
   runtime->opcodes = portable->opcodes;
 
