@@ -6,7 +6,7 @@
 #include "spvm_base.h"
 
 struct SPVM_runtime_basic_type {
-  const char* name;
+  int32_t name_id;
   int32_t id;
   int32_t category;
   int32_t package_id;

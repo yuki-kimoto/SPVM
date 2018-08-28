@@ -98,18 +98,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     int32_t* portable_basic_type = (int32_t*)&portable->basic_types[i];
     
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new();
-    runtime_basic_type->name = SPVM_LIST_fetch(runtime->strings, portable_basic_type[0]);
+    runtime_basic_type->name_id = portable_basic_type[0];
     runtime_basic_type->id = portable_basic_type[1];
     runtime_basic_type->category = portable_basic_type[2];
     runtime_basic_type->package_id = portable_basic_type[3];
     
     SPVM_LIST_push(runtime->basic_types, runtime_basic_type);
-  }
-
-  // build runtime basic type symtable
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types->length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name), runtime_basic_type);
   }
 
   runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
@@ -118,6 +112,13 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->info_package_var_ids = portable->info_package_var_ids;
   runtime->info_sub_ids = portable->info_sub_ids;
   runtime->opcodes = portable->opcodes;
+
+  // build runtime basic type symtable
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types->length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+    const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->strings, runtime_basic_type->name_id);
+    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
+  }
 
   // build runtime info_switch_info info_switch_infos
   int32_t info_switch_info_ints_index = 0;
