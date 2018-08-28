@@ -83,10 +83,6 @@ struct SPVM_runtime {
 
   SPVM_LIST* args;
 
-  SPVM_LIST* info_field_ids;
-
-  SPVM_LIST* info_types;
-  
   SPVM_LIST* info_switch_infos;
   
   SPVM_OPCODE* opcodes;
@@ -96,6 +92,10 @@ struct SPVM_runtime {
   int32_t* info_sub_ids;
 
   int32_t* info_package_var_ids;
+
+  int32_t* info_field_ids;
+
+  SPVM_RUNTIME_INFO_TYPE* info_types;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

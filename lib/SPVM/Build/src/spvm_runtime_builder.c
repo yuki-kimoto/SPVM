@@ -83,9 +83,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_var_symtable = SPVM_HASH_new(0);
   
   runtime->args = SPVM_LIST_new(0);
-  runtime->info_package_var_ids = SPVM_LIST_new(0);
-  runtime->info_field_ids = SPVM_LIST_new(0);
-  runtime->info_sub_ids = SPVM_LIST_new(0);
   runtime->info_types = SPVM_LIST_new(0);
   runtime->info_switch_infos = SPVM_LIST_new(0);
   runtime->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_longs_length + 1);
@@ -130,17 +127,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->args, runtime_arg);
   }
 
-  // build runtime info_type info_types
-  for (size_t i = 0; i < portable->info_types_unit * portable->info_types_length; i += portable->info_types_unit) {
-    int32_t* portable_info_type = (int32_t*)&portable->info_types[i];
-    
-    SPVM_RUNTIME_INFO_TYPE* runtime_info_type = SPVM_RUNTIME_INFO_TYPE_new();
-    runtime_info_type->basic_type_id = portable_info_type[0];
-    runtime_info_type->dimension = portable_info_type[1];
-    runtime_info_type->flag = portable_info_type[2];
-    
-    SPVM_LIST_push(runtime->info_types, runtime_info_type);
-  }
+  runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
+  runtime->info_field_ids = portable->info_field_ids;
+  runtime->info_package_var_ids = portable->info_package_var_ids;
+  runtime->info_sub_ids = portable->info_sub_ids;
+  runtime->opcodes = portable->opcodes;
 
   // build runtime info_switch_info info_switch_infos
   int32_t info_switch_info_ints_index = 0;
@@ -165,17 +156,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
   }
-  
-  // build runtime field_id field_ids
-  for (size_t i = 0; i < portable->info_field_ids_unit * portable->info_field_ids_length; i += portable->info_field_ids_unit) {
-    int32_t info_field_id = portable->info_field_ids[i];
-    
-    SPVM_LIST_push(runtime->info_field_ids, info_field_id);
-  }
-
-  runtime->info_package_var_ids = portable->info_package_var_ids;
-  runtime->info_sub_ids = portable->info_sub_ids;
-  runtime->opcodes = portable->opcodes;
 
   // build runtime long longs
   for (size_t i = 0; i < portable->info_longs_length; i++) {
