@@ -32,8 +32,6 @@ struct SPVM_runtime_sub {
   int32_t info_types_length;
   int32_t info_switch_infos_base;
   int32_t info_switch_infos_length;
-  int32_t info_longs_base;
-  int32_t info_longs_length;
   void* precompile_address;
   void* native_address;
 };

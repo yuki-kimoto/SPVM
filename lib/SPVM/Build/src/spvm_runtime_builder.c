@@ -142,8 +142,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_sub->info_types_length = portable_sub[24];
     runtime_sub->info_switch_infos_base = portable_sub[25];
     runtime_sub->info_switch_infos_length = portable_sub[26];
-    runtime_sub->info_longs_base = portable_sub[21];
-    runtime_sub->info_longs_length = portable_sub[22];
 
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
