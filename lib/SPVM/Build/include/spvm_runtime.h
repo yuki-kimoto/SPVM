@@ -42,7 +42,7 @@ struct SPVM_runtime {
   // API
   SPVM_ENV* env;
   
-  SPVM_LIST* symbols;
+  char** symbols;
   
   SPVM_LIST* packages;
   
