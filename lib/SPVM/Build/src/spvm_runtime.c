@@ -2052,10 +2052,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_TYPE_is_value_type(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_TYPE_get_width(compiler, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
             memcpy(&vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
           }
           else if (decl_sub_return_type_is_object) {
@@ -2697,8 +2697,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Croak
   if (!exception_flag) {
     
-    int32_t sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-    int32_t sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
+    int32_t sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
+    int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
     
     // Decrement ref count of return value
     if (sub_return_type_is_object && !sub_return_type_is_value_type) {
