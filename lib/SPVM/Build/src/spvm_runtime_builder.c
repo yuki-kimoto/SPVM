@@ -52,34 +52,32 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(env, runtime);
   
-  runtime->info_switch_infos = SPVM_LIST_new(0);
-  
-  // Build runtime sub infos
-  runtime->subs = SPVM_LIST_new(0);
-
-  // Build runtime package infos
-  runtime->packages = SPVM_LIST_new(0);
-
+  // Share runtime information with portable
   runtime->symbols = portable->symbols;
-  
   runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)portable->basic_types;
   runtime->basic_types_length = portable->basic_types_length;
-
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
   runtime->fields_length = portable->fields_length;
-
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;
   runtime->package_vars_length = portable->package_vars_length;
-  
   runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;
   runtime->info_sub_ids = portable->info_sub_ids;
   runtime->opcodes = portable->opcodes;
+  runtime->subs = portable->subs;
+  runtime->subs_length = portable->subs_length;
+
+  // Native sub addresses
+  runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
+  
+  // Precompile sub addresses
+  runtime->sub_precompile_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   
   // build runtime info_switch_info info_switch_infos
   int32_t info_switch_info_ints_index = 0;
+  runtime->info_switch_infos = SPVM_LIST_new(0);
   for (size_t i = 0; i < portable->info_switch_infos_length; i++) {
     int32_t* portable_info_switch_info_ints = (int32_t*)&portable->info_switch_info_ints[info_switch_info_ints_index];
 
@@ -110,46 +108,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_HASH_insert(runtime->package_var_symtable, runtime_package_var_name, strlen(runtime_package_var_name), runtime_package_var);
   }
 
-  // build subs
-  for (size_t i = 0; i < portable->subs_unit * portable->subs_length; i += portable->subs_unit) {
-    int32_t* portable_sub = (int32_t*)&portable->subs[i];
-    
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new();
-    runtime_sub->id = portable_sub[0];
-    runtime_sub->flag = portable_sub[1];
-    runtime_sub->name_id = portable_sub[2];
-    runtime_sub->abs_name_id = portable_sub[3];
-    runtime_sub->signature_id = portable_sub[4];
-    runtime_sub->package_id = portable_sub[5];
-    runtime_sub->file_id = portable_sub[6];
-    runtime_sub->line = portable_sub[7];
-    runtime_sub->args_alloc_length = portable_sub[8];
-    runtime_sub->vars_alloc_length = portable_sub[9];
-    runtime_sub->return_basic_type_id = portable_sub[10];
-    runtime_sub->return_type_dimension = portable_sub[11];
-    runtime_sub->return_type_flag = portable_sub[12];
-    runtime_sub->opcode_base = portable_sub[13];
-    runtime_sub->mortal_stack_length = portable_sub[14];
-    runtime_sub->arg_ids_base = portable_sub[15];
-    runtime_sub->arg_ids_length = portable_sub[16];
-    runtime_sub->info_package_var_ids_base = portable_sub[17];
-    runtime_sub->info_package_var_ids_length = portable_sub[18];
-    runtime_sub->info_field_ids_base = portable_sub[19];
-    runtime_sub->info_field_ids_length = portable_sub[20];
-    runtime_sub->info_sub_ids_base = portable_sub[21];
-    runtime_sub->info_sub_ids_length = portable_sub[22];
-    runtime_sub->info_types_base = portable_sub[23];
-    runtime_sub->info_types_length = portable_sub[24];
-    runtime_sub->info_switch_infos_base = portable_sub[25];
-    runtime_sub->info_switch_infos_length = portable_sub[26];
-
-    SPVM_LIST_push(runtime->subs, runtime_sub);
-  }
-
-  runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs->length + 1));
-  runtime->sub_precompile_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs->length + 1));
-
   // build packages
+  runtime->packages = SPVM_LIST_new(0);
   for (size_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
     int32_t* portable_package = (int32_t*)&portable->packages[i];
     
@@ -225,8 +185,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // Register sub info to package
-  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
     
     int32_t package_id = sub->package_id;
     
@@ -259,8 +219,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
 
   // build sub symtable
   runtime->sub_symtable = SPVM_HASH_new(0);
-  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
     const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
     SPVM_HASH_insert(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
   }

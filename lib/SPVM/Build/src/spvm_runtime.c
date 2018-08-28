@@ -60,7 +60,7 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
 
   // Constant pool sub
-  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
   int32_t exception_flag = 0;
   if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
@@ -91,7 +91,7 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
 
   // Constant pool sub
-  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
 
   // Subroutine is Precompile
   assert(sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED);
@@ -108,7 +108,7 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
 
   // Constant pool sub
-  SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
 
   // Subroutine is native
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC);
@@ -128,7 +128,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_SUB* sub = SPVM_LIST_fetch(runtime->compiler->subs, sub_id);
 
   // Runtime subroutine
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_RUNTIME_SUB* runtime_sub = &runtime->subs[sub_id];
   
   int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
   int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
@@ -2027,7 +2027,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t decl_sub_id = runtime->info_sub_ids[runtime_sub->info_sub_ids_base + rel_id];
 
         // Declare subroutine
-        SPVM_RUNTIME_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         
         int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
         int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
