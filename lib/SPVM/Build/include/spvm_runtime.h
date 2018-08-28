@@ -48,18 +48,8 @@ struct SPVM_runtime {
   
   SPVM_LIST* subs;
   
-  SPVM_LIST* info_switch_infos;
-  
   SPVM_OPCODE* opcodes;
   
-  int32_t* info_sub_ids;
-
-  int32_t* info_package_var_ids;
-
-  int32_t* info_field_ids;
-
-  SPVM_RUNTIME_INFO_TYPE* info_types;
-
   SPVM_RUNTIME_ARG* args;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
@@ -70,6 +60,13 @@ struct SPVM_runtime {
 
   SPVM_RUNTIME_PACKAGE_VAR* package_vars;
   int32_t package_vars_length;
+  
+  // Information for 16bit operand
+  int32_t* info_sub_ids;
+  int32_t* info_package_var_ids;
+  int32_t* info_field_ids;
+  SPVM_LIST* info_switch_infos;
+  SPVM_RUNTIME_INFO_TYPE* info_types;
   
   // Symbol table
   SPVM_HASH* basic_type_symtable;
