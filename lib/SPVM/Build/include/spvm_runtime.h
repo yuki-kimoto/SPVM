@@ -94,6 +94,8 @@ struct SPVM_runtime {
   SPVM_LIST* info_switch_infos;
   
   SPVM_OPCODE* opcodes;
+  
+  int64_t* info_longs;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

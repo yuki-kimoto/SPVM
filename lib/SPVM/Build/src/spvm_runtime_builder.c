@@ -88,6 +88,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->info_sub_ids = SPVM_LIST_new(0);
   runtime->info_types = SPVM_LIST_new(0);
   runtime->info_switch_infos = SPVM_LIST_new(0);
+  runtime->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_longs_length + 1);
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
@@ -186,6 +187,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_sub_ids, info_sub_id);
   }
 
+  // build runtime long longs
+  for (size_t i = 0; i < portable->info_longs_length; i++) {
+    runtime->info_longs[i] = portable->info_longs[i];
+  }
     
   // build_runtime fields
   for (size_t i = 0; i < portable->fields_unit * portable->fields_length; i += portable->fields_unit) {
@@ -265,9 +270,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_sub->info_sub_ids_length = portable_sub[22];
     runtime_sub->info_types_base = portable_sub[23];
     runtime_sub->info_types_length = portable_sub[24];
-
     runtime_sub->info_switch_infos_base = portable_sub[25];
     runtime_sub->info_switch_infos_length = portable_sub[26];
+    runtime_sub->info_longs_base = portable_sub[21];
+    runtime_sub->info_longs_length = portable_sub[22];
 
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
