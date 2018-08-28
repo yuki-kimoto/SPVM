@@ -36,6 +36,8 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_arg.h"
 #include "spvm_runtime_info_type.h"
+#include "spvm_runtime_info_switch_info.h"
+#include "spvm_runtime_info_case_info.h"
 #include "spvm_my.h"
 #include "spvm_portable.h"
 
@@ -137,6 +139,28 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_LIST_push(runtime->info_types, runtime_info_type);
   }
+
+  // build runtime info_switch_info info_switch_infos
+  int32_t info_switch_info_ints_index = 0;
+  for (size_t i = 0; i < portable->info_switch_infos_length; i++) {
+    int32_t* portable_info_switch_info_ints = (int32_t*)&portable->info_switch_info_ints[info_switch_info_ints_index];
+
+    SPVM_RUNTIME_INFO_SWITCH_INFO* runtime_info_switch_info = SPVM_RUNTIME_INFO_SWITCH_INFO_new();
+    runtime_info_switch_info->default_opcode_rel_index = portable_info_switch_info_ints[0];
+    int32_t case_infos_length = portable_info_switch_info_ints[1];
+    
+    runtime_info_switch_info->case_infos = SPVM_LIST_new(0);
+    for (int32_t case_info_index = 0; case_info_index < case_infos_length; case_info_index++) {
+      SPVM_RUNTIME_INFO_CASE_INFO* info_case_info = SPVM_RUNTIME_INFO_CASE_INFO_new();
+      
+      info_case_info->match = portable_info_switch_info_ints[2 + (2 * case_info_index)];
+      info_case_info->opcode_rel_index = portable_info_switch_info_ints[2 + (2 * case_info_index) + 1];
+      
+      SPVM_LIST_push(runtime_info_switch_info->case_infos, info_case_info);
+    }
+    
+    info_switch_info_ints_index += 2 + case_infos_length * 2;
+  }
   
   // build runtime package_var_id package_var_ids
   for (size_t i = 0; i < portable->info_package_var_ids_unit * portable->info_package_var_ids_length; i += portable->info_package_var_ids_unit) {
@@ -158,7 +182,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_LIST_push(runtime->info_sub_ids, info_sub_id);
   }
-  
+
+    
   // build_runtime fields
   for (size_t i = 0; i < portable->fields_unit * portable->fields_length; i += portable->fields_unit) {
     int32_t* portable_field = (int32_t*)&portable->fields[i];
