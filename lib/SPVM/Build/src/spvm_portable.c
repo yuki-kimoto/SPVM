@@ -36,9 +36,9 @@
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
   SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));
 
-  portable->strings_capacity = 32;
+  portable->symbols_capacity = 32;
   
-  portable->strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->strings_capacity);
+  portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
 
   portable->basic_types_capacity = 8;
   portable->basic_types_unit = 4;
@@ -138,14 +138,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_PORTABLE_push_string(SPVM_PORTABLE* portable, const char* string) {
   
-  int32_t id = portable->strings_length;
-  if (portable->strings_length >= portable->strings_capacity) {
-    int32_t new_strings_capacity = portable->strings_capacity * 2;
-    char** new_strings = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_strings_capacity);
-    memcpy(new_strings, portable->strings, sizeof(char*) * portable->strings_length);
-    free(portable->strings);
-    portable->strings = new_strings;
-    portable->strings_capacity = new_strings_capacity;
+  int32_t id = portable->symbols_length;
+  if (portable->symbols_length >= portable->symbols_capacity) {
+    int32_t new_symbols_capacity = portable->symbols_capacity * 2;
+    char** new_symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_symbols_capacity);
+    memcpy(new_symbols, portable->symbols, sizeof(char*) * portable->symbols_length);
+    free(portable->symbols);
+    portable->symbols = new_symbols;
+    portable->symbols_capacity = new_symbols_capacity;
   }
   
   int32_t string_length = (int32_t)strlen(string);
@@ -154,8 +154,8 @@ int32_t SPVM_PORTABLE_push_string(SPVM_PORTABLE* portable, const char* string) {
   memcpy(new_string, string, string_length);
   new_string[string_length] = '\0';
   
-  portable->strings[portable->strings_length] = new_string;
-  portable->strings_length++;
+  portable->symbols[portable->symbols_length] = new_string;
+  portable->symbols_length++;
   
   return id;
 }

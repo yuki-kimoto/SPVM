@@ -49,19 +49,19 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   
   runtime->env = env;
 
-  // Copy portable strings to runtime strings
-  SPVM_LIST* strings = SPVM_LIST_new(portable->strings_length);
-  for (int32_t i = 0; i < portable->strings_length; i++) {
-    char* string = portable->strings[i];
+  // Copy portable symbols to runtime symbols
+  SPVM_LIST* symbols = SPVM_LIST_new(portable->symbols_length);
+  for (int32_t i = 0; i < portable->symbols_length; i++) {
+    char* string = portable->symbols[i];
     int32_t string_length = (int32_t)strlen(string);
     
     char* new_string = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
     memcpy(new_string, string, string_length);
     new_string[string_length] = '\0';
     
-    SPVM_LIST_push(strings, new_string);
+    SPVM_LIST_push(symbols, new_string);
   }
-  runtime->strings = strings;
+  runtime->symbols = symbols;
   
   // Set global runtime
   SPVM_RUNTIME_API_set_runtime(env, runtime);
@@ -120,7 +120,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_var_symtable = SPVM_HASH_new(0);
   for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
     SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = &runtime->package_vars[package_var_id];
-    const char* runtime_package_var_name = SPVM_LIST_fetch(runtime->strings, runtime_package_var->name_id);
+    const char* runtime_package_var_name = SPVM_LIST_fetch(runtime->symbols, runtime_package_var->name_id);
     SPVM_HASH_insert(runtime->package_var_symtable, runtime_package_var_name, strlen(runtime_package_var_name), runtime_package_var);
   }
 
@@ -131,11 +131,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new();
     runtime_sub->id = portable_sub[0];
     runtime_sub->flag = portable_sub[1];
-    runtime_sub->name = SPVM_LIST_fetch(runtime->strings, portable_sub[2]);
-    runtime_sub->abs_name = SPVM_LIST_fetch(runtime->strings, portable_sub[3]);
-    runtime_sub->signature = SPVM_LIST_fetch(runtime->strings, portable_sub[4]);
+    runtime_sub->name = SPVM_LIST_fetch(runtime->symbols, portable_sub[2]);
+    runtime_sub->abs_name = SPVM_LIST_fetch(runtime->symbols, portable_sub[3]);
+    runtime_sub->signature = SPVM_LIST_fetch(runtime->symbols, portable_sub[4]);
     runtime_sub->package_id = portable_sub[5];
-    runtime_sub->file = SPVM_LIST_fetch(runtime->strings, portable_sub[6]);
+    runtime_sub->file = SPVM_LIST_fetch(runtime->symbols, portable_sub[6]);
     runtime_sub->line = portable_sub[7];
     runtime_sub->args_alloc_length = portable_sub[8];
     runtime_sub->vars_alloc_length = portable_sub[9];
@@ -168,7 +168,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new();
     runtime_package->id = portable_package[0];
-    runtime_package->name = SPVM_LIST_fetch(runtime->strings, portable_package[1]);
+    runtime_package->name = SPVM_LIST_fetch(runtime->symbols, portable_package[1]);
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
     
@@ -206,10 +206,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->fields, field);
-    const char* field_name = SPVM_LIST_fetch(runtime->strings, field->name_id);
+    const char* field_name = SPVM_LIST_fetch(runtime->symbols, field->name_id);
     SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
     
-    const char* field_signature = SPVM_LIST_fetch(runtime->strings, field->signature_id);
+    const char* field_signature = SPVM_LIST_fetch(runtime->symbols, field->signature_id);
     SPVM_LIST_push(package->field_signatures, field_signature);
     SPVM_HASH_insert(package->field_signature_symtable, field_signature, strlen(field_signature), field);
     
@@ -227,10 +227,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->package_vars, package_var);
-    const char* package_var_name = SPVM_LIST_fetch(runtime->strings, package_var->name_id);
+    const char* package_var_name = SPVM_LIST_fetch(runtime->symbols, package_var->name_id);
     SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
     
-    const char* package_var_signature = SPVM_LIST_fetch(runtime->strings, package_var->signature_id);
+    const char* package_var_signature = SPVM_LIST_fetch(runtime->symbols, package_var->signature_id);
     SPVM_LIST_push(package->package_var_signatures, package_var_signature);
     SPVM_HASH_insert(package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
   }
@@ -254,7 +254,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->basic_type_symtable = SPVM_HASH_new(0);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->strings, runtime_basic_type->name_id);
+    const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->symbols, runtime_basic_type->name_id);
     SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
   
@@ -262,7 +262,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->field_symtable = SPVM_HASH_new(0);
   for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
     SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
-    const char* runtime_field_name = SPVM_LIST_fetch(runtime->strings, runtime_field->name_id);
+    const char* runtime_field_name = SPVM_LIST_fetch(runtime->symbols, runtime_field->name_id);
     SPVM_HASH_insert(runtime->field_symtable, runtime_field_name, strlen(runtime_field_name), runtime_field);
   }
 

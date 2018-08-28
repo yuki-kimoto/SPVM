@@ -42,19 +42,12 @@ struct SPVM_runtime {
   // API
   SPVM_ENV* env;
   
-  // Compiler
-  SPVM_COMPILER* compiler;
-  
-  SPVM_OBJECT** mortal_stack;
-  
-  SPVM_LIST* strings;
+  SPVM_LIST* symbols;
   
   SPVM_LIST* packages;
   
   SPVM_LIST* subs;
   
-  SPVM_HASH* sub_symtable;
-
   SPVM_LIST* info_switch_infos;
   
   SPVM_OPCODE* opcodes;
@@ -77,14 +70,13 @@ struct SPVM_runtime {
 
   SPVM_RUNTIME_PACKAGE_VAR* package_vars;
   int32_t package_vars_length;
-
+  
+  // Symbol table
   SPVM_HASH* basic_type_symtable;
-
   SPVM_HASH* package_symtable;
-
   SPVM_HASH* field_symtable;
-
   SPVM_HASH* package_var_symtable;
+  SPVM_HASH* sub_symtable;
 
   // Exception
   SPVM_OBJECT* exception;
@@ -93,11 +85,15 @@ struct SPVM_runtime {
   SPVM_VALUE* package_vars_heap;
   
   // Mortal stack
+  SPVM_OBJECT** mortal_stack;
   int32_t mortal_stack_top;
   int32_t mortal_stack_capacity;
   
   // Memory blocks count
   int32_t memory_blocks_count;
+
+  // Compiler
+  SPVM_COMPILER* compiler;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
