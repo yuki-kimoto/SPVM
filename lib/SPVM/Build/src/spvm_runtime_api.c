@@ -245,6 +245,8 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, SPVM_RUNTIME_PACKAGE* interface) {
   (void)env;
   
+  SPVM_RUNTIME* runtime = env->get_runtime(env);
+  
   // When left package is interface, right package have all methods which left package have
   assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
   assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
@@ -273,7 +275,10 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
           for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
             SPVM_RUNTIME_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
             
-            if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
+            const char* sub_interface_signature = runtime->symbols[sub_interface->signature_id];
+            const char* sub_package_signature = runtime->symbols[sub_package->signature_id];
+            
+            if (strcmp(sub_interface_signature, sub_package_signature) == 0) {
               found = 1;
             }
           }

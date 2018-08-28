@@ -56,11 +56,9 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
-  runtime->sub_symtable = SPVM_HASH_new(0);
 
   // Build runtime package infos
   runtime->packages = SPVM_LIST_new(0);
-  runtime->package_symtable = SPVM_HASH_new(0);
 
   runtime->symbols = portable->symbols;
   
@@ -119,11 +117,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_SUB* runtime_sub = SPVM_RUNTIME_SUB_new();
     runtime_sub->id = portable_sub[0];
     runtime_sub->flag = portable_sub[1];
-    runtime_sub->name = runtime->symbols[runtime->symbols, portable_sub[2]];
-    runtime_sub->abs_name = runtime->symbols[portable_sub[3]];
-    runtime_sub->signature = runtime->symbols[portable_sub[4]];
+    runtime_sub->name_id = portable_sub[2];
+    runtime_sub->abs_name_id = portable_sub[3];
+    runtime_sub->signature_id = portable_sub[4];
     runtime_sub->package_id = portable_sub[5];
-    runtime_sub->file = runtime->symbols[portable_sub[6]];
+    runtime_sub->file_id = portable_sub[6];
     runtime_sub->line = portable_sub[7];
     runtime_sub->args_alloc_length = portable_sub[8];
     runtime_sub->vars_alloc_length = portable_sub[9];
@@ -164,6 +162,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // build package symtable
+  runtime->package_symtable = SPVM_HASH_new(0);
   for (int32_t package_id = 0; package_id < runtime->packages->length; package_id++) {
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
@@ -232,10 +231,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->subs, sub);
-    SPVM_HASH_insert(package->sub_symtable, sub->name, strlen(sub->name), sub);
+    const char* sub_name = runtime->symbols[sub->name_id];
+    SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
     
-    SPVM_LIST_push(package->sub_signatures, sub->signature);
-    SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
+    const char* sub_signature = runtime->symbols[sub->signature_id];
+    SPVM_LIST_push(package->sub_signatures, sub_signature);
+    SPVM_HASH_insert(package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
   }
 
   // build runtime basic type symtable
@@ -255,9 +256,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // build sub symtable
+  runtime->sub_symtable = SPVM_HASH_new(0);
   for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
-    SPVM_HASH_insert(runtime->sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
+    SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+    const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
+    SPVM_HASH_insert(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
   }
 
   // Initialize Package Variables

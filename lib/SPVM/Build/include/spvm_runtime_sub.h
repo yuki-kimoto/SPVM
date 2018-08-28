@@ -7,13 +7,11 @@
 struct SPVM_runtime_sub {
   int32_t id;
   int32_t flag;
-  const char* name;
-  const char* abs_name;
-  const char* signature;
+  int32_t name_id;
+  int32_t abs_name_id;
+  int32_t signature_id;
   int32_t package_id;
-  void* precompile_address;
-  void* native_address;
-  const char* file;
+  int32_t file_id;
   int32_t line;
   int32_t args_alloc_length;
   int32_t vars_alloc_length;
@@ -36,6 +34,8 @@ struct SPVM_runtime_sub {
   int32_t info_switch_infos_length;
   int32_t info_longs_base;
   int32_t info_longs_length;
+  void* precompile_address;
+  void* native_address;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

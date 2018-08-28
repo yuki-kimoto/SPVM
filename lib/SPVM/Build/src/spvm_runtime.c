@@ -2040,7 +2040,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
           void* object = *(void**)&vars[opcode->operand2];
-          call_sub_id = env->get_sub_id_method_call(env, object, decl_sub->signature);
+          const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
+          call_sub_id = env->get_sub_id_method_call(env, object, decl_sub_signature);
         }
         else {
           assert(0);
@@ -2078,10 +2079,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
-          const char* sub_name = sub->name;
+          const char* sub_name = runtime->symbols[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
           const char* package_name = sub_runtime_package->name;
-          const char* file = sub->file;
+          const char* file = runtime->symbols[sub->file_id];
           
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
@@ -2097,10 +2098,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
-          const char* sub_name = sub->name;
+          const char* sub_name = runtime->symbols[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
           const char* package_name = sub_runtime_package->name;
-          const char* file = sub->file;
+          const char* file = runtime->symbols[sub->file_id];
 
           // Exception stack trace
           env->set_exception(env, env->create_exception_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
