@@ -97,7 +97,7 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   assert(sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED);
   
   // Call precompile subroutine
-  int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = sub->precompile_address;
+  int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_precompile_addresses[sub->id];
   return (*precompile_address)(env, stack);
 }
 
@@ -114,7 +114,7 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC);
 
   // Call native subrotuine
-  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = sub->native_address;
+  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
   return (*native_address)(env, stack);
 }
 

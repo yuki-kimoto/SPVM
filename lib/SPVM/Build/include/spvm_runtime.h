@@ -68,6 +68,9 @@ struct SPVM_runtime {
   SPVM_LIST* info_switch_infos;
   SPVM_RUNTIME_INFO_TYPE* info_types;
   
+  void** sub_native_addresses;
+  void** sub_precompile_addresses;
+  
   // Symbol table
   SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;

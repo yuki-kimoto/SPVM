@@ -1616,7 +1616,7 @@ bind_sub(...)
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
   
   sub->native_address = native_address;
-  runtime_sub->native_address = native_address;
+  runtime->sub_native_addresses[sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -1684,7 +1684,7 @@ bind_sub(...)
   sub->precompile_address = sub_precompile_address;
   
   runtime_sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
-  runtime_sub->precompile_address = sub_precompile_address;
+  runtime->sub_precompile_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }
