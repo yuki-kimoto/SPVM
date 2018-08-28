@@ -254,7 +254,8 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
   SPVM_LIST* subs_interface = interface->subs;
   SPVM_LIST* subs_package = package->subs;
   
-  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface->name, strlen(interface->name));
+  const char* interface_name = runtime->symbols[interface->name_id];
+  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface_name, strlen(interface_name));
   
   int32_t is_cached = has_interface_cache & 1;
   int32_t has_interface;
@@ -298,7 +299,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
       new_has_interface_cache |= 2;
     }
     
-    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->name, strlen(interface->name), (void*)(intptr_t)new_has_interface_cache);
+    SPVM_HASH_insert(package->has_interface_cache_symtable, interface_name, strlen(interface_name), (void*)(intptr_t)new_has_interface_cache);
   }
   
   return has_interface;

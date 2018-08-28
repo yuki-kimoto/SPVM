@@ -154,7 +154,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new();
     runtime_package->id = portable_package[0];
-    runtime_package->name = runtime->symbols[portable_package[1]];
+    runtime_package->name_id = portable_package[1];
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
     
@@ -166,7 +166,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   for (int32_t package_id = 0; package_id < runtime->packages->length; package_id++) {
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
-    SPVM_HASH_insert(runtime->package_symtable, package->name, strlen(package->name), package);
+    const char* package_name = runtime->symbols[package->name_id];
+    SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
     
     package->fields = SPVM_LIST_new(0);
     package->field_symtable = SPVM_HASH_new(0);
