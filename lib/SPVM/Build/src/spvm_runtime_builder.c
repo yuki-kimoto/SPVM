@@ -71,7 +71,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
   // Build runtime basic type infos
-  runtime->basic_types = SPVM_LIST_new(0);
   runtime->basic_type_symtable = SPVM_HASH_new(0);
 
   // Build runtime field infos
@@ -93,33 +92,19 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->packages = SPVM_LIST_new(0);
   runtime->package_symtable = SPVM_HASH_new(0);
   
-  // build runtime basic types
-  for (size_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i += portable->basic_types_unit) {
-    int32_t* portable_basic_type = (int32_t*)&portable->basic_types[i];
-    
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_RUNTIME_BASIC_TYPE_new();
-    runtime_basic_type->name_id = portable_basic_type[0];
-    runtime_basic_type->id = portable_basic_type[1];
-    runtime_basic_type->category = portable_basic_type[2];
-    runtime_basic_type->package_id = portable_basic_type[3];
-    
-    SPVM_LIST_push(runtime->basic_types, runtime_basic_type);
-  }
+  runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)portable->basic_types;
+  runtime->basic_types_length = portable->basic_types_length;
 
+  runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
+  runtime->fields_length = portable->fields_length;
+  
   runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;
   runtime->info_sub_ids = portable->info_sub_ids;
   runtime->opcodes = portable->opcodes;
-
-  // build runtime basic type symtable
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types->length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-    const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->strings, runtime_basic_type->name_id);
-    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
-  }
-
+  
   // build runtime info_switch_info info_switch_infos
   int32_t info_switch_info_ints_index = 0;
   for (size_t i = 0; i < portable->info_switch_infos_length; i++) {
@@ -149,31 +134,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime->info_longs[i] = portable->info_longs[i];
   }
     
-  // build_runtime fields
-  for (size_t i = 0; i < portable->fields_unit * portable->fields_length; i += portable->fields_unit) {
-    int32_t* portable_field = (int32_t*)&portable->fields[i];
-    
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_RUNTIME_FIELD_new();
-    runtime_field->id = portable_field[0];
-    runtime_field->index = portable_field[1];
-    runtime_field->flag = portable_field[2];
-    runtime_field->name = SPVM_LIST_fetch(runtime->strings, portable_field[3]);
-    runtime_field->abs_name = SPVM_LIST_fetch(runtime->strings, portable_field[4]);
-    runtime_field->signature = SPVM_LIST_fetch(runtime->strings, portable_field[5]);
-    runtime_field->basic_type_id = portable_field[6];
-    runtime_field->type_dimension = portable_field[7];
-    runtime_field->type_flag = portable_field[8];
-    runtime_field->package_id = portable_field[9];
-    
-    SPVM_LIST_push(runtime->fields, runtime_field);
-  }
-  
-  // build runtime field symtable
-  for (int32_t field_id = 0; field_id < runtime->fields->length; field_id++) {
-    SPVM_RUNTIME_FIELD* runtime_field = SPVM_LIST_fetch(runtime->fields, field_id);
-    SPVM_HASH_insert(runtime->field_symtable, runtime_field->name, strlen(runtime_field->name), runtime_field);
-  }
-
   // build package variables
   for (size_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i += portable->package_vars_unit) {
     int32_t* portable_package_var = (int32_t*)&portable->package_vars[i];
@@ -235,12 +195,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->subs, runtime_sub);
   }
 
-  // build sub symtable
-  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
-    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
-    SPVM_HASH_insert(runtime->sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
-  }
-
   // build packages
   for (size_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
     int32_t* portable_package = (int32_t*)&portable->packages[i];
@@ -277,18 +231,20 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // Register field info to package
-  for (int32_t field_id = 0; field_id < runtime->fields->length; field_id++) {
-    SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
+    SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
     
     int32_t package_id = field->package_id;
     
     SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
     SPVM_LIST_push(package->fields, field);
-    SPVM_HASH_insert(package->field_symtable, field->name, strlen(field->name), field);
+    const char* field_name = SPVM_LIST_fetch(runtime->strings, field->name_id);
+    SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
     
-    SPVM_LIST_push(package->field_signatures, field->signature);
-    SPVM_HASH_insert(package->field_signature_symtable, field->signature, strlen(field->signature), field);
+    const char* field_signature = SPVM_LIST_fetch(runtime->strings, field->signature_id);
+    SPVM_LIST_push(package->field_signatures, field_signature);
+    SPVM_HASH_insert(package->field_signature_symtable, field_signature, strlen(field_signature), field);
     
     if (SPVM_RUNTIME_API_is_object_type(env, field->basic_type_id, field->type_dimension, field->type_flag)) {
       SPVM_LIST_push(package->object_field_indexes, field->index);
@@ -323,6 +279,26 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     SPVM_LIST_push(package->sub_signatures, sub->signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub->signature, strlen(sub->signature), sub);
+  }
+
+  // build runtime basic type symtable
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->strings, runtime_basic_type->name_id);
+    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
+  }
+  
+  // build runtime field symtable
+  for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
+    SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
+    const char* runtime_field_name = SPVM_LIST_fetch(runtime->strings, runtime_field->name_id);
+    SPVM_HASH_insert(runtime->field_symtable, runtime_field_name, strlen(runtime_field_name), runtime_field);
+  }
+
+  // build sub symtable
+  for (int32_t sub_id = 0; sub_id < runtime->subs->length; sub_id++) {
+    SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+    SPVM_HASH_insert(runtime->sub_symtable, runtime_sub->abs_name, strlen(runtime_sub->abs_name), runtime_sub);
   }
 
   // Initialize Package Variables

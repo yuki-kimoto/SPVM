@@ -61,16 +61,12 @@ struct SPVM_runtime {
   
   SPVM_LIST* strings;
   
-  SPVM_LIST* basic_types;
-  
   SPVM_HASH* basic_type_symtable;
 
   SPVM_LIST* packages;
   
   SPVM_HASH* package_symtable;
 
-  SPVM_LIST* fields;
-  
   SPVM_HASH* field_symtable;
 
   SPVM_LIST* package_vars;
@@ -96,6 +92,12 @@ struct SPVM_runtime {
   SPVM_RUNTIME_INFO_TYPE* info_types;
 
   SPVM_RUNTIME_ARG* args;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  int32_t basic_types_length;
+
+  SPVM_RUNTIME_FIELD* fields;
+  int32_t fields_length;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
