@@ -81,8 +81,6 @@ struct SPVM_runtime {
   
   SPVM_OPCODE* opcodes;
   
-  int64_t* info_longs;
-
   int32_t* info_sub_ids;
 
   int32_t* info_package_var_ids;

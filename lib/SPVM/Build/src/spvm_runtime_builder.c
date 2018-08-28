@@ -70,19 +70,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
-  // Build runtime basic type infos
-  runtime->basic_type_symtable = SPVM_HASH_new(0);
-
-  // Build runtime field infos
-  runtime->fields = SPVM_LIST_new(0);
-  runtime->field_symtable = SPVM_HASH_new(0);
-
   // Build runtime package_var infos
   runtime->package_vars = SPVM_LIST_new(0);
   runtime->package_var_symtable = SPVM_HASH_new(0);
   
   runtime->info_switch_infos = SPVM_LIST_new(0);
-  runtime->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_longs_length + 1);
   
   // Build runtime sub infos
   runtime->subs = SPVM_LIST_new(0);
@@ -129,11 +121,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
   }
 
-  // build runtime long longs
-  for (size_t i = 0; i < portable->info_longs_length; i++) {
-    runtime->info_longs[i] = portable->info_longs[i];
-  }
-    
   // build package variables
   for (size_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i += portable->package_vars_unit) {
     int32_t* portable_package_var = (int32_t*)&portable->package_vars[i];
@@ -282,6 +269,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // build runtime basic type symtable
+  runtime->basic_type_symtable = SPVM_HASH_new(0);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
     const char* runtime_basic_type_name = SPVM_LIST_fetch(runtime->strings, runtime_basic_type->name_id);
@@ -289,6 +277,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
   
   // build runtime field symtable
+  runtime->field_symtable = SPVM_HASH_new(0);
   for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
     SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
     const char* runtime_field_name = SPVM_LIST_fetch(runtime->strings, runtime_field->name_id);
