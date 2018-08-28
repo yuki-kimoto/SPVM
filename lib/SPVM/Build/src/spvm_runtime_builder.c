@@ -372,8 +372,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars->length + 1));
   
   
-  runtime->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OPCODE) * portable->opcodes_length);
-  memcpy(runtime->opcodes, portable->opcodes, sizeof(int64_t) * portable->opcodes_length);
+  runtime->opcodes = portable->opcodes;
   
   return runtime;
 }
