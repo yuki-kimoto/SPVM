@@ -45,34 +45,12 @@ struct SPVM_runtime {
   // Compiler
   SPVM_COMPILER* compiler;
   
-  // Exception
-  SPVM_OBJECT* exception;
-  
-  // Package variables
-  SPVM_VALUE* package_vars_heap;
-  
   SPVM_OBJECT** mortal_stack;
-  
-  int32_t mortal_stack_top;
-  
-  int32_t mortal_stack_capacity;
-
-  int32_t memory_blocks_count;
   
   SPVM_LIST* strings;
   
-  SPVM_HASH* basic_type_symtable;
-
   SPVM_LIST* packages;
   
-  SPVM_HASH* package_symtable;
-
-  SPVM_HASH* field_symtable;
-
-  SPVM_LIST* package_vars;
-  
-  SPVM_HASH* package_var_symtable;
-
   SPVM_LIST* subs;
   
   SPVM_HASH* sub_symtable;
@@ -96,6 +74,30 @@ struct SPVM_runtime {
 
   SPVM_RUNTIME_FIELD* fields;
   int32_t fields_length;
+
+  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
+  int32_t package_vars_length;
+
+  SPVM_HASH* basic_type_symtable;
+
+  SPVM_HASH* package_symtable;
+
+  SPVM_HASH* field_symtable;
+
+  SPVM_HASH* package_var_symtable;
+
+  // Exception
+  SPVM_OBJECT* exception;
+  
+  // Package variables
+  SPVM_VALUE* package_vars_heap;
+  
+  // Mortal stack
+  int32_t mortal_stack_top;
+  int32_t mortal_stack_capacity;
+  
+  // Memory blocks count
+  int32_t memory_blocks_count;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
