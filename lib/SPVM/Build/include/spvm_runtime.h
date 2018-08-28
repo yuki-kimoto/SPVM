@@ -92,6 +92,8 @@ struct SPVM_runtime {
   SPVM_LIST* info_types;
   
   SPVM_LIST* info_switch_infos;
+  
+  SPVM_OPCODE* opcodes;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

@@ -123,10 +123,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Runtime subroutine
-  SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->compiler->subs, sub_id);
 
   // Runtime subroutine
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_LIST_fetch(runtime->subs, sub_id);
@@ -141,7 +140,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_LIST_fetch(runtime->packages, runtime_sub->package_id);
 
   // Operation codes
-  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
+  SPVM_OPCODE* opcodes = runtime->opcodes;
   register int32_t opcode_rel_index = 0;
   
   // Operation code base

@@ -68,6 +68,9 @@ struct SPVM_portable {
   int32_t info_switch_infos_length;
   int32_t info_switch_info_ints_length;
   int32_t* info_switch_info_ints;
+  
+  int32_t opcodes_length;
+  int64_t* opcodes;
 };
 
 SPVM_PORTABLE* SPVM_PORTABLE_new();

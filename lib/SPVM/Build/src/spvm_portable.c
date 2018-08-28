@@ -63,6 +63,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   
   portable->info_switch_info_ints_capacity = 8;
   
+  portable->opcodes_length;
+  portable->opcodes;
+  
   return portable;
 }
 
@@ -123,6 +126,12 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
   }
+  
+  // OPCode
+  int32_t opcode_length = compiler->opcode_array->length;
+  portable->opcodes_length = opcode_length;
+  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
+  memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
   
   return portable;
 }
