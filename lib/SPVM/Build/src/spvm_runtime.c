@@ -1900,10 +1900,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
+        int32_t rel_id = opcode->operand2;
+        const char* string_value = runtime->info_string_values[runtime_sub->info_string_values_base + rel_id];
+        int32_t string_length = runtime->info_string_lengths[runtime_sub->info_string_values_base + rel_id];
         
-        void* string = env->new_string_raw(env, constant->value.oval, constant->string_length);
+        void* string = env->new_string_raw(env, string_value, string_length);
         
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0] , string);
