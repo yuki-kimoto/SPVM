@@ -43,11 +43,18 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 
+#include "spvm_runtime.h"
+#include "spvm_runtime_api.h"
+#include "spvm_runtime_allocator.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
+#include "spvm_runtime_arg.h"
+#include "spvm_runtime_info_type.h"
+#include "spvm_runtime_info_switch_info.h"
+#include "spvm_runtime_info_case_info.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   
@@ -850,6 +857,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_SUB* runtime_sub = &runtime->subs[sub->id];
   
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->return_type;
@@ -3397,7 +3405,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
           {
             int32_t rel_id = opcode->operand1;
-            int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, rel_id);
+            int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
             const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->name;
@@ -3440,7 +3448,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           }
           case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
             int32_t rel_id = opcode->operand1;
-            int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, rel_id);
+            int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
             const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->name;
@@ -3464,7 +3472,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
           {
             int32_t rel_id = opcode->operand0;
-            int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, rel_id);
+            int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
             const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->name;
@@ -3507,7 +3515,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           }
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
             int32_t rel_id = opcode->operand0;
-            int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, rel_id);
+            int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
             const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->name;
@@ -3524,7 +3532,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           }
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
             int32_t rel_id = opcode->operand0;
-            int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, rel_id);
+            int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
             const char* package_var_package_name = package_var->package->name;
             const char* package_var_name = package_var->name;
