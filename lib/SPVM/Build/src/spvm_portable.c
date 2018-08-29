@@ -66,6 +66,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_long_values_capacity = 8;
   portable->info_double_values_capacity = 8;
   portable->info_string_values_capacity = 8;
+  portable->info_string_lengths_capacity = 8;
 
   portable->opcodes_length;
   portable->opcodes;
@@ -233,6 +234,8 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable string values
   portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->info_string_values_capacity);
+
+  portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
