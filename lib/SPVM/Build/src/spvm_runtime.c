@@ -11,37 +11,13 @@
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
+#include "spvm_opcode.h"
+#include "spvm_object.h"
+#include "spvm_util_allocator.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-
-#include "spvm_opcode_array.h"
-#include "spvm_opcode.h"
-
-#include "spvm_object.h"
-
-#include "spvm_util_allocator.h"
 #include "spvm_runtime_allocator.h"
-
-#include "spvm_switch_info.h"
-#include "spvm_case_info.h"
-
-#include "spvm_compiler.h"
-#include "spvm_my.h"
-#include "spvm_constant.h"
-#include "spvm_opcode_array.h"
-
-#include "spvm_call_sub.h"
-#include "spvm_package_var_access.h"
-#include "spvm_field_access.h"
-#include "spvm_type.h"
-
-#include "spvm_package.h"
-#include "spvm_package_var.h"
-#include "spvm_sub.h"
-#include "spvm_basic_type.h"
-#include "spvm_field.h"
-
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
@@ -52,6 +28,13 @@
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
 
+// Only use for constant value
+#include "spvm_type.h"
+#include "spvm_package.h"
+#include "spvm_package_var.h"
+#include "spvm_sub.h"
+#include "spvm_basic_type.h"
+#include "spvm_field.h"
 
 int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   (void)env;
@@ -123,9 +106,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
-
-  // Runtime subroutine
-  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->compiler->subs, sub_id);
 
   // Runtime subroutine
   SPVM_RUNTIME_SUB* runtime_sub = &runtime->subs[sub_id];
