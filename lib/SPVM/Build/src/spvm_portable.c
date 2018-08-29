@@ -439,8 +439,8 @@ void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* i
 
   if (portable->info_string_values_length >= portable->info_string_values_capacity) {
     int32_t new_portable_info_string_values_capacity = portable->info_string_values_capacity * 2;
-    int32_t* new_portable_info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_string_values_capacity);
-    memcpy(new_portable_info_string_values, portable->info_string_values, sizeof(int64_t) * portable->info_string_values_length);
+    int32_t* new_portable_info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_portable_info_string_values_capacity);
+    memcpy(new_portable_info_string_values, portable->info_string_values, sizeof(char*) * portable->info_string_values_length);
     free(portable->info_string_values);
     portable->info_string_values = new_portable_info_string_values;
     portable->info_string_values_capacity = new_portable_info_string_values_capacity;
