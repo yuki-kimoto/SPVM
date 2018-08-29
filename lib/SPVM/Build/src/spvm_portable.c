@@ -179,6 +179,11 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_PORTABLE_push_info_string_value(portable, (char*)constant->value.oval, constant->string_length);
   }
 
+  for (int32_t info_string_lengths_index = 0; info_string_lengths_index < sub->info_string_constants->length; info_string_lengths_index++) {
+    SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_string_constants, info_string_lengths_index);
+    SPVM_PORTABLE_push_info_string_length(portable, constant->string_length);
+  }
+
   portable->subs_length++;
 }
 
@@ -446,9 +451,26 @@ void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* i
     portable->info_string_values_capacity = new_portable_info_string_values_capacity;
   }
   
-  portable->info_string_values[portable->info_string_values_length] = info_string_value;
+  portable->info_string_values[portable->info_string_values_length] = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
+  memcpy(portable->info_string_values[portable->info_string_values_length], info_string_value, string_length);
 
   portable->info_string_values_length++;
+}
+
+void SPVM_PORTABLE_push_info_string_length(SPVM_PORTABLE* portable, int32_t info_string_length) {
+
+  if (portable->info_string_lengths_length >= portable->info_string_lengths_capacity) {
+    int32_t new_portable_info_string_lengths_capacity = portable->info_string_lengths_capacity * 2;
+    int32_t* new_portable_info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_string_lengths_capacity);
+    memcpy(new_portable_info_string_lengths, portable->info_string_lengths, sizeof(int32_t) * portable->info_string_lengths_length);
+    free(portable->info_string_lengths);
+    portable->info_string_lengths = new_portable_info_string_lengths;
+    portable->info_string_lengths_capacity = new_portable_info_string_lengths_capacity;
+  }
+  
+  portable->info_string_lengths[portable->info_string_lengths_length] = info_string_length;
+
+  portable->info_string_lengths_length++;
 }
 
 void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* basic_type) {
