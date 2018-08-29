@@ -133,6 +133,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
   
+  // Long
+  portable->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (compiler->long_constants->length + 1));
+  portable->info_longs_length = compiler->long_constants->length;
+  for (int32_t info_long_index = 0; info_long_index < compiler->long_constants->length; info_long_index++) {
+    SPVM_CONSTANT* constant = SPVM_LIST_fetch(compiler->long_constants, info_long_index);
+    portable->info_longs[info_long_index] = constant->value.lval;
+  }
+
   return portable;
 }
 
@@ -458,7 +466,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_TYPE* info_switch_info = SPVM_LIST_fetch(sub->info_switch_infos, info_switch_info_id);
     SPVM_PORTABLE_push_info_switch_info(portable, info_switch_info);
   }
-
+  
   portable->subs_length++;
 }
 

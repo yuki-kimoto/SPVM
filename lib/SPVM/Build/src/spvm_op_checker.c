@@ -404,6 +404,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               op_cur->uv.constant->sub_rel_info_long_id = sub->info_long_constants->length;
                               SPVM_LIST_push(sub->info_long_constants, op_cur->uv.constant);
+
+                              op_cur->uv.constant->long_constant_id = compiler->long_constants->length;
+                              SPVM_LIST_push(compiler->long_constants, op_cur->uv.constant);
                             }
                           }
                         }
@@ -416,6 +419,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           op_cur->uv.constant->sub_rel_info_string_id = sub->info_string_constants->length;
                           SPVM_LIST_push(sub->info_string_constants, op_cur->uv.constant);
+                          
+                          op_cur->uv.constant->string_constant_id = compiler->string_constants->length;
+                          SPVM_LIST_push(compiler->string_constants, op_cur->uv.constant);
                         }
                         
                         if (add_constant) {

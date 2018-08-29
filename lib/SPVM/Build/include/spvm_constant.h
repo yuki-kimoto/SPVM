@@ -13,6 +13,8 @@ struct SPVM_constant {
   int32_t sub_rel_id;
   int32_t sub_rel_info_long_id;
   int32_t sub_rel_info_string_id;
+  int32_t long_constant_id;
+  int32_t string_constant_id;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);
