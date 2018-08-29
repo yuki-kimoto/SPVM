@@ -57,12 +57,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_types_capacity = 8;
   portable->info_types_unit = 3;
   portable->subs_capacity = 8;
-  portable->subs_unit = 27;
+  portable->subs_unit = 29;
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
   
   portable->info_switch_info_ints_capacity = 8;
-  
+
+  portable->info_long_values_capacity = 8;
+
   portable->opcodes_length;
   portable->opcodes;
   
@@ -110,8 +112,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * portable->info_types_capacity);
 
-  // Portable packages
+  // Portable switch info
   portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
+
+  // Portable long values
+  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_long_values_capacity);
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
@@ -134,11 +139,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
   
   // Long
-  portable->info_longs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (compiler->long_constants->length + 1));
-  portable->info_longs_length = compiler->long_constants->length;
+  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (compiler->long_constants->length + 1));
+  portable->info_long_values_length = compiler->long_constants->length;
   for (int32_t info_long_index = 0; info_long_index < compiler->long_constants->length; info_long_index++) {
     SPVM_CONSTANT* constant = SPVM_LIST_fetch(compiler->long_constants, info_long_index);
-    portable->info_longs[info_long_index] = constant->value.lval;
+    portable->info_long_values[info_long_index] = constant->value.lval;
   }
 
   return portable;
@@ -287,6 +292,22 @@ void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id
   portable->info_sub_ids_length++;
 }
 
+void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_long_value) {
+
+  if (portable->info_long_values_length >= portable->info_long_values_capacity) {
+    int32_t new_portable_info_long_values_capacity = portable->info_long_values_capacity * 2;
+    int32_t* new_portable_info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_long_values_capacity);
+    memcpy(new_portable_info_long_values, portable->info_long_values, sizeof(int64_t) * portable->info_long_values_length);
+    free(portable->info_long_values);
+    portable->info_long_values = new_portable_info_long_values;
+    portable->info_long_values_capacity = new_portable_info_long_values_capacity;
+  }
+  
+  portable->info_long_values[portable->info_long_values_length] = info_long_value;
+
+  portable->info_long_values_length++;
+}
+
 void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* basic_type) {
   
   if (portable->basic_types_length >= portable->basic_types_capacity) {
@@ -430,6 +451,8 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[24] = sub->info_types->length;
   new_portable_sub[25] = portable->info_switch_infos_length;
   new_portable_sub[26] = sub->info_switch_infos->length;
+  new_portable_sub[27] = portable->info_long_values_length;
+  new_portable_sub[28] = sub->info_long_constants->length;
   
   SPVM_MY* my = sub->args;
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
@@ -466,7 +489,12 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_TYPE* info_switch_info = SPVM_LIST_fetch(sub->info_switch_infos, info_switch_info_id);
     SPVM_PORTABLE_push_info_switch_info(portable, info_switch_info);
   }
-  
+
+  for (int32_t info_long_values_index = 0; info_long_values_index < sub->info_long_constants->length; info_long_values_index++) {
+    SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_long_constants, info_long_values_index);
+    SPVM_PORTABLE_push_info_long_value(portable, constant->value.lval);
+  }
+
   portable->subs_length++;
 }
 

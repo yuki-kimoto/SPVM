@@ -32,6 +32,8 @@ struct SPVM_runtime_sub {
   int32_t info_types_length;
   int32_t info_switch_infos_base;
   int32_t info_switch_infos_length;
+  int32_t info_long_values_base;
+  int32_t info_long_values_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

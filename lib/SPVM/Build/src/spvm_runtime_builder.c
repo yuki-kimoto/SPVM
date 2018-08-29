@@ -69,7 +69,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->subs = portable->subs;
   runtime->subs_length = portable->subs_length;
 
-  runtime->info_longs = portable->info_longs;
+  runtime->info_long_values = portable->info_long_values;
 
   // Native sub addresses
   runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
