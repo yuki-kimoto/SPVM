@@ -663,13 +663,12 @@ void SPVM_CSOURCE_BUILDER_add_set_deref(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_FIELD* field) {
+void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t out_index, int32_t object_index, SPVM_RUNTIME_FIELD* field) {
   (void)runtime;
   
-  SPVM_COMPILER* compiler = runtime->compiler;
-
-  const char* field_package_name = field->package->name;
-  const char* field_name = field->name;
+  SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+  const char* field_package_name = runtime->symbols[field_package->name_id];
+  const char* field_name = runtime->symbols[field->name_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -692,13 +691,12 @@ void SPVM_CSOURCE_BUILDER_add_get_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_FIELD* field, int32_t in_index) {
+void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* field_type_name, int32_t object_index, SPVM_RUNTIME_FIELD* field, int32_t in_index) {
   (void)runtime;
 
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  const char* field_package_name = field->package->name;
-  const char* field_name = field->name;
+  SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+  const char* field_package_name = runtime->symbols[field_package->name_id];
+  const char* field_name = runtime->symbols[field->name_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -3166,9 +3164,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand2;
-
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_byte", opcode->operand0, opcode->operand1, field);
         break;
@@ -3176,7 +3173,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_short", opcode->operand0, opcode->operand1, field);
         break;
@@ -3184,7 +3181,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_int", opcode->operand0, opcode->operand1, field);
         break;
@@ -3192,7 +3189,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1, field);
         break;
@@ -3200,7 +3197,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_float", opcode->operand0, opcode->operand1, field);
         break;
@@ -3208,7 +3205,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_get_field(runtime, string_buffer, "SPVM_VALUE_double", opcode->operand0, opcode->operand1, field);
         break;
@@ -3216,9 +3213,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t rel_id = opcode->operand2;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        const char* field_package_name = field->package->name;
-        const char* field_name = field->name;
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+        SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_name = runtime->symbols[field->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -3243,7 +3241,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_byte", opcode->operand0, field, opcode->operand2);
         break;
@@ -3251,7 +3249,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_short", opcode->operand0, field, opcode->operand2);
         break;
@@ -3259,7 +3257,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_int", opcode->operand0, field, opcode->operand2);
         break;
@@ -3267,7 +3265,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_long", opcode->operand0, field, opcode->operand2);
         break;
@@ -3275,7 +3273,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_float", opcode->operand0, field, opcode->operand2);
         break;
@@ -3283,7 +3281,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_add_set_field(runtime, string_buffer, "SPVM_VALUE_double", opcode->operand0, field, opcode->operand2);
         break;
