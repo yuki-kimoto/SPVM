@@ -850,6 +850,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_RUNTIME* runtime, SPVM_STRI
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+  
+  SPVM_ENV* env = runtime->env;
+
   SPVM_COMPILER* compiler = runtime->compiler;
   
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
@@ -2579,31 +2582,36 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       {
         int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, rel_id);
+        int32_t decl_sub_id = runtime->info_sub_ids[runtime_sub->info_sub_ids_base + rel_id];
 
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(compiler->subs, decl_sub_id);
+        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
+
+        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
+        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
+        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
+        
+        SPVM_RUNTIME_PACKAGE* decl_sub_package = &runtime->packages[decl_sub->package_id];
+        const char* decl_sub_abs_name = runtime->symbols[decl_sub->abs_name_id];
+        const char* decl_sub_name = runtime->symbols[decl_sub->name_id];
+        const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
+        const char* decl_sub_package_name = runtime->symbols[decl_sub_package->name_id];
         
         // Declare subroutine return type
-        SPVM_TYPE* decl_sub_return_type = decl_sub->return_type;
-        int32_t decl_sub_return_type_is_object = SPVM_TYPE_is_object_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
-        int32_t decl_sub_return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, decl_sub_return_type->basic_type->id, decl_sub_return_type->dimension, decl_sub_return_type->flag);
-        
-        // Declare subroutine return type id
-        int32_t decl_sub_return_basic_type_id = decl_sub_return_type->basic_type->id;
-        int32_t decl_sub_return_type_dimension = decl_sub_return_type->dimension;
+        int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+        int32_t decl_sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
         
         // Declare subroutine argument length
-        int32_t decl_sub_args_length = decl_sub->args->length;
+        int32_t decl_sub_args_length = decl_sub->arg_ids_length;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
         // Call subroutine id
         if (opcode->id == SPVM_OPCODE_C_ID_CALL_SUB) {
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
-          SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub->package->name, decl_sub->name);
+          SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         else if (opcode->id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
@@ -2611,13 +2619,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, "];\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_method_call(env, object, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (call_sub_id < 0) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->package->name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, " ");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->signature);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
@@ -2629,11 +2637,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
 
 
         // Subroutine inline expantion in same package
-        if (decl_sub->package->id == sub->package->id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+        if (decl_sub->package_id == runtime_sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->abs_name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_abs_name);
           {
-            int32_t index = string_buffer->length - strlen(decl_sub->abs_name);
+            int32_t index = string_buffer->length - strlen(decl_sub_abs_name);
             
             while (index < string_buffer->length) {
               if (string_buffer->buffer[index] == ':') {
@@ -2645,9 +2653,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
         // Inline expansion is done in native core function
-        else if (strcmp(decl_sub->package->name, "SPVM::CORE") == 0 && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
+        else if (strcmp(decl_sub_package_name, "SPVM::CORE") == 0 && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub->name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
         // Call subroutine
@@ -2658,17 +2666,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         // Call subroutine
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
         if (decl_sub_return_type_is_value_type) {
-          SPVM_PACKAGE* package = decl_sub_return_type->basic_type->package;
+          int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
+          SPVM_RUNTIME_BASIC_TYPE* decl_sub_return_basic_type = &runtime->basic_types[decl_sub_return_basic_type_id];
+          SPVM_RUNTIME_PACKAGE* decl_sub_return_package = &runtime->packages[decl_sub_return_basic_type->package_id];
           assert(package);
           
-          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(decl_sub_return_package->fields, 0);
           assert(first_field);
           
-          SPVM_TYPE* field_type = first_field->type;
-          assert(field_type->dimension == 0);
-
-          for (int32_t offset = 0; offset < package->fields->length; offset++) {
-            switch (field_type->basic_type->id) {
+          for (int32_t offset = 0; offset < decl_sub_return_package->fields->length; offset++) {
+            switch (first_field->basic_type_id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 SPVM_STRING_BUFFER_add(string_buffer, "      ");
                 SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_byte", var_id + offset);
