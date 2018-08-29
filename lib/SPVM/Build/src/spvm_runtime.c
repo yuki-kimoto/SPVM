@@ -704,9 +704,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         *(float*)&vars[opcode->operand0] = *(float*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
-        *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&constant->value;
+        int32_t rel_id = opcode->operand2;
+        double double_value = runtime->info_double_values[runtime_sub->info_double_values_base + rel_id];
+        
+        *(SPVM_VALUE_double*)&vars[opcode->operand0] = double_value;
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {
