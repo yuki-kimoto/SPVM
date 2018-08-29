@@ -11,6 +11,8 @@ struct SPVM_constant {
   int32_t string_length;
   int32_t id;
   int32_t sub_rel_id;
+  int32_t long_pool_id;
+  int32_t string_pool_id;
 };
 
 SPVM_CONSTANT* SPVM_CONSTANT_new(SPVM_COMPILER* compiler);

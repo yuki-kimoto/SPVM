@@ -100,6 +100,16 @@ struct SPVM_compiler {
 
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
+  
+  // Long pool for portable
+  int64_t* long_pool;
+  int32_t long_pool_length;
+  int32_t long_pool_capacity;
+  
+  // String pool for portable;
+  char* string_pool;
+  int32_t string_pool_length;
+  int32_t string_pool_capacity;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
@@ -107,5 +117,7 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_push_long_pool(SPVM_COMPILER* compiler, int64_t long_value);
+void SPVM_COMPILER_push_string_pool(SPVM_COMPILER* compiler, const char* string, int32_t string_length);
 
 #endif
