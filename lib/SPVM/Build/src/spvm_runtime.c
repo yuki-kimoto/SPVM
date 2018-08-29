@@ -706,7 +706,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t rel_id = opcode->operand2;
         double double_value = runtime->info_double_values[runtime_sub->info_double_values_base + rel_id];
-        
         *(SPVM_VALUE_double*)&vars[opcode->operand0] = double_value;
         break;
       }

@@ -235,6 +235,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->mortal_stack_capacity = 1;
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+
+  
   
   return runtime;
 }

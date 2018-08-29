@@ -254,28 +254,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
   
-  // long
-  portable->info_long_values_length = compiler->long_constants->length;
-  for (int32_t info_long_index = 0; info_long_index < compiler->long_constants->length; info_long_index++) {
-    SPVM_CONSTANT* constant = SPVM_LIST_fetch(compiler->long_constants, info_long_index);
-    portable->info_long_values[info_long_index] = constant->value.lval;
-  }
-
-  // double
-  portable->info_double_values_length = compiler->double_constants->length;
-  for (int32_t info_double_index = 0; info_double_index < compiler->double_constants->length; info_double_index++) {
-    SPVM_CONSTANT* constant = SPVM_LIST_fetch(compiler->double_constants, info_double_index);
-    portable->info_double_values[info_double_index] = constant->value.lval;
-  }
-
-  // string
-  portable->info_string_values_length = compiler->string_constants->length;
-  for (int32_t info_string_index = 0; info_string_index < compiler->string_constants->length; info_string_index++) {
-    SPVM_CONSTANT* constant = SPVM_LIST_fetch(compiler->string_constants, info_string_index);
-    portable->info_string_values[info_string_index] = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(constant->string_length + 1);
-    memcpy(&portable->info_string_values[info_string_index], constant->value.oval, constant->string_length);
-  }
-
   return portable;
 }
 
