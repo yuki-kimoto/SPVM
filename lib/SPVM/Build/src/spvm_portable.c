@@ -559,12 +559,8 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
   }
   new_portable_package_var[5] = package_var->type->dimension;
   new_portable_package_var[6] = package_var->type->flag;
-  if (package_var->package) {
-    new_portable_package_var[7] = package_var->package->id;
-  }
-  else {
-    new_portable_package_var[7] = -1;
-  }
+  assert(package_var->package);
+  new_portable_package_var[7] = package_var->package->id;
   
   portable->package_vars_length++;
 }

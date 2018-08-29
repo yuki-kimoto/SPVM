@@ -59,6 +59,9 @@ struct SPVM_runtime {
 
   SPVM_RUNTIME_SUB* subs;
   int32_t subs_length;
+
+  SPVM_RUNTIME_PACKAGE* packages;
+  int32_t packages_length;
   
   int64_t* info_long_values;
   double* info_double_values;
@@ -72,7 +75,6 @@ struct SPVM_runtime {
   void** sub_native_addresses;
   void** sub_precompile_addresses;
 
-  SPVM_LIST* packages;
   SPVM_LIST* info_switch_infos;
   
   // Symbol table

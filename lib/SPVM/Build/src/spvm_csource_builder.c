@@ -3533,10 +3533,11 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
-            SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
-            const char* package_var_package_name = package_var->package->name;
-            const char* package_var_name = package_var->name;
-
+            SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
+            SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_var->package_id];
+            const char* package_var_package_name = runtime->symbols[package->name_id];
+            const char* package_var_name = runtime->symbols[package_var->name_id];
+            
             SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
             SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[");
             SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);

@@ -117,7 +117,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, runtime_sub->return_basic_type_id, runtime_sub->return_type_dimension, runtime_sub->return_type_flag);
 
   // Runtime package
-  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_LIST_fetch(runtime->packages, runtime_sub->package_id);
+  SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[runtime_sub->package_id];
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -2061,7 +2061,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
           const char* package_name = runtime->symbols[sub_runtime_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
           
@@ -2080,7 +2080,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
           const char* package_name = runtime->symbols[sub_runtime_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
 
