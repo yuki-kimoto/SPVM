@@ -1225,12 +1225,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
     SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
     for (int32_t info_field_ids_index = 0; info_field_ids_index < sub->info_field_ids->length; info_field_ids_index++) {
       int32_t field_id = (intptr_t)SPVM_LIST_fetch(sub->info_field_ids, info_field_ids_index);
-      SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-      const char* field_package_name = field->package->name;
-      const char* field_signature = field->signature;
-      const char* field_name = field->name;
+      SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+      SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+      const char* field_package_name = runtime->symbols[field_package->name_id];
+      const char* field_name = runtime->symbols[field->name_id];
+      const char* field_abs_name = runtime->symbols[field->abs_name_id];
+      const char* field_signature = runtime->symbols[field->signature_id];
       
-      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_abs_name_symtable, field->abs_name, strlen(field->abs_name));
+      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_abs_name_symtable, field_abs_name, strlen(field_abs_name));
       if (!found_field) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
@@ -1251,7 +1253,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(field_abs_name_symtable, field->abs_name, strlen(field->abs_name), field);
+        SPVM_HASH_insert(field_abs_name_symtable, field_abs_name, strlen(field_abs_name), field);
       }
     }
     SPVM_HASH_free(field_abs_name_symtable);
@@ -1265,12 +1267,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
     SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
     for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids->length; info_package_var_ids_index++) {
       int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, info_package_var_ids_index);
-      SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
-      const char* package_var_package_name = package_var->package->name;
-      const char* package_var_name = package_var->name;
-      const char* package_var_signature = package_var->signature;
+      SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
+      SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
+      const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+      const char* package_var_name = runtime->symbols[package_var->name_id];
+      const char* package_var_abs_name = runtime->symbols[package_var->abs_name_id];
+      const char* package_var_signature = runtime->symbols[package_var->signature_id];
       
-      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name));
+      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var_abs_name, strlen(package_var_abs_name));
       if (!found_package_var) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
@@ -1291,7 +1295,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(package_var_abs_name_symtable, package_var->abs_name, strlen(package_var->abs_name), package_var);
+        SPVM_HASH_insert(package_var_abs_name_symtable, package_var_abs_name, strlen(package_var_abs_name), package_var);
       }
     }
     SPVM_HASH_free(package_var_abs_name_symtable);
