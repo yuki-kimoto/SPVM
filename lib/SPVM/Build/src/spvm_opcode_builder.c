@@ -1647,6 +1647,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = constant->sub_rel_id;
+                          opcode.operand2 = constant->sub_rel_info_string_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }

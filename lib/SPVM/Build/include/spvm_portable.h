@@ -77,6 +77,10 @@ struct SPVM_portable {
   int64_t* info_double_values;
   int32_t info_double_values_length;
 
+  int32_t info_string_values_capacity;
+  int64_t* info_string_values;
+  int32_t info_string_values_length;
+
   int32_t opcodes_length;
   int64_t* opcodes;
 };
