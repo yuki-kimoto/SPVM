@@ -61,6 +61,7 @@ struct SPVM_runtime {
   int32_t subs_length;
   
   // Information for 16bit operand
+  int64_t* info_longs;
   int32_t* info_sub_ids;
   int32_t* info_package_var_ids;
   int32_t* info_field_ids;

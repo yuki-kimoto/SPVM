@@ -1390,6 +1390,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_LONG;
                             opcode.operand1 = constant->sub_rel_id;
+                            opcode.operand2 = constant->sub_rel_info_long_id;
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT;
