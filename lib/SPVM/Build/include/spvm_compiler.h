@@ -100,15 +100,6 @@ struct SPVM_compiler {
 
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
-  
-  // Long constants
-  SPVM_LIST* long_constants;
-
-  // Double constants
-  SPVM_LIST* double_constants;
-  
-  // String constants
-  SPVM_LIST* string_constants;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
