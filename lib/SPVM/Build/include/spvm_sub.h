@@ -43,6 +43,7 @@ struct SPVM_sub {
   SPVM_LIST* info_constants;
   SPVM_LIST* info_switch_infos;
   SPVM_LIST* info_long_constants;
+  SPVM_LIST* info_double_constants;
   SPVM_LIST* info_string_constants;
   
   int32_t id;

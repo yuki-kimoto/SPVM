@@ -26,6 +26,7 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   sub->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   sub->info_long_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  sub->info_double_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_string_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return sub;

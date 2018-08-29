@@ -63,6 +63,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
 
   compiler->long_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->double_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->string_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   // Add basic types

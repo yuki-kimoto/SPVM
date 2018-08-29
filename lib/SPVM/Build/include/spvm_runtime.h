@@ -62,6 +62,7 @@ struct SPVM_runtime {
   
   // Information for 16bit operand
   int64_t* info_long_values;
+  double* info_double_values;
   int32_t* info_sub_ids;
   int32_t* info_package_var_ids;
   int32_t* info_field_ids;

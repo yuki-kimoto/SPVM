@@ -103,6 +103,9 @@ struct SPVM_compiler {
   
   // Long constants
   SPVM_LIST* long_constants;
+
+  // Double constants
+  SPVM_LIST* double_constants;
   
   // String constants
   SPVM_LIST* string_constants;

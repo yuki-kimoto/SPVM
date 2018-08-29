@@ -1399,6 +1399,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             opcode.id = SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE;
                             opcode.operand1 = constant->sub_rel_id;
+                            opcode.operand2 = constant->sub_rel_info_double_id;
                             break;
                           default:
                             assert(0);
