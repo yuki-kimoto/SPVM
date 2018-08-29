@@ -1305,12 +1305,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
     SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
     for (int32_t info_sub_ids_index = 0; info_sub_ids_index < sub->info_sub_ids->length; info_sub_ids_index++) {
       int32_t sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, info_sub_ids_index);
-      SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
-      const char* sub_package_name = sub->package->name;
-      const char* sub_signature = sub->signature;
-      const char* sub_name = sub->name;
+      SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      const char* sub_signature = runtime->symbols[sub->signature_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
       
-      SPVM_FIELD* found_sub = SPVM_HASH_fetch(sub_abs_name_symtable, sub->abs_name, strlen(sub->abs_name));
+      SPVM_FIELD* found_sub = SPVM_HASH_fetch(sub_abs_name_symtable, sub_abs_name, strlen(sub_abs_name));
       if (!found_sub) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
@@ -1331,7 +1333,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(sub_abs_name_symtable, sub->abs_name, strlen(sub->abs_name), sub);
+        SPVM_HASH_insert(sub_abs_name_symtable, sub_abs_name, strlen(sub_abs_name), sub);
       }
     }
     SPVM_HASH_free(sub_abs_name_symtable);
@@ -1372,7 +1374,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
     SPVM_HASH_free(basic_type_symtable);
   }
   
-  SPVM_OPCODE* opcodes = compiler->opcode_array->values;
+  SPVM_OPCODE* opcodes = runtime->opcodes;
   int32_t sub_opcode_base = sub->opcode_base;
   int32_t opcode_length = sub->opcode_length;
   int32_t opcode_index = 0;
