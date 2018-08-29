@@ -720,9 +720,8 @@ void SPVM_CSOURCE_BUILDER_add_set_field(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFE
 }
 
 void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
-  SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   
   SPVM_LIST* subs = package->subs;
   
@@ -734,11 +733,12 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
-      SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
-      const char* sub_name = sub->name;
+      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_signature = runtime->symbols[sub->signature_id];
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
         SPVM_STRING_BUFFER_add(string_buffer, "// [SIG]");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub->signature);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_CSOURCE_BUILDER_build_sub_declaration(runtime, string_buffer, package_name, sub_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n\n");
@@ -752,9 +752,9 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < subs->length; sub_index++) {
-      SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
-      const char* sub_name = sub->name;
+      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+        const char* sub_name = runtime->symbols[sub->name_id];
         SPVM_CSOURCE_BUILDER_build_sub_implementation(runtime, string_buffer, package_name, sub_name);
       }
     }
