@@ -72,49 +72,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_OP_build_use(compiler, op_use_core, op_type_core);
   SPVM_LIST_push(compiler->op_use_stack, op_use_core);
 
-  compiler->long_pool_capacity = 8;
-  compiler->string_pool_capacity = 8;
-  
-  compiler->long_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * compiler->long_pool_capacity);
-  compiler->string_pool_capacity = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(compiler->string_pool_capacity);
-
   return compiler;
-}
-
-void SPVM_COMPILER_push_long_pool(SPVM_COMPILER* compiler, int64_t long_value) {
-  
-  int32_t id = compiler->long_pool_length;
-  if (compiler->long_pool_length >= compiler->long_pool_capacity) {
-    int32_t new_long_pool_capacity = compiler->long_pool_capacity * 2;
-    int32_t* new_long_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_long_pool_capacity);
-    memcpy(new_long_pool, compiler->long_pool, sizeof(int64_t) * compiler->long_pool_length);
-    free(compiler->long_pool);
-    compiler->long_pool = new_long_pool;
-    compiler->long_pool_capacity = new_long_pool_capacity;
-  }
-  
-  compiler->long_pool[compiler->long_pool_length] = long_value;
-  compiler->long_pool_length++;
-  
-  return id;
-}
-
-void SPVM_COMPILER_push_string_pool(SPVM_COMPILER* compiler, const char* string, int32_t string_length) {
-
-  int32_t id = compiler->string_pool_length;
-  if (compiler->string_pool_length + string_length >= compiler->string_pool_capacity) {
-    int32_t new_string_pool_capacity = (compiler->string_pool_capacity + string_length) * 2;
-    int32_t* new_string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_string_pool_capacity);
-    memcpy(new_string_pool, compiler->string_pool, sizeof(int64_t) * compiler->string_pool_length);
-    free(compiler->string_pool);
-    compiler->string_pool = new_string_pool;
-    compiler->string_pool_capacity = new_string_pool_capacity;
-  }
-  
-  memcpy(&compiler->string_pool[compiler->string_pool_length], string, string_length);
-  compiler->string_pool_length += string_length;
-  
-  return id;
 }
 
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
