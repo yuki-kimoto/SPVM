@@ -819,15 +819,14 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* 
 }
 
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
-  SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
   // Subroutine name
-  const char* sub_abs_name = sub->abs_name;
+  const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
   
   // Return type
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
