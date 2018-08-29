@@ -3292,9 +3292,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        const char* field_package_name = field->package->name;
-        const char* field_name = field->name;
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+        SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_name = runtime->symbols[field->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -3322,9 +3323,10 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       {
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + rel_id];
-        SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-        const char* field_package_name = field->package->name;
-        const char* field_name = field->name;
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+        SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_name = runtime->symbols[field->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
