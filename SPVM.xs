@@ -172,7 +172,7 @@ set_elements(...)
   int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, array_basic_type_id, array_type_dimension, array_type_flag);
   
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array_basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array_basic_type_id];
     int32_t element_type_dimension = array_type_dimension - 1;
     int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, array_basic_type_id, element_type_dimension, 0);
     int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, array_basic_type_id, element_type_dimension, 0);
@@ -183,22 +183,20 @@ set_elements(...)
         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
 
         if (sv_derived_from(sv_value, "HASH")) {
-          SPVM_PACKAGE* package = basic_type->package;
+          
+          SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
           assert(package);
           
-          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
           assert(first_field);
-          
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-          assert(field_type->dimension == 0);
 
           void* elements = (void*)env->get_int_array_elements(env, array);
           
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t field_length = package->fields->length;
           for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-            const char* field_name = field->op_name->uv.name;
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
 
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
             SV* sv_field_value;
@@ -209,7 +207,7 @@ set_elements(...)
               sv_field_value = sv_2mortal(newSViv(0));
             }
 
-            switch (field_type->basic_type->id) {
+            switch (first_field->basic_type_id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
                 break;
@@ -1756,7 +1754,7 @@ call_sub(...)
   }
 
   SPVM_TYPE* sub_return_type = sub->return_type;
-  int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
+  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
   
@@ -1796,7 +1794,7 @@ call_sub(...)
       if (arg_type_is_ref_type) {
         args_contain_ref = 1;
         _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);
@@ -2200,7 +2198,7 @@ call_sub(...)
         int32_t ref_stack_id = ref_stack_ids[arg_index];
         
         _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);

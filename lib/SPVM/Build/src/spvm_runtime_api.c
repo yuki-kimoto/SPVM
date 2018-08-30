@@ -211,7 +211,7 @@ int32_t SPVM_RUNTIME_API_is_value_ref_type(SPVM_ENV* env, int32_t basic_type_id,
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
   
   int32_t is_value_ref_type;
   if (dimension == 0 && (flag & SPVM_TYPE_C_FLAG_REF)) {
