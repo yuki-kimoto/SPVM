@@ -382,24 +382,22 @@ set_bin(...)
   int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
     int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
     int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
     if (element_type_is_value_type) {
-      SPVM_PACKAGE* package = basic_type->package;
+      SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
       assert(first_field);
-      
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-      assert(field_type->dimension == 0);
+
 
       int32_t field_length = package->fields->length;
       
-      switch (field_type->basic_type->id) {
+      switch (first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           // Check range
           if ((int32_t)sv_len(sv_bin) != field_length * length) {
