@@ -142,7 +142,6 @@ set_elements(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
@@ -366,7 +365,6 @@ set_bin(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
