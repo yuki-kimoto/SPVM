@@ -1381,20 +1381,20 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   
   SPVM_OPCODE* opcodes = runtime->opcodes;
-  int32_t sub_opcode_base = sub->opcode_base;
-  int32_t opcode_length = sub->opcode_length;
+  int32_t sub_opcodes_base = runtime_sub->opcodes_base;
+  int32_t opcodes_length = runtime_sub->opcodes_length;
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
 
-  while (opcode_index < opcode_length) {
+  while (opcode_index < opcodes_length) {
 
     // Line label
     SPVM_STRING_BUFFER_add(string_buffer, "L");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     
-    opcode = &(opcodes[sub_opcode_base + opcode_index]);
+    opcode = &(opcodes[sub_opcodes_base + opcode_index]);
 
     SPVM_STRING_BUFFER_add(string_buffer, "// ");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_OPCODE_C_ID_NAMES[opcode->id]);
@@ -2807,14 +2807,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
-        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+        SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
         int32_t line = sub->line + rel_line;
         
-        const char* sub_package_name = sub->package->name;
-        const char* sub_name = sub->name;
-        const char* file = sub->file;
+        const char* sub_name = runtime->symbols[sub->name_id];
+        SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
+        const char* package_name = runtime->symbols[sub_runtime_package->name_id];
+        const char* file = runtime->symbols[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
@@ -2839,14 +2840,15 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         break;
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
-        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+        SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
         int32_t line = sub->line + rel_line;
         
-        const char* sub_package_name = sub->package->name;
-        const char* sub_name = sub->name;
-        const char* file = sub->file;
+        const char* sub_name = runtime->symbols[sub->name_id];
+        SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
+        const char* package_name = runtime->symbols[sub_runtime_package->name_id];
+        const char* file = runtime->symbols[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");

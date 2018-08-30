@@ -57,7 +57,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_types_capacity = 8;
   portable->info_types_unit = 3;
   portable->subs_capacity = 8;
-  portable->subs_unit = 33;
+  portable->subs_unit = 34;
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
   
@@ -67,9 +67,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_double_values_capacity = 8;
   portable->info_string_values_capacity = 8;
   portable->info_string_lengths_capacity = 8;
-
-  portable->opcodes_length;
-  portable->opcodes;
   
   return portable;
 }
@@ -107,7 +104,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[10] = sub->return_type->basic_type->id;
   new_portable_sub[11] = sub->return_type->dimension;
   new_portable_sub[12] = sub->return_type->flag;
-  new_portable_sub[13] = sub->opcode_base;
+  new_portable_sub[13] = sub->opcodes_base;
   new_portable_sub[14] = sub->mortal_stack_length;
   new_portable_sub[15] = portable->args_length;
   new_portable_sub[16] = sub->args->length;
@@ -127,6 +124,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[30] = sub->info_double_constants->length;
   new_portable_sub[31] = portable->info_string_values_length;
   new_portable_sub[32] = sub->info_string_constants->length;
+  new_portable_sub[33] = sub->opcodes_length;
   
   SPVM_MY* my = sub->args;
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {

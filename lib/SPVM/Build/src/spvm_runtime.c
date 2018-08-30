@@ -124,7 +124,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   register int32_t opcode_rel_index = 0;
   
   // Operation code base
-  int32_t sub_opcode_base = runtime_sub->opcode_base;
+  int32_t sub_opcodes_base = runtime_sub->opcodes_base;
 
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
@@ -177,7 +177,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t mortal_stack_top = 0;
   
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[sub_opcode_base + opcode_rel_index]);
+    SPVM_OPCODE* opcode = &(opcodes[sub_opcodes_base + opcode_rel_index]);
     
     switch (opcode->id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:
