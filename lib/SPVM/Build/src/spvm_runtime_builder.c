@@ -61,6 +61,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;
   runtime->package_vars_length = portable->package_vars_length;
   runtime->args = (SPVM_RUNTIME_MY*)portable->args;
+  runtime->mys = (SPVM_RUNTIME_MY*)portable->mys;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;

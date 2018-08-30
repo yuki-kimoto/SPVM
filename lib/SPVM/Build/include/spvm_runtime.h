@@ -47,6 +47,7 @@ struct SPVM_runtime {
   SPVM_OPCODE* opcodes;
   
   SPVM_RUNTIME_MY* args;
+  SPVM_RUNTIME_MY* mys;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
   int32_t basic_types_length;

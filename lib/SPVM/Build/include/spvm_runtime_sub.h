@@ -39,6 +39,8 @@ struct SPVM_runtime_sub {
   int32_t info_string_values_base;
   int32_t info_string_values_length;
   int32_t opcodes_length;
+  int32_t my_ids_base;
+  int32_t my_ids_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();
