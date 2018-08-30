@@ -723,8 +723,6 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
   
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   
-  SPVM_LIST* subs = package->subs;
-  
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_build_head(runtime, string_buffer);
   
@@ -732,8 +730,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < subs->length; sub_index++) {
-      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
+    for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
+      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       const char* sub_name = runtime->symbols[sub->name_id];
       const char* sub_signature = runtime->symbols[sub->signature_id];
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
@@ -751,8 +749,8 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Implementations\n");
   {
     int32_t sub_index;
-    for (sub_index = 0; sub_index < subs->length; sub_index++) {
-      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
+    for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
+      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
         const char* sub_name = runtime->symbols[sub->name_id];
         SPVM_CSOURCE_BUILDER_build_sub_implementation(runtime, string_buffer, package_name, sub_name);
@@ -821,12 +819,12 @@ void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* 
 void SPVM_CSOURCE_BUILDER_build_sub_declaration(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
-  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
+  assert(runtime_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
   // Subroutine name
-  const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
+  const char* sub_abs_name = runtime->symbols[runtime_sub->abs_name_id];
   
   // Return type
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
@@ -872,16 +870,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
 
   int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
   
-  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
+  assert(runtime_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
-  SPVM_CSOURCE_BUILDER_build_sub_declaration(runtime, string_buffer, sub->package->name, sub->name);
+  SPVM_CSOURCE_BUILDER_build_sub_declaration(runtime, string_buffer, package_name, sub_name);
 
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
-  if (sub->mortal_stack_length > 0) {
+  if (runtime_sub->mortal_stack_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   }
@@ -898,7 +896,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
-  int32_t vars_alloc_length = sub->vars_alloc_length;
+  int32_t vars_alloc_length = runtime_sub->vars_alloc_length;
   
   // Variable declaration
   if (sub->mys->length > 0) {
