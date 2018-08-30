@@ -899,24 +899,21 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   int32_t vars_alloc_length = runtime_sub->vars_alloc_length;
   
   // Variable declaration
-  if (runtime_sub->vars_alloc_length > 0) {
+  if (runtime_sub->my_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
   // Initialize variables with type information
-  if (runtime_sub->vars_alloc_length > 0) {
+  if (runtime_sub->my_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Initialize variables\n");
   }
   {
     int32_t my_index;
     for (my_index = 0; my_index < runtime_sub->my_ids_length; my_index++) {
-      SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
       SPVM_RUNTIME_MY* runtime_my = &runtime->mys[runtime_sub->my_ids_base + my_index];
       
-      SPVM_TYPE* my_type = my->type;
-
       _Bool my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
       _Bool my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
       _Bool my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
@@ -996,7 +993,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
         }
         else {
-          switch (my_type->basic_type->id) {
+          switch (runtime_my->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
               SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_byte", runtime_my->var_id);
