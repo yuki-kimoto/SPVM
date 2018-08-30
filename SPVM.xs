@@ -1690,14 +1690,9 @@ bind_sub(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
-  SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));
-  
-  sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
-  sub->precompile_address = sub_precompile_address;
-  
   runtime_sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
-  runtime->sub_precompile_addresses[sub->id] = sub_precompile_address;
+  runtime->sub_precompile_addresses[runtime_sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }
