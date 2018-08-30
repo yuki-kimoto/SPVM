@@ -1225,8 +1225,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   {
     SPVM_HASH* field_abs_name_symtable = SPVM_HASH_new(1);
-    for (int32_t info_field_ids_index = 0; info_field_ids_index < sub->info_field_ids->length; info_field_ids_index++) {
-      int32_t field_id = (intptr_t)SPVM_LIST_fetch(sub->info_field_ids, info_field_ids_index);
+    for (int32_t info_field_ids_index = 0; info_field_ids_index < runtime_sub->info_field_ids_length; info_field_ids_index++) {
+      int32_t field_id = runtime->info_field_ids[runtime_sub->info_field_ids_base + info_field_ids_index];
       SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
       SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
       const char* field_package_name = runtime->symbols[field_package->name_id];
@@ -1267,8 +1267,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   {
     SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
-    for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids->length; info_package_var_ids_index++) {
-      int32_t package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, info_package_var_ids_index);
+    for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < runtime_sub->info_package_var_ids_length; info_package_var_ids_index++) {
+      int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + info_package_var_ids_index];
       SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
       SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
       const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
@@ -1309,8 +1309,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   {
     SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
-    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < sub->info_sub_ids->length; info_sub_ids_index++) {
-      int32_t sub_id = (intptr_t)SPVM_LIST_fetch(sub->info_sub_ids, info_sub_ids_index);
+    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < runtime_sub->info_sub_ids_length; info_sub_ids_index++) {
+      int32_t sub_id = runtime->info_sub_ids[runtime_sub->info_sub_ids_base + info_sub_ids_index];
       SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
       SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
       const char* sub_package_name = runtime->symbols[sub_package->name_id];
