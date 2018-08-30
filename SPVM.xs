@@ -1339,24 +1339,24 @@ get_sub_names(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  // Environment
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
 
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   
   AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
   {
     int32_t sub_index;
     for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
       
-      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
+      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       
       // Subroutine name
-      const char* sub_name = sub->op_name->uv.name;
+      const char* sub_name = runtime->symbols[sub->name_id];
       SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
       
       av_push(av_sub_names, SvREFCNT_inc((SV*)sv_sub_name));
@@ -1377,19 +1377,18 @@ get_package_names(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
   
   {
     int32_t package_index;
-    for (package_index = 0; package_index < compiler->packages->length; package_index++) {
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    for (package_index = 0; package_index < runtime->packages_length; package_index++) {
+      SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_index];
       
       // Package name
-      const char* package_name = package->op_name->uv.name;
+      const char* package_name = runtime->symbols[package->name_id];
       SV* sv_package_name = sv_2mortal(newSVpvn(package_name, strlen(package_name)));
       
       av_push(av_package_names, SvREFCNT_inc((SV*)sv_package_name));
