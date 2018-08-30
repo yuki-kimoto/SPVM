@@ -90,7 +90,7 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
   (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
   (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
-  (void*)(intptr_t)offsetof(SPVM_OBJECT, dimension), // object_dimension_byte_offset
+  (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_byte_offset
   (void*)(intptr_t)offsetof(SPVM_OBJECT, elements_length), // object_elements_length_byte_offset
   SPVM_RUNTIME_call_sub,
   SPVM_RUNTIME_API_enter_scope,
@@ -111,6 +111,12 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_get_package_var_id,
   (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
 };
+
+int32_t SPVM_RUNTIME_API_is_array_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+}
 
 int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
@@ -327,7 +333,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, i
   (void)env;
   
   int32_t src_basic_type_id = object->basic_type_id;
-  int32_t src_type_dimension = object->dimension;
+  int32_t src_type_dimension = object->type_dimension;
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
   
@@ -819,7 +825,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   
   // Set object fields
   object->body = body;
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->elements_length = length;
   object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
@@ -837,7 +843,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length)
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_short));
   
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT;
   
   // Set array length
@@ -858,7 +864,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_int));
   
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT;
 
   // Set array length
@@ -883,7 +889,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length) 
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_long));
   
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG;
 
   // Set array length
@@ -904,7 +910,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_float));
   
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
 
   // Set array length
@@ -925,7 +931,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length
   // Alloc body length + 1
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_double));
   
-  object->dimension = 1;
+  object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
   
   // Set array length
@@ -950,7 +956,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
 
   object->basic_type_id = basic_type->id;
-  object->dimension = 1;
+  object->type_dimension = 1;
 
   // Set array length
   object->elements_length = length;
@@ -973,7 +979,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_object));
   
   object->basic_type_id = basic_type_id;
-  object->dimension = element_dimension + 1;
+  object->type_dimension = element_dimension + 1;
   
   // Set array length
   object->elements_length = length;
@@ -1026,7 +1032,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (length + 1) * unit_size * fields_length);
 
   object->basic_type_id = basic_type->id;
-  object->dimension = 1;
+  object->type_dimension = 1;
 
   // Set array length
   object->elements_length = length;
@@ -1062,7 +1068,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->body = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
 
   object->basic_type_id = basic_type->id;
-  object->dimension = 0;
+  object->type_dimension = 0;
 
   object->elements_length = fields_length;
 
@@ -1101,7 +1107,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->body = pointer;
 
   object->basic_type_id = basic_type->id;
-  object->dimension = 0;
+  object->type_dimension = 0;
 
   object->elements_length = 1;
 

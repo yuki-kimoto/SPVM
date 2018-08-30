@@ -167,8 +167,8 @@ set_elements(...)
   }
   
   int32_t basic_type_id  = array->basic_type_id;
-  int32_t dimension = array->dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t dimension = array->type_dimension;
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
   
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
@@ -379,7 +379,7 @@ set_bin(...)
   
   int32_t length = env->get_array_length(env, array);
   int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->dimension;
+  int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   if (is_array_type) {
@@ -586,7 +586,7 @@ set_element(...)
   }
 
   int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->dimension;
+  int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   if (is_array_type) {
@@ -790,7 +790,7 @@ get_element(...)
   }
 
   int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->dimension;
+  int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
 
   SV* sv_value;
@@ -959,7 +959,7 @@ to_elements(...)
   int32_t length = env->get_array_length(env, array);
 
   int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->dimension;
+  int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
@@ -1161,7 +1161,7 @@ to_bin(...)
   int32_t length = env->get_array_length(env, array);
 
   int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->dimension;
+  int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
   
   SV* sv_bin;

@@ -20,7 +20,8 @@ struct SPVM_object {
   int32_t ref_count;
   int32_t basic_type_id;
   int32_t elements_length;
-  uint8_t dimension;
+  uint8_t type_dimension;
+  uint8_t type_flag;
   uint8_t has_destructor;
   uint8_t in_destroy;
   uint8_t category;

@@ -1500,7 +1500,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_dimension_byte_offset) == dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset) == dimension);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
