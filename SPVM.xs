@@ -75,12 +75,12 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
 SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+  const char* basic_type_name = runtime->symbols[basic_type->id];
   assert(basic_type);
 
-  SV* sv_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+  SV* sv_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
   
   int32_t dim_index;
   for (dim_index = 0; dim_index < dimension; dim_index++) {
