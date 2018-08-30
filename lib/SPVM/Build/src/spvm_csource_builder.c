@@ -16,32 +16,12 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 
-#include "spvm_opcode_array.h"
 #include "spvm_opcode.h"
 
 #include "spvm_object.h"
 
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_allocator.h"
-
-#include "spvm_switch_info.h"
-#include "spvm_case_info.h"
-
-#include "spvm_compiler.h"
-#include "spvm_my.h"
-#include "spvm_constant.h"
-#include "spvm_opcode_array.h"
-
-#include "spvm_call_sub.h"
-#include "spvm_package_var_access.h"
-#include "spvm_field_access.h"
-#include "spvm_type.h"
-
-#include "spvm_package.h"
-#include "spvm_package_var.h"
-#include "spvm_sub.h"
-#include "spvm_basic_type.h"
-#include "spvm_field.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
@@ -55,6 +35,14 @@
 #include "spvm_runtime_info_type.h"
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
+
+// Only use constant value
+#include "spvm_package.h"
+#include "spvm_package_var.h"
+#include "spvm_sub.h"
+#include "spvm_basic_type.h"
+#include "spvm_field.h"
+#include "spvm_type.h"
 
 void SPVM_CSOURCE_BUILDER_add_var(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   
@@ -761,7 +749,7 @@ void SPVM_CSOURCE_BUILDER_build_package_csource(SPVM_RUNTIME* runtime, SPVM_STRI
 }
 
 void SPVM_CSOURCE_BUILDER_build_head(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer) {
-  SPVM_COMPILER* compiler = runtime->compiler;
+  (void)runtime;
   
   // Include header
   SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_CSOURCE_BUILDER_H\n");
@@ -853,9 +841,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
 
   SPVM_COMPILER* compiler = runtime->compiler;
   
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-
   SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime_package->sub_symtable, sub_name, strlen(sub_name));
 
@@ -930,7 +915,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
         assert(first_field);
         
-        for (int32_t offset = 0; offset < package->fields->length; offset++) {
+        for (int32_t offset = 0; offset < runtime_my_package->fields->length; offset++) {
           switch (first_field->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -1043,11 +1028,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   {
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+    for (arg_index = 0; arg_index < runtime_sub->arg_ids_length; arg_index++) {
       SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
-
-      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-      SPVM_TYPE* arg_type = arg_my->type;
 
       _Bool arg_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
       _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
@@ -1214,7 +1196,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   
   // Get field index
-  if (sub->info_field_ids->length > 0) {
+  if (runtime_sub->info_field_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get field index\n");
   }
   {
@@ -1256,7 +1238,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
   
   // Get package variable id
-  if (sub->info_package_var_ids->length > 0) {
+  if (runtime_sub->info_package_var_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
   }
   {
@@ -1298,7 +1280,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   }
 
   // Get sub id
-  if (sub->info_sub_ids->length > 0) {
+  if (runtime_sub->info_sub_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
   }
   {
@@ -1910,14 +1892,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
-        SPVM_VALUE_long value = *(SPVM_VALUE_long*)&constant->value;
+        int32_t rel_id = opcode->operand2;
+        int64_t long_value = runtime->info_long_values[runtime_sub->info_long_values_base + rel_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_long", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_long(string_buffer, value);
+        SPVM_STRING_BUFFER_add_long(string_buffer, long_value);
         SPVM_STRING_BUFFER_add(string_buffer, "ULL;\n");
         break;
       }
@@ -1930,14 +1911,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
-        SPVM_VALUE_double value = *(SPVM_VALUE_double*)&constant->value;
+        int32_t rel_id = opcode->operand2;
+        double double_value = runtime->info_double_values[runtime_sub->info_double_values_base + rel_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_double", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_double(string_buffer, value);
+        SPVM_STRING_BUFFER_add_double(string_buffer, double_value);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
@@ -2227,7 +2207,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
 
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
-        if (sub->mortal_stack_length > 0) {
+        if (runtime_sub->mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
@@ -2387,11 +2367,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_CONSTANT* constant = SPVM_LIST_fetch(sub->info_constants, rel_id);
-
-        const char* name = constant->value.oval;
-        int32_t length = constant->string_length;
+        int32_t rel_id = opcode->operand2;
+        const char* string_value = runtime->info_string_values[runtime_sub->info_string_values_base + rel_id];
+        int32_t string_length = runtime->info_string_lengths[runtime_sub->info_string_values_base + rel_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", opcode->operand0);
@@ -2400,13 +2378,13 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         
         {
           int32_t i;
-          for (i = 0; i < length; i++) {
-            SPVM_STRING_BUFFER_add_hex_char(string_buffer, name[i]);
+          for (i = 0; i < string_length; i++) {
+            SPVM_STRING_BUFFER_add_hex_char(string_buffer, string_value[i]);
           }
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, length);
+        SPVM_STRING_BUFFER_add_int(string_buffer, string_length);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         break;
       }
@@ -2690,7 +2668,6 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
           int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
           SPVM_RUNTIME_BASIC_TYPE* decl_sub_return_basic_type = &runtime->basic_types[decl_sub_return_basic_type_id];
           SPVM_RUNTIME_PACKAGE* decl_sub_return_package = &runtime->packages[decl_sub_return_basic_type->package_id];
-          assert(package);
           
           SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(decl_sub_return_package->fields, 0);
           assert(first_field);
