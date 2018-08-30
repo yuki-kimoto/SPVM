@@ -2553,9 +2553,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       }
       case SPVM_OPCODE_C_ID_CAST: {
         int32_t rel_id = opcode->operand2;
-        SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, rel_id);
-        const char* cast_basic_type_name = type->basic_type->name;
+
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[runtime_sub->info_types_base + rel_id];
+        int32_t cast_basic_type_id = type->basic_type_id;
         int32_t cast_type_dimension = type->dimension;
+        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[cast_basic_type_id];
+        const char* cast_basic_type_name = runtime->symbols[cast_basic_type->name_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cast_basic_type_id = ");
