@@ -1202,17 +1202,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   
   // If arg is object, increment reference count
   {
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-      SPVM_TYPE* arg_type = arg_my->type;
-      _Bool arg_type_is_value_t = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+    for (int32_t arg_index = runtime_sub->arg_ids_base; arg_index < runtime_sub->arg_ids_base + runtime_sub->arg_ids_length; arg_index++) {
+      SPVM_RUNTIME_ARG* arg = &runtime->args[arg_index];
+      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
       
-      if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) && !arg_type_is_value_t) {
+      if (arg_type_is_object_type && !arg_type_is_value_type) {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", arg_my->var_id);
+        SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", arg->var_id);
         SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
-        SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", arg_my->var_id);
+        SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "void*", arg->var_id);
         SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
       }
     }
