@@ -174,8 +174,8 @@ set_elements(...)
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array_basic_type_id);
     int32_t element_type_dimension = array_type_dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, array_basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, array_basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, array_basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, array_basic_type_id, element_type_dimension, 0);
     
     if (element_type_is_value_type) {
       for (int32_t index = 0; index < length; index++) {
@@ -386,8 +386,8 @@ set_bin(...)
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
     if (element_type_is_value_type) {
       SPVM_PACKAGE* package = basic_type->package;
@@ -593,8 +593,8 @@ set_element(...)
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
     if (element_type_is_value_type) {
       if (sv_derived_from(sv_value, "HASH")) {
@@ -798,8 +798,8 @@ get_element(...)
   _Bool is_object = 0;
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
     if (element_type_is_value_type) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
@@ -967,8 +967,8 @@ to_elements(...)
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
     if (element_type_is_value_type) {
       
@@ -1169,8 +1169,8 @@ to_bin(...)
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
+    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
     if (element_type_is_value_type) {
       SPVM_PACKAGE* package = basic_type->package;
@@ -1786,8 +1786,8 @@ call_sub(...)
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
-      _Bool arg_type_is_object_type = SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-      _Bool arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
       int32_t arg_basic_type_id = arg_type->basic_type->id;
@@ -2048,8 +2048,8 @@ call_sub(...)
   // Return type id
   SPVM_TYPE* return_type = sub->return_type;
 
-  int32_t return_type_is_object_type = SPVM_TYPE_is_object_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);
-  int32_t return_type_is_value_type = SPVM_TYPE_is_value_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag);
+  int32_t return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
+  int32_t return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
   
   int32_t return_basic_type_id = return_type->basic_type->id;
   int32_t return_type_dimension = return_type->dimension;
