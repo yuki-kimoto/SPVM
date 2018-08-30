@@ -899,14 +899,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   int32_t vars_alloc_length = runtime_sub->vars_alloc_length;
   
   // Variable declaration
-  if (sub->mys->length > 0) {
+  if (runtime_sub->vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
   // Initialize variables with type information
-  if (sub->mys->length > 0) {
+  if (runtime_sub->vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Initialize variables\n");
   }
   {
