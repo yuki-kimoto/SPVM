@@ -1751,8 +1751,10 @@ call_sub(...)
     croak("Subroutine not found %s %s", package_name, runtime_sub_signature);
   }
 
-  SPVM_TYPE* sub_return_type = sub->return_type;
-  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag);
+  int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
+  int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
+  int32_t sub_return_type_flag = runtime_sub->return_type_flag;
+  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
   
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
   
