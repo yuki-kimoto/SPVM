@@ -1723,6 +1723,7 @@ call_sub(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  
   if (package == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
@@ -1734,6 +1735,20 @@ call_sub(...)
   int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
   if (sub_id < 0) {
     croak("Subroutine not found %s %s", package_name, sub_signature);
+  }
+
+  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  if (runtime_package == NULL) {
+    croak("Subroutine not found %s %s", package_name, sub_name);
+  }
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime_package->sub_symtable, sub_name, strlen(sub_name));
+  if (runtime_sub == NULL) {
+    croak("Subroutine not found %s %s", package_name, sub_name);
+  }
+  const char* runtime_sub_signature = runtime->symbols[runtime_sub->signature_id];
+  int32_t runtime_sub_id = env->get_sub_id(env, package_name, runtime_sub_signature);
+  if (runtime_sub_id < 0) {
+    croak("Subroutine not found %s %s", package_name, runtime_sub_signature);
   }
 
   SPVM_TYPE* sub_return_type = sub->return_type;
