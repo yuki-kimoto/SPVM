@@ -3040,14 +3040,14 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         int32_t rel_id = opcode->operand2;
-        SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(sub->info_switch_infos, rel_id);
-        SPVM_LIST* cases = switch_info->cases_ordered;
+        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, runtime_sub->info_switch_infos_base + rel_id);
+        SPVM_LIST* case_infos = switch_info->case_infos;
 
         // default offset
         int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
         
         // case count
-        int32_t cases_length = cases->length;
+        int32_t cases_length = case_infos->length;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_int", opcode->operand0);
@@ -3055,8 +3055,8 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
         {
           int32_t case_index;
           for (case_index = 0; case_index < cases_length; case_index++) {
-            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(cases, case_index);
-            int32_t match = case_info->constant->value.ival;
+            SPVM_RUNTIME_INFO_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, case_index);
+            int32_t match = case_info->match;
             int32_t opcode_rel_index = case_info->opcode_rel_index;
             
             SPVM_STRING_BUFFER_add(string_buffer, "    case ");
