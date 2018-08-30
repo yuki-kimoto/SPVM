@@ -39,6 +39,19 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_builder.h"
 
+#include "spvm_runtime.h"
+#include "spvm_runtime_api.h"
+#include "spvm_runtime_allocator.h"
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_package_var.h"
+#include "spvm_runtime_my.h"
+#include "spvm_runtime_info_type.h"
+#include "spvm_runtime_info_switch_info.h"
+#include "spvm_runtime_info_case_info.h"
+
 SPVM_ENV* SPVM_XS_UTIL_get_env() {
   
   SV* sv_env = get_sv("SPVM::ENV", 0);
@@ -2543,16 +2556,16 @@ new_value_t_array_len(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   int32_t length = (int32_t)SvIV(sv_length);
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
   if (basic_type == NULL) {
+    const char* basic_type_name = runtime->symbols[basic_type->name_id];
     croak("Can't load %s", basic_type_name);
   }
   
