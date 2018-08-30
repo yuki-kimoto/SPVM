@@ -1352,12 +1352,12 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   {
     SPVM_HASH* basic_type_symtable = SPVM_HASH_new(1);
     int32_t type_index;
-    for (type_index = 0; type_index < sub->info_types->length; type_index++) {
-      SPVM_TYPE* type = SPVM_LIST_fetch(sub->info_types, type_index);
-      SPVM_BASIC_TYPE* basic_type = type->basic_type;
-      const char* basic_type_name = basic_type->name;
+    for (type_index = 0; type_index < runtime_sub->info_types_length; type_index++) {
+      SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[runtime_sub->info_types_base + type_index];
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[type->basic_type_id];
+      const char* basic_type_name = runtime->symbols[basic_type->name_id];
       
-      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(basic_type_symtable, basic_type_name, strlen(basic_type_name));
+      SPVM_RUNTIME_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(basic_type_symtable, basic_type_name, strlen(basic_type_name));
       if (!found_basic_type) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
