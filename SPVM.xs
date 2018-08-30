@@ -935,7 +935,6 @@ to_elements(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
@@ -953,7 +952,7 @@ to_elements(...)
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
     int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
     int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
@@ -961,26 +960,24 @@ to_elements(...)
     if (element_type_is_value_type) {
       
       for (int32_t index = 0; index < length; index++) {
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
         
-        SPVM_PACKAGE* package = basic_type->package;
+        SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+        assert(package);
         
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
         assert(first_field);
-        
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-        assert(field_type->dimension == 0);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = package->fields->length;
         for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-          const char* field_name = field->op_name->uv.name;
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          const char* field_name = runtime->symbols[field->name_id];
 
           SV* sv_field_value;
-          switch (field_type->basic_type->id) {
+          switch (first_field->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_VALUE_byte field_value = ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
@@ -1023,7 +1020,7 @@ to_elements(...)
     else if (element_type_is_object_type) {
       for (int32_t index = 0; index < length; index++) {
         // Element type id
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
 
         // Index
         SPVM_OBJECT* value = env->get_object_array_element(env, array, index);
@@ -1037,7 +1034,8 @@ to_elements(...)
           sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
         }
         else {
-          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type->name, 0));
+          const char* basic_type_name = runtime->symbols[basic_type->name_id];
+          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
           sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
         }
         av_push(av_values, SvREFCNT_inc(sv_value));
@@ -1137,7 +1135,6 @@ to_bin(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
@@ -1155,24 +1152,21 @@ to_bin(...)
   
   SV* sv_bin;
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
     int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
     int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
     if (element_type_is_value_type) {
-      SPVM_PACKAGE* package = basic_type->package;
+      SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
       assert(first_field);
-      
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-      assert(field_type->dimension == 0);
 
       int32_t field_length = package->fields->length;
 
-      switch (field_type->basic_type->id) {
+      switch (first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           int8_t* elements = env->get_byte_array_elements(env, array);
           
