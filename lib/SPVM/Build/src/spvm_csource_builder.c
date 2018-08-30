@@ -857,7 +857,9 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
   
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  SPVM_RUNTIME_SUB* runtime_sub = &runtime->subs[sub->id];
+
+  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime_package->sub_symtable, sub_name, strlen(sub_name));
   
   // Subroutine return type
   SPVM_TYPE* sub_return_type = sub->return_type;
