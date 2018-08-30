@@ -1063,17 +1063,16 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       }
       // Value type
       else if (arg_type_is_value_t) {
-        SPVM_PACKAGE* package = arg_type->basic_type->package;
-        assert(package);
+        int32_t runtime_arg_basic_type_id = runtime_arg->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_arg_basic_type = &runtime->basic_types[runtime_arg_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_arg_package = &runtime->packages[runtime_arg_basic_type->package_id];
         
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
-        assert(first_field);
-        
-        SPVM_TYPE* field_type = first_field->type;
-        assert(field_type->dimension == 0);
+        SPVM_RUNTIME_FIELD* runtime_first_field = SPVM_LIST_fetch(runtime_arg_package->fields, 0);
+        assert(runtime_first_field);
 
-        for (int32_t offset = 0; offset < package->fields->length; offset++) {
-          switch (field_type->basic_type->id) {
+        for (int32_t offset = 0; offset < runtime_arg_package->fields->length; offset++) {
+          
+          switch (runtime_first_field->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
               SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_byte", runtime_arg->var_id + offset);
@@ -1138,7 +1137,7 @@ void SPVM_CSOURCE_BUILDER_build_sub_implementation(SPVM_RUNTIME* runtime, SPVM_S
       }
       // Numeric type
       else {
-        switch (arg_type->basic_type->id) {
+        switch (runtime_arg->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_add_operand(runtime, string_buffer, "SPVM_VALUE_byte", runtime_arg->var_id);
