@@ -554,7 +554,6 @@ set_element(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -585,29 +584,26 @@ set_element(...)
   int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
     int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
     int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
     if (element_type_is_value_type) {
       if (sv_derived_from(sv_value, "HASH")) {
-        SPVM_PACKAGE* package = basic_type->package;
+        SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
         assert(package);
         
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
         assert(first_field);
-        
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-        assert(field_type->dimension == 0);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)SvRV(sv_value);
         int32_t field_length = package->fields->length;
         for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-          const char* field_name = field->op_name->uv.name;
+          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          const char* field_name = runtime->symbols[field->name_id];
 
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
@@ -618,7 +614,7 @@ set_element(...)
             sv_field_value = sv_2mortal(newSViv(0));
           }
 
-          switch (field_type->basic_type->id) {
+          switch (first_field->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
               break;
