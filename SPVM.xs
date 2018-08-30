@@ -1625,11 +1625,8 @@ bind_sub(...)
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Set native address to subroutine
-  SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, native_sub_name, strlen(native_sub_name));
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
-  
-  sub->native_address = native_address;
-  runtime->sub_native_addresses[sub->id] = native_address;
+  runtime->sub_native_addresses[runtime_sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -1652,7 +1649,7 @@ build_package_csource(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   int32_t package_id = package->id;
   
   // String buffer for csource
