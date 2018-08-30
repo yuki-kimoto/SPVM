@@ -126,7 +126,7 @@ int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t
     assert(basic_type->name_id >= 0);
     
     const char* basic_type_name = runtime->symbols[basic_type->name_id];
-    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? SPVM_LIST_fetch(runtime->packages, basic_type->package_id) : NULL;
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? &runtime->packages[basic_type->package_id] : NULL;
     
     assert(package);
     
@@ -148,7 +148,7 @@ int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int
   int32_t is_value_t;
   if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = runtime->symbols[basic_type->name_id];;
-    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? SPVM_LIST_fetch(runtime->packages, basic_type->package_id) : NULL;
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? &runtime->packages[basic_type->package_id] : NULL;
     // Package
     if (package) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
@@ -175,6 +175,24 @@ int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, in
   (void)env;
   
   if (dimension > 0 || ((dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_RUNTIME_API_is_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  (void)dimension;
+  
+  return flag & SPVM_TYPE_C_FLAG_REF;
+}
+
+int32_t SPVM_RUNTIME_API_is_numeric_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && (flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -328,7 +346,7 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, i
         if (src_type_dimension == 0) {
           // Source basic type is value type
           SPVM_RUNTIME_BASIC_TYPE* src_basic_type = &runtime->basic_types[src_basic_type_id];
-          SPVM_RUNTIME_PACKAGE* src_base_package = SPVM_LIST_fetch(runtime->packages, src_basic_type->package_id);
+          SPVM_RUNTIME_PACKAGE* src_base_package = &runtime->packages[src_basic_type->package_id];
           if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
             check_cast = 0;
           }
@@ -1030,7 +1048,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(runtime->packages, basic_type->package_id);
+    package = &runtime->packages[basic_type->package_id];
   }
   if (!package) {
     return NULL;
@@ -1071,7 +1089,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(runtime->packages, basic_type->package_id);
+    package = &runtime->packages[basic_type->package_id];
   }
   if (!package) {
     return NULL;
@@ -1229,7 +1247,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       package = NULL;
     }
     else {
-      package = SPVM_LIST_fetch(runtime->packages, basic_type->package_id);
+      package = &runtime->packages[basic_type->package_id];
     }
     _Bool is_pointer = 0;
     if (package) {

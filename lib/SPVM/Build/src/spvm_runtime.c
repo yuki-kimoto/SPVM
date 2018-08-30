@@ -23,7 +23,7 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
-#include "spvm_runtime_arg.h"
+#include "spvm_runtime_my.h"
 #include "spvm_runtime_info_type.h"
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
@@ -117,14 +117,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, runtime_sub->return_basic_type_id, runtime_sub->return_type_dimension, runtime_sub->return_type_flag);
 
   // Runtime package
-  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_LIST_fetch(runtime->packages, runtime_sub->package_id);
+  SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[runtime_sub->package_id];
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
   register int32_t opcode_rel_index = 0;
   
   // Operation code base
-  int32_t sub_opcode_base = runtime_sub->opcode_base;
+  int32_t sub_opcodes_base = runtime_sub->opcodes_base;
 
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
@@ -157,7 +157,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // If arg is object, increment reference count
   {
     for (int32_t arg_index = runtime_sub->arg_ids_base; arg_index < runtime_sub->arg_ids_base + runtime_sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_ARG* arg = &runtime->args[arg_index];
+      SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
       int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
       int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
       if (arg_type_is_object_type && !arg_type_is_value_type) {
@@ -177,7 +177,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t mortal_stack_top = 0;
   
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[sub_opcode_base + opcode_rel_index]);
+    SPVM_OPCODE* opcode = &(opcodes[sub_opcodes_base + opcode_rel_index]);
     
     switch (opcode->id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:
@@ -2061,7 +2061,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
           const char* package_name = runtime->symbols[sub_runtime_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
           
@@ -2080,7 +2080,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = SPVM_LIST_fetch(runtime->packages, sub->package_id);
+          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
           const char* package_name = runtime->symbols[sub_runtime_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
 

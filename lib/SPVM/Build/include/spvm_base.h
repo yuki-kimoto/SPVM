@@ -28,9 +28,9 @@ typedef struct SPVM_runtime_info_type SPVM_RUNTIME_INFO_TYPE;
 struct SPVM_runtime_builder;
 typedef struct SPVM_runtime_builder SPVM_RUNTIME_BUILDER;
 
-// spvm_runtime_arg.h
-struct SPVM_runtime_arg;
-typedef struct SPVM_runtime_arg SPVM_RUNTIME_ARG;
+// spvm_runtime_my.h
+struct SPVM_runtime_my;
+typedef struct SPVM_runtime_my SPVM_RUNTIME_MY;
 
 // spvm_runtime_package.h
 struct SPVM_runtime_package;

@@ -34,7 +34,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
-#include "spvm_runtime_arg.h"
+#include "spvm_runtime_my.h"
 #include "spvm_runtime_info_type.h"
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
@@ -60,7 +60,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->fields_length = portable->fields_length;
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;
   runtime->package_vars_length = portable->package_vars_length;
-  runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
+  runtime->args = (SPVM_RUNTIME_MY*)portable->args;
+  runtime->mys = (SPVM_RUNTIME_MY*)portable->mys;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;
@@ -114,24 +115,23 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   }
 
   // build packages
-  runtime->packages = SPVM_LIST_new(0);
+  runtime->packages_length = portable->packages_length;
+  runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
   for (size_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
     int32_t* portable_package = (int32_t*)&portable->packages[i];
     
-    SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_RUNTIME_PACKAGE_new();
+    SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[i / portable->packages_unit];
     runtime_package->id = portable_package[0];
     runtime_package->name_id = portable_package[1];
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
-    
-    SPVM_LIST_push(runtime->packages, runtime_package);
   }
 
   // build package symtable
   runtime->package_symtable = SPVM_HASH_new(0);
-  for (int32_t package_id = 0; package_id < runtime->packages->length; package_id++) {
+  for (int32_t package_id = 0; package_id < runtime->packages_length; package_id++) {
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     const char* package_name = runtime->symbols[package->name_id];
     SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
     
@@ -157,7 +157,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     int32_t package_id = field->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->fields, field);
     const char* field_name = runtime->symbols[field->name_id];
@@ -178,7 +178,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     int32_t package_id = package_var->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->package_vars, package_var);
     const char* package_var_name = runtime->symbols[package_var->name_id];
@@ -195,7 +195,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     
     int32_t package_id = sub->package_id;
     
-    SPVM_RUNTIME_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->subs, sub);
     const char* sub_name = runtime->symbols[sub->name_id];
