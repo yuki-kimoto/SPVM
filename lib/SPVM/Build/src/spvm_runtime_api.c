@@ -206,6 +206,39 @@ int32_t SPVM_RUNTIME_API_is_numeric_ref_type(SPVM_ENV* env, int32_t basic_type_i
   }
 }
 
+int32_t SPVM_RUNTIME_API_is_value_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime();
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  
+  int32_t is_value_ref_type;
+  if (dimension == 0 && (flag & SPVM_TYPE_C_FLAG_REF)) {
+    const char* basic_type_name = runtime->symbols[basic_type->name_id];
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));
+    // Package
+    if (package) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+        is_value_ref_type = 1;
+      }
+      else {
+        is_value_ref_type = 0;
+      }
+    }
+    // Numeric type
+    else {
+      is_value_ref_type = 0;
+    }
+  }
+  // Array
+  else {
+    is_value_ref_type = 0;
+  }
+  
+  return is_value_ref_type;
+}
+
 SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime() {
   return (SPVM_ENV*)SPVM_ENV_RUNTIME;
 }

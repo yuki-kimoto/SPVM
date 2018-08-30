@@ -381,7 +381,7 @@ set_bin(...)
   int32_t length = env->get_array_length(env, array);
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
@@ -588,7 +588,7 @@ set_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
   if (is_array_type) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
@@ -792,7 +792,7 @@ get_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
   SV* sv_value;
   _Bool is_object = 0;
@@ -870,7 +870,7 @@ get_element(...)
         env->inc_ref_count(env, value);
       }
       
-      int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_type_dimension, 0);
+      int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
       if (element_type_is_array_type) {
         sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
       }
@@ -961,7 +961,7 @@ to_elements(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
@@ -1043,7 +1043,7 @@ to_elements(...)
           env->inc_ref_count(env, value);
         }
         
-        int32_t element_type_is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, element_type_dimension, 0);
+        int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
         SV* sv_value;
         if (element_type_is_array_type) {
           sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
@@ -1163,7 +1163,7 @@ to_bin(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, 0);
+  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
   
   SV* sv_bin;
   if (is_array_type) {
@@ -1788,14 +1788,14 @@ call_sub(...)
       
       _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
       _Bool arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-      _Bool arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
       
       if (arg_type_is_ref_type) {
         args_contain_ref = 1;
-        _Bool arg_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {
@@ -2191,7 +2191,7 @@ call_sub(...)
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
-      _Bool arg_type_is_ref_type = SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
@@ -2199,7 +2199,7 @@ call_sub(...)
       if (arg_type_is_ref_type) {
         int32_t ref_stack_id = ref_stack_ids[arg_index];
         
-        _Bool arg_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         _Bool arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         if (arg_type_is_numeric_ref_type) {

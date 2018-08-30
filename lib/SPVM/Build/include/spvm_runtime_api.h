@@ -9,6 +9,7 @@ int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, in
 int32_t SPVM_RUNTIME_API_is_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_RUNTIME_API_is_numeric_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_RUNTIME_API_is_array_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_RUNTIME_API_is_value_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 

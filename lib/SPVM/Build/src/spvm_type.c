@@ -460,30 +460,30 @@ _Bool SPVM_TYPE_is_value_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
-  int32_t is_value_t;
+  int32_t is_value_ref_type;
   if (dimension == 0 && (flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (package) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-        is_value_t = 1;
+        is_value_ref_type = 1;
       }
       else {
-        is_value_t = 0;
+        is_value_ref_type = 0;
       }
     }
     // Numeric type
     else {
-      is_value_t = 0;
+      is_value_ref_type = 0;
     }
   }
   // Array
   else {
-    is_value_t = 0;
+    is_value_ref_type = 0;
   }
   
-  return is_value_t;
+  return is_value_ref_type;
 }
 
 _Bool SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
