@@ -27,12 +27,6 @@
 #include "spvm_op_checker.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
-#include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_package.h"
-#include "spvm_runtime_field.h"
-#include "spvm_runtime_package_var.h"
-#include "spvm_runtime_sub.h"
-#include "spvm_runtime_arg.h"
 #include "spvm_my.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {

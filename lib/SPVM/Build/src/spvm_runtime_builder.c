@@ -34,7 +34,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
-#include "spvm_runtime_arg.h"
+#include "spvm_runtime_my.h"
 #include "spvm_runtime_info_type.h"
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
@@ -60,7 +60,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   runtime->fields_length = portable->fields_length;
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;
   runtime->package_vars_length = portable->package_vars_length;
-  runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
+  runtime->args = (SPVM_RUNTIME_MY*)portable->args;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
   runtime->info_field_ids = portable->info_field_ids;
   runtime->info_package_var_ids = portable->info_package_var_ids;
