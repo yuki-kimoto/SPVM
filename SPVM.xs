@@ -1917,9 +1917,6 @@ call_sub(...)
           SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
           assert(first_field);
           
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-          assert(field_type->dimension == 0);
-          
           for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = runtime->symbols[field->name_id];
