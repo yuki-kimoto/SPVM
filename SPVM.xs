@@ -2046,22 +2046,13 @@ call_sub(...)
     SPVM_RUNTIME_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
     assert(sub_return_first_field);
     
-    SPVM_PACKAGE* package = return_type->basic_type->package;
-    assert(package);
-    
-    SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
-    assert(first_field);
-    
-    SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-    assert(field_type->dimension == 0);
-    
     HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-    for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-      const char* field_name = field->op_name->uv.name;
+    for (int32_t field_index = 0; field_index < sub_return_package->fields->length; field_index++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
+      const char* field_name = runtime->symbols[field->name_id];
       
       SV* sv_field_value = NULL;
-      switch (field_type->basic_type->id) {
+      switch (sub_return_first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
           break;
