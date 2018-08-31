@@ -1750,7 +1750,7 @@ call_sub(...)
   _Bool args_contain_ref = 0;
   {
     // If class method, first argument is ignored
-    if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
+    if (runtime_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
       arg_start++;
     }
     
@@ -2023,14 +2023,13 @@ call_sub(...)
   }
   
   // Return type id
-  SPVM_TYPE* return_type = sub->return_type;
   int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
   int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
   int32_t sub_return_type_flag = runtime_sub->return_type_flag;
   int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
 
-  int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
-  int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
+  int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
+  int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
   
   // Return count
   SV* sv_return_value = NULL;
@@ -2094,7 +2093,7 @@ call_sub(...)
         env->inc_ref_count(env, return_value);
         
         if (sub_return_type_dimension == 0) {
-          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
+          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(sub_return_basic_type_id, sub_return_type_dimension);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
         }

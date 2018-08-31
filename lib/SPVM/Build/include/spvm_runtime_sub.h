@@ -41,6 +41,7 @@ struct SPVM_runtime_sub {
   int32_t opcodes_length;
   int32_t my_ids_base;
   int32_t my_ids_length;
+  int32_t call_type_id;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

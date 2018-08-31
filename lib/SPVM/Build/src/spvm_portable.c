@@ -59,7 +59,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_types_capacity = 8;
   portable->info_types_unit = 3;
   portable->subs_capacity = 8;
-  portable->subs_unit = 36;
+  portable->subs_unit = 37;
   portable->packages_capacity = 8;
   portable->packages_unit = 4;
   
@@ -129,6 +129,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[33] = sub->opcodes_length;
   new_portable_sub[34] = portable->mys_length;
   new_portable_sub[35] = sub->mys->length;
+  new_portable_sub[36] = sub->call_type_id;
   
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);

@@ -34,7 +34,7 @@ struct SPVM_sub {
   int32_t rel_id;
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
-  int8_t call_type_id;
+  int32_t call_type_id;
   
   SPVM_LIST* info_package_var_ids;
   SPVM_LIST* info_sub_ids;
