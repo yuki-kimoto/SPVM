@@ -1831,18 +1831,15 @@ call_sub(...)
           if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
             
-            SPVM_PACKAGE* package = arg_type->basic_type->package;
+            SPVM_RUNTIME_PACKAGE* package = &runtime->packages[arg_basic_type->package_id];
             assert(package);
             
-            SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
             assert(first_field);
             
-            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-            assert(field_type->dimension == 0);
-            
             for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-              SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-              const char* field_name = field->op_name->uv.name;
+              SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+              const char* field_name = runtime->symbols[field->name_id];
 
               SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
               SV* sv_field_value;
@@ -1852,7 +1849,7 @@ call_sub(...)
               else {
                 sv_field_value = sv_2mortal(newSViv(0));
               }
-              switch (field_type->basic_type->id) {
+              switch (first_field->basic_type_id) {
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   ref_stack[ref_stack_top + field_index].bval = value;
