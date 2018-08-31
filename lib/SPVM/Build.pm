@@ -11,6 +11,7 @@ use SPVM::Build::CBuilder::Precompile;
 use SPVM::Build::Util;
 use SPVM::Build::Config;
 use SPVM::Build::Info;
+use Scalar::Util 'weaken';
 
 use File::Path 'rmtree';
 use File::Spec;
@@ -31,16 +32,22 @@ sub new {
   $self->{compiler} ||= $self->create_compiler;
   
   $self->{info} ||= SPVM::Build::Info->new;
+  $self->{info}{build} = $self;
+  weaken($self->{info}{build});
   
   $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
+  $self->{cbuilder_native}{build} = $self;
+  weaken $self->{cbuilder_native}{build};
   
   $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
+  $self->{cbuilder_precompile}{build} = $self;
+  weaken $self->{cbuilder_precompile}{build};
   
   $self->{config} ||= SPVM::Build::Util::new_default_build_config;
   
