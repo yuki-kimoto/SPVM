@@ -1773,17 +1773,18 @@ call_sub(...)
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
-      int32_t arg_basic_type_id = arg_type->basic_type->id;
-      int32_t arg_type_dimension = arg_type->dimension;
+      int32_t arg_basic_type_id = runtime_arg->basic_type_id;
+      int32_t arg_type_dimension = runtime_arg->type_dimension;
+      int32_t arg_type_flag = runtime_arg->type_flag;
       
       if (arg_type_is_ref_type) {
         args_contain_ref = 1;
-        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_basic_type_id, arg_type_dimension, arg_type_flag);
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);
-          switch (arg_type->basic_type->id) {
+          switch (arg_basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               int8_t value = (int8_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].bval = value;
