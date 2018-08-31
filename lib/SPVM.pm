@@ -59,127 +59,6 @@ CHECK {
   }
 }
 
-sub new_byte_array {
-  my $elements = shift;
-  
-  return undef unless defined $elements;
-  
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_byte_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_byte_array_string {
-  my $string = shift;
-  
-  # Encode internal string to UTF-8 string
-  my $bin = Encode::encode('UTF-8', $string);
-  
-  my $length = length $bin;
-  
-  my $array = SPVM::new_byte_array_len($length);
-  $array->set_bin($bin);
-  
-  return $array;
-}
-
-sub new_short_array {
-  my $elements = shift;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_short_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_int_array {
-  my $elements = shift;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_int_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_long_array {
-  my $elements = shift;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_long_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_float_array {
-  my $elements = shift;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_float_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_double_array {
-  my $elements = shift;
-  
-  return undef unless defined $elements;
-  
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_double_array_len($length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
 
 sub new_object_array {
   my ($package_name, $elements) = @_;
@@ -237,6 +116,14 @@ sub new_value_t_array_len { SPVM::PerlAPI::new_value_t_array_len($SPVM::ENV, @_)
 sub set_exception_undef { SPVM::PerlAPI::set_exception_undef($SPVM::ENV, @_) }
 sub get_memory_blocks_count { SPVM::PerlAPI::get_memory_blocks_count($SPVM::ENV, @_) }
 sub call_sub { SPVM::PerlAPI::call_sub($SPVM::ENV, @_) }
+
+sub new_byte_array { SPVM::PerlAPI::new_byte_array($SPVM::ENV, @_) }
+sub new_byte_array_string { SPVM::PerlAPI::new_byte_array_string($SPVM::ENV, @_) }
+sub new_short_array { SPVM::PerlAPI::new_short_array($SPVM::ENV, @_) }
+sub new_int_array { SPVM::PerlAPI::new_int_array($SPVM::ENV, @_) }
+sub new_long_array { SPVM::PerlAPI::new_long_array($SPVM::ENV, @_) }
+sub new_float_array { SPVM::PerlAPI::new_float_array($SPVM::ENV, @_) }
+sub new_double_array { SPVM::PerlAPI::new_double_array($SPVM::ENV, @_) }
 
 1;
 
