@@ -1906,16 +1906,10 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(sv_value);
 
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-          assert(package);
+          assert(arg_package);
 
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          
-          SPVM_PACKAGE* package = arg_type->basic_type->package;
-          assert(package);
-          
-          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
-          assert(first_field);
           
           for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
@@ -1964,7 +1958,7 @@ call_sub(...)
                 assert(0);
             }
           }
-          arg_var_id += package->fields->length;
+          arg_var_id += arg_package->fields->length;
         }
         else {
           croak("%dth argument must be hash reference", arg_index + 1);
