@@ -1776,6 +1776,8 @@ call_sub(...)
       int32_t arg_basic_type_id = runtime_arg->basic_type_id;
       int32_t arg_type_dimension = runtime_arg->type_dimension;
       int32_t arg_type_flag = runtime_arg->type_flag;
+
+      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[runtime_arg->basic_type_id];
       
       if (arg_type_is_ref_type) {
         args_contain_ref = 1;
