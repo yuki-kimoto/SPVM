@@ -59,50 +59,9 @@ CHECK {
   }
 }
 
-
-sub new_object_array {
-  my ($package_name, $elements) = @_;
-  
-  return undef unless defined $elements;
-  
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_object_array_len($package_name, $length);
-  
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_value_t_array {
-  my ($package_name, $elements) = @_;
-  
-  return undef unless defined $elements;
-  
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::new_value_t_array_len($package_name, $length);
-
-  $array->set_elements($elements);
-  
-  return $array;
-}
-
-sub new_object {
-  my $package_name = shift;
-  
-  my $object = SPVM::Data::Package->new($package_name);
-  
-  return $object;
-}
+sub new_object_array { SPVM::PerlAPI::new_object_array($SPVM::ENV, @_) }
+sub new_value_t_array { SPVM::PerlAPI::new_value_t_array($SPVM::ENV, @_) }
+sub new_object { SPVM::PerlAPI::new_object($SPVM::ENV, @_) }
 
 sub new_byte_array_len { SPVM::PerlAPI::new_byte_array_len($SPVM::ENV, @_) }
 sub new_short_array_len { SPVM::PerlAPI::new_short_array_len($SPVM::ENV, @_) }
