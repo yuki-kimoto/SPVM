@@ -1410,18 +1410,17 @@ get_package_load_path(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+
   SV* sv_package_name = ST(1);
   
   const char* package_name = SvPV_nolen(sv_package_name);
   
   // Subroutine information
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));;
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));;
   
-  const char* package_load_path = package->load_path;
+  const char* package_load_path = runtime->symbols[package->load_path_id];
   
   SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, strlen(package_load_path)));
   
