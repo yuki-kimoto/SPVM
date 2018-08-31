@@ -1547,8 +1547,6 @@ build_runtime(...)
   
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
-
-  runtime->compiler = compiler;
   
   // Set ENV
   SPVM_ENV* env = runtime->env;
