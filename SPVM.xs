@@ -1943,15 +1943,17 @@ new_value_t_array_len(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM		PACKAGE = SPVM
-
 SV*
 set_exception_undef(...)
   PPCODE:
 {
   (void)RETVAL;
+
+  SV* sv_env = ST(0);
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
   env->set_exception(env, NULL);
   
   XSRETURN(0);
@@ -1963,7 +1965,11 @@ get_memory_blocks_count(...)
 {
   (void)RETVAL;
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  SV* sv_env = ST(0);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
   int32_t memory_blocks_count = env->get_memory_blocks_count(env);
   SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
   
@@ -1977,12 +1983,16 @@ call_sub(...)
 {
   (void)RETVAL;
   
-  SV* sv_package_name = ST(0);
-  SV* sv_sub_name = ST(1);
+  SV* sv_env = ST(0);
+  SV* sv_package_name = ST(1);
+  SV* sv_sub_name = ST(2);
 
-  int32_t arg_start = 2;
+  int32_t arg_start = 3;
 
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   const char* package_name = SvPV_nolen(sv_package_name);
@@ -2554,3 +2564,4 @@ call_sub(...)
   }
 }
 
+MODULE = SPVM		PACKAGE = SPVM
