@@ -1770,9 +1770,6 @@ call_sub(...)
 
       SV* sv_value = ST(arg_index + arg_start);
       
-      SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-      SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
-      
       int32_t arg_basic_type_id = runtime_arg->basic_type_id;
       int32_t arg_type_dimension = runtime_arg->type_dimension;
       int32_t arg_type_flag = runtime_arg->type_flag;
@@ -1972,7 +1969,7 @@ call_sub(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            _Bool check_cast = env->check_cast(env, arg_type->basic_type->id, arg_type->dimension, object);
+            _Bool check_cast = env->check_cast(env, arg_basic_type_id, arg_type_dimension, object);
             if (!check_cast) {
               croak("Can't cast %dth argument", arg_index);
             }
