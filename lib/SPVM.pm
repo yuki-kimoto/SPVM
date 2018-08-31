@@ -11,6 +11,7 @@ use SPVM::Data;
 use SPVM::Data::Array;
 
 use SPVM::Build;
+use SPVM::PerlAPI;
 
 use Encode 'encode';
 
@@ -223,6 +224,8 @@ sub new_object {
   
   return $object;
 }
+
+sub new_value_t_array_len { SPVM::PerlAPI::new_value_t_array_len($SPVM::ENV, @_) }
 
 1;
 
