@@ -30,17 +30,15 @@ sub new {
   
   $self->{compiler} ||= $self->create_compiler;
   
-  $self->{info} ||= SPVM::Build::Info->new(compiler => $self->{compiler});
+  $self->{info} ||= SPVM::Build::Info->new;
   
   $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
-    compiler => $self->{compiler},
     info => $self->{info},
   );
   
   $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
-    compiler => $self->{compiler},
     info => $self->{info},
   );
   
