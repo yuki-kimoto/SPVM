@@ -1826,7 +1826,7 @@ call_sub(...)
         }
         else if (arg_type_is_value_ref_type) {
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-          assert(package);
+          assert(arg_package);
             
           if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
@@ -2186,8 +2186,8 @@ call_sub(...)
       if (arg_type_is_ref_type) {
         int32_t ref_stack_id = ref_stack_ids[arg_index];
         
-        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        _Bool arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+        _Bool arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);
@@ -2225,6 +2225,12 @@ call_sub(...)
           int32_t ref_stack_id = ref_stack_ids[arg_index];
           
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
           
           SPVM_PACKAGE* package = arg_type->basic_type->package;
           assert(package);
