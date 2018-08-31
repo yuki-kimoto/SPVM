@@ -1650,8 +1650,16 @@ bind_sub(...)
   
   const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
-
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));
