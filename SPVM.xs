@@ -1751,11 +1751,6 @@ call_sub(...)
     croak("Subroutine not found %s %s", package_name, runtime_sub_signature);
   }
 
-  int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
-  int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
-  int32_t sub_return_type_flag = runtime_sub->return_type_flag;
-  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-  
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
   
   int32_t ref_stack_top = 0;
@@ -2045,17 +2040,18 @@ call_sub(...)
   
   // Return type id
   SPVM_TYPE* return_type = sub->return_type;
+  int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
+  int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
+  int32_t sub_return_type_flag = runtime_sub->return_type_flag;
+  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
 
-  int32_t return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
-  int32_t return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
-  
-  int32_t return_basic_type_id = return_type->basic_type->id;
-  int32_t return_type_dimension = return_type->dimension;
+  int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
+  int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, return_type->basic_type->id, return_type->dimension, return_type->flag);
   
   // Return count
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
-  if (return_type_is_value_type) {
+  if (sub_return_type_is_value_type) {
     excetpion_flag = env->call_sub(env, sub_id, stack);
     
     SPVM_PACKAGE* package = return_type->basic_type->package;
@@ -2106,7 +2102,7 @@ call_sub(...)
       sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
     }
   }
-  else if (return_type_is_object_type) {
+  else if (sub_return_type_is_object_type) {
     excetpion_flag = env->call_sub(env, sub_id, stack);
     if (!excetpion_flag) {
       void* return_value = stack[0].oval;
@@ -2114,12 +2110,12 @@ call_sub(...)
       if (return_value != NULL) {
         env->inc_ref_count(env, return_value);
         
-        if (return_type_dimension == 0) {
+        if (sub_return_type_dimension == 0) {
           SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(return_type->basic_type->id, return_type->dimension);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
         }
-        else if (return_type_dimension > 0) {
+        else if (sub_return_type_dimension > 0) {
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
         }
       }
@@ -2129,7 +2125,7 @@ call_sub(...)
     }
   }
   else {
-    switch (return_basic_type_id) {
+    switch (sub_return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
         excetpion_flag = env->call_sub(env, sub_id, stack);
         break;
@@ -2300,7 +2296,7 @@ call_sub(...)
   // Success
   else {
     int32_t return_count;
-    if (return_type_dimension == 0 && return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
+    if (sub_return_type_dimension == 0 && sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
       return_count = 0;
     }
     else {
@@ -2474,7 +2470,6 @@ new_object_array_len(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
 
   int32_t length = (int32_t)SvIV(sv_length);
 
@@ -2510,7 +2505,6 @@ new_multi_array_len(...)
   // Environment
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   int32_t length = (int32_t)SvIV(sv_length);
 
