@@ -1664,6 +1664,245 @@ bind_sub(...)
 MODULE = SPVM::PerlAPI		PACKAGE = SPVM::PerlAPI
 
 SV*
+new_byte_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_byte_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_short_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_short_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_int_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_int_array);
+  XSRETURN(1);
+}
+
+SV*
+new_long_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_long_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_long_array);
+  XSRETURN(1);
+}
+
+SV*
+new_float_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_float_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_float_array);
+  XSRETURN(1);
+}
+
+SV*
+new_double_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array =  env->new_double_array_raw(env, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_double_array);
+  XSRETURN(1);
+}
+
+SV*
+new_object_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_length = ST(2);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+
+  int32_t length = (int32_t)SvIV(sv_length);
+
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_object_array_raw(env, basic_type->id, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_multi_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_element_type_dimension = ST(2);
+  SV* sv_length = ST(3);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+
+  int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
+
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_multi_array_raw(env, basic_type->id, element_type_dimension, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 new_value_t_array_len(...)
   PPCODE:
 {
@@ -2315,223 +2554,3 @@ call_sub(...)
   }
 }
 
-SV*
-new_byte_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_byte_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_byte_array);
-  XSRETURN(1);
-}
-
-SV*
-new_short_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_short_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_short_array);
-  XSRETURN(1);
-}
-
-SV*
-new_int_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_int_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_int_array);
-  XSRETURN(1);
-}
-
-SV*
-new_long_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_long_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_long_array);
-  XSRETURN(1);
-}
-
-SV*
-new_float_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_float_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_float_array);
-  XSRETURN(1);
-}
-
-SV*
-new_double_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_length = ST(0);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  
-  // New array
-  void* array =  env->new_double_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_double_array);
-  XSRETURN(1);
-}
-
-SV*
-new_object_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_basic_type_name = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-
-  int32_t length = (int32_t)SvIV(sv_length);
-
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-  assert(basic_type);
-  
-  // New array
-  void* array = env->new_object_array_raw(env, basic_type->id, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_multi_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_basic_type_name = ST(0);
-  SV* sv_element_type_dimension = ST(1);
-  SV* sv_length = ST(2);
-  
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-
-  int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
-
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-  assert(basic_type);
-  
-  // New array
-  void* array = env->new_multi_array_raw(env, basic_type->id, element_type_dimension, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}

@@ -225,6 +225,14 @@ sub new_object {
   return $object;
 }
 
+sub new_byte_array_len { SPVM::PerlAPI::new_byte_array_len($SPVM::ENV, @_) }
+sub new_short_array_len { SPVM::PerlAPI::new_short_array_len($SPVM::ENV, @_) }
+sub new_int_array_len { SPVM::PerlAPI::new_int_array_len($SPVM::ENV, @_) }
+sub new_long_array_len { SPVM::PerlAPI::new_long_array_len($SPVM::ENV, @_) }
+sub new_float_array_len { SPVM::PerlAPI::new_float_array_len($SPVM::ENV, @_) }
+sub new_double_array_len { SPVM::PerlAPI::new_double_array_len($SPVM::ENV, @_) }
+sub new_object_array_len { SPVM::PerlAPI::new_object_array_len($SPVM::ENV, @_) }
+sub new_multi_array_len { SPVM::PerlAPI::new_multi_array_len($SPVM::ENV, @_) }
 sub new_value_t_array_len { SPVM::PerlAPI::new_value_t_array_len($SPVM::ENV, @_) }
 
 1;
