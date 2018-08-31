@@ -2038,6 +2038,14 @@ call_sub(...)
   if (sub_return_type_is_value_type) {
     excetpion_flag = env->call_sub(env, sub_id, stack);
     
+    SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub_return_basic_type_id];
+
+    SPVM_RUNTIME_PACKAGE* sub_return_package = &runtime->packages[sub_return_basic_type->package_id];
+    assert(sub_return_package);
+    
+    SPVM_RUNTIME_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
+    assert(sub_return_first_field);
+    
     SPVM_PACKAGE* package = return_type->basic_type->package;
     assert(package);
     
