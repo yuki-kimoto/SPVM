@@ -1828,17 +1828,17 @@ call_sub(...)
           arg_var_id++;
         }
         else if (arg_type_is_value_ref_type) {
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(package);
+            
           if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
             
-            SPVM_RUNTIME_PACKAGE* package = &runtime->packages[arg_basic_type->package_id];
-            assert(package);
-            
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
-              SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+              SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = runtime->symbols[field->name_id];
 
               SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -1893,7 +1893,7 @@ call_sub(...)
 
           ref_stack_ids[arg_index] = ref_stack_top;
 
-          int32_t fields_length = arg_type->basic_type->package->fields->length;
+          int32_t fields_length = arg_package->fields->length;
           ref_stack_top += fields_length;
           arg_var_id++;
         }
