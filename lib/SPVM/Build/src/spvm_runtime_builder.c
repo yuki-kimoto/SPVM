@@ -125,6 +125,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
     runtime_package->name_id = portable_package[1];
     runtime_package->destructor_sub_id = portable_package[2];
     runtime_package->category = portable_package[3];
+    runtime_package->load_path_id = portable_package[4];
   }
 
   // build package symtable

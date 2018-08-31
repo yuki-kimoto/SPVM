@@ -61,7 +61,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->subs_capacity = 8;
   portable->subs_unit = 37;
   portable->packages_capacity = 8;
-  portable->packages_unit = 4;
+  portable->packages_unit = 5;
   
   portable->info_switch_info_ints_capacity = 8;
 
@@ -88,9 +88,9 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
 
   new_portable_sub[0] = sub->id;
   new_portable_sub[1] = sub->flag;
-  new_portable_sub[2] = SPVM_PORTABLE_push_string(portable, sub->name);
-  new_portable_sub[3] = SPVM_PORTABLE_push_string(portable, sub->abs_name);
-  new_portable_sub[4] = SPVM_PORTABLE_push_string(portable, sub->signature);
+  new_portable_sub[2] = SPVM_PORTABLE_push_symbol(portable, sub->name);
+  new_portable_sub[3] = SPVM_PORTABLE_push_symbol(portable, sub->abs_name);
+  new_portable_sub[4] = SPVM_PORTABLE_push_symbol(portable, sub->signature);
   if (sub->package) {
     new_portable_sub[5] = sub->package->id;
   }
@@ -98,7 +98,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     new_portable_sub[5] = -1;
   }
 
-  new_portable_sub[6] = SPVM_PORTABLE_push_string(portable, sub->file);
+  new_portable_sub[6] = SPVM_PORTABLE_push_symbol(portable, sub->file);
   new_portable_sub[7] = sub->line;
   new_portable_sub[8] = sub->args_alloc_length;
   new_portable_sub[9] = sub->vars_alloc_length;
@@ -275,7 +275,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   return portable;
 }
 
-int32_t SPVM_PORTABLE_push_string(SPVM_PORTABLE* portable, const char* string) {
+int32_t SPVM_PORTABLE_push_symbol(SPVM_PORTABLE* portable, const char* string) {
   
   int32_t id = portable->symbols_length;
   if (portable->symbols_length >= portable->symbols_capacity) {
@@ -515,7 +515,7 @@ void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* bas
   }
   
   int32_t* new_portable_basic_type = (int32_t*)&portable->basic_types[portable->basic_types_unit * portable->basic_types_length];
-  new_portable_basic_type[0] = SPVM_PORTABLE_push_string(portable, basic_type->name);
+  new_portable_basic_type[0] = SPVM_PORTABLE_push_symbol(portable, basic_type->name);
   new_portable_basic_type[1] = basic_type->id;
   new_portable_basic_type[2] = basic_type->category;
   if (basic_type->package) {
@@ -543,9 +543,9 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   new_portable_field[0] = field->id;
   new_portable_field[1] = field->index;
   new_portable_field[2] = field->flag;
-  new_portable_field[3] = SPVM_PORTABLE_push_string(portable, field->name);
-  new_portable_field[4] = SPVM_PORTABLE_push_string(portable, field->abs_name);
-  new_portable_field[5] = SPVM_PORTABLE_push_string(portable, field->signature);
+  new_portable_field[3] = SPVM_PORTABLE_push_symbol(portable, field->name);
+  new_portable_field[4] = SPVM_PORTABLE_push_symbol(portable, field->abs_name);
+  new_portable_field[5] = SPVM_PORTABLE_push_symbol(portable, field->signature);
   if (field->type->basic_type) {
     new_portable_field[6] = field->type->basic_type->id;
   }
@@ -578,9 +578,9 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
   int32_t* new_portable_package_var = (int32_t*)&portable->package_vars[portable->package_vars_unit * portable->package_vars_length];
 
   new_portable_package_var[0] = package_var->id;
-  new_portable_package_var[1] = SPVM_PORTABLE_push_string(portable, package_var->name);
-  new_portable_package_var[2] = SPVM_PORTABLE_push_string(portable, package_var->abs_name);
-  new_portable_package_var[3] = SPVM_PORTABLE_push_string(portable, package_var->signature);
+  new_portable_package_var[1] = SPVM_PORTABLE_push_symbol(portable, package_var->name);
+  new_portable_package_var[2] = SPVM_PORTABLE_push_symbol(portable, package_var->abs_name);
+  new_portable_package_var[3] = SPVM_PORTABLE_push_symbol(portable, package_var->signature);
   if (package_var->type->basic_type) {
     new_portable_package_var[4] = package_var->type->basic_type->id;
   }
@@ -609,7 +609,7 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   int32_t* new_portable_package = (int32_t*)&portable->packages[portable->packages_unit * portable->packages_length];
 
   new_portable_package[0] = package->id;
-  new_portable_package[1] = SPVM_PORTABLE_push_string(portable, package->name);
+  new_portable_package[1] = SPVM_PORTABLE_push_symbol(portable, package->name);
   if (package->sub_destructor) {
     new_portable_package[2] = package->sub_destructor->id;
   }
@@ -617,6 +617,8 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
     new_portable_package[2] = -1;
   }
   new_portable_package[3] = package->category;
+  new_portable_package[4] = SPVM_PORTABLE_push_symbol(portable, package->load_path);
+
   
   portable->packages_length++;
 }
