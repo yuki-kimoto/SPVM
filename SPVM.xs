@@ -2165,14 +2165,23 @@ call_sub(...)
     int32_t arg_var_id = 0;
     for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
+
+
+
+      SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
+
+      _Bool arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
       
+      int32_t arg_basic_type_id = runtime_arg->basic_type_id;
+      int32_t arg_type_dimension = runtime_arg->type_dimension;
+      int32_t arg_type_flag = runtime_arg->type_flag;
+
+      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[runtime_arg->basic_type_id];
+
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
-      
-      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-
-      int32_t arg_basic_type_id = arg_type->basic_type->id;
-      int32_t arg_type_dimension = arg_type->dimension;
       
       if (arg_type_is_ref_type) {
         int32_t ref_stack_id = ref_stack_ids[arg_index];
