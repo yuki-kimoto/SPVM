@@ -1904,6 +1904,12 @@ call_sub(...)
       else if (arg_type_is_value_type) {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
+
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(package);
+
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
           
           SPVM_PACKAGE* package = arg_type->basic_type->package;
           assert(package);
