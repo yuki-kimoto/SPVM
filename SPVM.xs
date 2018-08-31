@@ -1271,8 +1271,15 @@ get_subs(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SV* sv_package_name = ST(1);
@@ -1339,8 +1346,15 @@ get_sub_names(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SV* sv_package_name = ST(1);
@@ -1377,7 +1391,15 @@ get_package_names(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
@@ -1410,7 +1432,15 @@ get_package_load_path(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SV* sv_package_name = ST(1);
@@ -1590,7 +1620,15 @@ bind_sub(...)
   SV* sv_native_sub_name = ST(1);
   SV* sv_native_address = ST(2);
 
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   // Native subroutine name
@@ -1617,7 +1655,15 @@ build_package_csource(...)
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
   
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
