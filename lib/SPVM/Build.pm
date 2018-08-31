@@ -57,6 +57,8 @@ sub build_spvm {
     # Build run-time
     $self->build_runtime;
     
+    $SPVM::ENV = $self->{env};
+    
     # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
     $self->build_precompile;
     

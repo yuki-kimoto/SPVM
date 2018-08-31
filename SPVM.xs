@@ -1553,7 +1553,7 @@ build_runtime(...)
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  sv_setsv(get_sv("SPVM::ENV", 0), sv_env);
+  hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   
   XSRETURN(0);
 }
