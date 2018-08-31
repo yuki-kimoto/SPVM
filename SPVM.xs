@@ -1596,10 +1596,6 @@ bind_sub(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
   // Native subroutine name
   const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
   
@@ -1623,10 +1619,6 @@ build_package_csource(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_package_name = ST(1);
   const char* package_name = SvPV_nolen(sv_package_name);
-  
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
@@ -1665,10 +1657,6 @@ bind_sub(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
   SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));
   runtime_sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   runtime->sub_precompile_addresses[runtime_sub->id] = sub_precompile_address;
@@ -1773,16 +1761,18 @@ call_sub(...)
     }
     
     int32_t arg_var_id = 0;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+    for (arg_index = 0; arg_index < runtime_sub->arg_ids_length; arg_index++) {
+      SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
+
+      _Bool arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+
       SV* sv_value = ST(arg_index + arg_start);
       
       SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
       SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
       
-      _Bool arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-      _Bool arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-      _Bool arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-
       int32_t arg_basic_type_id = arg_type->basic_type->id;
       int32_t arg_type_dimension = arg_type->dimension;
       
