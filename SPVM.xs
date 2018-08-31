@@ -1705,25 +1705,9 @@ call_sub(...)
 
   SPVM_ENV* env = SPVM_XS_UTIL_get_env();
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
-  SPVM_COMPILER* compiler = runtime->compiler;
   
   const char* package_name = SvPV_nolen(sv_package_name);
   const char* sub_name = SvPV_nolen(sv_sub_name);
-
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-  
-  if (package == NULL) {
-    croak("Subroutine not found %s %s", package_name, sub_name);
-  }
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  if (sub == NULL) {
-    croak("Subroutine not found %s %s", package_name, sub_name);
-  }
-  const char* sub_signature = sub->signature;
-  int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
-  if (sub_id < 0) {
-    croak("Subroutine not found %s %s", package_name, sub_signature);
-  }
 
   SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (runtime_package == NULL) {
@@ -1756,7 +1740,7 @@ call_sub(...)
     
     int32_t arg_index;
     // Check argument count
-    if (items - arg_start != sub->args->length) {
+    if (items - arg_start != runtime_sub->arg_ids_length) {
       croak("Argument count is defferent");
     }
     
@@ -2035,7 +2019,7 @@ call_sub(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
   if (sub_return_type_is_value_type) {
-    excetpion_flag = env->call_sub(env, sub_id, stack);
+    excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
     
     SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub_return_basic_type_id];
 
@@ -2085,7 +2069,7 @@ call_sub(...)
     }
   }
   else if (sub_return_type_is_object_type) {
-    excetpion_flag = env->call_sub(env, sub_id, stack);
+    excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
     if (!excetpion_flag) {
       void* return_value = stack[0].oval;
       sv_return_value = NULL;
@@ -2109,46 +2093,46 @@ call_sub(...)
   else {
     switch (sub_return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].bval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].sval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].ival));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].lval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
+        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
         }
@@ -2161,7 +2145,7 @@ call_sub(...)
   
   if (args_contain_ref) {
     int32_t arg_var_id = 0;
-    for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
+    for (int32_t arg_index = 0; arg_index < runtime_sub->arg_ids_length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
 
       SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
