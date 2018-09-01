@@ -1,7 +1,7 @@
 0.0367 2018-09-01
   - runtime don't need compiler information
   - add SPVM::set_array_elements, SPVM::set_array_elements_bin, SPVM::get_array_elements, SPVM::get_array_elements_bin, SPVM::set_array_element, SPVM::get_array_element
-
+  - remove SPVM::Data::Array::set_element
 0.0366 2018-08-09
   - rename SPVM::Build::Setting to SPVM::Build::Config and many methods is added and changed.
 0.0365 2018-08-01
