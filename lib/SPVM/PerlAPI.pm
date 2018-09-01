@@ -1,6 +1,7 @@
 package SPVM::PerlAPI;
 
 use Carp 'croak', 'confess';
+use Encode 'decode';
 
 sub new_object_array {
   my ($env, $package_name, $elements) = @_;
@@ -167,5 +168,16 @@ sub new_double_array {
   
   return $array;
 }
+
+sub get_array_elements_string {
+  my ($env, $array) = @_;
+  
+  my $bin = SPVM::get_array_elements_bin($array);
+  
+  my $string = decode('UTF-8', $bin);
+  
+  return $string;
+}
+
 
 1;

@@ -1487,19 +1487,20 @@ call_sub(...)
   }
 }
 
-MODULE = SPVM		PACKAGE = SPVM
-
 SV*
 set_array_elements(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
-  SV* sv_values = ST(1);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
+  SV* sv_values = ST(2);
 
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   // Array must be SPVM::Data::Array object
@@ -1718,11 +1719,14 @@ set_array_elements_bin(...)
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
-  SV* sv_bin = ST(1);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
+  SV* sv_bin = ST(2);
   
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   // Array must be SPVM::Data::Array object
@@ -1906,12 +1910,15 @@ set_array_element(...)
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
+  SV* sv_value = ST(3);
 
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   // Index
@@ -2107,11 +2114,14 @@ get_array_element(...)
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
-  SV* sv_index = ST(1);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
 
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
   
   // Index
@@ -2289,10 +2299,13 @@ get_array_elements(...)
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
   
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   // Array must be SPVM::Data::Array object
@@ -2489,10 +2502,13 @@ get_array_elements_bin(...)
 {
   (void)RETVAL;
   
-  SV* sv_array = ST(0);
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
   
-  // Environment
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   // Array must be SPVM::Data::Array object
@@ -2619,3 +2635,6 @@ get_array_elements_bin(...)
   XPUSHs(sv_bin);
   XSRETURN(1);
 }
+
+MODULE = SPVM		PACKAGE = SPVM
+

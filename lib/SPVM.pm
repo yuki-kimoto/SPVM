@@ -59,16 +59,6 @@ CHECK {
   }
 }
 
-sub get_array_elements_string {
-  my $self = shift;
-  
-  my $bin = SPVM::get_array_elements_bin($self);
-  
-  my $string = decode('UTF-8', $bin);
-  
-  return $string;
-}
-
 sub new_object_array { SPVM::PerlAPI::new_object_array($SPVM::ENV, @_) }
 sub new_value_t_array { SPVM::PerlAPI::new_value_t_array($SPVM::ENV, @_) }
 sub new_object { SPVM::PerlAPI::new_object($SPVM::ENV, @_) }
@@ -93,6 +83,14 @@ sub new_int_array { SPVM::PerlAPI::new_int_array($SPVM::ENV, @_) }
 sub new_long_array { SPVM::PerlAPI::new_long_array($SPVM::ENV, @_) }
 sub new_float_array { SPVM::PerlAPI::new_float_array($SPVM::ENV, @_) }
 sub new_double_array { SPVM::PerlAPI::new_double_array($SPVM::ENV, @_) }
+
+sub set_array_elements { SPVM::PerlAPI::set_array_elements($SPVM::ENV, @_) }
+sub set_array_elements_bin { SPVM::PerlAPI::set_array_elements_bin($SPVM::ENV, @_) }
+sub set_array_element { SPVM::PerlAPI::set_array_element($SPVM::ENV, @_) }
+sub get_array_element { SPVM::PerlAPI::get_array_element($SPVM::ENV, @_) }
+sub get_array_elements { SPVM::PerlAPI::get_array_elements($SPVM::ENV, @_) }
+sub get_array_elements_bin { SPVM::PerlAPI::get_array_elements_bin($SPVM::ENV, @_) }
+sub get_array_elements_string { SPVM::PerlAPI::get_array_elements_string($SPVM::ENV, @_) }
 
 1;
 
