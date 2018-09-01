@@ -7,7 +7,7 @@ use Encode 'decode';
 sub to_string {
   my $self = shift;
   
-  my $bin = $self->to_bin;
+  my $bin = SPVM::get_array_elements_bin($self);
   
   my $string = decode('UTF-8', $bin);
   

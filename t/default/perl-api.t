@@ -376,7 +376,7 @@ is_deeply(
     my $sp_values = SPVM::new_value_t_array_len("TestCase::Point_i3", 3);
     SPVM::set_array_elements_bin($sp_values, $bin);
     ok(TestCase::PerlAPI->spvm_new_value_t_array_bin_int($sp_values));
-    my $out_bin = $sp_values->to_bin;
+    my $out_bin = SPVM::get_array_elements_bin($sp_values);
     is_deeply($out_bin, $bin);
   }
 
@@ -408,80 +408,80 @@ is_deeply(
     }
   }
 
-  # to_bin 0 length
+  # SPVM::get_array_elements_bin( 0 length
   {
     {
       my $sp_values = SPVM::new_byte_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
     {
       my $sp_values = SPVM::new_short_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
     {
       my $sp_values = SPVM::new_int_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
     {
       my $sp_values = SPVM::new_long_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
     {
       my $sp_values = SPVM::new_float_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
     {
       my $sp_values = SPVM::new_double_array([]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       is($bin, "");
     }
   }
     
-  # to_bin
+  # SPVM::get_array_elements_bin(
   {
     {
       my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('c3', $bin);
       is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
     {
       my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('s3', $bin);
       is_deeply(\@values, [1, 2, $SHORT_MAX]);
     }
     {
       my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('l3', $bin);
       is_deeply(\@values, [1, 2, $INT_MAX]);
     }
     {
       my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('q3', $bin);
       is_deeply(\@values, [1, 2, $LONG_MAX]);
     }
     {
       my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('f3', $bin);
       is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
     }
     {
       my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE]);
-      my $bin = $sp_values->to_bin;
+      my $bin = SPVM::get_array_elements_bin($sp_values);
       
       my @values = unpack('d3', $bin);
       is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
@@ -601,7 +601,7 @@ is_deeply(
 {
   {
     my $values = TestCase->string_empty();
-    is($values->to_bin, "");
+    is(SPVM::get_array_elements_bin($values), "");
   }
   
   {
