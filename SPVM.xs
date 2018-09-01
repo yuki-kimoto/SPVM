@@ -341,24 +341,6 @@ get_package_load_path(...)
 MODULE = SPVM::Build		PACKAGE = SPVM::Build
 
 SV*
-create_compiler(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  
-  // Set compiler
-  size_t iv_compiler = PTR2IV(compiler);
-  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  
-  XPUSHs(sv_compiler);
-  XSRETURN(1);
-}
-
-SV*
 compile_spvm(...)
   PPCODE:
 {
@@ -367,9 +349,7 @@ compile_spvm(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
   SV* sv_package_infos = sv_package_infos_ptr ? *sv_package_infos_ptr : &PL_sv_undef;
@@ -447,29 +427,13 @@ compile_spvm(...)
     SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
     hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   }
+
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
   
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
-}
-
-SV*
-free_compiler(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // Free compiler
-  SPVM_COMPILER_free(compiler);
-  
-  XSRETURN(0);
 }
 
 MODULE = SPVM::Build::CBuilder::Native		PACKAGE = SPVM::Build::CBuilder::Native

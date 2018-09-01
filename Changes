@@ -1,5 +1,6 @@
 0.0367 2018-09-01
   - runtime don't need compiler information
+  - free compiler memory completly
   - add SPVM::set_array_elements, SPVM::set_array_elements_bin, SPVM::get_array_elements, SPVM::get_array_elements_bin, SPVM::set_array_element, SPVM::get_array_element
   - remove SPVM::Data::Array::set_element, remove SPVM::Data::Array::get_element, remove SPVM::Data::Array::to_elements, remove SPVM::Data::Array::set_bin
     remove SPVM::Data::Array::set_elements, remove SPVM::Data::Array::to_bin, remove SPVM::Data::Array::to_string

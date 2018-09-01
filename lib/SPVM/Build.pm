@@ -29,8 +29,6 @@ sub new {
   
   bless $self, $class;
   
-  $self->{compiler} ||= $self->create_compiler;
-  
   $self->{info} ||= SPVM::Build::Info->new;
   $self->{info}{build} = $self;
   weaken($self->{info}{build});
