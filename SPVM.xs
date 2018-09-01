@@ -432,39 +432,25 @@ compile_spvm(...)
   else {
     sv_compile_success = sv_2mortal(newSViv(1));
   }
-
+  
+  if (compiler->error_count == 0) {
+    // Build portable info
+    SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
+    
+    // Create run-time
+    SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
+    
+    // Set ENV
+    SPVM_ENV* env = runtime->env;
+    size_t iv_env = PTR2IV(env);
+    SV* sviv_env = sv_2mortal(newSViv(iv_env));
+    SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+    hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  }
+  
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
-}
-
-SV*
-build_runtime(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // Build portable info
-  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
-  
-  // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
-  
-  // Set ENV
-  SPVM_ENV* env = runtime->env;
-  size_t iv_env = PTR2IV(env);
-  SV* sviv_env = sv_2mortal(newSViv(iv_env));
-  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  
-  XSRETURN(0);
 }
 
 SV*

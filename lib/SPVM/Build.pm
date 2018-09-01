@@ -57,13 +57,10 @@ sub new {
 sub build_spvm {
   my $self = shift;
   
-  # Compile SPVM source code
+  # Compile SPVM source code and create runtime env
   my $compile_success = $self->compile_spvm();
   
   if ($compile_success) {
-    # Build run-time
-    $self->build_runtime;
-    
     # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
     $self->build_precompile;
     
@@ -116,8 +113,6 @@ sub build_shared_lib_native_dist {
   
   $self->compile_spvm;
 
-  $self->build_runtime;
-
   my $sub_names = $self->info->get_native_sub_names($package_name);
   
   $self->cbuilder_native->build_shared_lib_dist($package_name, $sub_names);
@@ -132,8 +127,6 @@ sub build_shared_lib_precompile_dist {
   unless ($compile_success) {
     die "Compile error";
   }
-  
-  $self->build_runtime;
   
   my $sub_names = $self->info->get_precompile_sub_names($package_name);
   
