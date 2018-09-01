@@ -15,7 +15,7 @@ sub new_object_array {
   
   my $array = SPVM::PerlAPI::new_object_array_len($env, $package_name, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -33,7 +33,7 @@ sub new_value_t_array {
   
   my $array = SPVM::PerlAPI::new_value_t_array_len($env, $package_name, $length);
 
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -59,7 +59,7 @@ sub new_byte_array {
   
   my $array = SPVM::PerlAPI::new_byte_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -91,7 +91,7 @@ sub new_short_array {
   
   my $array = SPVM::PerlAPI::new_short_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -109,7 +109,7 @@ sub new_int_array {
   
   my $array = SPVM::PerlAPI::new_int_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -127,7 +127,7 @@ sub new_long_array {
   
   my $array = SPVM::PerlAPI::new_long_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -145,7 +145,7 @@ sub new_float_array {
   
   my $array = SPVM::PerlAPI::new_float_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }
@@ -163,7 +163,7 @@ sub new_double_array {
   
   my $array = SPVM::PerlAPI::new_double_array_len($env, $length);
   
-  $array->set_elements($elements);
+  SPVM::set_array_elements($array, $elements);
   
   return $array;
 }

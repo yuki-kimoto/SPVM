@@ -365,7 +365,7 @@ is_deeply(
       {x => 6, y => 7, z => 8},
     ];
     my $sp_values = SPVM::new_value_t_array("TestCase::Point_i3", $values);
-    $sp_values->set_elements($values);
+    SPVM::set_array_elements($sp_values, $values);
     ok(TestCase::PerlAPI->spvm_new_value_t_array_int($sp_values));
     my $out_values = SPVM::get_array_elements($sp_values);
     is_deeply($out_values, $values);
@@ -554,7 +554,7 @@ is_deeply(
 # SPVM::Object::Array
 {
   my $sp_values = SPVM::new_int_array_len(3);
-  $sp_values->set_elements([1, 2, 3]);
+  SPVM::set_array_elements($sp_values, [1, 2, 3]);
 }
 
 # byte

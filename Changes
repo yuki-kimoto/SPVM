@@ -2,6 +2,7 @@
   - runtime don't need compiler information
   - add SPVM::set_array_elements, SPVM::set_array_elements_bin, SPVM::get_array_elements, SPVM::get_array_elements_bin, SPVM::set_array_element, SPVM::get_array_element
   - remove SPVM::Data::Array::set_element, remove SPVM::Data::Array::get_element, remove SPVM::Data::Array::to_elements, remove SPVM::Data::Array::set_bin
+    remove SPVM::Data::Array::set_elements
 0.0366 2018-08-09
   - rename SPVM::Build::Setting to SPVM::Build::Config and many methods is added and changed.
 0.0365 2018-08-01
