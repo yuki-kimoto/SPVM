@@ -73,7 +73,7 @@ sub new_byte_array_string {
   my $length = length $bin;
   
   my $array = SPVM::PerlAPI::new_byte_array_len($env, $length);
-  $array->set_bin($bin);
+  SPVM::set_array_elements_bin($array, $bin);
   
   return $array;
 }
