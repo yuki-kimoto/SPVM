@@ -52,16 +52,7 @@
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
 
-SPVM_ENV* SPVM_XS_UTIL_get_env() {
-  
-  SV* sv_env = get_sv("SPVM::ENV", 0);
-  
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  return env;
-}
-
-SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
+SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* package) {
   
   // Create object
   size_t iv_object = PTR2IV(object);
@@ -71,6 +62,12 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
   HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
   hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
   SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+
+  // Set ENV
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
 
   HV* hv_class = gv_stashpv(package, 0);
   sv_bless(sv_data, hv_class);
@@ -121,13 +118,17 @@ DESTROY(...)
   (void)RETVAL;
   
   SV* sv_object = ST(0);
-  
+  SV* hv_object = (HV*)SvRV(sv_object);
+
   assert(SvOK(sv_object));
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+
   
   // Get object
   void* object = SPVM_XS_UTIL_get_object(sv_object);
+
+  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   assert(env->get_ref_count(env, object));
   
@@ -616,7 +617,7 @@ new_byte_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -643,7 +644,7 @@ new_short_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_short_array);
   XSRETURN(1);
@@ -670,7 +671,7 @@ new_int_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_int_array);
   XSRETURN(1);
@@ -697,7 +698,7 @@ new_long_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_long_array);
   XSRETURN(1);
@@ -724,7 +725,7 @@ new_float_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_float_array);
   XSRETURN(1);
@@ -751,7 +752,7 @@ new_double_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_double_array);
   XSRETURN(1);
@@ -788,7 +789,7 @@ new_object_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -828,7 +829,7 @@ new_multi_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -869,7 +870,7 @@ new_value_t_array_len(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1300,10 +1301,10 @@ call_sub(...)
         if (sub_return_type_dimension == 0) {
           SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(env, sub_return_basic_type_id, sub_return_type_dimension);
           
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_return_type_name));
         }
         else if (sub_return_type_dimension > 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, "SPVM::Data::Array");
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
         }
       }
       else {
@@ -2237,12 +2238,12 @@ get_array_element(...)
       
       int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
       if (element_type_is_array_type) {
-        sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
+        sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
       }
       else {
         const char* basic_type_name = runtime->symbols[basic_type->name_id];
         SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-        sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
+        sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
       }
     }
     else {
@@ -2412,12 +2413,12 @@ get_array_elements(...)
         int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
         SV* sv_value;
         if (element_type_is_array_type) {
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, "SPVM::Data::Array");
+          sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
         }
         else {
           const char* basic_type_name = runtime->symbols[basic_type->name_id];
           SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-          sv_value = SPVM_XS_UTIL_new_sv_object(value, SvPV_nolen(sv_basic_type_name));
+          sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
         }
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
