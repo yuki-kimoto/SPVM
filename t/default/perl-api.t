@@ -606,7 +606,7 @@ is_deeply(
   
   {
     my $values = TestCase->string_utf8();
-    is($values->to_string, "あいうえお");
+    is(SPVM::get_array_elements_string($values), "あいうえお");
   }
 }
 

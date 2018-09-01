@@ -13,7 +13,7 @@ use SPVM::Data::Array;
 use SPVM::Build;
 use SPVM::PerlAPI;
 
-use Encode 'encode';
+use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
@@ -57,6 +57,16 @@ CHECK {
       die "SPVM compile error";
     }
   }
+}
+
+sub get_array_elements_string {
+  my $self = shift;
+  
+  my $bin = SPVM::get_array_elements_bin($self);
+  
+  my $string = decode('UTF-8', $bin);
+  
+  return $string;
 }
 
 sub new_object_array { SPVM::PerlAPI::new_object_array($SPVM::ENV, @_) }
