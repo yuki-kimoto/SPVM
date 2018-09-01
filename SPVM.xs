@@ -62,18 +62,40 @@ SPVM_ENV* SPVM_XS_UTIL_get_env() {
 }
 
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_OBJECT* object, const char* package) {
+  
   // Create object
   size_t iv_object = PTR2IV(object);
   SV* sviv_object = sv_2mortal(newSViv(iv_object));
   SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
+
+  HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
+  hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+
   HV* hv_class = gv_stashpv(package, 0);
-  sv_bless(sv_object, hv_class);
+  sv_bless(sv_data, hv_class);
   
-  return sv_object;
+  return sv_data;
 }
 
-SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env();
+SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
+  
+  if (SvOK(sv_data)) {
+    HV* hv_data = SvRV(sv_data);
+    
+    SV** sv_object_ptr = hv_fetch(hv_data, "object", strlen("object"), 0);
+    SV* sv_object = sv_object_ptr ? *sv_object_ptr : &PL_sv_undef;
+    size_t iv_object = SvIV(SvRV(sv_object));
+    SPVM_OBJECT* object = INT2PTR(SPVM_OBJECT*, iv_object);
+    
+    return object;
+  }
+  else {
+    return NULL;
+  }
+}
+
+SV* SPVM_XS_UTIL_create_sv_type_name(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->get_runtime(env);
 
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
@@ -88,19 +110,6 @@ SV* SPVM_XS_UTIL_create_sv_type_name(int32_t basic_type_id, int32_t dimension) {
   }
   
   return sv_type_name;
-}
-
-SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_object) {
-  
-  if (SvOK(sv_object)) {
-    size_t iv_object = SvIV(SvRV(sv_object));
-    SPVM_OBJECT* object = INT2PTR(SPVM_OBJECT*, iv_object);
-    
-    return object;
-  }
-  else {
-    return NULL;
-  }
 }
 
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
@@ -1289,7 +1298,7 @@ call_sub(...)
         env->inc_ref_count(env, return_value);
         
         if (sub_return_type_dimension == 0) {
-          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(sub_return_basic_type_id, sub_return_type_dimension);
+          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(env, sub_return_basic_type_id, sub_return_type_dimension);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(return_value, SvPV_nolen(sv_return_type_name));
         }

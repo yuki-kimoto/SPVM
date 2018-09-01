@@ -56,6 +56,9 @@ CHECK {
     unless ($compile_success) {
       die "SPVM compile error";
     }
+    
+    # Set env
+    $SPVM::ENV = $BUILD->{env};
   }
 }
 

@@ -58,8 +58,6 @@ int main(int argc, char *argv[]) {
   // Create run-time
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
 
-  runtime->compiler = compiler;
-  
   // Bind native subroutine
   {
     SPVM_RUNTIME_SUB* sub_SPVM__CORE__print = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
