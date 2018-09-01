@@ -411,8 +411,8 @@ int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, i
           else {
             SPVM_RUNTIME_BASIC_TYPE* dist_basic_type = &runtime->basic_types[dist_basic_type_id];
             SPVM_RUNTIME_BASIC_TYPE* src_basic_type = &runtime->basic_types[src_basic_type_id];
-            SPVM_RUNTIME_PACKAGE* dist_package = &runtime->basic_types[dist_basic_type->package_id];
-            SPVM_RUNTIME_PACKAGE* src_package = &runtime->basic_types[src_basic_type->package_id];
+            SPVM_RUNTIME_PACKAGE* dist_package = &runtime->packages[dist_basic_type->package_id];
+            SPVM_RUNTIME_PACKAGE* src_package = &runtime->packages[src_basic_type->package_id];
             
             // Dist basic type and source basic type is package
             if (dist_package && src_package) {
@@ -822,7 +822,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, 
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, char* bytes, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_string_raw(env, bytes, length);
@@ -1155,7 +1155,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, char* bytes, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
 
   if (length == 0) {

@@ -95,14 +95,23 @@ struct SPVM_portable {
 };
 
 SPVM_PORTABLE* SPVM_PORTABLE_new();
-
-int32_t SPVM_PORTABLE_push_runtime_string(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, const char* string);
-void SPVM_PORTABLE_push_portable_arg(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_MY* my);
-void SPVM_PORTABLE_push_portable_basic_type(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-void SPVM_PORTABLE_push_portable_field(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_FIELD* field);
-void SPVM_PORTABLE_push_portable_package_var(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_PACKAGE_VAR* package_var);
-void SPVM_PORTABLE_push_portable_sub(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_SUB* sub);
-void SPVM_PORTABLE_push_portable_package(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_PACKAGE* package);
-void SPVM_PORTABLE_push_portable_info_type(SPVM_COMPILER* compiler, SPVM_RUNTIME* runtime, SPVM_TYPE* info_type);
+void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub);
+SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler);
+int32_t SPVM_PORTABLE_push_symbol(SPVM_PORTABLE* portable, const char* string);
+void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my);
+void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my);
+void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type);
+void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_INFO* info_switch_info);
+void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id);
+void SPVM_PORTABLE_push_info_field_id(SPVM_PORTABLE* portable, int32_t info_field_id);
+void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id);
+void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_long_value);
+void SPVM_PORTABLE_push_info_double_value(SPVM_PORTABLE* portable, double info_double_value);
+void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* info_string_value, int32_t string_length);
+void SPVM_PORTABLE_push_info_string_length(SPVM_PORTABLE* portable, int32_t info_string_length);
+void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* basic_type);
+void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field);
+void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var);
+void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package);
 
 #endif

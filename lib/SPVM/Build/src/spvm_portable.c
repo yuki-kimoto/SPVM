@@ -140,6 +140,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_id);
     SPVM_PORTABLE_push_my(portable, my);
   }
+  
 
   for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids->length; info_package_var_ids_index++) {
     int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, info_package_var_ids_index);
@@ -159,15 +160,13 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_PORTABLE_push_info_sub_id(portable, info_sub_id);
   }
 
-  SPVM_TYPE* info_types = sub->info_types;
   for (int32_t info_type_id = 0; info_type_id < sub->info_types->length; info_type_id++) {
     SPVM_TYPE* info_type = SPVM_LIST_fetch(sub->info_types, info_type_id);
     SPVM_PORTABLE_push_info_type(portable, info_type);
   }
 
-  SPVM_TYPE* info_switch_infos = sub->info_switch_infos;
   for (int32_t info_switch_info_id = 0; info_switch_info_id < sub->info_switch_infos->length; info_switch_info_id++) {
-    SPVM_TYPE* info_switch_info = SPVM_LIST_fetch(sub->info_switch_infos, info_switch_info_id);
+    SPVM_SWITCH_INFO* info_switch_info = SPVM_LIST_fetch(sub->info_switch_infos, info_switch_info_id);
     SPVM_PORTABLE_push_info_switch_info(portable, info_switch_info);
   }
 
@@ -208,14 +207,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Portable fields
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->fields_unit * portable->fields_capacity);
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
-    SPVM_BASIC_TYPE* field = SPVM_LIST_fetch(compiler->fields, field_id);
+    SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_PORTABLE_push_field(portable, field);
   }
   
   // Portable package_vars
   portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->package_vars_unit * portable->package_vars_capacity);
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
-    SPVM_BASIC_TYPE* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
+    SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     SPVM_PORTABLE_push_package_var(portable, package_var);
   }
   
@@ -251,18 +250,18 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->info_string_values_capacity);
 
   portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
-
+  
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->subs_unit * portable->subs_capacity);
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
-    SPVM_BASIC_TYPE* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     SPVM_PORTABLE_push_sub(portable, sub);
   }
   
   // Portable packages
   portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->packages_unit * portable->packages_capacity);
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
-    SPVM_BASIC_TYPE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
   }
   
@@ -320,7 +319,7 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
 }
 
 void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
-
+  
   if (portable->mys_length >= portable->mys_capacity) {
     int32_t new_portable_mys_capacity = portable->mys_capacity * 2;
     int32_t* new_portable_mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->mys_unit * new_portable_mys_capacity);
@@ -442,7 +441,7 @@ void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_lo
 
   if (portable->info_long_values_length >= portable->info_long_values_capacity) {
     int32_t new_portable_info_long_values_capacity = portable->info_long_values_capacity * 2;
-    int32_t* new_portable_info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_long_values_capacity);
+    int64_t* new_portable_info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_long_values_capacity);
     memcpy(new_portable_info_long_values, portable->info_long_values, sizeof(int64_t) * portable->info_long_values_length);
     free(portable->info_long_values);
     portable->info_long_values = new_portable_info_long_values;
@@ -458,7 +457,7 @@ void SPVM_PORTABLE_push_info_double_value(SPVM_PORTABLE* portable, double info_d
 
   if (portable->info_double_values_length >= portable->info_double_values_capacity) {
     int32_t new_portable_info_double_values_capacity = portable->info_double_values_capacity * 2;
-    int32_t* new_portable_info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_double_values_capacity);
+    double* new_portable_info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * new_portable_info_double_values_capacity);
     memcpy(new_portable_info_double_values, portable->info_double_values, sizeof(int64_t) * portable->info_double_values_length);
     free(portable->info_double_values);
     portable->info_double_values = new_portable_info_double_values;
@@ -474,7 +473,7 @@ void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* i
 
   if (portable->info_string_values_length >= portable->info_string_values_capacity) {
     int32_t new_portable_info_string_values_capacity = portable->info_string_values_capacity * 2;
-    int32_t* new_portable_info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_portable_info_string_values_capacity);
+    char** new_portable_info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_portable_info_string_values_capacity);
     memcpy(new_portable_info_string_values, portable->info_string_values, sizeof(char*) * portable->info_string_values_length);
     free(portable->info_string_values);
     portable->info_string_values = new_portable_info_string_values;
