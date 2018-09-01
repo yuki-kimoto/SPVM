@@ -35,6 +35,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"
+#include "spvm_portable.h"
 
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_builder.h"
@@ -60,14 +61,14 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* p
   SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
 
   HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
-  hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
+  (void)hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
   SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
 
   // Set ENV
   size_t iv_env = PTR2IV(env);
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  (void)hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
 
   HV* hv_class = gv_stashpv(package, 0);
   sv_bless(sv_data, hv_class);
@@ -78,7 +79,7 @@ SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* p
 SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   
   if (SvOK(sv_data)) {
-    HV* hv_data = SvRV(sv_data);
+    HV* hv_data = (HV*)SvRV(sv_data);
     
     SV** sv_object_ptr = hv_fetch(hv_data, "object", strlen("object"), 0);
     SV* sv_object = sv_object_ptr ? *sv_object_ptr : &PL_sv_undef;
@@ -118,7 +119,7 @@ DESTROY(...)
   (void)RETVAL;
   
   SV* sv_object = ST(0);
-  SV* hv_object = (HV*)SvRV(sv_object);
+  HV* hv_object = (HV*)SvRV(sv_object);
 
   assert(SvOK(sv_object));
 
@@ -153,7 +154,7 @@ get_subs(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -200,11 +201,11 @@ get_subs(...)
       // Subroutine
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
-      hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
-      hv_store(hv_sub, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
-      hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
-      hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
-      hv_store(hv_sub, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
+      (void)hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
+      (void)hv_store(hv_sub, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
+      (void)hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
+      (void)hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
+      (void)hv_store(hv_sub, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
       
       SV* sv_sub = sv_2mortal(newRV_inc((SV*)hv_sub));
       av_push(av_subs, SvREFCNT_inc((SV*)sv_sub));
@@ -228,7 +229,7 @@ get_sub_names(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -273,7 +274,7 @@ get_package_names(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -314,7 +315,7 @@ get_package_load_path(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -425,7 +426,7 @@ compile_spvm(...)
     size_t iv_env = PTR2IV(env);
     SV* sviv_env = sv_2mortal(newSViv(iv_env));
     SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-    hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+    (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   }
 
   // Free compiler
@@ -452,7 +453,7 @@ bind_sub(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -487,7 +488,7 @@ build_package_csource(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -529,7 +530,7 @@ bind_sub(...)
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = SvRV(sv_build);
+  HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -1236,7 +1237,7 @@ call_sub(...)
           assert(0);
       }
       
-      hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+      (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
       sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
     }
   }
@@ -1414,7 +1415,7 @@ call_sub(...)
               default:
                 assert(0);
             }
-            hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
         }
         else {
@@ -2112,7 +2113,7 @@ get_array_element(...)
   int32_t dimension = array->type_dimension;
   int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
 
-  SV* sv_value;
+  SV* sv_value = NULL;
   _Bool is_object = 0;
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
@@ -2171,7 +2172,7 @@ get_array_element(...)
           default:
             assert(0);
         }
-        hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+        (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
         sv_value = sv_2mortal(newRV_inc((SV*)hv_value));
       }
     }
@@ -2343,7 +2344,8 @@ get_array_elements(...)
             default:
               assert(0);
           }
-          hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          SvREFCNT_inc(sv_field_value);
+          (void)hv_store(hv_value, field_name, strlen(field_name), sv_field_value, 0);
         }
         SV* sv_value = sv_2mortal(newRV_inc((SV*)hv_value));
         av_push(av_values, SvREFCNT_inc(sv_value));
