@@ -56,7 +56,8 @@ int main(int argc, char *argv[]) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   // Create run-time
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
+  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Bind native subroutine
   {
@@ -186,8 +187,6 @@ int main(int argc, char *argv[]) {
     runtime->sub_native_addresses[sub_SPVM__CORE__PI->id] = SPVM_NATIVE_SPVM__CORE__PI;
   }
 
-  SPVM_ENV* env = runtime->env;
-
   // Entry point subroutine address
   SPVM_SUB* sub_start;
   int32_t sub_id;
@@ -238,7 +237,7 @@ int main(int argc, char *argv[]) {
   // Leave scope
   env->leave_scope(env, scope_id);
   
-  SPVM_RUNTIME_free(runtime);
+  SPVM_RUNTIME_free(env);
   
   return status_code;
 }
