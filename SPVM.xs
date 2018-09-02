@@ -503,7 +503,7 @@ build_package_csource(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // Build package csource
-  SPVM_CSOURCE_BUILDER_build_package_csource(runtime, string_buffer, package_name);
+  SPVM_CSOURCE_BUILDER_build_package_csource(env, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
