@@ -418,11 +418,10 @@ compile_spvm(...)
     // Build portable info
     SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
     
-    // Create run-time
-    SPVM_RUNTIME* runtime = SPVM_RUNTIME_BUILDER_build_runtime(portable);
+    // Create run-time env
+    SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);
     
     // Set ENV
-    SPVM_ENV* env = runtime->env;
     size_t iv_env = PTR2IV(env);
     SV* sviv_env = sv_2mortal(newSViv(iv_env));
     SV* sv_env = sv_2mortal(newRV_inc(sviv_env));

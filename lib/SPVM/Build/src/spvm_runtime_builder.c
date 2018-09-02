@@ -185,13 +185,11 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
   return (SPVM_ENV*)env;
 }
 
-SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
+SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
 
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
   SPVM_ENV* env = SPVM_RUNTIME_BUILDER_create_env(runtime);
-  
-  runtime->env = env;
   
   // Share runtime information with portable
   runtime->symbols = portable->symbols;
@@ -381,5 +379,5 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
 
   
   
-  return runtime;
+  return env;
 }

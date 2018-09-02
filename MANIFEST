@@ -24,7 +24,6 @@ lib/SPVM/Build/include/spvm_enumeration.h
 lib/SPVM/Build/include/spvm_enumeration_value.h
 lib/SPVM/Build/include/spvm_field.h
 lib/SPVM/Build/include/spvm_field_access.h
-lib/SPVM/Build/include/spvm_global.h
 lib/SPVM/Build/include/spvm_hash.h
 lib/SPVM/Build/include/spvm_hash_entry.h
 lib/SPVM/Build/include/spvm_hash_func.h

@@ -1,6 +1,0 @@
-#ifndef SPVM_GLOBAL_H
-#define SPVM_GLOBAL_H
-
-static SPVM_RUNTIME* SPVM_GLOBAL_RUNTIME;
-
-#endif

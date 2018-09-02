@@ -11,7 +11,6 @@
 #include "spvm_runtime_api.h"
 #include "spvm_object.h"
 #include "spvm_native.h"
-#include "spvm_global.h"
 
 #include "spvm_list.h"
 #include "spvm_hash.h"

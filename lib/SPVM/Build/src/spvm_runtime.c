@@ -2695,10 +2695,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   return exception_flag;
 }
 
-void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
+void SPVM_RUNTIME_free(SPVM_ENV* env) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
   
   // Free exception
-  SPVM_RUNTIME_API_set_exception(runtime->env, NULL);
+  SPVM_RUNTIME_API_set_exception(env, NULL);
   
   free(runtime->package_vars_heap);
   
