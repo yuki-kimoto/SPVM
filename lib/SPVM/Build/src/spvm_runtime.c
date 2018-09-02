@@ -40,7 +40,7 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   (void)env;
   
   // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Constant pool sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
@@ -71,7 +71,7 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   (void)env;
   
   // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Constant pool sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
@@ -88,7 +88,7 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   (void)env;
   
   // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Constant pool sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
@@ -105,7 +105,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   (void)env;
   
   // Runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_get_runtime(env);
+  SPVM_RUNTIME* runtime = env->runtime;
 
   // Runtime subroutine
   SPVM_RUNTIME_SUB* runtime_sub = &runtime->subs[sub_id];
@@ -2534,7 +2534,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2542,7 +2542,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2550,7 +2550,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2558,7 +2558,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2566,7 +2566,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(float*)&vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2574,7 +2574,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
+            *(double*)&vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id];
             
             break;
           }
@@ -2582,7 +2582,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand1;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id]);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id]);
             
             break;
           }
@@ -2590,7 +2590,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
+            *(SPVM_VALUE_byte*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
             
             break;
           }
@@ -2598,7 +2598,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
+            *(SPVM_VALUE_short*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
             
             break;
           }
@@ -2606,7 +2606,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+            *(SPVM_VALUE_int*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
             
             break;
           }
@@ -2614,7 +2614,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
+            *(SPVM_VALUE_long*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
             
             break;
           }
@@ -2622,7 +2622,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(float*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(float*)&vars[opcode->operand1];
+            *(float*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(float*)&vars[opcode->operand1];
             
             break;
           }
@@ -2630,7 +2630,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            *(double*)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(double*)&vars[opcode->operand1];
+            *(double*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id] = *(double*)&vars[opcode->operand1];
             
             break;
           }
@@ -2638,7 +2638,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id], *(void**)&vars[opcode->operand1]);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id], *(void**)&vars[opcode->operand1]);
             
             break;
           }
@@ -2646,7 +2646,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             int32_t rel_id = opcode->operand0;
             int32_t package_var_id = runtime->info_package_var_ids[runtime_sub->info_package_var_ids_base + rel_id];
             
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->get_runtime(env) + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id], NULL);
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_byte_offset))[package_var_id], NULL);
             
             break;
           }

@@ -144,7 +144,6 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_dec_ref_count,
     SPVM_RUNTIME_API_inc_dec_ref_count,
     SPVM_RUNTIME_API_get_memory_blocks_count,
-    SPVM_RUNTIME_API_get_runtime,
     SPVM_RUNTIME_API_dec_ref_count_only,
     SPVM_RUNTIME_API_weaken,
     SPVM_RUNTIME_API_isweak,
@@ -179,7 +178,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
     runtime,
   };
   
-  int32_t env_length = 80;
+  int32_t env_length = 79;
   void** env = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
   
@@ -193,9 +192,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_BUILDER_build_runtime(SPVM_PORTABLE* portable) {
   SPVM_ENV* env = SPVM_RUNTIME_BUILDER_create_env(runtime);
   
   runtime->env = env;
-
-  // Set global runtime
-  SPVM_RUNTIME_API_set_runtime(env, runtime);
   
   // Share runtime information with portable
   runtime->symbols = portable->symbols;

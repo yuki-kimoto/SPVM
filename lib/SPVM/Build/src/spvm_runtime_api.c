@@ -78,7 +78,6 @@ static const void* SPVM_ENV_RUNTIME[]  = {
   SPVM_RUNTIME_API_dec_ref_count,
   SPVM_RUNTIME_API_inc_dec_ref_count,
   SPVM_RUNTIME_API_get_memory_blocks_count,
-  SPVM_RUNTIME_API_get_runtime,
   SPVM_RUNTIME_API_dec_ref_count_only,
   SPVM_RUNTIME_API_weaken,
   SPVM_RUNTIME_API_isweak,
@@ -302,7 +301,7 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, SPVM_RUNTIME_PACKAGE* interface) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->get_runtime(env);
+  SPVM_RUNTIME* runtime = env->runtime;
   
   // When left package is interface, right package have all methods which left package have
   assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
@@ -543,17 +542,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
   memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
   
   return string3;
-}
-
-SPVM_RUNTIME* SPVM_RUNTIME_API_get_runtime() {
-  
-  return SPVM_GLOBAL_RUNTIME;
-}
-
-void SPVM_RUNTIME_API_set_runtime(SPVM_ENV* env, SPVM_RUNTIME* runtime) {
-  (void)env;
-  
-  SPVM_GLOBAL_RUNTIME = runtime;
 }
 
 int32_t SPVM_RUNTIME_API_get_memory_blocks_count(SPVM_ENV* env) {
