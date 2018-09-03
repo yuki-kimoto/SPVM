@@ -72,13 +72,16 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // fields
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->fields_unit * portable->fields_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->fields_unit * portable->fields_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->fields[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // fields_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields_length = ");
@@ -86,13 +89,16 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // package_vars
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars_unit * portable->package_vars_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // package_vars_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars_length = ");
@@ -100,81 +106,134 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // subs
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->subs_unit * portable->subs_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->subs_unit * portable->subs_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->subs[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // subs_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs_length = ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->subs_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-  // args
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = {\n");
-  for (int32_t i = 0; i < portable->args_unit * portable->args_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->args[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  // packages
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_unit * portable->packages_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // packages_length
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages_length = ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_length);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+  // args
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->args_unit * portable->args_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->args_unit * portable->args_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->args[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->args[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
 
   // mys
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys_unit * portable->mys_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->mys_unit * portable->mys_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // info_types
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types_unit * portable->info_types_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_types_unit * portable->info_types_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // info_field_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_field_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
-  // package_var_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids = {\n");
+  // info_package_var_ids
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_package_var_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // info_sub_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_sub_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // opcodes
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes = {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->opcodes_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // info_string_lengths
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_string_lengths_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_string_lengths_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_lengths[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_string_lengths[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
 
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
@@ -187,13 +246,8 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     runtime->info_long_values = portable->info_long_values;
     runtime->info_double_values = portable->info_double_values;
     runtime->info_string_values = portable->info_string_values;
-    runtime->info_string_lengths = portable->info_string_lengths;
     runtime->symbols = portable->symbols;
-    
     portable->info_switch_infos_length
-    runtime->packages_length = portable->packages_length;
-    runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
-    for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
   */
 
 }
