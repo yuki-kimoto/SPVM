@@ -1,5 +1,6 @@
 0.0368 2018-09-03
   - remove global runtime. SPVM become reentrant.
+  - more portable, remove all static and inline keywords.
 0.0367 2018-09-01
   - runtime don't need compiler information
   - free compiler memory completly
