@@ -252,8 +252,6 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
-  warn("%s", string_buffer->buffer);
-
   // info_sub_ids
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids_length + 1);
@@ -290,9 +288,36 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
 
-  /*
-    runtime->info_string_values = portable->info_string_values;
-    runtime->symbols = portable->symbols;
-  */
+  // info_string_values
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_string_values_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_string_values_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = \"");
+    {
+      for (int32_t j = 0; j < portable->info_string_lengths_length; j++) {
+        SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->info_string_values[i][j]);
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  }
 
+  // symbols
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->symbols_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->symbols_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->symbols[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = \"");
+    {
+      int32_t string_length = strlen(portable->symbols[i]);
+      for (int32_t j = 0; j < string_length; j++) {
+        SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->symbols[i][j]);
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  }
 }
