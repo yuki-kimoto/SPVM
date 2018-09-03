@@ -55,13 +55,16 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));\n");
 
   // basic_types
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = [\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types_unit * portable->basic_types_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
   
   // basic_types_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types_length = ");
@@ -69,13 +72,13 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // fields
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields = [\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields = {\n");
   for (int32_t i = 0; i < portable->fields_unit * portable->fields_length; i++) {
     SPVM_STRING_BUFFER_add(string_buffer, "    ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->fields[i]);
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // fields_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->fields_length = ");
@@ -83,36 +86,95 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // package_vars
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = [\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = {\n");
   for (int32_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i++) {
     SPVM_STRING_BUFFER_add(string_buffer, "    ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars[i]);
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // package_vars_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars_length = ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
+  // subs
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs = {\n");
+  for (int32_t i = 0; i < portable->subs_unit * portable->subs_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->subs[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // subs_length
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->subs_length = ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->subs_length);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
   // args
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = [\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = {\n");
   for (int32_t i = 0; i < portable->args_unit * portable->args_length; i++) {
     SPVM_STRING_BUFFER_add(string_buffer, "    ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->args[i]);
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // mys
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = [\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = {\n");
   for (int32_t i = 0; i < portable->mys_unit * portable->mys_length; i++) {
     SPVM_STRING_BUFFER_add(string_buffer, "    ");
     SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys[i]);
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // info_types
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types = {\n");
+  for (int32_t i = 0; i < portable->info_types_unit * portable->info_types_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // info_field_ids
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids = {\n");
+  for (int32_t i = 0; i < portable->info_field_ids_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // package_var_ids
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids = {\n");
+  for (int32_t i = 0; i < portable->info_package_var_ids_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // info_sub_ids
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = {\n");
+  for (int32_t i = 0; i < portable->info_sub_ids_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+
+  // opcodes
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes = {\n");
+  for (int32_t i = 0; i < portable->opcodes_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
 
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
@@ -122,183 +184,16 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   warn("%s", string_buffer->buffer);
   
   /*
-  runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
-  runtime->info_field_ids = portable->info_field_ids;
-  runtime->info_package_var_ids = portable->info_package_var_ids;
-  runtime->info_sub_ids = portable->info_sub_ids;
-  runtime->opcodes = (SPVM_OPCODE*)portable->opcodes;
-  runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
-  runtime->subs_length = portable->subs_length;
-  runtime->symbols = portable->symbols;
-
-  runtime->info_long_values = portable->info_long_values;
-  runtime->info_double_values = portable->info_double_values;
-  runtime->info_string_values = portable->info_string_values;
-  runtime->info_string_lengths = portable->info_string_lengths;
-  
-  // Native sub addresses
-  runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
-  
-  // Precompile sub addresses
-  runtime->sub_precompile_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
-  
-  // build runtime info_switch_info info_switch_infos
-  int32_t info_switch_info_ints_index = 0;
-  runtime->info_switch_infos = SPVM_LIST_new(0);
-  for (int32_t i = 0; i < portable->info_switch_infos_length; i++) {
-    int32_t* portable_info_switch_info_ints = (int32_t*)&portable->info_switch_info_ints[info_switch_info_ints_index];
-
-    SPVM_RUNTIME_INFO_SWITCH_INFO* runtime_info_switch_info = SPVM_RUNTIME_INFO_SWITCH_INFO_new();
-    runtime_info_switch_info->default_opcode_rel_index = portable_info_switch_info_ints[0];
-    int32_t case_infos_length = portable_info_switch_info_ints[1];
+    runtime->info_long_values = portable->info_long_values;
+    runtime->info_double_values = portable->info_double_values;
+    runtime->info_string_values = portable->info_string_values;
+    runtime->info_string_lengths = portable->info_string_lengths;
+    runtime->symbols = portable->symbols;
     
-    runtime_info_switch_info->case_infos = SPVM_LIST_new(0);
-    for (int32_t case_info_index = 0; case_info_index < case_infos_length; case_info_index++) {
-      SPVM_RUNTIME_INFO_CASE_INFO* info_case_info = SPVM_RUNTIME_INFO_CASE_INFO_new();
-      
-      info_case_info->match = portable_info_switch_info_ints[2 + (2 * case_info_index)];
-      info_case_info->opcode_rel_index = portable_info_switch_info_ints[2 + (2 * case_info_index) + 1];
-      
-      SPVM_LIST_push(runtime_info_switch_info->case_infos, info_case_info);
-    }
-    
-    info_switch_info_ints_index += 2 + case_infos_length * 2;
-    
-    SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
-  }
-
-  // build package variable symtable
-  runtime->package_var_symtable = SPVM_HASH_new(0);
-  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = &runtime->package_vars[package_var_id];
-    const char* runtime_package_var_name = runtime->symbols[runtime_package_var->name_id];
-    SPVM_HASH_insert(runtime->package_var_symtable, runtime_package_var_name, strlen(runtime_package_var_name), runtime_package_var);
-  }
-
-  // build packages
-  runtime->packages_length = portable->packages_length;
-  runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
-  for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
-    int32_t* portable_package = (int32_t*)&portable->packages[i];
-    
-    SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[i / portable->packages_unit];
-    runtime_package->id = portable_package[0];
-    runtime_package->name_id = portable_package[1];
-    runtime_package->destructor_sub_id = portable_package[2];
-    runtime_package->category = portable_package[3];
-    runtime_package->load_path_id = portable_package[4];
-  }
-
-  // build package symtable
-  runtime->package_symtable = SPVM_HASH_new(0);
-  for (int32_t package_id = 0; package_id < runtime->packages_length; package_id++) {
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    const char* package_name = runtime->symbols[package->name_id];
-    SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
-    
-    package->fields = SPVM_LIST_new(0);
-    package->field_symtable = SPVM_HASH_new(0);
-    package->field_signatures = SPVM_LIST_new(0);
-    package->field_signature_symtable = SPVM_HASH_new(0);
-    package->object_field_indexes = SPVM_LIST_new(0);
-    package->package_vars = SPVM_LIST_new(0);
-    package->package_var_symtable = SPVM_HASH_new(0);
-    package->package_var_signatures = SPVM_LIST_new(0);
-    package->package_var_signature_symtable = SPVM_HASH_new(0);
-    package->subs = SPVM_LIST_new(0);
-    package->sub_symtable = SPVM_HASH_new(0);
-    package->sub_signatures = SPVM_LIST_new(0);
-    package->sub_signature_symtable = SPVM_HASH_new(0);
-    package->has_interface_cache_symtable = SPVM_HASH_new(0);
-  }
-
-  // Register field info to package
-  for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
-    SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-    
-    int32_t package_id = field->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    SPVM_LIST_push(package->fields, field);
-    const char* field_name = runtime->symbols[field->name_id];
-    SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
-    
-    const char* field_signature = runtime->symbols[field->signature_id];
-    SPVM_LIST_push(package->field_signatures, (char*)field_signature);
-    SPVM_HASH_insert(package->field_signature_symtable, field_signature, strlen(field_signature), field);
-    
-    if (SPVM_RUNTIME_API_is_object_type(env, field->basic_type_id, field->type_dimension, field->type_flag)) {
-      SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
-    }
-  }
-
-  // Register package_var info to package
-  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
-    
-    int32_t package_id = package_var->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    SPVM_LIST_push(package->package_vars, package_var);
-    const char* package_var_name = runtime->symbols[package_var->name_id];
-    SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
-    
-    const char* package_var_signature = runtime->symbols[package_var->signature_id];
-    SPVM_LIST_push(package->package_var_signatures, (char*)package_var_signature);
-    SPVM_HASH_insert(package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
-  }
-
-  // Register sub info to package
-  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-    
-    int32_t package_id = sub->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    SPVM_LIST_push(package->subs, sub);
-    const char* sub_name = runtime->symbols[sub->name_id];
-    SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
-    
-    const char* sub_signature = runtime->symbols[sub->signature_id];
-    SPVM_LIST_push(package->sub_signatures, (char*)sub_signature);
-    SPVM_HASH_insert(package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
-  }
-
-  // build runtime basic type symtable
-  runtime->basic_type_symtable = SPVM_HASH_new(0);
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    const char* runtime_basic_type_name = runtime->symbols[runtime_basic_type->name_id];
-    SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
-  }
-  
-  // build runtime field symtable
-  runtime->field_symtable = SPVM_HASH_new(0);
-  for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
-    SPVM_RUNTIME_FIELD* runtime_field = &runtime->fields[field_id];
-    const char* runtime_field_name = runtime->symbols[runtime_field->name_id];
-    SPVM_HASH_insert(runtime->field_symtable, runtime_field_name, strlen(runtime_field_name), runtime_field);
-  }
-
-  // build sub symtable
-  runtime->sub_symtable = SPVM_HASH_new(0);
-  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-    const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
-    SPVM_HASH_insert(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
-  }
-
-  // Initialize Package Variables
-  runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
-
-  runtime->mortal_stack_capacity = 1;
-
-  runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
- 
- */
+    portable->info_switch_infos_length
+    runtime->packages_length = portable->packages_length;
+    runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
+    for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
+  */
 
 }
