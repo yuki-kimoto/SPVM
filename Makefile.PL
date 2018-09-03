@@ -68,6 +68,16 @@ WriteMakefile(
     clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib t/spvm_build/src t/spvm_build/work t/spvm_build/lib @object_files"},
     DEFINE => "@defines -o \$@",
     EXE_FILES => ['script/spvmcc'],
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        resources => {
+            repository => {
+                type => 'git',
+                url  => 'https://github.com/yuki-kimoto/SPVM.git',
+                web  => 'https://github.com/yuki-kimoto/SPVM',
+            },
+        },
+    },
 );
 
 # Create precompile test
