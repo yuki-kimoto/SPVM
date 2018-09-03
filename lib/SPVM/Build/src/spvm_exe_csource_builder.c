@@ -253,13 +253,46 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
   warn("%s", string_buffer->buffer);
-  
+
+  // info_sub_ids
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_sub_ids_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
+
+  // info_long_values
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_long_values_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_long_values_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_long_values[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_long(string_buffer, portable->info_long_values[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
+
+  // info_double_values
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_double_values_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_double_values_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_double(string_buffer, portable->info_double_values[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
+
   /*
-    runtime->info_long_values = portable->info_long_values;
-    runtime->info_double_values = portable->info_double_values;
     runtime->info_string_values = portable->info_string_values;
     runtime->symbols = portable->symbols;
-    portable->info_switch_infos_length
   */
 
 }

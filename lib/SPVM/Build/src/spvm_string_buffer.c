@@ -210,7 +210,7 @@ void SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t valu
 void SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value) {
   
   
-  int32_t max_length = 40;
+  int32_t max_length = 20;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
@@ -227,7 +227,7 @@ void SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value
 void SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double value) {
   
   
-  int32_t max_length = 70;
+  int32_t max_length = 20;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
