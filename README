@@ -1,3 +1,20 @@
 SPVM
 
   Provide Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing to Perl
+
+FOR DEVELOPER
+
+  PORTABILITY NOTE
+  
+    Compiler type, version and working is various in different environments. 
+    Main compiler targets is gcc and clang.
+    Main OS targets is Linux/Unix, Windows, macOS.
+    To keep maxmam portability, I have the following rule.
+  
+    - don't use realloc.
+    - don't use global variables
+    - don't use static keyword
+    - don't use inline keyword
+    - use -std=c99
+    - fix all warnings before CPAN release
+    - exception is spvm_yacc.c. This is automatically created by yacc/bison.
