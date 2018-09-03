@@ -2,7 +2,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "spvm_runtime_builder.h"
+#include "spvm_exe_csource_builder.h"
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
@@ -39,162 +39,38 @@
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
 #include "spvm_my.h"
+
+#include "spvm_string_buffer.h"
 #include "spvm_portable.h"
 
-#include "spvm_exe_csource_builder.h"
-#include "spvm_string_buffer.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
-
-  void* env_init[]  = {
-    SPVM_RUNTIME_API_get_array_length,
-    SPVM_RUNTIME_API_get_byte_array_elements,
-    SPVM_RUNTIME_API_get_short_array_elements,
-    SPVM_RUNTIME_API_get_int_array_elements,
-    SPVM_RUNTIME_API_get_long_array_elements,
-    SPVM_RUNTIME_API_get_float_array_elements,
-    SPVM_RUNTIME_API_get_double_array_elements,
-    SPVM_RUNTIME_API_get_object_array_element,
-    SPVM_RUNTIME_API_set_object_array_element,
-    SPVM_RUNTIME_API_get_field_index,
-    SPVM_RUNTIME_API_get_byte_field,
-    SPVM_RUNTIME_API_get_short_field,
-    SPVM_RUNTIME_API_get_int_field,
-    SPVM_RUNTIME_API_get_long_field,
-    SPVM_RUNTIME_API_get_float_field,
-    SPVM_RUNTIME_API_get_double_field,
-    SPVM_RUNTIME_API_get_object_field,
-    SPVM_RUNTIME_API_get_pointer,
-    SPVM_RUNTIME_API_set_byte_field,
-    SPVM_RUNTIME_API_set_short_field,
-    SPVM_RUNTIME_API_set_int_field,
-    SPVM_RUNTIME_API_set_long_field,
-    SPVM_RUNTIME_API_set_float_field,
-    SPVM_RUNTIME_API_set_double_field,
-    SPVM_RUNTIME_API_set_object_field,
-    SPVM_RUNTIME_API_get_sub_id,
-    SPVM_RUNTIME_API_get_sub_id_method_call,
-    SPVM_RUNTIME_API_get_basic_type_id,
-    SPVM_RUNTIME_API_new_object_raw,
-    SPVM_RUNTIME_API_new_byte_array_raw,
-    SPVM_RUNTIME_API_new_short_array_raw,
-    SPVM_RUNTIME_API_new_int_array_raw,
-    SPVM_RUNTIME_API_new_long_array_raw,
-    SPVM_RUNTIME_API_new_float_array_raw,
-    SPVM_RUNTIME_API_new_double_array_raw,
-    SPVM_RUNTIME_API_new_object_array_raw,
-    SPVM_RUNTIME_API_new_multi_array_raw,
-    SPVM_RUNTIME_API_new_value_t_array_raw,
-    SPVM_RUNTIME_API_new_string_raw,
-    SPVM_RUNTIME_API_new_pointer_raw,
-    SPVM_RUNTIME_API_get_exception,
-    SPVM_RUNTIME_API_set_exception,
-    SPVM_RUNTIME_API_get_ref_count,
-    SPVM_RUNTIME_API_inc_ref_count,
-    SPVM_RUNTIME_API_dec_ref_count,
-    SPVM_RUNTIME_API_inc_dec_ref_count,
-    SPVM_RUNTIME_API_get_memory_blocks_count,
-    SPVM_RUNTIME_API_dec_ref_count_only,
-    SPVM_RUNTIME_API_weaken,
-    SPVM_RUNTIME_API_isweak,
-    SPVM_RUNTIME_API_unweaken,
-    SPVM_RUNTIME_API_concat,
-    SPVM_RUNTIME_API_weaken_object_field,
-    SPVM_RUNTIME_API_create_exception_stack_trace,
-    SPVM_RUNTIME_API_check_cast,
-    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, elements_length), // object_elements_length_byte_offset
-    SPVM_RUNTIME_call_sub,
-    SPVM_RUNTIME_API_enter_scope,
-    SPVM_RUNTIME_API_push_mortal,
-    SPVM_RUNTIME_API_leave_scope,
-    SPVM_RUNTIME_API_new_object,
-    SPVM_RUNTIME_API_new_byte_array,
-    SPVM_RUNTIME_API_new_short_array,
-    SPVM_RUNTIME_API_new_int_array,
-    SPVM_RUNTIME_API_new_long_array,
-    SPVM_RUNTIME_API_new_float_array,
-    SPVM_RUNTIME_API_new_double_array,
-    SPVM_RUNTIME_API_new_object_array,
-    SPVM_RUNTIME_API_new_multi_array,
-    SPVM_RUNTIME_API_new_value_t_array,
-    SPVM_RUNTIME_API_new_string,
-    SPVM_RUNTIME_API_new_pointer,
-    SPVM_RUNTIME_API_get_package_var_id,
-    (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
-    runtime,
-  };
+void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, SPVM_PORTABLE* portable) {
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t env_length = 79;
-  void** env = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * env_length);
-  memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_native.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_portable.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_builder.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "int32_t main(int argc, char *argv[]) {\n");
   
-  return (SPVM_ENV*)env;
-}
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));\n");
 
-SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
+  // Basic types
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = [\n");
+  for (int32_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  ];\n");
 
-  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+  // Create run-time
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
-  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_create_env(runtime);
+  warn("%s", string_buffer->buffer);
   
-  // Share runtime information with portable
-  runtime->symbols = portable->symbols;
-  runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)portable->basic_types;
+  /*
   runtime->basic_types_length = portable->basic_types_length;
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
   runtime->fields_length = portable->fields_length;
@@ -209,6 +85,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->opcodes = (SPVM_OPCODE*)portable->opcodes;
   runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
   runtime->subs_length = portable->subs_length;
+  runtime->symbols = portable->symbols;
 
   runtime->info_long_values = portable->info_long_values;
   runtime->info_double_values = portable->info_double_values;
@@ -377,14 +254,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->mortal_stack_capacity = 1;
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+ 
+ */
 
-  // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-  
-  // Build package csource
-  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable);
-  
-  SPVM_STRING_BUFFER_free(string_buffer);
-  
-  return env;
 }

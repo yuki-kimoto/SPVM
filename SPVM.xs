@@ -507,7 +507,7 @@ build_package_csource(...)
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
   SPVM_STRING_BUFFER_free(string_buffer);
-  
+
   XPUSHs(sv_package_csource);
   XSRETURN(1);
 }
