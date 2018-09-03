@@ -235,6 +235,18 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
 
+  // info_switch_infos
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  for (int32_t i = 0; i < portable->info_switch_info_ints_length; i++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, i);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints[i]);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
+
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
