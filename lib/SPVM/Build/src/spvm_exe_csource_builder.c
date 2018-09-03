@@ -176,7 +176,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_field_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_field_ids_length; i++) {
@@ -188,7 +188,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_package_var_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_package_var_ids_length; i++) {
@@ -200,7 +200,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_sub_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_sub_ids_length; i++) {
@@ -212,7 +212,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // opcodes
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->opcodes_length; i++) {
@@ -224,7 +224,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_string_lengths
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_string_lengths_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->info_string_lengths_length; i++) {
