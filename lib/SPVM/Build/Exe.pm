@@ -96,10 +96,8 @@ sub create_exe_file {
 sub compile_spvm_csources {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
-  my $src_files = glob "blib/lib/SPVM/Build/src/*";
-  
   # Correct source files
-  my $src_files = [glob "blib/lib/SPVM/Build/src/*"];
+  my $src_files = [glob "blib/lib/SPVM/Build/src/*.c"];
   
   # Config
   my $build_config = SPVM::Build::Util::new_default_build_config;

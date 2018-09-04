@@ -27,7 +27,7 @@ $optimize ||= $build_config->get_config('optimize');
 
 my $ccflags = $build_config->get_ccflags;
 
-my $ldflags = $build_config->get_ldflags;
+my $lddlflags = $build_config->get_lddlflags;
 
 my $src_dir = "lib/SPVM/Build/src";
 my @csource_files = glob "$src_dir/*.c";
@@ -36,7 +36,7 @@ my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $obje
 my $object_dir = 'solo';
 
 my $cccmd = "cc -c @defines $ccflags $optimize";
-my $ldcmd = "cc $ldflags";
+my $ldcmd = "cc ";
 
 my $makefile = <<"EOS";
 

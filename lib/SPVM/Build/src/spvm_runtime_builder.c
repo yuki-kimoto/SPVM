@@ -187,7 +187,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
 }
 
 SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
-
+  
   SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
   runtime->portable = portable;
@@ -216,7 +216,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->info_double_values = portable->info_double_values;
   runtime->info_string_values = portable->info_string_values;
   runtime->info_string_lengths = portable->info_string_lengths;
-  
+
   // Native sub addresses
   runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   
@@ -314,7 +314,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
       SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
     }
   }
-
+  
   // Register package_var info to package
   for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
     SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
@@ -335,6 +335,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   // Register sub info to package
   for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
     SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+    
     
     int32_t package_id = sub->package_id;
     
