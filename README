@@ -1,8 +1,73 @@
 SPVM
 
   Provide Fast Calculation and Easy C/C++ Binding with perlish syntax and static typing to Perl
+  
+  See SPVM document
+  
+  https://metacpan.org/pod/SPVM
 
-FOR DEVELOPER
+DEVELOPERS NOTE
+  
+  TESTS
+    
+    Do tests
+    
+      perl Makefile.PL
+      make
+      make test
+    
+    Cleanup
+    
+      make clean
+      
+    Create distribution
+      
+      perl Makefile.PL
+      rm MANIFEST
+      make manifest
+      make disttest
+      make dist
+
+  SOLE TESTS
+  
+    SPVM solo test command
+
+       # Normal run
+       yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/main foo bar
+
+       # Debug run - Print AST, package information, operaion codes
+       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_OBJECT_COUNT && make -f solo/Makefile && ./solo/main foo bar
+
+       # Parser Debug run - Print yacc result
+       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/main foo bar
+
+    See batcktrace of core dump
+
+      gdb solo/main core.*
+
+    What is solo test command?
+
+      solo test is used for debgug.
+      
+      SPVM is compiled to dynamic link library by -O3 option.
+      
+      this is difficult to debug because debug information is removed and it is not simple machine code.
+      
+      If you use the above solo test commands, you can create
+      
+        solo/main
+      
+      "solo/main" can execute SPVM module by the following way.
+      
+        ./solo/main
+
+    See core dump
+
+      If you use Debug run, you can see core dump and back trace by gdb command
+
+        gdb spvm core.*
+        
+        bt
 
   PORTABILITY NOTE
   
@@ -18,3 +83,4 @@ FOR DEVELOPER
     - use -std=c99
     - fix all warnings before CPAN release
     - exception is spvm_yacc.c. This is automatically created by yacc/bison.
+  

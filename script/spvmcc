@@ -9,7 +9,8 @@ use SPVM::Build::Util;
 SPVM::Build::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'o|output=s'      => \my $output_file,
+  'o|output-dir=s'  => \my $output_dir,
+  'n|name=s'        => \my $name,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
 ;
@@ -20,7 +21,8 @@ push @INC, @include_dirs;
 
 my $build_exe = SPVM::Build::Exe->new(
   build_dir => $build_dir,
-  output_file => $output_file,
+  output_dir => $output_dir,
+  name => $name,
 );
 $build_exe->create_exe_file($package_name);
 
