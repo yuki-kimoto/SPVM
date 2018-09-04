@@ -1,7 +1,10 @@
 package TestCase::Exe {
-  use TestCase;
-  
+  use TestCase::Minimal;
   sub main : int ($argv : string[]) {
-    return 10;
+    my $minimal = new TestCase::Minimal;
+    
+    $minimal->{x} = 10;
+    
+    return $minimal->{y};
   }
 }

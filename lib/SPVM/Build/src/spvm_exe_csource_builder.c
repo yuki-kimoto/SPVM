@@ -323,21 +323,22 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_SUB* sub_start;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t sub_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (start_sub_name) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    sub_start = SPVM_HASH_fetch(compiler->sub_symtable, start_sub_name, strlen(start_sub_name));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (sub_start) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      sub_id = sub_start->id;\n");
+  // Package
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t sub_id = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (package) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"main\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (sub) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      sub_id = sub->id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Can't find entry point subroutine %s\", start_sub_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Can't find entry point subroutine %s\\n\", sub_name);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      exit(EXIT_FAILURE);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    fprintf(stderr, \"Can't find entry point subroutine\\n\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exit(EXIT_FAILURE);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    fprintf(stderr, \"Can't find entry point package %s\\n\", package_name);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t scope_id = env->enter_scope(env);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t arg_type_basic_id = env->get_basic_type_id(env, \"byte\");\n");
