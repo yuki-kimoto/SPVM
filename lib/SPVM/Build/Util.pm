@@ -211,6 +211,9 @@ sub new_default_build_config {
   $lib_dir =~ s/\/SPVM\/Build\/Util.pm$//;
   $build_config->add_ccflags("-I$lib_dir");
   
+  # math library
+  $build_config->add_lddlflags("-lm");
+  
   # C99
   $build_config->set_std('c99');
   

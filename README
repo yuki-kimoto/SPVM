@@ -75,7 +75,8 @@ DEVELOPERS NOTE
     
       perl Makefile.PL
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvmcc_build -o spvmcc_build -n myexe TestCase::Exe
-    
+      gcc -o spvmcc_build/myexe spvmcc_build/my_runtime.so
+      
   PORTABILITY NOTE
   
     Compiler type, version and working is various in different environments. 

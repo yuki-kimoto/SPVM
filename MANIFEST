@@ -22,6 +22,7 @@ lib/SPVM/Build/include/spvm_descriptor.h
 lib/SPVM/Build/include/spvm_dumper.h
 lib/SPVM/Build/include/spvm_enumeration.h
 lib/SPVM/Build/include/spvm_enumeration_value.h
+lib/SPVM/Build/include/spvm_exe_csource_builder.h
 lib/SPVM/Build/include/spvm_field.h
 lib/SPVM/Build/include/spvm_field_access.h
 lib/SPVM/Build/include/spvm_hash.h
@@ -81,6 +82,7 @@ lib/SPVM/Build/src/spvm_descriptor.c
 lib/SPVM/Build/src/spvm_dumper.c
 lib/SPVM/Build/src/spvm_enumeration.c
 lib/SPVM/Build/src/spvm_enumeration_value.c
+lib/SPVM/Build/src/spvm_exe_csource_builder.c
 lib/SPVM/Build/src/spvm_field.c
 lib/SPVM/Build/src/spvm_field_access.c
 lib/SPVM/Build/src/spvm_hash.c
@@ -179,7 +181,6 @@ solo/lib/TestCase/Pointer.spvm
 solo/lib/TestCase/Simple.spvm
 solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
-solo/README
 solo/solo_Makefile.PL
 SPVM.xs
 spvm_build/.gitkeep
@@ -226,6 +227,7 @@ t/default/lib/TestCase/Double.spvm
 t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Exception.spvm
+t/default/lib/TestCase/Exe.spvm
 t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension2.c

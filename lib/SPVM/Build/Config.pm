@@ -120,58 +120,31 @@ sub get_ld {
   return $self->get_config('ld');
 }
 
-sub set_ldflags {
-  my ($self, $ldflags) = @_;
+sub set_lddlflags {
+  my ($self, $lddlflags) = @_;
   
-  $self->set_config(ldflags => $ldflags);
+  $self->set_config(lddlflags => $lddlflags);
   
   return $self;
 }
 
-sub get_ldflags {
+sub get_lddlflags {
   my $self = shift;
   
-  return $self->get_config('ldflags');
+  return $self->get_config('lddlflags');
 }
 
-sub add_ldflags {
-  my ($self, $new_ldflags) = @_;
+sub add_lddlflags {
+  my ($self, $new_lddlflags) = @_;
   
-  my $ldflags = $self->get_config('ldflags');
+  my $lddlflags = $self->get_config('lddlflags');
   
-  $ldflags .= " $new_ldflags";
+  $lddlflags .= " $new_lddlflags";
   
-  $self->set_config('ldflags' => $ldflags);
+  $self->set_config('lddlflags' => $lddlflags);
   
   return $self;
 }
-
-sub set_lddflags {
-  my ($self, $lddflags) = @_;
-  
-  $self->set_config(lddflags => $lddflags);
-  
-  return $self;
-}
-
-sub get_lddflags {
-  my $self = shift;
-  
-  return $self->get_config('lddflags');
-}
-
-sub add_lddflags {
-  my ($self, $new_lddflags) = @_;
-  
-  my $lddflags = $self->get_config('lddflags');
-  
-  $lddflags .= " $new_lddflags";
-  
-  $self->set_config('lddflags' => $lddflags);
-  
-  return $self;
-}
-
 
 =head1 NAME
 
@@ -278,23 +251,23 @@ Set C<ld>.
 
 Get C<ld>.
 
-=head2 set_ldflags
+=head2 set_lddlflags
 
-  $build_config->set_ldflags($ldflags);
+  $build_config->set_lddlflags($lddlflags);
 
-Set C<ldflags>.
+Set C<lddlflags>.
 
-=head2 get_ldflags
+=head2 get_lddlflags
 
-  my $ldflags = $build_config->get_ldflags;
+  my $lddlflags = $build_config->get_lddlflags;
 
-Get C<ldflags>.
+Get C<lddlflags>.
 
-=head2 add_ldflags
+=head2 add_lddlflags
 
-  $build_config->add_ldflags($ldflags);
+  $build_config->add_lddlflags($lddlflags);
 
-Add C<ldflags> after current C<ldflags>.
+Add C<lddlflags> after current C<lddlflags>.
 
 =cut
 

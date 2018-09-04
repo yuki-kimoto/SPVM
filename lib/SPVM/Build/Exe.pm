@@ -79,6 +79,9 @@ sub create_exe_file {
 =cut
   
   $self->{build} = $build;
+
+  # Compile SPVM csource
+  $self->compile_spvm_csources;
   
   # Create main csouce
   $self->create_main_csource($package_name);
@@ -90,10 +93,49 @@ sub create_exe_file {
   $self->link_main($package_name);
 }
 
+sub compile_spvm_csources {
+  my ($self, $package_name, $sub_names, $opt) = @_;
+  
+  my $src_files = glob "blib/lib/SPVM/Build/src/*";
+  
+  # Correct source files
+  my $src_files = [glob "blib/lib/SPVM/Build/src/*"];
+  
+  # Config
+  my $build_config = SPVM::Build::Util::new_default_build_config;
+  
+  # CBuilder configs
+  my $ccflags = $build_config->get_ccflags;
+  
+  # Default include path
+  $build_config->add_ccflags("-Iblib/lib/SPVM/Build/include");
+
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user configs
+  my $config = $build_config->to_hash;
+  
+  # Compile source files
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $object_files = [];
+  for my $src_file (@$src_files) {
+    # Object file
+    my $object_file = "spvmcc_build/" . basename($src_file);
+    $object_file =~ s/\.c$//;
+    $object_file .= '.o';
+    
+    # Compile source file
+    $cbuilder->compile(
+      source => $src_file,
+      object_file => $object_file,
+    );
+    push @$object_files, $object_file;
+  }
+}
+
 sub create_main_csource {
   my ($self) = @_;
   
-  my $main_csource_file = "spvmcc_build/main.c";
+  my $main_csource_file = "spvmcc_build/my_runtime.c";
 
   # Create c source file
   my $main_csource = $self->build_main_csource;
@@ -112,8 +154,8 @@ sub compile_main {
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
-  my $object_file = "spvmcc_build/main.o";
-  my $src_file = "spvmcc_build/main.c";
+  my $object_file = "spvmcc_build/my_runtime.o";
+  my $src_file = "spvmcc_build/my_runtime.c";
   
   # Compile source file
   $cbuilder->compile(
@@ -127,13 +169,13 @@ sub compile_main {
 sub link_main {
   my ($self, $package_name) = @_;
   
-  my $object_files = ['spvmcc_build/main.o'];
+  my $object_files = [glob 'spvmcc_build/*.o'];
   
   my $build_config = SPVM::Build::Util::new_default_build_config();
   my $config = $build_config->to_hash;
   
   # CBuilder configs
-  my $ldflags = $build_config->get_ldflags;
+  my $lddlflags = $build_config->get_lddlflags;
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
@@ -157,7 +199,7 @@ sub link_main {
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
-  my $tmp_shared_lib_file = $cbuilder->link_executable(
+  my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,

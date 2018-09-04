@@ -277,7 +277,7 @@ sub link_shared_lib {
   }
   
   # CBuilder configs
-  my $ldflags = $build_config->get_ldflags;
+  my $lddlflags = $build_config->get_lddlflags;
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
