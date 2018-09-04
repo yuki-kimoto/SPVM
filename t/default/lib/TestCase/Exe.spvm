@@ -1,0 +1,7 @@
+package TestCase::Exe {
+  use TestCase;
+  
+  sub main : int ($argv : string[]) {
+    return 10;
+  }
+}

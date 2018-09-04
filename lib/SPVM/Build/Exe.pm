@@ -51,13 +51,12 @@ sub create_exe_file {
   push @{$build->{package_infos}}, $package_info;
   
   # Compile
-  my $compile_success = $self->compile_spvm();
+  my $compile_success = $build->compile_spvm();
   unless ($compile_success) {
     croak "Compile error";
   }
-  
-  my $build_dir = $self->build_dir;
-  
+
+=pod
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
   my $cbuilder_native = SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
@@ -77,41 +76,32 @@ sub create_exe_file {
   $cbuilder_precompile->build({quiet => 0});
   
   $self->{build} = $build;
-  
+=cut
+
   # Create main csouce
   $self->create_main_csource;
   
+=pod
   # compile main
   $self->compile_main;
   
   # Link and create exe file
   $self->link_main;
+=cut
+
 }
 
 sub create_main_csource {
-  my ($self, $package_name, $sub_names, $opt) = @_;
+  my ($self) = @_;
   
-  my $input_dir = $opt->{input_dir};
-
-  my $work_dir = $opt->{work_dir};
-  mkpath $work_dir;
-  
-  my $output_dir = $opt->{output_dir};
-  
-  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
-  my $work_src_dir = "$work_dir/$package_path";
-  mkpath $work_src_dir;
-  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $source_file = "$work_src_dir/$module_base_name.c";
+  my $main_csource_file = "spvmcc_build/main.c";
 
   # Create c source file
-  my $main = $self->build_main;
-  open my $fh, '>', $source_file
-    or die "Can't create $source_file";
-  print $fh $main;
+  my $main_csource = $self->build_main_csource;
+  
+  open my $fh, '>', $main_csource_file
+    or die "Can't create $main_csource_file";
+  print $fh $main_csource;
   close $fh;
 }
 

@@ -68,7 +68,14 @@ DEVELOPERS NOTE
         gdb spvm core.*
         
         bt
-
+  
+  EXE TESTS
+    
+    SPVM can create exe file.
+    
+      perl Makefile.PL
+      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvmcc_build -o spvmcc_build -n myexe TestCase::Exe
+    
   PORTABILITY NOTE
   
     Compiler type, version and working is various in different environments. 
