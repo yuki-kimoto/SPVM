@@ -86,11 +86,8 @@ sub create_exe_file {
   # compile main
   $self->compile_main;
 
-=pod
   # Link and create exe file
-  $self->link_main;
-=cut
-
+  $self->link_main($package_name);
 }
 
 sub create_main_csource {
@@ -125,6 +122,46 @@ sub compile_main {
   );
   
   return $object_file;
+}
+
+sub link_main {
+  my ($self, $package_name) = @_;
+  
+  my $object_files = ['spvmcc_build/main.o'];
+  
+  my $build_config = SPVM::Build::Util::new_default_build_config();
+  my $config = $build_config->to_hash;
+  
+  # CBuilder configs
+  my $ldflags = $build_config->get_ldflags;
+
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user configs
+  my $config = $build_config->to_hash;
+  
+  my $sub_names = [];
+  
+  my $cfunc_names = [];
+  for my $sub_name (@$sub_names) {
+    my $category = $self->category;
+    my $category_uc = uc $category;
+    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
+    $cfunc_name =~ s/:/_/g;
+    push @$cfunc_names, $cfunc_name;
+  }
+  
+  # This is dummy to suppress boot strap function
+  # This is bad hack
+  unless (@$cfunc_names) {
+    push @$cfunc_names, '';
+  }
+  
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $tmp_shared_lib_file = $cbuilder->link_executable(
+    objects => $object_files,
+    package_name => $package_name,
+    dl_func_list => $cfunc_names,
+  );
 }
 
 1;
