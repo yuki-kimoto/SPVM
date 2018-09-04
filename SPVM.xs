@@ -53,6 +53,9 @@
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
 
+#include "spvm_portable.h"
+#include "spvm_exe_csource_builder.h"
+
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* package) {
   
   // Create object
@@ -2596,6 +2599,42 @@ get_array_elements_bin(...)
   XPUSHs(sv_bin);
   XSRETURN(1);
 }
+
+MODULE = SPVM::Build::Exe		PACKAGE = SPVM::Build::Exe
+
+SV*
+build_main_csource(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Env
+  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
+  HV* hv_build = (HV*)SvRV(sv_build);
+  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  SPVM_PORTABLE* portable = runtime->portable;
+
+  // String buffer for csource
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+
+  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable);
+
+  SPVM_STRING_BUFFER_free(string_buffer);
+
+  SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  
+  XPUSHs(sv_main_csource);
+  XSRETURN(1);
+}
+
 
 MODULE = SPVM		PACKAGE = SPVM
 

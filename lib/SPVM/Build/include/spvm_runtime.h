@@ -96,6 +96,8 @@ struct SPVM_runtime {
   
   // Memory blocks count
   int32_t memory_blocks_count;
+  
+  SPVM_PORTABLE* portable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

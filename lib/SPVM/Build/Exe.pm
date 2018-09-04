@@ -14,6 +14,7 @@ use ExtUtils::CBuilder;
 use File::Copy 'move';
 use File::Path 'mkpath';
 use DynaLoader;
+use Scalar::Util 'weaken';
 
 use File::Basename 'dirname', 'basename';
 
@@ -60,27 +61,63 @@ sub create_exe_file {
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
   my $cbuilder_native = SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
-    compiler => $build->compiler,
     info => $build->info,
   );
+  $cbuilder_native->{build} = $build;
+  weaken $cbuilder_native->{build};
   $cbuilder_native->build({all_subs => 1, quiet => 0});
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $cbuilder_precompile = SPVM::Build::CBuilder::Precompile->new(
     build_dir => $build_dir,
-    compiler => $build->compiler,
     info => $build->info,
   );
+  $cbuilder_precompile->{build} = $build;
+  weaken $cbuilder_precompile->{build};
   $cbuilder_precompile->build({quiet => 0});
   
-  # Build SPVM source
+  $self->{build} = $build;
   
+  # Create main csouce
+  $self->create_main_csource;
   
-  # Build exe file
-  $self->build_exe;
+  # compile main
+  $self->compile_main;
+  
+  # Link and create exe file
+  $self->link_main;
 }
 
-sub compile_spvm_core {
+sub create_main_csource {
+  my ($self, $package_name, $sub_names, $opt) = @_;
+  
+  my $input_dir = $opt->{input_dir};
+
+  my $work_dir = $opt->{work_dir};
+  mkpath $work_dir;
+  
+  my $output_dir = $opt->{output_dir};
+  
+  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $work_src_dir = "$work_dir/$package_path";
+  mkpath $work_src_dir;
+  
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $source_file = "$work_src_dir/$module_base_name.c";
+
+  # Create c source file
+  my $main = $self->build_main;
+  open my $fh, '>', $source_file
+    or die "Can't create $source_file";
+  print $fh $main;
+  close $fh;
+}
+
+sub compile_main {
+
+=pod
   my ($self, $build) = @_;
   
   my $build_dir = $build->build_dir;
@@ -115,6 +152,8 @@ sub compile_spvm_core {
   }
   
   return $object_files;
+=cut
+
 }
 
 
