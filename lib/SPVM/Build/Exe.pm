@@ -79,14 +79,14 @@ sub create_exe_file {
 =cut
   
   $self->{build} = $build;
-
-  # Create main csouce
-  $self->create_main_csource;
   
-=pod
+  # Create main csouce
+  $self->create_main_csource($package_name);
+  
   # compile main
   $self->compile_main;
-  
+
+=pod
   # Link and create exe file
   $self->link_main;
 =cut
@@ -108,45 +108,23 @@ sub create_main_csource {
 }
 
 sub compile_main {
-
-=pod
-  my ($self, $build) = @_;
-  
-  my $build_dir = $build->build_dir;
-  
-  my $spvm_core_dir = "$build_dir/spvm_core";
-  
-  # SPVM source directory
-  my $spvm_src_dir = $INC{"SPVM/Build/Util.pm"};
-  $spvm_src_dir =~ s/\/Util\.pm$//;
-  $spvm_src_dir .= '/src';
-  
-  my @src_files = glob "$spvm_src_dir/*.c";
+  my ($self) = @_;
   
   my $build_config = SPVM::Build::Util::new_default_build_config();
   my $config = $build_config->to_hash;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(config => $config);
-  my $object_files = [];
-  for my $src_file (@src_files) {
-    # Object file
-    my $object_file = "$spvm_core_dir/" . basename($src_file);
-    $object_file =~ s/\.c$//;
-    $object_file .= '.o';
-    
-    # Compile source file
-    $cbuilder->compile(
-      source => $src_file,
-      object_file => $object_file,
-    );
-    push @$object_files, $object_file;
-  }
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $object_file = "spvmcc_build/main.o";
+  my $src_file = "spvmcc_build/main.c";
   
-  return $object_files;
-=cut
-
+  # Compile source file
+  $cbuilder->compile(
+    source => $src_file,
+    object_file => $object_file,
+  );
+  
+  return $object_file;
 }
-
 
 1;

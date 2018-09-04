@@ -43,15 +43,22 @@
 #include "spvm_string_buffer.h"
 #include "spvm_portable.h"
 
-void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, SPVM_PORTABLE* portable) {
+void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, SPVM_PORTABLE* portable, const char* package_name) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_sub.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"stdlib.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"string.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_hash.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_list.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_native.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_util_allocator.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_native.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_portable.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_api.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_builder.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_sub.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t main(int argc, char *argv[]) {\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));\n");
@@ -252,7 +259,6 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "}\n");
   
   // info_sub_ids
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
@@ -325,6 +331,9 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
 
   // Package
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t sub_id = -1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "const char* package_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (package) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"main\";\n");

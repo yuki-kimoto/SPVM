@@ -2609,7 +2609,10 @@ build_main_csource(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+
   HV* hv_self = (HV*)SvRV(sv_self);
+  const char* package_name = SvPV_nolen(sv_package_name);
   
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
@@ -2625,7 +2628,7 @@ build_main_csource(...)
   // String buffer for csource
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
 
-  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable);
+  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable, package_name);
 
   SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
 
