@@ -380,17 +380,5 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
 
   runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
-  /*
-  
-  // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-  
-  // Build package csource
-  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable);
-  
-  SPVM_STRING_BUFFER_free(string_buffer);
-  
-  */
-  
   return env;
 }

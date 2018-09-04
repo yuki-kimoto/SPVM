@@ -13,6 +13,8 @@
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_builder.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
 
 #include <spvm_native.h>
 
@@ -21,7 +23,7 @@
 int main(int argc, char *argv[]) {
   
   // Package name
-  const char* start_package_name = "TestCase";
+  const char* package_name = "TestCase";
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
@@ -29,20 +31,12 @@ int main(int argc, char *argv[]) {
   // compiler->debug = 1;
   
   // Create use op for entry point package
-  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, start_package_name, start_package_name, 0);
+  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
   SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
-  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, start_package_name, 0);
+  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
   SPVM_OP_build_use(compiler, op_use_start, op_type_start);
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
-  // Entry point
-  int32_t start_package_name_length = (int32_t)strlen(start_package_name);
-  int32_t start_sub_name_length =  (int32_t)(start_package_name_length + 6);
-  char* start_sub_name = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(start_sub_name_length + 1);
-  strncpy(start_sub_name, start_package_name, start_package_name_length);
-  strncpy(start_sub_name + start_package_name_length, "::main", 6);
-  start_sub_name[start_sub_name_length] = '\0';
-
   SPVM_LIST_push(compiler->module_include_pathes, "lib");
   SPVM_LIST_push(compiler->module_include_pathes, "solo/lib");
   
@@ -58,6 +52,9 @@ int main(int argc, char *argv[]) {
   // Create run-time
   SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);
   SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
 
   // Bind native subroutine
   {
@@ -186,23 +183,25 @@ int main(int argc, char *argv[]) {
     SPVM_RUNTIME_SUB* sub_SPVM__CORE__PI = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::PI", strlen("SPVM::CORE::PI"));
     runtime->sub_native_addresses[sub_SPVM__CORE__PI->id] = SPVM_NATIVE_SPVM__CORE__PI;
   }
-
-  // Entry point subroutine address
-  SPVM_SUB* sub_start;
-  int32_t sub_id;
-  if (start_sub_name) {
-    sub_start = SPVM_HASH_fetch(compiler->sub_symtable, start_sub_name, strlen(start_sub_name));
-    if (sub_start) {
-      sub_id = sub_start->id;
+  
+  // Package
+  int32_t sub_id = -1;
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  if (package) {
+  
+    const char* sub_name = "main";
+    
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    if (sub) {
+      sub_id = sub->id;
     }
     else {
-      fprintf(stderr, "Can't find entry point subroutine %s", start_sub_name);
+      fprintf(stderr, "Can't find entry point subroutine %s", sub_name);
       exit(EXIT_FAILURE);
     }
   }
   else {
-    fprintf(stderr, "Can't find entry point subroutine\n");
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "Can't find entry point package %s\n", package_name);
   }
   
   // Enter scope

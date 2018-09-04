@@ -55,6 +55,7 @@ sub create_exe_file {
   unless ($compile_success) {
     croak "Compile error";
   }
+  
 
 =pod
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
@@ -74,9 +75,10 @@ sub create_exe_file {
   $cbuilder_precompile->{build} = $build;
   weaken $cbuilder_precompile->{build};
   $cbuilder_precompile->build({quiet => 0});
+
+=cut
   
   $self->{build} = $build;
-=cut
 
   # Create main csouce
   $self->create_main_csource;
@@ -98,7 +100,7 @@ sub create_main_csource {
 
   # Create c source file
   my $main_csource = $self->build_main_csource;
-  
+
   open my $fh, '>', $main_csource_file
     or die "Can't create $main_csource_file";
   print $fh $main_csource;

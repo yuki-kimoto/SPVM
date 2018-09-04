@@ -362,6 +362,4 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_free(env);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return status_code;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
-  
-  warn("%s", string_buffer->buffer);
 }

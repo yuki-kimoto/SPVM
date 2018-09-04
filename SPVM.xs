@@ -2610,7 +2610,7 @@ build_main_csource(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
@@ -2627,9 +2627,9 @@ build_main_csource(...)
 
   SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable);
 
-  SPVM_STRING_BUFFER_free(string_buffer);
-
   SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+
+  SPVM_STRING_BUFFER_free(string_buffer);
   
   XPUSHs(sv_main_csource);
   XSRETURN(1);
