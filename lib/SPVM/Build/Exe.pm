@@ -131,12 +131,12 @@ sub compile_spvm_csources {
 }
 
 sub create_main_csource {
-  my ($self) = @_;
+  my ($self, $package_name) = @_;
   
   my $main_csource_file = "spvmcc_build/my_runtime.c";
 
   # Create c source file
-  my $main_csource = $self->build_main_csource;
+  my $main_csource = $self->build_main_csource($package_name);
 
   open my $fh, '>', $main_csource_file
     or die "Can't create $main_csource_file";
