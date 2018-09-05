@@ -221,14 +221,14 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // opcodes
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
   for (int32_t i = 0; i < portable->opcodes_length; i++) {
     SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes[");
     SPVM_STRING_BUFFER_add_int(string_buffer, i);
     SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes[i]);
+    SPVM_STRING_BUFFER_add_long(string_buffer, portable->opcodes[i]);
     SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
 
