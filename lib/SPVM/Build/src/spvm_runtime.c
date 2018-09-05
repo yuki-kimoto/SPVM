@@ -117,7 +117,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, runtime_sub->return_basic_type_id, runtime_sub->return_type_dimension, runtime_sub->return_type_flag);
 
   // Runtime package
-  SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[runtime_sub->package_id];
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[runtime_sub->package_id];
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -2055,14 +2055,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         if (exception_flag) {
           exception_flag = 0;
           
-          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
-          const char* package_name = runtime->symbols[sub_runtime_package->name_id];
+          SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+          const char* package_name = runtime->symbols[sub_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
           
           // Exception stack trace
@@ -2074,14 +2074,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
-          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(runtime_package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
           
           const char* sub_name = runtime->symbols[sub->name_id];
-          SPVM_RUNTIME_PACKAGE* sub_runtime_package = &runtime->packages[sub->package_id];
-          const char* package_name = runtime->symbols[sub_runtime_package->name_id];
+          SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+          const char* package_name = runtime->symbols[sub_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
 
           // Exception stack trace
