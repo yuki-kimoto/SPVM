@@ -79,7 +79,9 @@ DEVELOPERS NOTE
       spvmcc_build/myexe
       
       gdb spvmcc_build/myexe core.*
-
+    
+    Debug mode
+    
       perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP && \
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvmcc_build -o spvmcc_build -n myexe TestCase::Exe && \
       gcc -o spvmcc_build/myexe spvmcc_build/my_runtime.so && \

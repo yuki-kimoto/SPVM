@@ -56,8 +56,8 @@ sub create_exe_file {
     croak "Compile error";
   }
   
+  my $build_dir = 'spvmcc_build';
 
-=pod
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
   my $cbuilder_native = SPVM::Build::CBuilder::Native->new(
     build_dir => $build_dir,
@@ -65,7 +65,7 @@ sub create_exe_file {
   );
   $cbuilder_native->{build} = $build;
   weaken $cbuilder_native->{build};
-  $cbuilder_native->build({all_subs => 1, quiet => 0});
+  $cbuilder_native->build({quiet => 0});
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $cbuilder_precompile = SPVM::Build::CBuilder::Precompile->new(
@@ -75,8 +75,6 @@ sub create_exe_file {
   $cbuilder_precompile->{build} = $build;
   weaken $cbuilder_precompile->{build};
   $cbuilder_precompile->build({quiet => 0});
-
-=cut
   
   $self->{build} = $build;
 

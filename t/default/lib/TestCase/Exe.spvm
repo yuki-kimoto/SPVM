@@ -1,10 +1,16 @@
 package TestCase::Exe {
   use TestCase::Minimal;
+  use TestCase::Extension;
   sub main : int ($argv : string[]) {
     my $minimal = new TestCase::Minimal;
     
     $minimal->{x} = 10;
     
     return $minimal->{y};
+  }
+  
+  precompile sub precompile_sub : int () {
+    
+    return 5;
   }
 }
