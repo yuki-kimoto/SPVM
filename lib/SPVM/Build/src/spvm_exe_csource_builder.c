@@ -327,50 +327,10 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
 
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
-
-  
-  // Package
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t sub_id = -1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* package_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (package) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"main\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (sub) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      sub_id = sub->id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      fprintf(stderr, \"Can't find entry point subroutine %s\\n\", sub_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exit(EXIT_FAILURE);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    fprintf(stderr, \"Can't find entry point package %s\\n\", package_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    exit(EXIT_FAILURE);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t scope_id = env->enter_scope(env);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t arg_type_basic_id = env->get_basic_type_id(env, \"byte\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* cmd_args_obj = env->new_multi_array(env, arg_type_basic_id, 1, argc);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->set_object_array_element(env, cmd_args_obj, arg_index, cmd_arg_obj);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE stack[255];\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  stack[0].oval = cmd_args_obj;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = env->call_sub(env, sub_id, stack);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t status_code;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_API_print(env, runtime->exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    printf(\"\\n\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    status_code = 255;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    status_code = stack[0].ival;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  env->leave_scope(env, scope_id);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_free(env);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return status_code;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");
