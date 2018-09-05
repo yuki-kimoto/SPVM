@@ -42,7 +42,7 @@ my $makefile = <<"EOS";
 
 all:
 	$cccmd -o solo/main.o solo/main.c
-	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files
+	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files blib/lib/SPVM/CORE.native/CORE.so
 
 test:
 	$cccmd -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o
