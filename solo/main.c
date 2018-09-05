@@ -15,12 +15,13 @@
 #include "spvm_runtime_builder.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
+#include "spvm_runtime_api.h"
 
 #include <spvm_native.h>
 
 #include "SPVM/CORE.native/CORE.c"
 
-int main(int argc, char *argv[]) {
+int32_t main(int32_t argc, const char *argv[]) {
   
   // Package name
   const char* package_name = "TestCase";
@@ -184,57 +185,8 @@ int main(int argc, char *argv[]) {
     runtime->sub_native_addresses[sub_SPVM__CORE__PI->id] = SPVM_NATIVE_SPVM__CORE__PI;
   }
   
-  // Package
-  int32_t sub_id = -1;
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  if (package) {
-  
-    const char* sub_name = "main";
-    
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    if (sub) {
-      sub_id = sub->id;
-    }
-    else {
-      fprintf(stderr, "Can't find entry point subroutine %s", sub_name);
-      exit(EXIT_FAILURE);
-    }
-  }
-  else {
-    fprintf(stderr, "Can't find entry point package %s\n", package_name);
-  }
-  
-  // Enter scope
-  int32_t scope_id = env->enter_scope(env);
-  
-  // new byte[][args_length] object
-  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* cmd_args_obj = env->new_multi_array(env, arg_type_basic_id, 1, argc);
-  
-  // Set command line arguments
-  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
-    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
-    env->set_object_array_element(env, cmd_args_obj, arg_index, cmd_arg_obj);
-  }
-  
-  SPVM_VALUE stack[255];
-  stack[0].oval = cmd_args_obj;
-  
-  // Run
-  int32_t exception_flag = env->call_sub(env, sub_id, stack);
-  
-  int32_t status_code;
-  if (exception_flag) {
-    SPVM_RUNTIME_API_print(env, runtime->exception);
-    printf("\n");
-    status_code = 255;
-  }
-  else {
-    status_code = stack[0].ival;
-  }
-  
-  // Leave scope
-  env->leave_scope(env, scope_id);
+  // Call entry point sub
+  int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);
   
   SPVM_RUNTIME_free(env);
   

@@ -4,6 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
+int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);
+
 int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_RUNTIME_API_is_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
