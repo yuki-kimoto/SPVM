@@ -59,9 +59,9 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_builder.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_sub.h\"\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t main(int argc, char *argv[]) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "int32_t main(int32_t argc, const char *argv[]) {\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_PORTABLE_new();\n");
 
   // basic_types
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
@@ -330,6 +330,8 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* package_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  
+  
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_free(env);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return status_code;\n");

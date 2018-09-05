@@ -32,7 +32,7 @@
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-  
+
   // Package
   int32_t sub_id = -1;
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
