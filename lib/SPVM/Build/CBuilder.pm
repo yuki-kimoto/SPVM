@@ -36,22 +36,12 @@ sub category {
 sub build {
   my ($self, $opt) = @_;
   
-  my $build_all_sub = $opt->{all_sub};
-  
   my $package_names = $self->info->get_package_names;
   for my $package_name (@$package_names) {
     
     my $category = $self->{category};
     my $sub_names;
-    if ($build_all_sub) {
-      if ($category eq 'precompile') {
-        $sub_names = $self->info->get_sub_names($package_name);
-      }
-      else {
-        croak "Can't specify all_subs option in $category";
-      }
-    }
-    elsif ($category eq 'native') {
+    if ($category eq 'native') {
       $sub_names = $self->info->get_native_sub_names($package_name)
     }
     elsif ($category eq 'precompile') {
