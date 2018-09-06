@@ -47,8 +47,6 @@ sub new {
   $self->{cbuilder_precompile}{builder} = $self;
   weaken $self->{cbuilder_precompile}{builder};
   
-  $self->{config} ||= SPVM::Builder::Util::new_default_build_config;
-  
   return $self;
 }
 

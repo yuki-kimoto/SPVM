@@ -56,8 +56,12 @@ sub build {
 
       # Try runtime compile if shared library is not found
       unless (-f $shared_lib_path) {
-        $self->build_shared_lib_runtime($package_name, $sub_names);
-
+        if ($category eq 'native') {
+          $self->build_shared_lib_native_runtime($package_name, $sub_names);
+        }
+        elsif ($category eq 'precompile') {
+          $self->build_shared_lib_precompile_runtime($package_name, $sub_names);
+        }
         $shared_lib_path = $self->get_shared_lib_path_runtime($package_name);
       }
       $self->bind_subs($shared_lib_path, $package_name, $sub_names);
@@ -318,6 +322,77 @@ sub get_shared_lib_path_dist {
   my $shared_lib_path = SPVM::Builder::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
   return $shared_lib_path;
+}
+
+sub build_shared_lib_precompile_runtime {
+  my ($self, $package_name, $sub_names) = @_;
+
+  # Output directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+  
+  my $work_dir = "$build_dir/work";
+  mkpath $work_dir;
+  my $input_dir = "$build_dir/src";
+  mkpath $input_dir;
+  my $output_dir = "$build_dir/lib";
+  mkpath $output_dir;
+  
+  my $is_cached;
+  $self->create_csource(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $work_dir,
+      is_cached => \$is_cached,
+    }
+  );
+  
+  $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $work_dir,
+      work_dir => $work_dir,
+      output_dir => $output_dir,
+      quiet => 1,
+      is_cached => $is_cached,
+    }
+  );
+}
+
+sub build_shared_lib_native_runtime {
+  my ($self, $package_name, $sub_names) = @_;
+  
+  my $package_load_path = $self->info->get_package_load_path($package_name);
+  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($package_load_path, $package_name);
+
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+  
+  my $work_dir = "$build_dir/work";
+  mkpath $work_dir;
+  
+  my $output_dir = "$build_dir/lib";
+  mkpath $output_dir;
+  
+  $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $input_dir,
+      work_dir => $work_dir,
+      output_dir => $output_dir,
+      quiet => 1,
+    }
+  );
 }
 
 1;

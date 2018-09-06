@@ -112,45 +112,4 @@ sub build_shared_lib_dist {
   );
 }
 
-sub build_shared_lib_runtime {
-  my ($self, $package_name, $sub_names) = @_;
-
-  # Output directory
-  my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
-  }
-  
-  my $work_dir = "$build_dir/work";
-  mkpath $work_dir;
-  my $input_dir = "$build_dir/src";
-  mkpath $input_dir;
-  my $output_dir = "$build_dir/lib";
-  mkpath $output_dir;
-  
-  my $is_cached;
-  $self->create_csource(
-    $package_name,
-    $sub_names,
-    {
-      input_dir => $input_dir,
-      work_dir => $work_dir,
-      output_dir => $work_dir,
-      is_cached => \$is_cached,
-    }
-  );
-  
-  $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      input_dir => $work_dir,
-      work_dir => $work_dir,
-      output_dir => $output_dir,
-      quiet => 1,
-      is_cached => $is_cached,
-    }
-  );
-}
-
 1;

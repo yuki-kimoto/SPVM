@@ -52,34 +52,5 @@ sub build_shared_lib_dist {
   );
 }
 
-sub build_shared_lib_runtime {
-  my ($self, $package_name, $sub_names) = @_;
-  
-  my $package_load_path = $self->info->get_package_load_path($package_name);
-  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($package_load_path, $package_name);
-
-  # Build directory
-  my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
-  }
-  
-  my $work_dir = "$build_dir/work";
-  mkpath $work_dir;
-  
-  my $output_dir = "$build_dir/lib";
-  mkpath $output_dir;
-  
-  $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      input_dir => $input_dir,
-      work_dir => $work_dir,
-      output_dir => $output_dir,
-      quiet => 1,
-    }
-  );
-}
 
 1;
