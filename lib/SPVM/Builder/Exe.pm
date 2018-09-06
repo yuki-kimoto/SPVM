@@ -60,7 +60,7 @@ sub create_exe_file {
   }
   
   $builder->{build_dir} = 'spvmcc_build';
-
+  
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $builder->{build_dir},
@@ -70,7 +70,7 @@ sub create_exe_file {
     quiet => 0,
   );
   $builder_c_native->build;
-  
+
   # Build precompile packages - Compile C source codes and link them to SPVM precompile subroutine
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $builder->{build_dir},
@@ -80,13 +80,13 @@ sub create_exe_file {
     quiet => 0,
   );
   $builder_c_precompile->build;
-  
+
   # Compile SPVM csource
   $self->compile_spvm_csources;
-  
+
   # Create main csouce
   $self->create_main_csource($package_name);
-  
+
   # compile main
   $self->compile_main;
 
@@ -149,6 +149,7 @@ sub compile_main {
   my ($self) = @_;
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
+  $build_config->set_optimize('-O0');
   my $config = $build_config->to_hash;
   
   # Compile source files
