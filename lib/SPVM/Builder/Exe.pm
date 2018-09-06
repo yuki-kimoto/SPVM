@@ -6,6 +6,7 @@ use Carp 'croak', 'confess';
 use Pod::Usage 'pod2usage';
 
 use SPVM::Builder;
+use SPVM::Builder::C;
 use SPVM::Builder::Util;
 
 use Getopt::Long 'GetOptions';
@@ -42,47 +43,51 @@ sub create_exe_file {
   my ($self, $package_name) = @_;
   
   # New SPVM::Builder object
-  my $build = SPVM::Builder->new;
+  my $builder = SPVM::Builder->new;
   
   # Add package informations
   my $package_info = {
     name => $package_name,
   };
-  push @{$build->{package_infos}}, $package_info;
+  push @{$builder->{package_infos}}, $package_info;
   
   # Compile
-  my $compile_success = $build->compile_spvm();
+  my $compile_success =$builder->compile_spvm();
   unless ($compile_success) {
     croak "Compile error";
   }
   
-  my $build_dir = 'spvmcc_build';
+  $builder->{build_dir} = 'spvmcc_build';
 
-  # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
-  my $cbuilder_native = SPVM::Builder::C::Native->new(
-    build_dir => $build_dir,
-    info => $build->info,
-  );
-  $cbuilder_native->{builder} = $build;
-  weaken $cbuilder_native->{builder};
-  $cbuilder_native->build({quiet => 0});
-  
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
-  my $cbuilder_precompile = SPVM::Builder::C::Precompile->new(
-    build_dir => $build_dir,
-    info => $build->info,
+  my $builder_c_native = SPVM::Builder::C->new(
+    build_dir => $builder->{build_dir},
+    info => $builder->{info},
+    category => 'native',
+    builder => $builder,
+    quiet => 0,
   );
-  $cbuilder_precompile->{builder} = $build;
-  weaken $cbuilder_precompile->{builder};
-  $cbuilder_precompile->build({quiet => 0});
+  $builder_c_native->build;
   
-  $self->{builder} = $build;
-
+  # Build precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+  my $builder_c_precompile = SPVM::Builder::C->new(
+    build_dir => $builder->{build_dir},
+    info => $builder->{info},
+    category => 'precompile',
+    builder => $builder,
+    quiet => 0,
+  );
+  $builder_c_precompile->build;
+  
   # Compile SPVM csource
   $self->compile_spvm_csources;
   
+  warn("AAAAAAAAAAAAAAA");
+  
   # Create main csouce
   $self->create_main_csource($package_name);
+  
+  warn("BBBBBBBBBBBBBB");
   
   # compile main
   $self->compile_main;

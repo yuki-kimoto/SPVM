@@ -3,7 +3,7 @@ use warnings;
 use Config;
 
 use lib 'lib';
-use SPVM::Build::Util;
+use SPVM::Builder::Util;
 use Getopt::Long 'GetOptions';
 
 my @defines;
@@ -22,14 +22,14 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Build::Util::new_default_build_config;
+my $build_config = SPVM::Builder::Util::new_default_build_config;
 $optimize ||= $build_config->get_config('optimize');
 
 my $ccflags = $build_config->get_ccflags;
 
 my $lddlflags = $build_config->get_lddlflags;
 
-my $src_dir = "lib/SPVM/Build/src";
+my $src_dir = "lib/SPVM/Builder/src";
 my @csource_files = glob "$src_dir/*.c";
 my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $object_file } @csource_files;
 
