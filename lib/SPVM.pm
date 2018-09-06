@@ -10,7 +10,7 @@ use File::Basename 'basename', 'dirname';
 use SPVM::Data;
 use SPVM::Data::Array;
 
-use SPVM::Build;
+use SPVM::Builder;
 use SPVM::PerlAPI;
 
 use Encode 'encode', 'decode';
@@ -34,7 +34,7 @@ sub import {
       # Remove traling slash
       $build_dir = File::Spec->catdir(File::Spec->splitdir($build_dir));
     }
-    $BUILD = SPVM::Build->new(build_dir => $build_dir);
+    $BUILD = SPVM::Builder->new(build_dir => $build_dir);
   }
 
   # Add package informations

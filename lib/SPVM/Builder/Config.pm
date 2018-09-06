@@ -1,4 +1,4 @@
-package SPVM::Build::Config;
+package SPVM::Builder::Config;
 
 use strict;
 use warnings;
@@ -148,19 +148,19 @@ sub add_lddlflags {
 
 =head1 NAME
 
-SPVM::Build::Config - build config
+SPVM::Builder::Config - build config
 
 =head1 DESCRIPTION
 
-L<SPVM::Build::Config> is configuration of c/c++ compile and link.
+L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 =head1 Methods
 
 =head2 new
 
-  my $build_config = SPVM::Build::Config->new;
+  my $build_config = SPVM::Builder::Config->new;
   
-Create L<SPVM::Build::Config> object.
+Create L<SPVM::Builder::Config> object.
 
 =head2 replace_all_config
 

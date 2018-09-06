@@ -1,4 +1,4 @@
-package SPVM::BuildDir;
+package SPVM::BuilderDir;
 
 use strict;
 use warnings;

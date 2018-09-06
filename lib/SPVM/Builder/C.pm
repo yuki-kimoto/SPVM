@@ -1,10 +1,10 @@
-package SPVM::Build::CBuilder;
+package SPVM::Builder::C;
 
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
 
-use SPVM::Build::Util;
+use SPVM::Builder::Util;
 
 use ExtUtils::CBuilder;
 use File::Copy 'move';
@@ -66,7 +66,7 @@ sub build {
 sub get_shared_lib_path_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/lib";
   my $shared_lib_path = "$output_dir/$shared_lib_rel_file";
@@ -95,7 +95,7 @@ sub bind_subs {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
-    my $cfunc_address = SPVM::Build::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
+    my $cfunc_address = SPVM::Builder::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
@@ -137,7 +137,7 @@ sub compile_objects {
   }
 
   # shared lib file
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
   # Return if source code is chaced and exists shared lib file
@@ -149,7 +149,7 @@ sub compile_objects {
   my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
  
   my $input_dir = $opt->{input_dir};
-  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   
   my $work_object_dir = "$work_dir/$package_path";
@@ -177,7 +177,7 @@ sub compile_objects {
       or confess "Can't parser $config_file: $!$@";
   }
   else {
-    $build_config = SPVM::Build::Util::new_default_build_config;
+    $build_config = SPVM::Builder::Util::new_default_build_config;
   }
   
   # CBuilder configs
@@ -232,7 +232,7 @@ sub link_shared_lib {
   }
 
   # shared lib file
-  my $shared_lib_rel_file = SPVM::Build::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
   # Return if source code is chaced and exists shared lib file
@@ -244,7 +244,7 @@ sub link_shared_lib {
   my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
  
   my $input_dir = $opt->{input_dir};
-  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
   my $input_src_dir = "$input_dir/$package_path";
   
   my $work_object_dir = "$work_dir/$package_path";
@@ -263,7 +263,7 @@ sub link_shared_lib {
       or confess "Can't parser $config_file: $!$@";
   }
   else {
-    $build_config = SPVM::Build::Util::new_default_build_config;
+    $build_config = SPVM::Builder::Util::new_default_build_config;
   }
   
   # CBuilder configs
@@ -313,7 +313,7 @@ sub get_shared_lib_path_dist {
   my @package_name_parts = split(/::/, $package_name);
   my $module_load_path = $self->info->get_package_load_path($package_name);
   
-  my $shared_lib_path = SPVM::Build::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
+  my $shared_lib_path = SPVM::Builder::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
   return $shared_lib_path;
 }

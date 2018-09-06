@@ -10,7 +10,7 @@ use Config;
 use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
-use SPVM::Build::Util;
+use SPVM::Builder::Util;
 use Getopt::Long 'GetOptions';
 use File::Basename 'basename';
 use File::Copy 'copy';
@@ -42,13 +42,13 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Build::Util::new_default_build_config();
+my $build_config = SPVM::Builder::Util::new_default_build_config();
 $optimize ||= $build_config->get_config('optimize');
 my $ccflags = $build_config->get_ccflags;
 
 my @csource_files;
 push @csource_files, 'SPVM.c';
-push @csource_files, glob('lib/SPVM/Build/src/*.c');
+push @csource_files, glob('lib/SPVM/Builder/src/*.c');
 
 my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $object_file } @csource_files;
 
@@ -81,11 +81,11 @@ sub MY::postamble {
   my $make_rule = '';
   
   # Native compile make rule
-  $make_rule .= SPVM::Build::Util::create_make_rule_native('SPVM::CORE');
-  $make_rule .= SPVM::Build::Util::create_make_rule_native('SPVM::Example');
+  $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
+  $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
   
   # Precompile make rule
-  $make_rule .= SPVM::Build::Util::create_make_rule_precompile('SPVM::Example');
+  $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Example');
   
   return $make_rule;
 }

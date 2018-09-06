@@ -144,7 +144,7 @@ DESTROY(...)
 
 MODULE = SPVM::Data::Array		PACKAGE = SPVM::Data::Array
 
-MODULE = SPVM::Build::Info		PACKAGE = SPVM::Build::Info
+MODULE = SPVM::Builder::Info		PACKAGE = SPVM::Builder::Info
 
 SV*
 get_subs(...)
@@ -342,7 +342,7 @@ get_package_load_path(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Build		PACKAGE = SPVM::Build
+MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
 compile_spvm(...)
@@ -439,7 +439,7 @@ compile_spvm(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Build::CBuilder::Native		PACKAGE = SPVM::Build::CBuilder::Native
+MODULE = SPVM::Builder::C::Native		PACKAGE = SPVM::Builder::C::Native
 
 SV*
 bind_sub(...)
@@ -476,7 +476,7 @@ bind_sub(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Build::CBuilder::Precompile		PACKAGE = SPVM::Build::CBuilder::Precompile
+MODULE = SPVM::Builder::C::Precompile		PACKAGE = SPVM::Builder::C::Precompile
 
 SV*
 build_package_csource(...)
@@ -2600,7 +2600,7 @@ get_array_elements_bin(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Build::Exe		PACKAGE = SPVM::Build::Exe
+MODULE = SPVM::Builder::Exe		PACKAGE = SPVM::Builder::Exe
 
 SV*
 build_main_csource(...)

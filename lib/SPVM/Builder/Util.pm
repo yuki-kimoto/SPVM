@@ -1,4 +1,4 @@
-package SPVM::Build::Util;
+package SPVM::Builder::Util;
 
 use strict;
 use warnings;
@@ -10,10 +10,10 @@ use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
 
-use SPVM::Build::Config;
+use SPVM::Builder::Config;
 
-# SPVM::Build::tUtil is used from Makefile.PL
-# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Build::Config.
+# SPVM::Builder::tUtil is used from Makefile.PL
+# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Builder::Config.
 
 sub unindent {
   my $str = shift;
@@ -30,7 +30,7 @@ sub extract_usage {
   $output =~ s/^.*\n|\n$//;
   $output =~ s/\n$//;
 
-  return SPVM::Build::Util::unindent($output);
+  return SPVM::Builder::Util::unindent($output);
 }
 
 sub getopt {
@@ -151,7 +151,7 @@ sub create_package_make_rule {
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\t$^X -Mblib -MSPVM::Build -e \"SPVM::Build->new(build_dir => 'spvm_build')->build_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_lib_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }
@@ -194,21 +194,21 @@ sub convert_package_name_to_shared_lib_dir {
 }
 
 sub new_default_build_config {
-  my $build_config = SPVM::Build::Config->new;
+  my $build_config = SPVM::Builder::Config->new;
   
   # Use default config
   my $default_config = {%Config};
   $build_config->replace_all_config($default_config);
   
   # Include directory
-  my $include_dir = $INC{"SPVM/Build/Util.pm"};
+  my $include_dir = $INC{"SPVM/Builder/Util.pm"};
   $include_dir =~ s/\/Util\.pm$//;
   $include_dir .= '/include';
   $build_config->add_ccflags("-I$include_dir");
 
   # lib directory
-  my $lib_dir = $INC{"SPVM/Build/Util.pm"};
-  $lib_dir =~ s/\/SPVM\/Build\/Util.pm$//;
+  my $lib_dir = $INC{"SPVM/Builder/Util.pm"};
+  $lib_dir =~ s/\/SPVM\/Builder\/Util.pm$//;
   $build_config->add_ccflags("-I$lib_dir");
   
   # math library
@@ -233,13 +233,13 @@ sub new_default_build_config {
 
 =head1 NAME
 
-SPVM::Build::Util - Build Utilities
+SPVM::Builder::Util - Build Utilities
 
 B<Create defaulgt build config>
 
-  use SPVM::Build::Util;
+  use SPVM::Builder::Util;
 
-  my $build_config = SPVM::Build::Util::new_default_build_config();
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
 
   $build_config->set_optimize('-O3');
   
@@ -251,25 +251,25 @@ B<Add Build shared library make rule in Makefile.PL>
     my $make_rule = '';
     
     # Native compile make rule
-    $make_rule .= SPVM::Build::Util::create_make_rule_native('Foo');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Foo');
     
     # Precompile make rule
-    $make_rule .= SPVM::Build::Util::create_make_rule_precompile('Foo');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Foo');
     
     return $make_rule;
   }
 
 =head1 DESCRIPTION
 
-SPVM::Build::Util is building utilities.
+SPVM::Builder::Util is building utilities.
 
 =head1 FUNCTIONS
 
 =head2 new_default_build_config
   
-  my $build_config = SPVM::Build::Util::new_default_build_config;
+  my $build_config = SPVM::Builder::Util::new_default_build_config;
 
-Create defaulgt build config. This is L<SPVM::Build::Config> object.
+Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
 This function is used in native config file.
 
@@ -277,9 +277,9 @@ This function is used in native config file.
   use strict;
   use warnings;
 
-  use SPVM::Build::Util;
+  use SPVM::Builder::Util;
 
-  my $build_config = SPVM::Build::Util::new_default_build_config();
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
 
   $build_config->set_config(optimize => '-O2');
 
@@ -297,7 +297,7 @@ This is used in Makefile.PL of your distributed module.
     my $make_rule = '';
     
     # Native compile make rule
-    $make_rule .= SPVM::Build::Util::create_make_rule_native('Foo');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Foo');
     
     return $make_rule;
   }
@@ -313,7 +313,7 @@ This is used in Makefile.PL of your distributed module.
     my $make_rule = '';
     
     # Precompile make rule
-    $make_rule .= SPVM::Build::Util::create_make_rule_precompile('Foo');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Foo');
     
     return $make_rule;
   }

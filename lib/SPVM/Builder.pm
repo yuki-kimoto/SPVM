@@ -1,4 +1,4 @@
-package SPVM::Build;
+package SPVM::Builder;
 
 use strict;
 use warnings;
@@ -6,11 +6,11 @@ use warnings;
 use Config;
 use Carp 'confess';
 
-use SPVM::Build::CBuilder::Native;
-use SPVM::Build::CBuilder::Precompile;
-use SPVM::Build::Util;
-use SPVM::Build::Config;
-use SPVM::Build::Info;
+use SPVM::Builder::C::Native;
+use SPVM::Builder::C::Precompile;
+use SPVM::Builder::Util;
+use SPVM::Builder::Config;
+use SPVM::Builder::Info;
 use Scalar::Util 'weaken';
 
 use File::Path 'rmtree';
@@ -29,25 +29,25 @@ sub new {
   
   bless $self, $class;
   
-  $self->{info} ||= SPVM::Build::Info->new;
+  $self->{info} ||= SPVM::Builder::Info->new;
   $self->{info}{build} = $self;
   weaken($self->{info}{build});
   
-  $self->{cbuilder_native} ||= SPVM::Build::CBuilder::Native->new(
+  $self->{cbuilder_native} ||= SPVM::Builder::C::Native->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
   $self->{cbuilder_native}{build} = $self;
   weaken $self->{cbuilder_native}{build};
   
-  $self->{cbuilder_precompile} ||= SPVM::Build::CBuilder::Precompile->new(
+  $self->{cbuilder_precompile} ||= SPVM::Builder::C::Precompile->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
   $self->{cbuilder_precompile}{build} = $self;
   weaken $self->{cbuilder_precompile}{build};
   
-  $self->{config} ||= SPVM::Build::Util::new_default_build_config;
+  $self->{config} ||= SPVM::Builder::Util::new_default_build_config;
   
   return $self;
 }

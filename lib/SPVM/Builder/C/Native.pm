@@ -1,11 +1,11 @@
-package SPVM::Build::CBuilder::Native;
+package SPVM::Builder::C::Native;
 
-# SPVM::Build::PPtUtil is used from Makefile.PL
+# SPVM::Builder::PPtUtil is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules.
 
 use strict;
 use warnings;
-use base 'SPVM::Build::CBuilder';
+use base 'SPVM::Builder::C';
 
 use Carp 'croak', 'confess';
 
@@ -17,8 +17,8 @@ use DynaLoader;
 
 use File::Basename 'dirname', 'basename';
 
-use SPVM::Build;
-use SPVM::Build::Util;
+use SPVM::Builder;
+use SPVM::Builder::Util;
 
 sub new {
   my $self = shift->SUPER::new(@_);
@@ -56,7 +56,7 @@ sub build_shared_lib_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $package_load_path = $self->info->get_package_load_path($package_name);
-  my $input_dir = SPVM::Build::Util::remove_package_part_from_path($package_load_path, $package_name);
+  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory
   my $build_dir = $self->{build_dir};

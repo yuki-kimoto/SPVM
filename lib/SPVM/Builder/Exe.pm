@@ -1,12 +1,12 @@
-package SPVM::Build::Exe;
+package SPVM::Builder::Exe;
 
 use strict;
 use warnings;
 use Carp 'croak', 'confess';
 use Pod::Usage 'pod2usage';
 
-use SPVM::Build;
-use SPVM::Build::Util;
+use SPVM::Builder;
+use SPVM::Builder::Util;
 
 use Getopt::Long 'GetOptions';
 
@@ -41,8 +41,8 @@ sub output_file {
 sub create_exe_file {
   my ($self, $package_name) = @_;
   
-  # New SPVM::Build object
-  my $build = SPVM::Build->new;
+  # New SPVM::Builder object
+  my $build = SPVM::Builder->new;
   
   # Add package informations
   my $package_info = {
@@ -59,7 +59,7 @@ sub create_exe_file {
   my $build_dir = 'spvmcc_build';
 
   # Build precompile all subs - Compile C source codes and link them to SPVM precompile subroutine
-  my $cbuilder_native = SPVM::Build::CBuilder::Native->new(
+  my $cbuilder_native = SPVM::Builder::C::Native->new(
     build_dir => $build_dir,
     info => $build->info,
   );
@@ -68,7 +68,7 @@ sub create_exe_file {
   $cbuilder_native->build({quiet => 0});
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
-  my $cbuilder_precompile = SPVM::Build::CBuilder::Precompile->new(
+  my $cbuilder_precompile = SPVM::Builder::C::Precompile->new(
     build_dir => $build_dir,
     info => $build->info,
   );
@@ -95,16 +95,16 @@ sub compile_spvm_csources {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Correct source files
-  my $src_files = [glob "blib/lib/SPVM/Build/src/*.c"];
+  my $src_files = [glob "blib/lib/SPVM/Builder/src/*.c"];
   
   # Config
-  my $build_config = SPVM::Build::Util::new_default_build_config;
+  my $build_config = SPVM::Builder::Util::new_default_build_config;
   
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;
   
   # Default include path
-  $build_config->add_ccflags("-Iblib/lib/SPVM/Build/include");
+  $build_config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
@@ -145,7 +145,7 @@ sub create_main_csource {
 sub compile_main {
   my ($self) = @_;
   
-  my $build_config = SPVM::Build::Util::new_default_build_config();
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
   my $config = $build_config->to_hash;
   
   # Compile source files
@@ -167,7 +167,7 @@ sub link_main {
   
   my $object_files = [glob 'spvmcc_build/*.o'];
   
-  my $build_config = SPVM::Build::Util::new_default_build_config();
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
   my $config = $build_config->to_hash;
   
   # CBuilder configs

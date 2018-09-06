@@ -1,5 +1,6 @@
 0.0369 2018-09-04
   - fix hash key buffer memory bug.
+  - rename SPVM::Build to SPVM::Builder
 0.0368 2018-09-03
   - remove global runtime. SPVM become reentrant.
   - more portable, remove all static and inline keywords.

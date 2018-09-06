@@ -6,22 +6,22 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM::Build::Util;
+use SPVM::Builder::Util;
 
 # Documented function check
 {
   {
-    my $build_config = SPVM::Build::Util::new_default_build_config();
+    my $build_config = SPVM::Builder::Util::new_default_build_config();
     ok($build_config);
   }
 
   {
-    my $make_rule = SPVM::Build::Util::create_make_rule_native('Foo');
+    my $make_rule = SPVM::Builder::Util::create_make_rule_native('Foo');
     ok($make_rule);
   }
 
   {
-    my $make_rule = SPVM::Build::Util::create_make_rule_precompile('Foo');
+    my $make_rule = SPVM::Builder::Util::create_make_rule_precompile('Foo');
     ok($make_rule);
   }
 }

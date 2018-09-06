@@ -1,8 +1,8 @@
-package SPVM::Build::CBuilder::Precompile;
+package SPVM::Builder::C::Precompile;
 
 use strict;
 use warnings;
-use base 'SPVM::Build::CBuilder';
+use base 'SPVM::Builder::C';
 
 use Carp 'croak', 'confess';
 use File::Spec;
@@ -14,8 +14,8 @@ use File::Path 'mkpath', 'rmtree';
 
 use File::Basename 'dirname', 'basename';
 
-use SPVM::Build;
-use SPVM::Build::Util;
+use SPVM::Builder;
+use SPVM::Builder::Util;
 
 sub new {
   my $self = shift->SUPER::new(@_);
@@ -37,7 +37,7 @@ sub create_csource {
   
   my $is_cached_ref = $opt->{is_cached};
   
-  my $package_path = SPVM::Build::Util::convert_package_name_to_path($package_name, $self->category);
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
   my $work_src_dir = "$work_dir/$package_path";
   mkpath $work_src_dir;
   
