@@ -23,8 +23,6 @@ sub new {
   
   my $self = {@_};
   
-  my $build_dir = $self->{build_dir};
-  
   $self->{package_infos} ||= [];
   
   bless $self, $class;
@@ -34,7 +32,7 @@ sub new {
   weaken($self->{info}{builder});
   
   my $builder_c_native ||= SPVM::Builder::C->new(
-    build_dir => $build_dir,
+    build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'native',
     builder => $self
@@ -43,7 +41,7 @@ sub new {
   $self->{cbuilder_native} = $builder_c_native;
   
   my $builder_c_precompile ||= SPVM::Builder::C->new(
-    build_dir => $build_dir,
+    build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'precompile',
     builder => $self
