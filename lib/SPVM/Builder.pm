@@ -111,7 +111,7 @@ sub build_shared_lib_native_dist {
 
   my $sub_names = $self->info->get_native_sub_names($package_name);
   
-  $self->cbuilder_native->build_shared_lib_dist($package_name, $sub_names);
+  $self->cbuilder_native->build_shared_lib_native_dist($package_name, $sub_names);
 }
 
 sub build_shared_lib_precompile_dist {
@@ -126,7 +126,7 @@ sub build_shared_lib_precompile_dist {
   
   my $sub_names = $self->info->get_precompile_sub_names($package_name);
   
-  $self->cbuilder_precompile->build_shared_lib_dist($package_name, $sub_names);
+  $self->cbuilder_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
 }
 
 sub build_precompile {
