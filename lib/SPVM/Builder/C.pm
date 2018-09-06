@@ -33,6 +33,8 @@ sub category {
   $self->{category};
 }
 
+sub builder { shift->{builder} }
+
 sub build {
   my ($self, $opt) = @_;
   

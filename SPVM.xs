@@ -155,7 +155,7 @@ get_subs(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -230,7 +230,7 @@ get_sub_names(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -275,7 +275,7 @@ get_package_names(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -316,7 +316,7 @@ get_package_load_path(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -453,7 +453,7 @@ bind_sub(...)
   SV* sv_native_address = ST(2);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -488,7 +488,7 @@ build_package_csource(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -530,7 +530,7 @@ bind_sub(...)
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
   
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
@@ -2615,7 +2615,7 @@ build_main_csource(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "build", strlen("build"), 0);
+  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
   SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
   HV* hv_build = (HV*)SvRV(sv_build);
   SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);

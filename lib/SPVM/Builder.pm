@@ -30,22 +30,22 @@ sub new {
   bless $self, $class;
   
   $self->{info} ||= SPVM::Builder::Info->new;
-  $self->{info}{build} = $self;
-  weaken($self->{info}{build});
+  $self->{info}{builder} = $self;
+  weaken($self->{info}{builder});
   
   $self->{cbuilder_native} ||= SPVM::Builder::C::Native->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
-  $self->{cbuilder_native}{build} = $self;
-  weaken $self->{cbuilder_native}{build};
+  $self->{cbuilder_native}{builder} = $self;
+  weaken $self->{cbuilder_native}{builder};
   
   $self->{cbuilder_precompile} ||= SPVM::Builder::C::Precompile->new(
     build_dir => $build_dir,
     info => $self->{info},
   );
-  $self->{cbuilder_precompile}{build} = $self;
-  weaken $self->{cbuilder_precompile}{build};
+  $self->{cbuilder_precompile}{builder} = $self;
+  weaken $self->{cbuilder_precompile}{builder};
   
   $self->{config} ||= SPVM::Builder::Util::new_default_build_config;
   

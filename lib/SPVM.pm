@@ -20,7 +20,7 @@ use Carp 'confess';
 our $VERSION = '0.0368';
 
 our $ENV;
-our $BUILD;
+our $BUILDER;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -28,13 +28,13 @@ XSLoader::load('SPVM', $VERSION);
 sub import {
   my ($class, $package_name) = @_;
   
-  unless ($BUILD) {
+  unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     if (defined $build_dir) {
       # Remove traling slash
       $build_dir = File::Spec->catdir(File::Spec->splitdir($build_dir));
     }
-    $BUILD = SPVM::Builder->new(build_dir => $build_dir);
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
 
   # Add package informations
@@ -45,20 +45,20 @@ sub import {
       file => $file,
       line => $line
     };
-    push @{$BUILD->{package_infos}}, $package_info;
+    push @{$BUILDER->{package_infos}}, $package_info;
   }
 }
 
 # Compile SPVM source code just after compile-time of Perl
 CHECK {
-  if ($BUILD) {
-    my $compile_success = $BUILD->build_spvm();
+  if ($BUILDER) {
+    my $compile_success = $BUILDER->build_spvm();
     unless ($compile_success) {
       die "SPVM compile error";
     }
     
     # Set env
-    $SPVM::ENV = $BUILD->{env};
+    $SPVM::ENV = $BUILDER->{env};
   }
 }
 
