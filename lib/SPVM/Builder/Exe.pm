@@ -45,6 +45,8 @@ sub create_exe_file {
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new;
   
+  $self->{builder} = $builder;
+  
   # Add package informations
   my $package_info = {
     name => $package_name,
@@ -82,12 +84,8 @@ sub create_exe_file {
   # Compile SPVM csource
   $self->compile_spvm_csources;
   
-  warn("AAAAAAAAAAAAAAA");
-  
   # Create main csouce
   $self->create_main_csource($package_name);
-  
-  warn("BBBBBBBBBBBBBB");
   
   # compile main
   $self->compile_main;
