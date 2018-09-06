@@ -33,15 +33,6 @@ sub new {
   $self->{info}{builder} = $self;
   weaken($self->{info}{builder});
   
-  my $builder_c_native = SPVM::Builder::C->new(
-    build_dir => $self->{build_dir},
-    info => $self->{info},
-    category => 'native',
-    builder => $self
-  );
-  weaken $builder_c_native->{builder};
-  $self->{cbuilder_native} = $builder_c_native;
-  
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
     info => $self->{info},
@@ -94,12 +85,6 @@ sub info {
   return $self->{info};
 }
 
-sub cbuilder_native {
-  my $self = shift;
-  
-  return $self->{cbuilder_native};
-}
-
 sub cbuilder_precompile {
   my $self = shift;
   
@@ -114,8 +99,15 @@ sub build_shared_lib_native_dist {
   $self->compile_spvm;
 
   my $sub_names = $self->info->get_native_sub_names($package_name);
+
+  my $builder_c_native = SPVM::Builder::C->new(
+    build_dir => $self->{build_dir},
+    info => $self->{info},
+    category => 'native',
+    builder => $self
+  );
   
-  $self->cbuilder_native->build_shared_lib_native_dist($package_name, $sub_names);
+  $builder_c_native->build_shared_lib_native_dist($package_name, $sub_names);
 }
 
 sub build_shared_lib_precompile_dist {
@@ -141,8 +133,15 @@ sub build_precompile {
 
 sub build_native {
   my $self = shift;
+
+  my $builder_c_native = SPVM::Builder::C->new(
+    build_dir => $self->{build_dir},
+    info => $self->{info},
+    category => 'native',
+    builder => $self
+  );
   
-  $self->cbuilder_native->build;
+  $builder_c_native->build;
 }
 
 my $package_name_h = {};
