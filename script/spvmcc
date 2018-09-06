@@ -3,10 +3,10 @@
 use strict;
 use warnings;
 
-use SPVM::Build::Exe;
-use SPVM::Build::Util;
+use SPVM::Builder::Exe;
+use SPVM::Builder::Util;
 
-SPVM::Build::Util::getopt
+SPVM::Builder::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'o|output-dir=s'  => \my $output_dir,
@@ -15,13 +15,13 @@ SPVM::Build::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
 ;
 
-die SPVM::Build::Util::extract_usage if $help || !(my $package_name = shift);
+die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
 
 push @INC, @include_dirs;
 
 warn "@INC";
 
-my $build_exe = SPVM::Build::Exe->new(
+my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
   output_dir => $output_dir,
   name => $name,

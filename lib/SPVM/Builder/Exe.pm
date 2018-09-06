@@ -63,8 +63,8 @@ sub create_exe_file {
     build_dir => $build_dir,
     info => $build->info,
   );
-  $cbuilder_native->{build} = $build;
-  weaken $cbuilder_native->{build};
+  $cbuilder_native->{builder} = $build;
+  weaken $cbuilder_native->{builder};
   $cbuilder_native->build({quiet => 0});
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
@@ -72,11 +72,11 @@ sub create_exe_file {
     build_dir => $build_dir,
     info => $build->info,
   );
-  $cbuilder_precompile->{build} = $build;
-  weaken $cbuilder_precompile->{build};
+  $cbuilder_precompile->{builder} = $build;
+  weaken $cbuilder_precompile->{builder};
   $cbuilder_precompile->build({quiet => 0});
   
-  $self->{build} = $build;
+  $self->{builder} = $build;
 
   # Compile SPVM csource
   $self->compile_spvm_csources;
