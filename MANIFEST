@@ -5,8 +5,6 @@ lib/SPVM/Bool.spvm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/C.pm
-lib/SPVM/Builder/C/Native.pm
-lib/SPVM/Builder/C/Precompile.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_array_field_access.h

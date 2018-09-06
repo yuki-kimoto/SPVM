@@ -33,21 +33,23 @@ sub new {
   $self->{info}{builder} = $self;
   weaken($self->{info}{builder});
   
-  $self->{cbuilder_native} ||= SPVM::Builder::C->new(
+  my $builder_c_native ||= SPVM::Builder::C->new(
     build_dir => $build_dir,
     info => $self->{info},
     category => 'native',
+    builder => $self
   );
-  $self->{cbuilder_native}{builder} = $self;
-  weaken $self->{cbuilder_native}{builder};
+  weaken $builder_c_native->{builder};
+  $self->{cbuilder_native} = $builder_c_native;
   
-  $self->{cbuilder_precompile} ||= SPVM::Builder::C->new(
+  my $builder_c_precompile ||= SPVM::Builder::C->new(
     build_dir => $build_dir,
     info => $self->{info},
     category => 'precompile',
+    builder => $self
   );
-  $self->{cbuilder_precompile}{builder} = $self;
-  weaken $self->{cbuilder_precompile}{builder};
+  weaken $builder_c_precompile->{builder};
+  $self->{cbuilder_precompile} = $builder_c_precompile;
   
   return $self;
 }
