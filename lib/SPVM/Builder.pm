@@ -85,12 +85,6 @@ sub info {
   return $self->{info};
 }
 
-sub cbuilder_precompile {
-  my $self = shift;
-  
-  return $self->{cbuilder_precompile};
-}
-
 sub build_shared_lib_native_dist {
   my ($self, $package_name) = @_;
   
@@ -121,14 +115,28 @@ sub build_shared_lib_precompile_dist {
   }
   
   my $sub_names = $self->info->get_precompile_sub_names($package_name);
+
+  my $builder_c_precompile = SPVM::Builder::C->new(
+    build_dir => $self->{build_dir},
+    info => $self->{info},
+    category => 'precompile',
+    builder => $self
+  );
   
-  $self->cbuilder_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
+  $builder_c_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
 }
 
 sub build_precompile {
   my $self = shift;
+
+  my $builder_c_precompile = SPVM::Builder::C->new(
+    build_dir => $self->{build_dir},
+    info => $self->{info},
+    category => 'precompile',
+    builder => $self
+  );
   
-  $self->cbuilder_precompile->build;
+  $builder_c_precompile->build;
 }
 
 sub build_native {
