@@ -439,10 +439,10 @@ compile_spvm(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::C::Native		PACKAGE = SPVM::Builder::C::Native
+MODULE = SPVM::Builder::C		PACKAGE = SPVM::Builder::C
 
 SV*
-bind_sub(...)
+bind_sub_native(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -476,10 +476,8 @@ bind_sub(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Builder::C::Precompile		PACKAGE = SPVM::Builder::C::Precompile
-
 SV*
-build_package_csource(...)
+build_package_csource_precompile(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
@@ -516,7 +514,7 @@ build_package_csource(...)
 }
 
 SV*
-bind_sub(...)
+bind_sub_precompile(...)
   PPCODE:
 {
   (void)RETVAL;

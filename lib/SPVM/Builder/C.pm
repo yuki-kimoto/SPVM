@@ -108,7 +108,14 @@ sub bind_subs {
       $cfunc_name =~ s/:/_/g;
       confess "Can't find function address of $sub_abs_name(). C function name must be $cfunc_name";
     }
-    $self->bind_sub($sub_abs_name, $cfunc_address);
+    
+    my $category = $self->category;
+    if ($category eq 'native') {
+      $self->bind_sub_native($sub_abs_name, $cfunc_address);
+    }
+    elsif ($category eq 'precompile') {
+      $self->bind_sub_precompile($sub_abs_name, $cfunc_address);
+    }
   }
 }
 
@@ -492,7 +499,7 @@ sub create_precompile_csource {
   }
   
   # Create c source file
-  my $package_csource = $self->build_package_csource($package_name, $sub_names);
+  my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
   open my $fh, '>', $source_file
     or die "Can't create $source_file";
   print $fh $package_csource;

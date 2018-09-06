@@ -6,11 +6,11 @@ use warnings;
 use Config;
 use Carp 'confess';
 
-use SPVM::Builder::C::Native;
-use SPVM::Builder::C::Precompile;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use SPVM::Builder::Info;
+use SPVM::Builder::C;
+
 use Scalar::Util 'weaken';
 
 use File::Path 'rmtree';
@@ -33,16 +33,18 @@ sub new {
   $self->{info}{builder} = $self;
   weaken($self->{info}{builder});
   
-  $self->{cbuilder_native} ||= SPVM::Builder::C::Native->new(
+  $self->{cbuilder_native} ||= SPVM::Builder::C->new(
     build_dir => $build_dir,
     info => $self->{info},
+    category => 'native',
   );
   $self->{cbuilder_native}{builder} = $self;
   weaken $self->{cbuilder_native}{builder};
   
-  $self->{cbuilder_precompile} ||= SPVM::Builder::C::Precompile->new(
+  $self->{cbuilder_precompile} ||= SPVM::Builder::C->new(
     build_dir => $build_dir,
     info => $self->{info},
+    category => 'precompile',
   );
   $self->{cbuilder_precompile}{builder} = $self;
   weaken $self->{cbuilder_precompile}{builder};
