@@ -98,7 +98,8 @@ sub build_shared_lib_native_dist {
     build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'native',
-    builder => $self
+    builder => $self,
+    quiet => 0,
   );
   
   $builder_c_native->build_shared_lib_native_dist($package_name, $sub_names);
@@ -120,7 +121,8 @@ sub build_shared_lib_precompile_dist {
     build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'precompile',
-    builder => $self
+    builder => $self,
+    quiet => 0,
   );
   
   $builder_c_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
@@ -133,7 +135,8 @@ sub build_precompile {
     build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'precompile',
-    builder => $self
+    builder => $self,
+    quiet => 1,
   );
   
   $builder_c_precompile->build;
@@ -146,7 +149,8 @@ sub build_native {
     build_dir => $self->{build_dir},
     info => $self->{info},
     category => 'native',
-    builder => $self
+    builder => $self,
+    quiet => 1,
   );
   
   $builder_c_native->build;

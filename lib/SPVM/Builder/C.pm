@@ -33,6 +33,8 @@ sub category {
   $self->{category};
 }
 
+sub quiet { shift->{quiet} }
+
 sub builder { shift->{builder} }
 
 sub build {
@@ -159,7 +161,7 @@ sub compile_objects {
   }
   
   # Quiet output
-  my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
+  my $quiet = $self->quiet;
  
   my $input_dir = $opt->{input_dir};
   my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
@@ -202,7 +204,7 @@ sub compile_objects {
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
   my $config = $build_config->to_hash;
-  
+
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
@@ -254,7 +256,7 @@ sub link_shared_lib {
   }
   
   # Quiet output
-  my $quiet = defined $opt->{quiet} ? $opt->{quiet} : 0;
+  my $quiet = $self->quiet;
  
   my $input_dir = $opt->{input_dir};
   my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
@@ -366,7 +368,6 @@ sub build_shared_lib_precompile_runtime {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      quiet => 1,
       is_cached => $is_cached,
     }
   );
@@ -397,7 +398,6 @@ sub build_shared_lib_native_runtime {
       input_dir => $input_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      quiet => 1,
     }
   );
 }
