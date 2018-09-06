@@ -6,6 +6,8 @@ package TestCase::Exe {
     
     $minimal->{x} = 10;
     
+    print((string)$minimal->{x} . "\n");
+    
     return $minimal->{y};
   }
   
