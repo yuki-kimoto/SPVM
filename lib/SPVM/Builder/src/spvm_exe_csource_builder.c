@@ -43,6 +43,52 @@
 #include "spvm_string_buffer.h"
 #include "spvm_portable.h"
 
+void SPVM_EXE_CSOURCE_BUILDER_add_native_headers(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+    if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t SPVM_NATIVE_");
+      SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "__");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* stack);\n");
+    }
+  }
+}
+
+void SPVM_EXE_CSOURCE_BUILDER_add_precompile_headers(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+    if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t SPVM_PRECOMPILE_");
+      SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "__");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* stack);\n");
+    }
+  }
+}
+
+void SPVM_EXE_CSOURCE_BUILDER_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+  
+}
+
+void SPVM_EXE_CSOURCE_BUILDER_add_set_sub_precompile_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+  
+}
+
 void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, SPVM_PORTABLE* portable, const char* package_name) {
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -59,6 +105,13 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_builder.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_sub.h\"\n");
+
+  // Add native sub headers
+  SPVM_EXE_CSOURCE_BUILDER_add_native_headers(env, string_buffer);
+
+  // Add precompile sub headers
+  SPVM_EXE_CSOURCE_BUILDER_add_precompile_headers(env, string_buffer);
+  
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t main(int32_t argc, const char *argv[]) {\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_PORTABLE_new();\n");
