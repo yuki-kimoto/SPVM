@@ -82,11 +82,75 @@ void SPVM_EXE_CSOURCE_BUILDER_add_precompile_headers(SPVM_ENV* env, SPVM_STRING_
 }
 
 void SPVM_EXE_CSOURCE_BUILDER_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
   
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+    if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_abs_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "::");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_");
+        SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "__");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+      }
+    }
+  }
 }
 
 void SPVM_EXE_CSOURCE_BUILDER_add_set_sub_precompile_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
   
+  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+    if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_abs_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "::");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    runtime->sub_precompile_addresses[sub->id] = SPVM_PRECOMPILE_");
+        SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "__");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+      }
+    }
+  }
 }
 
 void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, SPVM_PORTABLE* portable, const char* package_name) {
@@ -380,6 +444,12 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
 
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
+
+  // SPVM_EXE_CSOURCE_BUILDER_add_set_sub_native_addresses(env, string_buffer);
+
+  // SPVM_EXE_CSOURCE_BUILDER_add_set_sub_precompile_addresses(env, string_buffer);
+
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* package_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
