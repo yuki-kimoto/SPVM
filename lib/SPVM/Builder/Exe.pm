@@ -35,7 +35,7 @@ sub new {
   my $exe_name = $self->{exe_name};
   unless (defined $exe_name) {
     $exe_name = $package_name;
-    $exe_name =~ s/::.*//;
+    $exe_name =~ s/::/__/g;
     $self->{exe_name} = $exe_name;
   }
   
