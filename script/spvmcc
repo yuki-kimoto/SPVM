@@ -9,7 +9,6 @@ use SPVM::Builder::Util;
 SPVM::Builder::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'o|output-dir=s'  => \my $output_dir,
   'n|name=s'        => \my $name,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
@@ -18,15 +17,14 @@ SPVM::Builder::Util::getopt
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
 
 push @INC, @include_dirs;
-
-warn "@INC";
+push @INC, 'lib';
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
-  output_dir => $output_dir,
-  name => $name,
+  exe_name => $name,
+  package_name => $package_name,
 );
-$build_exe->create_exe_file($package_name);
+$build_exe->create_exe_file;
 
 =encoding utf8
 
@@ -43,7 +41,7 @@ spvmcc - SPVM compiler to create exe file
   Options:
     -h, --help                     Show this message
     -v, --version                  Version
-    -o, --output <file>            Output file
+    -n, --name                     Excutable file name
     -I, --include-dir <directory>  Add package search path
     -B, --build-dir <directory>    Building diretory
 

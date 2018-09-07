@@ -1,4 +1,4 @@
-package TestCase::Exe {
+package TestCase::MyExe {
   use TestCase::Minimal;
   use TestCase::Extension;
   sub main : int ($argv : string[]) {

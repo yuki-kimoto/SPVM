@@ -16,6 +16,7 @@ use File::Copy 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 use Scalar::Util 'weaken';
+use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
 
@@ -23,27 +24,45 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
+
+  # Package name
+  my $package_name = $self->{package_name};
+  unless (defined $package_name) {
+    croak "Package name not specified";
+  }
+  
+  # Excutable file name
+  my $exe_name = $self->{exe_name};
+  unless (defined $exe_name) {
+    $exe_name = $package_name;
+    $exe_name =~ s/::.*//;
+    $self->{exe_name} = $exe_name;
+  }
+  
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir) {
+    $self->{build_dir} = 'spvm_build/exe';
+  }
   
   return bless $self, $class;
 }
 
-sub build_dir {
-  my $self = shift;
-  
-  return $self->{build_dir};
-}
-
-sub output_file {
-  my $self = shift;
-  
-  return $self->{output_file};
-}
-
 sub create_exe_file {
-  my ($self, $package_name) = @_;
+  my ($self) = @_;
+  
+  # Package name
+  my $package_name = $self->{package_name};
+  
+  # Excutable file name
+  my $exe_name = $self->{exe_name};
+  
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  mkpath $build_dir;
   
   # New SPVM::Builder object
-  my $builder = SPVM::Builder->new;
+  my $builder = SPVM::Builder->new(build_dir => $build_dir);
   
   $self->{builder} = $builder;
   
@@ -54,12 +73,12 @@ sub create_exe_file {
   push @{$builder->{package_infos}}, $package_info;
   
   # Compile
-  my $compile_success =$builder->compile_spvm();
+  warn $builder;
+  
+  my $compile_success = $builder->compile_spvm();
   unless ($compile_success) {
     croak "Compile error";
   }
-  
-  $builder->{build_dir} = 'spvmcc_build';
   
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $builder_c_native = SPVM::Builder::C->new(
@@ -114,11 +133,12 @@ sub compile_spvm_csources {
   my $config = $build_config->to_hash;
   
   # Compile source files
+  my $build_dir = $self->{build_dir};
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "spvmcc_build/" . basename($src_file);
+    my $object_file = "$build_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
@@ -134,7 +154,8 @@ sub compile_spvm_csources {
 sub create_main_csource {
   my ($self, $package_name) = @_;
   
-  my $main_csource_file = "spvmcc_build/my_runtime.c";
+  my $build_dir = $self->{build_dir};
+  my $main_csource_file = "$build_dir/my_runtime.c";
 
   # Create c source file
   my $main_csource = $self->build_main_csource($package_name);
@@ -148,14 +169,16 @@ sub create_main_csource {
 sub compile_main {
   my ($self) = @_;
   
+  my $build_dir = $self->{build_dir};
+
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   $build_config->set_optimize('-O0');
   my $config = $build_config->to_hash;
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
-  my $object_file = "spvmcc_build/my_runtime.o";
-  my $src_file = "spvmcc_build/my_runtime.c";
+  my $object_file = "$build_dir/my_runtime.o";
+  my $src_file = "$build_dir/my_runtime.c";
   
   # Compile source file
   $cbuilder->compile(
@@ -168,17 +191,17 @@ sub compile_main {
 
 sub link_main {
   my ($self, $package_name) = @_;
+
+  my $build_dir = $self->{build_dir};
   
-  my $object_files = [glob 'spvmcc_build/*.o'];
+  my $object_files = [glob "$build_dir/*.o"];
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
-  my $config = $build_config->to_hash;
   
   # CBuilder configs
   my $lddlflags = $build_config->get_lddlflags;
-
-  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user configs
+  
+  # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;
   
   my $sub_names = [];
