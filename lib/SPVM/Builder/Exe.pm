@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Carp 'croak', 'confess';
 use Pod::Usage 'pod2usage';
+use Config;
 
 use SPVM::Builder;
 use SPVM::Builder::C;
@@ -203,6 +204,8 @@ sub compile_main {
 
 sub link_main {
   my ($self, $package_name) = @_;
+  
+  my $dlext = $Config{dlext};
 
   my $build_dir = $self->{build_dir};
   
@@ -236,10 +239,12 @@ sub link_main {
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $lib_file = "$build_dir/libmy_main.$dlext";
   my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
+    lib_file => $lib_file,
   );
 }
 
