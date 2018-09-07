@@ -75,8 +75,8 @@ DEVELOPERS NOTE
     
       perl Makefile.PL && \
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe && \
-      gcc -o spvm_build/exe/MyExe spvm_build/exe/my_runtime.so spvm_build/exe/my_runtime.so spvm_build/exe/lib/SPVM/CORE.native/CORE.so spvm_build/exe/lib/SPVM/Example.native/Example.so spvm_build/exe/lib/SPVM/Example.precompile/Example.so spvm_build/exe/lib/TestCase/MyExe.precompile/MyExe.so spvm_build/exe/lib/TestCase/Extension.native/Extension.so && \
-      spvm_build/exe/MyExe
+      gcc -o spvm_build/exe/TestCase__MyExe spvm_build/exe/exe_main.so spvm_build/exe/exe_main.so spvm_build/exe/lib/SPVM/CORE.native/CORE.so spvm_build/exe/lib/SPVM/Example.native/Example.so spvm_build/exe/lib/SPVM/Example.precompile/Example.so spvm_build/exe/lib/TestCase/MyExe.precompile/MyExe.so spvm_build/exe/lib/TestCase/Extension.native/Extension.so && \
+      spvm_build/exe/TestCase__MyExe
  
       gdb spvm_build/exe/MyExe core.*
     
@@ -84,7 +84,7 @@ DEVELOPERS NOTE
     
       perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP && \
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvm_build/exe -n MyExe TestCase::MyExe && \
-      gcc -o spvm_build/exe/MyExe spvm_build/exe/my_runtime.so && \
+      gcc -o spvm_build/exe/MyExe spvm_build/exe/exe_main.so && \
       spvm_build/exe/MyExe
       
   PORTABILITY NOTE
