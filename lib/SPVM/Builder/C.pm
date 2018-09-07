@@ -7,7 +7,7 @@ use Carp 'croak', 'confess';
 use SPVM::Builder::Util;
 
 use ExtUtils::CBuilder;
-use File::Copy 'move';
+use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 
@@ -55,9 +55,15 @@ sub build {
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
       my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
-
+      
       # Try runtime compile if shared library is not found
-      unless (-f $shared_lib_path) {
+      if (-f $shared_lib_path) {
+        # Copy distribution shared lib to build directory
+        if ($self->{copy_dist}) {
+          $self->copy_shared_lib_to_build_dir($package_name, $category);
+        }
+      }
+      else {
         if ($category eq 'native') {
           $self->build_shared_lib_native_runtime($package_name, $sub_names);
         }
@@ -69,6 +75,25 @@ sub build {
       $self->bind_subs($shared_lib_path, $package_name, $sub_names);
     }
   }
+}
+
+sub copy_shared_lib_to_build_dir {
+  my ($self, $package_name, $category) = @_;
+  
+  my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
+  
+  my $shared_lib_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $category);
+  
+  my $build_dir = $self->builder->{build_dir};
+  
+  my $shared_lib_build_dir_path = "$build_dir/lib/$shared_lib_rel_path";
+  
+  my $shared_lib_build_dir_path_dir = dirname $shared_lib_build_dir_path;
+  
+  mkpath $shared_lib_build_dir_path_dir;
+  
+  copy $shared_lib_path, $shared_lib_build_dir_path
+    or croak "Can't copy $shared_lib_path to $shared_lib_build_dir_path";
 }
 
 sub get_shared_lib_path_runtime {

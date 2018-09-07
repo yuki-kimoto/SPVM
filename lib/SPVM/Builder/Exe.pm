@@ -73,8 +73,6 @@ sub create_exe_file {
   push @{$builder->{package_infos}}, $package_info;
   
   # Compile
-  warn $builder;
-  
   my $compile_success = $builder->compile_spvm();
   unless ($compile_success) {
     croak "Compile error";
@@ -87,6 +85,7 @@ sub create_exe_file {
     category => 'native',
     builder => $builder,
     quiet => 0,
+    copy_dist => 1,
   );
   $builder_c_native->build;
 
@@ -97,6 +96,7 @@ sub create_exe_file {
     category => 'precompile',
     builder => $builder,
     quiet => 0,
+    copy_dist => 1,
   );
   $builder_c_precompile->build;
 
