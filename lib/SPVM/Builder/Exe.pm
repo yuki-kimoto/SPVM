@@ -155,7 +155,7 @@ sub create_main_csource {
   my ($self, $package_name) = @_;
   
   my $build_dir = $self->{build_dir};
-  my $main_csource_file = "$build_dir/exe_main.c";
+  my $main_csource_file = "$build_dir/my_main.c";
 
   # Create c source file
   my $main_csource = $self->build_main_csource($package_name);
@@ -177,8 +177,8 @@ sub compile_main {
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
-  my $object_file = "$build_dir/exe_main.o";
-  my $src_file = "$build_dir/exe_main.c";
+  my $object_file = "$build_dir/my_main.o";
+  my $src_file = "$build_dir/my_main.c";
   
   # Compile source file
   $cbuilder->compile(
