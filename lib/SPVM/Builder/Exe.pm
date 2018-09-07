@@ -111,6 +111,12 @@ sub create_exe_file {
 
   # Link and create exe file
   $self->link_main($package_name);
+  
+  $self->create_exe($package_name);
+}
+
+sub create_exe {
+  
 }
 
 sub compile_spvm_csources {
