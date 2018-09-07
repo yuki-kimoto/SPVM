@@ -132,13 +132,19 @@ sub compile_spvm_csources {
   # and overwrite user configs
   my $config = $build_config->to_hash;
   
-  # Compile source files
+  # Build directory
   my $build_dir = $self->{build_dir};
+  
+  # SPVM dir
+  my $build_spvm_dir = "$build_dir/spvm";
+  mkpath $build_spvm_dir;
+  
+  # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
-    my $object_file = "$build_dir/" . basename($src_file);
+    my $object_file = "$build_spvm_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
@@ -194,7 +200,9 @@ sub link_main {
 
   my $build_dir = $self->{build_dir};
   
-  my $object_files = [glob "$build_dir/*.o"];
+  my $object_files = [];
+  push @$object_files, glob "$build_dir/my_main.o";
+  push @$object_files, glob "$build_dir/spvm/*.o";
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   
