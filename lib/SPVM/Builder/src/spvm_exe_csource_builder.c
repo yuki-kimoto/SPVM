@@ -451,7 +451,7 @@ void SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_EXE_CSOURCE_BUILDER_add_set_sub_precompile_addresses(env, string_buffer);
 
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* package_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
   

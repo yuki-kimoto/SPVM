@@ -352,7 +352,7 @@ compile_spvm(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
@@ -391,7 +391,6 @@ compile_spvm(...)
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
     }
   }
-  
   
   // Add include paths
   AV* av_include_paths = get_av("main::INC", 0);;

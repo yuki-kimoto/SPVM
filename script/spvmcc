@@ -12,6 +12,7 @@ SPVM::Builder::Util::getopt
   'n|name=s'        => \my $name,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
+  'q|quiet'   => \my $quiet,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
@@ -23,6 +24,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
   exe_name => $name,
   package_name => $package_name,
+  quiet => $quiet,
 );
 $build_exe->build_exe_file;
 

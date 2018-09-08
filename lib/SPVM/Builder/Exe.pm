@@ -47,6 +47,10 @@ sub new {
     $self->{build_dir} = 'spvm_build/exe';
   }
   
+  unless (exists $self->{quiet}) {
+    $self->{quiet} = 0;
+  }
+  
   return bless $self, $class;
 }
 
@@ -71,6 +75,8 @@ sub build_exe_file {
   # Add package informations
   my $package_info = {
     name => $package_name,
+    file => 'internal',
+    line => 0,
   };
   push @{$builder->{package_infos}}, $package_info;
   
@@ -80,13 +86,15 @@ sub build_exe_file {
     croak "Compile error";
   }
   
+  my $quiet = $self->{quiet};
+  
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $builder->{build_dir},
     info => $builder->{info},
     category => 'native',
     builder => $builder,
-    quiet => 0,
+    quiet => $quiet,
     copy_dist => 1,
   );
   $builder_c_native->build;
@@ -97,7 +105,7 @@ sub build_exe_file {
     info => $builder->{info},
     category => 'precompile',
     builder => $builder,
-    quiet => 0,
+    quiet => $quiet,
     copy_dist => 1,
   );
   $builder_c_precompile->build;
@@ -141,8 +149,10 @@ sub create_exe_file {
   # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;
   
+  my $quiet = $self->{quiet};
+
   my $exe_file = "$build_dir/$exe_name";
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
     exe_file => $exe_file,
@@ -176,7 +186,8 @@ sub compile_spvm_csources {
   mkpath $build_spvm_dir;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $quiet = $self->{quiet};
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
   for my $src_file (@$src_files) {
     # Object file
@@ -253,7 +264,8 @@ sub compile_main {
   my $config = $build_config->to_hash;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $quiet = $self->{quiet};
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_file = "$build_dir/my_main.o";
   my $src_file = "$build_dir/my_main.c";
   
@@ -302,7 +314,8 @@ sub link_main {
     push @$cfunc_names, '';
   }
   
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $quiet = $self->{quiet};
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $lib_file = "$build_dir/libmy_main.$dlext";
   my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
