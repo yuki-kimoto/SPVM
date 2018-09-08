@@ -9,11 +9,12 @@ use Config;
 use SPVM::Builder;
 use SPVM::Builder::C;
 use SPVM::Builder::Util;
+use File::Find 'find';
 
 use Getopt::Long 'GetOptions';
 
 use ExtUtils::CBuilder;
-use File::Copy 'move';
+use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 use Scalar::Util 'weaken';
@@ -104,6 +105,9 @@ sub create_exe_file {
   # Compile SPVM csource
   $self->compile_spvm_csources;
 
+  # Copy and rename shared libraray "libxxx.$Config{dlext"
+  $self->copy_rename_spvm_shared_lib;
+
   # Create main csouce
   $self->create_main_csource($package_name);
 
@@ -112,12 +116,6 @@ sub create_exe_file {
 
   # Link and create exe file
   $self->link_main($package_name);
-  
-  $self->create_exe($package_name);
-}
-
-sub create_exe {
-  
 }
 
 sub compile_spvm_csources {
@@ -177,6 +175,41 @@ sub create_main_csource {
     or die "Can't create $main_csource_file";
   print $fh $main_csource;
   close $fh;
+}
+
+sub copy_rename_spvm_shared_lib {
+  my ($self) = @_;
+
+  my $dlext = $Config{dlext};
+  
+  my $build_dir = $self->{build_dir};
+  my $build_lib_dir = "$build_dir/lib";
+  
+  find(
+    {
+      wanted => sub {
+        my $file_name = $File::Find::name;
+        if ($file_name =~ /\.$dlext$/) {
+          my $build_lib_dir_escape = quotemeta($build_lib_dir);
+          my $module_path = $file_name;
+          $module_path =~ s/^$build_lib_dir_escape//;
+          $module_path =~ s/^[\/\\]//;
+          
+          my $shared_lib_file = $module_path;
+          $shared_lib_file =~ s/\.$dlext$//;
+          $shared_lib_file =~ s/\./-/g;
+          $shared_lib_file .= ".$dlext";
+          $shared_lib_file =~ s/[\/\\]/__/g;
+          $shared_lib_file = "$build_dir/lib$shared_lib_file";
+          
+          copy $file_name, $shared_lib_file
+            or croak "Can't copy $file_name to $shared_lib_file: $!";
+        }
+      },
+      no_chdir => 1,
+    }
+    , $build_lib_dir
+  );
 }
 
 sub compile_main {
