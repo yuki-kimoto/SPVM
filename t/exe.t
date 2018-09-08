@@ -14,7 +14,8 @@ use lib "$FindBin::Bin/default/lib";
 
 {
   my $spvmcc_cmd = 'perl -Mblib -- blib/script/spvmcc -q -I t/default/lib TestCase::MyExe';
-  my $execute_cmd = 'env LD_LIBRARY_PATH=spvm_build/exe spvm_build/exe/TestCase__MyExe';
+  $ENV{LD_LIBRARY_PATH} = 'spvm_build/exe';
+  my $execute_cmd = 'spvm_build/exe/TestCase__MyExe';
   
   system($spvmcc_cmd) == 0
     or die "Can't execute comman $spvmcc_cmd:$!";
