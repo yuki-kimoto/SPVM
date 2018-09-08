@@ -33,5 +33,4 @@ use lib "$FindBin::Bin/default/lib";
 
   system($execute_cmd) == 0
     or die "Can't execute comman $spvmcc_cmd:$!";
-  
 }

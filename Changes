@@ -1,7 +1,17 @@
-0.0369 2018-09-04
+0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder
-  - script/spvmcc can create exe file
+  - spvmcc command can create exe file
+    
+      spvmcc TestCase::MyExe
+      
+      # Entry point is main subroutine
+      package TestCase::MyExe {
+        sub main : int ($argv : string[]) {
+          my $test_num = 0;
+        }
+      }
+      
 0.0368 2018-09-03
   - remove global runtime. SPVM become reentrant.
   - more portable, remove all static and inline keywords.
