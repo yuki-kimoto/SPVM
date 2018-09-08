@@ -37,6 +37,9 @@ package TestCase::MyExe {
       ok($ok, \$test_num);
     }
     
+    # Finish test
+    print("1.." . (string)$test_num . "\n");
+    
     return 0;
   }
   
