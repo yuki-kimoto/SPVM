@@ -76,7 +76,7 @@ DEVELOPERS NOTE
       perl Makefile.PL && \
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe && \
       cd spvm_build/exe && \
-      gcc -o TestCase__MyExe ./libmy_main.so lib/SPVM/CORE.native/CORE.so lib/SPVM/Example.native/Example.so lib/SPVM/Example.precompile/Example.so lib/TestCase/MyExe.precompile/MyExe.so lib/TestCase/Extension.native/Extension.so && \
+      gcc -o TestCase__MyExe ./libmy_main.so ./libSPVM__CORE-native__CORE.so ./libSPVM__Example-native__Example.so ./libSPVM__Example-precompile__Example.so ./libTestCase__MyExe-precompile__MyExe.so ./libTestCase__Extension-native__Extension.so && \
       ./TestCase__MyExe && \
       cd ../..
  
