@@ -14,7 +14,18 @@ use lib "$FindBin::Bin/default/lib";
 
 {
   my $spvmcc_cmd = 'perl -Mblib -- blib/script/spvmcc -q -I t/default/lib TestCase::MyExe';
-  $ENV{LD_LIBRARY_PATH} = 'spvm_build/exe';
+  
+  # Library path
+  {
+    my $library_path = 'spvm_build/exe';
+    
+    # Linux, macOS
+    $ENV{LD_LIBRARY_PATH} = $library_path;
+    
+    # Windows MinGW
+    $ENV{LIBRARY_PATH} = $library_path;
+  }
+  
   my $execute_cmd = 'spvm_build/exe/TestCase__MyExe';
   
   system($spvmcc_cmd) == 0

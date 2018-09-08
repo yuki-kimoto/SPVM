@@ -182,7 +182,6 @@ solo/lib/TestCase/Weaken2.spvm
 solo/solo_Makefile.PL
 SPVM.xs
 spvm_build/.gitkeep
-spvmcc_build/.gitkeep
 t/compile-error.t
 t/copy_default_to_precompile.pl
 t/default/array.t
@@ -225,7 +224,6 @@ t/default/lib/TestCase/Double.spvm
 t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Exception.spvm
-t/default/lib/TestCase/Exe.spvm
 t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension2.c
@@ -245,6 +243,7 @@ t/default/lib/TestCase/LogicalOperator.spvm
 t/default/lib/TestCase/Long.spvm
 t/default/lib/TestCase/Loop.spvm
 t/default/lib/TestCase/Minimal.spvm
+t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/PerlAPI.spvm
@@ -279,6 +278,7 @@ t/default/string.t
 t/default/switch.t
 t/default/value_t_array.t
 t/default/weaken.t
+t/exe.t
 t/lib/TestAuto.pm
 t/spvm_build/.gitkeep
 yacc/bison.sh
