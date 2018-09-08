@@ -1,18 +1,58 @@
 package TestCase::MyExe {
+  use TestCase;
   use TestCase::Minimal;
   use TestCase::Extension;
   sub main : int ($argv : string[]) {
-    my $minimal = new TestCase::Minimal;
+    my $test_num = 0;
     
-    $minimal->{x} = 10;
+    # use TestCase::Minimal
+    {
+      my $minimal = new TestCase::Minimal;
+      $minimal->{x} = 10;
+
+      my $ok = 0;
+      if ($minimal->{x} == 10) {
+        $ok = 1;
+      }
+      ok($ok, \$test_num);
+    }
     
-    print((string)$minimal->{x} . "\n");
+    # use TestCase
+    {
+      my $ret = TestCase->my_exe_test(10);
+      my $ok = 0;
+      if ($ret == 20) {
+        $ok = 1;
+      }
+      ok($ok, \$test_num);
+    }
     
-    return $minimal->{y};
+    # precompile sub
+    {
+      my $ret = precompile_sub(3);
+      my $ok = 0;
+      if ($ret == 9) {
+        $ok = 1;
+      }
+      ok($ok, \$test_num);
+    }
+    
+    return 0;
   }
   
-  precompile sub precompile_sub : int () {
+  sub ok : void ($ok : int, $test_num_ref : &int) {
+    $$test_num_ref = $$test_num_ref + 1;
+    if ($ok) {
+      print("ok ");
+    }
+    else {
+      print("not ok ");
+    }
+    print((string)$$test_num_ref . "\n");
+  }
+  
+  precompile sub precompile_sub : int ($num : int) {
     
-    return 5;
+    return $num * 3;
   }
 }
