@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 SPVM::Document::PerlAPI - SPVM Perl API
@@ -108,6 +110,8 @@ You can set and get value by C<set> and C<get> method.
 
 =head2 SPVM::Data::Array
 
+=over 2
+
 =item * new_len
 
 =item * set_elements
@@ -125,3 +129,5 @@ You can set and get value by C<set> and C<get> method.
 =item * to_bin
 
 =item * to_string
+
+=back

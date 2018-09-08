@@ -168,6 +168,8 @@ B<Returns:>
 
 the arc sine of the argument.
 
+=back
+
 =head2 acos
 
 B<sub acos : double ($x : double)>
