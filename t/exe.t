@@ -20,5 +20,6 @@ use lib "$FindBin::Bin/default/lib";
     or die "Can't execute comman $spvmcc_cmd:$!";
 
   system($execute_cmd) == 0
-    or die "Can't execute comman $execute_cmd:$!";
+    or die "Can't execute comman $spvmcc_cmd:$!";
+  
 }

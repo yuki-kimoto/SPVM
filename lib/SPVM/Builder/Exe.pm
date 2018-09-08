@@ -138,24 +138,35 @@ sub create_exe_file {
 
   my $build_dir = $self->{build_dir};
   
+  my $extra_linker_flag = '';
   my $object_files = [];
   push @$object_files, glob "$build_dir/*.$dlext";
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   
-  # CBuilder configs
-  my $lddlflags = $build_config->get_lddlflags;
+  $extra_linker_flag .= " -L$build_dir";
+  
+  for my $object_file (@$object_files) {
+    my $module_shared_lib_name = basename $object_file;
+    $module_shared_lib_name =~ s/^lib//;
+    $module_shared_lib_name =~ s/\.$dlext$//;
+    $extra_linker_flag .= " -l$module_shared_lib_name";
+  }
   
   # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;
   
   my $quiet = $self->{quiet};
-
+  
+  my $stab_file = "$build_dir/my_main_stab.c";
+  open my $stab_fh, '>', $stab_file
+    or croak "Can't create stab $stab_file: $!";
   my $exe_file = "$build_dir/$exe_name";
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link_executable(
-    objects => $object_files,
+    objects => [$stab_file],
     exe_file => $exe_file,
+    extra_linker_flags => $extra_linker_flag,
   );
 }
 
