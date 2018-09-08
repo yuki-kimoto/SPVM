@@ -24,7 +24,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   exe_name => $name,
   package_name => $package_name,
 );
-$build_exe->create_exe_file;
+$build_exe->build_exe_file;
 
 =encoding utf8
 

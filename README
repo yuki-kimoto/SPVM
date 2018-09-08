@@ -73,12 +73,9 @@ DEVELOPERS NOTE
     
     SPVM can create exe file.
     
-      perl Makefile.PL && \
-      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe && \
-      cd spvm_build/exe && \
-      gcc -o TestCase__MyExe ./libmy_main.so ./libSPVM__CORE-native__CORE.so ./libSPVM__Example-native__Example.so ./libSPVM__Example-precompile__Example.so ./libTestCase__MyExe-precompile__MyExe.so ./libTestCase__Extension-native__Extension.so && \
-      ./TestCase__MyExe && \
-      cd ../..
+      perl Makefile.PL
+      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe
+      env LD_LIBRARY_PATH=spvm_build/exe spvm_build/exe/TestCase__MyExe
  
       gdb spvm_build/exe/MyExe core.*
     

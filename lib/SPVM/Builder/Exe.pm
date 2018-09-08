@@ -50,7 +50,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub create_exe_file {
+sub build_exe_file {
   my ($self) = @_;
   
   # Package name
@@ -116,6 +116,37 @@ sub create_exe_file {
 
   # Link and create exe file
   $self->link_main($package_name);
+  
+  $self->create_exe_file;
+}
+
+sub create_exe_file {
+
+  my ($self) = @_;
+  
+  my $exe_name = $self->{exe_name};
+  
+  my $dlext = $Config{dlext};
+
+  my $build_dir = $self->{build_dir};
+  
+  my $object_files = [];
+  push @$object_files, glob "$build_dir/*.$dlext";
+  
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
+  
+  # CBuilder configs
+  my $lddlflags = $build_config->get_lddlflags;
+  
+  # ExeUtils::CBuilder config
+  my $config = $build_config->to_hash;
+  
+  my $exe_file = "$build_dir/$exe_name";
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $tmp_shared_lib_file = $cbuilder->link_executable(
+    objects => $object_files,
+    exe_file => $exe_file,
+  );
 }
 
 sub compile_spvm_csources {
