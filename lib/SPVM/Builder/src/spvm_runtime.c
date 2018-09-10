@@ -1822,13 +1822,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_LONG_ARRAY: {
         
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        
         if (length >= 0) {
           void* object = env->new_long_array_raw(env, length);
-          
-          // Set array
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
@@ -1840,13 +1836,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_FLOAT_ARRAY: {
         
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        
         if (length >= 0) {
           void* object = env->new_float_array_raw(env, length);
-          
-          // Set array
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
@@ -1858,13 +1850,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_NEW_DOUBLE_ARRAY: {
         
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        
         if (length >= 0) {
           void* object = env->new_double_array_raw(env, length);
-          
-          // Set array
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
@@ -1879,13 +1867,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
         int32_t basic_type_id = type->basic_type_id;
         
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
-        
         if (length >= 0) {
           void* object = env->new_object_array_raw(env, basic_type_id, length);
-          
-          // Set object
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
@@ -1901,13 +1885,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t basic_type_id = type->basic_type_id;
         int32_t element_dimension = type->dimension - 1;
         
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
-        
         if (length >= 0) {
           void* object = env->new_multi_array_raw(env, basic_type_id, element_dimension, length);
-          
-          // Set object
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {
