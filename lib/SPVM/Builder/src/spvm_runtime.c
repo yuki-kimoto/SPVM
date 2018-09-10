@@ -1771,14 +1771,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
-        
-        // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        
         if (length >= 0) {
           void* object = env->new_byte_array_raw(env, length);
-          
-          // Set array
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         }
         else {

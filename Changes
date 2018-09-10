@@ -1,5 +1,6 @@
 0.0370 2018-09-10
   - fix check object type null segumentation fault bug
+  - fix new array length is minus segfalt bug
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder
