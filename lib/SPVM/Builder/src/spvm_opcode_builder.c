@@ -1648,33 +1648,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag));
 
                           if (src_type->basic_type->id == dist_type->basic_type->id && src_type->dimension == dist_type->dimension) {
-                            if (src_type->dimension == 0) {
-                              switch (src_type->basic_type->id) {
-                                case SPVM_BASIC_TYPE_C_ID_BYTE:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_BYTE;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_SHORT:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_SHORT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_INT:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_INT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_LONG:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_LONG;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_FLOAT;
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_DOUBLE;
-                                  break;
-                                default:
-                                  opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
-                              }
-                            }
-                            else {
-                              opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
-                            }
+                            opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
                           }
                           else {
                             opcode.id = SPVM_OPCODE_C_ID_CAST;
