@@ -1775,10 +1775,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_byte_array_raw(env, length);
-        
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_byte_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_SHORT_ARRAY: {
@@ -1786,10 +1793,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_short_array_raw(env, length);
-        
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_short_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_INT_ARRAY: {
@@ -1797,10 +1811,18 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_int_array_raw(env, length);
+        if (length >= 0) {
+          void* object = env->new_int_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_LONG_ARRAY: {
@@ -1808,10 +1830,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_long_array_raw(env, length);
-        
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_long_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_FLOAT_ARRAY: {
@@ -1819,10 +1848,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_float_array_raw(env, length);
-        
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_float_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_DOUBLE_ARRAY: {
@@ -1830,10 +1866,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand1];
         
-        void* object = env->new_double_array_raw(env, length);
-        
-        // Set array
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_double_array_raw(env, length);
+          
+          // Set array
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
@@ -1844,10 +1887,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         
-        void* object = env->new_object_array_raw(env, basic_type_id, length);
-        
-        // Set object
-         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_object_array_raw(env, basic_type_id, length);
+          
+          // Set object
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
@@ -1859,10 +1909,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         
-        void* object = env->new_multi_array_raw(env, basic_type_id, element_dimension, length);
-        
-        // Set object
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_multi_array_raw(env, basic_type_id, element_dimension, length);
+          
+          // Set object
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
@@ -1873,10 +1930,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // length
         int32_t length = *(SPVM_VALUE_int*)&vars[opcode->operand2];
         
-        void* object = env->new_value_t_array_raw(env, basic_type_id, length);
-        
-        // Set object
-        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        if (length >= 0) {
+          void* object = env->new_value_t_array_raw(env, basic_type_id, length);
+          
+          // Set object
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+        }
+        else {
+          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
@@ -1984,18 +2048,20 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
         void* object = *(void**)&vars[opcode->operand1];
         
-        int32_t rel_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_TYPE* check_type = &runtime->info_types[sub->info_types_base + rel_id];
-        int32_t check_basic_type_id = check_type->basic_type_id;
-        int32_t check_type_dimension = check_type->dimension;
-        
-        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-        int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-        
-        if (!(object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension)) {
-          void* exception = env->new_string_raw(env, "Can't cast uncompatible type.", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
+        if (object != NULL) {
+          int32_t rel_id = opcode->operand2;
+          SPVM_RUNTIME_INFO_TYPE* check_type = &runtime->info_types[sub->info_types_base + rel_id];
+          int32_t check_basic_type_id = check_type->basic_type_id;
+          int32_t check_type_dimension = check_type->dimension;
+          
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          
+          if (!(object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension)) {
+            void* exception = env->new_string_raw(env, "Can't cast uncompatible type.", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
         }
         
         break;
