@@ -114,6 +114,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
   // Temporary buffer
   char tmp_buffer[UINT16_MAX];
+  char tmp_buffer2[UINT16_MAX];
   
   // Check trees
   int32_t sub_id = 0;
@@ -2141,9 +2142,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (!is_convertable) {
+                          char* src_type_name = tmp_buffer2;
+                          SPVM_TYPE_sprint_type_name(compiler, src_type_name, src_type->basic_type->id, src_type->dimension, src_type->flag);
+
                           char* dist_type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                          SPVM_yyerror_format(compiler, "Can't convert to %s at %s line %d\n", dist_type_name, op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
                           
                           return;
                         }
