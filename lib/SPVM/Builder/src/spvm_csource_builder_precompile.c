@@ -2412,7 +2412,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_T_ARRAY: {
         int32_t rel_id = opcode->operand1;
-
         SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
         int32_t basic_type_id = type->basic_type_id;
         int32_t type_dimension = type->dimension;
@@ -2420,16 +2419,24 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* basic_type_name = runtime->symbols[basic_type->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
-        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = *(SPVM_VALUE_int*)&");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", env->new_value_t_array_raw(env, basic_type_id, ");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_int", opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, "));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (length >= 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_value_t_array_raw(env, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ", length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Array length must be more than or equal to 0\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
