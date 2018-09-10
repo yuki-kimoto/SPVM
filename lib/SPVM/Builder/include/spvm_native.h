@@ -99,7 +99,6 @@ struct SPVM_env {
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
   int32_t (*weaken_object_field)(SPVM_ENV* env, void* object, int32_t field_rel_id);
   void* (*create_exception_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
-  int32_t (*check_cast)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
   void* object_header_byte_size;
   void* object_ref_count_byte_offset;
   void* object_basic_type_id_byte_offset;

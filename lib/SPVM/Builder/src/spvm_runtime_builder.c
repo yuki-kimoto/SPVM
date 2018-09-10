@@ -152,7 +152,6 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_concat,
     SPVM_RUNTIME_API_weaken_object_field,
     SPVM_RUNTIME_API_create_exception_stack_trace,
-    SPVM_RUNTIME_API_check_cast,
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset

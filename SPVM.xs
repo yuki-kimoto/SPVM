@@ -1124,10 +1124,9 @@ call_sub(...)
         else {
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            
-            _Bool check_cast = env->check_cast(env, arg_basic_type_id, arg_type_dimension, object);
-            if (!check_cast) {
-              croak("Can't cast %dth argument", arg_index);
+
+            if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
+              croak("%dth argument is invalid object type", arg_index);
             }
             
             stack[arg_var_id].oval = object;
@@ -1572,13 +1571,11 @@ set_array_elements(...)
         else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
           SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
           
-          int32_t check_cast = env->check_cast(env, array_basic_type_id, element_type_dimension, object);
-          
-          if (check_cast) {
+          if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
             env->set_object_array_element(env, array, index, object);
           }
           else {
-            croak("Element must be cast");
+            croak("Element is invalid object type");
           }
         }
         else {
@@ -1981,13 +1978,11 @@ set_array_element(...)
       else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
         SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
         
-        int32_t check_cast = env->check_cast(env, basic_type_id, element_type_dimension, object);
-        
-        if (check_cast) {
+        if (object->basic_type_id == basic_type_id && object->type_dimension == element_type_dimension) {
           env->set_object_array_element(env, array, index, object);
         }
         else {
-          croak("Element must be cast");
+          croak("Element is invalid object type");
         }
       }
       else {

@@ -285,7 +285,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "PUSH_ARG_DOUBLE",
   "PUSH_ARG_OBJECT",
   "PUSH_ARG_UNDEF",
-  "CAST",
+  "CHECK_OBJECT_TYPE",
   "STRING_EQ",
   "STRING_NE",
   "STRING_GT",

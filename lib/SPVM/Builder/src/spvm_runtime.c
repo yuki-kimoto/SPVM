@@ -1981,7 +1981,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top++;
         
         break;
-      case SPVM_OPCODE_C_ID_CAST: {
+      case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
         void* object = *(void**)&vars[opcode->operand1];
         
         int32_t rel_id = opcode->operand2;

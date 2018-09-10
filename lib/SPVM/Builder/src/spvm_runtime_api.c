@@ -334,21 +334,6 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
   return has_interface;
 }
 
-int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, int32_t dist_type_dimension, SPVM_OBJECT* object) {
-  (void)env;
-  
-  int32_t check_cast;
-  // Dist type is same as source type
-  if (dist_basic_type_id == object->basic_type_id && dist_type_dimension == object->type_dimension) {
-    check_cast = 1;
-  }
-  else {
-    check_cast = 0;
-  }
-  
-  return check_cast;
-}
-
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
   
   // stack trace symbols
