@@ -41,6 +41,7 @@ do {\
 struct SPVM_runtime {
   
   char** symbols;
+  int32_t symbols_length;
   
   SPVM_OPCODE* opcodes;
   
@@ -65,6 +66,7 @@ struct SPVM_runtime {
   int64_t* info_long_values;
   double* info_double_values;
   char** info_string_values;
+  int32_t info_string_values_length;
   int32_t* info_string_lengths;
   int32_t* info_sub_ids;
   int32_t* info_package_var_ids;

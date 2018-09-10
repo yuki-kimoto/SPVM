@@ -195,6 +195,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   
   // Share runtime information with portable
   runtime->symbols = portable->symbols;
+  runtime->symbols_length = portable->symbols_length;
   runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)portable->basic_types;
   runtime->basic_types_length = portable->basic_types_length;
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
@@ -214,6 +215,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->info_long_values = portable->info_long_values;
   runtime->info_double_values = portable->info_double_values;
   runtime->info_string_values = portable->info_string_values;
+  runtime->info_string_values_length = portable->info_string_values_length;
   runtime->info_string_lengths = portable->info_string_lengths;
 
   // Native sub addresses

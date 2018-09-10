@@ -2749,6 +2749,62 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   SPVM_PORTABLE_free(runtime->portable);
 
 /*
+  free(runtime->basic_types);
+  runtime->basic_types = NULL;
+
+  free(runtime->fields);
+  runtime->fields = NULL;
+
+  free(runtime->subs);
+  runtime->subs = NULL;
+
+  free(runtime->mys);
+  runtime->mys = NULL;
+
+  free(runtime->info_package_var_ids);
+  runtime->info_package_var_ids = NULL;
+
+  free(runtime->info_sub_ids);
+  runtime->info_sub_ids = NULL;
+
+  free(runtime->info_field_ids);
+  runtime->info_field_ids = NULL;
+
+  free(runtime->info_types);
+  runtime->info_types = NULL;
+
+  free(runtime->mys);
+  runtime->mys = NULL;
+  
+  free(runtime->info_long_values);
+  runtime->info_long_values = NULL;
+  
+  free(runtime->info_double_values);
+  runtime->info_double_values = NULL;
+  
+  free(runtime->info_string_lengths);
+  runtime->info_string_lengths = NULL;
+  
+  free(runtime->opcodes);
+  runtime->opcodes = NULL;
+  
+  for (int32_t i = 0; i < runtime->symbols_length; i++) {
+    free(runtime->symbols[i]);
+    runtime->symbols[i] = NULL;
+  }
+  free(runtime->symbols);
+  runtime->symbols = NULL;
+  
+  for (int32_t i = 0; i < runtime->info_string_values_length; i++) {
+    free(runtime->info_string_values[i]);
+    runtime->info_string_values[i] = NULL;
+  }
+  free(runtime->info_string_values);
+  runtime->info_string_values = NULL;
+
+*/
+
+/*
   char** symbols;
   SPVM_OPCODE* opcodes;
   SPVM_RUNTIME_MY* args;
