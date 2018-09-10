@@ -2104,6 +2104,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
                         assert(dist_type);
+
+                        // if dist basic type is any object, can't be converted
+                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+                          SPVM_yyerror_format(compiler, "Basic type of runtime type coversion must not be any object type at %s line %d\n", op_cur->file, op_cur->line);
+                          break;
+                        }
+                        // if dist basic type is interface, can't be converted
+                        else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                          SPVM_yyerror_format(compiler, "Basic type of runtime type coversion must not reference type at %s line %d\n", op_cur->file, op_cur->line);
+                          break;
+                        }
                         
                         // Convert number to number
                         _Bool is_convertable;
@@ -2148,8 +2159,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           char* dist_type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                           SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
-                          
-                          return;
+                          break;
                         }
                         if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
                           if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
@@ -2157,6 +2167,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           op_type->uv.type->sub_rel_id = sub->info_types->length;
                           SPVM_LIST_push(sub->info_types, op_type->uv.type);
+                          break;
                         }
                       }
                       break;
