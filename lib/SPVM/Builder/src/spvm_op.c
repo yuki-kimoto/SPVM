@@ -31,7 +31,7 @@
 #include "spvm_use.h"
 #include "spvm_package_var.h"
 #include "spvm_package_var_access.h"
-#include "spvm_csource_builder.h"
+#include "spvm_csource_builder_precompile.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"

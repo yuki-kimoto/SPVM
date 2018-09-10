@@ -41,7 +41,7 @@
 #include "spvm_my.h"
 #include "spvm_portable.h"
 
-#include "spvm_exe_csource_builder.h"
+#include "spvm_csource_builder_exe.h"
 #include "spvm_string_buffer.h"
 
 

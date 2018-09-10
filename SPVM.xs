@@ -29,9 +29,9 @@
 #include "spvm_object.h"
 #include "spvm_native.h"
 #include "spvm_opcode_builder.h"
-#include "spvm_csource_builder.h"
+#include "spvm_csource_builder_precompile.h"
 #include "spvm_list.h"
-#include "spvm_csource_builder.h"
+#include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"
@@ -54,7 +54,7 @@
 #include "spvm_runtime_info_case_info.h"
 
 #include "spvm_portable.h"
-#include "spvm_exe_csource_builder.h"
+#include "spvm_csource_builder_exe.h"
 
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* package) {
   
@@ -502,7 +502,7 @@ build_package_csource_precompile(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
   
   // Build package csource
-  SPVM_CSOURCE_BUILDER_build_package_csource(env, string_buffer, package_name);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(env, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
@@ -2625,7 +2625,7 @@ build_main_csource(...)
   // String buffer for csource
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
 
-  SPVM_EXE_CSOURCE_BUILDER_build_exe_csource(env, string_buffer, portable, package_name);
+  SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(env, string_buffer, portable, package_name);
 
   SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
 
