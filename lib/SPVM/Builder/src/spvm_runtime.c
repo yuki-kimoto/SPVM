@@ -1983,14 +1983,16 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       case SPVM_OPCODE_C_ID_CAST: {
         void* object = *(void**)&vars[opcode->operand1];
-
-        int32_t rel_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
-        int32_t cast_basic_type_id = type->basic_type_id;
-        int32_t cast_type_dimension = type->dimension;
         
-        _Bool can_cast = env->check_cast(env, cast_basic_type_id, cast_type_dimension, object);
-        if (!can_cast) {
+        int32_t rel_id = opcode->operand2;
+        SPVM_RUNTIME_INFO_TYPE* check_type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t check_basic_type_id = check_type->basic_type_id;
+        int32_t check_type_dimension = check_type->dimension;
+        
+        int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
+        int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+        
+        if (!(object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension)) {
           void* exception = env->new_string_raw(env, "Can't cast uncompatible type.", 0);
           env->set_exception(env, exception);
           exception_flag = 1;
