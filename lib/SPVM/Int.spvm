@@ -9,11 +9,11 @@ package SPVM::Int {
     return $self;
   }
   
-  sub get_value : int ($self : self) {
+  sub val : int ($self : self) {
     return $self->{value};
   }
 
-  sub set_value : void ($self : self, $value : int) {
+  sub set_val : void ($self : self, $value : int) {
     $self->{value} = $value;
   }
 }

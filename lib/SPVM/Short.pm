@@ -16,14 +16,14 @@ Construct Short object with specified value.
 
 =head1 METHODS
 
-=head2 get_value
+=head2 val
 
-  sub get_value : short ($self : self)
+  sub val : short ($self : self)
 
 Get value.
 
-=head2 set_value
+=head2 set_val
 
-  sub set_value : void ($self : self, $value : short)
+  sub set_val : void ($self : self, $value : short)
 
 Set value.

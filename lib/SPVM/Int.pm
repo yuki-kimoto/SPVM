@@ -16,14 +16,14 @@ Construct Int object with specified value.
 
 =head1 METHODS
 
-=head2 get_value
+=head2 val
 
-  sub get_value : int ($self : self)
+  sub val : int ($self : self)
 
 Get value.
 
-=head2 set_value
+=head2 set_val
 
-  sub set_value : void ($self : self, $value : int)
+  sub set_val : void ($self : self, $value : int)
 
 Set value.

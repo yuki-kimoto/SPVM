@@ -9,11 +9,11 @@ package SPVM::Float {
     return $self;
   }
   
-  sub get_value : float ($self : self) {
+  sub val : float ($self : self) {
     return $self->{value};
   }
   
-  sub set_value : void ($self : self, $value : float) {
+  sub set_val : void ($self : self, $value : float) {
     $self->{value} = $value;
   }
 }

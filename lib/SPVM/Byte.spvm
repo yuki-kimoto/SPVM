@@ -9,11 +9,11 @@ package SPVM::Byte {
     return $self;
   }
   
-  sub get_value : byte ($self : self) {
+  sub val : byte ($self : self) {
     return $self->{value};
   }
   
-  sub set_value : void ($self : self, $value : byte) {
+  sub set_val : void ($self : self, $value : byte) {
     $self->{value} = $value;
   }
 }

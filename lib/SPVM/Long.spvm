@@ -9,11 +9,11 @@ package SPVM::Long {
     return $self;
   }
   
-  sub get_value : long ($self : self) {
+  sub val : long ($self : self) {
     return $self->{value};
   }
 
-  sub set_value : void ($self : self, $value : long) {
+  sub set_val : void ($self : self, $value : long) {
     $self->{value} = $value;
   }
 }

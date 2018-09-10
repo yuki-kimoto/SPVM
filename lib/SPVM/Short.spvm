@@ -9,11 +9,11 @@ package SPVM::Short {
     return $self;
   }
   
-  sub get_value : short ($self : self) {
+  sub val : short ($self : self) {
     return $self->{value};
   }
   
-  sub set_value : void ($self : self, $value : short) {
+  sub set_val : void ($self : self, $value : short) {
     $self->{value} = $value;
   }
 }

@@ -2,11 +2,11 @@ package TestCase::Short {
   use SPVM::Short;
 
   sub basic : int () {
-    my $obj_value = SPVM::Short->new(3);
-    my $value1 = $obj_value->get_value;
+    my $oval = SPVM::Short->new(3);
+    my $value1 = $oval->val;
     
-    $obj_value->set_value(5);
-    my $value2 = $obj_value->get_value;
+    $oval->set_val(5);
+    my $value2 = $oval->val;
     
     if ($value1 == 3 && $value2 == 5) {
       return 1;
