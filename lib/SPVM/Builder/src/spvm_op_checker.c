@@ -2135,14 +2135,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_value_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag) || SPVM_TYPE_is_value_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             is_convertable = 0;
                           }
-                          // if dist basic type is any object, can't be converted
-                          else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-                            is_convertable = 0;
-                          }
-                          // if dist basic type is interface, can't be converted
-                          else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                            is_convertable = 0;
-                          }
                           else {
                             is_convertable = 1;
                           }
