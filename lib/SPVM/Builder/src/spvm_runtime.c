@@ -2747,92 +2747,23 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);
+  
+  free(runtime->sub_native_addresses);
+  free(runtime->sub_precompile_addresses);
+  
+  if (runtime->exception != NULL) {
+    free(runtime->exception);
+  }
+  
+  free(runtime->mortal_stack);
 
 /*
-  free(runtime->basic_types);
-  runtime->basic_types = NULL;
-
-  free(runtime->fields);
-  runtime->fields = NULL;
-
-  free(runtime->subs);
-  runtime->subs = NULL;
-
-  free(runtime->mys);
-  runtime->mys = NULL;
-
-  free(runtime->info_package_var_ids);
-  runtime->info_package_var_ids = NULL;
-
-  free(runtime->info_sub_ids);
-  runtime->info_sub_ids = NULL;
-
-  free(runtime->info_field_ids);
-  runtime->info_field_ids = NULL;
-
-  free(runtime->info_types);
-  runtime->info_types = NULL;
-
-  free(runtime->mys);
-  runtime->mys = NULL;
-  
-  free(runtime->info_long_values);
-  runtime->info_long_values = NULL;
-  
-  free(runtime->info_double_values);
-  runtime->info_double_values = NULL;
-  
-  free(runtime->info_string_lengths);
-  runtime->info_string_lengths = NULL;
-  
-  free(runtime->opcodes);
-  runtime->opcodes = NULL;
-  
-  for (int32_t i = 0; i < runtime->symbols_length; i++) {
-    free(runtime->symbols[i]);
-    runtime->symbols[i] = NULL;
-  }
-  free(runtime->symbols);
-  runtime->symbols = NULL;
-  
-  for (int32_t i = 0; i < runtime->info_string_values_length; i++) {
-    free(runtime->info_string_values[i]);
-    runtime->info_string_values[i] = NULL;
-  }
-  free(runtime->info_string_values);
-  runtime->info_string_values = NULL;
-
-*/
-
-/*
-  char** symbols;
-  SPVM_OPCODE* opcodes;
-  SPVM_RUNTIME_MY* args;
-  SPVM_RUNTIME_MY* mys;
-  SPVM_RUNTIME_BASIC_TYPE* basic_types;
-  SPVM_RUNTIME_FIELD* fields;
-  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
-  SPVM_RUNTIME_SUB* subs;
-  SPVM_RUNTIME_PACKAGE* packages;
-  int64_t* info_long_values;
-  double* info_double_values;
-  char** info_string_values;
-  int32_t* info_string_lengths;
-  int32_t* info_sub_ids;
-  int32_t* info_package_var_ids;
-  int32_t* info_field_ids;
-  SPVM_RUNTIME_INFO_TYPE* info_types;
-  void** sub_native_addresses;
-  void** sub_precompile_addresses;
   SPVM_LIST* info_switch_infos;
   SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;
   SPVM_HASH* field_symtable;
   SPVM_HASH* package_var_symtable;
   SPVM_HASH* sub_symtable;
-  SPVM_OBJECT* exception;
-  SPVM_VALUE* package_vars_heap;
-  SPVM_OBJECT** mortal_stack;
 */
 
   // Free package variables heap
