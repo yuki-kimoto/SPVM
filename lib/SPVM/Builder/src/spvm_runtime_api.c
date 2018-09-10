@@ -337,83 +337,13 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
 int32_t SPVM_RUNTIME_API_check_cast(SPVM_ENV* env, int32_t dist_basic_type_id, int32_t dist_type_dimension, SPVM_OBJECT* object) {
   (void)env;
   
-  int32_t src_basic_type_id = object->basic_type_id;
-  int32_t src_type_dimension = object->type_dimension;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  _Bool check_cast;
-  
+  int32_t check_cast;
   // Dist type is same as source type
-  if (dist_basic_type_id == src_basic_type_id && dist_type_dimension == src_type_dimension) {
+  if (dist_basic_type_id == object->basic_type_id && dist_type_dimension == object->type_dimension) {
     check_cast = 1;
   }
-  // Dist type is difference from source type
   else {
-    // Dist type dimension is less than or equal to source type dimension
-    if (dist_type_dimension <= src_type_dimension) {
-      // Dist basic type is any object
-      if (dist_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-        if (src_type_dimension == 0) {
-          // Source basic type is value type
-          SPVM_RUNTIME_BASIC_TYPE* src_basic_type = &runtime->basic_types[src_basic_type_id];
-          SPVM_RUNTIME_PACKAGE* src_base_package = &runtime->packages[src_basic_type->package_id];
-          if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-            check_cast = 0;
-          }
-          // Source basic type is not value type
-          else {
-            check_cast = 1;
-          }
-        }
-        // Source type is array
-        else {
-          check_cast = 1;
-        }
-      }
-      // Dist basic type is object (except for any object)
-      else {
-        // Dist type dimension is equal to source type dimension
-        if (dist_type_dimension == src_type_dimension) {
-          // Dist basic type is same as source basic type
-          if (dist_basic_type_id == src_basic_type_id) {
-            check_cast = 1;
-          }
-          // Dist basic type is different from source basic type
-          else {
-            SPVM_RUNTIME_BASIC_TYPE* dist_basic_type = &runtime->basic_types[dist_basic_type_id];
-            SPVM_RUNTIME_BASIC_TYPE* src_basic_type = &runtime->basic_types[src_basic_type_id];
-            SPVM_RUNTIME_PACKAGE* dist_package = &runtime->packages[dist_basic_type->package_id];
-            SPVM_RUNTIME_PACKAGE* src_package = &runtime->packages[src_basic_type->package_id];
-            
-            // Dist basic type and source basic type is package
-            if (dist_package && src_package) {
-              
-              // Dist base type is interface
-              if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                check_cast = SPVM_RUNTIME_API_has_interface(env, src_package, dist_package);
-              }
-              // Dist base type is not interface
-              else {
-                check_cast = 0;
-              }
-            }
-            // Dist basic type is not package or source basic type is not package
-            else {
-              check_cast = 0;
-            }
-          }
-        }
-        // Dist type dimension is different from source type dimension
-        else {
-          check_cast = 0;
-        }
-      }
-    }
-    // Dist type dimension is greater than source type dimension
-    else if (dist_type_dimension > src_type_dimension) {
-      check_cast = 0;
-    }
+    check_cast = 0;
   }
   
   return check_cast;

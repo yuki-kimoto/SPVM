@@ -1591,6 +1591,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         // Check cast
                         else {
+                          assert(SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag));
                           if (src_type->basic_type->id == dist_type->basic_type->id && src_type->dimension == dist_type->dimension) {
                             if (src_type->dimension == 0) {
                               switch (src_type->basic_type->id) {
