@@ -11,11 +11,9 @@ use SPVM 'TestCase::List';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-=pod
 {
   ok(TestCase::List->test_list);
 }
-=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

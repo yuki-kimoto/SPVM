@@ -1429,7 +1429,7 @@ call_sub(...)
     int32_t length = env->get_array_length(env, exception);
     const char* exception_bytes = (char*)env->get_byte_array_elements(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
-    croak("%s", SvPV_nolen(sv_exception));
+    croak("%s\n ", SvPV_nolen(sv_exception));
   }
   // Success
   else {

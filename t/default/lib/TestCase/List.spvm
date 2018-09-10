@@ -10,22 +10,23 @@ package TestCase::List {
     my $list = TestCase::List->new(5);
     $list->add(SPVM::Int->new(1));
     $list->add(SPVM::Int->new(2));
+    
+    my $onum1 = (SPVM::Int)$list->get(1);
+    
+    $list->add_all([SPVM::Int->new(4), SPVM::Int->new(5)]);
+    
+    my $onum2 = (SPVM::Int)$list->get(2);
 
-    my $list2 = TestCase::List->new(5);
-    $list2->add(SPVM::Int->new(4));
-    $list2->add(SPVM::Int->new(5));
+    my $onums = $list->sub_list(2, 3);
+    my $onum3 = (SPVM::Int)$onums->[1];
     
-    $list->add_all($list2->{values});
-    
-    my $num_obj = (SPVM::Int)$list->get(2);
-    
-    my $nums = $list->sub_list(2, 3);
-    
+
     my $ok = 0;
-    
-    if ($num_obj->get_value == 2) {
-      if (((SPVM::Int)$nums->[0])->get_value == 4 && ((SPVM::Int)$nums->[1])->get_value == 5) {
-        $ok = 1;
+    if ($onum1->get_value == 2) {
+      if ($onum2->get_value == 4) {
+        if ($onum3->get_value == 5) {
+          $ok = 1;
+        }
       }
     }
    
@@ -53,11 +54,18 @@ package TestCase::List {
     }
     
     $self->{values}[$length] = $object;
+    
+    $self->{length} = $self->{length} + 1;
   }
   
   sub add_all : void ($self : self, $objects : object[]) {
     for (my $i = 0; $i < @$objects; $i++) {
-      $self->add($objects->[$i]);
+      if ($objects->[$i]) {
+        $self->add($objects->[$i]);
+      }
+      else {
+        croak "Error";
+      }
     }
   }
   
@@ -66,7 +74,7 @@ package TestCase::List {
   }
   
   sub sub_list : object[] ($self : self, $from : int, $to : int) {
-    my $length = $to - $from;
+    my $length = $to - $from + 1;
     
     my $new_values = new object[$length];
     for (my $i = $from; $i <= $to; $i++) {
