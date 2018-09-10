@@ -1990,10 +1990,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t cast_type_dimension = type->dimension;
         
         _Bool can_cast = env->check_cast(env, cast_basic_type_id, cast_type_dimension, object);
-        if (can_cast) {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
-        }
-        else {
+        if (!can_cast) {
           void* exception = env->new_string_raw(env, "Can't cast uncompatible type.", 0);
           env->set_exception(env, exception);
           exception_flag = 1;
