@@ -2746,32 +2746,11 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   SPVM_RUNTIME_API_set_exception(env, NULL);
   
   // Free portable
-  SPVM_PORTABLE* portable = runtime->portable;
-  if (portable->basic_types != NULL) {
-    free(portable->basic_types);
-  }
+  SPVM_PORTABLE_free(runtime->portable);
   
-  /*
-  char** symbols;
-  int32_t* basic_types;
-  int32_t* fields;
-  int32_t* subs;
-  int32_t* mys;
-  int32_t* info_package_var_ids;
-  int32_t* info_sub_ids;
-  int32_t* info_field_ids;
-  int32_t* info_types;
-  int32_t* info_constants;
-  int32_t* info_switch_info_ints;
-  int64_t* info_long_values;
-  double* info_double_values;
-  char** info_string_values;
-  int32_t* info_string_lengths;
-  int64_t* opcodes;
-  */
-  
-
+  // Free package variables heap
   free(runtime->package_vars_heap);
   
+  // Free runtime
   free(runtime);
 }

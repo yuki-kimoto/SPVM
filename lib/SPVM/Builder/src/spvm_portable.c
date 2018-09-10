@@ -622,3 +622,67 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   portable->packages_length++;
 }
 
+void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
+  if (portable->basic_types != NULL) {
+    free(portable->basic_types);
+  }
+  if (portable->fields != NULL) {
+    free(portable->fields);
+  }
+  if (portable->subs != NULL) {
+    free(portable->subs);
+  }
+  if (portable->mys != NULL) {
+    free(portable->mys);
+  }
+  if (portable->info_package_var_ids != NULL) {
+    free(portable->info_package_var_ids);
+  }
+  if (portable->info_sub_ids != NULL) {
+    free(portable->info_sub_ids);
+  }
+  if (portable->info_field_ids != NULL) {
+    free(portable->info_field_ids);
+  }
+  if (portable->info_types != NULL) {
+    free(portable->info_types);
+  }
+  if (portable->info_constants != NULL) {
+    free(portable->mys);
+  }
+  if (portable->info_constants != NULL) {
+    free(portable->mys);
+  }
+  if (portable->info_switch_info_ints != NULL) {
+    free(portable->info_switch_info_ints);
+  }
+  if (portable->info_long_values != NULL) {
+    free(portable->info_long_values);
+  }
+  if (portable->info_double_values != NULL) {
+    free(portable->info_double_values);
+  }
+  if (portable->info_string_lengths != NULL) {
+    free(portable->info_string_lengths);
+  }
+  if (portable->opcodes != NULL) {
+    free(portable->opcodes);
+  }
+  for (int32_t i = 0; i < portable->symbols_length; i++) {
+    if (portable->symbols[i] != NULL) {
+      free(portable->symbols[i]);
+    }
+  }
+  if (portable->symbols != NULL) {
+    free(portable->symbols);
+  }
+  for (int32_t i = 0; i < portable->info_string_values_length; i++) {
+    if (portable->info_string_values[i] != NULL) {
+      free(portable->info_string_values[i]);
+    }
+  }
+  if (portable->info_string_values != NULL) {
+    free(portable->info_string_values);
+  }
+  free(portable);
+}

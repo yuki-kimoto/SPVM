@@ -113,5 +113,6 @@ void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* bas
 void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field);
 void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var);
 void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package);
+void SPVM_PORTABLE_free(SPVM_PORTABLE* portable);
 
 #endif
