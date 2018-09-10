@@ -2747,7 +2747,38 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);
-  
+
+/*
+  char** symbols;
+  SPVM_OPCODE* opcodes;
+  SPVM_RUNTIME_MY* args;
+  SPVM_RUNTIME_MY* mys;
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  SPVM_RUNTIME_FIELD* fields;
+  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
+  SPVM_RUNTIME_SUB* subs;
+  SPVM_RUNTIME_PACKAGE* packages;
+  int64_t* info_long_values;
+  double* info_double_values;
+  char** info_string_values;
+  int32_t* info_string_lengths;
+  int32_t* info_sub_ids;
+  int32_t* info_package_var_ids;
+  int32_t* info_field_ids;
+  SPVM_RUNTIME_INFO_TYPE* info_types;
+  void** sub_native_addresses;
+  void** sub_precompile_addresses;
+  SPVM_LIST* info_switch_infos;
+  SPVM_HASH* basic_type_symtable;
+  SPVM_HASH* package_symtable;
+  SPVM_HASH* field_symtable;
+  SPVM_HASH* package_var_symtable;
+  SPVM_HASH* sub_symtable;
+  SPVM_OBJECT* exception;
+  SPVM_VALUE* package_vars_heap;
+  SPVM_OBJECT** mortal_stack;
+*/
+
   // Free package variables heap
   free(runtime->package_vars_heap);
   
