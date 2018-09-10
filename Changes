@@ -1,6 +1,18 @@
 0.0370 2018-09-10
   - fix check object type null segumentation fault bug
   - fix new array length is minus segfalt bug
+  - rename SPVM::Byte->set_value to SPVM::Byte->set_val
+  - rename SPVM::Short->set_value to SPVM::Short->set_val
+  - rename SPVM::Int->set_value to SPVM::Int->set_val
+  - rename SPVM::Long->set_value to SPVM::Long->set_val
+  - rename SPVM::Float->set_value to SPVM::Float->set_val
+  - rename SPVM::Double->set_value to SPVM::Double->set_val
+  - rename SPVM::Byte->get_value to SPVM::Byte->val
+  - rename SPVM::Short->get_value to SPVM::Short->val
+  - rename SPVM::Int->get_value to SPVM::Int->val
+  - rename SPVM::Long->get_value to SPVM::Long->val
+  - rename SPVM::Float->get_value to SPVM::Float->val
+  - rename SPVM::Double->get_value to SPVM::Double->val
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder

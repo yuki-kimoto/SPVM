@@ -6,7 +6,6 @@ package TestCase::List {
   has capacity : int;
   
   sub test_list : int () {
-    
     my $list = TestCase::List->new(5);
     $list->add(SPVM::Int->new(1));
     $list->add(SPVM::Int->new(2));
