@@ -19,19 +19,6 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "object",
 };
 
-const char* const SPVM_BASIC_TYPE_C_CATEGORY_NAMES[] = {
-  "unknown",
-  "undef",
-  "void",
-  "numeric_ref",
-  "numeric",
-  "any_object",
-  "class",
-  "interface",
-  "pointer",
-  "value_t",
-};
-
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_BASIC_TYPE));
   
