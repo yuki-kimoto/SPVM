@@ -2104,16 +2104,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
                         assert(dist_type);
+                        
+                        int32_t invalid_type_convertion = 0;
 
                         // if dist basic type is any object, can't be converted
                         if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-                          SPVM_yyerror_format(compiler, "Basic type of runtime type coversion must not be any object type at %s line %d\n", op_cur->file, op_cur->line);
-                          break;
+                          invalid_type_convertion = 1;
                         }
                         // if dist basic type is interface, can't be converted
                         else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                          SPVM_yyerror_format(compiler, "Basic type of runtime type coversion must not reference type at %s line %d\n", op_cur->file, op_cur->line);
-                          break;
+                          invalid_type_convertion = 1;
+                        }
+                        
+                        if (invalid_type_convertion) {
+                          SPVM_TYPE_sprint_type_name(compiler, tmp_buffer, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+                          SPVM_yyerror_format(compiler, "Invalid type convertion (%s) at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
                         }
                         
                         // Convert number to number
