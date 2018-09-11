@@ -2773,9 +2773,27 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   }
   SPVM_LIST_free(runtime->info_switch_infos);
 
-/*
-  SPVM_HASH* package_symtable;
-*/
+  for (int32_t package_id = 0; package_id < runtime->packages_length; package_id++) {
+    
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
+    
+    SPVM_LIST_free(package->fields);
+    SPVM_LIST_free(package->field_signatures);
+    SPVM_LIST_free(package->package_vars);
+    SPVM_LIST_free(package->package_var_signatures);
+    SPVM_LIST_free(package->subs);
+    SPVM_LIST_free(package->sub_signatures);
+    SPVM_LIST_free(package->object_field_indexes);
+
+    SPVM_HASH_free(package->field_symtable);
+    SPVM_HASH_free(package->field_signature_symtable);
+    SPVM_HASH_free(package->package_var_symtable);
+    SPVM_HASH_free(package->package_var_signature_symtable);
+    SPVM_HASH_free(package->sub_symtable);
+    SPVM_HASH_free(package->sub_signature_symtable);
+    SPVM_HASH_free(package->has_interface_cache_symtable);
+  }
+  SPVM_HASH_free(runtime->package_symtable);
 
   // Free package variables heap
   free(runtime->package_vars_heap);
