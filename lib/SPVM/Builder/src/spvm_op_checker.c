@@ -2105,22 +2105,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
                         assert(dist_type);
                         
-                        int32_t invalid_type_convertion = 0;
+                        int32_t invalid_dist_type = 0;
                         if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                           // if dist basic type is any object, can't be converted
                           if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-                            invalid_type_convertion = 1;
+                            invalid_dist_type = 1;
                           }
                           // if dist basic type is interface, can't be converted
                           else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                            invalid_type_convertion = 1;
+                            invalid_dist_type = 1;
                           }
                         }
                         else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                          invalid_type_convertion = 1;
+                          invalid_dist_type = 1;
                         }
-                          
-                        if (invalid_type_convertion) {
+                        if (invalid_dist_type) {
                           SPVM_TYPE_sprint_type_name(compiler, tmp_buffer, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                           SPVM_yyerror_format(compiler, "Invalid type convertion to \"%s\" at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
                           break;
@@ -2154,21 +2153,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           is_convertable = 0;
                         }
                         
-                        if (!is_convertable) {
+                        if (is_convertable) {
+                          if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                            if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                              SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                            op_type->uv.type->sub_rel_id = sub->info_types->length;
+                            SPVM_LIST_push(sub->info_types, op_type->uv.type);
+                            break;
+                          }
+                        }
+                        else {
                           char* src_type_name = tmp_buffer2;
                           SPVM_TYPE_sprint_type_name(compiler, src_type_name, src_type->basic_type->id, src_type->dimension, src_type->flag);
 
                           char* dist_type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                           SPVM_yyerror_format(compiler, "Can't convert \"%s\" to \"%s\" at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
-                          break;
-                        }
-                        if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                          if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
-                          }
-                          op_type->uv.type->sub_rel_id = sub->info_types->length;
-                          SPVM_LIST_push(sub->info_types, op_type->uv.type);
                           break;
                         }
                       }
