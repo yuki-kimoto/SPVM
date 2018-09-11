@@ -2160,7 +2160,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           char* dist_type_name = tmp_buffer;
                           SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                          SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Can't convert \"%s\" to \"%s\" at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
                           break;
                         }
                         if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
