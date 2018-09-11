@@ -2106,19 +2106,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         assert(dist_type);
                         
                         int32_t invalid_type_convertion = 0;
-
-                        // if dist basic type is any object, can't be converted
-                        if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+                        if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          // if dist basic type is any object, can't be converted
+                          if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+                            invalid_type_convertion = 1;
+                          }
+                          // if dist basic type is interface, can't be converted
+                          else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                            invalid_type_convertion = 1;
+                          }
+                        }
+                        else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                           invalid_type_convertion = 1;
                         }
-                        // if dist basic type is interface, can't be converted
-                        else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                          invalid_type_convertion = 1;
-                        }
-                        
+                          
                         if (invalid_type_convertion) {
                           SPVM_TYPE_sprint_type_name(compiler, tmp_buffer, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                           SPVM_yyerror_format(compiler, "Invalid type convertion (%s) at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
+                          break;
                         }
                         
                         // Convert number to number

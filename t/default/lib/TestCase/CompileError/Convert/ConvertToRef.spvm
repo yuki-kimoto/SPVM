@@ -1,0 +1,7 @@
+package TestCase::CompileError::Convert::ConvertToRef {
+  use TestCase::Minimal;
+
+  sub main : int () {
+    (&int)new TestCase::Minimal;
+  }
+}

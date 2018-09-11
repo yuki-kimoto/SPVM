@@ -78,3 +78,10 @@ my $ok;
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
+
+{
+  my $build = SPVM::Builder->new;
+  $build->use('TestCase::CompileError::Convert::ConvertToRef');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
+}

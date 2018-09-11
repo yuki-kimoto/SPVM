@@ -56,6 +56,11 @@ void SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic
   if (flag & SPVM_TYPE_C_FLAG_CONST) {
     fprintf(fh, "const ");
   }
+
+  // Back slash
+  if (flag & SPVM_TYPE_C_FLAG_REF) {
+    fprintf(fh, "&");
+  }
   
   // Basic type
   fprintf(fh, "%s", basic_type->name);
@@ -64,11 +69,6 @@ void SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic
   int32_t dim_index;
   for (dim_index = 0; dim_index < dimension; dim_index++) {
     fprintf(fh, "[]");
-  }
-  
-  // Back slash
-  if (flag & SPVM_TYPE_C_FLAG_REF) {
-    fprintf(fh, "\\");
   }
 }
 
@@ -83,6 +83,12 @@ void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t b
     sprintf(cur, "const ");
     cur += strlen("const") + 1;
   }
+
+  // Back slash
+  if (flag & SPVM_TYPE_C_FLAG_REF) {
+    sprintf(cur, "&");
+    cur += 1;
+  }
   
   sprintf(cur, "%s", basic_type->name);
   cur += strlen(basic_type->name);
@@ -93,12 +99,6 @@ void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t b
     cur += 2;
   }
 
-  // Back slash
-  if (flag & SPVM_TYPE_C_FLAG_REF) {
-    sprintf(cur, "\\");
-    cur += 1;
-  }
-  
   *cur = '\0';
   cur++;
 }
