@@ -1,4 +1,21 @@
 package TestCase::Convert {
+  sub convert_to_numeric_array : int () {
+    my $onums_byte : object = new byte[3];
+    my $nums_byte = (byte[])$onums_byte;
+    my $onums_short : object = new short[3];
+    my $nums_short = (short[])$onums_short;
+    my $onums_int : object = new int[3];
+    my $nums_int = (int[])$onums_int;
+    my $onums_long : object = new long[3];
+    my $nums_long = (long[])$onums_long;
+    my $onums_float : object = new float[3];
+    my $nums_float = (float[])$onums_float;
+    my $onums_double : object = new double[3];
+    my $nums_double = (double[])$onums_double;
+    
+    return 1;
+  }
+
   # Convert type - floating point narrowing convertion
   sub convert_float_to_byte : int () {
     my $value = (byte)127.1f;
