@@ -2134,7 +2134,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                             }
                           }
-                          else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          else {
                             invalid_dist_type = 1;
                           }
                           if (invalid_dist_type) {
@@ -2142,24 +2142,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_yyerror_format(compiler, "Invalid type convertion to \"%s\" at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
                             break;
                           }
-                        
-                          // Convert object to object
-                          if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag) && SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                            // Value type can't be convert
-                            if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag) || SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                              is_convertable = 0;
-                            }
-                            // Value array type can't be convert
-                            else if (SPVM_TYPE_is_value_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag) || SPVM_TYPE_is_value_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                              is_convertable = 0;
-                            }
-                            else {
-                              is_convertable = 1;
-                            }
-                          }
-                          // Other
                           else {
-                            is_convertable = 0;
+                            // Convert object to object
+                            if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                              // Value type can't be convert
+                              if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                                is_convertable = 0;
+                              }
+                              else {
+                                is_convertable = 1;
+                              }
+                            }
+                            // Other
+                            else {
+                              is_convertable = 0;
+                            }
                           }
                         }
                         
