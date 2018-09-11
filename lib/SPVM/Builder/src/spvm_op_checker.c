@@ -2122,7 +2122,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                         if (invalid_type_convertion) {
                           SPVM_TYPE_sprint_type_name(compiler, tmp_buffer, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                          SPVM_yyerror_format(compiler, "Invalid type convertion (%s) at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Invalid type convertion to \"%s\" at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
                           break;
                         }
                         
