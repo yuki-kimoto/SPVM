@@ -12,7 +12,7 @@ package TestCase::List {
     
     my $onum1 = (SPVM::Int)$list->get(1);
     
-    $list->add_all([SPVM::Int->new(4), SPVM::Int->new(5)]);
+    $list->add_all(new object[] {SPVM::Int->new(4), SPVM::Int->new(5)});
     
     my $onum2 = (SPVM::Int)$list->get(2);
 
