@@ -23,7 +23,6 @@ extern const char* const SPVM_BASIC_TYPE_C_ID_NAMES[];
 struct SPVM_basic_type {
   const char* name;
   int32_t id;
-  int32_t category;
   SPVM_PACKAGE* package;
 };
 

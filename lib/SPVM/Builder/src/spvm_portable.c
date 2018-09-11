@@ -41,7 +41,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
 
   portable->basic_types_capacity = 8;
-  portable->basic_types_unit = 4;
+  portable->basic_types_unit = 3;
   portable->fields_capacity = 8;
   portable->fields_unit = 10;
   portable->package_vars_capacity = 8;
@@ -516,12 +516,11 @@ void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* bas
   int32_t* new_portable_basic_type = (int32_t*)&portable->basic_types[portable->basic_types_unit * portable->basic_types_length];
   new_portable_basic_type[0] = SPVM_PORTABLE_push_symbol(portable, basic_type->name);
   new_portable_basic_type[1] = basic_type->id;
-  new_portable_basic_type[2] = basic_type->category;
   if (basic_type->package) {
-    new_portable_basic_type[3] = basic_type->package->id;
+    new_portable_basic_type[2] = basic_type->package->id;
   }
   else {
-    new_portable_basic_type[3] = -1;
+    new_portable_basic_type[2] = -1;
   }
   portable->basic_types_length++;
 }
