@@ -82,7 +82,6 @@ struct SPVM_runtime {
   SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;
   SPVM_HASH* field_symtable;
-  SPVM_HASH* package_var_symtable;
   SPVM_HASH* sub_symtable;
 
   // Exception

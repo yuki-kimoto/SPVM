@@ -249,14 +249,6 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(runtime->info_switch_infos, runtime_info_switch_info);
   }
 
-  // build package variable symtable
-  runtime->package_var_symtable = SPVM_HASH_new(0);
-  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = &runtime->package_vars[package_var_id];
-    const char* runtime_package_var_name = runtime->symbols[runtime_package_var->name_id];
-    SPVM_HASH_insert(runtime->package_var_symtable, runtime_package_var_name, strlen(runtime_package_var_name), runtime_package_var);
-  }
-
   // build packages
   runtime->packages_length = portable->packages_length;
   runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));

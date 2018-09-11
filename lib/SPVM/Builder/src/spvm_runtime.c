@@ -2762,7 +2762,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;
   SPVM_HASH* field_symtable;
-  SPVM_HASH* package_var_symtable;
   SPVM_HASH* sub_symtable;
 */
 
