@@ -2760,9 +2760,20 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   SPVM_HASH_free(runtime->basic_type_symtable);
   SPVM_HASH_free(runtime->field_symtable);
   SPVM_HASH_free(runtime->sub_symtable);
+  
+  for (int32_t switch_index = 0; switch_index < runtime->info_switch_infos->length; switch_index++) {
+    SPVM_RUNTIME_INFO_SWITCH_INFO* info_switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, switch_index);
+    
+    SPVM_LIST* case_infos = info_switch_info->case_infos;
+    for (int32_t case_index = 0; case_index < case_infos->length; case_index++) {
+      SPVM_RUNTIME_INFO_CASE_INFO* info_case_info = SPVM_LIST_fetch(case_infos, case_index);
+      free(info_case_info);
+    }
+    SPVM_LIST_free(info_switch_info->case_infos);
+  }
+  SPVM_LIST_free(runtime->info_switch_infos);
 
 /*
-  SPVM_LIST* info_switch_infos;
   SPVM_HASH* package_symtable;
 */
 
