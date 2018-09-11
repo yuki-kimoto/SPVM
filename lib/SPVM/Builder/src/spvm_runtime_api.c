@@ -1169,7 +1169,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     }
     _Bool is_pointer = 0;
     if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+      if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
         is_pointer = 1;
       }
     }

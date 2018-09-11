@@ -1414,7 +1414,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_POINTER:
-          package->category = SPVM_PACKAGE_C_CATEGORY_POINTER;
+          package->category = SPVM_PACKAGE_C_CATEGORY_CLASS;
+          package->flag |= SPVM_PACKAGE_C_FLAG_IS_POINTER;
           duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_VALUE_T:
@@ -1474,7 +1475,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   {
     int32_t i;
     for (i = 0; i < package->fields->length; i++) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_POINTER) {
+      if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
         SPVM_yyerror_format(compiler, "Pointer package can't have field at %s line %d\n", op_decl->file, op_decl->line);
         continue;
       }

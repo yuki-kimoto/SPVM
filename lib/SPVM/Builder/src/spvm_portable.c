@@ -61,7 +61,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->subs_capacity = 8;
   portable->subs_unit = 37;
   portable->packages_capacity = 8;
-  portable->packages_unit = 5;
+  portable->packages_unit = 6;
   
   portable->info_switch_info_ints_capacity = 8;
 
