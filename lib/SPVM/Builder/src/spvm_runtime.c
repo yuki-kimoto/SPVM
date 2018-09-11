@@ -2756,13 +2756,14 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   }
   
   free(runtime->mortal_stack);
+  
+  SPVM_HASH_free(runtime->basic_type_symtable);
+  SPVM_HASH_free(runtime->field_symtable);
+  SPVM_HASH_free(runtime->sub_symtable);
 
 /*
   SPVM_LIST* info_switch_infos;
-  SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;
-  SPVM_HASH* field_symtable;
-  SPVM_HASH* sub_symtable;
 */
 
   // Free package variables heap
