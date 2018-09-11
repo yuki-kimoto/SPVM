@@ -11,9 +11,9 @@ enum {
 };
 
 enum {
-  SPVM_PACKAGE_C_FLAG_IS_PRIVATE,
-  SPVM_PACKAGE_C_FLAG_IS_ANON,
-  SPVM_PACKAGE_C_FLAG_IS_POINTER,
+  SPVM_PACKAGE_C_FLAG_IS_PRIVATE = 1,
+  SPVM_PACKAGE_C_FLAG_IS_ANON = 2,
+  SPVM_PACKAGE_C_FLAG_IS_POINTER = 4,
 };
 
 extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
@@ -39,7 +39,6 @@ struct SPVM_package {
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
-  _Bool is_private;
   _Bool is_anon;
   int32_t flag;
   int32_t category;

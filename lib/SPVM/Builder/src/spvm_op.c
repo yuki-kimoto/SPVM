@@ -1422,10 +1422,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           duplicate_descriptors++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
-          package->is_private = 1;
+          package->flag |= SPVM_PACKAGE_C_FLAG_IS_PRIVATE;
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-          package->is_private = 0;
           break;
         default:
           SPVM_yyerror_format(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);

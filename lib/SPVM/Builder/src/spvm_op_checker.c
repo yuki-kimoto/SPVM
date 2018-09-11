@@ -936,7 +936,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                               SPVM_yyerror_format(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
                             }
-                            else if (package->is_private) {
+                            else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PRIVATE) {
                               if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
                                 SPVM_yyerror_format(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
                               }
