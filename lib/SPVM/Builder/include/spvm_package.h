@@ -39,7 +39,6 @@ struct SPVM_package {
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
-  _Bool is_anon;
   int32_t flag;
   int32_t category;
   const char* name;

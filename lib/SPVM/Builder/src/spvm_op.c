@@ -1370,7 +1370,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   if (!op_type) {
     // Package is anon
-    package->is_anon = 1;
+    package->flag |= SPVM_PACKAGE_C_FLAG_IS_ANON;
     
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
@@ -1384,7 +1384,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   const char* package_name = op_type->uv.type->basic_type->name;
   
-  if (!package->is_anon && islower(package_name[0])) {
+  if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) && islower(package_name[0])) {
     SPVM_yyerror_format(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
 
