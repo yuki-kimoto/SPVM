@@ -92,3 +92,17 @@ my $ok;
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
+
+{
+  my $build = SPVM::Builder->new;
+  $build->use('TestCase::CompileError::Convert::ConvertFromRef');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
+}
+
+{
+  my $build = SPVM::Builder->new;
+  $build->use('TestCase::CompileError::Convert::ConvertFromValueType');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
+}

@@ -2143,40 +2143,39 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             break;
                           }
                           else {
-                            // Convert object to object
+                            // Check src type
+                            int32_t invalid_src_type;
                             if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                               // Value type can't be convert
                               if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                is_convertable = 0;
+                                invalid_src_type = 1;
                               }
                               else {
-                                is_convertable = 1;
+                                invalid_src_type = 0;
                               }
                             }
                             // Other
                             else {
-                              is_convertable = 0;
+                              invalid_src_type = 1;
+                            }
+                            if (invalid_src_type) {
+                              char* src_type_name = tmp_buffer2;
+                              SPVM_TYPE_sprint_type_name(compiler, src_type_name, src_type->basic_type->id, src_type->dimension, src_type->flag);
+
+                              char* dist_type_name = tmp_buffer;
+                              SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+                              SPVM_yyerror_format(compiler, "Invalid type convertion from \"%s\" at %s line %d\n", src_type_name, op_cur->file, op_cur->line);
+                              break;
                             }
                           }
                         }
                         
-                        if (is_convertable) {
-                          if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                            if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                              SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
-                            }
-                            op_type->uv.type->sub_rel_id = sub->info_types->length;
-                            SPVM_LIST_push(sub->info_types, op_type->uv.type);
-                            break;
+                        if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                          if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                            SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
                           }
-                        }
-                        else {
-                          char* src_type_name = tmp_buffer2;
-                          SPVM_TYPE_sprint_type_name(compiler, src_type_name, src_type->basic_type->id, src_type->dimension, src_type->flag);
-
-                          char* dist_type_name = tmp_buffer;
-                          SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                          SPVM_yyerror_format(compiler, "Can't convert \"%s\" to \"%s\" at %s line %d\n", src_type_name, dist_type_name, op_cur->file, op_cur->line);
+                          op_type->uv.type->sub_rel_id = sub->info_types->length;
+                          SPVM_LIST_push(sub->info_types, op_type->uv.type);
                           break;
                         }
                       }
