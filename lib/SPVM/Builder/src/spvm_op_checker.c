@@ -2126,13 +2126,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           // Check dist type
                           int32_t invalid_dist_type = 0;
                           if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                            // if dist basic type is any object, can't be converted
-                            if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-                              invalid_dist_type = 1;
-                            }
-                            // if dist basic type is interface, can't be converted
-                            else if (dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                              invalid_dist_type = 1;
+                            // Basic type is not numeric
+                            if (!(dist_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && dist_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE)) {
+                              // Basic type is not class package
+                              if (!(dist_type->basic_type->package && dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_CLASS)) {
+                                invalid_dist_type = 1;
+                              }
                             }
                           }
                           else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
