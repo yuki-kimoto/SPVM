@@ -617,7 +617,7 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   }
   new_portable_package[3] = package->category;
   new_portable_package[4] = SPVM_PORTABLE_push_symbol(portable, package->load_path);
-
+  new_portable_package[5] = package->flag;
   
   portable->packages_length++;
 }
