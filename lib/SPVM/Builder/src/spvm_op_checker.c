@@ -2540,7 +2540,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   return has_interface;
 }
 
-_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t src_basic_type_id, int32_t src_type_dimension) {
+_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag) {
   
   _Bool check_cast;
   
@@ -2715,7 +2715,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
           check_cast = 1;
         }
         else {
-          check_cast = SPVM_OP_CHECKER_check_cast(compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_from_type->basic_type->id,  assign_from_type->dimension);
+          check_cast = SPVM_OP_CHECKER_check_cast(compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_to_type->flag, assign_from_type->basic_type->id, assign_from_type->dimension, assign_from_type->flag);
         }
         
         if (!check_cast) {

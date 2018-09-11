@@ -4,7 +4,7 @@
 #include "spvm_base.h"
 
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler);
-_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t assign_to_basic_type_id, int32_t assign_to_type_dimension, int32_t assign_from_basic_type_id, int32_t assign_from_type_dimension);
+_Bool SPVM_OP_CHECKER_check_cast(SPVM_COMPILER* compiler, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
 SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from);
 
 void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler);
