@@ -1590,7 +1590,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       else if (package->subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_yyerror_format(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
-        
       }
       // Unknown sub
       else {
@@ -1612,6 +1611,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
       }
+    }
+  }
+  
+  // Interface must have only one method
+  if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+    if (package->subs->length != 1) {
+      SPVM_yyerror_format(compiler, "Interface must have only one method at %s line %d\n", op_package->file, op_package->line);
     }
   }
   

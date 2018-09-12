@@ -6,7 +6,8 @@ package TestCase {
   use TestCase::Simple;
   use TestCase::Minimal;
   use TestCase::Destructor;
-  use TestCase::Interface;
+  use TestCase::Interface1;
+  use TestCase::Interface2;
   use TestCase::ImplementInterface1;
   use TestCase::ImplementInterface2;
   use TestCase::Comparator;
@@ -430,8 +431,8 @@ SPVM::Test - SPVM test module
     
     {
       my $object : object = new TestCase::Minimal;
-      my $implement_interface1 : TestCase::Interface = new TestCase::ImplementInterface1;
-      my $implement_interface2 : TestCase::Interface = new TestCase::ImplementInterface2;
+      my $implement_interface1 : TestCase::Interface1 = new TestCase::ImplementInterface1;
+      my $implement_interface2 : TestCase::Interface1 = new TestCase::ImplementInterface2;
       
       print((string)$implement_interface1->foo(0, 0) . "\n");
       print((string)$implement_interface2->foo(0, 0) . "\n");

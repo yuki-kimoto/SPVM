@@ -1,6 +1,5 @@
-package TestCase::Interface : interface {
+package TestCase::Interface2 : interface {
   use TestCase::Minimal;
 
-  sub foo : int ($self : self, $var1 : int, $var2 : long);
   sub bar : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : object);
 }
