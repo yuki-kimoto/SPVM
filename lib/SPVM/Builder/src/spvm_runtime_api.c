@@ -271,69 +271,6 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
   runtime->mortal_stack_top = original_mortal_stack_top;
 }
 
-int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, SPVM_RUNTIME_PACKAGE* interface) {
-  (void)env;
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  // When left package is interface, right package have all methods which left package have
-  assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
-  assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
-  
-  SPVM_LIST* subs_interface = interface->subs;
-  SPVM_LIST* subs_package = package->subs;
-  
-  const char* interface_name = runtime->symbols[interface->name_id];
-  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface_name, strlen(interface_name));
-  
-  int32_t is_cached = has_interface_cache & 1;
-  int32_t has_interface;
-  if (is_cached) {
-    has_interface = has_interface_cache & 2;
-  }
-  else {
-    has_interface = 1;
-    
-    {
-      int32_t sub_index_interface;
-      for (sub_index_interface = 0; sub_index_interface < subs_interface->length; sub_index_interface++) {
-        SPVM_RUNTIME_SUB* sub_interface = SPVM_LIST_fetch(subs_interface, sub_index_interface);
-        
-        _Bool found = 0;
-        {
-          int32_t sub_index_package;
-          for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
-            SPVM_RUNTIME_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
-            
-            const char* sub_interface_signature = runtime->symbols[sub_interface->signature_id];
-            const char* sub_package_signature = runtime->symbols[sub_package->signature_id];
-            
-            if (strcmp(sub_interface_signature, sub_package_signature) == 0) {
-              found = 1;
-            }
-          }
-        }
-        if (!found) {
-          has_interface = 0;
-          break;
-        }
-      }
-    }
-    
-    // 1 bit : is cached
-    // 2 bit : has interface
-    int32_t new_has_interface_cache = 0;
-    new_has_interface_cache |= 1;
-    if (has_interface) {
-      new_has_interface_cache |= 2;
-    }
-    
-    SPVM_HASH_insert(package->has_interface_cache_symtable, interface_name, strlen(interface_name), (void*)(intptr_t)new_has_interface_cache);
-  }
-  
-  return has_interface;
-}
-
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
   
   // stack trace symbols

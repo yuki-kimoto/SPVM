@@ -2506,23 +2506,25 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   
   int32_t has_interface = 1;
   
-  assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-  
-  _Bool found = 0;
   {
-    int32_t sub_index_package;
-    for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
-      SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
-      
-      if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
-        found = 1;
+    assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+    
+    _Bool found = 0;
+    {
+      int32_t sub_index_package;
+      for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
+        SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
+        
+        if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
+          found = 1;
+        }
       }
     }
+    if (!found) {
+      has_interface = 0;
+    }
   }
-  if (!found) {
-    has_interface = 0;
-  }
-  
+
   return has_interface;
 }
 
