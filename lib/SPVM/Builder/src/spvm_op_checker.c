@@ -2501,31 +2501,17 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
   assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
   
+  assert(interface->subs->length == 1);
   SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
-  SPVM_LIST* subs_package = package->subs;
   
-  int32_t has_interface = 1;
+  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_interface->signature, strlen(sub_interface->signature));
   
-  {
-    assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-    
-    _Bool found = 0;
-    {
-      int32_t sub_index_package;
-      for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
-        SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
-        
-        if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
-          found = 1;
-        }
-      }
-    }
-    if (!found) {
-      has_interface = 0;
-    }
+  if (found_sub) {
+    return 1;
   }
-
-  return has_interface;
+  else {
+    return 0;
+  }
 }
 
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
