@@ -2501,7 +2501,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
   assert(!(package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE));
   
-  SPVM_LIST* subs_interface = interface->subs;
+  SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
   SPVM_LIST* subs_package = package->subs;
   
   int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
@@ -2515,26 +2515,21 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
     has_interface = 1;
     
     {
-      int32_t sub_index_interface;
-      for (sub_index_interface = 0; sub_index_interface < subs_interface->length; sub_index_interface++) {
-        SPVM_SUB* sub_interface = SPVM_LIST_fetch(subs_interface, sub_index_interface);
-        assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
-        
-        _Bool found = 0;
-        {
-          int32_t sub_index_package;
-          for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
-            SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
-            
-            if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
-              found = 1;
-            }
+      assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+      
+      _Bool found = 0;
+      {
+        int32_t sub_index_package;
+        for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
+          SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
+          
+          if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
+            found = 1;
           }
         }
-        if (!found) {
-          has_interface = 0;
-          break;
-        }
+      }
+      if (!found) {
+        has_interface = 0;
       }
     }
     
