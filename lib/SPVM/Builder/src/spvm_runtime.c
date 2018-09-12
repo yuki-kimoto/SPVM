@@ -2791,7 +2791,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
     SPVM_HASH_free(package->package_var_signature_symtable);
     SPVM_HASH_free(package->sub_symtable);
     SPVM_HASH_free(package->sub_signature_symtable);
-    SPVM_HASH_free(package->has_interface_cache_symtable);
   }
   SPVM_HASH_free(runtime->package_symtable);
 

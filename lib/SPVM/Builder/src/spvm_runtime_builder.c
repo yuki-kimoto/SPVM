@@ -285,7 +285,6 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {
     package->sub_symtable = SPVM_HASH_new(0);
     package->sub_signatures = SPVM_LIST_new(0);
     package->sub_signature_symtable = SPVM_HASH_new(0);
-    package->has_interface_cache_symtable = SPVM_HASH_new(0);
   }
 
   // Register field info to package

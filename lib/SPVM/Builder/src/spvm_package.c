@@ -34,7 +34,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->package_var_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->package_var_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  package->has_interface_cache_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

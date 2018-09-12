@@ -24,7 +24,6 @@ struct SPVM_runtime_package {
   SPVM_HASH* sub_symtable;
   SPVM_LIST* sub_signatures;
   SPVM_HASH* sub_signature_symtable;
-  SPVM_HASH* has_interface_cache_symtable;
 };
 
 SPVM_RUNTIME_PACKAGE* SPVM_RUNTIME_PACKAGE_new();

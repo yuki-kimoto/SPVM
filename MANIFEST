@@ -167,7 +167,8 @@ solo/lib/TestCase/EnumD.spvm
 solo/lib/TestCase/ImplementInterface1.spvm
 solo/lib/TestCase/ImplementInterface2.spvm
 solo/lib/TestCase/Inline.spvm
-solo/lib/TestCase/Interface.spvm
+solo/lib/TestCase/Interface1.spvm
+solo/lib/TestCase/Interface2.spvm
 solo/lib/TestCase/Minimal.spvm
 solo/lib/TestCase/Point_b3.spvm
 solo/lib/TestCase/Point_d3.spvm
@@ -210,6 +211,12 @@ t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/AssignIncompatibleType/ConstToNoConst.spvm
 t/default/lib/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObject.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObjectArray.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertToInterface.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertToRef.spvm
 t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
@@ -238,6 +245,7 @@ t/default/lib/TestCase/Interface.spvm
 t/default/lib/TestCase/Interface/ImplementInterface1.spvm
 t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
+t/default/lib/TestCase/List.spvm
 t/default/lib/TestCase/Literal.spvm
 t/default/lib/TestCase/LogicalOperator.spvm
 t/default/lib/TestCase/Long.spvm
@@ -265,6 +273,7 @@ t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/Weaken2.spvm
+t/default/list.t
 t/default/literal.t
 t/default/logical-operator.t
 t/default/loop.t
