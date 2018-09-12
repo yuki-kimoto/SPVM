@@ -1262,7 +1262,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Check if source value can be assigned dist distination value
                         // If needed, audistmatical numeric convertion op is added
-                        SPVM_OP_CHECKER_check_and_convert_type(compiler, op_term_dist, op_term_src);
+                        SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
                         
                         break;
                       }
@@ -1940,7 +1940,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
                           
-                          op_term = SPVM_OP_CHECKER_check_and_convert_type(compiler, sub_arg_my->op_my, op_term);
+                          op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
                         }
                         
                         if (call_sub_args_count < sub_args_count) {
@@ -2552,7 +2552,7 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   return has_interface;
 }
 
-SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
+SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
   SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
