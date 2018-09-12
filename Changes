@@ -15,6 +15,7 @@
   - rename SPVM::Double->get_value to SPVM::Double->val
   - free runtime memory
   - Interface must have only one method
+  - fix mortal stack bug. mortal stack is extended to count of PUSH_MORTAL opcode
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder

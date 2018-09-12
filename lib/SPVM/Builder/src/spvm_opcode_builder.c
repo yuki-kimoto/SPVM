@@ -2805,9 +2805,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t my_var_id = my->var_id;
                         SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_var_id);
                         
-                        if (mortal_stack->length - 1 > mortal_stack_top_max) {
-                          mortal_stack_top_max = mortal_stack->length;
-                        }
+                        mortal_stack_top_max++;
                         
                         SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                         op_block_current->uv.block->have_object_var_decl = 1;
