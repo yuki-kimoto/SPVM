@@ -2504,44 +2504,23 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
   SPVM_LIST* subs_package = package->subs;
   
-  int32_t has_interface_cache = (intptr_t)SPVM_HASH_fetch(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name));
+  int32_t has_interface = 1;
   
-  int32_t is_cached = has_interface_cache & 1;
-  int32_t has_interface;
-  if (is_cached) {
-    has_interface = has_interface_cache & 2;
-  }
-  else {
-    has_interface = 1;
-    
-    {
-      assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+  assert(sub_interface->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD);
+  
+  _Bool found = 0;
+  {
+    int32_t sub_index_package;
+    for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
+      SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
       
-      _Bool found = 0;
-      {
-        int32_t sub_index_package;
-        for (sub_index_package = 0; sub_index_package < subs_package->length; sub_index_package++) {
-          SPVM_SUB* sub_package = SPVM_LIST_fetch(subs_package, sub_index_package);
-          
-          if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
-            found = 1;
-          }
-        }
-      }
-      if (!found) {
-        has_interface = 0;
+      if (strcmp(sub_interface->signature, sub_package->signature) == 0) {
+        found = 1;
       }
     }
-    
-    // 1 bit : is cached
-    // 2 bit : has interface
-    int32_t new_has_interface_cache = 0;
-    new_has_interface_cache |= 1;
-    if (has_interface) {
-      new_has_interface_cache |= 2;
-    }
-    
-    SPVM_HASH_insert(package->has_interface_cache_symtable, interface->op_name->uv.name, strlen(interface->op_name->uv.name), (void*)(intptr_t)new_has_interface_cache);
+  }
+  if (!found) {
+    has_interface = 0;
   }
   
   return has_interface;
