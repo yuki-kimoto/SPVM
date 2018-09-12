@@ -2552,29 +2552,36 @@ _Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* packa
   return has_interface;
 }
 
-SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
-  SPVM_TYPE* assign_to_type = SPVM_OP_get_type(compiler, op_assign_to);
-  SPVM_TYPE* assign_from_type = SPVM_OP_get_type(compiler, op_assign_from);
+SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
+  SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
+  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
+  
+  int32_t dist_basic_type_id = dist_type->basic_type->id;
+  int32_t dist_type_dimension = dist_type->dimension;
+  int32_t dist_type_flag = dist_type->flag;
+  int32_t src_basic_type_id = src_type->basic_type->id;
+  int32_t src_type_dimension = src_type->dimension;
+  int32_t src_type_flag = src_type->flag;
   
   SPVM_OP* op_out = NULL;
   
   // Can't assign undef to numeric value
-  if (SPVM_TYPE_is_numeric_type(compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_to_type->flag) && op_assign_from->id == SPVM_OP_C_ID_UNDEF) {
-    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_assign_to->file, op_assign_to->line);
+  if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag) && op_src->id == SPVM_OP_C_ID_UNDEF) {
+    SPVM_yyerror_format(compiler, "Can't convert undef to numeric type at %s line %d\n", op_dist->file, op_dist->line);
   }
   else {
     // Numeric type check
-    if (SPVM_TYPE_is_numeric_type(compiler, assign_to_type->basic_type->id, assign_to_type->dimension, assign_to_type->flag) && SPVM_TYPE_is_numeric_type(compiler, assign_from_type->basic_type->id, assign_from_type->dimension, assign_from_type->flag)) {
+    if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag) && SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       int32_t do_convert = 0;
-      if (assign_to_type->basic_type->id > assign_from_type->basic_type->id) {
+      if (dist_type->basic_type->id > src_type->basic_type->id) {
         do_convert = 1;
       }
       // Narrowng convetion only when constant is in range
-      else if (assign_to_type->basic_type->id < assign_from_type->basic_type->id) {
+      else if (dist_type->basic_type->id < src_type->basic_type->id) {
         int32_t compile_error = 0;
-        if (op_assign_from->id == SPVM_OP_C_ID_CONSTANT) {
+        if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
           int32_t compile_error = 0;
-          SPVM_CONSTANT* constant = op_assign_from->uv.constant;
+          SPVM_CONSTANT* constant = op_src->uv.constant;
           int64_t constant_value;
           if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)
             || (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG))
@@ -2586,17 +2593,17 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
               constant_value = constant->value.lval;
             }
             
-            if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
+            if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
               if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
                 compile_error = 1;
               }
             }
-            else if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)) {
+            else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)) {
               if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
                 compile_error = 1;
               }
             }
-            else if ((assign_to_type->dimension == 0 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
+            else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
               if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
                 compile_error = 1;
               }
@@ -2614,7 +2621,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
         }
         
         if (compile_error) {
-          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
         }
         else {
           do_convert = 1;
@@ -2622,11 +2629,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
       
       if (do_convert) {
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_assign_from);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
         
-        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_assign_from->file, op_assign_from->line);
-        SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, assign_to_type, op_assign_from->file, op_assign_from->line);
-        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_assign_from);
+        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
+        SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, op_src->file, op_src->line);
+        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_src);
         
         SPVM_OP_replace_op(compiler, op_stab, op_convert);
 
@@ -2638,22 +2645,16 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
       }
     }
     else {
-      if ((assign_to_type->dimension == 1 && assign_to_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) && SPVM_TYPE_is_numeric_type(compiler, assign_from_type->basic_type->id, assign_from_type->dimension, assign_from_type->flag)) {
+      if ((dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) && SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         // Convert numeric type to string
       }
       // object type check
       else {
         _Bool check_cast;
-        if (assign_from_type->dimension == 0 && assign_from_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
+        if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
           check_cast = 1;
         }
         else {
-          int32_t dist_basic_type_id = assign_to_type->basic_type->id;
-          int32_t dist_type_dimension = assign_to_type->dimension;
-          int32_t dist_type_flag = assign_to_type->flag;
-          int32_t src_basic_type_id = assign_from_type->basic_type->id;
-          int32_t src_type_dimension = assign_from_type->dimension;
-          
           // To any object
           if (SPVM_TYPE_is_any_object_type(compiler, dist_basic_type_id, dist_type_dimension, dist_type_flag)) {
             check_cast = 1;
@@ -2753,18 +2754,18 @@ SPVM_OP* SPVM_OP_CHECKER_check_and_convert_type(SPVM_COMPILER* compiler, SPVM_OP
         }
         
         if (!check_cast) {
-          SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_assign_from->file, op_assign_from->line);
+          SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_src->file, op_src->line);
         }
         // Const check
-        if (!(assign_to_type->flag & SPVM_TYPE_C_FLAG_CONST) && (assign_from_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
-          SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_assign_from->file, op_assign_from->line);
+        if (!(dist_type->flag & SPVM_TYPE_C_FLAG_CONST) && (src_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
+          SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_src->file, op_src->line);
         }
       }
     }
   }
   
   if (!op_out) {
-    op_out = op_assign_from;
+    op_out = op_src;
   }
   
   return op_out;
