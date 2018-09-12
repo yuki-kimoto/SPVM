@@ -49,7 +49,10 @@ package TestCase::Interface {
       $minimals->[2] = new TestCase::Minimal;
       $minimals->[2]{x} = 2;
       
-      sort_obj($minimals, $comparator);
+      my $objects = new object[scalar @$minimals];
+      for (my $i = 0; $i < @$objects; $i++) { $objects->[$i] = $minimals->[$i]; }
+      sort_obj($objects, $comparator);
+      for (my $i = 0; $i < @$objects; $i++) { $minimals->[$i] = (TestCase::Minimal)$objects->[$i]; }
       
       if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
         return 1;
