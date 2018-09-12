@@ -2767,6 +2767,13 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
         SPVM_yyerror_format(compiler, "Reference type must be numeric refernce type or value_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
       }
     }
+    
+    // Interface array is invalid
+    if (type->basic_type->package && type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+      if (type->dimension > 1) {
+        SPVM_yyerror_format(compiler, "Array of interface is invalid at %s line %d\n", op_type->file, op_type->line);
+      }
+    }
   }
 }
 
