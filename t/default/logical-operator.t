@@ -31,6 +31,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::LogicalOperator->logical_and_left_true());
   ok(TestCase::LogicalOperator->logical_and_right_true());
   ok(TestCase::LogicalOperator->logical_and_both_false());
+  # ok(TestCase::LogicalOperator->logical_and_push_mortal_leave_scope);
 }
 
 # All object is freed
