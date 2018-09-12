@@ -1,4 +1,7 @@
 package TestCase::Convert {
+  use TestCase::Minimal;
+  use TestCase::Interface::Interface;
+  
   sub convert_to_numeric_array : int () {
     my $onums_byte : object = new byte[3];
     my $nums_byte = (byte[])$onums_byte;
@@ -12,6 +15,20 @@ package TestCase::Convert {
     my $nums_float = (float[])$onums_float;
     my $onums_double : object = new double[3];
     my $nums_double = (double[])$onums_double;
+    
+    return 1;
+  }
+
+  sub convert_to_object_array : int () {
+    my $ominimals : object = new TestCase::Minimal[3];
+    my $minimals = (TestCase::Minimal[])$ominimals;
+    
+    return 1;
+  }
+
+  sub convert_to_interface_array : int () {
+    my $ointerfaces : object = new TestCase::Interface::Interface[3];
+    my $interfaces = (TestCase::Interface::Interface[])$ointerfaces;
     
     return 1;
   }
