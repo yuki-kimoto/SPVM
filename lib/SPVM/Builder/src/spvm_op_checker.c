@@ -254,6 +254,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_array_init = op_cur;
                         
                         SPVM_OP* op_list_elements = op_cur->first;
+                        SPVM_OP* op_type_new_default = op_cur->last;
                         
                         const char* file = op_list_elements->file;
                         int32_t line = op_list_elements->line;
@@ -288,15 +289,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               op_term_element->no_need_check = 1;
 
                               // Create element type
-                              SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                              type_element->basic_type = type_term_element->basic_type;
-                              type_element->dimension = type_term_element->dimension;
-                              if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                                type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
+                              if (op_type_element == NULL) {
+                                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+                                type_element->basic_type = type_term_element->basic_type;
+                                type_element->dimension = type_term_element->dimension;
+                                if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                  type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
+                                }
+                                op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
                               }
-                              op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
                               
-                              if (!SPVM_TYPE_is_numeric_type(compiler, type_element->basic_type->id, type_element->dimension, type_element->flag)) {
+                              if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
                                 if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                                   SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
                                 }
@@ -305,15 +308,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                                                       
                               // Create array type
-                              SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                              type_new->basic_type = type_term_element->basic_type;
-                              type_new->dimension = type_term_element->dimension + 1;
-                              if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                                type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
+                              if (op_type_new == NULL) {
+                                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                                type_new->basic_type = type_term_element->basic_type;
+                                type_new->dimension = type_term_element->dimension + 1;
+                                if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                  type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
+                                }
+                                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
                               }
-                              op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
 
-                              if (!SPVM_TYPE_is_numeric_type(compiler, type_new->basic_type->id, type_new->dimension, type_new->flag)) {
+                              if (!SPVM_TYPE_is_numeric_type(compiler, op_type_new->uv.type->basic_type->id, op_type_new->uv.type->dimension, op_type_new->uv.type->flag)) {
                                 if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                                   SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_element->file, op_type_element->line);
                                 }
