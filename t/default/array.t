@@ -35,6 +35,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Array->array_init_float());
   ok(TestCase::Array->array_init_double());
   ok(TestCase::Array->array_init_list());
+  ok(TestCase::Array->array_init_object());
 }
 
 # array - set and get array element, first element

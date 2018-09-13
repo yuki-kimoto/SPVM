@@ -290,4 +290,18 @@ package TestCase::Array {
     
     return 0;
   }
+
+  sub array_init_object : int () {
+    my $objects = new object[] {new TestCase::Minimal, new TestCase::Minimal};
+    
+    if ($objects isa object[]) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+    
+    return 0;
+  }
+
 }

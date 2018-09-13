@@ -264,6 +264,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_type_new = NULL;
                         SPVM_OP* op_type_element = NULL;
                         
+                        if (op_type_new_default->id == SPVM_OP_C_ID_TYPE) {
+                          op_type_new = op_type_new_default;
+                          
+                          // Create element type
+                          SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+                          type_element->basic_type = op_type_new->uv.type->basic_type;
+                          type_element->dimension = op_type_new->uv.type->dimension - 1;
+                          type_element->flag = op_type_new->uv.type->flag;
+                          op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_type_new_default->file, op_type_new_default->line);
+                        }
+                        
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                         SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, NULL, file, line);
