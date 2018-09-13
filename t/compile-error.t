@@ -36,6 +36,36 @@ my $ok;
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
 }
 
 {

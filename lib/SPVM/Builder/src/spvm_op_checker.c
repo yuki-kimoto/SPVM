@@ -2538,15 +2538,17 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
         int32_t can_narrowing_promotion = 0;
         if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
           SPVM_CONSTANT* constant = op_src->uv.constant;
-          int64_t constant_value;
-          if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)
-            || (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG))
-          {
-            if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
+          assert(constant->type->dimension == 0);
+          if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT || constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+            int64_t constant_value;
+            if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
               constant_value = constant->value.ival;
             }
-            else if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG)) {
+            else if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
               constant_value = constant->value.lval;
+            }
+            else {
+              assert(0);
             }
             
             if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
