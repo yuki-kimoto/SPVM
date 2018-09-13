@@ -2574,7 +2574,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
               }
             }
             else {
-              can_narrowing_promotion = 0;
+              assert(0);
             }
           }
           else {
