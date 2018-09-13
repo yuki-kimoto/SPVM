@@ -2518,13 +2518,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
-  int32_t dist_basic_type_id = dist_type->basic_type->id;
-  int32_t dist_type_dimension = dist_type->dimension;
-  int32_t dist_type_flag = dist_type->flag;
-  int32_t src_basic_type_id = src_type->basic_type->id;
-  int32_t src_type_dimension = src_type->dimension;
-  int32_t src_type_flag = src_type->flag;
-  
   SPVM_OP* op_out = NULL;
   
   // Dist type is numeric type
@@ -2651,19 +2644,19 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     // Source type is object type
     if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       // Dist type is any object
-      if (SPVM_TYPE_is_any_object_type(compiler, dist_basic_type_id, dist_type_dimension, dist_type_flag)) {
+      if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
         can_assign = 1;
       }
       else {
         // Different dimension
-        if (dist_type_dimension != src_type_dimension) {
+        if (dist_type->dimension != src_type->dimension) {
           can_assign = 0;
         }
         // Same dimension
         else {
-          if (dist_type_dimension > 1) {
+          if (dist_type->dimension > 1) {
             // Same basic type
-            if (dist_basic_type_id == src_basic_type_id) {
+            if (dist_type->basic_type->id == src_type->basic_type->id) {
               can_assign = 1;
             }
             // Different basic type
@@ -2673,18 +2666,18 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
           }
           else {
             // Dist type is same as source type
-            if (dist_basic_type_id == src_basic_type_id) {
+            if (dist_type->basic_type->id == src_type->basic_type->id) {
               can_assign = 1;
             }
             // Dist type is difference from source type
             else {
               // Dist type dimension is less than or equal to source type dimension
-              if (dist_type_dimension <= src_type_dimension) {
+              if (dist_type->dimension <= src_type->dimension) {
                 // Dist basic type is any object
-                if (dist_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-                  if (src_type_dimension == 0) {
+                if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+                  if (src_type->dimension == 0) {
                     // Source basic type is value type
-                    SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
+                    SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_type->basic_type->id);
                     SPVM_PACKAGE* src_base_package = src_basic_type->package;
                     if (src_base_package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                       can_assign = 0;
@@ -2702,15 +2695,15 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
                 // Dist basic type is object (except for any object)
                 else {
                   // Dist type dimension is equal to source type dimension
-                  if (dist_type_dimension == src_type_dimension) {
+                  if (dist_type->dimension == src_type->dimension) {
                     // Dist basic type is same as source basic type
-                    if (dist_basic_type_id == src_basic_type_id) {
+                    if (dist_type->basic_type->id == src_type->basic_type->id) {
                       can_assign = 1;
                     }
                     // Dist basic type is different from source basic type
                     else {
-                      SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_basic_type_id);
-                      SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_basic_type_id);
+                      SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_type->basic_type->id);
+                      SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_type->basic_type->id);
                       SPVM_PACKAGE* dist_package = dist_basic_type->package;
                       SPVM_PACKAGE* src_package = src_basic_type->package;
                       
@@ -2739,7 +2732,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
                 }
               }
               // Dist type dimension is greater than source type dimension
-              else if (dist_type_dimension > src_type_dimension) {
+              else if (dist_type->dimension > src_type->dimension) {
                 can_assign = 0;
               }
             }
