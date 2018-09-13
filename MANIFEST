@@ -169,6 +169,7 @@ solo/lib/TestCase/ImplementInterface2.spvm
 solo/lib/TestCase/Inline.spvm
 solo/lib/TestCase/Interface1.spvm
 solo/lib/TestCase/Interface2.spvm
+solo/lib/TestCase/List.spvm
 solo/lib/TestCase/Minimal.spvm
 solo/lib/TestCase/Point_b3.spvm
 solo/lib/TestCase/Point_d3.spvm
@@ -211,6 +212,12 @@ t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm
 t/default/lib/TestCase/CompileError/Assign/DifferentObject.spvm
+t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionIntToByte.spvm
+t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionIntToShort.spvm
+t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToByte.spvm
+t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToInt.spvm
+t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
+t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObject.spvm
