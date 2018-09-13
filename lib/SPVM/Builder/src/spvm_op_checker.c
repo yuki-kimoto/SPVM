@@ -2698,17 +2698,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
           {
             SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_type->basic_type->id);
             SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_type->basic_type->id);
-            SPVM_PACKAGE* dist_package = dist_basic_type->package;
-            SPVM_PACKAGE* src_package = src_basic_type->package;
             
-            // Dist base type is interface
-            if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-              can_assign = SPVM_OP_CHECKER_has_interface(compiler, src_package, dist_package);
-            }
-            // Dist base type is not interface
-            else {
-              can_assign = 0;
-            }
+            can_assign = SPVM_OP_CHECKER_has_interface(compiler, src_basic_type->package, dist_basic_type->package);
           }
           else {
             can_assign = 0;
