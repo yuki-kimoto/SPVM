@@ -1256,8 +1256,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
                         
-                        // Check if source value can be assigned dist distination value
-                        // If needed, audistmatical numeric convertion op is added
+                        // Check if source can be assigned to dist
+                        // If needed, numeric promotion op is added
                         SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
                         
                         break;
@@ -1936,6 +1936,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
                           
+                          // Check if source can be assigned to dist
+                          // If needed, numeric promotion op is added
                           op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
                         }
                         
@@ -2520,18 +2522,20 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-      int32_t do_convert = 0;
+      int32_t need_promotion = 0;
+      // Dist type is same as source type
       if (dist_type->basic_type->id == src_type->basic_type->id) {
         can_assign = 1;
       }
+      // Dist type is more wide than source type
       else if (dist_type->basic_type->id > src_type->basic_type->id) {
-        do_convert = 1;
+        can_assign = 1;
+        need_promotion = 1;
       }
-      // Narrowing promotion only when constant is in range
+      // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
-        int32_t compile_error = 0;
         if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-          int32_t compile_error = 0;
+          int32_t cant_narrowing_promotion = 0;
           SPVM_CONSTANT* constant = op_src->uv.constant;
           int64_t constant_value;
           if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)
@@ -2546,40 +2550,40 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
             
             if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
               if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
-                compile_error = 1;
+                cant_narrowing_promotion = 1;
               }
             }
             else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)) {
               if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
-                compile_error = 1;
+                cant_narrowing_promotion = 1;
               }
             }
             else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
               if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
-                compile_error = 1;
+                cant_narrowing_promotion = 1;
               }
             }
             else {
-              compile_error = 1;
+              cant_narrowing_promotion = 1;
             }
           }
           else {
-            compile_error = 1;
+            cant_narrowing_promotion = 1;
           }
         }
         else {
-          compile_error = 1;
+          cant_narrowing_promotion = 1;
         }
         
-        if (compile_error) {
+        if (cant_narrowing_promotion) {
           SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
         }
         else {
-          do_convert = 1;
+          need_promotion = 1;
         }
       }
       
-      if (do_convert) {
+      if (need_promotion) {
         can_assign = 1;
         
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
