@@ -217,7 +217,7 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_T
   return op_var;
 }
 
-_Bool SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   switch (op->id) {
@@ -276,7 +276,7 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   // Package variable
   else if (isupper(var_name[1]) || strchr(var_name, ':')) {
     
-    _Bool is_invalid = 0;
+    int32_t is_invalid = 0;
     int32_t length = (int32_t)strlen(var_name);
     
     // only allow two colon
@@ -425,13 +425,13 @@ SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   return op_parent;
 }
 
-void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, _Bool* next_is_child_ptr) {
+void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, int32_t* next_is_child_ptr) {
 
   // Get parent
   SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
   
   SPVM_OP* op_before;
-  _Bool next_is_child = 0;
+  int32_t next_is_child = 0;
   if (op_parent->first == op_target) {
     op_before = op_parent;
     next_is_child = 1;
@@ -459,10 +459,10 @@ void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op
   // Get parent op
   SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
   
-  _Bool op_target_is_last_child = op_parent->last == op_target;
+  int32_t op_target_is_last_child = op_parent->last == op_target;
 
   // Get before op
-  _Bool next_is_child;
+  int32_t next_is_child;
   SPVM_OP* op_before;
   SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
@@ -494,10 +494,10 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   // Get parent op
   SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
   
-  _Bool op_target_is_last_child = op_parent->last == op_target;
+  int32_t op_target_is_last_child = op_parent->last == op_target;
 
   // Get before op
-  _Bool next_is_child;
+  int32_t next_is_child;
   SPVM_OP* op_before;
   SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
@@ -1695,7 +1695,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   package_var->name = op_var->uv.var->op_name->uv.name;
   
-  _Bool invalid_name = 0;
+  int32_t invalid_name = 0;
   if (op_var->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
     invalid_name = 1;
   }

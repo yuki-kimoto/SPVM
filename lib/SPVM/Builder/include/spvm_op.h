@@ -227,11 +227,11 @@ struct SPVM_op {
   int32_t id;
   int32_t flag;
   int32_t line;
-  _Bool moresib;
-  _Bool is_lvalue;
-  _Bool is_assigned_to_var;
-  _Bool is_passed_to_sub;
-  _Bool no_need_check;
+  int8_t moresib;
+  int8_t is_lvalue;
+  int8_t is_assigned_to_var;
+  int8_t is_passed_to_sub;
+  int8_t no_need_check;
 };
 
 SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line);
@@ -257,7 +257,7 @@ SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target);
-void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, _Bool* next_is_child_ptr);
+void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** op_before_ptr, int32_t* next_is_child_ptr);
 
 void SPVM_OP_build_constant_pool(SPVM_COMPILER* compiler);
 SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target);

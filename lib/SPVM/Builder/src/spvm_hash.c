@@ -178,7 +178,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
     
     int32_t entry_index = hash->table[table_index];
     while (1) {
-      _Bool match_string = 0;
+      int32_t match_string = 0;
       if (length == 0) {
         if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
           match_string = 1;
@@ -244,7 +244,7 @@ void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
   while (1) {
     assert(entry_index >= -1);
     if (entry_index != -1) {
-      _Bool match_string = 0;
+      int32_t match_string = 0;
       if (length == 0) {
         if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
           match_string = 1;

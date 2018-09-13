@@ -41,7 +41,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t minus = 0;
   
   // Expect name
-  _Bool expect_sub_name = compiler->expect_sub_name;
+  int32_t expect_sub_name = compiler->expect_sub_name;
   compiler->expect_sub_name = 0;
   
   while(1) {
@@ -657,7 +657,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->bufptr++;
         }
         else {
-          _Bool finish = 0;
+          int32_t finish = 0;
           while(1) {
             // End of string literal
             if (*compiler->bufptr == '"' && *(compiler->bufptr - 1) != '\\') {
@@ -825,7 +825,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             digit = 10;
           }
           
-          _Bool is_floating_number = 0;
+          int32_t is_floating_number = 0;
           
           compiler->bufptr++;
           // Scan number
@@ -937,8 +937,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
             int64_t num;
             errno = 0;
-            _Bool out_of_range = 0;
-            _Bool invalid = 0;
+            int32_t out_of_range = 0;
+            int32_t invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
               uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
@@ -974,8 +974,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
             int64_t num;
             errno = 0;
-            _Bool out_of_range = 0;
-            _Bool invalid = 0;
+            int32_t out_of_range = 0;
+            int32_t invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
               uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);

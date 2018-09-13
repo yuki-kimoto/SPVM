@@ -138,7 +138,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Destructor must receive own package object
           if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
             // DESTROY argument must be 0
-            _Bool error = 0;
+            int32_t error = 0;
             if (sub->args->length != 1) {
               error = 1;
             }
@@ -188,7 +188,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
             SPVM_OP* op_cur = op_base;
-            _Bool finish = 0;
+            int32_t finish = 0;
             while (op_cur) {
               int32_t rel_line = op_cur->line - sub->op_sub->line;
               if (op_cur->line >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
@@ -406,7 +406,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CONSTANT: {
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                         
-                        _Bool add_constant = 0;
+                        int32_t add_constant = 0;
                         
                         // long or double
                         if (type->dimension == 0) {
@@ -1263,8 +1263,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_yyerror_format(compiler, "undef can't be assigned dist undef at %s line %d\n", op_cur->file, op_cur->line);
                           }
                           else {
-                            _Bool dist_type_is_value_type = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                            _Bool dist_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+                            int32_t dist_type_is_value_type = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+                            int32_t dist_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                             if (dist_type_is_value_type) {
                               SPVM_yyerror_format(compiler, "undef can't be assigned dist value_t type at %s line %d\n", op_cur->file, op_cur->line);
                               return;
@@ -1290,7 +1290,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_term);
                           SPVM_TYPE* sub_return_type = SPVM_OP_get_type(compiler, sub->return_type->op_type);
                           
-                          _Bool is_invalid = 0;
+                          int32_t is_invalid = 0;
                           
                           // Can't return refernece type
                           if (SPVM_TYPE_is_ref_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag)) {
@@ -1839,7 +1839,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_MY* my = op_cur->uv.var->my;
                           
                           // Redeclaration error if same name variable is declare in same block
-                          _Bool found = 0;
+                          int32_t found = 0;
                           int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(block_my_base_stack, block_my_base_stack->length - 1);
                           {
                             int32_t i;
@@ -2062,7 +2062,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                           
-                          _Bool is_basic_type_value_t = SPVM_TYPE_basic_type_is_value_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
+                          int32_t is_basic_type_value_t = SPVM_TYPE_basic_type_is_value_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
                           if (is_basic_type_value_t) {
                             if (array_element_type->dimension != 0) {
                               SPVM_yyerror_format(compiler, "value_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
@@ -2122,7 +2122,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         assert(dist_type);
                         
                         // Source is number
-                        _Bool is_convertable;
+                        int32_t is_convertable;
                         if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                           // Number to numober
                           if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
@@ -2247,7 +2247,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
             SPVM_OP* op_cur = op_base;
-            _Bool finish = 0;
+            int32_t finish = 0;
             while (op_cur) {
               // [START]Preorder traversal position
               if (op_cur->first) {
@@ -2405,7 +2405,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
             SPVM_OP* op_cur = op_base;
-            _Bool finish = 0;
+            int32_t finish = 0;
             while (op_cur) {
               // [START]Preorder traversal position
               switch (op_cur->id) {
@@ -2447,7 +2447,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_MY* my = op_cur->uv.var->my;
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                        _Bool type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
+                        int32_t type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
                         
                         if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_value_t) {
                           SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
@@ -2510,7 +2510,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-_Bool SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
+int32_t SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
   (void)compiler;
   
   // When left package is interface, right package have all methods which left package have
@@ -2656,7 +2656,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   }
   // Dist type is object type
   else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    _Bool can_assign;
+    int32_t can_assign;
     // Source type is object type
     if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       // Dist type is any object
@@ -2975,7 +2975,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
         else {
           int32_t field_index;
-          _Bool numeric_field_error = 0;
+          int32_t numeric_field_error = 0;
           for (field_index = 0; field_index < package->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(fields, field_index);
             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
@@ -3033,7 +3033,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
         // valut_t can't become field
-        _Bool is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+        int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
         if (is_value_t) {
           SPVM_yyerror_format(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
         }
@@ -3052,7 +3052,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       for (package_var_index = 0; package_var_index < package->package_vars->length; package_var_index++) {
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, package_var_index);
         SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, package_var->op_package_var);
-        _Bool is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
+        int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
         
         if (is_value_t) {
           SPVM_yyerror_format(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
@@ -3073,8 +3073,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
 
           SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
           
-          _Bool is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-          _Bool is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+          int32_t is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+          int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
           
           if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
             arg_allow_count += arg_type->basic_type->package->fields->length;

@@ -98,7 +98,7 @@ int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t
   
   SPVM_RUNTIME* runtime = env->runtime;
 
-  _Bool is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, dimension, flag);
+  int32_t is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, dimension, flag);
   
   int32_t width;
   if (is_value_type) {
@@ -1104,7 +1104,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     else {
       package = &runtime->packages[basic_type->package_id];
     }
-    _Bool is_pointer = 0;
+    int32_t is_pointer = 0;
     if (package) {
       if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
         is_pointer = 1;

@@ -32,7 +32,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   
   // Run OPs
   SPVM_OP* op_cur = op_base;
-  _Bool finish = 0;
+  int32_t finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
     {
