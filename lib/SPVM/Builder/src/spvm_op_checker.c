@@ -2536,11 +2536,15 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   SPVM_OP* op_out = NULL;
   
   // Dist type is numeric type
+  int32_t can_assign = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       int32_t do_convert = 0;
-      if (dist_type->basic_type->id > src_type->basic_type->id) {
+      if (dist_type->basic_type->id == src_type->basic_type->id) {
+        can_assign = 1;
+      }
+      else if (dist_type->basic_type->id > src_type->basic_type->id) {
         do_convert = 1;
       }
       // Narrowing promotion only when constant is in range
@@ -2596,6 +2600,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       }
       
       if (do_convert) {
+        can_assign = 1;
+        
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
         
         SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
@@ -2612,12 +2618,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       }
     }
     else {
-      SPVM_yyerror_format(compiler, "Can't convert not numeric type to numeric type at %s line %d\n", op_dist->file, op_dist->line);
+      can_assign = 0;
     }
   }
   // Dist type is referece type
   else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    int32_t can_assign;
     if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
         can_assign = 1;
@@ -2629,14 +2634,9 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     else {
       can_assign = 0;
     }
-    
-    if (!can_assign) {
-      SPVM_yyerror_format(compiler, "Imcompatible reference type convertion at %s line %d\n", op_src->file, op_src->line);
-    }
   }
   // Dist type is value type
   else if (SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    int32_t can_assign;
     if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
         can_assign = 1;
@@ -2648,14 +2648,9 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     else {
       can_assign = 0;
     }
-    
-    if (!can_assign) {
-      SPVM_yyerror_format(compiler, "Imcompatible value type convertion at %s line %d\n", op_src->file, op_src->line);
-    }
   }
   // Dist type is object type
   else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    int32_t can_assign;
     // Source type is object type
     if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       // Dist type is any object
@@ -2720,18 +2715,20 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     else {
       can_assign = 0;
     }
-    
-    if (!can_assign) {
-      SPVM_yyerror_format(compiler, "Imcompatible object convertion at %s line %d\n", op_src->file, op_src->line);
-    }
   }
   else {
     SPVM_yyerror_format(compiler, "Can't assign to empty type at %s line %d\n", op_src->file, op_src->line);
   }
+  
+  if (!can_assign) {
+    SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
+    SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
+  }
 
   // Const check
   if (!(dist_type->flag & SPVM_TYPE_C_FLAG_CONST) && (src_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
-    SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_src->file, op_src->line);
+    SPVM_yyerror_format(compiler, "Can't convert const type to not const type at %s line %d\n", op_src->file, op_src->line);
   }
 
   if (!op_out) {
