@@ -100,6 +100,9 @@ struct SPVM_compiler {
 
   // Method signature symbol table
   SPVM_HASH* signature_symtable;
+  
+  char buffer1[UINT16_MAX * 2];
+  char buffer2[UINT16_MAX * 2]
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
