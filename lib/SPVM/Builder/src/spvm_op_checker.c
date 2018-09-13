@@ -2519,6 +2519,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   
   // Dist type is numeric type
   int32_t can_assign = 0;
+  int32_t narrowing_promotion_error = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -2578,9 +2579,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
         
         if (can_narrowing_promotion) {
           need_promotion = 1;
+          can_assign = 1;
         }
         else {
-          SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
+          narrowing_promotion_error = 1;
+          can_assign = 0;
         }
       }
       
@@ -2706,9 +2709,14 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   }
   
   if (!can_assign) {
-    SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
-    SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-    SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
+    if (narrowing_promotion_error) {
+      SPVM_yyerror_format(compiler, "Can't apply narrowing promotion at %s line %d\n", op_src->file, op_src->line);
+    }
+    else {
+      SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
+      SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+      SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
+    }
   }
 
   // Const check
