@@ -2701,19 +2701,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
             SPVM_PACKAGE* dist_package = dist_basic_type->package;
             SPVM_PACKAGE* src_package = src_basic_type->package;
             
-            // Dist basic type and source basic type is package
-            if (dist_package && src_package) {
-              
-              // Dist base type is interface
-              if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                can_assign = SPVM_OP_CHECKER_has_interface(compiler, src_package, dist_package);
-              }
-              // Dist base type is not interface
-              else {
-                can_assign = 0;
-              }
+            // Dist base type is interface
+            if (dist_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+              can_assign = SPVM_OP_CHECKER_has_interface(compiler, src_package, dist_package);
             }
-            // Dist basic type is not package or source basic type is not package
+            // Dist base type is not interface
             else {
               can_assign = 0;
             }
