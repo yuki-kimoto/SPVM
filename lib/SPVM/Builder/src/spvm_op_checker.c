@@ -1256,26 +1256,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
                         
-                        // From type is undef
-                        if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
-                          // To type is undef
-                          if (dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) { 
-                            SPVM_yyerror_format(compiler, "undef can't be assigned dist undef at %s line %d\n", op_cur->file, op_cur->line);
-                          }
-                          else {
-                            int32_t dist_type_is_value_type = SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                            int32_t dist_type_is_numeric_ref_type = SPVM_TYPE_is_numeric_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                            if (dist_type_is_value_type) {
-                              SPVM_yyerror_format(compiler, "undef can't be assigned dist value_t type at %s line %d\n", op_cur->file, op_cur->line);
-                              return;
-                            }
-                            else if (dist_type_is_numeric_ref_type) {
-                              SPVM_yyerror_format(compiler, "undef can't be assigned dist numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
-                              return;
-                            }
-                          }
-                        }
-                        
                         // Check if source value can be assigned dist distination value
                         // If needed, audistmatical numeric convertion op is added
                         SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
