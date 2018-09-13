@@ -2607,6 +2607,24 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       SPVM_yyerror_format(compiler, "Can't convert not numeric type to numeric type at %s line %d\n", op_dist->file, op_dist->line);
     }
   }
+  else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+    int32_t can_assign;
+    if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+      if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
+    }
+    else {
+      can_assign = 0;
+    }
+    
+    if (!can_assign) {
+      SPVM_yyerror_format(compiler, "Imcompatible reference type convertion at %s line %d\n", op_src->file, op_src->line);
+    }
+  }
   else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     _Bool check_cast;
     if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_UNDEF) {
@@ -2825,24 +2843,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     // Const check
     if (!(dist_type->flag & SPVM_TYPE_C_FLAG_CONST) && (src_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
       SPVM_yyerror_format(compiler, "Can't assign const type to no const type at %s line %d\n", op_src->file, op_src->line);
-    }
-  }
-  else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    int32_t can_assign;
-    if (SPVM_TYPE_is_ref_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-      if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
-        can_assign = 1;
-      }
-      else {
-        can_assign = 0;
-      }
-    }
-    else {
-      can_assign = 0;
-    }
-    
-    if (!can_assign) {
-      SPVM_yyerror_format(compiler, "Imcompatible reference type convertion at %s line %d\n", op_src->file, op_src->line);
     }
   }
   else {
