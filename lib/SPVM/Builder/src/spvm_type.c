@@ -375,11 +375,19 @@ _Bool SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, i
       return 0;
     }
     else {
-      if (dimension > 0 || ((dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))) {
+      if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
         return 1;
       }
       else {
-        return 0;
+        if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
+          return 1;
+        }
+        else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
       }
     }
   }
