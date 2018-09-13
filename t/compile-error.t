@@ -16,6 +16,28 @@ use lib "$FindBin::Bin/default/lib";
 
 my $ok;
 
+# Assign
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::DifferentObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::ConstToNoConst');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NotNumericToNumeric');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 {
   my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::InvalidType');
@@ -33,20 +55,6 @@ my $ok;
 {
   my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::AssignIncompatibleType::DifferentObject');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::AssignIncompatibleType::ConstToNoConst');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }

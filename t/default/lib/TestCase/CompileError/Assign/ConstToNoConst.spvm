@@ -1,4 +1,4 @@
-package TestCase::CompileError::AssignIncompatibleType::ConstToNoConst {
+package TestCase::CompileError::Assign::ConstToNoConst {
 
   sub main : int () {
     {

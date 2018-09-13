@@ -209,8 +209,8 @@ t/default/lib/TestCase/Byte.spvm
 t/default/lib/TestCase/CallSub.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
-t/default/lib/TestCase/CompileError/AssignIncompatibleType/ConstToNoConst.spvm
-t/default/lib/TestCase/CompileError/AssignIncompatibleType/DifferentObject.spvm
+t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm
+t/default/lib/TestCase/CompileError/Assign/DifferentObject.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObject.spvm
