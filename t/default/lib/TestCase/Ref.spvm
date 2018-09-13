@@ -435,8 +435,8 @@ package TestCase::Ref {
     my $point1 : TestCase::Point_f3;
     
     $point1->{x} = FLT_MIN();
-    $point1->{y} = 0.5;
-    $point1->{z} = 0.125;
+    $point1->{y} = 0.5f;
+    $point1->{z} = 0.125f;
     
     my $point1_ref = \$point1;
     
@@ -452,8 +452,8 @@ package TestCase::Ref {
     my $point : TestCase::Point_f3;
     
     $point->{x} = FLT_MIN();
-    $point->{y} = 0.5;
-    $point->{z} = 0.125;
+    $point->{y} = 0.5f;
+    $point->{z} = 0.125f;
     
     my $point_ref = \$point;
     
@@ -473,8 +473,8 @@ package TestCase::Ref {
     my $point_ref = \$point;
     
     $point_ref->{x} = FLT_MIN();
-    $point_ref->{y} = 0.5;
-    $point_ref->{z} = 0.125;
+    $point_ref->{y} = 0.5f;
+    $point_ref->{z} = 0.125f;
     
     if ($point->{x} == FLT_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
       return 1;
@@ -486,14 +486,14 @@ package TestCase::Ref {
     my $point_out : TestCase::Point_f3;
     
     my $point1 : TestCase::Point_f3;
-    $point1->{x} = 0.25;
-    $point1->{y} = 0.5;
-    $point1->{z} = 0.125;
+    $point1->{x} = 0.25f;
+    $point1->{y} = 0.5f;
+    $point1->{z} = 0.125f;
 
     my $point2 : TestCase::Point_f3;
-    $point2->{x} = 0.25;
-    $point2->{y} = 0.5;
-    $point2->{z} = 0.125;
+    $point2->{x} = 0.25f;
+    $point2->{y} = 0.5f;
+    $point2->{z} = 0.125f;
     
     pass_value_ref_float($point1, $point2, \$point_out);
     

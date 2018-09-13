@@ -2,10 +2,10 @@ package TestCase::Float {
   use SPVM::Float;
 
   sub basic : int () {
-    my $oval = SPVM::Float->new(0.25);
+    my $oval = SPVM::Float->new(0.25f);
     my $value1 = $oval->val;
 
-    $oval->set_val(0.5);
+    $oval->set_val(0.5f);
     my $value2 = $oval->val;
     
     if ($value1 == 0.25 && $value2 == 0.5) {

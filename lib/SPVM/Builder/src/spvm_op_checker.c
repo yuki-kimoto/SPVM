@@ -2535,9 +2535,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       }
       // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
-        int32_t can_narrowing_promotion = 1;
+        int32_t can_narrowing_promotion = 0;
         if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-          int32_t can_narrowing_promotion = 1;
           SPVM_CONSTANT* constant = op_src->uv.constant;
           int64_t constant_value;
           if ((constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)
@@ -2550,18 +2549,27 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
               constant_value = constant->value.lval;
             }
             
-            if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)) {
-              if (!(constant_value >= INT8_MIN && constant_value <= INT8_MAX)) {
+            if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+              if (constant_value >= INT8_MIN && constant_value <= INT8_MAX) {
+                can_narrowing_promotion = 1;
+              }
+              else {
                 can_narrowing_promotion = 0;
               }
             }
-            else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)) {
-              if (!(constant_value >= INT16_MIN && constant_value <= INT16_MAX)) {
+            else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+              if (constant_value >= INT16_MIN && constant_value <= INT16_MAX) {
+                can_narrowing_promotion = 1;
+              }
+              else {
                 can_narrowing_promotion = 0;
               }
             }
-            else if ((dist_type->dimension == 0 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
-              if (!(constant_value >= INT32_MIN && constant_value <= INT32_MAX)) {
+            else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+              if (constant_value >= INT32_MIN && constant_value <= INT32_MAX) {
+                can_narrowing_promotion = 1;
+              }
+              else {
                 can_narrowing_promotion = 0;
               }
             }
@@ -2574,7 +2582,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
           }
         }
         else {
-          can_narrowing_promotion = 0;
+          can_assign = 0;
         }
         
         if (can_narrowing_promotion) {
@@ -2710,7 +2718,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   
   if (!can_assign) {
     if (narrowing_promotion_error) {
-      SPVM_yyerror_format(compiler, "Can't apply narrowing promotion at %s line %d\n", op_src->file, op_src->line);
+      SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
     }
     else {
       SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);

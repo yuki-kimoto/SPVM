@@ -96,8 +96,8 @@ package TestCase::Complex {
   }
 
   sub test_caddf : int () {
-    my $z_in1 = new_fcomplex(0.25, 0.5);
-    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_in1 = new_fcomplex(0.25f, 0.5f);
+    my $z_in2 = new_fcomplex(0.5f, 0.125f);
     my $z_out = caddf($z_in1, $z_in2);
     
     if ($z_out->{re} == 0.75 && $z_out->{im} == 0.625) {
@@ -119,8 +119,8 @@ package TestCase::Complex {
   }
 
   sub test_csubf : int () {
-    my $z_in1 = new_fcomplex(0.25, 0.5);
-    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_in1 = new_fcomplex(0.25f, 0.5f);
+    my $z_in2 = new_fcomplex(0.5f, 0.125f);
     my $z_out = csubf($z_in1, $z_in2);
     
     if ($z_out->{re} == -0.25 && $z_out->{im} == 0.375) {
@@ -142,8 +142,8 @@ package TestCase::Complex {
   }
 
   sub test_cmulf : int () {
-    my $z_in1 = new_fcomplex(0.25, 0.5);
-    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_in1 = new_fcomplex(0.25f, 0.5f);
+    my $z_in2 = new_fcomplex(0.5f, 0.125f);
     my $z_out = cmulf($z_in1, $z_in2);
     
     if ($z_out->{re} == 0.0625 && $z_out->{im} == 0.28125) {
@@ -165,8 +165,8 @@ package TestCase::Complex {
   }
 
   sub test_cdivf : int () {
-    my $z_in1 = new_fcomplex(0.25, 0.5);
-    my $z_in2 = new_fcomplex(0.5, 0.125);
+    my $z_in1 = new_fcomplex(0.25f, 0.5f);
+    my $z_in2 = new_fcomplex(0.5f, 0.125f);
     my $z_out = cdivf($z_in1, $z_in2);
     
     if (($z_out->{re} - 0.70588) < 0.00001 && ($z_out->{im} - 0.82352) < 0.00001) {
