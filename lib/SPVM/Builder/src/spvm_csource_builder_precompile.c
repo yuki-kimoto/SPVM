@@ -1513,6 +1513,39 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
+      case SPVM_OPCODE_C_ID_ISA_INTERFACE:
+      {
+        int32_t rel_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t basic_type_id = type->basic_type_id;
+        int32_t type_dimension = type->dimension;
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+        const char* basic_type_name = runtime->symbols[basic_type->name_id];
+        int32_t dimension = type->dimension;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_type_dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = env->has_interface(object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_STRING_EQ:
       case SPVM_OPCODE_C_ID_STRING_NE:
       case SPVM_OPCODE_C_ID_STRING_GT:
