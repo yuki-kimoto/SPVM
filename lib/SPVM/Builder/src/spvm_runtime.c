@@ -2057,13 +2057,13 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
           int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           
-          if (!(object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension)) {
+          if (object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension) {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
+          }
+          else {
             void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
-          }
-          else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
           }
         }
         
@@ -2082,12 +2082,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           
           if (env->has_interface(env, object_basic_type_id, object_type_dimension_id, interface_basic_type_id, interface_type_dimension)) {
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
+          }
+          else {
             void* exception = env->new_string_raw(env, "Can't convert imcompatible interface type.", 0);
             env->set_exception(env, exception);
             exception_flag = 1;
-          }
-          else {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], *(void**)&vars[opcode->operand1]);
           }
         }
         
