@@ -280,16 +280,35 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] <= *(double*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_ISA_OBJECT:
-      {
+      case SPVM_OPCODE_C_ID_ISA_OBJECT: {
         void* object = *(void**)&vars[opcode->operand0];
         int32_t rel_id = opcode->operand1;
         SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t dimension = type->dimension;
+        int32_t check_basic_type_id = type->basic_type_id;
+        int32_t check_type_dimension = type->dimension;
         
         if (object) {
-          condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset) == dimension);
+          int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);
+          condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);
+        }
+        else {
+          condition_flag = 0;
+        }
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ISA_INTERFACE: {
+        void* object = *(void**)&vars[opcode->operand0];
+        int32_t rel_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t check_basic_type_id = type->basic_type_id;
+        int32_t check_type_dimension = type->dimension;
+        
+        if (object) {
+          int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);
+          condition_flag = env->has_interface(env, object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);
         }
         else {
           condition_flag = 0;

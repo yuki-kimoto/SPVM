@@ -3119,14 +3119,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_ID_ISA: {
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    
-                    opcode.id = SPVM_OPCODE_C_ID_ISA_OBJECT;
-                    
                     int32_t var_id_in1 = SPVM_OP_get_my_var_id(compiler, op_cur->first);
                     SPVM_OP* op_type = op_cur->last;
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
+
+                    SPVM_OPCODE opcode;
+                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                    
+                    if (SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                      opcode.id = SPVM_OPCODE_C_ID_ISA_INTERFACE;
+                    }
+                    else {
+                      opcode.id = SPVM_OPCODE_C_ID_ISA_OBJECT;
+                    }
                     
                     opcode.operand0 = var_id_in1;
                     opcode.operand1 = op_type->uv.type->sub_rel_id;
