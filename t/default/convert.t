@@ -82,6 +82,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Convert->convert_to_interface_array);
   ok(TestCase::Convert->convert_to_any_object);
   ok(TestCase::Convert->convert_to_interface);
+  ok(TestCase::Convert->convert_to_undef_to_any_object);
+  ok(TestCase::Convert->convert_to_undef_to_interface);
+  ok(TestCase::Convert->convert_to_undef_to_object);
 }
 
 # All object is freed

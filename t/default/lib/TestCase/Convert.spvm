@@ -26,6 +26,28 @@ package TestCase::Convert {
     return 1;
   }
 
+  sub convert_to_undef_to_any_object : int () {
+    my $minimal : TestCase::Minimal;
+    my $object = (object)$minimal;
+    
+    if ($object == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub convert_to_undef_to_object : int () {
+    my $minimal : TestCase::Minimal;
+    my $object = (TestCase::Minimal)$minimal;
+    
+    if ($object == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   sub convert_to_interface : int () {
     my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
       return 5;
@@ -36,6 +58,18 @@ package TestCase::Convert {
     my $comparator2 = (SPVM::Comparator)$object;
     
     if ($comparator2->compare(undef, undef) == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub convert_to_undef_to_interface : int () {
+    my $comparator : SPVM::Comparator;
+    
+    my $comparator2 = (SPVM::Comparator)$comparator;
+    
+    if ($comparator2 == undef) {
       return 1;
     }
     
