@@ -2492,25 +2492,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-int32_t SPVM_OP_CHECKER_has_interface(SPVM_COMPILER* compiler, SPVM_PACKAGE* package, SPVM_PACKAGE* interface) {
-  (void)compiler;
-  
-  // When left package is interface, right package have all methods which left package have
-  assert(interface->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE);
-  
-  assert(interface->subs->length == 1);
-  SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
-  
-  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_interface->signature, strlen(sub_interface->signature));
-  
-  if (found_sub) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
   SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
@@ -2689,10 +2670,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
             || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
           )
           {
-            SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_fetch(compiler->basic_types, dist_type->basic_type->id);
-            SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_fetch(compiler->basic_types, src_type->basic_type->id);
-            
-            can_assign = SPVM_OP_CHECKER_has_interface(compiler, src_basic_type->package, dist_basic_type->package);
+            can_assign = SPVM_TYPE_has_interface(
+              compiler,
+              src_type->basic_type->id, src_type->dimension, src_type->flag,
+              dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+            );
           }
           else {
             can_assign = 0;
