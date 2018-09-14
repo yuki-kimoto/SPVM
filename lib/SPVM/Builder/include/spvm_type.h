@@ -21,6 +21,12 @@ struct SPVM_type {
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
+int32_t SPVM_TYPE_has_interface(
+  SPVM_COMPILER* compiler,
+  int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
+  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag
+);
+
 SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler);

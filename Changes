@@ -1,4 +1,4 @@
-0.0370 2018-09-12
+0.0370 2018-09-14
   - fix check object type null segumentation fault bug
   - fix new array length is minus segfalt bug
   - rename SPVM::Byte->set_value to SPVM::Byte->set_val

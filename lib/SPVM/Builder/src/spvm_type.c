@@ -12,6 +12,38 @@
 #include "spvm_package.h"
 #include "spvm_limit.h"
 #include "spvm_basic_type.h"
+#include "spvm_sub.h"
+
+int32_t SPVM_TYPE_has_interface(
+  SPVM_COMPILER* compiler,
+  int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
+  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag)
+{
+  (void)compiler;
+
+  assert(
+    SPVM_TYPE_is_class_type(compiler, package_basic_type_id, package_type_dimension, package_type_flag)
+    || SPVM_TYPE_is_interface_type(compiler, interface_basic_type_id, interface_type_dimension, interface_type_flag)
+  );
+
+  SPVM_BASIC_TYPE* package_basic_type = SPVM_LIST_fetch(compiler->basic_types, package_basic_type_id);
+  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+  
+  SPVM_PACKAGE* package = package_basic_type->package;
+  SPVM_PACKAGE* interface = interface_basic_type->package;
+  
+  assert(interface->subs->length == 1);
+  SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+  
+  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_interface->signature, strlen(sub_interface->signature));
+  
+  if (found_sub) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
 
 SPVM_TYPE* SPVM_TYPE_clone_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
   SPVM_TYPE* new_type = SPVM_TYPE_new(compiler);
