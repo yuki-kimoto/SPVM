@@ -58,12 +58,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Object->destructor());
 }
 
-# isa
-{
-  ok(TestCase::Object->isa_basic());
-}
-
-
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

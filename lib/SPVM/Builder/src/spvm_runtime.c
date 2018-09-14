@@ -283,13 +283,17 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_ISA:
       {
         void* object = *(void**)&vars[opcode->operand0];
-
         int32_t rel_id = opcode->operand1;
         SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
         int32_t basic_type_id = type->basic_type_id;
         int32_t dimension = type->dimension;
         
-        condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset) == dimension);
+        if (object) {
+          condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset) == dimension);
+        }
+        else {
+          condition_flag = 0;
+        }
         
         break;
       }
