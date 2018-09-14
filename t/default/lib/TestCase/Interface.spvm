@@ -10,9 +10,9 @@ package TestCase::Interface {
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
       for (my $i = 0; $i < $change_cnt; $i++) {
-        my $ret = $comparator->($values->[$i], $values->[$i + 1]);
+        my $ret = $comparator->compare($values->[$i], $values->[$i + 1]);
         
-        if ($comparator->($values->[$i], $values->[$i + 1]) == 1) {
+        if ($comparator->compare($values->[$i], $values->[$i + 1]) == 1) {
           my $tmp_value = $values->[$i];
           $values->[$i] = $values->[$i + 1];
           $values->[$i + 1] = $tmp_value;
@@ -23,7 +23,7 @@ package TestCase::Interface {
   }
   
   sub comparator : int () {
-      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+      my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         

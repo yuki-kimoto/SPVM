@@ -19,6 +19,13 @@
   - fix array init type bug
   - fix type semantics. Can't assign Class[] to object[]
   - fix narrowing convertion bug
+  - remove anon subroutine. This is mistake of class design
+  - add anon package syntax for which have one subroutine
+    
+      my $comparator = sub compare : long ($self : self, $x1 : long, $x2 : long) {
+        return $x1 * $x2;
+      };
+  
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder

@@ -28,7 +28,7 @@
 %type <opval> opt_packages packages package anon_package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use our
+%type <opval> sub opt_args args arg invocant has use our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -171,7 +171,6 @@ declaration
   | enumeration
   | our ';'
   | use
-  | anon_sub
 
 use
   : USE basic_type ';'
@@ -261,18 +260,6 @@ sub
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
-     }
-
-anon_sub
-  : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
-     {
-       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
-       $$ = SPVM_OP_build_sub(compiler, $2, op_sub_name, $4, $6, $1, $8);
-     }
-  | opt_descriptors SUB ':' type_or_void '(' opt_args ')' ';'
-     {
-       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
-       $$ = SPVM_OP_build_sub(compiler, $2, op_sub_name, $4, $6, $1, NULL);
      }
 
 opt_args
@@ -763,7 +750,7 @@ new
 
       $$ = SPVM_OP_build_new(compiler, op_new, $1, NULL);
     }
-  | anon_sub
+  | sub
     {
       // Package
       SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);
