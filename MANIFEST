@@ -200,6 +200,7 @@ t/default/exception.t
 t/default/extension.t
 t/default/increment.t
 t/default/interface.t
+t/default/isa.t
 t/default/lib-CORE-math.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Array.spvm
@@ -220,12 +221,12 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
-t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObject.spvm
-t/default/lib/TestCase/CompileError/Convert/ConvertToAnyObjectArray.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToInterface.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToRef.spvm
 t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
+t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
+t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
@@ -252,6 +253,7 @@ t/default/lib/TestCase/Interface.spvm
 t/default/lib/TestCase/Interface/ImplementInterface1.spvm
 t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
+t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/List.spvm
 t/default/lib/TestCase/Literal.spvm
 t/default/lib/TestCase/LogicalOperator.spvm
