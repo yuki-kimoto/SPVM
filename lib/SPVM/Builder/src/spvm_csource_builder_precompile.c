@@ -1491,18 +1491,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t dimension = type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t dimension = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (*(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset) == basic_type_id && *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset) == dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
