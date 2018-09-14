@@ -1032,10 +1032,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_OP* op_type = op_cur->last;
                         
-                        // Can receive only numeric type
+                        // Left term must be object type
                         if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
                           SPVM_yyerror_format(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
-                          return;
+                        }
+                        
+                        // Right type must be object type
+                        if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                          // Right type must be not any object type
+                          if (SPVM_TYPE_is_any_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                            SPVM_yyerror_format(compiler, "isa rigth type must be not any object type at %s line %d\n", op_cur->file, op_cur->line);
+                          }
+                        }
+                        else {
+                          SPVM_yyerror_format(compiler, "isa rigth type must be object type at %s line %d\n", op_cur->file, op_cur->line);
                         }
 
                         if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
