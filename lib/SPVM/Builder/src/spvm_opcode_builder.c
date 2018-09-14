@@ -1662,21 +1662,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
                           }
-                          
-                          // MOVE_OBJECT
-                          {
-                            SPVM_OPCODE opcode;
-                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                            opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
-                            
-                            int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_dist_term);
-                            int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_src_term);
-                            
-                            opcode.operand0 = var_id_out;
-                            opcode.operand1 = var_id_in;
-                            
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          }
                         }
                       }
                       else if (op_assign_src->id == SPVM_OP_C_ID_NEW) {
