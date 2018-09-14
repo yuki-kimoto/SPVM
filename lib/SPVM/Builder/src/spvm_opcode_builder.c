@@ -1650,7 +1650,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             
-                            if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                            if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                              opcode.id = SPVM_OPCODE_C_ID_MOVE_OBJECT;
+                            }
+                            else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                               opcode.id = SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE;
                             }
                             else {
