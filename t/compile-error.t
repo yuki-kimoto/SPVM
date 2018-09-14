@@ -68,6 +68,22 @@ my $ok;
   }
 }
 
+# isa
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Isa::LeftIsNotObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Isa::RightIsAnyObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 {
   my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::InvalidType');
