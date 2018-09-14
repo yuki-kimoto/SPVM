@@ -121,6 +121,34 @@ int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t
   return width;
 }
 
+int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t package_basic_type_id, int32_t interface_basic_type_id) {
+  (void)env;
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_RUNTIME_BASIC_TYPE* package_basic_type = package_basic_type_id >= 0 ? &runtime->basic_types[package_basic_type_id] : NULL;
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = interface_basic_type_id >= 0 ? &runtime->basic_types[interface_basic_type_id] : NULL;
+
+  SPVM_RUNTIME_PACKAGE* package = package_basic_type->package_id >= 0 ? &runtime->packages[package_basic_type->package_id] : NULL;
+  SPVM_RUNTIME_PACKAGE* interface = interface_basic_type->package_id >= 0 ? &runtime->packages[interface_basic_type->package_id] : NULL;
+  
+  assert(package);
+  assert(interface);
+  
+  SPVM_RUNTIME_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+  
+  const char* sub_interface_signature = runtime->symbols[sub_interface->signature_id];
+  
+  SPVM_RUNTIME_SUB* found_sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_interface_signature, strlen(sub_interface_signature));
+  
+  if (found_sub) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   SPVM_RUNTIME* runtime = env->runtime;
