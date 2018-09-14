@@ -121,20 +121,6 @@ my $ok;
 
 {
   my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Convert::ConvertToAnyObject');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Convert::ConvertToAnyObjectArray');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::Convert::ConvertToRef');
   my $success = $build->compile_spvm();
   ok($success == 0);

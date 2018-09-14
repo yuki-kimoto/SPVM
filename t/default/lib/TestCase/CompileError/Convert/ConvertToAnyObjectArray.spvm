@@ -1,7 +1,0 @@
-package TestCase::CompileError::Convert::ConvertToAnyObjectArray {
-  use TestCase::Minimal;
-
-  sub main : int () {
-    (object[])new TestCase::Minimal;
-  }
-}

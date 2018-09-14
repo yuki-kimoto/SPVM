@@ -2104,98 +2104,76 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_CONVERT: {
                         
-                        SPVM_OP* op_term = op_cur->first;
-                        SPVM_OP* op_type = op_cur->last;
+                        SPVM_OP* op_src = op_cur->first;
+                        SPVM_OP* op_dist = op_cur->last;
                         
-                        SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term);
+                        SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
                         assert(src_type);
                         
-                        SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_type);
+                        SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
                         assert(dist_type);
                         
-                        // Source is number
-                        int32_t is_convertable;
-                        if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                          // Number to numober
-                          if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                            is_convertable = 1;
+                        // Dist type is numeric type
+                        int32_t can_convert = 0;
+                        int32_t narrowing_promotion_error = 0;
+                        if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          // Soruce type is numeric type
+                          if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                            can_convert = 1;
                           }
-                          // Number to string
-                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                            is_convertable = 1;
-                          }
-                          // Error
                           else {
-                            is_convertable = 0;
+                            can_convert = 0;
                           }
                         }
-                        // Source is not number
-                        else {
-                          // Check dist type
-                          int32_t invalid_dist_type;
-                          if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                            // Basic type is numeric
-                            if (dist_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE && dist_type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                              invalid_dist_type = 0;
-                            }
-                            // Basic type is not numeric
-                            else {
-                              // Basic type is not class package
-                              if (dist_type->basic_type->package) {
-                                if (dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_CLASS || dist_type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                                  invalid_dist_type = 0;
-                                }
-                                else {
-                                  invalid_dist_type = 1;
-                                }
-                              }
-                              else {
-                                invalid_dist_type = 1;
-                              }
+                        // Dist type is referece type
+                        else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          can_convert = 0;
+                        }
+                        // Dist type is value type
+                        else if (SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          can_convert = 0;
+                        }
+                        // Dist type is object type
+                        else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                          // Dist type is string type
+                          int32_t can_string_convertion = 0;
+                          if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                            if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                              can_convert = 1;
+                              can_string_convertion = 1;
                             }
                           }
-                          else {
-                            invalid_dist_type = 1;
-                          }
-                          if (invalid_dist_type) {
-                            SPVM_TYPE_sprint_type_name(compiler, tmp_buffer, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                            SPVM_yyerror_format(compiler, "Invalid type convertion to \"%s\" at %s line %d\n", tmp_buffer, op_cur->file, op_cur->line);
-                            break;
-                          }
-                          else {
-                            // Check src type
-                            int32_t invalid_src_type;
+                          
+                          if (!can_string_convertion) {
+                            // Source type is object type
                             if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                              // Value type can't be convert
-                              if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                                invalid_src_type = 1;
-                              }
-                              else {
-                                invalid_src_type = 0;
-                              }
+                              can_convert = 1;
                             }
-                            // Other
+                            // Source type is undef type
+                            else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                              can_convert = 1;
+                            }
                             else {
-                              invalid_src_type = 1;
-                            }
-                            if (invalid_src_type) {
-                              char* src_type_name = tmp_buffer2;
-                              SPVM_TYPE_sprint_type_name(compiler, src_type_name, src_type->basic_type->id, src_type->dimension, src_type->flag);
-
-                              char* dist_type_name = tmp_buffer;
-                              SPVM_TYPE_sprint_type_name(compiler, dist_type_name, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                              SPVM_yyerror_format(compiler, "Invalid type convertion from \"%s\" at %s line %d\n", src_type_name, op_cur->file, op_cur->line);
-                              break;
+                              can_convert = 0;
                             }
                           }
+                        }
+                        else {
+                          assert(0);
+                        }
+
+                        if (!can_convert) {
+                          SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
+                          SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
+                          SPVM_yyerror_format(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
                         }
                         
-                        if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                        if (SPVM_TYPE_is_object_type(compiler, op_dist->uv.type->basic_type->id, op_dist->uv.type->dimension, op_dist->uv.type->flag)) {
                           if (sub->info_types->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                             SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_cur->file, op_cur->line);
                           }
-                          op_type->uv.type->sub_rel_id = sub->info_types->length;
-                          SPVM_LIST_push(sub->info_types, op_type->uv.type);
+                          op_dist->uv.type->sub_rel_id = sub->info_types->length;
+                          SPVM_LIST_push(sub->info_types, op_dist->uv.type);
                           break;
                         }
                       }
