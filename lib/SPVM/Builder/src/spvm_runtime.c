@@ -2043,6 +2043,27 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         break;
       }
+      case SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE: {
+        void* object = *(void**)&vars[opcode->operand1];
+        
+        if (object != NULL) {
+          int32_t rel_id = opcode->operand2;
+          SPVM_RUNTIME_INFO_TYPE* interface_type = &runtime->info_types[sub->info_types_base + rel_id];
+          int32_t interface_basic_type_id = interface_type->basic_type_id;
+          int32_t interface_type_dimension = interface_type->dimension;
+          
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          
+          if (env->has_interface(env, object_basic_type_id, object_type_dimension_id, interface_basic_type_id, interface_type_dimension)) {
+            void* exception = env->new_string_raw(env, "Can't cast uncompatible type.", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_CALL_SUB:
       case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
       {

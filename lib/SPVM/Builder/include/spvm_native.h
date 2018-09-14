@@ -123,5 +123,6 @@ struct SPVM_env {
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* signature);
   void* runtime_package_vars_heap_byte_offset;
   void* runtime;
+  int32_t (*has_interface)(SPVM_ENV*, int32_t package_basic_type_id, int32_t package_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
 };
 #endif

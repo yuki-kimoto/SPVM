@@ -176,6 +176,7 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_package_var_id,
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
     runtime,
+    SPVM_RUNTIME_API_has_interface,
   };
   
   int32_t env_length = 79;
