@@ -1649,7 +1649,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                            opcode.id = SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE;
+                            
+                            if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                              opcode.id = SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE;
+                            }
+                            else {
+                              opcode.id = SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE;
+                            }
                             opcode.operand2 = op_dist_type->uv.type->sub_rel_id;
 
                             int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_dist_term);
