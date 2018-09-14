@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Isa->isa_not_match_class());
   ok(TestCase::Isa->isa_match_array());
   ok(TestCase::Isa->isa_not_match_undef());
+  ok(TestCase::Isa->isa_match_interface());
 }
 
 # All object is freed

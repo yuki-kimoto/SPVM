@@ -135,7 +135,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
   assert(object_package);
   assert(interface_package);
   
-  assert(interface_package->subs->length == 0);
+  assert(interface_package->subs->length == 1);
   
   SPVM_RUNTIME_SUB* sub_interface = SPVM_LIST_fetch(interface_package->subs, 0);
   

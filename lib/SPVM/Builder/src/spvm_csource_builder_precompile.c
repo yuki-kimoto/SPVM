@@ -1537,7 +1537,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = env->has_interface(object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = env->has_interface(env, object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");

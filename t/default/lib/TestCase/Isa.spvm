@@ -1,11 +1,15 @@
 package TestCase::Isa {
   use TestCase::Minimal;
   use TestCase::Simple;
+  use SPVM::Comparator;
   
   sub isa_match_class : int () {
     my $minimal = new TestCase::Minimal;
     if ($minimal isa TestCase::Minimal) {
-      return 1;
+      my $object : object = $minimal;
+      if ($object isa TestCase::Minimal) {
+        return 1;
+      }
     }
     
     return 0;
@@ -38,6 +42,21 @@ package TestCase::Isa {
     
     if (!($minimal isa TestCase::Minimal)) {
       return 1;
+    }
+    
+    return 0;
+  }
+
+  sub isa_match_interface : int () {
+    
+    my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+      
+    };
+    if ($comparator isa SPVM::Comparator) {
+      my $object : object = $comparator;
+      if ($object isa SPVM::Comparator) {
+        return 1;
+      }
     }
     
     return 0;
