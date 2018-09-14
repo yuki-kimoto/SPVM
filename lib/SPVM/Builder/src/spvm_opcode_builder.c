@@ -3122,7 +3122,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    opcode.id = SPVM_OPCODE_C_ID_ISA;
+                    opcode.id = SPVM_OPCODE_C_ID_ISA_OBJECT;
                     
                     int32_t var_id_in1 = SPVM_OP_get_my_var_id(compiler, op_cur->first);
                     SPVM_OP* op_type = op_cur->last;

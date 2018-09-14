@@ -280,7 +280,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         condition_flag = *(double*)&vars[opcode->operand0] <= *(double*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_ISA:
+      case SPVM_OPCODE_C_ID_ISA_OBJECT:
       {
         void* object = *(void**)&vars[opcode->operand0];
         int32_t rel_id = opcode->operand1;

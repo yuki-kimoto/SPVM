@@ -1480,7 +1480,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_le(env, string_buffer, "double", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_ISA:
+      case SPVM_OPCODE_C_ID_ISA_OBJECT:
       {
         int32_t rel_id = opcode->operand1;
         SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
