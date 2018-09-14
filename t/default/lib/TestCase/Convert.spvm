@@ -1,6 +1,7 @@
 package TestCase::Convert {
   use TestCase::Minimal;
   use TestCase::Interface::Interface;
+  use SPVM::Comparator;
   
   sub convert_to_numeric_array : int () {
     my $onums_byte : object = new byte[3];
@@ -17,6 +18,28 @@ package TestCase::Convert {
     my $nums_double = (double[])$onums_double;
     
     return 1;
+  }
+
+  sub convert_to_any_object : int () {
+    my $object = (object)new TestCase::Minimal[3];
+    
+    return 1;
+  }
+
+  sub convert_to_interface : int () {
+    my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+      return 5;
+    };
+    
+    my $object : object = $comparator;
+    
+    my $comparator2 = (SPVM::Comparator)$object;
+    
+    if ($comparator2->compare(undef, undef) == 5) {
+      return 1;
+    }
+    
+    return 0;
   }
 
   sub convert_to_object_array : int () {
