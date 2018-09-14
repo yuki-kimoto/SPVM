@@ -27,6 +27,7 @@
       };
       
   - isa can check interface
+  - can cast (object)
   
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
