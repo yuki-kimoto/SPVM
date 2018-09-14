@@ -3475,7 +3475,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           SPVM_OPCODE opcode;
           memset(&opcode, 0, sizeof(SPVM_OPCODE));
-          opcode.id = SPVM_OPCODE_C_ID_END_SUB;
+          opcode.id = SPVM_OPCODE_C_ID_WIDE;
+          opcode.operand3 = SPVM_OPCODE_C_ID_END_SUB - 255;
           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
           sub->opcodes_length = opcode_array->length - sub->opcodes_base;
