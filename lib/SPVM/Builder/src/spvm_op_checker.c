@@ -34,6 +34,28 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 
+void SPVM_OP_CHECKER_apply_unary_string_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+  
+  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
+  
+  SPVM_TYPE* dist_type;
+  if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_string_type(compiler, op_term->file, op_term->line);
+    dist_type = op_dist_type->uv.type;
+  }
+  else {
+    return;
+  }
+  
+  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
+  
+  SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term->file, op_term->line);
+  SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, op_term->file, op_term->line);
+  SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term);
+  
+  SPVM_OP_replace_op(compiler, op_stab, op_convert);
+}
+
 void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
@@ -1751,16 +1773,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                         
-                        // Left type must be string
-                        if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, ". operator left value must be string at %s line %d\n", op_cur->file, op_cur->line);
-                          return;
+                        // Left type is numeric type
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->first);
+                        }
+                        // Left type is not string type
+                        else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          SPVM_yyerror_format(compiler, ". operator first value must be string at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
-                        // First value must be numeric or byte array
+                        // Right value is numeric type
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->last);
+                        }
+                        // Right value is not string type
                         if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, ". operator right value must be string at %s line %d\n", op_cur->file, op_cur->line);
-                          return;
+                          SPVM_yyerror_format(compiler, ". operator last value must be string at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
                         break;
