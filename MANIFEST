@@ -186,7 +186,7 @@ spvm_build/.gitkeep
 t/compile-error.t
 t/copy_default_to_precompile.pl
 t/default/array.t
-t/default/assign-operator.t
+t/default/assign.t
 t/default/bit-operator.t
 t/default/call-sub.t
 t/default/comparison-operator.t
@@ -204,7 +204,7 @@ t/default/isa.t
 t/default/lib-CORE-math.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Array.spvm
-t/default/lib/TestCase/AssignOperator.spvm
+t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/BitOperator.spvm
 t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
