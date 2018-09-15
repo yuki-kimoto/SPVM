@@ -1783,7 +1783,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Right value is numeric type
-                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                        if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                           SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->last);
                         }
                         // Right value is not string type

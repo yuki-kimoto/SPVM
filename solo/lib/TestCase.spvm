@@ -85,13 +85,13 @@ SPVM::Test - SPVM test module
       my $z_re = $z_ref->{re};
       my $z_im = $z_ref->{im};
       
-      print((string)$z_re . " " . (string)$z_im . "\n");
+      print($z_re . " " . $z_im . "\n");
       
       my $out : SPVM::Complex_d2;
       
       ref_sum_complex($z, $z, \$out);
       
-      print((string)$out->{re} . " " . (string)$out->{im} . "\n");
+      print($out->{re} . " " . $out->{im} . "\n");
     }
     
     {
@@ -108,7 +108,7 @@ SPVM::Test - SPVM test module
       my $out : double;
       ref_sum(0.25, 0.5, \$out);
       
-      print((string)$out);
+      print($out . "\n");
     }
     {
       my $num = 4;
@@ -119,8 +119,8 @@ SPVM::Test - SPVM test module
       
       $$num_ref = 5;
       
-      print((string)$num2);
-      print((string)$num);
+      print($num2 . "\n");
+      print($num . "\n");
     }
 
     {
@@ -129,12 +129,12 @@ SPVM::Test - SPVM test module
       };
       
       my $ret = $anon_sub->compare(4L, 5L);
-      print((string)$ret . "\n");
+      print($ret . "\n");
     }
     
     {
       my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
-      print((string)$array->[7]);
+      print($array->[7] . "\n");
     }
     {
       my $strings = ["abc", "def", "hij"];
@@ -149,16 +149,16 @@ SPVM::Test - SPVM test module
       my $nums1_9_re = $nums1->[9]{re};
       my $nums1_9_im = $nums1->[9]{im};
       
-      print((string)$nums1->[9]{re} . "\n");
-      print((string)$nums1_9_im . "\n");
+      print($nums1->[9]{re} . "\n");
+      print($nums1_9_im . "\n");
       
       my $nums2 = $nums1->[9];
-      print((string)$nums1->[9]{re} . "\n");
-      print((string)$nums1->[9]{im} . "\n");
+      print($nums1->[9]{re} . "\n");
+      print($nums1->[9]{im} . "\n");
       
       $nums1->[5] = $nums2;
-      print((string)$nums1->[5]{re} . "\n");
-      print((string)$nums1->[5]{im} . "\n");
+      print($nums1->[5]{re} . "\n");
+      print($nums1->[5]{im} . "\n");
       
     }
     
@@ -176,8 +176,8 @@ SPVM::Test - SPVM test module
       my $z3_re = $z3->{re};
       my $z3_im = $z3->{im};
 
-      print((string)$z3_re . "\n");
-      print((string)$z3_im . "\n");
+      print($z3_re . "\n");
+      print($z3_im . "\n");
     }
 
     {
@@ -188,16 +188,16 @@ SPVM::Test - SPVM test module
       my $re = $z->{re};
       my $im = $z->{im};
       
-      print((string)$re . "\n");
-      print((string)$im . "\n");
+      print($re . "\n");
+      print($im . "\n");
       
       my $z2 = $z;
       
       my $z2_re = $z2->{re};
       my $z2_im = $z2->{im};
 
-      print((string)$z2_re . "\n");
-      print((string)$z2_im . "\n");
+      print($z2_re . "\n");
+      print($z2_im . "\n");
     }
     
     {
@@ -221,35 +221,35 @@ SPVM::Test - SPVM test module
       my $nums1 = [1, 2, 3];
       my $nums2 = [1.0, 2, 3];
       
-      print((string)$nums2->[2]);
+      print($nums2->[2] . "\n");
     }
     
     # Pre increment and assign
     {
       my $num1 = 0;
       my $num2 = ++$num1;
-      print((string)$num2);
+      print($num2 . "\n");
     }
 
     # Pre decrement and assign
     {
       my $num1 = 0;
       my $num2 = --$num1;
-      print((string)$num2);
+      print($num2 . "\n");
     }
 
     # Post increment and assign
     {
       my $num1 = 0;
       my $num2 = $num1++;
-      print((string)$num2);
+      print($num2 . "\n");
     }
 
     # Post decrement and assign
     {
       my $num1 = 0;
       my $num2 = $num1--;
-      print((string)$num2);
+      print($num2 . "\n");
     }
     
     # UNDEF
@@ -291,7 +291,7 @@ SPVM::Test - SPVM test module
       $var1 = $var1;
     }
     
-    print((string)2.23e-9 . "\n");
+    print(2.23e-9 . "\n");
     
     # sort
     {
@@ -328,7 +328,7 @@ SPVM::Test - SPVM test module
       sort_obj($objects, $comparator);
       for (my $i = 0; $i < @$objects; $i++) { $minimals->[$i] = (TestCase::Minimal)$objects->[$i]; }
       
-      print((string)$minimals->[0]{x} . " " . (string)$minimals->[1]{x} . " " . (string)$minimals->[2]{x} . "\n");
+      print($minimals->[0]{x} . " " . $minimals->[1]{x} . " " . $minimals->[2]{x} . "\n");
     }
     # Anon package
     {
@@ -342,9 +342,9 @@ SPVM::Test - SPVM test module
       };
       
       $point->{x} = 3;
-      print((string)$point->{x} . "\n");
+      print($point->{x} . "\n");
       $point->clear;
-      print((string)$point->{x} . "\n");
+      print($point->{x} . "\n");
     }
     
     if (!(1 == 2)) {
@@ -399,8 +399,8 @@ SPVM::Test - SPVM test module
       my $implement_interface1 : TestCase::Interface1 = new TestCase::ImplementInterface1;
       my $implement_interface2 : TestCase::Interface1 = new TestCase::ImplementInterface2;
       
-      print((string)$implement_interface1->foo(0, 0) . "\n");
-      print((string)$implement_interface2->foo(0, 0) . "\n");
+      print($implement_interface1->foo(0, 0) . "\n");
+      print($implement_interface2->foo(0, 0) . "\n");
       
       my $minimal = (TestCase::Minimal)$object;
       
@@ -421,7 +421,7 @@ SPVM::Test - SPVM test module
     
     {
       my $num = sum0(1, 2);
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     
     {
@@ -435,7 +435,7 @@ SPVM::Test - SPVM test module
     {
       my $values = new int[] {1, 2, 3};
       
-      print((string)$values->[0] . "\n");
+      print($values->[0] . "\n");
     }
 
     {
@@ -454,7 +454,7 @@ SPVM::Test - SPVM test module
           return 1;
         }
       }
-      my $str = "" . (string)$PACKAGE_VAR_INT;
+      my $str = "" . $PACKAGE_VAR_INT;
     }
     
     {
@@ -468,7 +468,7 @@ SPVM::Test - SPVM test module
           return 1;
         }
       }
-      my $str = "" . (string)$TestCase::PACKAGE_VAR_INT;
+      my $str = "" . $TestCase::PACKAGE_VAR_INT;
     }
     
     
@@ -487,7 +487,7 @@ SPVM::Test - SPVM test module
     {
       my $time = time();
       
-      print((string)$time . "\n");
+      print($time . "\n");
     }
 
     warn("warn");
@@ -512,7 +512,7 @@ SPVM::Test - SPVM test module
       
       $num += 4;
       
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     
     {
@@ -526,7 +526,7 @@ SPVM::Test - SPVM test module
     {
       my $ret = error_eval();
       
-      print((string)$ret . "\n");
+      print($ret . "\n");
     }
     
     error_eval();
@@ -612,13 +612,13 @@ SPVM::Test - SPVM test module
     # Constant e
     {
       my $num = 0.25E+3;
-      print((string)$num . "\n");
+      print($num . "\n");
     }
 
     # Constant e
     {
       my $num = 0.25E-3f;
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     # Convert to string to byte[]
     {
@@ -629,12 +629,12 @@ SPVM::Test - SPVM test module
     # MIN long constant;
     {
       my $num = -9223372036854775808L;
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     {
       my $var = 3;
       while (my $var = 964) {
-        print((string)$var . "\n");
+        print($var . "\n");
         last;
       }
     }
@@ -643,7 +643,7 @@ SPVM::Test - SPVM test module
       my $error = "First";
       $@ = "Error";
       if (my $error = $@) {
-        print((string)$error . "\n");
+        print($error . "\n");
       }
     }
     
@@ -656,7 +656,7 @@ SPVM::Test - SPVM test module
     # Exception variable
     {
       $@ = "Exception";
-      print((string)$@ . "\n");
+      print($@ . "\n");
     }
     
     # $array->[0]{x}
@@ -664,7 +664,7 @@ SPVM::Test - SPVM test module
       my $objs = new TestCase::Minimal[3];
       $objs->[0] = TestCase::Minimal->new();
       $objs->[0]{x} = 111;
-      print((string)$objs->[0]{x} . "\n");
+      print($objs->[0]{x} . "\n");
     }
     
     # $obj->{x}[0]
@@ -672,7 +672,7 @@ SPVM::Test - SPVM test module
       my $obj = TestCase::Simple->new();
       $obj->{values1} = new int[5];
       $obj->{values1}[0] = 221;
-      print((string)$obj->{values1}[0] . "\n");
+      print($obj->{values1}[0] . "\n");
     }
     
     # Call new subroutine without variable
@@ -706,7 +706,7 @@ SPVM::Test - SPVM test module
     {
       my $string = "abc\"\'\\\n\t\b\r\fdef";
      
-      print((string)$string . "\n");
+      print($string . "\n");
     }
     
     # Escape sequence
@@ -736,7 +736,7 @@ SPVM::Test - SPVM test module
       my $nums : int[][] = new int[][3];
       $nums->[0] = new int[1];
       $nums->[0][0] = 178;
-      print((string)$nums->[0][0] . "\n");
+      print($nums->[0][0] . "\n");
     }
     
     # Declare mutil array
@@ -746,12 +746,12 @@ SPVM::Test - SPVM test module
     
     # Core functions
     {
-      print((string)(byte)1 . "\n");
-      print((string)(short)1 . "\n");
-      print((string)1 . "\n");
-      print((string)1L . "\n");
-      print((string)1f . "\n");
-      print((string)1.0 . "\n");
+      print((byte)1 . "\n");
+      print((short)1 . "\n");
+      print(1 . "\n");
+      print(1L . "\n");
+      print(1f . "\n");
+      print(1.0 . "\n");
       print("end\n");
     }
 
@@ -772,7 +772,7 @@ SPVM::Test - SPVM test module
       my $nums = new int[150000000];
       my $len = @{$nums};
       $nums->[149999999] = 764;
-      print((string)$nums->[149999999] . "\n");
+      print($nums->[149999999] . "\n");
     }
     
     {
@@ -782,8 +782,8 @@ SPVM::Test - SPVM test module
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;
       }
-      print((string)$i . "\n");
-      print((string)$nums->[$i - 1] . "\n");
+      print($i . "\n");
+      print($nums->[$i - 1] . "\n");
     }
 
     {
@@ -793,8 +793,8 @@ SPVM::Test - SPVM test module
       for ($i = 0; $i < $len; $i = $i + 1) {
         $nums->[$i] = $i;
       }
-      print((string)$i . "\n");
-      print((string)$nums->[$i - 1] . "\n");
+      print($i . "\n");
+      print($nums->[$i - 1] . "\n");
     }
     
     # object to get long field is undef
@@ -861,14 +861,14 @@ SPVM::Test - SPVM test module
     {
       my $num = (byte)1;
       $num++;
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     
     # Increment short 
     {
       my $num = (short)1;
       $num++;
-      print((string)$num . "\n");
+      print($num . "\n");
     }
     
     # increment int
@@ -910,22 +910,22 @@ SPVM::Test - SPVM test module
     {
       my $string = "ace";
      
-      print((string)$string . "\n");
+      print($string . "\n");
     }
 
     {
       my $string = "ace";
      
-      print((string)$string . "\n");
+      print($string . "\n");
     }
     
     {
       my $num = (byte)3;
-      print((string)$num . "\n");
+      print($num . "\n");
       
       my $num2 = (long)1 + (long)$num;
       
-      print((string)$num2 . "\n");
+      print($num2 . "\n");
     }
     
     # get and set field
@@ -935,8 +935,8 @@ SPVM::Test - SPVM test module
       $m->{x} = 99;
       $m->{y} = 100;
       
-      print((string)$m->{x} . "\n");
-      print((string)$m->{y} . "\n");
+      print($m->{x} . "\n");
+      print($m->{y} . "\n");
     }
 
     # Free when assignment
@@ -967,76 +967,76 @@ SPVM::Test - SPVM test module
     }
     7;
     
-    print((string)sum0(1, 1) . "\n");
-    print((string)sum2(1, 2) . "\n");
+    print(sum0(1, 1) . "\n");
+    print(sum2(1, 2) . "\n");
 
     # Constant float
-    print((string)0.3f . "\n");
-    print((string)1f . "\n");
-    print((string)2f . "\n");
-    print((string)1.2f . "\n");
+    print(0.3f . "\n");
+    print(1f . "\n");
+    print(2f . "\n");
+    print(1.2f . "\n");
     
     # Constant double
-    print((string)0d . "\n");
-    print((string)1d . "\n");
-    print((string)1.2 . "\n");
+    print(0d . "\n");
+    print(1d . "\n");
+    print(1.2 . "\n");
 
     # Constant int
-    print((string)-2147483648 . "\n");
-    print((string)-32769 . "\n");
-    print((string)-32768 . "\n");
-    print((string)-129 . "\n");
-    print((string)-128 . "\n");
-    print((string)-2 . "\n");
-    print((string)-1 . "\n");
-    print((string)0 . "\n");
-    print((string)1 . "\n");
-    print((string)2 . "\n");
-    print((string)3 . "\n");
-    print((string)4 . "\n");
-    print((string)5 . "\n");
-    print((string)6 . "\n");
-    print((string)127 . "\n");
-    print((string)128 . "\n");
-    print((string)255 . "\n");
-    print((string)256 . "\n");
-    print((string)32767 . "\n");
-    print((string)32768 . "\n");
-    print((string)65535 . "\n");
-    print((string)65536 . "\n");
-    print((string)2147483647 . "\n");
+    print(-2147483648 . "\n");
+    print(-32769 . "\n");
+    print(-32768 . "\n");
+    print(-129 . "\n");
+    print(-128 . "\n");
+    print(-2 . "\n");
+    print(-1 . "\n");
+    print(0 . "\n");
+    print(1 . "\n");
+    print(2 . "\n");
+    print(3 . "\n");
+    print(4 . "\n");
+    print(5 . "\n");
+    print(6 . "\n");
+    print(127 . "\n");
+    print(128 . "\n");
+    print(255 . "\n");
+    print(256 . "\n");
+    print(32767 . "\n");
+    print(32768 . "\n");
+    print(65535 . "\n");
+    print(65536 . "\n");
+    print(2147483647 . "\n");
     
     # Constant long
-    print((string)-1L . "\n");
-    print((string)0L . "\n");
-    print((string)1L . "\n");
-    print((string)2L . "\n");
-    print((string)9223372036854775807L . "\n");
-    print((string)-9223372036854775807L . "\n");
-    print((string)-2147483648L . "\n");
-    print((string)-32769L . "\n");
-    print((string)-32768L . "\n");
-    print((string)-129L . "\n");
-    print((string)-128L . "\n");
-    print((string)-2L . "\n");
-    print((string)-1L . "\n");
-    print((string)0L . "\n");
-    print((string)1L . "\n");
-    print((string)2L . "\n");
-    print((string)3L . "\n");
-    print((string)4L . "\n");
-    print((string)5L . "\n");
-    print((string)6L . "\n");
-    print((string)127L . "\n");
-    print((string)128L . "\n");
-    print((string)255L . "\n");
-    print((string)256L . "\n");
-    print((string)32767L . "\n");
-    print((string)32768L . "\n");
-    print((string)65535L . "\n");
-    print((string)65536L . "\n");
-    print((string)2147483647L . "\n");
-    print((string)0xFFL . "\n");
+    print(-1L . "\n");
+    print(0L . "\n");
+    print(1L . "\n");
+    print(2L . "\n");
+    print(9223372036854775807L . "\n");
+    print(-9223372036854775807L . "\n");
+    print(-2147483648L . "\n");
+    print(-32769L . "\n");
+    print(-32768L . "\n");
+    print(-129L . "\n");
+    print(-128L . "\n");
+    print(-2L . "\n");
+    print(-1L . "\n");
+    print(0L . "\n");
+    print(1L . "\n");
+    print(2L . "\n");
+    print(3L . "\n");
+    print(4L . "\n");
+    print(5L . "\n");
+    print(6L . "\n");
+    print(127L . "\n");
+    print(128L . "\n");
+    print(255L . "\n");
+    print(256L . "\n");
+    print(32767L . "\n");
+    print(32768L . "\n");
+    print(65535L . "\n");
+    print(65536L . "\n");
+    print(2147483647L . "\n");
+    print(0xFFL . "\n");
     
     "abc";
     
@@ -1046,16 +1046,16 @@ SPVM::Test - SPVM test module
       
       switch($num) {
         case TestCase::EnumD->THREE():
-          print((string)1 . "\n");
+          print(1 . "\n");
           last;
         case TestCase::EnumD->FORE():
-          print((string)2 . "\n");
+          print(2 . "\n");
           last;
         case 5:
-          print((string)3 . "\n");
+          print(3 . "\n");
           last;
         default:
-          print((string)5 . "\n");
+          print(5 . "\n");
       }
     }
 
@@ -1064,16 +1064,16 @@ SPVM::Test - SPVM test module
       my $num = 3;
       switch ($num) {
         case 1:
-          print((string)1 . "\n");
+          print(1 . "\n");
           last;
         case 3:
-          print((string)2 . "\n");
+          print(2 . "\n");
           last;
         case 10000:
-          print((string)2 . "\n");
+          print(2 . "\n");
           last;
         default:
-          print((string)5 . "\n");
+          print(5 . "\n");
       }
     }
     
@@ -1081,7 +1081,7 @@ SPVM::Test - SPVM test module
     #   my $num = 5;
     #   switch($num) {
     #     default:
-    #       print((string)5 . "\n");
+    #       print(5 . "\n");
     #   }
     # }
     
@@ -1099,7 +1099,7 @@ SPVM::Test - SPVM test module
 
     my $simple3 : TestCase::Simple = TestCase::Simple->new();
     
-    print((string)$simple3->{x} . "\n");
+    print($simple3->{x} . "\n");
     $simple3->{x};
     
     $simple3->{y} = 2;
@@ -1196,17 +1196,17 @@ SPVM::Test - SPVM test module
       my $nums = new int[3];
       $nums->[0] = 13;
       $nums->[1] = 14;
-      print((string)$nums->[0] . "\n");
-      print((string)$nums->[1] . "\n");
+      print($nums->[0] . "\n");
+      print($nums->[1] . "\n");
     }
     
     {
       my $nums : long[] = new long[3];
       $nums->[0] = 11L;
       $nums->[1] = 12L;
-      print((string)$nums->[0] . "\n");
-      print((string)$nums->[1] . "\n");
-      print((string)@$nums . "\n");
+      print($nums->[0] . "\n");
+      print($nums->[1] . "\n");
+      print(@$nums . "\n");
       my $nums_length : int = @$nums;
     }
     
@@ -1218,7 +1218,7 @@ SPVM::Test - SPVM test module
     my $v3 : int;
     
     $v3 = $v2 = $v1 = 543;
-    print((string)$v3 . "\n");
+    print($v3 . "\n");
     
     100;
     1000;
@@ -1315,7 +1315,7 @@ SPVM::Test - SPVM test module
       my $num1 = (byte)1;
       my $num2 = (byte)2;
       my $num3 = (byte)((int)$num0 + (int)$num1 + (int)$num2);
-      print((string)$num3 . "\n");
+      print($num3 . "\n");
     }
 
     {
@@ -1323,7 +1323,7 @@ SPVM::Test - SPVM test module
       my $num1 = (short)1;
       my $num2 = (short)2;
       my $num3 = (short)((int)$num0 + (int)$num1 + (int)$num2);
-      print((string)$num3 . "\n");
+      print($num3 . "\n");
     }
 
     # my $error : String = "Error";
