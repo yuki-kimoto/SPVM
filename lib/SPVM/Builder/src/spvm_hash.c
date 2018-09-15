@@ -184,7 +184,7 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
           match_string = 1;
         }
       }
-      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
+      else if (memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
         && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
       {
         match_string = 1;
@@ -250,7 +250,7 @@ void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
           match_string = 1;
         }
       }
-      else if (strncmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
+      else if (memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
         && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
       {
         match_string = 1;
