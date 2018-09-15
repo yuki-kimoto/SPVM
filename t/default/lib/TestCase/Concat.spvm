@@ -49,5 +49,4 @@ package TestCase::Concat {
     
     return 0;
   }
-
 }
