@@ -30,7 +30,7 @@
   - can cast (object)
   - can cast to interface
   - add automatically concat string convertion
-  
+  - add automatically numeric type to string type convertion
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder

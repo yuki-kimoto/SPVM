@@ -54,6 +54,10 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      my $num : string = 1;
+    }
+    
     print($args->[0] . "\n");
     print($args->[1] . "\n");
     print($args->[2] . "\n");
@@ -491,16 +495,16 @@ SPVM::Test - SPVM test module
     }
 
     warn("warn");
-    warn((string)1);
-    warn((string)1L);
-    warn((string)0.5f);
-    warn((string)0.5);
+    warn(1);
+    warn(1L);
+    warn(0.5f);
+    warn(0.5);
 
     warn("warn");
-    warn((string)1);
-    warn((string)1L);
-    warn((string)0.5f);
-    warn((string)0.5);
+    warn(1);
+    warn(1L);
+    warn(0.5f);
+    warn(0.5);
     
     # .
     {

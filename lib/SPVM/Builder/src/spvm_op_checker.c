@@ -2646,76 +2646,99 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   }
   // Dist type is object type
   else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    // Source type is object type
-    if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-      // Dist type is any object
-      if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+    // Source type is number
+    if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+      if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         can_assign = 1;
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
+        
+        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
+        SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, op_src->file, op_src->line);
+        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_src);
+        
+        SPVM_OP_replace_op(compiler, op_stab, op_convert);
+
+        op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
+        
+        op_convert->first->is_assigned_to_var = 0;
+        
+        op_out = op_convert;
       }
-      // Dist type is array
-      else if (dist_type->dimension > 0){
-        if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+    }
+    
+    if (!can_assign) {
+    
+      // Source type is object type
+      if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        // Dist type is any object
+        if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
           can_assign = 1;
         }
-        else {
-          can_assign = 0;
+        // Dist type is array
+        else if (dist_type->dimension > 0){
+          if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
+            can_assign = 1;
+          }
+          else {
+            can_assign = 0;
+          }
         }
-      }
-      // Dist type is class or interface
-      else if (dist_type->dimension == 0){
-        // Dist type is class
-        if (SPVM_TYPE_is_class_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-          if (SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-            if (dist_type->basic_type->id == src_type->basic_type->id) {
-              can_assign = 1;
+        // Dist type is class or interface
+        else if (dist_type->dimension == 0){
+          // Dist type is class
+          if (SPVM_TYPE_is_class_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+            if (SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+              if (dist_type->basic_type->id == src_type->basic_type->id) {
+                can_assign = 1;
+              }
+              else {
+                can_assign = 0;
+              }
+            }
+            else {
+              can_assign = 0;
+            }
+          }
+          // Dist type is interface
+          else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+            
+            // Source type is class or interface
+            if (
+              SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+            )
+            {
+              can_assign = SPVM_TYPE_has_interface(
+                compiler,
+                src_type->basic_type->id, src_type->dimension, src_type->flag,
+                dist_type->basic_type->id, dist_type->dimension, dist_type->flag
+              );
             }
             else {
               can_assign = 0;
             }
           }
           else {
-            can_assign = 0;
-          }
-        }
-        // Dist type is interface
-        else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-          
-          // Source type is class or interface
-          if (
-            SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
-            || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
-          )
-          {
-            can_assign = SPVM_TYPE_has_interface(
-              compiler,
-              src_type->basic_type->id, src_type->dimension, src_type->flag,
-              dist_type->basic_type->id, dist_type->dimension, dist_type->flag
-            );
-          }
-          else {
-            can_assign = 0;
+            assert(0);
           }
         }
         else {
           assert(0);
         }
       }
-      else {
-        assert(0);
+      // Source type is undef type
+      else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        can_assign = 1;
       }
-    }
-    // Source type is undef type
-    else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-      can_assign = 1;
-    }
-    else {
-      can_assign = 0;
+      else {
+        can_assign = 0;
+      }
     }
   }
   else {
     SPVM_yyerror_format(compiler, "Can't assign to empty type at %s line %d\n", op_src->file, op_src->line);
   }
-  
+    
   if (!can_assign) {
     if (narrowing_promotion_error) {
       SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
