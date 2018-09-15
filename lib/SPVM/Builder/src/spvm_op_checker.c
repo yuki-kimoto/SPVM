@@ -1779,7 +1779,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         // Left type is not string type
                         else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, ". operator first value must be string at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "\".\" operator left value must be string at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
                         // Right value is numeric type
@@ -1787,8 +1787,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->last);
                         }
                         // Right value is not string type
-                        if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, ". operator last value must be string at %s line %d\n", op_cur->file, op_cur->line);
+                        else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_yyerror_format(compiler, "\".\" operator right value must be string at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
                         break;

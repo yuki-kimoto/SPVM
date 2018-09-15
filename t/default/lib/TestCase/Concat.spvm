@@ -1,0 +1,23 @@
+package TestCase::Concat {
+  sub concat_string : int () {
+    
+    my $string = "abc" . "def";
+    
+    if ($string eq "abcdef") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub concat_left_right_is_number : int () {
+    
+    my $string = 13 . 0.25;
+    
+    if ($string eq "130.25") {
+      return 1;
+    }
+    
+    return 0;
+  }
+}
