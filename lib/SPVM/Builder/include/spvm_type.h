@@ -47,9 +47,17 @@ SPVM_TYPE* SPVM_TYPE_create_float_ref_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_double_ref_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_any_object_type(SPVM_COMPILER* compiler);
 
+SPVM_TYPE* SPVM_TYPE_create_byte_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_short_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler);
+
 int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_TYPE_is_numeric_object(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
