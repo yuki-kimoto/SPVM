@@ -79,4 +79,76 @@ package TestCase::Assign {
     
     return 0;
   }
+
+  sub assign_byte_to_byte_object : int () {
+    my $byte : byte = INT8_MIN();
+    my $byte_obj : SPVM::Byte = $byte;
+    
+    if ($byte_obj isa SPVM::Byte) {
+      if ($byte_obj->val == INT8_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub assign_short_to_short_object : int () {
+    my $short : short = INT16_MIN();
+    my $short_obj : SPVM::Short = $short;
+    
+    if ($short_obj isa SPVM::Short) {
+      if ($short_obj->val == INT16_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub assign_int_to_int_object : int () {
+    my $int : int = INT32_MIN();
+    my $int_obj : SPVM::Int = $int;
+    
+    if ($int_obj isa SPVM::Int) {
+      if ($int_obj->val == INT32_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub assign_long_to_long_object : int () {
+    my $long : long = INT64_MIN();
+    my $long_obj : SPVM::Long = $long;
+    
+    if ($long_obj isa SPVM::Long) {
+      if ($long_obj->val == INT64_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub assign_float_to_float_object : int () {
+    my $float : float = FLT_MIN();
+    my $float_obj : SPVM::Float = $float;
+    
+    if ($float_obj isa SPVM::Float) {
+      if ($float_obj->val == FLT_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub assign_double_to_double_object : int () {
+    my $double : double = DBL_MIN();
+    my $double_obj : SPVM::Double = $double;
+    
+    if ($double_obj isa SPVM::Double) {
+      if ($double_obj->val == DBL_MIN()) {
+        return 1;
+      }
+    }
+    return 0;
+  }
 }

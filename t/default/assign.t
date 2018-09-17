@@ -15,6 +15,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Assign->assign);
   ok(TestCase::Assign->assign_numeric_to_string);
+  ok(TestCase::Assign->assign_byte_to_byte_object);
+  ok(TestCase::Assign->assign_short_to_short_object);
+  ok(TestCase::Assign->assign_int_to_int_object);
+  ok(TestCase::Assign->assign_long_to_long_object);
+  ok(TestCase::Assign->assign_float_to_float_object);
+  ok(TestCase::Assign->assign_double_to_double_object);
 }
 
 # All object is freed
