@@ -2831,7 +2831,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
@@ -2853,7 +2853,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
@@ -2875,7 +2875,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
@@ -2897,7 +2897,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
@@ -2919,7 +2919,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
@@ -2942,7 +2942,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE: {
-            void** object = (void**)&vars[opcode->operand1];
+            void* object = *(void**)&vars[opcode->operand1];
             if (object == NULL) {
               void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
               env->set_exception(env, exception);
