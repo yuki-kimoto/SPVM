@@ -2157,6 +2157,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               can_convert = 0;
                             }
                           }
+                          else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                            can_convert = 1;
+                          }
                           else {
                             can_convert = 0;
                           }
