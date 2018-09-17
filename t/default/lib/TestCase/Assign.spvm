@@ -347,4 +347,12 @@ package TestCase::Assign {
     }
     return 0;
   }
+  sub assign_undef_to_numeric_object : int () {
+    my $int_obj = SPVM::Int->new(1);
+    $int_obj = undef;
+    if ($int_obj == undef) {
+      return 1;
+    }
+    return 0;
+  }
 }

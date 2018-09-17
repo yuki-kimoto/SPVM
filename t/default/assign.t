@@ -44,6 +44,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Assign->assign_any_object_to_long);
   ok(TestCase::Assign->assign_any_object_to_float);
   ok(TestCase::Assign->assign_any_object_to_double);
+  
+  ok(TestCase::Assign->assign_undef_to_numeric_object);
 
 }
 
