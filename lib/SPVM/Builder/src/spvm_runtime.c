@@ -2772,7 +2772,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT: {
             SPVM_VALUE_byte value = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_byte_object;
+            
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_byte*)&fields[0] = value;
@@ -2782,7 +2783,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT: {
             SPVM_VALUE_short value = *(SPVM_VALUE_short*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_short_object;
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_short*)&fields[0] = value;
@@ -2792,7 +2793,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT: {
             SPVM_VALUE_int value = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_INT_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_int_object;
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_int*)&fields[0] = value;
@@ -2802,7 +2803,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT: {
             SPVM_VALUE_long value = *(SPVM_VALUE_long*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_long_object;
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_long*)&fields[0] = value;
@@ -2812,7 +2813,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT: {
             SPVM_VALUE_float value = *(SPVM_VALUE_float*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_float_object;
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_float*)&fields[0] = value;
@@ -2822,7 +2823,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           }
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT: {
             SPVM_VALUE_double value = *(SPVM_VALUE_double*)&vars[opcode->operand1];
-            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
+            int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_double_object;
             void* object = env->new_object_raw(env, basic_type_id);
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             *(SPVM_VALUE_double*)&fields[0] = value;
@@ -2840,7 +2841,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_byte_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[0];
               }
@@ -2862,7 +2863,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_short_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[0];
               }
@@ -2884,7 +2885,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_int_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[0];
               }
@@ -2906,7 +2907,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_long_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[0];
               }
@@ -2928,7 +2929,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_float_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[0];
               }
@@ -2951,7 +2952,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             else {
               int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
               int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT && object_type_dimension_id == 0) {
+              if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_double_object && object_type_dimension_id == 0) {
                 SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
                 *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[0];
               }

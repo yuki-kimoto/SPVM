@@ -177,13 +177,19 @@ SPVM_ENV* SPVM_RUNTIME_BUILDER_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
     runtime,
     SPVM_RUNTIME_API_has_interface,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_INT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
   };
   
-  int32_t env_length = 79;
-  void** env = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * env_length);
+  int32_t env_length = 85;
+  SPVM_ENV* env = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
   
-  return (SPVM_ENV*)env;
+  return env;
 }
 
 SPVM_ENV* SPVM_RUNTIME_BUILDER_build_runtime_env(SPVM_PORTABLE* portable) {

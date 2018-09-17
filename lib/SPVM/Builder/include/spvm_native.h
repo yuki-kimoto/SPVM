@@ -124,5 +124,11 @@ struct SPVM_env {
   void* runtime_package_vars_heap_byte_offset;
   void* runtime;
   int32_t (*has_interface)(SPVM_ENV*, int32_t package_basic_type_id, int32_t package_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
+  void* basic_type_id_byte_object;
+  void* basic_type_id_short_object;
+  void* basic_type_id_int_object;
+  void* basic_type_id_long_object;
+  void* basic_type_id_float_object;
+  void* basic_type_id_double_object;
 };
 #endif
