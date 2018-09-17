@@ -1,3 +1,5 @@
+0.0372 2018-09-17
+  - add boxing and unboxing feature
 0.0371 2018-09-14
   - add automatically concat string convertion
   - add automatically numeric type to string type convertion

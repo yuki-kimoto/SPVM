@@ -211,6 +211,7 @@ t/default/lib/TestCase/Byte.spvm
 t/default/lib/TestCase/CallSub.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
+t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm
 t/default/lib/TestCase/CompileError/Assign/DifferentObject.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionIntToByte.spvm
@@ -219,6 +220,7 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToByte.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToInt.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
+t/default/lib/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Concat/LeftIsNotString.spvm
 t/default/lib/TestCase/CompileError/Concat/RightIsNotString.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
