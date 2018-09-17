@@ -2592,6 +2592,24 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
         }
       }
     }
+    else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+      if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        can_assign = 1;
+        need_convertion = 1;
+      }
+      else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        if (src_type->basic_type->id == dist_type->basic_type->id + 6) {
+          can_assign = 1;
+          need_convertion = 1;
+        }
+        else {
+          can_assign = 0;
+        }
+      }
+      else {
+        can_assign = 0;
+      }
+    }
     else {
       can_assign = 0;
     }
