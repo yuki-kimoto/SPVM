@@ -2770,6 +2770,66 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           case SPVM_OPCODE_C_ID_END_SUB: {
             goto label_END_SUB;
           }
+          case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT: {
+            SPVM_VALUE_byte value = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_byte*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT: {
+            SPVM_VALUE_short value = *(SPVM_VALUE_short*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_short*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT: {
+            SPVM_VALUE_int value = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_INT_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_int*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT: {
+            SPVM_VALUE_long value = *(SPVM_VALUE_long*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_long*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT: {
+            SPVM_VALUE_float value = *(SPVM_VALUE_float*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_float*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT: {
+            SPVM_VALUE_double value = *(SPVM_VALUE_double*)&vars[opcode->operand1];
+            int32_t basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
+            void* object = env->new_object_raw(env, basic_type_id);
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_double*)&fields[0] = value;
+            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], object);
+            
+            break;
+          }
         }
       }
     }
