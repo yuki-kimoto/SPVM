@@ -34,7 +34,7 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 
-void SPVM_OP_CHECKER_apply_unary_string_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+void SPVM_OP_CHECKER_apply_unary_string_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
@@ -56,7 +56,7 @@ void SPVM_OP_CHECKER_apply_unary_string_promotion(SPVM_COMPILER* compiler, SPVM_
   SPVM_OP_replace_op(compiler, op_stab, op_convert);
 }
 
-void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+void SPVM_OP_CHECKER_apply_unary_numeric_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
@@ -80,7 +80,7 @@ void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM
   }
 }
 
-void SPVM_OP_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
+void SPVM_OP_apply_binary_numeric_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
@@ -587,7 +587,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           // numeric == numeric
                           if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                            SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                            SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                           }
                           // numeric == OBJ
                           else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
@@ -648,7 +648,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           // numeric != numeric
                           if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                            SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                            SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                           }
                           // numeric != OBJ
                           else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
@@ -715,7 +715,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
 
                         break;
                       }
@@ -748,7 +748,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -781,7 +781,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -814,7 +814,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -824,7 +824,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Can receive only numeric type
                         if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         }
                         else {
                           SPVM_yyerror_format(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -833,7 +833,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
                           
                           if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                             SPVM_yyerror_format(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -855,7 +855,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Can receive only numeric type
                         if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         }
                         else {
                           SPVM_yyerror_format(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -864,7 +864,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
                           
                           if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                             SPVM_yyerror_format(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -886,7 +886,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Can receive only numeric type
                         if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         }
                         else {
                           SPVM_yyerror_format(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
@@ -895,7 +895,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
                           
                           if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                             SPVM_yyerror_format(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
@@ -928,7 +928,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             assert(index_type);
                             if (SPVM_TYPE_is_numeric_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
-                              SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_index_term);
+                              SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_index_term);
                               
                               SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                               
@@ -1013,7 +1013,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
                         
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -1030,7 +1030,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -1046,7 +1046,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
                         
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -1261,7 +1261,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Right value must be integer
                         if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->last);
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
                           SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                           
                           if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
@@ -1289,7 +1289,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
                         
                         // Check if source can be assigned to dist
-                        // If needed, numeric promotion op is added
+                        // If needed, numeric convertion op is added
                         SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
                         
                         break;
@@ -1358,7 +1358,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
                         
-                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         
                         break;
                       }
@@ -1372,7 +1372,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         
                         break;
                       }
@@ -1386,7 +1386,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        SPVM_OP_CHECKER_apply_unary_numeric_promotion(compiler, op_cur->first);
+                        SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
                         
                         break;
                       }
@@ -1423,7 +1423,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Upgrade type
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                                                         
                         break;
                       }
@@ -1460,7 +1460,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Upgrade type
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -1497,7 +1497,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
 
                         // Upgrade type
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -1534,7 +1534,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Upgrade type
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
 
                         break;
                       }
@@ -1571,7 +1571,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Upgrade type
-                        SPVM_OP_apply_binary_numeric_promotion(compiler, op_cur->first, op_cur->last);
+                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                                                         
                         break;
                       }
@@ -1775,7 +1775,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Left type is numeric type
                         if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->first);
+                          SPVM_OP_CHECKER_apply_unary_string_convertion(compiler, op_cur->first);
                         }
                         // Left type is not string type
                         else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
@@ -1784,7 +1784,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Right value is numeric type
                         if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_string_promotion(compiler, op_cur->last);
+                          SPVM_OP_CHECKER_apply_unary_string_convertion(compiler, op_cur->last);
                         }
                         // Right value is not string type
                         else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
@@ -1975,7 +1975,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
                           
                           // Check if source can be assigned to dist
-                          // If needed, numeric promotion op is added
+                          // If needed, numeric convertion op is added
                           op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
                         }
                         
@@ -2143,7 +2143,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Dist type is numeric type
                         int32_t can_convert = 0;
-                        int32_t narrowing_promotion_error = 0;
+                        int32_t narrowing_convertion_error = 0;
                         if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                           // Soruce type is numeric type
                           if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -2516,8 +2516,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   
   // Dist type is numeric type
   int32_t can_assign = 0;
-  int32_t narrowing_promotion_error = 0;
-  int32_t need_promotion = 0;
+  int32_t narrowing_convertion_error = 0;
+  int32_t need_convertion = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -2528,11 +2528,11 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       // Dist type is more wide than source type
       else if (dist_type->basic_type->id > src_type->basic_type->id) {
         can_assign = 1;
-        need_promotion = 1;
+        need_convertion = 1;
       }
       // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
-        int32_t can_narrowing_promotion = 0;
+        int32_t can_narrowing_convertion = 0;
         if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
           SPVM_CONSTANT* constant = op_src->uv.constant;
           assert(constant->type->dimension == 0);
@@ -2550,26 +2550,26 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
             
             if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
               if (constant_value >= INT8_MIN && constant_value <= INT8_MAX) {
-                can_narrowing_promotion = 1;
+                can_narrowing_convertion = 1;
               }
               else {
-                can_narrowing_promotion = 0;
+                can_narrowing_convertion = 0;
               }
             }
             else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
               if (constant_value >= INT16_MIN && constant_value <= INT16_MAX) {
-                can_narrowing_promotion = 1;
+                can_narrowing_convertion = 1;
               }
               else {
-                can_narrowing_promotion = 0;
+                can_narrowing_convertion = 0;
               }
             }
             else if (dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
               if (constant_value >= INT32_MIN && constant_value <= INT32_MAX) {
-                can_narrowing_promotion = 1;
+                can_narrowing_convertion = 1;
               }
               else {
-                can_narrowing_promotion = 0;
+                can_narrowing_convertion = 0;
               }
             }
             else {
@@ -2577,19 +2577,19 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
             }
           }
           else {
-            can_narrowing_promotion = 0;
+            can_narrowing_convertion = 0;
           }
         }
         else {
           can_assign = 0;
         }
         
-        if (can_narrowing_promotion) {
-          need_promotion = 1;
+        if (can_narrowing_convertion) {
+          need_convertion = 1;
           can_assign = 1;
         }
         else {
-          narrowing_promotion_error = 1;
+          narrowing_convertion_error = 1;
           can_assign = 0;
         }
       }
@@ -2722,7 +2722,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   }
     
   if (!can_assign) {
-    if (narrowing_promotion_error) {
+    if (narrowing_convertion_error) {
       SPVM_yyerror_format(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
     }
     else {
@@ -2737,7 +2737,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     SPVM_yyerror_format(compiler, "Can't convert const type to not const type at %s line %d\n", op_src->file, op_src->line);
   }
 
-  if (need_promotion) {
+  if (need_convertion) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
