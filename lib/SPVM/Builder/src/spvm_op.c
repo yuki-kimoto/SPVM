@@ -925,12 +925,13 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   
   // ELSIF is same as IF
   int32_t not_condition = 0;
-  if (op_if->id == SPVM_OP_C_ID_ELSIF) {
-    op_if->id = SPVM_OP_C_ID_IF;
-  }
-  else if (op_if->id == SPVM_OP_C_ID_UNLESS) {
+  
+  if (op_if->id == SPVM_OP_C_ID_UNLESS) {
     op_if->id = SPVM_OP_C_ID_IF;
     not_condition = 1;
+  }
+  else if (op_if->id == SPVM_OP_C_ID_ELSIF) {
+    op_if->id = SPVM_OP_C_ID_IF;
   }
   
   // Condition
