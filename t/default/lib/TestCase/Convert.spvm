@@ -652,10 +652,9 @@ package TestCase::Convert {
     return 0;
   }
 
-=pod
   sub convert_byte_object_to_byte : int () {
     my $byte_obj = SPVM::Byte->new(INT8_MIN());
-    my $byte : byte = $byte_obj;
+    my $byte = (byte)$byte_obj;
     
     if ($byte == INT8_MIN()) {
       return 1;
@@ -665,7 +664,7 @@ package TestCase::Convert {
 
   sub convert_short_object_to_short : int () {
     my $short_obj = SPVM::Short->new(INT16_MIN());
-    my $short : short = $short_obj;
+    my $short = (short)$short_obj;
     
     if ($short == INT16_MIN()) {
       return 1;
@@ -675,7 +674,7 @@ package TestCase::Convert {
 
   sub convert_int_object_to_int : int () {
     my $int_obj = SPVM::Int->new(INT32_MIN());
-    my $int : int = $int_obj;
+    my $int = (int)$int_obj;
     
     if ($int == INT32_MIN()) {
       return 1;
@@ -685,7 +684,7 @@ package TestCase::Convert {
 
   sub convert_long_object_to_long : int () {
     my $long_obj = SPVM::Long->new(INT64_MIN());
-    my $long : long = $long_obj;
+    my $long = (long)$long_obj;
     
     if ($long == INT64_MIN()) {
       return 1;
@@ -695,7 +694,7 @@ package TestCase::Convert {
 
   sub convert_float_object_to_float : int () {
     my $float_obj = SPVM::Float->new(FLT_MIN());
-    my $float : float = $float_obj;
+    my $float = (float)$float_obj;
     
     if ($float == FLT_MIN()) {
       return 1;
@@ -704,7 +703,7 @@ package TestCase::Convert {
   }
   sub convert_double_object_to_double : int () {
     my $double_obj = SPVM::Double->new(DBL_MIN());
-    my $double : double = $double_obj;
+    my $double = (double)$double_obj;
     
     if ($double == DBL_MIN()) {
       return 1;
@@ -712,6 +711,7 @@ package TestCase::Convert {
     return 0;
   }
 
+=pod
   sub convert_any_object_to_byte : int () {
     my $byte_obj = (object)SPVM::Byte->new(INT8_MIN());
     my $byte : byte = $byte_obj;
