@@ -3845,142 +3845,174 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
             
             break;
           }
-          /*
           case SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_byte", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_byte*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_short", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_short*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_int", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_int*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_LONG_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_long", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_long*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
-            
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_float", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_float*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE: {
-            void* object = *(void**)&vars[opcode->operand1];
-            if (object == NULL) {
-              void* exception = env->new_string_raw(env, "Can't convert undef value.", 0);
-              env->set_exception(env, exception);
-              exception_flag = 1;
-            }
-            else {
-              int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-              int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-              if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT && object_type_dimension_id == 0) {
-                SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-                *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[0];
-              }
-              else {
-                void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.", 0);
-                env->set_exception(env, exception);
-                exception_flag = 1;
-              }
-            }
-            
+            SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "void*", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Can't convert undef value.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT && object_type_dimension_id == 0) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        \n");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, "SPVM_VALUE_double", opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_double*)&fields[0];\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Can't convert imcompatible object type.\", 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
             break;
           }
-          */
           default:
             assert(0);
         }
