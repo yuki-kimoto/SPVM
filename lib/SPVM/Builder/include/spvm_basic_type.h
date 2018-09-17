@@ -24,6 +24,10 @@ enum {
   SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
 };
 
+enum {
+  SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT = 7,
+};
+
 extern const char* const SPVM_BASIC_TYPE_C_ID_NAMES[];
 
 struct SPVM_basic_type {
