@@ -14,7 +14,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Number literal
 {
   ok(TestCase::Assign->assign);
+
   ok(TestCase::Assign->assign_numeric_to_string);
+
   ok(TestCase::Assign->assign_byte_to_byte_object);
   ok(TestCase::Assign->assign_short_to_short_object);
   ok(TestCase::Assign->assign_int_to_int_object);

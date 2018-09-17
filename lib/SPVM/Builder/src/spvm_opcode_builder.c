@@ -1416,6 +1416,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist_type);
+                        
 
                         if (src_type->dimension == 0 && src_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                           SPVM_OPCODE opcode;
@@ -1704,7 +1705,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
                         // Check cast
-                        else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                        else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                           
                           // Object cast
                           {
