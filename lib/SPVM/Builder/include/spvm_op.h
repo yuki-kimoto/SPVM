@@ -38,6 +38,7 @@
 /* Operation id */
 enum {
   SPVM_OP_C_ID_IF,
+  SPVM_OP_C_ID_UNLESS,
   SPVM_OP_C_ID_ELSIF,
   SPVM_OP_C_ID_ELSE,
   SPVM_OP_C_ID_FOR,

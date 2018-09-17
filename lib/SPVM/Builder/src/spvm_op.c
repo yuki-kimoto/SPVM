@@ -39,6 +39,7 @@
 
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
+  "UNLESS",
   "ELSIF",
   "ELSE",
   "FOR",
@@ -923,12 +924,17 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term_condition, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
   
   // ELSIF is same as IF
+  int32_t not_condition = 0;
   if (op_if->id == SPVM_OP_C_ID_ELSIF) {
     op_if->id = SPVM_OP_C_ID_IF;
   }
+  else if (op_if->id == SPVM_OP_C_ID_UNLESS) {
+    op_if->id = SPVM_OP_C_ID_IF;
+    not_condition = 1;
+  }
   
   // Condition
-  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 0);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, not_condition);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
 
   // Create true block if needed

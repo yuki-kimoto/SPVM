@@ -1286,6 +1286,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->cur_file, compiler->cur_line);
                   return UNDEF;
                 }
+                else if (strcmp(keyword, "unless") == 0) {
+                  yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->cur_file, compiler->cur_line);
+                  return UNLESS;
+                }
                 else if (strcmp(keyword, "use") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_USE);
                   return USE;

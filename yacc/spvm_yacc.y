@@ -18,7 +18,7 @@
 
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
 %token <opval> DESCRIPTOR CONST
-%token <opval> IF ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
+%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
@@ -463,6 +463,17 @@ default_statement
 
 if_statement
   : IF '(' term ')' block else_statement
+    {
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      
+      // if is wraped with block to allow the following syntax
+      //  if (my $var = 3) { ... }
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
+      
+      $$ = op_block;
+    }
+  | UNLESS '(' term ')' block else_statement
     {
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
       
