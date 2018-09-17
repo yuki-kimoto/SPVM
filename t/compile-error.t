@@ -64,6 +64,20 @@ use lib "$FindBin::Bin/default/lib";
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
+=pod
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::UnboxingDifferentType');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::BoxingDifferentType');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+=cut
 }
 
 # isa

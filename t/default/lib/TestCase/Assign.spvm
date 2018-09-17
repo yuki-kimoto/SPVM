@@ -288,4 +288,63 @@ package TestCase::Assign {
     }
     return 0;
   }
+
+  sub assign_any_object_to_byte : int () {
+    my $byte_obj = (object)SPVM::Byte->new(INT8_MIN());
+    my $byte : byte = $byte_obj;
+    
+    if ($byte == INT8_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_any_object_to_short : int () {
+    my $short_obj = (object)SPVM::Short->new(INT16_MIN());
+    my $short : short = $short_obj;
+    
+    if ($short == INT16_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_any_object_to_int : int () {
+    my $int_obj = (object)SPVM::Int->new(INT32_MIN());
+    my $int : int = $int_obj;
+    
+    if ($int == INT32_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_any_object_to_long : int () {
+    my $long_obj = (object)SPVM::Long->new(INT64_MIN());
+    my $long : long = $long_obj;
+    
+    if ($long == INT64_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_any_object_to_float : int () {
+    my $float_obj = (object)SPVM::Float->new(FLT_MIN());
+    my $float : float = $float_obj;
+    
+    if ($float == FLT_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
+  sub assign_any_object_to_double : int () {
+    my $double_obj = (object)SPVM::Double->new(DBL_MIN());
+    my $double : double = $double_obj;
+    
+    if ($double == DBL_MIN()) {
+      return 1;
+    }
+    return 0;
+  }
 }
