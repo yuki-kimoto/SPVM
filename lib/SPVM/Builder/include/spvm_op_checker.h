@@ -13,6 +13,7 @@ void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP
 void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler);
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler);
 
+void SPVM_OP_CHECKER_apply_unary_string_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_term);
 void SPVM_OP_CHECKER_apply_unary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
 void SPVM_OP_CHECKER_apply_binary_numeric_promotion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
 

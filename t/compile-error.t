@@ -14,8 +14,6 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
-my $ok;
-
 # Assign
 {
   {
@@ -119,23 +117,42 @@ my $ok;
   ok($success == 0);
 }
 
+# Convert
 {
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Convert::ConvertToRef');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Convert::ConvertToRef');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Convert::ConvertFromRef');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Convert::ConvertFromValueType');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
 }
 
+# Concat
 {
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Convert::ConvertFromRef');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Convert::ConvertFromValueType');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Concat::RightIsNotString');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Concat::LeftIsNotString');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
 }

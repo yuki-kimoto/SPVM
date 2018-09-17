@@ -1978,12 +1978,22 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {
-        void* concat_string = env->concat(env, *(void**)&vars[opcode->operand1], *(void**)&vars[opcode->operand2]);
-        if (concat_string == NULL) {
+        
+        void* string1 = *(void**)&vars[opcode->operand1];
+        void* string2 = *(void**)&vars[opcode->operand2];
+        if (string1 == NULL) {
+          void* exception = env->new_string_raw(env, "\".\" operater left value must be defined", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else if (string2 == NULL) {
+          void* exception = env->new_string_raw(env, "\".\" operater right value must be defined", 0);
+          env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
-          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], concat_string);
+          void* string3 = env->concat(env, string1, string2);
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&vars[opcode->operand0], string3);
         }
         
         break;

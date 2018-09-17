@@ -154,7 +154,6 @@ MANIFEST			This list of files
 ppport.h
 README
 script/spvmcc
-solo/lib/Main.spvm
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/ComparatorAnon.spvm
@@ -187,11 +186,12 @@ spvm_build/.gitkeep
 t/compile-error.t
 t/copy_default_to_precompile.pl
 t/default/array.t
-t/default/assign-operator.t
+t/default/assign.t
 t/default/bit-operator.t
 t/default/call-sub.t
 t/default/comparison-operator.t
 t/default/complex.t
+t/default/concat.t
 t/default/constant.t
 t/default/convert.t
 t/default/core-func.t
@@ -204,7 +204,7 @@ t/default/isa.t
 t/default/lib-CORE-math.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Array.spvm
-t/default/lib/TestCase/AssignOperator.spvm
+t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/BitOperator.spvm
 t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
@@ -219,6 +219,8 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToByte.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToInt.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
+t/default/lib/TestCase/CompileError/Concat/LeftIsNotString.spvm
+t/default/lib/TestCase/CompileError/Concat/RightIsNotString.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToInterface.spvm
@@ -231,6 +233,7 @@ t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/Complex.spvm
+t/default/lib/TestCase/Concat.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm

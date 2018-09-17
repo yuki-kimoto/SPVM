@@ -1,3 +1,7 @@
+0.0371 2018-09-14
+  - add automatically concat string convertion
+  - add automatically numeric type to string type convertion
+
 0.0370 2018-09-14
   - fix check object type null segumentation fault bug
   - fix new array length is minus segfalt bug
@@ -29,7 +33,6 @@
   - isa can check interface
   - can cast (object)
   - can cast to interface
-  
 0.0369 2018-09-08
   - fix hash key buffer memory bug.
   - rename SPVM::Build to SPVM::Builder

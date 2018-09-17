@@ -372,17 +372,6 @@ void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
 SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   (void)env;
 
-  if (string1 == NULL) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, ". operater left string must be defined(string . string)", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return NULL;
-  }
-  else if (string2 == NULL) {
-    SPVM_OBJECT* exception = SPVM_RUNTIME_API_new_string_raw(env, ". operater right string must be defined(string . string)", 0);
-    SPVM_RUNTIME_API_set_exception(env, exception);
-    return NULL;
-  }
-  
   int32_t string1_length = SPVM_RUNTIME_API_get_array_length(env, string1);
   int32_t string2_length = SPVM_RUNTIME_API_get_array_length(env, string2);
   
