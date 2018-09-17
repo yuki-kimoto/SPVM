@@ -2512,8 +2512,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
-  SPVM_OP* op_out = NULL;
-  
   // Dist type is numeric type
   int32_t can_assign = 0;
   int32_t narrowing_convertion_error = 0;
@@ -2632,19 +2630,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
       if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         can_assign = 1;
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
-        
-        SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
-        SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type, op_src->file, op_src->line);
-        SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_src);
-        
-        SPVM_OP_replace_op(compiler, op_stab, op_convert);
-
-        op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
-        
-        op_convert->first->is_assigned_to_var = 0;
-        
-        op_out = op_convert;
+        need_convertion = 1;
       }
     }
     
@@ -2750,14 +2736,10 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     
     op_convert->first->is_assigned_to_var = 0;
     
-    op_out = op_convert;
-  }
-
-  if (!op_out) {
-    op_out = op_src;
+    return op_convert;
   }
   
-  return op_out;
+  return op_src;
 }
 
 void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
