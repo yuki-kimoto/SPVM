@@ -2830,6 +2830,48 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             
             break;
           }
+          case SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[0];
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[0];
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[0];
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[0];
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_float*)&vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[0];
+            
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE: {
+            void** object = (void**)&vars[opcode->operand1];
+            SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+            *(SPVM_VALUE_double*)&vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[0];
+            
+            break;
+          }
         }
       }
     }
