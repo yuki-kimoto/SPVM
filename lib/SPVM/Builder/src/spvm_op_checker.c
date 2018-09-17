@@ -2595,8 +2595,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
       }
       
       if (need_promotion) {
-        can_assign = 1;
-        
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
         
         SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);
