@@ -2651,10 +2651,18 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
         can_assign = 1;
         need_convertion = 1;
       }
+      // Source type is string
+      else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        can_assign = 1;
+      }
+      else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+        can_assign = 1;
+      }
+      else {
+        can_assign = 0;
+      }
     }
-    
-    if (!can_assign) {
-    
+    else {
       // Source type is object type
       if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         // Dist type is any object
