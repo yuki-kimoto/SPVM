@@ -60,12 +60,68 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER_add_basic_types(compiler);
 
   // use SPVM::CORE module
-  SPVM_OP* op_name_core = SPVM_OP_new_op_name(compiler, "SPVM::CORE", "SPVM::CORE", 0);
-  SPVM_OP* op_type_core = SPVM_OP_build_basic_type(compiler, op_name_core);
-  SPVM_OP* op_use_core = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name_core->file, op_name_core->line);
-  SPVM_OP_build_use(compiler, op_use_core, op_type_core);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_core);
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::CORE", "SPVM::CORE", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
 
+  // use SPVM::Byte module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Byte", "SPVM::Byte", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Short module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Short", "SPVM::Short", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Int module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Int", "SPVM::Int", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Long module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Long", "SPVM::Long", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Float module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Float", "SPVM::Float", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Double module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Double", "SPVM::Double", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+  
   return compiler;
 }
 
@@ -155,6 +211,60 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
      basic_type->id = SPVM_BASIC_TYPE_C_ID_ANY_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+  
+  // Add SPVM::Byte basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add SPVM::Short basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add SPVM::Int basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_INT_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add SPVM::Long basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_LONG_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add SPVM::Float basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
+  // Add SPVM::Double basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
      basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
