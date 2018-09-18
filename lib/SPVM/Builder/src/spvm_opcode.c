@@ -97,6 +97,7 @@
 
 
 const char* const SPVM_OPCODE_C_ID_NAMES[] = {
+  "WIDE",
   "ADD_INT",
   "ADD_LONG",
   "ADD_FLOAT",
@@ -352,7 +353,6 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "SET_FIELD_DOUBLE",
   "SET_FIELD_OBJECT",
   "SET_FIELD_UNDEF",
-  "WIDE",
   "GET_DEREF_BYTE",
   "GET_DEREF_SHORT",
   "GET_DEREF_INT",

@@ -97,6 +97,7 @@
 
 
 enum {
+  SPVM_OPCODE_C_ID_WIDE,
   SPVM_OPCODE_C_ID_ADD_INT,
   SPVM_OPCODE_C_ID_ADD_LONG,
   SPVM_OPCODE_C_ID_ADD_FLOAT,
@@ -352,7 +353,6 @@ enum {
   SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE,
   SPVM_OPCODE_C_ID_SET_FIELD_OBJECT,
   SPVM_OPCODE_C_ID_SET_FIELD_UNDEF,
-  SPVM_OPCODE_C_ID_WIDE,
   SPVM_OPCODE_C_ID_GET_DEREF_BYTE,
   SPVM_OPCODE_C_ID_GET_DEREF_SHORT,
   SPVM_OPCODE_C_ID_GET_DEREF_INT,
@@ -398,22 +398,15 @@ enum {
   SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE,
 };
 
-enum {
-  SPVM_OPCODE_C_FLAG_IS_LABEL = 1
-};
-
 extern const char* const SPVM_OPCODE_C_ID_NAMES[];
 
+// Operation code is 64bit
 struct SPVM_opcode {
   uint8_t id;
   uint8_t operand3;
   uint16_t operand0;
   uint16_t operand1;
   uint16_t operand2;
-};
-
-enum {
-  SPVM_OPCODE_C_UNIT = sizeof(SPVM_OPCODE) / sizeof(int32_t)
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new();
