@@ -174,7 +174,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_byte : void ($x_in1 : TestCase::Point_b3, $x_in2 : TestCase::Point_b3, $x_out : &TestCase::Point_b3) {
+  sub pass_value_ref_byte : void ($x_in1 : TestCase::Point_b3, $x_in2 : TestCase::Point_b3, $x_out : TestCase::Point_b3&) {
     $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
@@ -252,7 +252,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_short : void ($x_in1 : TestCase::Point_s3, $x_in2 : TestCase::Point_s3, $x_out : &TestCase::Point_s3) {
+  sub pass_value_ref_short : void ($x_in1 : TestCase::Point_s3, $x_in2 : TestCase::Point_s3, $x_out : TestCase::Point_s3&) {
     $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
@@ -347,7 +347,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_int : void ($x_in1 : TestCase::Point_i3, $x_in2 : TestCase::Point_i3, $x_out : &TestCase::Point_i3) {
+  sub pass_value_ref_int : void ($x_in1 : TestCase::Point_i3, $x_in2 : TestCase::Point_i3, $x_out : TestCase::Point_i3&) {
     $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
@@ -425,7 +425,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_long : void ($x_in1 : TestCase::Point_l3, $x_in2 : TestCase::Point_l3, $x_out : &TestCase::Point_l3) {
+  sub pass_value_ref_long : void ($x_in1 : TestCase::Point_l3, $x_in2 : TestCase::Point_l3, $x_out : TestCase::Point_l3&) {
     $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
@@ -503,7 +503,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_f3, $x_in2 : TestCase::Point_f3, $x_out : &TestCase::Point_f3) {
+  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_f3, $x_in2 : TestCase::Point_f3, $x_out : TestCase::Point_f3&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
@@ -564,7 +564,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : &TestCase::Point_d3) {
+  sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : TestCase::Point_d3&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};

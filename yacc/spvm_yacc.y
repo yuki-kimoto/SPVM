@@ -1005,9 +1005,9 @@ basic_type
     }
 
 ref_type
-  : AMPERSAND basic_type
+  : basic_type AMPERSAND
     {
-      $$ = SPVM_OP_build_ref_type(compiler, $2);
+      $$ = SPVM_OP_build_ref_type(compiler, $1);
     }
 
 array_type

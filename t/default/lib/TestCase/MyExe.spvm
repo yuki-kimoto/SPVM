@@ -43,7 +43,7 @@ package TestCase::MyExe {
     return 0;
   }
   
-  sub ok : void ($ok : int, $test_num_ref : &int) {
+  sub ok : void ($ok : int, $test_num_ref : int&) {
     $$test_num_ref = $$test_num_ref + 1;
     if ($ok) {
       print("ok ");
