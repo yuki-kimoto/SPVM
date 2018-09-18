@@ -1747,9 +1747,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_INC_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_double", opcode->operand0, (int16_t)opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_byte", "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_BYTE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_byte", "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
         break;
@@ -1767,9 +1764,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_SHORT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_short", "SPVM_VALUE_byte", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_short", "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_SHORT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_short", "SPVM_VALUE_int", opcode->operand0, opcode->operand1);
@@ -1792,9 +1786,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_INT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_int", "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_int", "SPVM_VALUE_int", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_INT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_int", "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
         break;
@@ -1813,9 +1804,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_LONG:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_long", "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_long", "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_LONG:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_long", "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
         break;
@@ -1831,9 +1819,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_FLOAT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_float", "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_float", "SPVM_VALUE_float", opcode->operand0, opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_FLOAT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_float", "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
         break;
@@ -1848,9 +1833,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_double", "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_double", "SPVM_VALUE_double", opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_double", "SPVM_VALUE_float", opcode->operand0, opcode->operand1);

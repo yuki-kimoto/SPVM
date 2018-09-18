@@ -636,24 +636,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_SHORT:
         *(SPVM_VALUE_short*)&vars[opcode->operand0] = (int16_t)*(SPVM_VALUE_byte*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE:
-        *(SPVM_VALUE_byte*)&vars[opcode->operand0] = *(SPVM_VALUE_byte*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT:
-        *(SPVM_VALUE_short*)&vars[opcode->operand0] = *(SPVM_VALUE_short*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT:
-        *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG:
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] = *(SPVM_VALUE_long*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT:
-        *(float*)&vars[opcode->operand0] = *(float*)&vars[opcode->operand1];
-        break;
-      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE:
-        *(double*)&vars[opcode->operand0] = *(double*)&vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
