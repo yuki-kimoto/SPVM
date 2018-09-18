@@ -36,7 +36,7 @@
 %type <opval> expression
 %type <opval> unop binop
 %type <opval> call_sub
-%type <opval> array_access field_access weaken_field convert_type array_length 
+%type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
 %type <opval> deref ref
 %type <opval> new array_init isa
 %type <opval> my_var var
@@ -856,6 +856,12 @@ weaken_field
   : WEAKEN field_access
     {
       $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+    }
+
+weaken_array_element
+  : WEAKEN array_access
+    {
+      $$ = SPVM_OP_build_weaken_array_element(compiler, $1, $2);
     }
 
 array_length

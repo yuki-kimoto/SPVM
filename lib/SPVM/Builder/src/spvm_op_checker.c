@@ -2121,12 +2121,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
                         
-                        if (type->dimension == 0 && type->basic_type->id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                        if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_yyerror_format(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
                             field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                           
                           break;
                         }
+                        
+                        break;
+                      }
+                      case SPVM_OP_C_ID_WEAKEN_ARRAY_ELEMENT: {
+                        // Nothing todo
                         
                         break;
                       }
@@ -2324,7 +2329,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CONCAT:
                       case SPVM_OP_C_ID_EXCEPTION_VAR:
                       case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
-                      case SPVM_OP_C_ID_ARRAY_ACCESS:
                       case SPVM_OP_C_ID_SWITCH_CONDITION:
                       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
                       case SPVM_OP_C_ID_REF:
@@ -2339,6 +2343,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_FIELD_ACCESS: {
                         if (!(op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN)) {
+                          create_tmp_var = 1;
+                        }
+                        break;
+                      }
+                      case SPVM_OP_C_ID_ARRAY_ACCESS:{
+                        if (!(op_cur->flag &= SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN)) {
                           create_tmp_var = 1;
                         }
                         break;

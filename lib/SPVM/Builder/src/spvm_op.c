@@ -127,6 +127,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "OBJECT",
   "WEAKEN",
   "WEAKEN_FIELD",
+  "WEAKEN_ARRAY_ELEMENT",
   "SPECIAL_ASSIGN",
   "CONCAT",
   "SET",
@@ -1328,6 +1329,16 @@ SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken,
   op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN;
   
   return op_weaken_field;
+}
+
+SPVM_OP* SPVM_OP_build_weaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access) {
+  
+  SPVM_OP* op_weaken_array_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WEAKEN_ARRAY_ELEMENT, op_weaken->file, op_weaken->line);
+  SPVM_OP_insert_child(compiler, op_weaken_array_element, op_weaken_array_element->last, op_field_access);
+  
+  op_field_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN;
+  
+  return op_weaken_array_element;
 }
 
 SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {

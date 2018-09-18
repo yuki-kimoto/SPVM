@@ -163,7 +163,6 @@ SPVM::Test - SPVM test module
       $nums1->[5] = $nums2;
       print($nums1->[5]{re} . "\n");
       print($nums1->[5]{im} . "\n");
-      
     }
     
     {
