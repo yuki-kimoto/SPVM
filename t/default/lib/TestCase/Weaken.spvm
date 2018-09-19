@@ -10,21 +10,20 @@ package TestCase::Weaken {
   has weaken3 : TestCase::Data::Weaken;
   has weaken4 : TestCase::Data::Weaken;
 
-
   sub weaken_field_cross_reference : int () {
-    my $weaken = TestCase::Data::Weaken->new();
-    $weaken->{x1} = 1;
+    my $weaken1 = TestCase::Data::Weaken->new();
+    $weaken1->{x} = 1;
     
-    my $test_case = new TestCase::Weaken;
-    $test_case->{x_weaken} = $weaken;
-    $test_case->{x_int} = 2;
+    my $weaken2 = TestCase::Data::Weaken->new();
+    $weaken2->{x} = 2;
     
-    $weaken->{test_case} = $test_case;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
     
-    weaken $test_case->{x_weaken};
+    weaken $weaken1->{data_weaken};
     
-    if ($weaken->{x1} == 1) {
-      if ($test_case->{x_int} == 2) {
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
         return 1;
       }
     }
