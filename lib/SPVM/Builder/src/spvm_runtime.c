@@ -1956,9 +1956,41 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
-        
-        exception_flag = env->weaken_object_field(env, object, field_index);
 
+        if (object == NULL) {
+          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+          void** object_field_address = (void**)&fields[field_index];
+          
+          // Weaken object field
+          env->weaken(env, object_field_address);
+        }
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_WEAKEN_ARRAY_ELEMENT: {
+        void* array = *(void**)&vars[opcode->operand0];
+        int32_t index = *(SPVM_VALUE_int*)&vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_string_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) {
+            void* exception = env->new_string_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            void* object = (*(SPVM_VALUE_object**)&(*(void**)array))[index];
+            env->weaken(env, &object);
+          }
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {

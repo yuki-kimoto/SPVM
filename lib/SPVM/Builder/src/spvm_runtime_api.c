@@ -472,6 +472,25 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   object->weaken_back_refs_length++;
 }
 
+int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+
+  if (!object) {
+    SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
+    env->set_exception(env, exception);
+    return SPVM_EXCEPTION;
+  }
+
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[field_index];
+  
+  // Weaken object field
+  if (*object_field_address != NULL) {
+    SPVM_RUNTIME_API_weaken(env, object_field_address);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
@@ -1380,25 +1399,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* objec
   void* value = *(SPVM_VALUE_object*)&fields[field_index];
   
   return value;
-}
-
-int32_t SPVM_RUNTIME_API_weaken_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
-
-  if (!object) {
-    SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
-    env->set_exception(env, exception);
-    return SPVM_EXCEPTION;
-  }
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-  SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[field_index];
-  
-  // Weaken object field
-  if (*object_field_address != NULL) {
-    SPVM_RUNTIME_API_weaken(env, object_field_address);
-  }
-  
-  return SPVM_SUCCESS;
 }
 
 void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value) {
