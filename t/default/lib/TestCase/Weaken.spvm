@@ -1,6 +1,5 @@
 package TestCase::Weaken {
   use TestCase::Data::Weaken;
-  use TestCase::Data::Weaken2;
   
   has x_int : int;
   has x_self : TestCase::Weaken;
@@ -147,7 +146,7 @@ package TestCase::Weaken {
   
   sub weaken_field_recursive3 : int () {
     my $weaken = TestCase::Data::Weaken->new();
-    my $weaken2 = TestCase::Data::Weaken2->new();
+    my $weaken2 = TestCase::Data::Weaken->new();
     my $test_case = new TestCase::Weaken;
     $test_case->{x_weaken} = $weaken;
     $weaken->{weaken2} = $weaken2;
