@@ -1,0 +1,188 @@
+package TestCase::Weaken {
+  use TestCase::Data::Weaken;
+  use TestCase::Data::Weaken2;
+  
+  has x_int : int;
+  has x_test_case : TestCase::Weaken;
+  has x_weaken : TestCase::Data::Weaken;
+  has weaken1 : TestCase::Data::Weaken;
+  has weaken2 : TestCase::Data::Weaken;
+  has weaken3 : TestCase::Data::Weaken;
+  has weaken4 : TestCase::Data::Weaken;
+
+  sub weaken_target4_weaken_object_assign : int () {
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_int} = 2;
+    my $weaken1 = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken->new();
+    my $weaken3 = TestCase::Data::Weaken->new();
+    my $weaken4 = TestCase::Data::Weaken->new();
+    
+    $test_case->{weaken1} = $weaken1;
+    $test_case->{weaken2} = $weaken2;
+    $test_case->{weaken3} = $weaken3;
+    $test_case->{weaken4} = $weaken4;
+    
+    $weaken1->{test_case} = $test_case;
+    $weaken2->{test_case} = $test_case;
+    $weaken3->{test_case} = $test_case;
+    $weaken4->{test_case} = $test_case;
+    
+    $weaken1->weaken_test_case;
+    $weaken2->weaken_test_case;
+    $weaken3->weaken_test_case;
+    $weaken4->weaken_test_case;
+    
+    $weaken2->{test_case} = undef;
+    my $test_case2 = new TestCase::Weaken;
+    $weaken4->{test_case} = $test_case2;
+    
+    if ($test_case->{x_int} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub weaken_target4 : int () {
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_int} = 2;
+    my $weaken1 = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken->new();
+    my $weaken3 = TestCase::Data::Weaken->new();
+    my $weaken4 = TestCase::Data::Weaken->new();
+    
+    $test_case->{weaken1} = $weaken1;
+    $test_case->{weaken2} = $weaken2;
+    $test_case->{weaken3} = $weaken3;
+    $test_case->{weaken4} = $weaken4;
+    
+    $weaken1->{test_case} = $test_case;
+    $weaken2->{test_case} = $test_case;
+    $weaken3->{test_case} = $test_case;
+    $weaken4->{test_case} = $test_case;
+    
+    $weaken1->weaken_test_case;
+    $weaken2->weaken_test_case;
+    $weaken3->weaken_test_case;
+    $weaken4->weaken_test_case;
+
+    if ($test_case->{x_int} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub weaken_weaken_object_undef : int () {
+    my $weaken = TestCase::Data::Weaken->new();
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_int} = 2;
+    
+    $test_case->{x_weaken} = $weaken;
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    $test_case->{x_weaken} = undef;
+    
+    if ($test_case->{x_weaken} == undef) {
+      if ($test_case->{x_int} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
+  sub weaken_target_object_undef : int () {
+    my $weaken = TestCase::Data::Weaken->new();
+    my $test_case = new TestCase::Weaken;
+
+    $test_case->{x_weaken} = $weaken;
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    $weaken = undef;
+    
+    if ($test_case->{x_weaken} == undef) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub weaken_recursive3 : int () {
+    my $weaken = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken2->new();
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_weaken} = $weaken;
+    $weaken->{weaken2} = $weaken2;
+    $weaken2->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    
+    return 1;
+  }
+  
+  sub weaken_reference_count1_object : int () {
+    my $weaken = TestCase::Data::Weaken->new();
+    my $test_case = new TestCase::Weaken;
+    
+    $test_case->{x_weaken} = $weaken;
+    $weaken = undef;
+    weaken $test_case->{x_weaken};
+    
+    if ($test_case->{x_weaken} == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_recursive_again : void () {
+    my $weaken = TestCase::Data::Weaken->new();
+    
+    # Recuresive reference
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_weaken} = $weaken;
+    
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    weaken $test_case->{x_weaken};
+  }
+  
+  sub weaken_recursive : int () {
+    my $weaken = TestCase::Data::Weaken->new();
+    $weaken->{x1} = 1;
+    
+    # Recuresive reference
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_weaken} = $weaken;
+    $test_case->{x_int} = 2;
+    
+    $weaken->{test_case} = $test_case;
+    
+    weaken $test_case->{x_weaken};
+    
+    if ($weaken->{x1} == 1) {
+      if ($test_case->{x_int} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
+  sub weaken_self_recuresive : int () {
+    my $test_case = new TestCase::Weaken;
+    $test_case->{x_int} = 5;
+    
+    # Recuresive reference
+    $test_case->{x_test_case} = $test_case;
+    
+    weaken $test_case->{x_test_case};
+    
+    if ($test_case->{x_int} == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+}
