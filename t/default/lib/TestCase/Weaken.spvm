@@ -94,114 +94,65 @@ package TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_target4_weaken_object_assign : int () {
-    my $test_case = new TestCase::Weaken;
-    $test_case->{x_int} = 2;
-    my $weaken1 = TestCase::Data::Weaken->new();
-    my $weaken2 = TestCase::Data::Weaken->new();
-    my $weaken3 = TestCase::Data::Weaken->new();
-    my $weaken4 = TestCase::Data::Weaken->new();
+  sub weaken_field_circular_reference : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} =1;
     
-    $test_case->{weaken1} = $weaken1;
-    $test_case->{weaken2} = $weaken2;
-    $test_case->{weaken3} = $weaken3;
-    $test_case->{weaken4} = $weaken4;
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
     
-    $weaken1->{test_case} = $test_case;
-    $weaken2->{test_case} = $test_case;
-    $weaken3->{test_case} = $test_case;
-    $weaken4->{test_case} = $test_case;
+    my $weaken3 = new TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
     
-    $weaken1->weaken_test_case;
-    $weaken2->weaken_test_case;
-    $weaken3->weaken_test_case;
-    $weaken4->weaken_test_case;
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
     
-    $weaken2->{test_case} = undef;
-    my $test_case2 = new TestCase::Weaken;
-    $weaken4->{test_case} = $test_case2;
+    # Weaken
+    weaken $weaken3->{data_weaken};
     
-    if ($test_case->{x_int} == 2) {
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
       return 1;
     }
+    
     return 0;
   }
-  
-  sub weaken_field_target4 : int () {
-    my $test_case = new TestCase::Weaken;
-    $test_case->{x_int} = 2;
-    my $weaken1 = TestCase::Data::Weaken->new();
-    my $weaken2 = TestCase::Data::Weaken->new();
-    my $weaken3 = TestCase::Data::Weaken->new();
-    my $weaken4 = TestCase::Data::Weaken->new();
-    
-    $test_case->{weaken1} = $weaken1;
-    $test_case->{weaken2} = $weaken2;
-    $test_case->{weaken3} = $weaken3;
-    $test_case->{weaken4} = $weaken4;
-    
-    $weaken1->{test_case} = $test_case;
-    $weaken2->{test_case} = $test_case;
-    $weaken3->{test_case} = $test_case;
-    $weaken4->{test_case} = $test_case;
-    
-    $weaken1->weaken_test_case;
-    $weaken2->weaken_test_case;
-    $weaken3->weaken_test_case;
-    $weaken4->weaken_test_case;
 
-    if ($test_case->{x_int} == 2) {
-      return 1;
-    }
-    return 0;
-  }
-  
-  sub weaken_field_weaken_object_undef : int () {
-    my $weaken = TestCase::Data::Weaken->new();
-    my $test_case = new TestCase::Weaken;
-    $test_case->{x_int} = 2;
+  sub weaken_field_assign_undef_to_weakened_field : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
     
-    $test_case->{x_weaken} = $weaken;
-    $weaken->{test_case} = $test_case;
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
     
-    weaken $test_case->{x_weaken};
-    $test_case->{x_weaken} = undef;
+    # Cross reference
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
     
-    if ($test_case->{x_weaken} == undef) {
-      if ($test_case->{x_int} == 2) {
+    weaken $weaken2->{data_weaken};
+    $weaken2->{data_weaken} = undef;
+    
+    if ($weaken2->{data_weaken} == undef) {
+      if ($weaken2->{x} == 2) {
         return 1;
       }
     }
     return 0;
   }
   
-  sub weaken_field_target_object_undef : int () {
-    my $weaken = TestCase::Data::Weaken->new();
-    my $test_case = new TestCase::Weaken;
+  sub weaken_field_assign_undef_to_assinged_object : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    my $weaken2 = new TestCase::Data::Weaken;
 
-    $test_case->{x_weaken} = $weaken;
-    $weaken->{test_case} = $test_case;
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
     
-    weaken $test_case->{x_weaken};
-    $weaken = undef;
+    weaken $weaken2->{data_weaken};
+    $weaken1 = undef;
     
-    if ($test_case->{x_weaken} == undef) {
+    if ($weaken2->{data_weaken} == undef) {
       return 1;
     }
     return 0;
   }
-  
-  sub weaken_field_recursive3 : int () {
-    my $weaken = TestCase::Data::Weaken->new();
-    my $weaken2 = TestCase::Data::Weaken->new();
-    my $test_case = new TestCase::Weaken;
-    $test_case->{x_weaken} = $weaken;
-    $weaken->{weaken2} = $weaken2;
-    $weaken2->{test_case} = $test_case;
-    
-    weaken $test_case->{x_weaken};
-    
-    return 1;
-  }
-  
 }

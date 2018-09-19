@@ -48,7 +48,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
-      ok(TestCase::Weaken->weaken_field_target4_weaken_object_assign());
+      TestCase::Weaken->weaken_field_circular_reference();
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
@@ -56,7 +56,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
-      ok(TestCase::Weaken->weaken_field_target4());
+      ok(TestCase::Weaken->weaken_field_assign_undef_to_weakened_field());
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
@@ -64,23 +64,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
-      ok(TestCase::Weaken->weaken_field_weaken_object_undef());
-    }
-    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
-    is($end_memory_blocks_count, $start_memory_blocks_count);
-  }
-  {
-    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-    {
-      ok(TestCase::Weaken->weaken_field_target_object_undef());
-    }
-    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
-    is($end_memory_blocks_count, $start_memory_blocks_count);
-  }
-  {
-    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-    {
-      TestCase::Weaken->weaken_field_recursive3();
+      ok(TestCase::Weaken->weaken_field_assign_undef_to_assinged_object());
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
