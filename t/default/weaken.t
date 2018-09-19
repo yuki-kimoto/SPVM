@@ -11,7 +11,7 @@ use SPVM 'TestCase';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Weaken
+# Weaken field
 {
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

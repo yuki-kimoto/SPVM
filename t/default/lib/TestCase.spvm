@@ -1,11 +1,11 @@
 package TestCase {
-  use TestCase::Weaken;
   use TestCase::Minimal;
   use TestCase::Simple;
   use TestCase::Destructor;
   use TestCase::Empty;
   use TestCase::Private;
   use TestCase::Point_i3;
+  use TestCase::Data::Weaken;
 
   use SPVM::Byte;
   use SPVM::Short;
@@ -33,11 +33,11 @@ package TestCase {
   has x_int_array : int[];
   has x_string : byte[];
   has x_test_case : TestCase;
-  has x_weaken : TestCase::Weaken;
-  has weaken1 : TestCase::Weaken;
-  has weaken2 : TestCase::Weaken;
-  has weaken3 : TestCase::Weaken;
-  has weaken4 : TestCase::Weaken;
+  has x_weaken : TestCase::Data::Weaken;
+  has weaken1 : TestCase::Data::Weaken;
+  has weaken2 : TestCase::Data::Weaken;
+  has weaken3 : TestCase::Data::Weaken;
+  has weaken4 : TestCase::Data::Weaken;
   has minimal : TestCase::Minimal;
   has private_field : private int;
   
@@ -237,10 +237,10 @@ package TestCase {
   sub weaken_target4_weaken_object_assign : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
-    my $weaken1 = TestCase::Weaken->new();
-    my $weaken2 = TestCase::Weaken->new();
-    my $weaken3 = TestCase::Weaken->new();
-    my $weaken4 = TestCase::Weaken->new();
+    my $weaken1 = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken->new();
+    my $weaken3 = TestCase::Data::Weaken->new();
+    my $weaken4 = TestCase::Data::Weaken->new();
     
     $test_case->{weaken1} = $weaken1;
     $test_case->{weaken2} = $weaken2;
@@ -270,10 +270,10 @@ package TestCase {
   sub weaken_target4 : int () {
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
-    my $weaken1 = TestCase::Weaken->new();
-    my $weaken2 = TestCase::Weaken->new();
-    my $weaken3 = TestCase::Weaken->new();
-    my $weaken4 = TestCase::Weaken->new();
+    my $weaken1 = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken->new();
+    my $weaken3 = TestCase::Data::Weaken->new();
+    my $weaken4 = TestCase::Data::Weaken->new();
     
     $test_case->{weaken1} = $weaken1;
     $test_case->{weaken2} = $weaken2;
@@ -297,7 +297,7 @@ package TestCase {
   }
   
   sub weaken_weaken_object_undef : int () {
-    my $weaken = TestCase::Weaken->new();
+    my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase;
     $test_case->{x_int} = 2;
     
@@ -316,7 +316,7 @@ package TestCase {
   }
   
   sub weaken_target_object_undef : int () {
-    my $weaken = TestCase::Weaken->new();
+    my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase;
 
     $test_case->{x_weaken} = $weaken;
@@ -332,8 +332,8 @@ package TestCase {
   }
   
   sub weaken_recursive3 : int () {
-    my $weaken = TestCase::Weaken->new();
-    my $weaken2 = TestCase::Weaken2->new();
+    my $weaken = TestCase::Data::Weaken->new();
+    my $weaken2 = TestCase::Data::Weaken2->new();
     my $test_case = new TestCase;
     $test_case->{x_weaken} = $weaken;
     $weaken->{weaken2} = $weaken2;
@@ -345,7 +345,7 @@ package TestCase {
   }
   
   sub weaken_reference_count1_object : int () {
-    my $weaken = TestCase::Weaken->new();
+    my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase;
     
     $test_case->{x_weaken} = $weaken;
@@ -360,7 +360,7 @@ package TestCase {
   }
 
   sub weaken_recursive_again : void () {
-    my $weaken = TestCase::Weaken->new();
+    my $weaken = TestCase::Data::Weaken->new();
     
     # Recuresive reference
     my $test_case = new TestCase;
@@ -373,7 +373,7 @@ package TestCase {
   }
   
   sub weaken_recursive : int () {
-    my $weaken = TestCase::Weaken->new();
+    my $weaken = TestCase::Data::Weaken->new();
     $weaken->{x1} = 1;
     
     # Recuresive reference

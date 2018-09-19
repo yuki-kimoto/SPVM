@@ -239,6 +239,8 @@ t/default/lib/TestCase/Concat.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
+t/default/lib/TestCase/Data/Weaken.spvm
+t/default/lib/TestCase/Data/Weaken2.spvm
 t/default/lib/TestCase/Destructor.spvm
 t/default/lib/TestCase/Double.spvm
 t/default/lib/TestCase/Empty.spvm
@@ -284,9 +286,8 @@ t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Switch.spvm
+t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
-t/default/lib/TestCase/Weaken.spvm
-t/default/lib/TestCase/Weaken2.spvm
 t/default/list.t
 t/default/literal.t
 t/default/logical-operator.t
@@ -299,6 +300,7 @@ t/default/ref.t
 t/default/special-assign.t
 t/default/string.t
 t/default/switch.t
+t/default/unless.t
 t/default/value_t_array.t
 t/default/weaken.t
 t/exe.t
