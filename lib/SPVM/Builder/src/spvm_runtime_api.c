@@ -1211,6 +1211,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     
+    if (SPVM_RUNTIME_API_isweak(env, object)) {
+      SPVM_RUNTIME_API_unweaken(env, &object);
+    }
+
     // Free object body
     if (object->body != NULL && !is_pointer) {
       SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, object->body);

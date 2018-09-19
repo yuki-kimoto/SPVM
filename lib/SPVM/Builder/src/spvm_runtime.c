@@ -1993,6 +1993,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_WEAKEN_SCALAR: {
+        void* object = *(void**)&vars[opcode->operand1];
+        env->weaken(env, &object);
+        break;
+      }
       case SPVM_OPCODE_C_ID_CONCAT: {
         
         void* string1 = *(void**)&vars[opcode->operand1];
