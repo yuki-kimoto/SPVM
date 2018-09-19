@@ -1950,13 +1950,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        void* object = *(void**)&vars[opcode->operand0];
-
         int32_t rel_id = opcode->operand1;
         int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
-
+        void* object = *(void**)&vars[opcode->operand0];
         if (object == NULL) {
           SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
           env->set_exception(env, exception);
@@ -1965,11 +1963,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         else {
           SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
           void** object_field_address = (void**)&fields[field_index];
-          
-          // Weaken object field
           env->weaken(env, object_field_address);
         }
-        
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_ARRAY_ELEMENT: {
