@@ -240,7 +240,6 @@ t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
 t/default/lib/TestCase/Data/Weaken.spvm
-t/default/lib/TestCase/Data/Weaken2.spvm
 t/default/lib/TestCase/Destructor.spvm
 t/default/lib/TestCase/Double.spvm
 t/default/lib/TestCase/Empty.spvm

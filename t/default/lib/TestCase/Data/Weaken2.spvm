@@ -1,5 +1,0 @@
-package TestCase::Data::Weaken2 {
-  use TestCase::Weaken;
-  use TestCase::Data::Weaken;
-
-}
