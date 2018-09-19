@@ -75,6 +75,25 @@ package TestCase::Weaken {
     return 0;
   }
 
+  sub weaken_field_weaken_ref_count1_object : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    my $weaken2 = new TestCase::Data::Weaken;
+    
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # object reference count become 1.
+    $weaken1 = undef;
+    
+    # Weaken(data_weaken is freed because data_weaken reference count is 1);
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken2->{data_weaken} == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   sub weaken_field_target4_weaken_object_assign : int () {
     my $test_case = new TestCase::Weaken;
     $test_case->{x_int} = 2;
@@ -185,18 +204,4 @@ package TestCase::Weaken {
     return 1;
   }
   
-  sub weaken_field_reference_count1_object : int () {
-    my $weaken = TestCase::Data::Weaken->new();
-    my $test_case = new TestCase::Weaken;
-    
-    $test_case->{x_weaken} = $weaken;
-    $weaken = undef;
-    weaken $test_case->{x_weaken};
-    
-    if ($test_case->{x_weaken} == undef) {
-      return 1;
-    }
-    
-    return 0;
-  }
 }
