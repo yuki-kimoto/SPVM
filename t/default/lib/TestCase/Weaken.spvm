@@ -10,7 +10,7 @@ package TestCase::Weaken {
   has weaken3 : TestCase::Data::Weaken;
   has weaken4 : TestCase::Data::Weaken;
 
-  sub weaken_target4_weaken_object_assign : int () {
+  sub weaken_field_target4_weaken_object_assign : int () {
     my $test_case = new TestCase::Weaken;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Data::Weaken->new();
@@ -43,7 +43,7 @@ package TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_target4 : int () {
+  sub weaken_field_target4 : int () {
     my $test_case = new TestCase::Weaken;
     $test_case->{x_int} = 2;
     my $weaken1 = TestCase::Data::Weaken->new();
@@ -72,7 +72,7 @@ package TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_weaken_object_undef : int () {
+  sub weaken_field_weaken_object_undef : int () {
     my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase::Weaken;
     $test_case->{x_int} = 2;
@@ -91,7 +91,7 @@ package TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_target_object_undef : int () {
+  sub weaken_field_target_object_undef : int () {
     my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase::Weaken;
 
@@ -107,7 +107,7 @@ package TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_recursive3 : int () {
+  sub weaken_field_recursive3 : int () {
     my $weaken = TestCase::Data::Weaken->new();
     my $weaken2 = TestCase::Data::Weaken2->new();
     my $test_case = new TestCase::Weaken;
@@ -120,7 +120,7 @@ package TestCase::Weaken {
     return 1;
   }
   
-  sub weaken_reference_count1_object : int () {
+  sub weaken_field_reference_count1_object : int () {
     my $weaken = TestCase::Data::Weaken->new();
     my $test_case = new TestCase::Weaken;
     
@@ -135,7 +135,7 @@ package TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_recursive_again : void () {
+  sub weaken_field_recursive_again : void () {
     my $weaken = TestCase::Data::Weaken->new();
     
     # Recuresive reference
@@ -148,7 +148,7 @@ package TestCase::Weaken {
     weaken $test_case->{x_weaken};
   }
   
-  sub weaken_recursive : int () {
+  sub weaken_field_recursive : int () {
     my $weaken = TestCase::Data::Weaken->new();
     $weaken->{x1} = 1;
     
@@ -169,7 +169,7 @@ package TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_self_recuresive : int () {
+  sub weaken_field_self_recuresive : int () {
     my $test_case = new TestCase::Weaken;
     $test_case->{x_int} = 5;
     
