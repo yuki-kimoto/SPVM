@@ -2506,7 +2506,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t rel_id = opcode->operand1;
         
         int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];

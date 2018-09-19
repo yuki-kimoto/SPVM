@@ -1949,7 +1949,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           *(SPVM_VALUE_int*)&vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)*(void**)&vars[opcode->operand1] + (intptr_t)env->object_elements_length_byte_offset);
         }
         break;
-      case SPVM_OPCODE_C_ID_WEAKEN_FIELD_OBJECT: {
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         void* object = *(void**)&vars[opcode->operand0];
 
         int32_t rel_id = opcode->operand1;
