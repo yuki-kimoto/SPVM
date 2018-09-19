@@ -2,6 +2,7 @@ package TestCase::Data::Weaken2 {
   use TestCase::Weaken;
   use TestCase::Data::Weaken;
 
+  has x_int : int;
   has x1 : int;
   has test_case : TestCase::Weaken;
   has weaken1 : TestCase::Data::Weaken;
