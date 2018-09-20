@@ -204,5 +204,14 @@ package TestCase::Weaken {
     return 0;
   }
 
-
+  sub weaken_field_undef : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    weaken $weaken1->{data_weaken};
+    
+    unless ($weaken1->{data_weaken}) {
+      return 1;
+    }
+    
+    return 0;
+  }
 }

@@ -411,8 +411,18 @@ void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_ENV* env, void** weaken_back_re
   SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, weaken_back_refs);
 }
 
+int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
+  (void)env;
+  
+  int32_t isweak = (intptr_t)*object_address & 1;
+  
+  return isweak;
+}
+
 void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   (void)env;
+  
+  assert(object_address);
 
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -472,16 +482,10 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   object->weaken_back_refs_length++;
 }
 
-int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
-  (void)env;
-  
-  int32_t isweak = (intptr_t)*object_address & 1;
-  
-  return isweak;
-}
-
 void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   (void)env;
+
+  assert(object_address);
   
   if (*object_address == NULL) {
     return;
