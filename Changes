@@ -5,6 +5,8 @@
       sub sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
     
     & is after type name.
+  - fix weaken bug
+  - add weaken $values->[$index] syntax
 
 0.0372 2018-09-17
   - add boxing and unboxing feature
