@@ -29,6 +29,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
+=pod
+  {
+    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    {
+      TestCase::Weaken->weaken_field_cross_reference_weaken_both();
+    }
+    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
+=cut
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {

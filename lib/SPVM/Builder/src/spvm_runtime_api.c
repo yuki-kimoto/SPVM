@@ -420,7 +420,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     return;
   }
   
-  if (SPVM_RUNTIME_API_isweak(env, *object_address)) {
+  if (SPVM_RUNTIME_API_isweak(env, object_address)) {
     return;
   }
   
@@ -472,10 +472,10 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   object->weaken_back_refs_length++;
 }
 
-int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   (void)env;
   
-  int32_t isweak = (intptr_t)object & 1;
+  int32_t isweak = (intptr_t)*object_address & 1;
   
   return isweak;
 }
@@ -487,7 +487,7 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     return;
   }
   
-  if (!SPVM_RUNTIME_API_isweak(env, *object_address)) {
+  if (!SPVM_RUNTIME_API_isweak(env, object_address)) {
     return;
   }
   
@@ -1172,7 +1172,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[object_field_index];
           if (*object_field_address != NULL) {
             // If object is weak, unweaken
-            if (SPVM_RUNTIME_API_isweak(env, *object_field_address)) {
+            if (SPVM_RUNTIME_API_isweak(env, object_field_address)) {
               SPVM_RUNTIME_API_unweaken(env, object_field_address);
             }
             else {
