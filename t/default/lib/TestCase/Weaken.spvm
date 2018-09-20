@@ -267,4 +267,43 @@ package TestCase::Weaken {
     
     return 0;
   }
+
+  sub weaken_field_cross_reference_assign_var : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    # Assign var($var isn't weak reference
+    my $var = $weaken1->{data_weaken};
+    
+    return 1;
+  }
+
+  sub weaken_array_element_cross_reference : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    my $weaken2 = new TestCase::Data::Weaken;
+    my $weakens = [$weaken1, $weaken2];
+    
+    $weakens->[0]{x} = 1;
+    $weakens->[1]{x} = 2;
+    
+    # Weaken
+    weaken $weakens->[0];
+    
+    if ($weakens->[0]{x} == 1 && $weakens->[1]{x}) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
 }

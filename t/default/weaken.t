@@ -97,7 +97,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
-      ok(TestCase::Weaken->weaken_field_cross_reference_array());
+      ok(TestCase::Weaken->weaken_field_undef());
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
@@ -106,6 +106,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       ok(TestCase::Weaken->weaken_field_undef());
+    }
+    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
+  {
+    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    {
+      ok(TestCase::Weaken->weaken_field_cross_reference_assign_var());
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
