@@ -1982,8 +1982,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
             exception_flag = 1;
           }
           else {
-            void* object = (*(SPVM_VALUE_object**)&(*(void**)array))[index];
-            env->weaken(env, &object);
+            SPVM_VALUE_object* elements = *(SPVM_VALUE_object**)&(*(void**)array);
+            void** object_element_address = (void**)&elements[index];
+            env->weaken(env, object_element_address);
           }
         }
         break;
