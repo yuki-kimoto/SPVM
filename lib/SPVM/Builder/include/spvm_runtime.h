@@ -25,7 +25,7 @@ do {\
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
 #define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \
 do {\
-  void* tmp_object = source;\
+  void* tmp_object = (void*)((intptr_t)source & ~(intptr_t)1);\
   if (tmp_object != NULL) {\
     SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
   }\
