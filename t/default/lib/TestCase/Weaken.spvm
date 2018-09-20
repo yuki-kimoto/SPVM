@@ -282,7 +282,7 @@ package TestCase::Weaken {
     # Weaken
     weaken $weaken1->{data_weaken};
     
-    # Assign var($var isn't weak reference
+    # Assign var($var isn't weak reference)
     my $var = $weaken1->{data_weaken};
     
     return 1;
@@ -299,7 +299,31 @@ package TestCase::Weaken {
     # Weaken
     weaken $weakens->[0];
     
-    if ($weakens->[0]{x} == 1 && $weakens->[1]{x}) {
+    if ($weakens->[0]{x} == 1 && $weakens->[1]{x} == 2) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_array_element_circular_reference_with_many_cases : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    my $weaken2 = new TestCase::Data::Weaken;
+    my $weaken3 = new TestCase::Data::Weaken;
+    my $weakens = [$weaken1, $weaken2, $weaken3];
+    
+    $weakens->[0]{x} = 1;
+    $weakens->[1]{x} = 2;
+    $weakens->[2]{x} = 3;
+    
+    # Weaken
+    weaken $weakens->[0];
+    weaken $weakens->[1];
+    
+    my $var = $weakens->[0];
+    $weaken2 = undef;
+    
+    if ($weakens->[0]{x} == 1 && $weakens->[1]{x} == 2 && $weakens->[2]{x} == 3) {
       return 1;
     }
     

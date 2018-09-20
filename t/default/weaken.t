@@ -126,6 +126,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
+  {
+    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    {
+      ok(TestCase::Weaken->weaken_array_element_circular_reference_with_many_cases);
+    }
+    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
 }
 
 # All object is freed
