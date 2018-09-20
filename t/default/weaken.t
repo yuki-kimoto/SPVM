@@ -29,7 +29,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
-=pod
+  
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
@@ -38,7 +38,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
-=cut
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
@@ -59,6 +58,22 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       TestCase::Weaken->weaken_field_circular_reference();
+    }
+    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
+  {
+    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    {
+      TestCase::Weaken->weaken_field_circular_reference_weaken_twice();
+    }
+    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
+  {
+    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    {
+      TestCase::Weaken->weaken_field_circular_reference_weaken_triple();
     }
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
@@ -95,7 +110,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
-
 }
 
 # All object is freed

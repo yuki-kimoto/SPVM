@@ -1178,6 +1178,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
             // If object is weak, unweaken
             if (SPVM_RUNTIME_API_isweak(env, object_field_address)) {
               SPVM_RUNTIME_API_unweaken(env, object_field_address);
+              (*object_field_address)->ref_count--;
             }
             else {
               SPVM_RUNTIME_API_dec_ref_count(env, *object_field_address);

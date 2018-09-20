@@ -9,6 +9,31 @@ package TestCase::Weaken {
   has weaken3 : TestCase::Data::Weaken;
   has weaken4 : TestCase::Data::Weaken;
 
+  sub weaken_field_cross_reference_weaken_both : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken both
+    weaken $weaken1->{data_weaken};
+    weaken $weaken2->{data_weaken};
+
+    # Exists object
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
   sub weaken_field_cross_reference : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
@@ -46,31 +71,6 @@ package TestCase::Weaken {
     # Weaken twice
     weaken $weaken1->{data_weaken};
     weaken $weaken1->{data_weaken};
-
-    # Exists object
-    if ($weaken1->{x} == 1) {
-      if ($weaken2->{x} == 2) {
-        return 1;
-      }
-    }
-    
-    return 0;
-  }
-
-  sub weaken_field_cross_reference_weaken_both : int () {
-    my $weaken1 = new TestCase::Data::Weaken;
-    $weaken1->{x} = 1;
-
-    my $weaken2 = new TestCase::Data::Weaken;
-    $weaken2->{x} = 2;
-    
-    # Cross reference
-    $weaken1->{data_weaken} = $weaken2;
-    $weaken2->{data_weaken} = $weaken1;
-    
-    # Weaken both
-    weaken $weaken1->{data_weaken};
-    weaken $weaken2->{data_weaken};
 
     # Exists object
     if ($weaken1->{x} == 1) {
@@ -136,6 +136,59 @@ package TestCase::Weaken {
     
     # Weaken
     weaken $weaken3->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_circular_reference_weaken_twice : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_circular_reference_weaken_triple : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    weaken $weaken1->{data_weaken};
     
     if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
       return 1;
