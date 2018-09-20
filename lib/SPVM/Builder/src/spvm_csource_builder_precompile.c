@@ -2554,8 +2554,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = (*(SPVM_VALUE_object**)&(*(void**)array))[index];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        env->weaken(env, &object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE_object* elements = *(SPVM_VALUE_object**)&(*(void**)array);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void** object_element_address = (void**)&elements[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        env->weaken(env, object_element_address);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
