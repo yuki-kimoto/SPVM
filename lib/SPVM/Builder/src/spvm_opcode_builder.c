@@ -2936,9 +2936,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_INC:
                   case SPVM_OP_C_ID_DEC:
                   {
-                    SPVM_VAR* var = op_cur->first->uv.var;
-                    SPVM_MY* my = var->my;
-                    
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                     SPVM_OPCODE opcode;
                     assert(type->dimension == 0);
@@ -2962,7 +2959,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_DOUBLE);
                         break;
                     }
-                    opcode.operand0 = my->var_id;
+                    opcode.operand0 = SPVM_OP_get_my_var_id(compiler, op_cur->first);
                     
                     if (op_cur->id == SPVM_OP_C_ID_INC) {
                       opcode.operand1 = (int16_t)1;

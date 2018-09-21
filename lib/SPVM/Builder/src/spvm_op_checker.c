@@ -1579,11 +1579,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_POST_INC:
                       {
                         SPVM_OP* op_first = op_cur->first;
-                        if (op_first->id != SPVM_OP_C_ID_VAR) {
-                          SPVM_yyerror_format(compiler, "Only increment var at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
                         
                         // Numeric type
@@ -1677,11 +1672,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_POST_DEC:
                       {
                         SPVM_OP* op_first = op_cur->first;
-                        if (op_first->id != SPVM_OP_C_ID_VAR) {
-                          SPVM_yyerror_format(compiler, "Only decrement var at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
                         
                         // Numeric type
