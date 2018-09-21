@@ -788,9 +788,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, src_object) \\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "do {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* tmp_object = source;\\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* tmp_object = src_object;\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (tmp_object != NULL) {\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");

@@ -9,8 +9,8 @@
 */
 
 #define SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset))++)
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))++)
 #define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -18,7 +18,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset))--)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))--)
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -28,9 +28,9 @@ do {\
 } while (0)\
 
 #define SPVM_RUNTIME_C_INLINE_ISWEAK(object) ((intptr_t)object & 1)
-#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, source) \
+#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_ptr, src_object) \
 do {\
-  void* tmp_object = (void*)((intptr_t)source & ~(intptr_t)1);\
+  void* tmp_object = src_object;\
   if (tmp_object != NULL) {\
     SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
   }\
