@@ -102,7 +102,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
-=pod
   {
     my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
@@ -127,7 +126,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
-=cut
 }
 
 # All object is freed
