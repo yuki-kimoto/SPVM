@@ -14,6 +14,22 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
+# Weaken
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Weaken::HashNotObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Weaken::ArrayNotObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Assign
 {
   {

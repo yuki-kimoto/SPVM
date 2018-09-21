@@ -2132,23 +2132,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_WEAKEN_ARRAY_ELEMENT: {
                         SPVM_OP* op_array_access = op_cur->first;
-
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
+                        SPVM_OP* op_term_array = op_array_access->first;
                         
+                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
                         if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_yyerror_format(compiler, "weaken is only used for object element at %s line %d\n", op_cur->file, op_cur->line);
-                          break;
-                        }
-                        
-                        break;
-                      }
-                      case SPVM_OP_C_ID_WEAKEN_VAR: {
-                        SPVM_OP* op_var = op_cur->first;
-
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
-                        
-                        if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                          SPVM_yyerror_format(compiler, "weaken is only used for object variable at %s line %d\n", op_cur->file, op_cur->line);
                           break;
                         }
                         
