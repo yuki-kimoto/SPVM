@@ -233,8 +233,9 @@ void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* 
       else {
         printf("  name => \"ANON\"\n");
       }
-      if (strcmp(package->op_name->uv.name, "SPVM::CORE") == 0) {
-        printf("  (Omit)\n");
+      
+      if (strncmp(package->name, "SPVM", 4) == 0) {
+        printf("  (omit)\n");
         continue;
       }
       
