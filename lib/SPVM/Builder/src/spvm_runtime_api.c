@@ -1107,6 +1107,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   assert(object != NULL);
   assert(object->ref_count > 0);
   
+  // Not weakened
+  assert((((intptr_t)object) & 1) == 0);
+  
   if (object->ref_count < 1) {
     fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count())");
     abort();
