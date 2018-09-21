@@ -55,6 +55,14 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $objects1 = new object[1];
+      
+      $objects1->[0] = $objects1;
+      
+      weaken $objects1->[0];
+      
+    }
+    {
       my $num : string = 1;
     }
     

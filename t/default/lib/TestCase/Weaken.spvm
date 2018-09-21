@@ -329,5 +329,17 @@ package TestCase::Weaken {
     
     return 0;
   }
-
+  sub weaken_array_element_object_array : int () {
+    my $objects1 = new object[1];
+    my $objects2 = new object[2];
+    
+    $objects1->[0] = $objects2;
+    $objects2->[0] = $objects1;
+    
+    weaken $objects1->[0];
+    
+    if ($objects1->[0] && $objects2->[0]) {
+      return 1;
+    }
+  }
 }

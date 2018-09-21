@@ -1,13 +1,12 @@
-0.0373 2018-09-18
+0.0373 2018-09-21
   - add unless statement
   - change reference type syntax to 
     
       sub sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
     
     & is after type name.
-  - fix weaken bug
+  - fix many weaken bugs
   - add weaken $values->[$index] syntax
-
 0.0372 2018-09-17
   - add boxing and unboxing feature
 0.0371 2018-09-14

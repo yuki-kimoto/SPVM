@@ -1196,9 +1196,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           }
         }
       }
-      if (object->weaken_back_refs != NULL) {
-        SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_back_refs, object->weaken_back_refs_length);
-      }
+    }
+    if (object->weaken_back_refs != NULL) {
+      SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_back_refs, object->weaken_back_refs_length);
     }
     
     // Free object body
