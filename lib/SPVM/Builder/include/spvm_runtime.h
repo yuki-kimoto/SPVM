@@ -4,8 +4,12 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))++)
+/*
+  "& ~(intptr_t)1" means dropping weaken flag
+*/
+
+#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset)))
+#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset))++)
 #define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -13,7 +17,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))--)
+#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(SPVM_VALUE_int*)(((intptr_t)object & ~(intptr_t)1) + (intptr_t)env->object_ref_count_byte_offset))--)
 #define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
