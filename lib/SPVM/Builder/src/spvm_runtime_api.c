@@ -1064,7 +1064,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJEC
   assert(index >= 0);
   assert(index <= object->elements_length);
   
-  SPVM_OBJECT* oval = (*(SPVM_VALUE_object**)&(*(void**)object))[index];
+  SPVM_OBJECT* oval = SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS((*(SPVM_VALUE_object**)&(*(void**)object))[index]);
   
   return oval;
 }
@@ -1389,7 +1389,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* objec
 
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
   
-  void* value = *(SPVM_VALUE_object*)&fields[field_index];
+  void* value = SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(*(SPVM_VALUE_object*)&fields[field_index]);
   
   return value;
 }
