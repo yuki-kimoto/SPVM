@@ -37,7 +37,7 @@
 %type <opval> unop binop
 %type <opval> call_sub
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
-%type <opval> deref ref
+%type <opval> deref ref assign
 %type <opval> new array_init isa
 %type <opval> my_var var
 %type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
@@ -531,14 +531,6 @@ expression
     {
       $$ = SPVM_OP_build_croak(compiler, $1, $2);
     }
-  | field_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | array_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
   | weaken_field
   | weaken_array_element
 
@@ -588,6 +580,7 @@ normal_term
   | unop
   | ref
   | deref
+  | assign
 
 normal_terms
   : normal_terms ',' normal_term
@@ -721,7 +714,13 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | my_var ASSIGN normal_term
+  | '(' normal_term ')'
+    {
+      $$ = $2;
+    }
+
+assign
+  : my_var ASSIGN normal_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
@@ -733,9 +732,13 @@ binop
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | '(' normal_term ')'
+  | field_access ASSIGN normal_term
     {
-      $$ = $2;
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | array_access ASSIGN normal_term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
   | deref ASSIGN normal_term
     {
