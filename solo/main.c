@@ -119,6 +119,8 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Free compiler
   SPVM_COMPILER_free(compiler);
 
+#ifndef SPVM_DONT_USE_CORE_LIB
+
   // Bind native subroutine
   {
     SPVM_RUNTIME_SUB* sub_SPVM__CORE__print = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
@@ -246,7 +248,8 @@ int32_t main(int32_t argc, const char *argv[]) {
     SPVM_RUNTIME_SUB* sub_SPVM__CORE__PI = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::PI", strlen("SPVM::CORE::PI"));
     runtime->sub_native_addresses[sub_SPVM__CORE__PI->id] = SPVM_NATIVE_SPVM__CORE__PI;
   }
-  
+#endif
+
   // Call entry point sub
   int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);
   

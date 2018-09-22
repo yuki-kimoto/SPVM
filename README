@@ -42,7 +42,7 @@ DEVELOPERS NOTE
        yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DONT_USE_CORE_LIB && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DONT_USE_CORE_LIB && make -f solo/Makefile && ./solo/main foo bar
 
        # Debug run - Print yacc result
-       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/main foo bar
+       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_CORE_LIB && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_CORE_LIB && make -f solo/Makefile && ./solo/main foo bar
 
     See batcktrace of core dump
 
