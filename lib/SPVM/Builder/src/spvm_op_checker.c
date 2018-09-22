@@ -1592,16 +1592,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur->id = SPVM_OP_C_ID_INC;
                         }
                         else {
-                          // Convert PRE_INC
+                         // Convert PRE_INC
                           // [before]
                           // PRE_INC
-                          //   VAR
+                          //   TERM
                           // 
                           // [after]
-                          // SEQUENCE
-                          //   INC
-                          //     VAR_INC
-                          //   VAR_RET
+                          // (int, long, float, double)
+                          // ASSIGN
+                          //   TERM
+                          //     ADD
+                          //       TERM
+                          //       CONST 1
+                          //     TYPE
                           if (op_cur->id == SPVM_OP_C_ID_PRE_INC) {
                             SPVM_OP* op_var = op_cur->first;
                           
