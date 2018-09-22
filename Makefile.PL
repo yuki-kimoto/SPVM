@@ -90,12 +90,14 @@ sub MY::postamble {
 
   my $make_rule = '';
   
-  # Native compile make rule
-  $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
-  $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
-  
-  # Precompile make rule
-  $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Example');
+  unless (grep { $_ eq '-DSPVM_DONT_USE_CORE_LIB' } @defines) {
+    # Native compile make rule
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
+    
+    # Precompile make rule
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Example');
+  }
   
   return $make_rule;
 }
