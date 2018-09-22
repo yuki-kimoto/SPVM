@@ -195,6 +195,20 @@ SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op
   return op_ref;
 }
 
+int32_t SPVM_OP_is_op_term_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  switch (op->id) {
+    case SPVM_OP_C_ID_VAR:
+    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
+    case SPVM_OP_C_ID_ARRAY_ACCESS:
+    case SPVM_OP_C_ID_FIELD_ACCESS:
+      return 1;
+  }
+  
+  return 0;
+}
+
 int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
