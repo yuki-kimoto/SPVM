@@ -228,19 +228,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
                       SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
                       
-                      // Skip if same variable assignment
-                      if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
-                        int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
-                        int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_src);
-                        if (var_id_in == var_id_out) {
-                          break;
-                        }
-                      }
-
-                      if (0) {
-                        
-                      }
-                      else if (op_assign_src->id == SPVM_OP_C_ID_CONCAT) {
+                      if (op_assign_src->id == SPVM_OP_C_ID_CONCAT) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                         
                         assert(first_type->dimension == 1 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
