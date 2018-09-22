@@ -228,7 +228,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
                       SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
                       
-                      if (op_assign_src->id == SPVM_OP_C_ID_CONCAT) {
+                      if (op_assign_src->id == SPVM_OP_C_ID_ASSIGN) {
+                        SPVM_OP* op_var_src;
+                        if (op_assign_src->first->id == SPVM_OP_C_ID_VAR) {
+                          op_var_src = op_assign_src->first;
+                        }
+                        else if (op_assign_src->first->id == SPVM_OP_C_ID_CONSTANT) {
+                          op_var_src = op_assign_src->last;
+                        }
+                        SPVM_OP* op_var_dist = op_cur->last;
+                        
+                        assert(op_var_src->id == SPVM_OP_C_ID_VAR);
+                        assert(op_var_dist->id == SPVM_OP_C_ID_VAR);
+                        
+                        if (SPVM_TYPE_is_int_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_INT);
+                          
+                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_var_dist);
+                          int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_var_src);
+
+                          opcode.operand0 = var_id_out;
+                          opcode.operand1 = var_id_in;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        }
+                        else {
+                          assert(0);
+                        }
+                      }
+                      else if (op_assign_src->id == SPVM_OP_C_ID_CONCAT) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                         
                         assert(first_type->dimension == 1 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
