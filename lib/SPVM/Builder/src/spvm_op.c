@@ -195,31 +195,6 @@ SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op
   return op_ref;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
-
-  // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("@tmp2147483647") + 1);
-  sprintf(name, "@tmp%d", compiler->tmp_var_length);
-  compiler->tmp_var_length++;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = name;
-  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_MY* my = SPVM_MY_new(compiler);
-  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
-  SPVM_OP* op_type = NULL;
-  if (type) {
-    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
-  }
-  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
-
-  // Add op mys
-  if (op_sub) {
-    SPVM_LIST_push(op_sub->uv.sub->mys, my);
-  }
-  
-  return op_var;
-}
-
 int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   

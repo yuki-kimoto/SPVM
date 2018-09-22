@@ -34,6 +34,31 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 
+SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
+
+  // Temparary variable name
+  char* name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("@tmp2147483647") + 1);
+  sprintf(name, "@tmp%d", compiler->tmp_var_length);
+  compiler->tmp_var_length++;
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = name;
+  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+  SPVM_MY* my = SPVM_MY_new(compiler);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
+  SPVM_OP* op_type = NULL;
+  if (type) {
+    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  }
+  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+
+  // Add op mys
+  if (op_sub) {
+    SPVM_LIST_push(op_sub->uv.sub->mys, my);
+  }
+  
+  return op_var;
+}
+
 void SPVM_OP_CHECKER_apply_unary_string_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
@@ -299,7 +324,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                        SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, NULL, file, line);
+                        SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, NULL, file, line);
                         SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
                         
                         SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
@@ -1644,7 +1669,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                             SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
                       
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -1735,7 +1760,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                             SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
                       
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
@@ -2376,7 +2401,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   // Create temporary variable
                   if (create_tmp_var) {
-                    SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, sub->op_sub, tmp_var_type, op_cur->file, op_cur->line);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, tmp_var_type, op_cur->file, op_cur->line);
                     
                     if (op_var_tmp == NULL) {
                       return;
