@@ -19,6 +19,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Assign->assign_return_value_long);
   ok(TestCase::Assign->assign_return_value_float);
   ok(TestCase::Assign->assign_return_value_double);
+  ok(TestCase::Assign->assign_return_value_object);
+
   ok(TestCase::Assign->assign_return_value_var);
   ok(TestCase::Assign->assign_return_value_constant);
 }

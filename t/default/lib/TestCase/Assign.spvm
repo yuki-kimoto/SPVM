@@ -99,6 +99,18 @@ package TestCase::Assign {
       }
       return 0;
   }
+
+  sub assign_return_value_object : int () {
+    my $v1 : TestCase::Minimal;
+    my $v2 : TestCase::Minimal;
+    
+    $v2 = $v1 = new TestCase::Minimal;;
+    
+    if ($v2 isa TestCase::Minimal) {
+      return 1;
+    }
+    return 0;
+  }
   
   sub assign : int () {
     # Constant assignment
