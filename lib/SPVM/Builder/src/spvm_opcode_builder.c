@@ -233,8 +233,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         if (op_assign_src->first->id == SPVM_OP_C_ID_VAR) {
                           op_var_src = op_assign_src->first;
                         }
-                        else if (op_assign_src->first->id == SPVM_OP_C_ID_CONSTANT) {
+                        else if (op_assign_src->last->id == SPVM_OP_C_ID_VAR) {
                           op_var_src = op_assign_src->last;
+                        }
+                        else {
+                          assert(0);
                         }
                         SPVM_OP* op_var_dist = op_cur->last;
                         
