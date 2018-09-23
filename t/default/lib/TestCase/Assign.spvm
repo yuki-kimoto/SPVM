@@ -1,5 +1,6 @@
 package TestCase::Assign {
   use TestCase::Minimal;
+  use TestCase::Simple;
 
   sub assign_return_value_byte : int () {
     my $v1 : byte;
@@ -111,7 +112,31 @@ package TestCase::Assign {
     }
     return 0;
   }
-  
+
+  sub assign_return_value_array_access : int () {
+    my $nums = new int[1];
+    
+    my $var1 = 1;
+    my $var2 = $nums->[0] = $var1;
+    
+    if ($var2 == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_return_value_field_access : int () {
+    my $v2 : int;
+    
+    my $minimal = new TestCase::Minimal;
+    $v2 = $minimal->{x} = 1;
+    
+    if ($v2 == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
   sub assign : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
