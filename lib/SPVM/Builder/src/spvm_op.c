@@ -2084,6 +2084,18 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   return op_unary;
 }
 
+SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_incdec, op_incdec->last, op_first);
+
+  if (!SPVM_OP_is_mutable(compiler, op_first)) {
+    SPVM_yyerror_format(compiler, "inc/dec target value must be mutable at %s line %d\n", op_first->file, op_first->line);
+  }
+  
+  return op_incdec;
+}
+
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
   
   // Build op
