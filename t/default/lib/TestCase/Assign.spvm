@@ -74,6 +74,23 @@ package TestCase::Assign {
     return 0;
   }
 
+  sub assign_return_value_value_type : int () {
+    my $z1 : SPVM::Complex_d2;
+    $z1->{re} = 1;
+    $z1->{im} = 2;
+    
+    my $z2 : SPVM::Complex_d2;
+    my $z3 : SPVM::Complex_d2;
+    
+    $z3 = $z2 = $z1;
+    
+    if ($z3->{re} == 1 && $z3->{im} == 2 && $z2->{re} == 1 && $z2->{im} == 2) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub assign_return_value_value_field : int () {
     my $z : SPVM::Complex_d2;
     $z->{im} = 1;

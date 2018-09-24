@@ -345,6 +345,58 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
+                        else if (SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          SPVM_PACKAGE* package = type_dist->basic_type->package;
+                          assert(package);
+                          
+                          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+                          assert(first_field);
+                          
+                          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                          assert(field_type->dimension == 0);
+                          
+                          for (int32_t offset = 0; offset < package->fields->length; offset++) {
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                            switch (field_type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_BYTE);
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_SHORT);
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_INT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_INT);
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_LONG);
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_FLOAT);
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_DOUBLE);
+                                break;
+                              }
+                              default:
+                                assert(0);
+                            }
+
+                            int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
+                            int32_t var_id_in = SPVM_OP_get_my_var_id(compiler, op_assign_src);
+
+                            opcode.operand0 = var_id_out + offset;
+                            opcode.operand1 = var_id_in + offset;
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                        }
                         else {
                           assert(0);
                         }
@@ -2129,11 +2181,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
-                        int32_t type_dist_is_value_type = SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag);
-                        int32_t type_dist_is_object_type = SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag);
-                        
                         // Value type
-                        if (type_dist_is_value_type) {
+                        if (SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                           SPVM_PACKAGE* package = type_dist->basic_type->package;
                           assert(package);
                           
@@ -2186,7 +2235,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                         }
                         // Object type
-                        else if (type_dist_is_object_type) {
+                        else if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
