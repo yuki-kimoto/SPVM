@@ -218,7 +218,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_yyerror_format(compiler, "Interface sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
           }
           
-          // Check subroutine
+          // Check subroutine - First tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             int32_t eval_block_stack_length = 0;
             int32_t loop_block_stack_length = 0;
@@ -2246,7 +2246,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(op_switch_stack);
           }
           
-          // Create temporary variables for not assigned values
+          // Create temporary variables for not assigned values - Second tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Run OPs
             SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
@@ -2406,7 +2406,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           int32_t vars_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
           sub->vars_alloc_length = vars_alloc_length;
 
-          // Add more information for opcode building
+          // Add more information for opcode building - Third tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Block stack
             SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
