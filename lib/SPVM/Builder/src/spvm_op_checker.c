@@ -1235,6 +1235,28 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
+
+                        // Type inference
+                        if (op_term_dist->id == SPVM_OP_C_ID_VAR) {
+                          SPVM_MY* my = op_term_dist->uv.var->my;
+                          if (my->type == NULL) {
+                            if (my->try_type_inference) {
+                              SPVM_OP* op_term_type_inference = my->op_term_type_inference;
+                              
+                              SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
+                              
+                              if (inferenced_type) {
+                                SPVM_OP* op_inferenced_type = SPVM_OP_new_op_type(compiler, inferenced_type, my->op_my->file, my->op_my->line);
+                                my->type = op_inferenced_type->uv.type;
+                              }
+                            }
+                          }
+                          if (my->type == NULL) {
+                            SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
+                            
+                            return;
+                          }
+                        }
                         
                         // Check if source can be assigned to dist
                         // If needed, numeric convertion op is added
@@ -1824,22 +1846,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_LIST_push(my_stack, my);
                           }
                           
-                          // Type inference
-                          if (my->type == NULL) {
-                            if (my->try_type_inference) {
-                              SPVM_OP* op_term_type_inference = my->op_term_type_inference;
-                              
-                              SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
-                              
-                              if (inferenced_type) {
-                                SPVM_OP* op_inferenced_type = SPVM_OP_new_op_type(compiler, inferenced_type, my->op_my->file, my->op_my->line);
-                                my->type = op_inferenced_type->uv.type;
-                              }
-                            }
-                          }
-                          
                           // Type can't be detected
-                          if (my->type == NULL) {
+                          if (!op_cur->is_lvalue && my->type == NULL) {
                             SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
                             
                             return;
