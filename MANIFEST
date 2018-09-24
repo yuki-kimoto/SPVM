@@ -223,6 +223,10 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
 t/default/lib/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Bool/NotNumericObject.spvm
+t/default/lib/TestCase/CompileError/ComparisonOperator/GeNotNumeric.spvm
+t/default/lib/TestCase/CompileError/ComparisonOperator/GtNotNumeric.spvm
+t/default/lib/TestCase/CompileError/ComparisonOperator/LeNotNumeric.spvm
+t/default/lib/TestCase/CompileError/ComparisonOperator/LtNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Concat/LeftIsNotString.spvm
 t/default/lib/TestCase/CompileError/Concat/RightIsNotString.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
