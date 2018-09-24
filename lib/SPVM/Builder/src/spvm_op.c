@@ -2241,24 +2241,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   op_assign_to->is_lvalue = 1;
 
-  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
-    op_assign_from->is_assigned_to_var = 1;
-    op_assign_to->uv.var->op_term_assigned = op_assign_from;
-  }
-
-  // Assign left child is var and it has variable declaration, try type inference
-  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
-    SPVM_OP* op_var = op_assign_to;
-    if (op_var->uv.var->my && op_var->uv.var->my->op_my->id == SPVM_OP_C_ID_MY) {
-      SPVM_MY* my = op_var->uv.var->my;
-      my->try_type_inference = 1;
-      my->op_term_type_inference = op_assign_from;
-      if (op_assign_from->id == SPVM_OP_C_ID_VAR) {
-        op_assign_from->uv.var->op_term_type_inference_my = my;
-      }
-    }
-  }
-  
   if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
     SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }
