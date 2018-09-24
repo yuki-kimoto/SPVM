@@ -30,6 +30,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Assign->assign_return_value_array_access_chain);
   
   ok(TestCase::Assign->assign_return_value_field_access);
+
+  ok(TestCase::Assign->assign_return_value_my_var);
 }
 {
   ok(TestCase::Assign->assign);

@@ -2,6 +2,15 @@ package TestCase::Assign {
   use TestCase::Minimal;
   use TestCase::Simple;
 
+  sub assign_return_value_my_var : int () {
+    
+    if (my $var = 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   sub assign_return_value_byte : int () {
     my $v1 : byte;
     my $v2 : byte;
