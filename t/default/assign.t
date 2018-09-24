@@ -25,6 +25,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Assign return value
 {
   ok(TestCase::Assign->assign_return_value_ref);
+  ok(TestCase::Assign->assign_return_value_value_field);
 
   ok(TestCase::Assign->assign_return_value_byte);
   ok(TestCase::Assign->assign_return_value_short);
