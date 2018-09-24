@@ -37,7 +37,7 @@
 %type <opval> unop binop
 %type <opval> call_sub
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
-%type <opval> deref ref assign
+%type <opval> deref ref assign preinc postinc predec postdec
 %type <opval> new array_init isa
 %type <opval> my_var var
 %type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
@@ -581,6 +581,10 @@ normal_term
   | ref
   | deref
   | assign
+  | preinc
+  | postinc
+  | predec
+  | postdec
 
 normal_terms
   : normal_terms ',' normal_term
@@ -646,29 +650,37 @@ unop
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
-  | INC normal_term
+  | '~' normal_term
+    {
+      $$ = SPVM_OP_build_unop(compiler, $1, $2);
+    }
+
+preinc
+  : INC normal_term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
-  | normal_term INC
+
+postinc    
+  : normal_term INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
       $$ = SPVM_OP_build_unop(compiler, op, $1);
     }
-  | DEC normal_term
+
+predec
+  : DEC normal_term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
-  | normal_term DEC
+
+postdec
+  : normal_term DEC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
       $$ = SPVM_OP_build_unop(compiler, op, $1);
-    }
-  | '~' normal_term
-    {
-      $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
 
 binop
