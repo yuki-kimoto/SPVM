@@ -1,0 +1,10 @@
+package TestCase::CompileError::ComparisonOperator::LeNotNumeric {
+  use TestCase::Minimal;
+  
+  sub main : int () {
+    my $minimal = new TestCase::Minimal;
+    if ($minimal <= $minimal) {
+      
+    }
+  }
+}
