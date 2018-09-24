@@ -585,16 +585,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur = op_false;
                         }
                         else {
-                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_first);
-                          
-                          if (type) {
-                            // Value type is invalid
-                            if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                              SPVM_yyerror_format(compiler, "Boolean context don't allow value type at %s line %d\n", op_cur->file, op_cur->line);
+                          if (op_first->id == SPVM_OP_C_ID_IF) {
+                            // OK
+                          }
+                          else {
+                            SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_first);
+                            
+                            // Numeric or object
+                            if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag))
+                            {
+                              // OK
                             }
-                            // Reference type is invalid
-                            else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                              SPVM_yyerror_format(compiler, "Boolean context don't allow reference type at %s line %d\n", op_cur->file, op_cur->line);
+                            else {
+                              SPVM_yyerror_format(compiler, "Invalid boolean type at %s line %d\n", op_cur->file, op_cur->line);
                             }
                           }
                         }
@@ -685,7 +688,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             // OK
                           }
                           else {
-                            SPVM_yyerror_format(compiler, "Invalid == comparison at %s line %d\n", op_cur->file, op_cur->line);
+                            SPVM_yyerror_format(compiler, "Invalid != comparison at %s line %d\n", op_cur->file, op_cur->line);
                           }
                         }
                         // term != undef
@@ -712,31 +715,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                         
-                        // undef check
-                        if (!first_type) {
-                          SPVM_yyerror_format(compiler, "< left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         }
-                        if (!last_type) {
-                          SPVM_yyerror_format(compiler, "< right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        else {
+                          SPVM_yyerror_format(compiler, "Invalid < comparison at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        
-                        // Can receive only numeric type
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "< left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, "< right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-
-                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
 
                         break;
                       }
@@ -745,31 +729,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
 
-                        // undef check
-                        if (!first_type) {
-                          SPVM_yyerror_format(compiler, "<= left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         }
-                        if (!last_type) {
-                          SPVM_yyerror_format(compiler, "<= right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        else {
+                          SPVM_yyerror_format(compiler, "Invalid <= comparison at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                                        
-                        // Can receive only numeric type
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "<= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, "<= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-
-                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -778,31 +743,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
 
-                        // undef check
-                        if (!first_type) {
-                          SPVM_yyerror_format(compiler, "> left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         }
-                        if (!last_type) {
-                          SPVM_yyerror_format(compiler, "> right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        else {
+                          SPVM_yyerror_format(compiler, "Invalid > comparison at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        
-                        // Can receive only numeric type
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "> left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, "> right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-
-                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
@@ -811,31 +757,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                         SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
 
-                        // undef check
-                        if (!first_type) {
-                          SPVM_yyerror_format(compiler, "<= left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         }
-                        if (!last_type) {
-                          SPVM_yyerror_format(compiler, "<= right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
+                        else {
+                          SPVM_yyerror_format(compiler, "Invalid <= comparison at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        
-                        // Can receive only numeric type
-                        if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, ">= left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_yyerror_format(compiler, ">= right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-
-                        SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                         
                         break;
                       }
