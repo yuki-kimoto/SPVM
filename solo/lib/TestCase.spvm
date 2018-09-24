@@ -55,6 +55,36 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $nums = new int[2];
+    
+      my $var2 = $nums->[0] = $nums->[1] = 1;
+    }
+    {
+      my $nums = new int[1];
+      my $var2 = $nums->[0] = 5;
+      
+      warn($var2);
+    }
+
+    {
+      my $v1 : int;
+      my $v2 : int;
+      my $v3 : int;
+      
+      $v3 = $v2 = $v1 = 543;
+      warn($v2);
+      warn($v3);
+    }
+
+    {
+      my $nums = new int[1];
+      
+      my $var1 = 5;
+      my $var2 = $nums->[0] = $var1;
+      
+      warn($var2);
+    }
+    {
       my $objects1 = new object[1];
       
       $objects1->[0] = $objects1;

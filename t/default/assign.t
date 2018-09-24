@@ -11,7 +11,43 @@ use SPVM 'TestCase::Assign';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Number literal
+# Assign ref
+{
+  ok(TestCase::Assign->assign_ref());
+}
+
+# Special assign
+{
+  ok(TestCase::Assign->special_assign());
+  ok(TestCase::Assign->special_assign_concat());
+}
+
+# Assign return value
+{
+  ok(TestCase::Assign->assign_return_value_ref);
+  ok(TestCase::Assign->assign_return_value_value_field);
+  ok(TestCase::Assign->assign_return_value_value_type);
+
+  ok(TestCase::Assign->assign_return_value_byte);
+  ok(TestCase::Assign->assign_return_value_short);
+  ok(TestCase::Assign->assign_return_value_int);
+  ok(TestCase::Assign->assign_return_value_long);
+  ok(TestCase::Assign->assign_return_value_float);
+  ok(TestCase::Assign->assign_return_value_double);
+  ok(TestCase::Assign->assign_return_value_object);
+
+  ok(TestCase::Assign->assign_return_value_var);
+  ok(TestCase::Assign->assign_return_value_constant);
+
+  ok(TestCase::Assign->assign_return_value_array_access_right_var);
+  ok(TestCase::Assign->assign_return_value_array_access_right_not_var);
+  ok(TestCase::Assign->assign_return_value_array_access_left_var);
+  ok(TestCase::Assign->assign_return_value_array_access_chain);
+  
+  ok(TestCase::Assign->assign_return_value_field_access);
+
+  ok(TestCase::Assign->assign_return_value_my_var);
+}
 {
   ok(TestCase::Assign->assign);
 

@@ -153,22 +153,15 @@ package TestCase {
   }
 
   sub package_var_rel_name : int () {
-    if ($PACKAGE_VAR_INT2 == 0) {
-      $PACKAGE_VAR_INT2 = INT32_MAX();
-      if ($PACKAGE_VAR_INT2 == INT32_MAX()) {
-        $PACKAGE_VAR_LONG2 = INT64_MAX();
-        if ($PACKAGE_VAR_LONG2 == INT64_MAX()) {
-          $PACKAGE_VAR_MINIMAL2 = TestCase::Minimal->new();
-          
-          $PACKAGE_VAR_MINIMAL2->{x} = 4;
-          
-          if ($PACKAGE_VAR_MINIMAL2->{x} == 4) {
-            $PACKAGE_VAR_MINIMAL2 = undef;
-            return 1;
-          }
-        }
+    $PACKAGE_VAR_INT = 2;
+    
+    if ($PACKAGE_VAR_INT == 2) {
+      if ($TestCase::PACKAGE_VAR_INT == 2) {
+        $PACKAGE_VAR_INT = 0;
+        return 1;
       }
     }
+    
     return 0;
   }
 

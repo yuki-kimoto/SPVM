@@ -194,29 +194,20 @@ SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op
   return op_ref;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_TYPE* type, const char* file, int32_t line) {
-
-  // Temparary variable name
-  char* name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("@tmp2147483647") + 1);
-  sprintf(name, "@tmp%d", compiler->tmp_var_length);
-  compiler->tmp_var_length++;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = name;
-  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_MY* my = SPVM_MY_new(compiler);
-  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
-  SPVM_OP* op_type = NULL;
-  if (type) {
-    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
-  }
-  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
-
-  // Add op mys
-  if (op_sub) {
-    SPVM_LIST_push(op_sub->uv.sub->mys, my);
+int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  switch (op->id) {
+    case SPVM_OP_C_ID_VAR:
+    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
+    case SPVM_OP_C_ID_ARRAY_ACCESS:
+    case SPVM_OP_C_ID_FIELD_ACCESS:
+    case SPVM_OP_C_ID_DEREF:
+    case SPVM_OP_C_ID_EXCEPTION_VAR:
+      return 1;
   }
   
-  return op_var;
+  return 0;
 }
 
 int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -274,51 +265,6 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
     // Exception variable
     SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, op_var_name->file, op_var_name->line);
     op_var_ret = op_exception_var;
-  }
-  // Package variable
-  else if (isupper(var_name[1]) || strchr(var_name, ':')) {
-    
-    int32_t is_invalid = 0;
-    int32_t length = (int32_t)strlen(var_name);
-    
-    // only allow two colon
-    {
-      int32_t i = 0;
-      while (1) {
-        if (i < length) {
-          if (var_name[i] == ':') {
-            if (var_name[i + 1] != ':') {
-              is_invalid = 1;
-              break;
-            }
-            else {
-              if (!isalpha(var_name[i + 2])) {
-                is_invalid = 1;
-                break;
-              }
-              else {
-                i += 2;
-                continue;
-              }
-            }
-          }
-        }
-        else {
-          break;
-        }
-        i++;
-      }
-    }
-    
-    if (is_invalid) {
-      fprintf(stderr, "Invalid package variable name %s at %s line %" PRId32 "\n", var_name, compiler->cur_file, compiler->cur_line);
-      exit(EXIT_FAILURE);
-    }
-    
-    // Var OP
-    SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_var_name);
-    
-    op_var_ret = op_package_var_access;
   }
   // Lexical variable
   else {
@@ -1006,7 +952,15 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = op;
   }
   else if (op->id == SPVM_OP_C_ID_ASSIGN) {
-    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+    if (op->first->id == SPVM_OP_C_ID_VAR || op->first->id == SPVM_OP_C_ID_ASSIGN) {
+      op_var = SPVM_OP_get_target_op_var(compiler, op->first);
+    }
+    else if (op->last->id == SPVM_OP_C_ID_VAR || op->last->id == SPVM_OP_C_ID_ASSIGN) {
+      op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+    }
+    else {
+      assert(0);
+    }
   }
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->last);
@@ -1678,28 +1632,21 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type) {
   
-  if (op_var->id == SPVM_OP_C_ID_VAR) {
-    
-    // Declaration
-    op_var->uv.var->is_declaration = 1;
-    
-    // Create my var information
-    SPVM_MY* my = op_my->uv.my;
-    if (op_type) {
-      my->type = op_type->uv.type;
-    }
-    
-    // Name OP
-    SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-    op_name->uv.name = op_var->uv.var->op_name->uv.name;
-    my->op_name = op_name;
-    
-    op_var->uv.var->my = my;
+  // Declaration
+  op_var->uv.var->is_declaration = 1;
+  
+  // Create my var information
+  SPVM_MY* my = op_my->uv.my;
+  if (op_type) {
+    my->type = op_type->uv.type;
   }
-  else {
-    const char* name = SPVM_OP_get_var_name(compiler, op_var);
-    SPVM_yyerror_format(compiler, "Invalid lexical variable name %s at %s line %d\n", name, op_var->file, op_var->line);
-  }
+  
+  // Name OP
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
+  op_name->uv.name = op_var->uv.var->op_name->uv.name;
+  my->op_name = op_name;
+  
+  op_var->uv.var->my = my;
   
   return op_var;
 }
@@ -1709,18 +1656,13 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_var->file, op_var->line);
   SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
   
-  const char* name = SPVM_OP_get_var_name(compiler, op_var);
+  const char* name = op_var->uv.var->op_name->uv.name;;
   
   package_var->name = op_var->uv.var->op_name->uv.name;
   
   int32_t invalid_name = 0;
-  if (op_var->id != SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
+  if (strchr(name, ':')) {
     invalid_name = 1;
-  }
-  else {
-    if (strchr(name, ':')) {
-      invalid_name = 1;
-    }
   }
   
   if (invalid_name) {
@@ -1735,26 +1677,6 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   op_package_var->uv.package_var = package_var;
   
   return op_package_var;
-}
-
-const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
-  (void)compiler;
-  
-  const char* name;
-  if (op_var->id == SPVM_OP_C_ID_VAR) {
-    name = op_var->uv.var->op_name->uv.name;
-  }
-  else if (op_var->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
-    name = op_var->uv.package_var_access->op_name->uv.name;
-  }
-  else if (op_var->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
-    name = "$@";
-  }
-  else {
-    assert(0);
-  }
-  
-  return name;
 }
 
 SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
@@ -2076,6 +1998,18 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   return op_unary;
 }
 
+SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_incdec, op_incdec->last, op_first);
+
+  if (!SPVM_OP_is_mutable(compiler, op_first)) {
+    SPVM_yyerror_format(compiler, "inc/dec target value must be mutable at %s line %d\n", op_first->file, op_first->line);
+  }
+  
+  return op_incdec;
+}
+
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
   
   // Build op
@@ -2298,18 +2232,8 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   op_assign_to->is_lvalue = 1;
 
-  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
-    op_assign_from->is_assigned_to_var = 1;
-  }
-
-  // Assign left child is var and it has variable declaration, try type inference
-  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
-    SPVM_OP* op_var = op_assign_to;
-    if (op_var->uv.var->my && op_var->uv.var->my->op_my->id == SPVM_OP_C_ID_MY) {
-      SPVM_MY* my = op_var->uv.var->my;
-      my->try_type_inference = 1;
-      my->op_term_type_inference = op_assign_from;
-    }
+  if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
+    SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }
   
   return op_assign;

@@ -1,3 +1,6 @@
+0.0374 2018-09-24
+  - fix assign operator return value bugs
+  - support package variable relative name
 0.0373 2018-09-21
   - add unless statement
   - change reference type syntax to 

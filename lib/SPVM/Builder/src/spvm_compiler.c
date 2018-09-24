@@ -59,6 +59,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 
+#ifndef SPVM_DONT_USE_CORE_LIB
   // use SPVM::CORE module
   {
     SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::CORE", "SPVM::CORE", 0);
@@ -121,7 +122,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     SPVM_OP_build_use(compiler, op_use, op_type);
     SPVM_LIST_push(compiler->op_use_stack, op_use);
   }
-  
+#endif
+
   return compiler;
 }
 

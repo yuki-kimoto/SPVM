@@ -37,7 +37,7 @@
 %type <opval> unop binop
 %type <opval> call_sub
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
-%type <opval> deref ref
+%type <opval> deref ref assign incdec
 %type <opval> new array_init isa
 %type <opval> my_var var
 %type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
@@ -531,14 +531,6 @@ expression
     {
       $$ = SPVM_OP_build_croak(compiler, $1, $2);
     }
-  | field_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | array_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
   | weaken_field
   | weaken_array_element
 
@@ -588,6 +580,8 @@ normal_term
   | unop
   | ref
   | deref
+  | assign
+  | incdec
 
 normal_terms
   : normal_terms ',' normal_term
@@ -653,29 +647,31 @@ unop
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
-  | INC normal_term
+  | '~' normal_term
+    {
+      $$ = SPVM_OP_build_unop(compiler, $1, $2);
+    }
+
+incdec
+  : INC normal_term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $2);
+      $$ = SPVM_OP_build_incdec(compiler, op, $2);
     }
   | normal_term INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $1);
+      $$ = SPVM_OP_build_incdec(compiler, op, $1);
     }
   | DEC normal_term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $2);
+      $$ = SPVM_OP_build_incdec(compiler, op, $2);
     }
   | normal_term DEC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $1);
-    }
-  | '~' normal_term
-    {
-      $$ = SPVM_OP_build_unop(compiler, $1, $2);
+      $$ = SPVM_OP_build_incdec(compiler, op, $1);
     }
 
 binop
@@ -721,23 +717,17 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | my_var ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | var ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | var SPECIAL_ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
   | '(' normal_term ')'
     {
       $$ = $2;
     }
-  | deref ASSIGN normal_term
+
+assign
+  : normal_term ASSIGN normal_term
+    {
+      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+    }
+  | normal_term SPECIAL_ASSIGN normal_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
