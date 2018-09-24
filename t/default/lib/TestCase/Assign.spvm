@@ -113,13 +113,48 @@ package TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_array_access : int () {
+  sub assign_return_value_array_access_right_var : int () {
     my $nums = new int[1];
     
     my $var1 = 1;
     my $var2 = $nums->[0] = $var1;
     
     if ($var2 == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_return_value_array_access_right_not_var : int () {
+    my $nums = new int[1];
+    
+    my $var2 = $nums->[0] = 1;
+    
+    if ($var2 == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_return_value_array_access_left_var : int () {
+    my $nums = new int[1];
+    
+    my $var1 : int;
+    $nums->[0] = 1;
+    my $var2 = $var1 = $nums->[0];
+    
+    if ($var2 == 1 && $var1 == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub assign_return_value_array_access_chain : int () {
+    my $nums = new int[2];
+    
+    my $var2 = $nums->[0] = $nums->[1] = 1;
+    
+    if ($var2 == 1 && $nums->[0] == 1 && $nums->[1] == 1) {
       return 1;
     }
     return 0;

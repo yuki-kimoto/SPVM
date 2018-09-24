@@ -996,7 +996,15 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = op;
   }
   else if (op->id == SPVM_OP_C_ID_ASSIGN) {
-    op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+    if (op->first->id == SPVM_OP_C_ID_VAR || op->first->id == SPVM_OP_C_ID_ASSIGN) {
+      op_var = SPVM_OP_get_target_op_var(compiler, op->first);
+    }
+    else if (op->last->id == SPVM_OP_C_ID_VAR || op->last->id == SPVM_OP_C_ID_ASSIGN) {
+      op_var = SPVM_OP_get_target_op_var(compiler, op->last);
+    }
+    else {
+      assert(0);
+    }
   }
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->last);
