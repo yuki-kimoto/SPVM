@@ -1240,20 +1240,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         if (op_term_dist->id == SPVM_OP_C_ID_VAR) {
                           SPVM_MY* my = op_term_dist->uv.var->my;
                           if (my->type == NULL) {
-                            if (my->try_type_inference) {
-                              SPVM_OP* op_term_type_inference = my->op_term_type_inference;
-                              
-                              SPVM_TYPE* inferenced_type = SPVM_OP_get_type(compiler, op_term_type_inference);
-                              
-                              if (inferenced_type) {
-                                SPVM_OP* op_inferenced_type = SPVM_OP_new_op_type(compiler, inferenced_type, my->op_my->file, my->op_my->line);
-                                my->type = op_inferenced_type->uv.type;
-                              }
-                            }
+                            my->type = SPVM_OP_get_type(compiler, op_term_src);
                           }
                           if (my->type == NULL) {
                             SPVM_yyerror_format(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
-                            
                             return;
                           }
                         }
