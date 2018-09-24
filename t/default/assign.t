@@ -11,6 +11,12 @@ use SPVM 'TestCase::Assign';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Special assign
+{
+  ok(TestCase::Assign->special_assign());
+  ok(TestCase::Assign->special_assign_concat());
+}
+
 # Assign return value
 {
   ok(TestCase::Assign->assign_return_value_byte);

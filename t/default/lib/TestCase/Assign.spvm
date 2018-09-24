@@ -2,6 +2,66 @@ package TestCase::Assign {
   use TestCase::Minimal;
   use TestCase::Simple;
 
+  # Concat
+  sub special_assign_concat : string () {
+    
+    my $value = "a";
+    
+    $value .= "b";
+    
+    return $value;
+  }
+  
+  sub special_assign : int () {
+    my $num1 = 1;
+    $num1 += 4;
+    if ($num1 == 5) {
+      my $num2 = 5;
+      $num2 -= 2;
+      if ($num2 == 3) {
+        my $num3 = 3;
+        $num3 *= 4;
+        if ($num3 == 12) {
+          my $num4 = 6;
+          $num4 /= 2;
+          if ($num4 == 3) {
+            my $num5 = 10;
+            $num5 %= 4;
+            if ($num5 == 2) {
+              my $num6 = 8;
+              $num6 <<= 1;
+              if ($num6 == 16) {
+                my $num7 = -8;
+                $num7 >>= 1;
+                if ($num7 == -4) {
+                  my $num8 = 0xFFFFFFFF;
+                  $num8 >>>= 1;
+                  if ($num8 == 0x7FFFFFFF) {
+                    my $num9 = 0xFFFFFF00;
+                    $num9 &= 0xFF;
+                    if ($num9 == 0) {
+                      my $num10 = 0xFFFFFF00;
+                      $num10 |= 0xFF;
+                      if ($num10 == 0xFFFFFFFF) {
+                        my $num11 = 0xFFFFFF00;
+                        $num11 ^= 0xFFFF;
+                        if ($num11 == 0xFFFF00FF) {
+                          return 1;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
   sub assign_return_value_my_var : int () {
     
     if (my $var = 1) {
