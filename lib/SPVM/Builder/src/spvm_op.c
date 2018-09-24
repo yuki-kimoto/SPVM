@@ -2318,10 +2318,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   op_assign_to->is_lvalue = 1;
 
-  if (op_assign_to->id == SPVM_OP_C_ID_VAR) {
-    op_assign_from->is_assigned_to_var = 1;
-  }
-
   if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
     SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }

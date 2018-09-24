@@ -2230,6 +2230,53 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(block_my_base_stack);
             SPVM_LIST_free(op_switch_stack);
           }
+
+          // set assign_to_var flag - Second tree traversal
+          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+            // Run OPs
+            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+            SPVM_OP* op_cur = op_base;
+            int32_t finish = 0;
+            while (op_cur) {
+              // [START]Preorder traversal position
+              if (op_cur->first) {
+                op_cur = op_cur->first;
+              }
+              else {
+                while (1) {
+                  // [START]Postorder traversal position
+                  switch (op_cur->id) {
+                    case SPVM_OP_C_ID_ASSIGN:
+                      if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
+                        op_cur->first->is_assigned_to_var = 1;
+                      }
+                      break;
+                  }
+
+                  if (op_cur == op_base) {
+
+                    // Finish
+                    finish = 1;
+                    
+                    break;
+                  }
+                  
+                  // Next sibling
+                  if (op_cur->moresib) {
+                    op_cur = SPVM_OP_sibling(compiler, op_cur);
+                    break;
+                  }
+                  // Next is parent
+                  else {
+                    op_cur = op_cur->sibparent;
+                  }
+                }
+                if (finish) {
+                  break;
+                }
+              }
+            }
+          }
           
           // Create temporary variables for not assigned values - Second tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
