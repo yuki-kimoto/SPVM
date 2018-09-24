@@ -584,6 +584,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           op_cur = op_false;
                         }
+                        else {
+                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_first);
+                          
+                          if (type) {
+                            // Value type is invalid
+                            if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_yyerror_format(compiler, "Boolean context don't allow value type at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                            // Reference type is invalid
+                            else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_yyerror_format(compiler, "Boolean context don't allow reference type at %s line %d\n", op_cur->file, op_cur->line);
+                            }
+                          }
+                        }
                         
                         break;
                       }
@@ -614,35 +628,26 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                             SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                           }
-                          // numeric == OBJ
-                          else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                            SPVM_yyerror_format(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
+                          // object == object
+                          else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                            // OK
                           }
-                          // OBJ == numeric
-                          else if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                            SPVM_yyerror_format(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
+                          else {
+                            SPVM_yyerror_format(compiler, "Invalid == comparison at %s line %d\n", op_cur->file, op_cur->line);
                           }
                         }
                         // term == undef
                         else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id == SPVM_OP_C_ID_UNDEF) {
                           SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                          if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                             SPVM_yyerror_format(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
                           }
                         }
                         // undef == term
                         else if (op_first->id == SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
                           SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                          if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                             SPVM_yyerror_format(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
                           }
                         }
                         
@@ -675,17 +680,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                             SPVM_OP_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                           }
-                          // numeric != OBJ
-                          else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                            SPVM_yyerror_format(compiler, "!= left value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
+                          // numeric != object
+                          else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                            // OK
                           }
-                          // OBJ != numeric
-                          else if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                            SPVM_yyerror_format(compiler, "!= right value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
+                          else {
+                            SPVM_yyerror_format(compiler, "Invalid == comparison at %s line %d\n", op_cur->file, op_cur->line);
                           }
                         }
                         // term != undef
@@ -694,8 +694,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                             SPVM_yyerror_format(compiler, "!= left value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
                           }
                         }
                         // undef != term
@@ -704,8 +702,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                             SPVM_yyerror_format(compiler, "!= right value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
                           }
                         }
                         
