@@ -195,7 +195,7 @@ SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op
   return op_ref;
 }
 
-int32_t SPVM_OP_is_op_term_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   switch (op->id) {
@@ -203,6 +203,8 @@ int32_t SPVM_OP_is_op_term_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
     case SPVM_OP_C_ID_ARRAY_ACCESS:
     case SPVM_OP_C_ID_FIELD_ACCESS:
+    case SPVM_OP_C_ID_DEREF:
+    case SPVM_OP_C_ID_EXCEPTION_VAR:
       return 1;
   }
   
@@ -2316,6 +2318,10 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
       my->try_type_inference = 1;
       my->op_term_type_inference = op_assign_from;
     }
+  }
+  
+  if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
+    SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }
   
   return op_assign;

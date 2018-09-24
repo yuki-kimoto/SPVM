@@ -656,14 +656,19 @@ unop
     }
 
 preinc
-  : INC normal_term
+  : INC var
+    {
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
+      $$ = SPVM_OP_build_unop(compiler, op, $2);
+    }
+  | INC array_access
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
 
 postinc    
-  : normal_term INC
+  : var INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
       $$ = SPVM_OP_build_unop(compiler, op, $1);
@@ -732,27 +737,11 @@ binop
     }
 
 assign
-  : my_var ASSIGN normal_term
+  : normal_term ASSIGN normal_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | var ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | var SPECIAL_ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | field_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | array_access ASSIGN normal_term
-    {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
-    }
-  | deref ASSIGN normal_term
+  | normal_term SPECIAL_ASSIGN normal_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
