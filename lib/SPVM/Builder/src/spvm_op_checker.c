@@ -2016,7 +2016,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             else {
                               SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
                               op_array_field_access->is_lvalue = op_cur->is_lvalue;
-                              op_array_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                               
                               SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
                               array_field_access->field = field;
@@ -2842,11 +2841,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
     SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_src);
     
     SPVM_OP_replace_op(compiler, op_stab, op_convert);
-
-    op_convert->is_assigned_to_var = op_convert->first->is_assigned_to_var;
-    
-    op_convert->first->is_assigned_to_var = 0;
-    
     return op_convert;
   }
   
