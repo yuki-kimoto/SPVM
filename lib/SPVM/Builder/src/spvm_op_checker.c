@@ -1867,10 +1867,37 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           var->my = found_my;
                         }
                         else {
+                          int32_t is_package_var;
+                          SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(compiler->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
+                          if (!found_package_var) {
+                            found_package_var = SPVM_HASH_fetch(package->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
+                          }
+                          if (found_package_var) {
+                            // Var OP
+                            SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
+                            SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_name_package_var);
+                            op_package_var_access->uv.package_var_access->package_var = found_package_var;
+                            
+                            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                            SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+                            
+                            if (var->op_term_assigned) {
+                              var->op_term_assigned->is_assigned_to_var = 0;
+                            }
+                            
+                            if (var->op_term_type_inference_my) {
+                              var->op_term_type_inference_my->op_term_type_inference = op_package_var_access;
+                            }
+                            
+                            op_package_var_access->is_lvalue = op_cur->is_lvalue;
+                            
+                            op_cur = op_package_var_access;
+                            continue;
+                          }
                           // Error
-                          SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
-                          
-                          return;
+                          else {
+                            SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                          }
                         }
                         
                         break;
@@ -1951,25 +1978,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
                           SPVM_yyerror_format(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
                         }
-                        
-                        break;
-                      }
-                      case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
-                        
-                        // Check field name
-                        SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, package->op_package);
-                        if (!op_cur->uv.package_var_access->package_var) {
-                          SPVM_yyerror_format(compiler, "Package variable not found \"%s\" at %s line %d\n",
-                            op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        
-                        if (sub->info_package_var_ids->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        op_cur->uv.package_var_access->sub_rel_id = sub->info_package_var_ids->length;
-                        SPVM_LIST_push(sub->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
                         
                         break;
                       }
