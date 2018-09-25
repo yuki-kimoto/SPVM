@@ -374,7 +374,9 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
 SPVM_OP* SPVM_OP_new_op_package_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_package_var_access, const char* file, int32_t line) {
   (void)compiler;
   
-  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, original_op_package_var_access->file, original_op_package_var_access->line);
+  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, original_op_package_var_access->file, original_op_package_var_access->line);
+  
+  op_package_var_access->uv.package_var_access = original_op_package_var_access->uv.package_var_access;
   
   return op_package_var_access;
 }
