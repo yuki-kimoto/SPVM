@@ -1194,79 +1194,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         break;
                       }
-                      case SPVM_OP_C_ID_ARRAY_ACCESS: {
-                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                        SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                        
-                        // Left value must be array
-                        if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "left value must be array at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        
-                        // Right value must be integer
-                        if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
-                          SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                          
-                          if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
-                            SPVM_yyerror_format(compiler, "array index must be int type at %s line %d\n", op_cur->file, op_cur->line);
-                            
-                            return;
-                          }
-                        }
-                        else {
-                          SPVM_yyerror_format(compiler, "array index must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        
-                        assert(op_cur->first);
-                        assert(op_cur->last);
-                        
-                        // If array term is not var, create assign operator
-                        SPVM_OP* op_term_array = op_cur->first;
-                        if (op_term_array->id != SPVM_OP_C_ID_VAR) {
-                          SPVM_OP* op_term_array = op_cur->last;
-                          
-                          op_cur->no_need_check = 1;
-
-                          SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_array);
-
-                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
-                          
-                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
-                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-
-                          SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_array);
-                          
-                          // Convert cur new op to var
-                          SPVM_OP_replace_op(compiler, op_stab, op_assign);
-                        }
-                        
-                        // If array access index term is not var, create assign operator
-                        SPVM_OP* op_term_index = op_cur->last;
-                        if (op_term_index->id != SPVM_OP_C_ID_VAR) {
-                          SPVM_OP* op_term_index = op_cur->last;
-                          
-                          op_cur->no_need_check = 1;
-
-                          SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_index);
-
-                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
-                          
-                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
-                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-
-                          SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
-                          
-                          // Convert cur new op to var
-                          SPVM_OP_replace_op(compiler, op_stab, op_assign);
-                        }
-                        
-                        break;
-                      }
                       case SPVM_OP_C_ID_ASSIGN: {
                         SPVM_OP* op_term_dist = op_cur->last;
                         SPVM_OP* op_term_src = op_cur->first;
@@ -2015,6 +1942,76 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         break;
                       }
+                      case SPVM_OP_C_ID_ARRAY_ACCESS: {
+                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                        SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                        
+                        // Left value must be array
+                        if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          SPVM_yyerror_format(compiler, "left value must be array at %s line %d\n", op_cur->file, op_cur->line);
+                          
+                          return;
+                        }
+                        
+                        // Right value must be integer
+                        if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                          SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                          SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                          
+                          if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
+                            SPVM_yyerror_format(compiler, "array index must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                            
+                            return;
+                          }
+                        }
+                        else {
+                          SPVM_yyerror_format(compiler, "array index must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                          
+                          return;
+                        }
+                        
+                        assert(op_cur->first);
+                        assert(op_cur->last);
+                        
+                        // If array term is not var, create assign operator
+                        SPVM_OP* op_term_array = op_cur->first;
+                        if (op_term_array->id != SPVM_OP_C_ID_VAR) {
+                          op_cur->no_need_check = 1;
+
+                          SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_array);
+
+                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
+                          
+                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                          SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_array);
+                          
+                          // Convert cur new op to var
+                          SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                        }
+                        
+                        // If array access index term is not var, create assign operator
+                        SPVM_OP* op_term_index = op_cur->last;
+                        if (op_term_index->id != SPVM_OP_C_ID_VAR) {
+                          
+                          op_cur->no_need_check = 1;
+
+                          SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_index);
+
+                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
+                          
+                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                          SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
+                          
+                          // Convert cur new op to var
+                          SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                        }
+                        
+                        break;
+                      }
                       case SPVM_OP_C_ID_FIELD_ACCESS: {
                         SPVM_OP* op_term_invocker = op_cur->first;
                         SPVM_OP* op_name = op_cur->uv.field_access->op_name;
@@ -2091,6 +2088,63 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               
                               op_cur = op_array_field_access;
                             }
+                          }
+                        }
+                        
+                        if (op_cur->id == SPVM_OP_C_ID_ARRAY_FIELD_ACCESS) {
+                          // If array term is not var, create assign operator
+                          SPVM_OP* op_term_array = op_cur->first;
+                          if (op_term_array->id != SPVM_OP_C_ID_VAR) {
+                            op_cur->no_need_check = 1;
+
+                            SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_array);
+
+                            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
+                            
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                            SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_array);
+                            
+                            // Convert cur new op to var
+                            SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                          }
+                          
+                          // If array access index term is not var, create assign operator
+                          SPVM_OP* op_term_index = op_cur->last;
+                          if (op_term_index->id != SPVM_OP_C_ID_VAR) {
+                            op_cur->no_need_check = 1;
+
+                            SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_index);
+
+                            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
+                            
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                            SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
+                            
+                            // Convert cur new op to var
+                            SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                          }
+                        }
+                        else {
+                          // If object term is not var, create assign operator
+                          SPVM_OP* op_term_invocker = op_cur->first;
+                          if (op_term_invocker->id != SPVM_OP_C_ID_VAR) {
+                            op_cur->no_need_check = 1;
+
+                            SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_invocker);
+
+                            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_invocker);
+                            
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                            SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_invocker);
+                            
+                            // Convert cur new op to var
+                            SPVM_OP_replace_op(compiler, op_stab, op_assign);
                           }
                         }
                         
