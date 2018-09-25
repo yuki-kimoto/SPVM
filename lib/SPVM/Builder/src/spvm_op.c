@@ -1248,11 +1248,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_term_array, SPVM_OP* op_term_index) {
   
-  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_var->file, op_var->line);
-  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var);
-  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_term);
+  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_term_array->file, op_term_array->line);
+  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_term_array);
+  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_term_index);
   
   return op_array_access;
 }
