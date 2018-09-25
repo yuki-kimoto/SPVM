@@ -379,7 +379,7 @@ SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP
 }
 
 
-SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access) {
   (void)compiler;
   
   SPVM_OP* op_var_invoker = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_field_access->first);
@@ -392,7 +392,7 @@ SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   return op_field_access;
 }
 
-SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_array_access, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_array_access) {
   (void)compiler;
   
   SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, original_op_array_access->file, original_op_array_access->line);
@@ -405,7 +405,7 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   return op_array_access;
 }
 
-SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_array_field_access, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_array_field_access) {
   (void)compiler;
   
   SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, original_op_array_field_access->file, original_op_array_field_access->line);
@@ -419,7 +419,7 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_O
   return op_array_field_access;
 }
 
-SPVM_OP* SPVM_OP_new_op_package_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_package_var_access, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_package_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_package_var_access) {
   (void)compiler;
   
   SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, original_op_package_var_access->file, original_op_package_var_access->line);
@@ -439,6 +439,32 @@ SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_o
   SPVM_OP_build_deref(compiler, op_deref, op_var);
   
   return op_deref;
+}
+
+SPVM_OP* SPVM_OP_new_op_term_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_term_mutable) {
+  
+  SPVM_OP* op_term_mutable;
+  switch (original_op_term_mutable->id) {
+    case SPVM_OP_C_ID_VAR:
+      op_term_mutable = SPVM_OP_new_op_var_clone(compiler, original_op_term_mutable, original_op_term_mutable->file, original_op_term_mutable->line);
+      break;
+    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
+      op_term_mutable = SPVM_OP_new_op_package_var_access_clone(compiler, original_op_term_mutable);
+      break;
+    case SPVM_OP_C_ID_ARRAY_ACCESS:
+      op_term_mutable = SPVM_OP_new_op_array_access_clone(compiler, original_op_term_mutable);
+      break;
+    case SPVM_OP_C_ID_FIELD_ACCESS:
+      op_term_mutable = SPVM_OP_new_op_field_access_clone(compiler, original_op_term_mutable);
+      break;
+    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+      op_term_mutable = SPVM_OP_new_op_array_field_access_clone(compiler, original_op_term_mutable);
+      break;
+    default:
+      assert(0);
+  }
+  
+  return op_term_mutable;
 }
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
