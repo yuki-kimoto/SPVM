@@ -247,8 +247,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 switch (op_cur->id) {
                   // Start scope
                   case SPVM_OP_C_ID_BLOCK: {
-
-                    
                     int32_t block_my_base = my_stack->length;
                     SPVM_LIST_push(block_my_base_stack, (void*)(intptr_t)block_my_base);
                     
@@ -1226,6 +1224,27 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         assert(op_cur->first);
                         assert(op_cur->last);
+                        
+                        SPVM_OP* op_term_index = op_cur->last;
+
+                        // If array access index term is not var, create assign operator
+                        if (op_term_index->id != SPVM_OP_C_ID_VAR) {
+                          SPVM_OP* op_term_index = op_cur->last;
+                          
+                          op_cur->no_need_check = 1;
+
+                          SPVM_TYPE* term_index_type = SPVM_OP_get_type(compiler, op_term_index);
+
+                          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
+                          
+                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+                          SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
+                          
+                          // Convert cur new op to var
+                          SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                        }
                         
                         break;
                       }
