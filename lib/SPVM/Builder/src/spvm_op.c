@@ -386,9 +386,18 @@ SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_o
   
   SPVM_OP* op_deref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, original_op_deref->file, original_op_deref->line);
   
-  assert(original_op_deref->first->id == SPVM_OP_C_ID_VAR);
+  SPVM_OP* original_op_var;
+  if (original_op_deref->first->id == SPVM_OP_C_ID_VAR) {
+    original_op_var = original_op_deref->first;
+  }
+  else if (original_op_deref->first->id == SPVM_OP_C_ID_ASSIGN) {
+    original_op_var = original_op_deref->first->last;
+  }
+  else {
+    assert(0);
+  }
+  assert(original_op_var->id == SPVM_OP_C_ID_VAR);
   
-  SPVM_OP* original_op_var = original_op_deref->first;
   SPVM_OP* op_var = SPVM_OP_new_op_var_clone(compiler, original_op_var, original_op_var->file, original_op_var->line);
   
   SPVM_OP_build_deref(compiler, op_deref, op_var);
