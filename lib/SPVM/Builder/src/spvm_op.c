@@ -355,6 +355,30 @@ SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign, const char* file, int32_t line) {
+  (void)compiler;
+  
+  SPVM_OP* original_op_var;
+  if (original_op_var_or_assign->id == SPVM_OP_C_ID_ASSIGN) {
+    if (original_op_var_or_assign->last == SPVM_OP_C_ID_VAR) {
+      original_op_var = original_op_var_or_assign->last;
+    }
+    else {
+      assert(0);
+    }
+  }
+  else if (original_op_var_or_assign->id == SPVM_OP_C_ID_VAR) {
+    original_op_var = original_op_var_or_assign;
+  }
+  else {
+    assert(0);
+  }
+  
+  SPVM_OP* op_var = SPVM_OP_new_op_var_clone(compiler, original_op_var, file, line);
+  return op_var;
+}
+
+
 SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access, const char* file, int32_t line) {
   (void)compiler;
   
@@ -367,6 +391,9 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   (void)compiler;
   
   SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, original_op_array_access->file, original_op_array_access->line);
+  
+  SPVM_OP* op_var_array = original_op_array_access->first;
+  SPVM_OP* op_var_index = original_op_array_access->last;
   
   return op_array_access;
 }
