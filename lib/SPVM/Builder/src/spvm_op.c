@@ -2284,7 +2284,7 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   return op_if;
 }
 
-SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_assign_to, SPVM_OP* op_assign_from) {
+SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_term_dist, SPVM_OP* op_term_src) {
   
   if (op_assign->id == SPVM_OP_C_ID_SPECIAL_ASSIGN) {
     int32_t flag = op_assign->flag;
@@ -2331,12 +2331,12 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
     }
     
     SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_assign->file, op_assign->line);
-    op_var_right->uv.var = op_assign_to->uv.var;
+    op_var_right->uv.var = op_term_dist->uv.var;
     
     SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_var_right);
-    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_assign_from);
+    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_term_src);
     
-    op_assign_from = op_operation;
+    op_term_src = op_operation;
     
     op_assign->id = SPVM_OP_C_ID_ASSIGN;
   }
@@ -2344,13 +2344,13 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   // Build op
   // Exchange left and right for excecution order
   
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_from);
-  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
+  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term_src);
+  SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_term_dist);
   
-  op_assign_to->is_lvalue = 1;
+  op_term_dist->is_lvalue = 1;
   
-  if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
-    SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
+  if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
+    SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
   }
   
   return op_assign;

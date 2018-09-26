@@ -1189,6 +1189,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         break;
                       }
+                      case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
+                        
+                        break;
+                      }
                       case SPVM_OP_C_ID_ASSIGN: {
                         SPVM_OP* op_term_dist = op_cur->last;
                         SPVM_OP* op_term_src = op_cur->first;
