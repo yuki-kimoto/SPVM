@@ -23,6 +23,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   
   ok(TestCase::Increment->pre_inc_array_access_invocant_not_var);
   ok(TestCase::Increment->pre_inc_array_field_access_invocant_not_var);
+  ok(TestCase::Increment->pre_inc_field_access_invocant_not_var);
 }
 
 # Pre dec
