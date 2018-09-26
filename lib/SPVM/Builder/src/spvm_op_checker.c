@@ -1486,9 +1486,52 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
                         
-                        SPVM_OP* op_culc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_cur->file, op_cur->line);
-                        SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                        SPVM_OP_build_binop(compiler, op_culc, op_term_mutable, op_constant);
+                        int32_t culc_op_id;
+                        switch (op_cur->flag) {
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD:
+                            culc_op_id = SPVM_OP_C_ID_ADD;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT:
+                            culc_op_id = SPVM_OP_C_ID_SUBTRACT;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY:
+                            culc_op_id = SPVM_OP_C_ID_MULTIPLY;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE:
+                            culc_op_id = SPVM_OP_C_ID_DIVIDE;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER:
+                            culc_op_id = SPVM_OP_C_ID_REMAINDER;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT:
+                            culc_op_id = SPVM_OP_C_ID_LEFT_SHIFT;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT:
+                            culc_op_id = SPVM_OP_C_ID_RIGHT_SHIFT;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED:
+                            culc_op_id = SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR:
+                            culc_op_id = SPVM_OP_C_ID_BIT_XOR;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR:
+                            culc_op_id = SPVM_OP_C_ID_BIT_OR;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND:
+                            culc_op_id = SPVM_OP_C_ID_BIT_AND;
+                            break;
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT:
+                            culc_op_id = SPVM_OP_C_ID_CONCAT;
+                            break;
+                          default:
+                            assert(0);
+                            break;
+                        }
+                        
+                        SPVM_OP* op_culc = SPVM_OP_new_op(compiler, culc_op_id, op_cur->file, op_cur->line);
+                        
+                        SPVM_OP_build_binop(compiler, op_culc, op_term_mutable, op_term_src);
                         
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                         
