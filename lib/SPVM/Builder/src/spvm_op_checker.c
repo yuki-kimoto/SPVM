@@ -1570,7 +1570,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // Numeric type
                         if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "increment operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
                         }
