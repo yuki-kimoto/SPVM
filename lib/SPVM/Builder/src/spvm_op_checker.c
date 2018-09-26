@@ -1840,6 +1840,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           // Error
                           else {
                             SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                            return;
                           }
                         }
                         
