@@ -666,13 +666,13 @@ package TestCase::Increment {
     }
   }
 
-  sub post_inc : int () {
-    my $value_byte = (byte)0;
-    my $value_short = (short)0;
-    my $value_int = 0;
-    my $value_long = 0L;
-    my $value_float = 0.25f;
-    my $value_double = 0.25;
+  sub post_inc_var : int () {
+    my $value_byte = (byte)INT8_MIN();
+    my $value_short = (short)INT16_MIN();
+    my $value_int = INT32_MIN();
+    my $value_long = INT64_MIN();
+    my $value_float = FLT_MIN();
+    my $value_double = DBL_MIN();
     
     my $value_byte2 = $value_byte++;
     my $value_short2 = $value_short++;
@@ -681,18 +681,18 @@ package TestCase::Increment {
     my $value_float2 = $value_float++;
     my $value_double2 = $value_double++;
     
-    if ($value_byte == 1) {
-      if ($value_byte2 == 0) {
-        if ($value_short == 1) {
-          if ($value_short2 == 0) {
-            if ($value_int == 1) {
-              if ($value_int2 == 0) {
-                if ($value_long == 1L) {
-                  if ($value_long2 == 0L) {
-                    if ($value_float == 1.25f) {
-                      if ($value_float2 = 0.25f) {
-                        if ($value_double == 1.25) {
-                          if ($value_double2 == 0.25) {
+    if ($value_byte == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN()) {
+        if ($value_short == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN()) {
+            if ($value_int == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN()) {
+                if ($value_long == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN()) {
+                    if ($value_float == FLT_MIN() + 1) {
+                      if ($value_float2 = FLT_MIN()) {
+                        if ($value_double == DBL_MIN() + 1) {
+                          if ($value_double2 == DBL_MIN()) {
                             return 1;
                           }
                         }
