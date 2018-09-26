@@ -204,6 +204,7 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_FIELD_ACCESS:
     case SPVM_OP_C_ID_DEREF:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
+    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
       return 1;
   }
   
@@ -2344,7 +2345,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_assign_to);
   
   op_assign_to->is_lvalue = 1;
-
+  
   if (!SPVM_OP_is_mutable(compiler, op_assign_to)) {
     SPVM_yyerror_format(compiler, "assign operator left value must be mutable at %s line %d\n", op_assign_to->file, op_assign_to->line);
   }

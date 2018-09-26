@@ -1,5 +1,111 @@
 package TestCase::Increment {
   use TestCase::Simple;
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  
+  our $BYTE_VALUE : byte;
+  our $SHORT_VALUE : short;
+  our $INT_VALUE : int;
+  our $LONG_VALUE : long;
+  our $FLOAT_VALUE : float;
+  our $DOUBLE_VALUE : double;
+
+=pod
+  sub pre_inc_array_field_access_constant_index : int () {
+    my $values_point_byte = new TestCase::Point_b3[1];
+    my $values_point_short = new TestCase::Point_s3[1];
+    my $values_point_int = new TestCase::Point_i3[1];
+    my $values_point_long = new TestCase::Point_l3[1];
+    my $values_point_float = new TestCase::Point_f3[1];
+    my $values_point_double = new TestCase::Point_d3[1];
+    
+    $values_point_byte->[0]{x} = (byte)INT8_MIN();
+    $values_point_short->[0]{x} = (short)INT16_MIN();
+    $values_point_int->[0]{x} = INT32_MIN();
+    $values_point_long->[0]{x} = INT64_MIN();
+    $values_point_float->[0]{x} = FLT_MIN();
+    $values_point_double->[0]{x} = DBL_MIN();
+
+    my $value_byte2 = ++$values_point_byte->[0]{x};
+    my $value_short2 = ++$values_point_short->[0]{x};
+    my $value_int2 = ++$values_point_int->[0]{x};
+    my $value_long2 = ++$values_point_long->[0]{x};
+    my $value_float2 = ++$values_point_float->[0]{x};
+    my $value_double2 = ++$values_point_double->[0]{x};
+    
+    if ($values_point_byte->[0]{x} == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($values_point_short->[0]{x} == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($values_point_int->[0]{x} == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($values_point_long->[0]{x} == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($values_point_float->[0]{x} == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($values_point_double->[0]{x} == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+=cut
+
+  sub pre_inc_package_var_access : int () {
+    $BYTE_VALUE = (byte)INT8_MIN();
+    $SHORT_VALUE = (short)INT16_MIN();
+    $INT_VALUE = INT32_MIN();
+    $LONG_VALUE = INT64_MIN();
+    $FLOAT_VALUE = FLT_MIN();
+    $DOUBLE_VALUE = DBL_MIN();
+    
+    my $value_byte2 = ++$BYTE_VALUE;
+    my $value_short2 = ++$SHORT_VALUE;
+    my $value_int2 = ++$INT_VALUE;
+    my $value_long2 = ++$LONG_VALUE;
+    my $value_float2 = ++$FLOAT_VALUE;
+    my $value_double2 = ++$DOUBLE_VALUE;
+    
+    if ($BYTE_VALUE == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($SHORT_VALUE == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($INT_VALUE == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($LONG_VALUE == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($FLOAT_VALUE == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($DOUBLE_VALUE == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   sub pre_inc_deref : int () {
     my $value_byte = (byte)INT8_MIN();
@@ -50,50 +156,6 @@ package TestCase::Increment {
     }
   }
 
-  sub pre_inc_deref_access : int () {
-    my $simple = new TestCase::Simple;
-    
-    $simple->{byte_value} = (byte)INT8_MIN();
-    $simple->{short_value} = (short)INT16_MIN();
-    $simple->{int_value} = INT32_MIN();
-    $simple->{long_value} = INT64_MIN();
-    $simple->{float_value} = FLT_MIN();
-    $simple->{double_value} = DBL_MIN();
-
-    my $value_byte2 = ++$simple->{byte_value};
-    my $value_short2 = ++$simple->{short_value};
-    my $value_int2 = ++$simple->{int_value};
-    my $value_long2 = ++$simple->{long_value};
-    my $value_float2 = ++$simple->{float_value};
-    my $value_double2 = ++$simple->{double_value};
-    
-    if ($simple->{byte_value} == INT8_MIN() + 1) {
-      if ($value_byte2 == INT8_MIN() + 1) {
-        if ($simple->{short_value} == INT16_MIN() + 1) {
-          if ($value_short2 == INT16_MIN() + 1) {
-            if ($simple->{int_value} == INT32_MIN() + 1) {
-              if ($value_int2 == INT32_MIN() + 1) {
-                if ($simple->{long_value} == INT64_MIN() + 1) {
-                  if ($value_long2 == INT64_MIN() + 1) {
-                    if ($simple->{float_value} == FLT_MIN() + 1) {
-                      if ($value_float2 == FLT_MIN() + 1) {
-                        if ($simple->{double_value} == DBL_MIN() + 1) {
-                          if ($value_double2 = DBL_MIN() + 1) {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
   sub pre_inc_field_access : int () {
     my $simple = new TestCase::Simple;
     

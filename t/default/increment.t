@@ -18,6 +18,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Increment->pre_inc_array_access_var_index());
   ok(TestCase::Increment->pre_inc_field_access());
   ok(TestCase::Increment->pre_inc_deref());
+  ok(TestCase::Increment->pre_inc_package_var_access());
 }
 
 # Pre dec
