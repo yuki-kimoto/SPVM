@@ -1563,6 +1563,63 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         break;
                       }
+                      case SPVM_OP_C_ID_PRE_DEC:
+                      {
+                        SPVM_OP* op_first = op_cur->first;
+                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+                        
+                        // Numeric type
+                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                          SPVM_yyerror_format(compiler, "increment operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                          
+                          return;
+                        }
+                        
+                        // Convert PRE_DEC
+                        // [before]
+                        // PRE_DEC
+                        //   TERM_MUTABLE
+                        // 
+                        // [after]
+                        // ASSIGN
+                        //   SUBTRACT
+                        //     TERM_MUTABLE
+                        //     CONST 1
+                        //   TERM_MUTABLE_CLONE
+                        SPVM_OP* op_term_mutable = op_cur->first;
+                        
+                        op_term_mutable->no_need_check = 1;
+
+                        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                        SPVM_OP_cut_op(compiler, op_term_mutable);
+                        
+                        SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
+                        
+                        SPVM_OP* op_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_cur->file, op_cur->line);
+                        SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                        SPVM_OP_build_binop(compiler, op_subtract, op_term_mutable, op_constant);
+                        
+                        SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                        
+                        SPVM_TYPE* term_mutable_type = SPVM_OP_get_type(compiler, op_term_mutable);
+                        if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
+                          || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
+                        {
+                          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
+                          SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                          SPVM_OP_build_convert(compiler, op_convert, op_convert_type, op_subtract);
+                          SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_convert);
+                        }
+                        else {
+                          SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_subtract);
+                        }
+                        
+                        SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                        
+                        op_cur = op_term_mutable;
+                        
+                        break;
+                      }
                       case SPVM_OP_C_ID_POST_INC:
                       {
                         SPVM_OP* op_first = op_cur->first;
@@ -1593,36 +1650,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_var_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp, op_cur->file, op_cur->line);
                         SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
                         SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_inc);
-                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
-                        
-                        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                        SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-                        
-                        op_cur = op_sequence;
-                        
-                        break;
-                      }
-                      case SPVM_OP_C_ID_PRE_DEC:
-                      {
-                        SPVM_OP* op_first = op_cur->first;
-                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
-                        
-                        // Numeric type
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
-                        SPVM_OP* op_var = op_cur->first;
-                        
-                        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-                        SPVM_OP* op_var_dec = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
-                        
-                        SPVM_OP* op_dec = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEC, op_cur->file, op_cur->line);
-                        SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_var_dec);
-                        
-                        SPVM_OP* op_var_ret = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
-                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_dec);
                         SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
                         
                         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
