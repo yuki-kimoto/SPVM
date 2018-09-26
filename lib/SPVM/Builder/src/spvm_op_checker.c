@@ -1631,16 +1631,33 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           return;
                         }
+
+                        // Convert POST_INC
+                        // [before]
+                        // POST_INC
+                        //   TERM_MUTABLE
+                        // 
+                        // [after]
+                        // SEQUENCE
+                        //   ASSIGN
+                        //     TERM_MUTABLE
+                        //     VAR_TMP
+                        //   ASSIGN
+                        //     ADD
+                        //       TERM_MUTABLE
+                        //       CONST 1
+                        //     TERM_MUTABLE_CLONE
+                        //   VAR_TMP
                         
                         SPVM_OP* op_var = op_cur->first;
                       
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-                        SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
+                        SPVM_OP* op_term_mutable = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                         
                         SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
                   
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                        SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
+                        SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_mutable);
                         
                         SPVM_OP* op_var_inc = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
                         
