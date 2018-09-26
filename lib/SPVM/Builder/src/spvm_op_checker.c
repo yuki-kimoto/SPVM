@@ -1463,29 +1463,32 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
                         
-                        // Convert PRE_INC
+                        // Convert SPECIAL_ASSIGN
                         // [before]
-                        // PRE_INC
+                        // SPECIAL_ASSIGN
                         //   TERM_MUTABLE
-                        // 
+                        //   TERM_SRC
                         // [after]
                         // ASSIGN
-                        //   ADD
+                        //   CULC
                         //     TERM_MUTABLE
-                        //     CONST 1
+                        //     TERM_SRC
                         //   TERM_MUTABLE_CLONE
                         SPVM_OP* op_term_mutable = op_cur->first;
+                        SPVM_OP* op_term_src = op_cur->last;
                         
                         op_term_mutable->no_need_check = 1;
+                        op_term_src->no_need_check = 1;
 
                         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                         SPVM_OP_cut_op(compiler, op_term_mutable);
+                        SPVM_OP_cut_op(compiler, op_term_src);
                         
                         SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
                         
-                        SPVM_OP* op_add = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_cur->file, op_cur->line);
+                        SPVM_OP* op_culc = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_cur->file, op_cur->line);
                         SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                        SPVM_OP_build_binop(compiler, op_add, op_term_mutable, op_constant);
+                        SPVM_OP_build_binop(compiler, op_culc, op_term_mutable, op_constant);
                         
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                         
@@ -1495,11 +1498,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         {
                           SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
                           SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                          SPVM_OP_build_convert(compiler, op_convert, op_convert_type, op_add);
+                          SPVM_OP_build_convert(compiler, op_convert, op_convert_type, op_culc);
                           SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_convert);
                         }
                         else {
-                          SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_add);
+                          SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_culc);
                         }
                         
                         SPVM_OP_replace_op(compiler, op_stab, op_assign);
