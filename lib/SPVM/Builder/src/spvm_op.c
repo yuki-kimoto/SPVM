@@ -458,6 +458,9 @@ SPVM_OP* SPVM_OP_new_op_term_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
       op_term_mutable = SPVM_OP_new_op_array_field_access_clone(compiler, original_op_term_mutable);
       break;
+    case SPVM_OP_C_ID_DEREF:
+      op_term_mutable = SPVM_OP_new_op_deref_clone(compiler, original_op_term_mutable);
+      break;
     default:
       assert(0);
   }
