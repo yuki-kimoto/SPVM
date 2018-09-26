@@ -29,25 +29,25 @@ package TestCase::Increment {
     $values_point_float->[0]{x} = FLT_MIN();
     $values_point_double->[0]{x} = DBL_MIN();
 
-    my $value_byte2 = ++$values_point_byte->[0]{x};
-    my $value_short2 = ++$values_point_short->[0]{x};
-    my $value_int2 = ++$values_point_int->[0]{x};
-    my $value_long2 = ++$values_point_long->[0]{x};
-    my $value_float2 = ++$values_point_float->[0]{x};
-    my $value_double2 = ++$values_point_double->[0]{x};
+    my $value_byte2 = $values_point_byte->[0]{x}++;
+    my $value_short2 = $values_point_short->[0]{x}++;
+    my $value_int2 = $values_point_int->[0]{x}++;
+    my $value_long2 = $values_point_long->[0]{x}++;
+    my $value_float2 = $values_point_float->[0]{x}++;
+    my $value_double2 = $values_point_double->[0]{x}++;
     
     if ($values_point_byte->[0]{x} == INT8_MIN() + 1) {
-      if ($value_byte2 == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN()) {
         if ($values_point_short->[0]{x} == INT16_MIN() + 1) {
-          if ($value_short2 == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN()) {
             if ($values_point_int->[0]{x} == INT32_MIN() + 1) {
-              if ($value_int2 == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN()) {
                 if ($values_point_long->[0]{x} == INT64_MIN() + 1) {
-                  if ($value_long2 == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN()) {
                     if ($values_point_float->[0]{x} == FLT_MIN() + 1) {
-                      if ($value_float2 == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN()) {
                         if ($values_point_double->[0]{x} == DBL_MIN() + 1) {
-                          if ($value_double2 = DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN()) {
                             return 1;
                           }
                         }
@@ -71,25 +71,25 @@ package TestCase::Increment {
     $FLOAT_VALUE = FLT_MIN();
     $DOUBLE_VALUE = DBL_MIN();
     
-    my $value_byte2 = ++$BYTE_VALUE;
-    my $value_short2 = ++$SHORT_VALUE;
-    my $value_int2 = ++$INT_VALUE;
-    my $value_long2 = ++$LONG_VALUE;
-    my $value_float2 = ++$FLOAT_VALUE;
-    my $value_double2 = ++$DOUBLE_VALUE;
+    my $value_byte2 = $BYTE_VALUE++;
+    my $value_short2 = $SHORT_VALUE++;
+    my $value_int2 = $INT_VALUE++;
+    my $value_long2 = $LONG_VALUE++;
+    my $value_float2 = $FLOAT_VALUE++;
+    my $value_double2 = $DOUBLE_VALUE++;
     
     if ($BYTE_VALUE == INT8_MIN() + 1) {
-      if ($value_byte2 == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN()) {
         if ($SHORT_VALUE == INT16_MIN() + 1) {
-          if ($value_short2 == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN()) {
             if ($INT_VALUE == INT32_MIN() + 1) {
-              if ($value_int2 == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN()) {
                 if ($LONG_VALUE == INT64_MIN() + 1) {
-                  if ($value_long2 == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN()) {
                     if ($FLOAT_VALUE == FLT_MIN() + 1) {
-                      if ($value_float2 == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN()) {
                         if ($DOUBLE_VALUE == DBL_MIN() + 1) {
-                          if ($value_double2 = DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN()) {
                             return 1;
                           }
                         }
@@ -120,25 +120,25 @@ package TestCase::Increment {
     my $value_float_ref = \$value_float;
     my $value_double_ref = \$value_double;
     
-    my $value_byte2 = ++$$value_byte_ref;
-    my $value_short2 = ++$$value_short_ref;
-    my $value_int2 = ++$$value_int_ref;
-    my $value_long2 = ++$$value_long_ref;
-    my $value_float2 = ++$$value_float_ref;
-    my $value_double2 = ++$$value_double_ref;
+    my $value_byte2 = $$value_byte_ref++;
+    my $value_short2 = $$value_short_ref++;
+    my $value_int2 = $$value_int_ref++;
+    my $value_long2 = $$value_long_ref++;
+    my $value_float2 = $$value_float_ref++;
+    my $value_double2 = $$value_double_ref++;
     
     if ($$value_byte_ref == INT8_MIN() + 1) {
-      if ($value_byte2 == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN()) {
         if ($$value_short_ref == INT16_MIN() + 1) {
-          if ($value_short2 == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN()) {
             if ($$value_int_ref == INT32_MIN() + 1) {
-              if ($value_int2 == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN()) {
                 if ($$value_long_ref == INT64_MIN() + 1) {
-                  if ($value_long2 == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN()) {
                     if ($$value_float_ref == FLT_MIN() + 1) {
-                      if ($value_float2 == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN()) {
                         if ($$value_double_ref == DBL_MIN() + 1) {
-                          if ($value_double2 = DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN()) {
                             return 1;
                           }
                         }
@@ -164,25 +164,25 @@ package TestCase::Increment {
     $simple->{float_value} = FLT_MIN();
     $simple->{double_value} = DBL_MIN();
 
-    my $value_byte2 = ++$simple->{byte_value};
-    my $value_short2 = ++$simple->{short_value};
-    my $value_int2 = ++$simple->{int_value};
-    my $value_long2 = ++$simple->{long_value};
-    my $value_float2 = ++$simple->{float_value};
-    my $value_double2 = ++$simple->{double_value};
+    my $value_byte2 = $simple->{byte_value}++;
+    my $value_short2 = $simple->{short_value}++;
+    my $value_int2 = $simple->{int_value}++;
+    my $value_long2 = $simple->{long_value}++;
+    my $value_float2 = $simple->{float_value}++;
+    my $value_double2 = $simple->{double_value}++;
     
     if ($simple->{byte_value} == INT8_MIN() + 1) {
-      if ($value_byte2 == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN()) {
         if ($simple->{short_value} == INT16_MIN() + 1) {
-          if ($value_short2 == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN()) {
             if ($simple->{int_value} == INT32_MIN() + 1) {
-              if ($value_int2 == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN()) {
                 if ($simple->{long_value} == INT64_MIN() + 1) {
-                  if ($value_long2 == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN()) {
                     if ($simple->{float_value} == FLT_MIN() + 1) {
-                      if ($value_float2 == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN()) {
                         if ($simple->{double_value} == DBL_MIN() + 1) {
-                          if ($value_double2 = DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN()) {
                             return 1;
                           }
                         }
