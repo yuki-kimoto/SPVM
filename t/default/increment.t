@@ -36,6 +36,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Post inc
 {
   ok(TestCase::Increment->post_inc_var());
+  ok(TestCase::Increment->post_inc_array_access_constant_index);
+  ok(TestCase::Increment->post_inc_array_access_var_index);
 }
 
 # Post dec
