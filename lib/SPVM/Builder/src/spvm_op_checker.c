@@ -1456,8 +1456,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_term_src = op_cur->first;
                         SPVM_OP* op_term_mutable = op_cur->last;
                         
-                        SPVM_TYPE* term_src_type = SPVM_OP_get_type(compiler, op_term_src);
-                        
                         // Convert SPECIAL_ASSIGN
                         // [before]
                         // SPECIAL_ASSIGN
@@ -1530,9 +1528,40 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                         
                         SPVM_TYPE* term_mutable_type = SPVM_OP_get_type(compiler, op_term_mutable);
-                        if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
-                          || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
-                        {
+                        SPVM_TYPE* term_src_type = SPVM_OP_get_type(compiler, op_term_src);
+                        
+                        int32_t need_conversion = 0;
+                        switch (op_cur->flag) {
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND:
+                            if (SPVM_TYPE_is_numeric_type(compiler, term_src_type->basic_type->id, term_src_type->dimension, term_src_type->flag)) {
+                              if (SPVM_TYPE_is_numeric_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)) {
+                                if (term_src_type->basic_type->id > term_mutable_type->basic_type->id) {
+                                  need_conversion = 1;
+                                }
+                              }
+                            }
+                            
+                            break;
+
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT:
+                          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED:
+                            if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
+                              || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
+                            {
+                              need_conversion = 1;
+                            }
+                            break;
+                        }
+                        
+                        if (need_conversion) {
                           SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
                           SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
                           SPVM_OP_build_convert(compiler, op_convert, op_convert_type, op_culc);
