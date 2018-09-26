@@ -1707,40 +1707,65 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           return;
                         }
 
-                        // Convert PRE_DEC
+                        // Convert POST_DEC
                         // [before]
-                        // PRE_DEC
-                        //   VAR
+                        // POST_INC
+                        //   TERM_MUTABLE
                         // 
                         // [after]
                         // SEQUENCE
-                        //   DEC
-                        //     VAR_DEC
-                        //   VAR_RET
-                        SPVM_OP* op_var = op_cur->first;
-                      
-                        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-                        SPVM_OP* op_var_from = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
+                        //   ASSIGN_TMP
+                        //     TERM_MUTABLE
+                        //     VAR_TMP1
+                        //   ASSIGN_ADD
+                        //     SUBTRACT
+                        //       VAR_TMP2
+                        //       CONST 1
+                        //     TERM_MUTABLE_CLONE
+                        //   VAR_TMP3
                         
-                        SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, op_var->uv.var->my->type, op_cur->file, op_cur->line);
-                  
-                        SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                        SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_var_from);
-                        
-                        SPVM_OP* op_var_dec = SPVM_OP_new_op_var_clone(compiler, op_var, op_cur->file, op_cur->line);
-                        
-                        SPVM_OP* op_dec = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEC, op_cur->file, op_cur->line);
-                        SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_var_dec);
-                        
-                        SPVM_OP* op_var_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp, op_cur->file, op_cur->line);
-                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
-                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_dec);
-                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
-                        
+                        SPVM_OP* op_term_mutable = op_cur->first;
+
+                        op_term_mutable->no_need_check = 1;
+
                         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                        SPVM_OP_cut_op(compiler, op_term_mutable);
+
+                        SPVM_TYPE* term_mutable_type = SPVM_OP_get_type(compiler, op_term_mutable);
+                        
+                        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+                        SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_mutable_type, op_cur->file, op_cur->line);
+                        SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+                  
+                        SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                        SPVM_OP_build_assign(compiler, op_assign_tmp, op_var_tmp1, op_term_mutable);
+
+                        SPVM_OP* op_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_cur->file, op_cur->line);
+                        SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                        SPVM_OP_build_binop(compiler, op_subtract, op_var_tmp2, op_constant);
+                        SPVM_OP* op_assign_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                        
+                        SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
+                        if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
+                          || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
+                        {
+                          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
+                          SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                          SPVM_OP_build_convert(compiler, op_convert, op_convert_type, op_subtract);
+                          SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_convert);
+                        }
+                        else {
+                          SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_subtract);
+                        }
+
+                        SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_tmp);
+                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_subtract);
+                        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp3);
+                        
                         SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                         
-                        op_cur = op_sequence;
+                        op_cur = op_term_mutable;
                         
                         break;
                       }
