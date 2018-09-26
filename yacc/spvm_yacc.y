@@ -729,7 +729,7 @@ assign
     }
   | normal_term SPECIAL_ASSIGN normal_term
     {
-      $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_special_assign(compiler, $2, $1, $3);
     }
 
 new

@@ -1453,29 +1453,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
-                        SPVM_OP* op_first = op_cur->first;
-                        SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
+                        SPVM_OP* op_term_src = op_cur->first;
+                        SPVM_OP* op_term_mutable = op_cur->last;
                         
-                        // Numeric type
-                        if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                          SPVM_yyerror_format(compiler, "special assign right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
-                        }
+                        SPVM_TYPE* term_src_type = SPVM_OP_get_type(compiler, op_term_src);
                         
                         // Convert SPECIAL_ASSIGN
                         // [before]
                         // SPECIAL_ASSIGN
-                        //   TERM_MUTABLE
                         //   TERM_SRC
+                        //   TERM_MUTABLE
                         // [after]
                         // ASSIGN
                         //   CULC
                         //     TERM_MUTABLE
                         //     TERM_SRC
                         //   TERM_MUTABLE_CLONE
-                        SPVM_OP* op_term_mutable = op_cur->first;
-                        SPVM_OP* op_term_src = op_cur->last;
                         
                         op_term_mutable->no_need_check = 1;
                         op_term_src->no_need_check = 1;
@@ -1485,6 +1478,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP_cut_op(compiler, op_term_src);
                         
                         SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
+                        op_term_mutable_clone->is_lvalue = 1;
                         
                         int32_t culc_op_id;
                         switch (op_cur->flag) {

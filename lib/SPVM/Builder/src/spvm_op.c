@@ -2284,62 +2284,19 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   return op_if;
 }
 
-SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_term_dist, SPVM_OP* op_term_src) {
+SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_term_dist, SPVM_OP* op_term_src) {
   
-  if (op_assign->id == SPVM_OP_C_ID_SPECIAL_ASSIGN) {
-    int32_t flag = op_assign->flag;
-    
-    SPVM_OP* op_operation;
-    if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MULTIPLY, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DIVIDE, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REMAINDER, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LEFT_SHIFT, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RIGHT_SHIFT, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_XOR, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_OR, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, op_assign->file, op_assign->line);
-    }
-    else if (flag == SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT) {
-      op_operation = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONCAT, op_assign->file, op_assign->line);
-    }
-    else {
-      assert(0);
-    }
-    
-    SPVM_OP* op_var_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, op_assign->file, op_assign->line);
-    op_var_right->uv.var = op_term_dist->uv.var;
-    
-    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_var_right);
-    SPVM_OP_insert_child(compiler, op_operation, op_operation->last, op_term_src);
-    
-    op_term_src = op_operation;
-    
-    op_assign->id = SPVM_OP_C_ID_ASSIGN;
+  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_term_src);
+  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_term_dist);
+  
+  if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
+    SPVM_yyerror_format(compiler, "special assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
   }
+  
+  return op_special_assign;
+}
+
+SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_term_dist, SPVM_OP* op_term_src) {
   
   // Build op
   // Exchange left and right for excecution order
