@@ -833,8 +833,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
                         if (package) {
                           if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-                            assert(array_type->dimension == 1);
-                            is_value_t_array = 1;
+                            if (array_type->dimension == 1) {
+                              is_value_t_array = 1;
+                            }
                           }
                         }
                         
@@ -2432,8 +2433,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
                       if (package) {
                         if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-                          assert(array_type->dimension == 1);
-                          is_value_t_array = 1;
+                          if (array_type->dimension == 1) {
+                            is_value_t_array = 1;
+                          }
                         }
                       }
                       

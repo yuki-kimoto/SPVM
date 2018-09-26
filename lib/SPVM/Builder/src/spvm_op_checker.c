@@ -897,17 +897,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_yyerror_format(compiler, "new operator can't create array which don't have numeric length \"%s\" at %s line %d\n", type_name, op_cur->file, op_cur->line);
                               return;
                             }
-                            
-                            // valut_t array dimension must be 1
-                            SPVM_BASIC_TYPE* basic_type = type->basic_type;
-                            SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
-                            if (package) {
-                              if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-                                if (type->dimension != 1) {
-                                  SPVM_yyerror_format(compiler, "Can't create multi dimention array of valut_t type at %s line %d\n", op_cur->file, op_cur->line);
-                                }
-                              }
-                            }
                           }
                           // Numeric type
                           else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {

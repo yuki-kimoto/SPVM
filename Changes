@@ -1,6 +1,8 @@
 0.0374 2018-09-24
   - fix assign operator return value bugs
   - support package variable relative name
+  - improve increment/decrement, can use array element, field access, package variable, deref
+  - allow value_t multi dimension array
 0.0373 2018-09-21
   - add unless statement
   - change reference type syntax to 
