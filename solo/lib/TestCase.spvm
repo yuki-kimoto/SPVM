@@ -61,6 +61,15 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $i : int;
+      
+      my $p = $i++;
+      
+      warn($p);
+      warn($i);
+    }
+
+    {
       my $values_point_byte = new TestCase::Point_b3[1];
       my $values_point_short = new TestCase::Point_s3[1];
       my $values_point_int = new TestCase::Point_i3[1];
