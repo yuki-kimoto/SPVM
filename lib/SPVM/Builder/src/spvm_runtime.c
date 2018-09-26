@@ -528,24 +528,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_COMPLEMENT_LONG:
         *(SPVM_VALUE_long*)&vars[opcode->operand0] = ~*(SPVM_VALUE_long*)&vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_INC_BYTE:
-        *(SPVM_VALUE_byte*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_SHORT:
-        *(SPVM_VALUE_short*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_INT:
-        *(SPVM_VALUE_int*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_LONG:
-        *(SPVM_VALUE_long*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_FLOAT:
-        *(float*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_DOUBLE:
-        *(double*)&vars[opcode->operand0] += (int16_t)(opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_LONG:
         *(SPVM_VALUE_long*)&vars[opcode->operand0] = (int64_t)*(SPVM_VALUE_int*)&vars[opcode->operand1];
         break;

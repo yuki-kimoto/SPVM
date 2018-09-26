@@ -1730,24 +1730,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_COMPLEMENT_LONG:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complement(env, string_buffer, "SPVM_VALUE_long", opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_INC_BYTE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_byte", opcode->operand0, (int16_t)opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_SHORT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_short", opcode->operand0, (int16_t)opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_INT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_int", opcode->operand0, (int16_t)opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_LONG:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_long", opcode->operand0, (int16_t)opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_float", opcode->operand0, (int16_t)opcode->operand1);
-        break;
-      case SPVM_OPCODE_C_ID_INC_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_inc(env, string_buffer, "SPVM_VALUE_double", opcode->operand0, (int16_t)opcode->operand1);
-        break;
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_BYTE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, "SPVM_VALUE_byte", "SPVM_VALUE_short", opcode->operand0, opcode->operand1);
         break;

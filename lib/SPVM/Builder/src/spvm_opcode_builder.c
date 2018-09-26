@@ -3104,47 +3104,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_ID_INC:
-                  case SPVM_OP_C_ID_DEC:
-                  {
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                    SPVM_OPCODE opcode;
-                    assert(type->dimension == 0);
-                    switch (type->basic_type->id) {
-                      case SPVM_BASIC_TYPE_C_ID_BYTE:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_BYTE);
-                        break;
-                      case SPVM_BASIC_TYPE_C_ID_SHORT:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_SHORT);
-                        break;
-                      case SPVM_BASIC_TYPE_C_ID_INT:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_INT);
-                        break;
-                      case SPVM_BASIC_TYPE_C_ID_LONG:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_LONG);
-                        break;
-                      case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_FLOAT);
-                        break;
-                      case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INC_DOUBLE);
-                        break;
-                    }
-                    opcode.operand0 = SPVM_OP_get_my_var_id(compiler, op_cur->first);
-                    
-                    if (op_cur->id == SPVM_OP_C_ID_INC) {
-                      opcode.operand1 = (int16_t)1;
-                    }
-                    else if (op_cur->id == SPVM_OP_C_ID_DEC) {
-                      opcode.operand1 = (int16_t)-1;
-                    }
-                    else {
-                      assert(0);
-                    }
-                    
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                    break;
-                  }
                   case SPVM_OP_C_ID_GT: {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
 
