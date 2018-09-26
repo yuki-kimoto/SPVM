@@ -152,12 +152,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve types
   SPVM_OP_CHECKER_resolve_types(compiler);
+  if (compiler->error_count > 0) {
+    return;
+  }
   
   // Resolve basic types
   SPVM_OP_CHECKER_resolve_basic_types(compiler);
   
   // Resolve packages
   SPVM_OP_CHECKER_resolve_packages(compiler);
+  if (compiler->error_count > 0) {
+    return;
+  }
 
   // Temporary buffer
   char tmp_buffer[UINT16_MAX];
