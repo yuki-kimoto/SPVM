@@ -50,6 +50,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Increment->post_inc_deref);
   ok(TestCase::Increment->post_inc_package_var_access);
   ok(TestCase::Increment->post_inc_array_field_access_constant_index);
+
+  ok(TestCase::Increment->post_inc_array_access_invocant_not_var);
+  ok(TestCase::Increment->post_inc_array_field_access_invocant_not_var);
+  ok(TestCase::Increment->post_inc_field_access_invocant_not_var);
 }
 
 # Post dec
@@ -61,6 +65,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Increment->post_dec_deref);
   ok(TestCase::Increment->post_dec_package_var_access);
   ok(TestCase::Increment->post_dec_array_field_access_constant_index);
+
+  ok(TestCase::Increment->post_dec_array_access_invocant_not_var);
+  ok(TestCase::Increment->post_dec_array_field_access_invocant_not_var);
+  ok(TestCase::Increment->post_dec_field_access_invocant_not_var);
 }
 
 # All object is freed
