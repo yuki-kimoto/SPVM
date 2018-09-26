@@ -14,7 +14,6 @@ package TestCase::Increment {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
-=pod
   sub pre_inc_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_b3[1];
     my $values_point_short = new TestCase::Point_s3[1];
@@ -63,7 +62,6 @@ package TestCase::Increment {
       }
     }
   }
-=cut
 
   sub pre_inc_package_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();

@@ -14,6 +14,12 @@ package TestCase {
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
   use SPVM::Complex_d2;
+
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
   use TestCase::Point_d3;
 
 =pod
@@ -54,6 +60,29 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      my $values_point_byte = new TestCase::Point_b3[1];
+      my $values_point_short = new TestCase::Point_s3[1];
+      my $values_point_int = new TestCase::Point_i3[1];
+      my $values_point_long = new TestCase::Point_l3[1];
+      my $values_point_float = new TestCase::Point_f3[1];
+      my $values_point_double = new TestCase::Point_d3[1];
+      
+      $values_point_byte->[0]{x} = (byte)INT8_MIN();
+      $values_point_short->[0]{x} = (short)INT16_MIN();
+      $values_point_int->[0]{x} = INT32_MIN();
+      $values_point_long->[0]{x} = INT64_MIN();
+      $values_point_float->[0]{x} = FLT_MIN();
+      $values_point_double->[0]{x} = DBL_MIN();
+
+      my $value_byte2 = ++$values_point_byte->[0]{x};
+      my $value_short2 = ++$values_point_short->[0]{x};
+      my $value_int2 = ++$values_point_int->[0]{x};
+      my $value_long2 = ++$values_point_long->[0]{x};
+      my $value_float2 = ++$values_point_float->[0]{x};
+      my $value_double2 = ++$values_point_double->[0]{x};
+    }
+
     # Increment long
     {
       my $nums = new int[2];

@@ -415,6 +415,8 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_O
   SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_var_array);
   SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_var_index);
   
+  op_array_field_access->uv.array_field_access = original_op_array_field_access->uv.array_field_access;
+  
   return op_array_field_access;
 }
 
