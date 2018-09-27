@@ -1,6 +1,389 @@
 package TestCase::SpecialAssign {
   use TestCase::Minimal;
   use TestCase::Simple;
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  
+  our $BYTE_VALUE : byte;
+  our $SHORT_VALUE : short;
+  our $INT_VALUE : int;
+  our $LONG_VALUE : long;
+  our $FLOAT_VALUE : float;
+  our $DOUBLE_VALUE : double;
+
+  sub special_assign_add_field_access_invocant_not_var : int () {
+    my $nums_of_nums = new TestCase::Minimal[2];
+    $nums_of_nums->[0] = new TestCase::Minimal;
+    
+    my $ret1 = $nums_of_nums->[0]{x} += 1;
+    
+    if ($nums_of_nums->[0]{x} == 1) {
+      if ($ret1 == 1) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub special_assign_add_array_access_invocant_not_var : int () {
+    my $nums_of_nums = new int[][2];
+    $nums_of_nums->[0] = new int[1];
+    
+    my $ret1 = $nums_of_nums->[0][0] += 1;
+    
+    if ($nums_of_nums->[0][0] == 1) {
+      if ($ret1 == 1) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub special_assign_add_array_field_access_invocant_not_var : int () {
+    my $nums_of_nums = new TestCase::Point_i3[][2];
+    $nums_of_nums->[0] = new TestCase::Point_i3[1];
+    
+    my $ret1 = $nums_of_nums->[0][0]{x} += 1;
+    
+    if ($nums_of_nums->[0][0]{x} == 1) {
+      if ($ret1 == 1) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub special_assign_add_array_field_access_constant_index : int () {
+    my $values_point_byte = new TestCase::Point_b3[1];
+    my $values_point_short = new TestCase::Point_s3[1];
+    my $values_point_int = new TestCase::Point_i3[1];
+    my $values_point_long = new TestCase::Point_l3[1];
+    my $values_point_float = new TestCase::Point_f3[1];
+    my $values_point_double = new TestCase::Point_d3[1];
+    
+    $values_point_byte->[0]{x} = (byte)INT8_MIN();
+    $values_point_short->[0]{x} = (short)INT16_MIN();
+    $values_point_int->[0]{x} = INT32_MIN();
+    $values_point_long->[0]{x} = INT64_MIN();
+    $values_point_float->[0]{x} = FLT_MIN();
+    $values_point_double->[0]{x} = DBL_MIN();
+
+    my $value_byte2 = $values_point_byte->[0]{x} += 1;
+    my $value_short2 = $values_point_short->[0]{x} += 1;
+    my $value_int2 = $values_point_int->[0]{x} += 1;
+    my $value_long2 = $values_point_long->[0]{x} += 1;
+    my $value_float2 = $values_point_float->[0]{x} += 1;
+    my $value_double2 = $values_point_double->[0]{x} += 1;
+    
+    if ($values_point_byte->[0]{x} == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($values_point_short->[0]{x} == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($values_point_int->[0]{x} == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($values_point_long->[0]{x} == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($values_point_float->[0]{x} == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($values_point_double->[0]{x} == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_package_var_access : int () {
+    $BYTE_VALUE = (byte)INT8_MIN();
+    $SHORT_VALUE = (short)INT16_MIN();
+    $INT_VALUE = INT32_MIN();
+    $LONG_VALUE = INT64_MIN();
+    $FLOAT_VALUE = FLT_MIN();
+    $DOUBLE_VALUE = DBL_MIN();
+    
+    my $value_byte2 = $BYTE_VALUE += 1;
+    my $value_short2 = $SHORT_VALUE += 1;
+    my $value_int2 = $INT_VALUE += 1;
+    my $value_long2 = $LONG_VALUE += 1;
+    my $value_float2 = $FLOAT_VALUE += 1;
+    my $value_double2 = $DOUBLE_VALUE += 1;
+    
+    if ($BYTE_VALUE == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($SHORT_VALUE == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($INT_VALUE == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($LONG_VALUE == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($FLOAT_VALUE == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($DOUBLE_VALUE == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_deref : int () {
+    my $value_byte = (byte)INT8_MIN();
+    my $value_short = (short)INT16_MIN();
+    my $value_int = INT32_MIN();
+    my $value_long = INT64_MIN();
+    my $value_float = FLT_MIN();
+    my $value_double = DBL_MIN();
+    
+    my $value_byte_ref = \$value_byte;
+    my $value_short_ref = \$value_short;
+    my $value_int_ref = \$value_int;
+    my $value_long_ref = \$value_long;
+    my $value_float_ref = \$value_float;
+    my $value_double_ref = \$value_double;
+    
+    my $value_byte2 = $$value_byte_ref += 1;
+    my $value_short2 = $$value_short_ref += 1;
+    my $value_int2 = $$value_int_ref += 1;
+    my $value_long2 = $$value_long_ref += 1;
+    my $value_float2 = $$value_float_ref += 1;
+    my $value_double2 = $$value_double_ref += 1;
+    
+    if ($$value_byte_ref == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($$value_short_ref == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($$value_int_ref == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($$value_long_ref == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($$value_float_ref == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($$value_double_ref == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_field_access : int () {
+    my $simple = new TestCase::Simple;
+    
+    $simple->{byte_value} = (byte)INT8_MIN();
+    $simple->{short_value} = (short)INT16_MIN();
+    $simple->{int_value} = INT32_MIN();
+    $simple->{long_value} = INT64_MIN();
+    $simple->{float_value} = FLT_MIN();
+    $simple->{double_value} = DBL_MIN();
+
+    my $value_byte2 = $simple->{byte_value} += 1;
+    my $value_short2 = $simple->{short_value} += 1;
+    my $value_int2 = $simple->{int_value} += 1;
+    my $value_long2 = $simple->{long_value} += 1;
+    my $value_float2 = $simple->{float_value} += 1;
+    my $value_double2 = $simple->{double_value} += 1;
+    
+    if ($simple->{byte_value} == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($simple->{short_value} == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($simple->{int_value} == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($simple->{long_value} == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($simple->{float_value} == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($simple->{double_value} == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_array_access_var_index : int () {
+    my $values_byte = new byte[1];
+    my $values_short = new short[1];
+    my $values_int = new int[1];
+    my $values_long = new long[1];
+    my $values_float = new float[1];
+    my $values_double = new double[1];
+    
+    $values_byte->[0] = (byte)INT8_MIN();
+    $values_short->[0] = (short)INT16_MIN();
+    $values_int->[0] = INT32_MIN();
+    $values_long->[0] = INT64_MIN();
+    $values_float->[0] = FLT_MIN();
+    $values_double->[0] = DBL_MIN();
+
+    my $index = 0;
+    my $value_byte2 = $values_byte->[$index] += 1;
+    my $value_short2 = $values_short->[$index] += 1;
+    my $value_int2 = $values_int->[$index] += 1;
+    my $value_long2 = $values_long->[$index] += 1;
+    my $value_float2 = $values_float->[$index] += 1;
+    my $value_double2 = $values_double->[$index] += 1;
+    
+    if ($values_byte->[0] == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($values_short->[0] == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($values_int->[0] == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($values_long->[0] == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($values_float->[0] == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($values_double->[0] == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_array_access_constant_index : int () {
+    my $values_byte = new byte[1];
+    my $values_short = new short[1];
+    my $values_int = new int[1];
+    my $values_long = new long[1];
+    my $values_float = new float[1];
+    my $values_double = new double[1];
+    
+    $values_byte->[0] = (byte)INT8_MIN();
+    $values_short->[0] = (short)INT16_MIN();
+    $values_int->[0] = INT32_MIN();
+    $values_long->[0] = INT64_MIN();
+    $values_float->[0] = FLT_MIN();
+    $values_double->[0] = DBL_MIN();
+
+    my $value_byte2 = $values_byte->[0] += 1;
+    my $value_short2 = $values_short->[0] += 1;
+    my $value_int2 = $values_int->[0] += 1;
+    my $value_long2 = $values_long->[0] += 1;
+    my $value_float2 = $values_float->[0] += 1;
+    my $value_double2 = $values_double->[0] += 1;
+    
+    if ($values_byte->[0] == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($values_short->[0] == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($values_int->[0] == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($values_long->[0] == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($values_float->[0] == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($values_double->[0] == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_add_var : int () {
+    my $value_byte = (byte)INT8_MIN();
+    my $value_short = (short)INT16_MIN();
+    my $value_int = INT32_MIN();
+    my $value_long = INT64_MIN();
+    my $value_float = FLT_MIN();
+    my $value_double = DBL_MIN();
+    
+    my $value_byte2 = $value_byte += 1;
+    my $value_short2 = $value_short += 1;
+    my $value_int2 = $value_int += 1;
+    my $value_long2 = $value_long += 1;
+    my $value_float2 = $value_float += 1;
+    my $value_double2 = $value_double += 1;
+    
+    if ($value_byte == INT8_MIN() + 1) {
+      if ($value_byte2 == INT8_MIN() + 1) {
+        if ($value_short == INT16_MIN() + 1) {
+          if ($value_short2 == INT16_MIN() + 1) {
+            if ($value_int == INT32_MIN() + 1) {
+              if ($value_int2 == INT32_MIN() + 1) {
+                if ($value_long == INT64_MIN() + 1) {
+                  if ($value_long2 == INT64_MIN() + 1) {
+                    if ($value_float == FLT_MIN() + 1) {
+                      if ($value_float2 == FLT_MIN() + 1) {
+                        if ($value_double == DBL_MIN() + 1) {
+                          if ($value_double2 = DBL_MIN() + 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   
   # Concat
   sub special_assign_concat : string () {
