@@ -15,6 +15,48 @@ package TestCase::SpecialAssign {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
+  sub special_assign_subtract_var : int () {
+    my $value_byte = (byte)INT8_MAX();
+    my $value_short = (short)INT16_MAX();
+    my $value_int = INT32_MAX();
+    my $value_long = INT64_MAX();
+    my $value_float = FLT_MAX();
+    my $value_double = DBL_MAX();
+    
+    my $value_byte2 : byte = $value_byte -=1;
+    my $value_short2 : short = $value_short -=1;
+    my $value_int2 : int = $value_int -=1;
+    my $value_long2 : long = $value_long -=1;
+    my $value_float2 : float = $value_float -=1;
+    my $value_double2 : double= $value_double -=1;
+    
+    if ($value_byte == INT8_MAX() - 1) {
+      if ($value_byte2 == INT8_MAX() - 1) {
+        if ($value_short == INT16_MAX() - 1) {
+          if ($value_short2 == INT16_MAX() - 1) {
+            if ($value_int == INT32_MAX() - 1) {
+              if ($value_int2 == INT32_MAX() - 1) {
+                if ($value_long == INT64_MAX() - 1) {
+                  if ($value_long2 == INT64_MAX() - 1) {
+                    if ($value_float == FLT_MAX() - 1) {
+                      if ($value_float2 == FLT_MAX() - 1) {
+                        if ($value_double == DBL_MAX() - 1) {
+                          if ($value_double2 = DBL_MAX() - 1) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   sub special_assign_add_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[0] = new TestCase::Minimal;

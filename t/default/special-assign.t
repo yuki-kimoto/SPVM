@@ -26,6 +26,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::SpecialAssign->special_assign_add_field_access_invocant_not_var);
 }
 
+# Special assign subtract
+{
+  ok(TestCase::SpecialAssign->special_assign_subtract_var);
+}
 
 
 # All object is freed
