@@ -2716,6 +2716,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
           }
+          
+          if (compiler->error_count > 0) {
+            return;
+          }
 
           assert(sub->file);
           
@@ -2732,6 +2736,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           {
             int32_t my_index;
             int32_t my_var_id = 0;
+            int32_t my_numeric_var_id = 0;
+            int32_t my_address_var_id = 0;
             for (my_index = 0; my_index < sub->mys->length; my_index++) {
               SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
               assert(my);
@@ -2743,6 +2749,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               my->var_id = my_var_id;
               my_var_id += width;
+              
+              if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                my->address_var_id = my_var_id;
+                my_address_var_id += width;
+              }
+              else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                my->numeric_var_id = my_var_id;
+                my_numeric_var_id += width;
+              }
+              else {
+                assert(0);
+              }
             }
           }
 
