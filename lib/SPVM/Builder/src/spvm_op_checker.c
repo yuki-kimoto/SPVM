@@ -2762,14 +2762,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 assert(0);
               }
             }
+
+            int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
+            sub->args_alloc_length = args_alloc_length;
+
+            sub->vars_alloc_length = my_var_id;
+            sub->numeric_vars_alloc_length = my_numeric_var_id;
+            sub->address_vars_alloc_length = my_address_var_id;
           }
-
-        
-          int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
-          sub->args_alloc_length = args_alloc_length;
-
-          int32_t vars_alloc_length = SPVM_SUB_get_var_alloc_length(compiler, sub);
-          sub->vars_alloc_length = vars_alloc_length;
 
           // Add more information for opcode building - Fourth tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
