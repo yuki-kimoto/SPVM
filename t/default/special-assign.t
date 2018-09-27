@@ -31,6 +31,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::SpecialAssign->special_assign_subtract_var);
 }
 
+# Special assign multiply
+{
+  ok(TestCase::SpecialAssign->special_assign_multiply_var);
+}
+
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

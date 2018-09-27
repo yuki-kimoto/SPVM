@@ -15,6 +15,48 @@ package TestCase::SpecialAssign {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
+  sub special_assign_multiply_var : int () {
+    my $value_byte = (byte)6;
+    my $value_short = (short)6;
+    my $value_int = 6;
+    my $value_long = 6L;
+    my $value_float = 0.25f;
+    my $value_double = 0.25;
+    
+    my $value_byte2 : byte = $value_byte *= 3;
+    my $value_short2 : short = $value_short *= 3;
+    my $value_int2 : int = $value_int *= 3;
+    my $value_long2 : long = $value_long *= 3;
+    my $value_float2 : float = $value_float *= 3;
+    my $value_double2 : double= $value_double *= 3;
+    
+    if ($value_byte == 6 * 3) {
+      if ($value_byte2 == 6 * 3) {
+        if ($value_short == 6 * 3) {
+          if ($value_short2 == 6 * 3) {
+            if ($value_int == 6 * 3) {
+              if ($value_int2 == 6 * 3) {
+                if ($value_long == 6 * 3) {
+                  if ($value_long2 == 6 * 3) {
+                    if ($value_float == 0.25f * 3) {
+                      if ($value_float2 == 0.25f * 3) {
+                        if ($value_double == 0.25 * 3) {
+                          if ($value_double2 = 0.25 * 3) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   sub special_assign_subtract_var : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
