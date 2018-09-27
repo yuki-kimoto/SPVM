@@ -60,6 +60,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::SpecialAssign->special_assign_bit_xor_var);
 }
 
+# Special assign left shift
+{
+  ok(TestCase::SpecialAssign->special_assign_left_shift_var);
+}
+
+# Special assign right shift
+{
+  ok(TestCase::SpecialAssign->special_assign_right_shift_var);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

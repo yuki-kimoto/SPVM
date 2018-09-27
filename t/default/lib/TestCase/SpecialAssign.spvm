@@ -15,6 +15,66 @@ package TestCase::SpecialAssign {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
+  sub special_assign_right_shift_var : int () {
+    my $value_byte = (byte)INT8_MIN();
+    my $value_short = (short)INT16_MIN();
+    my $value_int = INT32_MIN();
+    my $value_long = INT64_MIN();
+    
+    my $value_byte2 : byte = $value_byte >>= 1;
+    my $value_short2 : short = $value_short >>= 1;
+    my $value_int2 : int = $value_int >>= 1;
+    my $value_long2 : long = $value_long >>= 1;
+    
+    if ($value_byte == INT8_MIN() >> 1) {
+      if ($value_byte2 == INT8_MIN() >> 1) {
+        if ($value_short == INT16_MIN() >> 1) {
+          if ($value_short2 == INT16_MIN() >> 1) {
+            if ($value_int == INT32_MIN() >> 1) {
+              if ($value_int2 == INT32_MIN() >> 1) {
+                if ($value_long == INT64_MIN() >> 1) {
+                  if ($value_long2 == INT64_MIN() >> 1) {
+                    return 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_left_shift_var : int () {
+    my $value_byte = (byte)6;
+    my $value_short = (short)6;
+    my $value_int = 6;
+    my $value_long = 6;
+    
+    my $value_byte2 : byte = $value_byte <<= 1;
+    my $value_short2 : short = $value_short <<= 1;
+    my $value_int2 : int = $value_int <<= 1;
+    my $value_long2 : long = $value_long <<= 1;
+    
+    if ($value_byte == 6 << 1) {
+      if ($value_byte2 == 6 << 1) {
+        if ($value_short == 6 << 1) {
+          if ($value_short2 == 6 << 1) {
+            if ($value_int == 6 << 1) {
+              if ($value_int2 == 6 << 1) {
+                if ($value_long == 6 << 1) {
+                  if ($value_long2 == 6 << 1) {
+                    return 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   sub special_assign_bit_xor_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
