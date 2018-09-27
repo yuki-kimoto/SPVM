@@ -36,6 +36,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::SpecialAssign->special_assign_multiply_var);
 }
 
+# Special assign divide
+{
+  ok(TestCase::SpecialAssign->special_assign_divide_var);
+}
+# Special assign remainder
+{
+  ok(TestCase::SpecialAssign->special_assign_remainder_var);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
