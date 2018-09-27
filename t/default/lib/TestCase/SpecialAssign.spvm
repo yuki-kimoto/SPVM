@@ -351,12 +351,12 @@ package TestCase::SpecialAssign {
     my $value_float = FLT_MIN();
     my $value_double = DBL_MIN();
     
-    my $value_byte2 = $value_byte += 1;
-    my $value_short2 = $value_short += 1;
-    my $value_int2 = $value_int += 1;
-    my $value_long2 = $value_long += 1;
-    my $value_float2 = $value_float += 1;
-    my $value_double2 = $value_double += 1;
+    my $value_byte2 : byte = $value_byte += 1;
+    my $value_short2 : short = $value_short += 1;
+    my $value_int2 : int = $value_int += 1;
+    my $value_long2 : long = $value_long += 1;
+    my $value_float2 : float = $value_float += 1;
+    my $value_double2 : double= $value_double += 1;
     
     if ($value_byte == INT8_MIN() + 1) {
       if ($value_byte2 == INT8_MIN() + 1) {
