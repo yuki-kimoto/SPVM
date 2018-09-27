@@ -290,6 +290,7 @@ t/default/lib/TestCase/Private.spvm
 t/default/lib/TestCase/Ref.spvm
 t/default/lib/TestCase/Short.spvm
 t/default/lib/TestCase/Simple.spvm
+t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Unless.spvm
@@ -304,6 +305,7 @@ t/default/object.t
 t/default/package_var.t
 t/default/perl-api.t
 t/default/ref.t
+t/default/special-assign.t
 t/default/string.t
 t/default/switch.t
 t/default/unless.t
