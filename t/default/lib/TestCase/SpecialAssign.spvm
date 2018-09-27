@@ -15,6 +15,96 @@ package TestCase::SpecialAssign {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
+  sub special_assign_bit_xor_var : int () {
+    my $value_byte = (byte)6;
+    my $value_short = (short)6;
+    my $value_int = 6;
+    my $value_long = 6;
+    
+    my $value_byte2 : byte = $value_byte ^= 3;
+    my $value_short2 : short = $value_short ^= 3;
+    my $value_int2 : int = $value_int ^= 3;
+    my $value_long2 : long = $value_long ^= 3;
+    
+    if ($value_byte == 6 ^ 3) {
+      if ($value_byte2 == 6 ^ 3) {
+        if ($value_short == 6 ^ 3) {
+          if ($value_short2 == 6 ^ 3) {
+            if ($value_int == 6 ^ 3) {
+              if ($value_int2 == 6 ^ 3) {
+                if ($value_long == 6 ^ 3) {
+                  if ($value_long2 == 6 ^ 3) {
+                    return 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_bit_or_var : int () {
+    my $value_byte = (byte)6;
+    my $value_short = (short)6;
+    my $value_int = 6;
+    my $value_long = 6;
+    
+    my $value_byte2 : byte = $value_byte |= 3;
+    my $value_short2 : short = $value_short |= 3;
+    my $value_int2 : int = $value_int |= 3;
+    my $value_long2 : long = $value_long |= 3;
+    
+    if ($value_byte == 6 | 3) {
+      if ($value_byte2 == 6 | 3) {
+        if ($value_short == 6 | 3) {
+          if ($value_short2 == 6 | 3) {
+            if ($value_int == 6 | 3) {
+              if ($value_int2 == 6 | 3) {
+                if ($value_long == 6 | 3) {
+                  if ($value_long2 == 6 | 3) {
+                    return 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  sub special_assign_bit_and_var : int () {
+    my $value_byte = (byte)6;
+    my $value_short = (short)6;
+    my $value_int = 6;
+    my $value_long = 6;
+    
+    my $value_byte2 : byte = $value_byte &= 3;
+    my $value_short2 : short = $value_short &= 3;
+    my $value_int2 : int = $value_int &= 3;
+    my $value_long2 : long = $value_long &= 3;
+    
+    if ($value_byte == 6 & 3) {
+      if ($value_byte2 == 6 & 3) {
+        if ($value_short == 6 & 3) {
+          if ($value_short2 == 6 & 3) {
+            if ($value_int == 6 & 3) {
+              if ($value_int2 == 6 & 3) {
+                if ($value_long == 6 & 3) {
+                  if ($value_long2 == 6 & 3) {
+                    return 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   sub special_assign_remainder_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;

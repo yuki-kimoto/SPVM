@@ -45,6 +45,21 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::SpecialAssign->special_assign_remainder_var);
 }
 
+# Special assign bit and
+{
+  ok(TestCase::SpecialAssign->special_assign_bit_and_var);
+}
+
+# Special assign bit or
+{
+  ok(TestCase::SpecialAssign->special_assign_bit_or_var);
+}
+
+# Special assign bit xor
+{
+  ok(TestCase::SpecialAssign->special_assign_bit_xor_var);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
