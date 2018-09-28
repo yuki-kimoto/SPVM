@@ -2857,9 +2857,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         else if (opcode_id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    void* object = *(void**)&vars[");
-          SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
-          SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, opcode->operand2);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = env->get_sub_id_method_call(env, object, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
