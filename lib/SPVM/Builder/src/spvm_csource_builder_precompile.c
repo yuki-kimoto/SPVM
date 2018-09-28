@@ -85,7 +85,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(SPVM_ENV* env, SPVM_STRING_BUFFER* 
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var_offset(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index, int32_t offset) {
-  SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS) {
+    SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  }
+  else {
+    SPVM_STRING_BUFFER_add(string_buffer, "vars[");
+  }
   SPVM_STRING_BUFFER_add_int(string_buffer, index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_STRING_BUFFER_add_int(string_buffer, offset);
