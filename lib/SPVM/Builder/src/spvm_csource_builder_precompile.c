@@ -879,7 +879,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
   int32_t vars_alloc_length = sub->vars_alloc_length;
-  
+
   // Variable declaration
   if (sub->my_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE vars[");
