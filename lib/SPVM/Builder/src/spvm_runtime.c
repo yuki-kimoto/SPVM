@@ -1753,13 +1753,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t mortal_stack_index;
         for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {
           int32_t var_index = mortal_stack[mortal_stack_index];
+          void** object_address = (void**)&address_vars[var_index];
           
           if (*(void**)&address_vars[var_index] != NULL) {
-            if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)&address_vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&address_vars[var_index]); }
-            else { env->dec_ref_count(env, *(void**)&address_vars[var_index]); }
+            if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*object_address) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*object_address); }
+            else { env->dec_ref_count(env, *object_address); }
           }
           
-          *(void**)&address_vars[var_index] = NULL;
+          *object_address = NULL;
         }
         
         mortal_stack_top = original_mortal_stack_top;
