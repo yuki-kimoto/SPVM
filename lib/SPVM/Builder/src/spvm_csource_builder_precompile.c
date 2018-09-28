@@ -44,6 +44,32 @@
 #include "spvm_field.h"
 #include "spvm_type.h"
 
+const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_type_name(SPVM_ENV* env, int32_t ctype_id) {
+  switch (ctype_id) {
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE:
+      return "int8_t";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT:
+      return "int16_t";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT:
+      return "int32_t";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG:
+      return "int64_t";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT:
+      return "float";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE:
+      return "double";
+      break;
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS:
+      return "void*";
+      break;
+  }
+}
+
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t index) {
   
   SPVM_STRING_BUFFER_add(string_buffer, "vars[");
