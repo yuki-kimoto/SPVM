@@ -2277,10 +2277,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           SPVM_STRING_BUFFER_add(string_buffer, "      int32_t mortal_stack_index;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        int32_t var_index = mortal_stack[mortal_stack_index];\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "        if (*(void**)&vars[var_index] != NULL) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)&vars[var_index]) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&vars[var_index]); }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "          else { env->dec_ref_count(env, *(void**)&vars[var_index]); }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "          *(void**)&vars[var_index] = NULL;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        void** object_address = (void**)&vars[var_index];\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        if (*object_address != NULL) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "          if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*object_address) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*object_address); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "          else { env->dec_ref_count(env, *object_address); }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "          *object_address = NULL;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
