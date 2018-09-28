@@ -890,7 +890,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   int32_t address_vars_alloc_length = sub->address_vars_alloc_length;
   if (sub->address_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE address_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, address_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
@@ -898,7 +898,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   int32_t numeric_vars_alloc_length = sub->numeric_vars_alloc_length;
   if (sub->numeric_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE numeric_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, numeric_vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
