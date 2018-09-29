@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use SPVM();
 use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
 
