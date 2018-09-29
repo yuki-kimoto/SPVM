@@ -778,7 +778,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         else {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                          if (field_type->dimension == 0) {
+                          int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
+                          int32_t var_id_out;
+
+                          if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_OBJECT);
+                            var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
+                          }
+                          else {
                             switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE:
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_BYTE);
@@ -799,17 +806,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE);
                                 break;
                               default:
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_OBJECT);
+                                assert(0);
                             }
-                          }
-                          else {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_OBJECT);
+                            var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
                           }
                           
-                          // Field absolute name symbol
-                          int32_t var_id_out = SPVM_OP_get_my_var_id(compiler, op_assign_dist);
-                          int32_t var_id_invocant = SPVM_OP_get_my_var_id(compiler, op_term_invocant);
-
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_invocant;
                           opcode.operand2 = field_access->sub_rel_id;
