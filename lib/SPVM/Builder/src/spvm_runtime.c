@@ -2303,9 +2303,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         continue;
       }
-      case SPVM_OPCODE_C_ID_REF:
-        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
-        break;
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t rel_id = opcode->operand2;
 
@@ -2595,6 +2592,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_REF:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
         *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_byte*)*(void**)&address_vars[opcode->operand1];
         break;
