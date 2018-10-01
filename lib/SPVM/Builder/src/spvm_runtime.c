@@ -155,29 +155,34 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     // address_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * address_vars_alloc_length);
   }
 
-  if (numeric_vars) {
-    int32_t args_alloc_length = sub->args_alloc_length;
-    if (args_alloc_length > 0) {
-      memcpy(numeric_vars, stack, sizeof(SPVM_VALUE) * args_alloc_length);
-    }
-  }
-  if (address_vars) {
-    int32_t args_alloc_length = sub->args_alloc_length;
-    if (args_alloc_length > 0) {
-      memcpy(address_vars, stack, sizeof(SPVM_VALUE) * args_alloc_length);
-    }
-  }
-  
-  // If arg is object, increment reference count
   {
+    int32_t stack_index = 0;
     for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
       SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
+      
+      int32_t arg_width;
+      if (SPVM_RUNTIME_API_is_numeric_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
+        arg_width = 1;
+        memcpy(&numeric_vars[stack_index], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+      }
+      else if (SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
+        arg_width = SPVM_RUNTIME_API_get_width(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+        memcpy(&numeric_vars[stack_index], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+      }
+      else {
+        arg_width = 1;
+        memcpy(&address_vars[stack_index], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+      }
+      
+      // If arg is object, increment reference count
       if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        void* object = *(void**)&address_vars[arg->var_id];
+        void* object = *(void**)&address_vars[stack_index];
         if (object != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }
       }
+      
+      stack_index += arg_width;
     }
   }
   
