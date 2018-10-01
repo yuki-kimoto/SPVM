@@ -828,18 +828,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
-                        int32_t is_value_type_array = 0;
-                        SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
-                        SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
-                        if (package) {
-                          if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
-                            if (array_type->dimension == 1) {
-                              is_value_type_array = 1;
-                            }
-                          }
-                        }
-                        
-                        if (is_value_type_array) {
+                        if (SPVM_TYPE_is_value_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
+                          SPVM_PACKAGE* package = array_type->basic_type->package;
                           SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
                           
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -872,7 +862,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
                           int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_numeric_var_id(compiler, op_term_index);
-                          int32_t unit = array_basic_type->package->fields->length;
+                          int32_t unit = array_type->basic_type->package->fields->length;
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_array;
