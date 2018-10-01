@@ -828,18 +828,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
-                        int32_t is_value_t_array = 0;
+                        int32_t is_value_type_array = 0;
                         SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
                         SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
                         if (package) {
                           if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                             if (array_type->dimension == 1) {
-                              is_value_t_array = 1;
+                              is_value_type_array = 1;
                             }
                           }
                         }
                         
-                        if (is_value_t_array) {
+                        if (is_value_type_array) {
                           SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
                           
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -978,9 +978,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (op_assign_src->id == SPVM_OP_C_ID_DEREF) {
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                         
-                        int32_t is_value_t_array = SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
+                        int32_t is_value_type_array = SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
 
-                        if (is_value_t_array) {
+                        if (is_value_type_array) {
                           SPVM_FIELD* first_field = SPVM_LIST_fetch(src_type->basic_type->package->fields, 0);
                         
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -2214,18 +2214,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   break;
                                 }
                                 default: {
-                                  int32_t is_value_t_array = 0;
+                                  int32_t is_value_type_array = 0;
                                   
                                   SPVM_BASIC_TYPE* basic_type = type->basic_type;
                                   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
                                   if (package) {
                                     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                                       assert(type->dimension == 1);
-                                      is_value_t_array = 1;
+                                      is_value_type_array = 1;
                                     }
                                   }
                                   
-                                  if (is_value_t_array) {
+                                  if (is_value_type_array) {
                                     SPVM_OPCODE opcode;
                                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -2551,18 +2551,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
-                      int32_t is_value_t_array = 0;
+                      int32_t is_value_type_array = 0;
                       SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
                       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, array_basic_type->name, strlen(array_basic_type->name));
                       if (package) {
                         if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                           if (array_type->dimension == 1) {
-                            is_value_t_array = 1;
+                            is_value_type_array = 1;
                           }
                         }
                       }
                       
-                      if (is_value_t_array) {
+                      if (is_value_type_array) {
                         SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
                       
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
