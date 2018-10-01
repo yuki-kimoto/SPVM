@@ -664,7 +664,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         // Field absolute name symbol
                         int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
-                        int32_t var_id_invocant = SPVM_OP_get_numeric_var_id(compiler, op_term_invocant);
+                        int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
                         int32_t var_id_index = SPVM_OP_get_numeric_var_id(compiler, op_term_index);
                         
                         int32_t unit = array_basic_type->package->fields->length;
@@ -2684,7 +2684,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                         }
 
-                        int32_t var_id_invocant = SPVM_OP_get_numeric_var_id(compiler, op_term_invocant);
+                        int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
                         int32_t var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_assign_src);
                         
                         int32_t unit = invocant_type->basic_type->package->fields->length;
@@ -2781,7 +2781,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           
-                          int32_t var_id_invocant = SPVM_OP_get_numeric_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
                           
                           opcode.operand0 = var_id_invocant;
                           opcode.operand1 = field_access->sub_rel_id;
@@ -2833,7 +2833,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_VALUE_ARRAY_FIELD_STORE_DOUBLE);
                       }
                       
-                      int32_t var_id_invocant = SPVM_OP_get_numeric_var_id(compiler, op_term_invocant);
+                      int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
                       int32_t var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_assign_src);
                       int32_t var_id_index = SPVM_OP_get_numeric_var_id(compiler, op_term_index);
 
