@@ -2230,7 +2230,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_BYTE:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_byte*)&stack[0] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
@@ -2238,7 +2238,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_SHORT:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_short*)&stack[0] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
@@ -2246,7 +2246,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_INT:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_int*)&stack[0] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
@@ -2254,7 +2254,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_LONG:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_long*)&stack[0] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
@@ -2262,7 +2262,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_FLOAT:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_float*)&stack[0] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
@@ -2270,7 +2270,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_DOUBLE:
       {
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        *(SPVM_VALUE_double*)&stack[0] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0];
         
         opcode_rel_index = opcode->operand1;
         
