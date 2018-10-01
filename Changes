@@ -1,3 +1,7 @@
+0.0378 2018-10-02
+  - fix exe compiler error library bugs
+0.0377 2018-10-01
+  - fix exe compiler error bugs
 0.0375 2018-09-26
   - improve increment/decrement, can use array element, field access, package variable, deref
   - allow value_t multi dimension array
