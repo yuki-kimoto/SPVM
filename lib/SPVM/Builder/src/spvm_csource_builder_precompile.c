@@ -3176,14 +3176,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
             }
           }
         }
-        // Object type
-        else if (sub_return_type_is_object_type) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, 0);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, var_id);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
         // Numeric type
         else {
           switch (sub_return_basic_type_id) {
