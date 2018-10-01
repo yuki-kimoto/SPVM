@@ -138,11 +138,12 @@ sub create_exe_file {
 
   my $build_dir = $self->{build_dir};
   
+  my $build_config = SPVM::Builder::Util::new_default_build_config();
+
+  my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
   my $extra_linker_flag = '';
   my $object_files = [];
   push @$object_files, glob "$build_dir/*.$dlext";
-  
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
   
   $extra_linker_flag .= " -L$build_dir";
   
@@ -152,6 +153,7 @@ sub create_exe_file {
     $module_shared_lib_name =~ s/\.$dlext$//;
     $extra_linker_flag .= " -l$module_shared_lib_name";
   }
+  $extra_linker_flag = "$extra_linker_flag $original_extra_linker_flag";
   
   # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;

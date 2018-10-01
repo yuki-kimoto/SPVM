@@ -249,6 +249,7 @@ sub compile_objects {
     $cbuilder->compile(
       source => $src_file,
       object_file => $object_file,
+      extra_compiler_flags => $build_config->get_extra_compiler_flags,
     );
     push @$object_files, $object_file;
   }
@@ -333,8 +334,8 @@ sub link_shared_lib {
     objects => $object_files,
     package_name => $package_name,
     dl_func_list => $cfunc_names,
+    extra_linker_flags => $build_config->get_extra_linker_flags,
   );
-  
 
   # Create shared lib blib directory
   my $shared_lib_dir = "$output_dir/$package_path";

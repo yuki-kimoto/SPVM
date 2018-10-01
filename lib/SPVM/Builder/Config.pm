@@ -146,6 +146,58 @@ sub add_lddlflags {
   return $self;
 }
 
+sub set_extra_compiler_flags {
+  my ($self, $extra_compiler_flags) = @_;
+  
+  $self->set_config(extra_compiler_flags => $extra_compiler_flags);
+  
+  return $self;
+}
+
+sub get_extra_compiler_flags {
+  my $self = shift;
+  
+  return $self->get_config('extra_compiler_flags');
+}
+
+sub add_extra_compiler_flags {
+  my ($self, $new_extra_compiler_flags) = @_;
+  
+  my $extra_compiler_flags = $self->get_config('extra_compiler_flags');
+  
+  $extra_compiler_flags .= " $new_extra_compiler_flags";
+  
+  $self->set_config('extra_compiler_flags' => $extra_compiler_flags);
+  
+  return $self;
+}
+
+sub set_extra_linker_flags {
+  my ($self, $extra_linker_flags) = @_;
+  
+  $self->set_config(extra_linker_flags => $extra_linker_flags);
+  
+  return $self;
+}
+
+sub get_extra_linker_flags {
+  my $self = shift;
+  
+  return $self->get_config('extra_linker_flags');
+}
+
+sub add_extra_linker_flags {
+  my ($self, $new_extra_linker_flags) = @_;
+  
+  my $extra_linker_flags = $self->get_config('extra_linker_flags');
+  
+  $extra_linker_flags .= " $new_extra_linker_flags";
+  
+  $self->set_config('extra_linker_flags' => $extra_linker_flags);
+  
+  return $self;
+}
+
 =head1 NAME
 
 SPVM::Builder::Config - build config

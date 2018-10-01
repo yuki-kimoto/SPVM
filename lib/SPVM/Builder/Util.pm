@@ -212,7 +212,7 @@ sub new_default_build_config {
   $build_config->add_ccflags("-I$lib_dir");
   
   # math library
-  $build_config->add_lddlflags("-lm");
+  $build_config->add_extra_linker_flags("-lm");
   
   # C99
   $build_config->set_std('c99');
