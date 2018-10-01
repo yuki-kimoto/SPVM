@@ -3779,14 +3779,34 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         if (sub->return_type->dimension == 0) {
                           switch (sub->return_type->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_BYTE:
-                            case SPVM_BASIC_TYPE_C_ID_SHORT:
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                              SPVM_TYPE* sub_return_type = sub->return_type;
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_BYTE);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                              SPVM_TYPE* sub_return_type = sub->return_type;
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_SHORT);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_INT: {
+                              SPVM_TYPE* sub_return_type = sub->return_type;
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_INT);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_LONG: {
+                              SPVM_TYPE* sub_return_type = sub->return_type;
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_LONG);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                              SPVM_TYPE* sub_return_type = sub->return_type;
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_FLOAT);
+                              break;
+                            }
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                               SPVM_TYPE* sub_return_type = sub->return_type;
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_DOUBLE);
                               break;
                             }
                             default: {
