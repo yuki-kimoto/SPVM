@@ -404,7 +404,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (op_assign_src->id == SPVM_OP_C_ID_CONCAT) {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                         
-                        assert(first_type->dimension == 1 && first_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE);
+                        assert(SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag));
                         
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1630,7 +1630,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING);
                             var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_src_term);
@@ -1694,7 +1694,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING);
                             var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_src_term);
@@ -1758,7 +1758,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING);
                             var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_src_term);
@@ -1822,7 +1822,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING);
                             var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_src_term);
@@ -1886,7 +1886,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING);
                             var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_src_term);
@@ -1929,7 +1929,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT);
                             }
                           }
-                          else if (dist_type->dimension == 1 && dist_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                          else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING);
                           }
                           else {
@@ -3304,7 +3304,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    assert(type->dimension == 0);
+                    assert(SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag));
                     switch (type->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_INT:
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LT_INT);
@@ -3339,7 +3339,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode;
                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
                     
-                    assert(type->dimension == 0);
+                    assert(SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag));
                     switch (type->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_INT:
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LE_INT);
