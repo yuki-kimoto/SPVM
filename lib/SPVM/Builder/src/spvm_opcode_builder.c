@@ -2620,7 +2620,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_DOUBLE);
                             }
                             else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT);
+                              assert(0);
                             }
                             var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_assign_src);
                           }
@@ -2629,7 +2629,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
                           }
                           
-                          int32_t var_id_array = SPVM_OP_get_numeric_var_id(compiler, op_term_array);
+                          int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_numeric_var_id(compiler, op_term_index);
                           
                           opcode.operand0 = var_id_array;
