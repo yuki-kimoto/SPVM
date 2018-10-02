@@ -1,3 +1,5 @@
+0.0379 2018-10-03
+  - fix temporary variable memory position bugs
 0.0378 2018-10-02
   - fix exe compiler error library bugs
 0.0377 2018-10-01
