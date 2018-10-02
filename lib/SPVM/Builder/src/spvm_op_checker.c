@@ -416,8 +416,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
                         SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
                         
-                        SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR, file, line);
-                        op_var_tmp_ret->uv.var = op_var_tmp_new->uv.var;
+                        SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
                         
                         SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
