@@ -51,6 +51,8 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type
   }
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
+  op_my->uv.my->is_tmp = 1;
+  
   return op_var;
 }
 
@@ -324,6 +326,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                         SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+                        SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp_new->uv.var->my);
                         SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
                         
                         SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
@@ -1337,6 +1340,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                         SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                        SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp1->uv.var->my);
+                        SPVM_LIST_push(my_stack, op_var_tmp1->uv.var->my);
+
                         SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
                   
                         SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -1411,7 +1417,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* term_mutable_type = SPVM_OP_get_type(compiler, op_term_mutable);
                         
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+                        
                         SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                        SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp1->uv.var->my);
+                        SPVM_LIST_push(my_stack, op_var_tmp1->uv.var->my);
+                        
                         SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
                   
                         SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -1987,8 +1997,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             return;
                           }
                           else {
-                            SPVM_LIST_push(sub->mys, my);
-                            SPVM_LIST_push(my_stack, my);
+                            if (!my->is_tmp) {
+                              SPVM_LIST_push(sub->mys, my);
+                              SPVM_LIST_push(my_stack, my);
+                            }
                           }
                           
                           // Type can't be detected

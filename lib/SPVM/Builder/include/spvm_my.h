@@ -10,6 +10,7 @@ struct SPVM_my {
   int32_t var_id;
   int32_t numeric_var_id;
   int32_t address_var_id;
+  int32_t is_tmp;
 };
 
 SPVM_MY* SPVM_MY_new();
