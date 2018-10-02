@@ -2343,7 +2343,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                         }
                         else {
-                          // If object term is not var, create assign operator
+                          // If invoker term is not var, create assign operator
+                          // [Before]
+                          // TERM
+                          // [After]
+                          // ASSIGN
+                          //   TERM
+                          //   VAR
                           SPVM_OP* op_term_invocker = op_cur->first;
                           if (op_term_invocker->id != SPVM_OP_C_ID_VAR) {
                             op_cur->no_need_check = 1;
