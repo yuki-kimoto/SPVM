@@ -581,7 +581,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                         }
 
-                        int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                        int32_t var_id_out;
+                        if (SPVM_TYPE_is_object_type(compiler, sub_call_sub->return_type->basic_type->id, sub_call_sub->return_type->dimension, sub_call_sub->return_type->flag)) {
+                          var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                        }
+                        else {
+                          var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                        }
 
                         // Call subroutine
                         SPVM_OPCODE opcode;
