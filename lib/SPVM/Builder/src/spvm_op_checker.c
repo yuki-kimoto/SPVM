@@ -50,11 +50,6 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_OP* op_sub
     op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   }
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
-
-  // Add op mys
-  if (op_sub) {
-    SPVM_LIST_push(op_sub->uv.sub->mys, my);
-  }
   
   return op_var;
 }
@@ -2191,7 +2186,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
                           
-                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                           SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
                           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2211,7 +2207,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
                           
-                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, term_index_type, op_cur->file, op_cur->line);
+                          SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                           SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
                           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2312,7 +2309,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                             SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
 
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -2332,7 +2330,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                             SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
                             
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -2353,7 +2352,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_invocker);
                             
-                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, term_index_type, op_cur->file, op_cur->line);
+                            SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                             SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
                             
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -2670,7 +2670,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                   // Create temporary variable
                   if (create_tmp_var) {
-                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub->op_sub, tmp_var_type, op_cur->file, op_cur->line);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, tmp_var_type, op_cur->file, op_cur->line);
+                    SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                     
                     if (op_var_tmp == NULL) {
                       return;
