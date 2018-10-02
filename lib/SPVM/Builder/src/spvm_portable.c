@@ -74,6 +74,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 }
 
 void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
+
   
   if (portable->subs_length >= portable->subs_capacity) {
     int32_t new_portable_subs_capacity = portable->subs_capacity * 2;
@@ -137,7 +138,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
     SPVM_PORTABLE_push_arg(portable, my);
   }
-
   for (int32_t my_id = 0; my_id < sub->mys->length; my_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_id);
     SPVM_PORTABLE_push_my(portable, my);
@@ -196,7 +196,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
 }
 
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
-  
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
   
   // Portable basic type

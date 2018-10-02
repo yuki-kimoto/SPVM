@@ -3859,5 +3859,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   printf("\n[OP codes]\n");
   SPVM_DUMPER_dump_packages_opcode_array(compiler, compiler->packages);
 #endif
-  
+
+    
+
 }

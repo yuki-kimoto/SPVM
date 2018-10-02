@@ -156,11 +156,13 @@ package TestCase::Array {
     my $nums = new int[] {1, 2, 3};
     my $nums2 : int[];
     $nums2 = new int[] {4, 5, 6};
-    
+
+=pod
     my $num3 = [
       [1, 2, 3],
       [4, 5, 6]
     ];
+=cut
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -168,9 +170,9 @@ package TestCase::Array {
           if ($nums2->[0] == 4) {
             if ($nums2->[1] == 5) {
               if ($nums2->[2] == 6) {
-                if ($num3->[1][2] == 6) {
+                # if ($num3->[1][2] == 6) {
                   return 1;
-                }
+                # }
               }
             }
           }

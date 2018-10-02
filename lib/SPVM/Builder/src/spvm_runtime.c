@@ -163,20 +163,20 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       int32_t arg_width;
       if (SPVM_RUNTIME_API_is_numeric_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
         arg_width = 1;
-        memcpy(&numeric_vars[arg->var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+        memcpy(&numeric_vars[arg->numeric_var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
       }
       else if (SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
         arg_width = SPVM_RUNTIME_API_get_width(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-        memcpy(&numeric_vars[arg->var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+        memcpy(&numeric_vars[arg->numeric_var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
       }
       else {
         arg_width = 1;
-        memcpy(&address_vars[arg->var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
+        memcpy(&address_vars[arg->address_var_id], &stack[stack_index], sizeof(SPVM_VALUE) * arg_width);
       }
       
       // If arg is object, increment reference count
       if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        void* object = *(void**)&address_vars[arg->var_id];
+        void* object = *(void**)&address_vars[arg->address_var_id];
         if (object != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }
