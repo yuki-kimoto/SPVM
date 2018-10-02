@@ -3491,8 +3491,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                     }
                     
-                    int32_t var_id_in1 = SPVM_OP_get_numeric_var_id(compiler, op_cur->first);
-                    int32_t var_id_in2 = SPVM_OP_get_numeric_var_id(compiler, op_cur->last);
+                    int32_t var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                    int32_t var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_cur->last);
                     
                     opcode.operand0 = var_id_in1;
                     opcode.operand1 = var_id_in2;
