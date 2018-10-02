@@ -3155,12 +3155,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_MORTAL);
-                        opcode.operand0 = my->var_id;
+                        int32_t my_address_var_id = SPVM_OP_get_address_var_id(compiler, op_cur);
+                        opcode.operand0 = my_address_var_id;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         
-                        int32_t my_var_id = my->var_id;
-                        SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_var_id);
+                        SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_address_var_id);
                         
                         mortal_stack_top_max++;
                         
