@@ -47,9 +47,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
   portable->args_capacity = 8;
-  portable->args_unit = 4;
+  portable->args_unit = 6;
   portable->mys_capacity = 8;
-  portable->mys_unit = 4;
+  portable->mys_unit = 6;
   portable->info_package_var_ids_capacity = 8;
   portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
@@ -316,6 +316,8 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_arg[1] = my->type->basic_type->id;
   new_portable_arg[2] = my->type->dimension;
   new_portable_arg[3] = my->type->flag;
+  new_portable_arg[4] = my->numeric_var_id;
+  new_portable_arg[5] = my->address_var_id;
 
   portable->args_length++;
 }
@@ -336,6 +338,8 @@ void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_my[1] = my->type->basic_type->id;
   new_portable_my[2] = my->type->dimension;
   new_portable_my[3] = my->type->flag;
+  new_portable_my[4] = my->numeric_var_id;
+  new_portable_my[5] = my->address_var_id;
 
   portable->mys_length++;
 }
