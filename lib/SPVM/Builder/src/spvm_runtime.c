@@ -2150,6 +2150,54 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top++;
         
         break;
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_BYTE: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_byte*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_SHORT: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_short*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_INT: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_int*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_LONG: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_long*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_FLOAT: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_float*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_VALUE_DOUBLE: {
+        int32_t field_length = opcode->operand1;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
+          *(SPVM_VALUE_double*)&stack[call_sub_arg_stack_top + field_offset] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_offset];
+        }
+        call_sub_arg_stack_top += field_length;
+        break;
+      }
       case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
         void* object = *(void**)&address_vars[opcode->operand1];
         
