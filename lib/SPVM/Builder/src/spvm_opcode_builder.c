@@ -532,6 +532,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     var_id_arg = SPVM_OP_get_double_var_id(compiler, op_term_arg);
                                     break;
                                   }
+                                  default:
+                                    assert(0);
                                 }
                                 
                                 opcode.operand0 = var_id_arg;
@@ -585,6 +587,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     var_id_arg = SPVM_OP_get_double_var_id(compiler, op_term_arg);
                                     break;
                                   }
+                                  default:
+                                    assert(0);
                                 }
                                 
                                 opcode.operand0 = var_id_arg;
