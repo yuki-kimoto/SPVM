@@ -1742,6 +1742,48 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_MOVE_REF:
         *(void**)&address_vars[opcode->operand0] = *(void**)&address_vars[opcode->operand1];
         break;
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_BYTE: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_SHORT: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_INT: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_LONG: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_FLOAT: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_MOVE_DOUBLE: {
+        int32_t length = opcode->operand2;
+        for (int32_t offset = 0; offset < length; offset++) {
+          *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + offset] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand1 + offset];
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
         assert(mortal_stack_top < sub->mortal_stack_length);
         mortal_stack[mortal_stack_top] = opcode->operand0;
