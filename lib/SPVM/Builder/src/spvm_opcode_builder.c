@@ -738,7 +738,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_invocant;
-                          opcode.operand3 = (field_offset << 4) + field_length;
+                          opcode.operand2 = field_offset;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
@@ -2655,7 +2655,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand0 = var_id_invocant;
                         opcode.operand1 = var_id_in;
-                        opcode.operand3 = (field_offset << 4) + field_length;
+                        opcode.operand2 = field_offset;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }

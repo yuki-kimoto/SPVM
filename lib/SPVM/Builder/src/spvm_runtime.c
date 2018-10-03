@@ -1616,7 +1616,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_VALUE_DEREF_DOUBLE: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
         int32_t field_length = opcode->operand3;
-        
         for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
           *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_double*)&value_ref[field_offset];
         }
@@ -1624,97 +1623,73 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_BYTE: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_byte*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_SHORT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_short*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_INT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_int*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_LONG: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_long*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_FLOAT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_float*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_GET_FIELD_DOUBLE: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand1];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
-        
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_double*)&value_ref[field_offset];
-
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_BYTE: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_byte*)&value_ref[field_offset] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_SHORT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_short*)&value_ref[field_offset] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_INT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_int*)&value_ref[field_offset] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_LONG: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_long*)&value_ref[field_offset] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_FLOAT: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_float*)&value_ref[field_offset] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_VALUE_DEREF_SET_FIELD_DOUBLE: {
         SPVM_VALUE* value_ref = *(SPVM_VALUE**)&address_vars[opcode->operand0];
-        int32_t field_length = opcode->operand3 & 0xF;
-        int32_t field_offset = opcode->operand3 >> 4;
+        int32_t field_offset = opcode->operand2;
         *(SPVM_VALUE_double*)&value_ref[field_offset] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand1];
         break;
       }
