@@ -1226,27 +1226,38 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
                         assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                        
+
+                        int32_t var_id_out;
+                        int32_t var_id_in1;
+                        int32_t var_id_in2;
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_INT);
+                            var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_int_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_int_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_LONG);
+                            var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_long_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_long_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_FLOAT);
+                            var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_float_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_float_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_DOUBLE);
+                            var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_double_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_double_var_id(compiler, op_assign_src->last);
                             break;
                           default:
                             assert(0);
                         }
-
-                        int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in1 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->first);
-                        int32_t var_id_in2 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->last);
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in1;
@@ -1260,26 +1271,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                         assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                        int32_t var_id_out;
+                        int32_t var_id_in1;
+                        int32_t var_id_in2;
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_INT);
+                            var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_int_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_int_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_LONG);
+                            var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_long_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_long_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_FLOAT);
+                            var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_float_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_float_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE);
+                            var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_double_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_double_var_id(compiler, op_assign_src->last);
                             break;
                           default:
                             assert(0);
                         }
-                        
-                        int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in1 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->first);
-                        int32_t var_id_in2 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->last);
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in1;
@@ -1293,26 +1315,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
                         assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                        int32_t var_id_out;
+                        int32_t var_id_in1;
+                        int32_t var_id_in2;
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_INT);
+                            var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_int_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_int_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_LONG);
+                            var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_long_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_long_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_FLOAT);
+                            var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_float_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_float_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_DOUBLE);
+                            var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_double_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_double_var_id(compiler, op_assign_src->last);
                             break;
                           default:
                             assert(0);
                         }
-                        
-                        int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in1 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->first);
-                        int32_t var_id_in2 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->last);
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in1;
@@ -1326,26 +1359,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
                         assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                        int32_t var_id_out;
+                        int32_t var_id_in1;
+                        int32_t var_id_in2;
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_INT);
+                            var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_int_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_int_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_LONG);
+                            var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_long_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_long_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_FLOAT);
+                            var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_float_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_float_var_id(compiler, op_assign_src->last);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_DOUBLE);
+                            var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
+                            var_id_in1 = SPVM_OP_get_double_var_id(compiler, op_assign_src->first);
+                            var_id_in2 = SPVM_OP_get_double_var_id(compiler, op_assign_src->last);
                             break;
                           default:
                             assert(0);
                         }
-                        
-                        int32_t var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in1 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->first);
-                        int32_t var_id_in2 = SPVM_OP_get_numeric_var_id(compiler, op_assign_src->last);
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in1;
