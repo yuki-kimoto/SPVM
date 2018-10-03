@@ -98,9 +98,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var_offset(SPVM_ENV* env, SPVM_STRING_B
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "*(");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)&");
+  if (ctype_id != SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS) {
+    SPVM_STRING_BUFFER_add(string_buffer, "*(");
+    SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, ctype_id));
+    SPVM_STRING_BUFFER_add(string_buffer, "*)&");
+  }
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, ctype_id, var_index);
 }
 
@@ -919,7 +921,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   // Address variable declarations
   int32_t address_vars_alloc_length = sub->address_vars_alloc_length;
   if (address_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE address_vars[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  void* address_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, address_vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
