@@ -1718,8 +1718,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         *(void**)&address_vars[opcode->operand0] = *(void**)&address_vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_VALUE_MOVE_BYTE: {
-        int32_t length = opcode->operand2;
-        for (int32_t field_offset = 0; field_offset < length; field_offset++) {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
           *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand1 + field_offset];
         }
         break;
@@ -1757,6 +1757,66 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         for (int32_t field_offset = 0; field_offset < field_length; field_offset++) {
           *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand1 + field_offset];
         }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_BYTE: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_SHORT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_INT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_LONG: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_FLOAT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_GET_FIELD_DOUBLE: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand1 + field_offset];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_BYTE: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_SHORT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_INT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_LONG: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_FLOAT: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_VALUE_SET_FIELD_DOUBLE: {
+        int32_t field_offset = opcode->operand2;
+        *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_offset] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
