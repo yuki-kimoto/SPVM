@@ -1118,6 +1118,54 @@ int32_t SPVM_OP_get_numeric_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op_var->uv.var->my->numeric_var_id;
 }
 
+int32_t SPVM_OP_get_byte_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->numeric_var_id;
+}
+
+int32_t SPVM_OP_get_short_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->numeric_var_id;
+}
+
+int32_t SPVM_OP_get_int_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->int_var_id;
+}
+
+int32_t SPVM_OP_get_long_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->numeric_var_id;
+}
+
+int32_t SPVM_OP_get_float_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->numeric_var_id;
+}
+
+int32_t SPVM_OP_get_double_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  (void)compiler;
+  
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+  
+  return op_var->uv.var->my->numeric_var_id;
+}
+
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_TYPE*  type = NULL;
