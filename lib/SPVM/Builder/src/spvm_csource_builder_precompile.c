@@ -926,9 +926,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
   // Numeric variable declarations
   int32_t numeric_vars_alloc_length = sub->numeric_vars_alloc_length;
-  if (sub->vars_alloc_length > 0) {
+  if (numeric_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE numeric_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, sub->vars_alloc_length);
+    SPVM_STRING_BUFFER_add_int(string_buffer, numeric_vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   
@@ -976,6 +976,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
   if (numeric_vars_alloc_length > 0) {
     int32_t my_index;
+    int32_t numeric_var_id = 0;
     for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
       SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
       
@@ -983,12 +984,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
       int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
       
-      // Value type
-      // Object type
+      // Reference type
       if (my_type_is_ref) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
       }
       else if (my_type_is_value_t) {
         int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
@@ -1041,12 +1038,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
               assert(0);
           }
         }
+        numeric_var_id++;
       }
       // Object type
       else if (my_type_is_object_type) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
       }
       // Numeric type
       else {
@@ -1100,6 +1095,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
               assert(0);
           }
         }
+        numeric_var_id++;
       }
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
