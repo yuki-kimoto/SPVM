@@ -143,16 +143,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_VALUE* numeric_vars = NULL;
   int32_t numeric_vars_alloc_length = sub->numeric_vars_alloc_length;
   if (numeric_vars_alloc_length > 0) {
-    numeric_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * sub->vars_alloc_length);
-    // numeric_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * numeric_vars_alloc_length);
+    numeric_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * numeric_vars_alloc_length);
   }
   
   // Address variables
   SPVM_VALUE* address_vars = NULL;
   int32_t address_vars_alloc_length = sub->address_vars_alloc_length;
   if (address_vars_alloc_length > 0) {
-    address_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * sub->vars_alloc_length);
-    // address_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * address_vars_alloc_length);
+    address_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * address_vars_alloc_length);
   }
 
   {
