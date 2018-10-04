@@ -2418,6 +2418,54 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         
         continue;
       }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_BYTE:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_SHORT:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_INT:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_LONG:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_FLOAT:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VALUE_DOUBLE:
+      {
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
+        
+        opcode_rel_index = opcode->operand1;
+        
+        continue;
+      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
 
         int32_t rel_id = opcode->operand2;
