@@ -487,10 +487,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               else if (SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
 
-                                SPVM_PACKAGE* package = arg_type->basic_type->package;
+                                SPVM_PACKAGE* value_package = arg_type->basic_type->package;
                                 assert(package);
                                 
-                                SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+                                SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
                                 assert(first_field);
                                 
                                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -533,7 +533,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                                 
                                 opcode.operand0 = var_id_arg;
-                                opcode.operand1 = package->fields->length;
+                                opcode.operand1 = value_package->fields->length;
                                 
                                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                               }
@@ -1135,10 +1135,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_in;
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                         if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                          SPVM_PACKAGE* package = src_type->basic_type->package;
+                          SPVM_PACKAGE* value_package = src_type->basic_type->package;
                           assert(package);
                           
-                          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+                          SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
                           assert(first_field);
                           
                           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -2542,10 +2542,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
                         // Value type
                         if (SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
-                          SPVM_PACKAGE* package = type_dist->basic_type->package;
+                          SPVM_PACKAGE* value_package = type_dist->basic_type->package;
                           assert(package);
                           
-                          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+                          SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
                           assert(first_field);
                           
                           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -2599,7 +2599,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
-                          opcode.operand2 = package->fields->length;
+                          opcode.operand2 = value_package->fields->length;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
@@ -4016,10 +4016,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             else if (SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-                              SPVM_PACKAGE* package = arg_type->basic_type->package;
+                              SPVM_PACKAGE* value_package = arg_type->basic_type->package;
                               assert(package);
                               
-                              SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+                              SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -4062,7 +4062,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                               
                               opcode.operand0 = var_id_arg;
-                              opcode.operand1 = package->fields->length;
+                              opcode.operand1 = value_package->fields->length;
                               
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
@@ -4208,8 +4208,46 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->first);
                         }
                         else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                          SPVM_PACKAGE* value_package = return_type->basic_type->package;
+                          assert(package);
+                          
+                          SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+                          assert(first_field);
+                          
+                          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                          assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_VALUES);
-                          var_id_in = SPVM_OP_get_numeric_var_id(compiler, op_cur->first);
+                          
+                          int32_t var_id_arg;
+                          switch (field_type->basic_type->id) {
+                            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                              var_id_in = SPVM_OP_get_byte_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                              var_id_in = SPVM_OP_get_short_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_INT: {
+                              var_id_in = SPVM_OP_get_int_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_LONG: {
+                              var_id_in = SPVM_OP_get_long_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                              var_id_in = SPVM_OP_get_float_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                              var_id_in = SPVM_OP_get_double_var_id(compiler, op_cur->first);
+                              break;
+                            }
+                            default:
+                              assert(0);
+                          }
                         }
                         else {
                           assert(0);
