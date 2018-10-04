@@ -189,7 +189,6 @@ t/copy_default_to_precompile.pl
 t/default/array.t
 t/default/assign.t
 t/default/bit-operator.t
-t/default/call-sub.t
 t/default/comparison-operator.t
 t/default/complex.t
 t/default/concat.t
@@ -209,7 +208,6 @@ t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/BitOperator.spvm
 t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
-t/default/lib/TestCase/CallSub.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
@@ -292,6 +290,7 @@ t/default/lib/TestCase/Short.spvm
 t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
+t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
@@ -307,6 +306,7 @@ t/default/perl-api.t
 t/default/ref.t
 t/default/special-assign.t
 t/default/string.t
+t/default/sub.t
 t/default/switch.t
 t/default/unless.t
 t/default/value_t_array.t

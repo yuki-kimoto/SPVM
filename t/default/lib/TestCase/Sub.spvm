@@ -1,4 +1,4 @@
-package TestCase::CallSub {
+package TestCase::Sub {
   use TestCase::Minimal;
 
   sub sub_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
