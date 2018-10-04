@@ -3466,20 +3466,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_BYTE:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -3490,20 +3485,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_SHORT:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -3514,20 +3504,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_INT:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_INT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -3538,20 +3523,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_LONG:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -3562,20 +3542,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_FLOAT:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
@@ -3586,20 +3561,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_RETURN_VALUE_DOUBLE:
       {
         int32_t var_id = opcode->operand0;
+        int32_t sub_return_type_width = opcode->operand2;
         
         // Value type
         for (int32_t field_offset = 0; field_offset < sub_return_type_width; field_offset++) {
-          switch (sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id + field_offset);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-          }
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id + field_offset);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
                     
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");

@@ -2412,6 +2412,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_BYTE:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;
@@ -2420,6 +2421,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_SHORT:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;
@@ -2428,6 +2430,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_INT:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;
@@ -2436,6 +2439,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_LONG:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;
@@ -2444,6 +2448,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_FLOAT:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;
@@ -2452,6 +2457,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_DOUBLE:
       {
+        int32_t sub_return_type_width = opcode->operand2;
         memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
         
         opcode_rel_index = opcode->operand1;

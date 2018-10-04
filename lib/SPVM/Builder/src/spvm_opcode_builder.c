@@ -4260,7 +4260,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t sub_return_type_width = SPVM_TYPE_get_width(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
 
                         opcode.operand0 = var_id_in;
-                        opcode.operand1 = sub_return_type_width;
+                        opcode.operand2 = sub_return_type_width;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
