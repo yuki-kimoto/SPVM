@@ -3094,7 +3094,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_SUB:
-      case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_METHOD:
       {
         int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
@@ -3130,7 +3130,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
-        else if (opcode_id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
+        else if (opcode_id == SPVM_OPCODE_C_ID_CALL_METHOD) {
           SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");

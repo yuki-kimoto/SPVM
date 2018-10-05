@@ -2245,7 +2245,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_SUB:
-      case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_METHOD:
       {
         int32_t rel_id = opcode->operand1;
         int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
@@ -2253,16 +2253,12 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Declare subroutine
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
-        
         // Call subroutine id
         int32_t call_sub_id;
         if (opcode_id == SPVM_OPCODE_C_ID_CALL_SUB) {
            call_sub_id = decl_sub_id;
         }
-        else if (opcode_id == SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD) {
+        else if (opcode_id == SPVM_OPCODE_C_ID_CALL_METHOD) {
           void* object = *(void**)&address_vars[opcode->operand2];
           const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
           call_sub_id = env->get_sub_id_method_call(env, object, decl_sub_signature);
@@ -2276,6 +2272,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         // Call subroutine
         exception_flag = env->call_sub(env, call_sub_id, stack);
         
+        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
+        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
+        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
           int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
