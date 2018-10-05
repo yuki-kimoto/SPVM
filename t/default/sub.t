@@ -22,8 +22,14 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Return value
 {
   ok(TestCase::Sub->return_value_byte);
+  ok(TestCase::Sub->return_value_short);
+  ok(TestCase::Sub->return_value_int);
+  ok(TestCase::Sub->return_value_long);
+  ok(TestCase::Sub->return_value_float);
+  ok(TestCase::Sub->return_value_double);
 }
 
 {
