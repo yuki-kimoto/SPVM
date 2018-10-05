@@ -2415,6 +2415,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           *(SPVM_VALUE_byte*)&stack[field_index] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
+        
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_SHORT:

@@ -1,6 +1,35 @@
 package TestCase::Sub {
   use TestCase::Minimal;
-
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  
+  sub return_value_byte_sub : TestCase::Point_b3 () {
+    my $value : TestCase::Point_b3;
+    $value->{x} = INT8_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_byte : int () {
+    my $value : TestCase::Point_b3 = return_value_byte_sub();
+    
+    if ($value->{x} == INT8_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   sub sub_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
     return $minimal;
   }

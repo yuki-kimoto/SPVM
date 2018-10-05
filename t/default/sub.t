@@ -23,6 +23,10 @@ my $DOUBLE_PRECICE = 65536.5;
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
+  ok(TestCase::Sub->return_value_byte);
+}
+
+{
   ok(TestCase::Sub->push_arg_undef());
 }
 
