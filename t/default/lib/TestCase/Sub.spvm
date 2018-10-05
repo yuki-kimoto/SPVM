@@ -1,6 +1,150 @@
-package TestCase::CallSub {
+package TestCase::Sub {
   use TestCase::Minimal;
-
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  
+  sub return_value_byte_sub : TestCase::Point_b3 () {
+    my $value : TestCase::Point_b3;
+    $value->{x} = INT8_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_byte : int () {
+    my $value : TestCase::Point_b3 = return_value_byte_sub();
+    
+    if ($value->{x} == INT8_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_short_sub : TestCase::Point_s3 () {
+    my $value : TestCase::Point_s3;
+    $value->{x} = INT16_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_short : int () {
+    my $value : TestCase::Point_s3 = return_value_short_sub();
+    
+    if ($value->{x} == INT16_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_int_sub : TestCase::Point_i3 () {
+    my $value : TestCase::Point_i3;
+    $value->{x} = INT32_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_int : int () {
+    my $value : TestCase::Point_i3 = return_value_int_sub();
+    
+    if ($value->{x} == INT32_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_long_sub : TestCase::Point_l3 () {
+    my $value : TestCase::Point_l3;
+    $value->{x} = INT64_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_long : int () {
+    my $value : TestCase::Point_l3 = return_value_long_sub();
+    
+    if ($value->{x} == INT64_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_float_sub : TestCase::Point_f3 () {
+    my $value : TestCase::Point_f3;
+    $value->{x} = FLT_MIN();
+    $value->{y} = 0.25f;
+    $value->{z} = 0.5f;
+    
+    return $value;
+  }
+  
+  sub return_value_float : int () {
+    my $value : TestCase::Point_f3 = return_value_float_sub();
+    
+    if ($value->{x} == FLT_MIN()) {
+      if ($value->{y} == 0.25f) {
+        if ($value->{z} == 0.5f) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_double_sub : TestCase::Point_d3 () {
+    my $value : TestCase::Point_d3;
+    $value->{x} = DBL_MIN();
+    $value->{y} = 0.25;
+    $value->{z} = 0.5;
+    
+    return $value;
+  }
+  
+  sub return_value_double : int () {
+    my $value : TestCase::Point_d3 = return_value_double_sub();
+    
+    if ($value->{x} == DBL_MIN()) {
+      if ($value->{y} == 0.25) {
+        if ($value->{z} == 0.5) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   sub sub_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
     return $minimal;
   }
