@@ -2259,8 +2259,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
+            int32_t decl_sub_return_type_field_length = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_field_length);
           }
           else if (decl_sub_return_type_is_object) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
@@ -2357,57 +2357,26 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
-          }
+          SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
         }
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_byte*)&stack[field_index];
           }
         }
         break;
@@ -2415,28 +2384,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_short*)&stack[field_index];
           }
         }
         break;
@@ -2444,28 +2399,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_int*)&stack[field_index];
           }
         }
         break;
@@ -2473,28 +2414,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_long*)&stack[field_index];
           }
         }
         break;
@@ -2502,28 +2429,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_float*)&stack[field_index];
           }
         }
         break;
@@ -2531,28 +2444,14 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
       {
         int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
-        SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
-        int32_t call_sub_id = decl_sub_id;
-        call_sub_arg_stack_top -= decl_sub->args_alloc_length;
+        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
+        call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
-        int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-        int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
-        int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-          if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
-          }
-          else if (decl_sub_return_type_is_object) {
-            SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
-          }
-          else {
-            if (decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID) {
-              numeric_vars[opcode->operand0] = stack[0];
-            }
+          int32_t call_sub_return_type_field_length = opcode->operand2;
+          for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
+            *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_double*)&stack[field_index];
           }
         }
         break;
@@ -2574,8 +2473,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           int32_t decl_sub_return_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
           if (decl_sub_return_type_is_value_t) {
-            int32_t decl_sub_return_type_width = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
-            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_width);
+            int32_t decl_sub_return_type_field_length = SPVM_RUNTIME_API_get_width(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+            memcpy(&numeric_vars[opcode->operand0], &stack[0], sizeof(SPVM_VALUE) * decl_sub_return_type_field_length);
           }
           else if (decl_sub_return_type_is_object) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&address_vars[opcode->operand0], stack[0].oval);
@@ -2703,8 +2602,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_BYTE:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_byte*)&stack[field_index] = *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
@@ -2713,8 +2612,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_SHORT:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_short*)&stack[field_index] = *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
@@ -2722,8 +2621,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_INT:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_int*)&stack[field_index] = *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
@@ -2731,8 +2630,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_LONG:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_long*)&stack[field_index] = *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
@@ -2740,8 +2639,8 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_FLOAT:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_float*)&stack[field_index] = *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
@@ -2749,9 +2648,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       }
       case SPVM_OPCODE_C_ID_RETURN_VALUE_DOUBLE:
       {
-        int32_t sub_return_type_width = opcode->operand2;
-        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_width);
-        for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
+        int32_t sub_return_type_field_length = opcode->operand2;
+        memcpy(&stack[0], &numeric_vars[opcode->operand0], sizeof(SPVM_VALUE) * sub_return_type_field_length);
+        for (int32_t field_index = 0; field_index < sub_return_type_field_length; field_index++) {
           *(SPVM_VALUE_double*)&stack[field_index] = *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index];
         }
         opcode_rel_index = opcode->operand1;
