@@ -2374,7 +2374,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_byte*)&stack[field_index];
           }
@@ -2389,7 +2389,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_short*)&stack[field_index];
           }
@@ -2404,7 +2404,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_int*)&stack[field_index];
           }
@@ -2419,7 +2419,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_long*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_long*)&stack[field_index];
           }
@@ -2434,7 +2434,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_float*)&stack[field_index];
           }
@@ -2449,9 +2449,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_double*)&stack[field_index];
+            // warn("AAAAAAAAAAA", opcode->operand0, field_index, *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index]);
           }
         }
         break;
@@ -2615,7 +2616,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_byte*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_byte*)&stack[field_index];
           }
@@ -2633,7 +2634,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_short*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_short*)&stack[field_index];
           }
@@ -2651,7 +2652,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_int*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_int*)&stack[field_index];
           }
@@ -2669,7 +2670,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_float*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_float*)&stack[field_index];
           }
@@ -2690,7 +2691,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         int32_t decl_sub_return_type_dimension = decl_sub->return_type_dimension;
         int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         if (!exception_flag) {
-          int32_t call_sub_return_type_field_length = opcode->operand2;
+          int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_double*)&stack[field_index];
           }

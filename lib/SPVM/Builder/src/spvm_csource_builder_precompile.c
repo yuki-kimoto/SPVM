@@ -3309,7 +3309,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_index);
@@ -3321,7 +3321,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id + field_index);
@@ -3333,7 +3333,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_index);
@@ -3345,7 +3345,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_LONG: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id + field_index);
@@ -3357,7 +3357,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id + field_index);
@@ -3369,7 +3369,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE: {
-            int32_t decl_sub_return_type_field_length = opcode->operand2;
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
             for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id + field_index);
