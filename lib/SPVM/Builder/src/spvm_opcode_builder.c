@@ -550,7 +550,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                               }
                               // Numeric type
-                              else {
+                              else if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
                                 int32_t var_id_arg;
                                 switch (arg_type->basic_type->id) {
                                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -594,6 +594,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 }
                                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                               }
+                              else {
+                                assert(0);
+                              }
                             }
                           }
                         }
@@ -612,6 +615,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         opcode.operand0 = var_id_out;
 
+                        SPVM_TYPE* call_sub_return_type = call_sub->sub->return_type;
                         if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD);
                           opcode.operand1 = call_sub->sub_rel_id;
@@ -622,7 +626,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand1 = call_sub->sub_rel_id;
                         }
                         
-                        SPVM_TYPE* call_sub_return_type = call_sub->sub->return_type;
                         int32_t call_sub_return_type_width = SPVM_TYPE_get_width(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag);
                         opcode.operand3 = call_sub_return_type_width;
                         
