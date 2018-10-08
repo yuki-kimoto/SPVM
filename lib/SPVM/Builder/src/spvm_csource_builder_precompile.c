@@ -3089,7 +3089,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_SUB:
       case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
       case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
       case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
@@ -3104,7 +3103,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
-      case SPVM_OPCODE_C_ID_CALL_METHOD:
       case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
       case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
       case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
@@ -3122,7 +3120,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       {
         int8_t is_sub;
         switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_CALL_SUB:
           case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
           case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
           case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
@@ -3139,7 +3136,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
             is_sub = 1;
             break;
-          case SPVM_OPCODE_C_ID_CALL_METHOD:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
           case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
           case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
