@@ -3085,9 +3085,73 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_SUB:
-      case SPVM_OPCODE_C_ID_CALL_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
+      case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
+      case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
+      case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
+      case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
+      case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
+      case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_LONG:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE:
       {
+        int8_t is_sub;
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
+          case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
+          case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
+          case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
+          case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
+            is_sub = 1;
+            break;
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_LONG:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE:
+            is_sub = 0;
+            break;
+          default:
+            assert(0);
+        }
+        
         int32_t var_id = opcode->operand0;
         int32_t rel_id = opcode->operand1;
         int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
@@ -3107,6 +3171,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         // Declare subroutine return type
         int32_t decl_sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
         int32_t decl_sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag);
+
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->arg_ids_length;
@@ -3116,13 +3181,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        // Call subroutine id
-        if (opcode_id == SPVM_OPCODE_C_ID_CALL_SUB) {
+        // Call subroutine
+        if (is_sub) {
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
           SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
-        else if (opcode_id == SPVM_OPCODE_C_ID_CALL_METHOD) {
+        // Call method
+        else {
           SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, opcode->operand2);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3139,11 +3205,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         }
-        else {
-          assert(0);
-        }
-
-
+        
         // Subroutine inline expantion in same package
         if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
@@ -3173,130 +3235,147 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         // Call subroutine
         SPVM_STRING_BUFFER_add(string_buffer, "    if (!exception_flag) {\n");
-        if (decl_sub_return_type_is_value_type) {
-          int32_t decl_sub_return_basic_type_id = decl_sub->return_basic_type_id;
-          SPVM_RUNTIME_BASIC_TYPE* decl_sub_return_basic_type = &runtime->basic_types[decl_sub_return_basic_type_id];
-          SPVM_RUNTIME_PACKAGE* decl_sub_return_package = &runtime->packages[decl_sub_return_basic_type->package_id];
-          
-          SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(decl_sub_return_package->fields, 0);
-          assert(first_field);
-          
-          for (int32_t field_index = 0; field_index < decl_sub_return_package->fields->length; field_index++) {
-            switch (first_field->basic_type_id) {
-              case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                
-                break;
-              }
-              case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              case SPVM_BASIC_TYPE_C_ID_INT: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              case SPVM_BASIC_TYPE_C_ID_LONG: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_index);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              default:
-                assert(0);
-            }
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
+            break;
+          case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
           }
-        }
-        else if (decl_sub_return_type_is_object) {
-          SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, var_id);
-          SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);\n");
-        }
-        else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
-          switch (decl_sub_return_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id);
-              SPVM_STRING_BUFFER_add(string_buffer, " = ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, 0);
-              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-              break;
-            }
-            default:
-              assert(0);
+          case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
           }
+          case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_LONG: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT: {
+            SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_LONG: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT: {
+            int32_t decl_sub_return_type_field_length = opcode->operand3;
+            for (int32_t field_index = 0; field_index < decl_sub_return_type_field_length; field_index++) {
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_field_index(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+            }
+            break;
+          }
+          default:
+            assert(0);
         }
+
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
