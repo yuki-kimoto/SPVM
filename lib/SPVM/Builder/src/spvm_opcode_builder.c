@@ -4214,12 +4214,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
                       if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VOID);
                         opcode.operand1 = call_sub->sub_rel_id;
                         opcode.operand2 = first_arg_var_id;
                       }
                       else {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VOID);
                         opcode.operand1 = call_sub->sub_rel_id;
                       }
                       
