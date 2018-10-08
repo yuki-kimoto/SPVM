@@ -231,7 +231,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         switch (arg->value_field_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             for (int32_t field_index = 0; field_index < arg_width; field_index++) {
-              byte_vars[arg->byte_var_id + field_index] = *(SPVM_VALUE_byte**)&stack[stack_index + field_index];
+              byte_vars[arg->byte_var_id + field_index] = *(SPVM_VALUE_byte*)&stack[stack_index + field_index];
             }
             break;
           }
