@@ -2885,6 +2885,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             sub->numeric_vars_alloc_length = my_numeric_var_id;
             sub->address_vars_alloc_length = my_address_var_id;
 
+            sub->byte_vars_alloc_length = my_byte_var_id;
+            sub->short_vars_alloc_length = my_short_var_id;
+            sub->int_vars_alloc_length = my_int_var_id;
+            sub->long_vars_alloc_length = my_long_var_id;
+            sub->float_vars_alloc_length = my_float_var_id;
+            sub->double_vars_alloc_length = my_double_var_id;
+
             sub->object_vars_alloc_length = my_object_var_id;
             sub->ref_vars_alloc_length = my_ref_var_id;
           }
