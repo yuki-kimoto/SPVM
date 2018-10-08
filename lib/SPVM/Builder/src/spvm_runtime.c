@@ -423,7 +423,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         SPVM_VALUE_byte* bytes1 = *(SPVM_VALUE_byte**)&(*(void**)object1);
         SPVM_VALUE_byte* bytes2 = *(SPVM_VALUE_byte**)&(*(void**)object2);
         
-        int32_t short_string_length = length1 < length1 ? length1 : length2;
+        int32_t short_string_length = length1 < length2 ? length1 : length2;
         int32_t retval = memcmp(bytes1, bytes2, short_string_length);
         int32_t cmp;
         if (retval) {
