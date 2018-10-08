@@ -855,10 +855,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_deref_set_field(SPVM_ENV* env, 
       SPVM_STRING_BUFFER_add(string_buffer, "double_vars");
       break;
     }
-    default: {
-      SPVM_STRING_BUFFER_add(string_buffer, "numeric_vars");
-      break;
-    }
   }
   SPVM_STRING_BUFFER_add(string_buffer, "[");
   SPVM_STRING_BUFFER_add_int(string_buffer, in_var_id);
@@ -1156,14 +1152,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
-  // Numeric variable declarations
-  int32_t numeric_vars_alloc_length = sub->numeric_vars_alloc_length;
-  if (numeric_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE numeric_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, numeric_vars_alloc_length + address_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
   // byte variable declarations
   int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
   if (byte_vars_alloc_length > 0) {
@@ -1268,77 +1256,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
-  }
-
-  if (numeric_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t numeric_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      // Value type
-      if (SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag)) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              break;
-            }
-            default:
-              assert(0);
-          }
-          numeric_var_id++;
-        }
-      }
-      // Numeric type
-      else if (SPVM_RUNTIME_API_is_numeric_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag)) {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_INT: {
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            break;
-          }
-          default:
-            assert(0);
-        }
-        numeric_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
 
   if (byte_vars_alloc_length > 0) {
