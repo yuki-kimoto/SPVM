@@ -1,3 +1,11 @@
+0.0379 2018-10-08
+  - fix temporary variable memory position bugs
+  - fix string eq bugs
+  - fix remainder bugs
+  - fix right shift precompile bug
+  - fix left shift precompile bug
+  - fix right shift unsigned precompile bug
+  - fix bit and bugs
 0.0378 2018-10-02
   - fix exe compiler error library bugs
 0.0377 2018-10-01

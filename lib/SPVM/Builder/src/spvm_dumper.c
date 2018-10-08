@@ -84,6 +84,8 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       printf(" \"%s\"", var->op_name->uv.name);
       if (var->my) {
         printf(" (my->var_id:%d) declaration : %d", var->my->var_id, op_cur->uv.var->is_declaration);
+        printf(" (my->numeric_var_id:%d) declaration : %d", var->my->numeric_var_id, op_cur->uv.var->is_declaration);
+        printf(" (my->address_var_id:%d) declaration : %d", var->my->address_var_id, op_cur->uv.var->is_declaration);
       }
       else {
         printf(" (my->var_id:not yet resolved)");
@@ -447,6 +449,8 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     SPVM_TYPE_fprint_type_name(compiler, stdout, type->basic_type->id, type->dimension, type->flag);
     printf("\n");
     printf("          var_id => %d\n", my->var_id);
+    printf("          numeric_var_id => %d\n", my->numeric_var_id);
+    printf("          address_var_id => %d\n", my->address_var_id);
   }
   else {
     printf("          (Unexpected)\n");

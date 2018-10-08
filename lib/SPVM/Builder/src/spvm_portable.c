@@ -47,9 +47,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
   portable->args_capacity = 8;
-  portable->args_unit = 4;
+  portable->args_unit = 15;
   portable->mys_capacity = 8;
-  portable->mys_unit = 4;
+  portable->mys_unit = 15;
   portable->info_package_var_ids_capacity = 8;
   portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
@@ -59,7 +59,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_types_capacity = 8;
   portable->info_types_unit = 3;
   portable->subs_capacity = 8;
-  portable->subs_unit = 39;
+  portable->subs_unit = 47;
   portable->packages_capacity = 8;
   portable->packages_unit = 6;
   
@@ -74,6 +74,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 }
 
 void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
+
   
   if (portable->subs_length >= portable->subs_capacity) {
     int32_t new_portable_subs_capacity = portable->subs_capacity * 2;
@@ -132,12 +133,19 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub[36] = sub->call_type_id;
   new_portable_sub[37] = sub->numeric_vars_alloc_length;
   new_portable_sub[38] = sub->address_vars_alloc_length;
-  
+  new_portable_sub[39] = sub->byte_vars_alloc_length;
+  new_portable_sub[40] = sub->short_vars_alloc_length;
+  new_portable_sub[41] = sub->int_vars_alloc_length;
+  new_portable_sub[42] = sub->long_vars_alloc_length;
+  new_portable_sub[43] = sub->float_vars_alloc_length;
+  new_portable_sub[44] = sub->double_vars_alloc_length;
+  new_portable_sub[45] = sub->object_vars_alloc_length;
+  new_portable_sub[46] = sub->ref_vars_alloc_length;
+
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
     SPVM_PORTABLE_push_arg(portable, my);
   }
-
   for (int32_t my_id = 0; my_id < sub->mys->length; my_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_id);
     SPVM_PORTABLE_push_my(portable, my);
@@ -196,7 +204,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
 }
 
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
-  
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
   
   // Portable basic type
@@ -316,6 +323,17 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_arg[1] = my->type->basic_type->id;
   new_portable_arg[2] = my->type->dimension;
   new_portable_arg[3] = my->type->flag;
+  new_portable_arg[4] = my->numeric_var_id;
+  new_portable_arg[5] = my->address_var_id;
+  new_portable_arg[6] = my->byte_var_id;
+  new_portable_arg[7] = my->short_var_id;
+  new_portable_arg[8] = my->int_var_id;
+  new_portable_arg[9] = my->long_var_id;
+  new_portable_arg[10] = my->float_var_id;
+  new_portable_arg[11] = my->double_var_id;
+  new_portable_arg[12] = my->object_var_id;
+  new_portable_arg[13] = my->ref_var_id;
+  new_portable_arg[14] = my->value_field_basic_type_id ;
 
   portable->args_length++;
 }
@@ -336,7 +354,18 @@ void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_my[1] = my->type->basic_type->id;
   new_portable_my[2] = my->type->dimension;
   new_portable_my[3] = my->type->flag;
-
+  new_portable_my[4] = my->numeric_var_id;
+  new_portable_my[5] = my->address_var_id;
+  new_portable_my[6] = my->byte_var_id;
+  new_portable_my[7] = my->short_var_id;
+  new_portable_my[8] = my->int_var_id;
+  new_portable_my[9] = my->long_var_id;
+  new_portable_my[10] = my->float_var_id;
+  new_portable_my[11] = my->double_var_id;
+  new_portable_my[12] = my->object_var_id;
+  new_portable_my[13] = my->ref_var_id;
+  new_portable_my[14] = my->value_field_basic_type_id;
+  
   portable->mys_length++;
 }
 

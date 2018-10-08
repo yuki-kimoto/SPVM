@@ -44,6 +44,14 @@ struct SPVM_runtime_sub {
   int32_t call_type_id;
   int32_t numeric_vars_alloc_length;
   int32_t address_vars_alloc_length;
+  int32_t byte_vars_alloc_length;
+  int32_t short_vars_alloc_length;
+  int32_t int_vars_alloc_length;
+  int32_t long_vars_alloc_length;
+  int32_t float_vars_alloc_length;
+  int32_t double_vars_alloc_length;
+  int32_t object_vars_alloc_length;
+  int32_t ref_vars_alloc_length;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

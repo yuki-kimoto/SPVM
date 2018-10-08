@@ -183,17 +183,6 @@ int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int
   return is_value_t;
 }
 
-int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  (void)env;
-  
-  if (dimension > 0 || ((dimension == 0 && basic_type_id > SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF))) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
 int32_t SPVM_RUNTIME_API_is_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)env;
   (void)dimension;
@@ -205,6 +194,17 @@ int32_t SPVM_RUNTIME_API_is_numeric_ref_type(SPVM_ENV* env, int32_t basic_type_i
   (void)env;
   
   if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && (flag & SPVM_TYPE_C_FLAG_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_RUNTIME_API_is_numeric_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  if (dimension == 0 && (basic_type_id >= SPVM_BASIC_TYPE_C_ID_BYTE && basic_type_id <= SPVM_BASIC_TYPE_C_ID_DOUBLE) && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -243,6 +243,69 @@ int32_t SPVM_RUNTIME_API_is_value_ref_type(SPVM_ENV* env, int32_t basic_type_id,
   }
   
   return is_value_ref_type;
+}
+
+int32_t SPVM_RUNTIME_API_is_any_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  return dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && !(flag & SPVM_TYPE_C_FLAG_REF);
+}
+
+int32_t SPVM_RUNTIME_API_is_package_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+  
+  int32_t is_package_type;
+  if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    const char* basic_type_name = runtime->symbols[basic_type->name_id];
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));
+    // Package
+    if (package) {
+      is_package_type = 1;
+    }
+    // Numeric type
+    else {
+      is_package_type = 0;
+    }
+  }
+  // Array
+  else {
+    is_package_type = 0;
+  }
+  
+  return is_package_type;
+}
+
+int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)env;
+  
+  if (SPVM_RUNTIME_API_is_ref_type(env, basic_type_id, dimension, flag)) {
+    return 0;
+  }
+  else {
+    if (SPVM_RUNTIME_API_is_value_type(env, basic_type_id, dimension, flag)) {
+      return 0;
+    }
+    else {
+      if (SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, flag)) {
+        return 1;
+      }
+      else {
+        if (SPVM_RUNTIME_API_is_package_type(env, basic_type_id, dimension, flag)) {
+          return 1;
+        }
+        else if (SPVM_RUNTIME_API_is_any_object_type(env, basic_type_id, dimension, flag)) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }
+    }
+  }
 }
 
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
