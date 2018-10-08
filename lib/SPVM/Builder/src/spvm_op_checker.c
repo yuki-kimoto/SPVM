@@ -2776,6 +2776,39 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               my_var_id += width;
               
               if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
+                switch(numeric_type->basic_type->id) {
+                  case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                    my->byte_var_id = my_byte_var_id;
+                    my_byte_var_id++;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                    my->short_var_id = my_short_var_id;
+                    my_short_var_id++;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_INT: {
+                    my->int_var_id = my_int_var_id;
+                    my_int_var_id++;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_LONG: {
+                    my->long_var_id = my_long_var_id;
+                    my_long_var_id++;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                    my->float_var_id = my_float_var_id;
+                    my_float_var_id++;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                    my->double_var_id = my_double_var_id;
+                    my_double_var_id++;
+                    break;
+                  }
+                }
                 my->numeric_var_id = my_numeric_var_id;
                 my_numeric_var_id += width;
               }
