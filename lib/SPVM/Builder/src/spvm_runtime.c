@@ -3210,7 +3210,22 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_REF:
+      case SPVM_OPCODE_C_ID_REF_BYTE:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_ID_REF_SHORT:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_ID_REF_INT:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_ID_REF_LONG:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_ID_REF_FLOAT:
+        *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
+        break;
+      case SPVM_OPCODE_C_ID_REF_DOUBLE:
         *(void**)&address_vars[opcode->operand0] = &numeric_vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
