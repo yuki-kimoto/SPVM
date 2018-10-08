@@ -11,6 +11,9 @@ use SPVM 'TestCase::BitOperator';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+  ok(TestCase::BitOperator->bit_or());
+
+__END__
 # Complement
 {
   ok(TestCase::BitOperator->complement());
