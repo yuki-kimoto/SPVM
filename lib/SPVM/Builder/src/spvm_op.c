@@ -1139,7 +1139,7 @@ int32_t SPVM_OP_get_int_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->numeric_var_id;
+  return op_var->uv.var->my->int_var_id;
 }
 
 int32_t SPVM_OP_get_long_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
