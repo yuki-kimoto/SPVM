@@ -151,6 +151,62 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
     address_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * address_vars_alloc_length);
   }
 
+  // byte variables
+  SPVM_VALUE* byte_vars = NULL;
+  int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
+  if (byte_vars_alloc_length > 0) {
+    byte_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * byte_vars_alloc_length);
+  }
+
+  // short variables
+  SPVM_VALUE* short_vars = NULL;
+  int32_t short_vars_alloc_length = sub->short_vars_alloc_length;
+  if (short_vars_alloc_length > 0) {
+    short_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * short_vars_alloc_length);
+  }
+
+  // int variables
+  SPVM_VALUE* int_vars = NULL;
+  int32_t int_vars_alloc_length = sub->int_vars_alloc_length;
+  if (int_vars_alloc_length > 0) {
+    int_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * int_vars_alloc_length);
+  }
+
+  // long variables
+  SPVM_VALUE* long_vars = NULL;
+  int32_t long_vars_alloc_length = sub->long_vars_alloc_length;
+  if (long_vars_alloc_length > 0) {
+    long_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * long_vars_alloc_length);
+  }
+
+  // float variables
+  SPVM_VALUE* float_vars = NULL;
+  int32_t float_vars_alloc_length = sub->float_vars_alloc_length;
+  if (float_vars_alloc_length > 0) {
+    float_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * float_vars_alloc_length);
+  }
+
+  // double variables
+  SPVM_VALUE* double_vars = NULL;
+  int32_t double_vars_alloc_length = sub->double_vars_alloc_length;
+  if (double_vars_alloc_length > 0) {
+    double_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * double_vars_alloc_length);
+  }
+
+  // object variables
+  SPVM_VALUE* object_vars = NULL;
+  int32_t object_vars_alloc_length = sub->object_vars_alloc_length;
+  if (object_vars_alloc_length > 0) {
+    object_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * object_vars_alloc_length);
+  }
+
+  // ref variables
+  SPVM_VALUE* ref_vars = NULL;
+  int32_t ref_vars_alloc_length = sub->ref_vars_alloc_length;
+  if (ref_vars_alloc_length > 0) {
+    ref_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * ref_vars_alloc_length);
+  }
+  
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
@@ -3563,6 +3619,15 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, address_vars);
   SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, numeric_vars);
   SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, mortal_stack);
+
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, byte_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, short_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, int_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, long_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, float_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, double_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, object_vars);
+  SPVM_RUNTIME_ALLOCATOR_free_memory_block(runtime, ref_vars);
   
   return exception_flag;
 }
