@@ -3445,11 +3445,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
                     }
                   }
                 }
-                else if (decl_sub_return_type_is_object) {
-                  SPVM_STRING_BUFFER_add(string_buffer, " SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
-                  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, var_id);
-                  SPVM_STRING_BUFFER_add(string_buffer, ", stack[0].oval);");
-                }
                 else if ((decl_sub_return_type_dimension == 0 && decl_sub_return_basic_type_id != SPVM_BASIC_TYPE_C_ID_VOID)) {
                   switch (decl_sub_return_basic_type_id) {
                     case SPVM_BASIC_TYPE_C_ID_BYTE: {
