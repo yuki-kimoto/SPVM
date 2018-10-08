@@ -1,0 +1,199 @@
+package SPVM::List {
+  has values   : private object[];
+  has capacity : private int;
+  has offset   : private int;
+  has length   : private int;
+
+  sub _reallocate : void ($self : self, $new_capacity : int, $left_reserve : int, $right_reserve : int) {
+    if ($new_capacity  <= $self->{capacity} &&
+      $left_reserve  <= $self->{offset}   &&
+      $right_reserve <= $self->{capacity} - $self->{offset} - $self->{length}) {
+      return;
+    }
+    if ($new_capacity < $self->{length} * 2) {
+      $new_capacity = $self->{length} * 2;
+    }
+    my $margin = $new_capacity - ($left_reserve + $self->{length} + $right_reserve);
+    my $new_offset = $margin / 2 + $left_reserve;
+    my $new_values = new object[$new_capacity];
+    for (my $i = 0; $i < $self->{length}; $i++) {
+      $new_values->[$new_offset + $i] = $self->{values}[$self->{offset} + $i];
+    }
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
+    $self->{offset} = $new_offset;
+  }
+
+  sub _clear : void ($self : self) {
+    $self->{values} = new object [0];
+    $self->{capacity} = 0;
+    $self->{offset} = 0;
+    $self->{length} = 0;
+  }
+
+  sub _range_check : int ($self : self, $index : int) {
+    if (-$self->{length} <= $index && $index < $self->{length}) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  sub _fix_negative_index : int ($self : self, $index : int) {
+    if ($index < 0) {
+      return $index + $self->{length};
+    } else {
+      return $index;
+    }
+  }
+
+  sub _values : object[] ($self : self) {
+    return $self->{values};
+  }
+
+  sub _capacity : int ($self : self) {
+    return $self->{capacity};
+  }
+
+  sub _offset : int ($self : self) {
+    return $self->{offset};
+  }
+
+  sub new : SPVM::List () {
+    my $self = new SPVM::List;
+    $self->{offset} = 0;
+    $self->{length} = 0;
+    return $self;
+  }
+
+  sub new_with_capacity : SPVM::List ($capacity : int) {
+    my $self = SPVM::List->new;
+    if ($capacity < 0) {
+      croak "capacity must not be negative, capacity " . $capacity;
+    }
+    $self->_reallocate($capacity, 0, 0);
+    return $self;
+  }
+
+  sub new_with_array : SPVM::List ($objects : object[]) {
+    my $self = SPVM::List->new;
+    $self->_reallocate(@$objects, 0, @$objects);
+    for (my $i = 0; $i < @$objects; $i++) {
+      $self->{values}[$i] = $objects->[$i];
+    }
+    $self->{length} = @$objects;
+    return $self;
+  }
+
+  sub length : int ($self : self) {
+    return $self->{length};
+  }
+
+  sub push : void ($self : self, $value : object) {
+    $self->_reallocate($self->{length} + 1, 0, 1);
+    $self->{values}[$self->{offset} + $self->{length}++] = $value;
+  }
+
+  sub pop : object ($self : self) {
+    if ($self->{length} - 1 < 0) {
+      return undef;
+    }
+    my $target = $self->{offset} + $self->{length} - 1;
+    my $ret = $self->{values}[$target];
+    $self->{values}[$target] = undef;
+    $self->{length}--;
+    return $ret;
+  }
+
+  sub unshift : void ($self : self, $value : object) {
+    $self->_reallocate($self->{length} + 1, 1, 0);
+    $self->{values}[--$self->{offset}] = $value;
+    $self->{length}++;
+  }
+
+  sub shift : object ($self : self) {
+    if ($self->{length} - 1 < 0) {
+      return undef;
+    }
+    --$self->{length};
+    my $ret = $self->{values}[$self->{offset}];
+    $self->{values}[$self->{offset}] = undef;
+    $self->{offset}++;
+    return $ret;
+  }
+
+  sub set : void ($self : self, $index : int, $value : object) {
+    if (!$self->_range_check($index)) {
+      # do not allow autovivification
+      croak "Modification of non-creatable array value attempted, subscript " . $index;
+    }
+    $index = $self->_fix_negative_index($index);
+    $self->{values}[$self->{offset} + $index] = $value;
+  }
+
+  sub get : object ($self : self, $index : int) {
+    if (!$self->_range_check($index)) {
+      return undef;
+    }
+    $index = $self->_fix_negative_index($index);
+    return $self->{values}[$self->{offset} + $index];
+  }
+
+  sub splice : SPVM::List ($self : self, $cut_offset : int, $cut_length : int) {
+    my $empty_list = SPVM::List->new;
+    return $self->splice_with_list($cut_offset, $cut_length, $empty_list);
+  }
+
+  sub splice_with_list : SPVM::List ($self : self, $cut_offset : int, $cut_length : int, $insert_list : SPVM::List) {
+    if ($cut_offset > $self->{length}) {
+      warn("splice_with_list() offset past end of array");
+      $cut_offset = $self->{length};
+      $cut_length = 0;
+    }
+    if ($cut_offset != $self->{length} && !$self->_range_check($cut_offset)) {
+      croak "Modification of non-creatable array value attempted, subscript " . $cut_offset;
+    }
+
+    $cut_offset = $self->_fix_negative_index($cut_offset);
+
+    # fix negative length  
+    if ($cut_length < 0) {
+      $cut_length += $self->{length} - $cut_offset;
+      if ($cut_length < 0) {
+        $cut_length = 0;
+      }
+    }
+
+    # fit cut_length to the end.
+    if ($cut_offset + $cut_length > $self->{length}) {
+      $cut_length = $self->{length} - $cut_offset;
+    }
+
+    my $old_values = new object [$self->{length}];
+    for (my $i = 0; $i < $self->{length}; $i++) {
+      $old_values->[$i] = $self->get($i);
+    }
+
+    $self->_clear;
+    my $insert_length = $insert_list->length;
+    my $new_length = @$old_values - $cut_length + $insert_length;
+    $self->_reallocate($new_length, 0, $new_length);
+    for (my $i = 0; $i < $cut_offset; $i++) {
+      $self->push($old_values->[$i]);
+    }
+    for (my $i = 0; $i < $insert_length; $i++) {
+      $self->push($insert_list->get($i));
+    }
+    for (my $i = 0; $i < @$old_values - $cut_offset - $cut_length; $i++) {
+      $self->push($old_values->[$cut_offset + $cut_length + $i]);
+    }
+
+    my $extracted = SPVM::List->new;
+    $extracted->_reallocate($cut_length, 0, $cut_length);
+    for (my $i = 0; $i < $cut_length; $i++) {
+      $extracted->push($old_values->[$cut_offset + $i]);
+    }
+
+    return $extracted;
+  }
+}
