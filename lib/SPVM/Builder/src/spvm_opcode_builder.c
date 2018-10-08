@@ -614,32 +614,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             switch (call_sub_return_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_BYTE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_byte_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_SHORT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_SHORT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_short_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_LONG: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_LONG);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               default:
@@ -666,32 +666,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_byte_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_SHORT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_short_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_LONG: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_LONG);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               default:
@@ -712,32 +712,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             switch (call_sub_return_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_BYTE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_byte_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_SHORT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_SHORT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_short_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_LONG: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_LONG);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_FLOAT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               default:
@@ -764,32 +764,32 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_byte_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_SHORT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_short_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_LONG: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_long_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_float_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE);
-                                var_id_out = SPVM_OP_get_numeric_var_id(compiler, op_assign_dist);
+                                var_id_out = SPVM_OP_get_double_var_id(compiler, op_assign_dist);
                                 break;
                               }
                               default:
