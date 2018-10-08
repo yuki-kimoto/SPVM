@@ -16,6 +16,8 @@ SPVM_MY* SPVM_MY_new(SPVM_COMPILER* compiler) {
   my->long_var_id = -1;
   my->float_var_id = -1;
   my->double_var_id = -1;
+  my->object_var_id = -1;
+  my->ref_var_id = -1;
   
   return my;
 }

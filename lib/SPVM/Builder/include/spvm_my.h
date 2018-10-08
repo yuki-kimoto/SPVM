@@ -17,6 +17,8 @@ struct SPVM_my {
   int32_t long_var_id;
   int32_t float_var_id;
   int32_t double_var_id;
+  int32_t object_var_id;
+  int32_t ref_var_id;
 };
 
 SPVM_MY* SPVM_MY_new();
