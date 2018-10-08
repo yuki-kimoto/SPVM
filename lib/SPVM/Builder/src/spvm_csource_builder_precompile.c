@@ -3384,18 +3384,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
             assert(opcode_id == SPVM_OPCODE_C_ID_CALL_SUB || opcode_id == SPVM_OPCODE_C_ID_CALL_METHOD);
             assert(SPVM_RUNTIME_API_is_numeric_type(env, decl_sub_return_basic_type_id, decl_sub_return_type_dimension, decl_sub_return_type_flag));
             assert(decl_sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_INT);
-            switch (decl_sub_return_basic_type_id) {
-              case SPVM_BASIC_TYPE_C_ID_INT: {
-                SPVM_STRING_BUFFER_add(string_buffer, "      ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
-                SPVM_STRING_BUFFER_add(string_buffer, " = ");
-                SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-                SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-                break;
-              }
-              default:
-                assert(0);
-            }
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
           }
         }
 
