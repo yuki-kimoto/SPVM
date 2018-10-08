@@ -16,11 +16,17 @@ use lib "$FindBin::Bin/default/lib";
 {
   my $library_path = 'spvm_build/exe';
   {
-    # Windows MinGW
-    $ENV{LIBRARY_PATH} = $library_path;
-  
-    # Linux, macOS
-    $ENV{LD_LIBRARY_PATH} = $library_path;
+    # macOS
+    if ($^O eq 'darwin') {
+      $ENV{DYLD_LIBRARY_PATH} = $library_path;
+    }
+    else {
+      # Windows MinGW
+      $ENV{LIBRARY_PATH} = $library_path;
+    
+      # Linux, macOS
+      $ENV{LD_LIBRARY_PATH} = $library_path;
+    }
   }
   
   $ENV{PERL5LIB} = "blib/arch$Config{path_sep}blib/lib";
