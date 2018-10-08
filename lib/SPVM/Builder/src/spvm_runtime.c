@@ -534,7 +534,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           = *(double*)&numeric_vars[opcode->operand1] / *(double*)&numeric_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_INT:
-        if (__builtin_expect(short_vars[opcode->operand2] == 0, 0)) {
+        if (__builtin_expect(*(SPVM_VALUE_int*)&numeric_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_raw(env, "0 division", 0);
           env->set_exception(env, exception);
           exception_flag = 1;
@@ -544,7 +544,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         }
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_LONG:
-        if (__builtin_expect(short_vars[opcode->operand2] == 0, 0)) {
+        if (__builtin_expect(*(SPVM_VALUE_long*)&numeric_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_raw(env, "0 division", 0);
           env->set_exception(env, exception);
           exception_flag = 1;
