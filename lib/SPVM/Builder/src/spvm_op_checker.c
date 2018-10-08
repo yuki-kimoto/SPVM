@@ -2827,6 +2827,49 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 my_ref_var_id += width;
               }
               else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_PACKAGE* value_package =  type->basic_type->package;
+                assert(package);
+                
+                SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+                assert(first_field);
+                
+                SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+                
+                switch (field_type->basic_type->id) {
+                  case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                    my->byte_var_id = my_byte_var_id;
+                    my_byte_var_id += width;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                    my->short_var_id = my_short_var_id;
+                    my_short_var_id += width;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_INT: {
+                    my->int_var_id = my_int_var_id;
+                    my_int_var_id += width;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_LONG: {
+                    my->long_var_id = my_long_var_id;
+                    my_long_var_id += width;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                    my->float_var_id = my_float_var_id;
+                    my_float_var_id += width;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                    my->double_var_id = my_double_var_id;
+                    my_double_var_id += width;
+                    break;
+                  }
+                  default:
+                    assert(0);
+                }
                 my->numeric_var_id = my_numeric_var_id;
                 my_numeric_var_id += width;
               }
