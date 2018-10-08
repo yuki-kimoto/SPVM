@@ -19,6 +19,7 @@ struct SPVM_my {
   int32_t double_var_id;
   int32_t object_var_id;
   int32_t ref_var_id;
+  int32_t value_field_basic_type_id;
 };
 
 SPVM_MY* SPVM_MY_new();

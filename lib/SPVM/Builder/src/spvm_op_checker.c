@@ -2836,6 +2836,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                 assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                 
+                my->value_field_basic_type_id = field_type->basic_type->id;
+                
                 switch (field_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     my->byte_var_id = my_byte_var_id;
@@ -2894,6 +2896,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
             sub->object_vars_alloc_length = my_object_var_id;
             sub->ref_vars_alloc_length = my_ref_var_id;
+            
           }
 
           // Add more information for opcode building - Fourth tree traversal

@@ -18,6 +18,8 @@ SPVM_MY* SPVM_MY_new(SPVM_COMPILER* compiler) {
   my->double_var_id = -1;
   my->object_var_id = -1;
   my->ref_var_id = -1;
+  my->ref_var_id = -1;
+  my->value_field_basic_type_id = -1;
   
   return my;
 }
