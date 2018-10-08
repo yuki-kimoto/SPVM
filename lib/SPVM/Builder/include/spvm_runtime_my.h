@@ -11,6 +11,14 @@ struct SPVM_runtime_my {
   int32_t type_flag;
   int32_t numeric_var_id;
   int32_t address_var_id;
+  int32_t byte_var_id;
+  int32_t short_var_id;
+  int32_t int_var_id;
+  int32_t long_var_id;
+  int32_t float_var_id;
+  int32_t double_var_id;
+  int32_t object_var_id;
+  int32_t ref_var_id;
 };
 
 SPVM_RUNTIME_MY* SPVM_RUNTIME_MY_new();
