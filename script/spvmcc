@@ -18,8 +18,7 @@ SPVM::Builder::Util::getopt
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
 
-push @INC, @include_dirs;
-push @INC, 'lib';
+unshift @INC, @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
