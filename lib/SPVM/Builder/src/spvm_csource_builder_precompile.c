@@ -3359,15 +3359,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
             }
             break;
           }
-          case SPVM_OPCODE_C_ID_CALL_SUB_INT:
-          case SPVM_OPCODE_C_ID_CALL_METHOD_INT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "      ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-            break;
-          }
           case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT: {
             int32_t decl_sub_return_type_field_length = opcode->operand3;
@@ -3378,6 +3369,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
               SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_index);
               SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_SUB_INT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_INT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
           default: {
