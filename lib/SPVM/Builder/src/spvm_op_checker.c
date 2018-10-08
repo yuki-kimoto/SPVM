@@ -2775,7 +2775,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               my->var_id = my_var_id;
               my_var_id += width;
               
-              if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+              if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                my->numeric_var_id = my_numeric_var_id;
+                my_numeric_var_id += width;
+              }
+              else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 my->address_var_id = my_address_var_id;
                 my_address_var_id += width;
 
@@ -2789,7 +2793,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 my->ref_var_id = my_ref_var_id;
                 my_ref_var_id += width;
               }
-              else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+              else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 my->numeric_var_id = my_numeric_var_id;
                 my_numeric_var_id += width;
               }
