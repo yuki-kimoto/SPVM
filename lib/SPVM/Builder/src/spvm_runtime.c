@@ -2452,7 +2452,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
           int32_t call_sub_return_type_field_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < call_sub_return_type_field_length; field_index++) {
             *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index] = *(SPVM_VALUE_double*)&stack[field_index];
-            // warn("AAAAAAAAAAA", opcode->operand0, field_index, *(SPVM_VALUE_double*)&numeric_vars[opcode->operand0 + field_index]);
           }
         }
         break;
