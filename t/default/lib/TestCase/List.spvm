@@ -232,7 +232,7 @@ package TestCase::List {
         return 0;
       }
       _assert_croak_message("Modification of non-creatable array value attempted, subscript 0");
-      $@ = undef; # XXX: suppress leak due to `croak`
+      $@ = undef;
     }
     # negative index
     {
@@ -244,7 +244,7 @@ package TestCase::List {
         return 0;
       }
       _assert_croak_message("Modification of non-creatable array value attempted, subscript -3");
-      $@ = undef; # XXX: suppress leak due to `croak`
+      $@ = undef;
       return 1;
     }
   }
@@ -393,7 +393,7 @@ package TestCase::List {
         return 0;
       }
       _assert_croak_message("Modification of non-creatable array value attempted, subscript -3");
-      $@ = undef; # XXX: suppress leak due to `croak`
+      $@ = undef;
     }
     return 1;
   }
