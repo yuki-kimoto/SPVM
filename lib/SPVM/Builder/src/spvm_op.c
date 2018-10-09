@@ -1171,7 +1171,7 @@ int32_t SPVM_OP_get_object_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->address_var_id;
+  return op_var->uv.var->my->object_var_id;
 }
 
 int32_t SPVM_OP_get_ref_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
@@ -1179,7 +1179,7 @@ int32_t SPVM_OP_get_ref_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->address_var_id;
+  return op_var->uv.var->my->ref_var_id;
 }
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {

@@ -3405,6 +3405,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         call_sub_arg_stack_top++;
         break;
       }
+      case SPVM_OPCODE_C_ID_PUSH_ARG_REF:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, call_sub_arg_stack_top);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_ADDRESS, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        call_sub_arg_stack_top++;
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
