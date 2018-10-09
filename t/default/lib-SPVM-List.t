@@ -27,7 +27,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::List->test_get);
   ok(TestCase::List->test_get_out_of_range);
   ok(TestCase::List->test_splice);
-  ok(TestCase::List->test_splice_with_list);
   ok(TestCase::List->test_splice_with_list_out_of_range);
 }
 
