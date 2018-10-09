@@ -1159,14 +1159,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
-  // Address variable declarations
-  int32_t address_vars_alloc_length = sub->address_vars_alloc_length;
-  if (address_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  void* address_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, address_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
   // byte variable declarations
   int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
   if (byte_vars_alloc_length > 0) {
