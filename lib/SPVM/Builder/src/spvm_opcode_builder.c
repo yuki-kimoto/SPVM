@@ -324,8 +324,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
                           
-                          int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_var_dist);
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_var_src);
+                          int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_var_dist);
+                          int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_var_src);
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -337,8 +337,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_REF);
                           
-                          int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_var_dist);
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_var_src);
+                          int32_t var_id_out = SPVM_OP_get_ref_var_id(compiler, op_var_dist);
+                          int32_t var_id_in = SPVM_OP_get_ref_var_id(compiler, op_var_src);
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -420,9 +420,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONCAT);
                         
-                        int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_assign_src->first);
-                        int32_t var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_assign_src->last);
+                        int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
+                        int32_t var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_assign_src->first);
+                        int32_t var_id_in2 = SPVM_OP_get_object_var_id(compiler, op_assign_src->last);
 
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in1;
@@ -438,7 +438,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_UNDEF);
                         
-                        int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                        int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                         opcode.operand0 = var_id_out;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -479,7 +479,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT);
 
                                 // Term of argument
-                                int32_t var_id_arg = SPVM_OP_get_address_var_id(compiler, op_term_arg);
+                                int32_t var_id_arg = SPVM_OP_get_object_var_id(compiler, op_term_arg);
                                 
                                 opcode.operand0 = var_id_arg;
                                 
@@ -540,7 +540,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               // Object type
                               else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT);
-                                int32_t var_id_arg = SPVM_OP_get_address_var_id(compiler, op_term_arg);
+                                int32_t var_id_arg = SPVM_OP_get_object_var_id(compiler, op_term_arg);
                                 
                                 opcode.operand0 = var_id_arg;
                                 
@@ -649,7 +649,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // Object type
                           else if (SPVM_TYPE_is_object_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                           }
                           // Value type
                           else if (SPVM_TYPE_is_value_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
@@ -747,7 +747,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // Object type
                           else if (SPVM_TYPE_is_object_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                           }
                           // Value type
                           else if (SPVM_TYPE_is_value_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
@@ -816,7 +816,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_LENGTH);
                         
                         int32_t var_id_out = SPVM_OP_get_int_var_id(compiler, op_assign_dist);
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src->first);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src->first);
                         
                         opcode.operand0 = var_id_out;
                         opcode.operand1 = var_id_in;
@@ -877,7 +877,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         
                         // Field absolute name symbol
-                        int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                        int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
                         int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
                         
                         int32_t field_length = array_basic_type->package->fields->length;
@@ -941,7 +941,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                           }
                           
-                          int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_ref_var_id(compiler, op_term_invocant);
                           
                           int32_t field_length = invocant_type->basic_type->package->fields->length;
                           int32_t field_offset = field->index;
@@ -1004,11 +1004,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         else {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                          int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
                           int32_t var_id_out;
                           if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_FIELD_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                           }
                           else {
                             switch (field_type->basic_type->id) {
@@ -1097,7 +1097,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             default:
                               assert(0);
                           }
-                          int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                          int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
                           int32_t field_length = array_type->basic_type->package->fields->length;
 
@@ -1118,7 +1118,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_out;
                           if (SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                           }
                           else {
                             switch (element_type->basic_type->id) {
@@ -1151,7 +1151,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
 
-                          int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                          int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
 
                           opcode.operand0 = var_id_out;
@@ -1174,7 +1174,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_out;
                         if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT);
-                          var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                          var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                         }
                         else {
                           switch (type->basic_type->id) {
@@ -1253,7 +1253,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
 
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                          int32_t var_id_in = SPVM_OP_get_ref_var_id(compiler, op_assign_src);
                           int32_t field_length = src_type->basic_type->package->fields->length;
                           
                           opcode.operand0 = var_id_out;
@@ -1297,7 +1297,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                           }
                           
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                          int32_t var_id_in = SPVM_OP_get_ref_var_id(compiler, op_assign_src);
                           
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -1313,7 +1313,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
-                        int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                        int32_t var_id_out = SPVM_OP_get_ref_var_id(compiler, op_assign_dist);
                         int32_t var_id_in;
                         SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                         if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -1401,7 +1401,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR);
 
-                        int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                        int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                         
                         opcode.operand0 = var_id_out;
                         
@@ -2042,17 +2042,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_byte_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_byte_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_BYTE_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_byte_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_byte_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2106,17 +2106,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_short_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_short_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_SHORT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_short_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_short_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2170,17 +2170,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_int_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_int_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_TO_INT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_int_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_int_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2234,17 +2234,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_long_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_long_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_TO_LONG_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_long_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_long_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2298,17 +2298,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_float_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_float_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_FLOAT_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_float_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_float_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2362,17 +2362,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_double_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_double_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_DOUBLE_OBJECT);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_double_var_id(compiler, op_src_term);
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING);
-                            var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
+                            var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
                             var_id_in = SPVM_OP_get_double_var_id(compiler, op_src_term);
                           }
                           else {
@@ -2397,12 +2397,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_byte_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE);
                                 var_id_out = SPVM_OP_get_byte_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE);
                                 var_id_out = SPVM_OP_get_byte_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2412,12 +2412,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_short_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT);
                                 var_id_out = SPVM_OP_get_short_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT);
                                 var_id_out = SPVM_OP_get_short_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2427,12 +2427,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_int_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT);
                                 var_id_out = SPVM_OP_get_int_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT);
                                 var_id_out = SPVM_OP_get_int_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2442,12 +2442,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_long_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG);
                                 var_id_out = SPVM_OP_get_long_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG);
                                 var_id_out = SPVM_OP_get_long_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2457,12 +2457,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_float_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT);
                                 var_id_out = SPVM_OP_get_float_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT);
                                 var_id_out = SPVM_OP_get_float_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2472,12 +2472,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_double_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE);
                                 var_id_out = SPVM_OP_get_double_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE);
                                 var_id_out = SPVM_OP_get_double_var_id(compiler, op_dist_term);
-                                var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                                var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                               }
                               else {
                                 assert(0);
@@ -2486,20 +2486,20 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             else if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                               // MOVE_OBJECT
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
-                              var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
-                              var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                              var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
+                              var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                             }
                             // CHECK_INTERFACE_TYPE
                             else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE);
-                              var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
-                              var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                              var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
+                              var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                             }
                             // CHECK_OBJECT_TYPE
                             else {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE);
-                              var_id_out = SPVM_OP_get_address_var_id(compiler, op_dist_term);
-                              var_id_in = SPVM_OP_get_address_var_id(compiler, op_src_term);
+                              var_id_out = SPVM_OP_get_object_var_id(compiler, op_dist_term);
+                              var_id_in = SPVM_OP_get_object_var_id(compiler, op_src_term);
                             }
                             opcode.operand2 = op_dist_type->uv.type->sub_rel_id;
 
@@ -2523,7 +2523,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_STRING);
 
-                          int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                          int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                           SPVM_CONSTANT* constant = op_assign_src->first->uv.constant;
 
                           opcode.operand0 = var_id_out;
@@ -2553,7 +2553,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY);
 
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
 
                                   opcode.operand0 = var_id_out;
@@ -2570,7 +2570,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   memset(&opcode, 0, sizeof(SPVM_OPCODE));
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_SHORT_ARRAY);
 
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
                                   
                                   opcode.operand0 = var_id_out;
@@ -2588,7 +2588,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_INT_ARRAY);
 
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
 
                                   opcode.operand0 = var_id_out;
@@ -2606,7 +2606,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_LONG_ARRAY);
 
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
 
                                   opcode.operand0 = var_id_out;
@@ -2624,7 +2624,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_FLOAT_ARRAY);
 
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
 
                                   opcode.operand0 = var_id_out;
@@ -2642,7 +2642,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_DOUBLE_ARRAY);
                                   
-                                  int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                  int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                   int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
 
                                   opcode.operand0 = var_id_out;
@@ -2661,7 +2661,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_VALUE_ARRAY);
 
-                                    int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                    int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                     SPVM_TYPE* type = op_assign_src->first->first->uv.type;
                                     int32_t basic_type_id = type->basic_type->id;
                                     int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
@@ -2680,7 +2680,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY);
 
-                                    int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                                    int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                                     SPVM_TYPE* type = op_assign_src->first->first->uv.type;
                                     int32_t basic_type_id = type->basic_type->id;
                                     int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
@@ -2702,7 +2702,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY);
 
-                              int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                              int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                               SPVM_TYPE* type = op_assign_src->first->first->uv.type;
                               int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_assign_src->first->last);
                               
@@ -2721,7 +2721,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_OBJECT);
                             
-                            int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                            int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
                             
                             opcode.operand0 = var_id_out;
                             opcode.operand1 = type->sub_rel_id;
@@ -2801,8 +2801,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
-                          int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                          int32_t var_id_out = SPVM_OP_get_object_var_id(compiler, op_assign_dist);
+                          int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src);
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -2814,8 +2814,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_REF);
-                          int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
-                          int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                          int32_t var_id_out = SPVM_OP_get_ref_var_id(compiler, op_assign_dist);
+                          int32_t var_id_in = SPVM_OP_get_ref_var_id(compiler, op_assign_src);
 
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_in;
@@ -2902,7 +2902,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_in;
                         if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT);
-                          var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                          var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src);
                         }
                         else {
                           if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
@@ -2979,7 +2979,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                       
-                      int32_t var_id_out = SPVM_OP_get_address_var_id(compiler, op_assign_dist);
+                      int32_t var_id_out = SPVM_OP_get_ref_var_id(compiler, op_assign_dist);
                       
                       opcode.operand0 = var_id_out;
                       opcode.operand1 = var_id_in;
@@ -3001,7 +3001,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR);
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src);
                         opcode.operand0 = var_id_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
@@ -3055,7 +3055,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
 
-                        int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                        int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                         int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
                         int32_t field_length = array_type->basic_type->package->fields->length;
                         
@@ -3078,7 +3078,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF);
                           
-                          int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                          int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
                           
                           opcode.operand0 = var_id_array;
@@ -3123,10 +3123,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT);
-                            var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                            var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src);
                           }
                           
-                          int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                          int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                           int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
                           
                           opcode.operand0 = var_id_array;
@@ -3186,7 +3186,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                         }
 
-                        int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                        int32_t var_id_invocant = SPVM_OP_get_ref_var_id(compiler, op_term_invocant);
                         
                         int32_t field_length = invocant_type->basic_type->package->fields->length;
                         int32_t field_offset = field->index;
@@ -3253,7 +3253,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_FIELD_UNDEF);
                           
-                          int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
 
                           opcode.operand0 = var_id_invocant;
                           opcode.operand1 = field_access->sub_rel_id;
@@ -3297,13 +3297,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_FIELD_OBJECT);
-                            var_id_in = SPVM_OP_get_address_var_id(compiler, op_assign_src);
+                            var_id_in = SPVM_OP_get_object_var_id(compiler, op_assign_src);
                           }
                           else {
                             assert(0);
                           }
                           
-                          int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                          int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
                           
                           opcode.operand0 = var_id_invocant;
                           opcode.operand1 = field_access->sub_rel_id;
@@ -3365,7 +3365,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                       }
                       
-                      int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                      int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
                       int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
 
                       int32_t field_length = array_basic_type->package->fields->length;
@@ -3483,7 +3483,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_WEAKEN_FIELD);
                       
                       SPVM_OP* op_term_invocant = op_cur->first;
-                      int32_t var_id_invocant = SPVM_OP_get_address_var_id(compiler, op_term_invocant);
+                      int32_t var_id_invocant = SPVM_OP_get_object_var_id(compiler, op_term_invocant);
 
                       opcode.operand0 = var_id_invocant;
                       opcode.operand1 = op_cur->uv.field_access->sub_rel_id;
@@ -3505,7 +3505,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_array = op_cur->first;
                       SPVM_OP* op_term_index = op_cur->last;
                       
-                      int32_t var_id_array = SPVM_OP_get_address_var_id(compiler, op_term_array);
+                      int32_t var_id_array = SPVM_OP_get_object_var_id(compiler, op_term_array);
                       int32_t var_id_index = SPVM_OP_get_int_var_id(compiler, op_term_index);
 
                       opcode.operand0 = var_id_array;
@@ -3721,7 +3721,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_MORTAL);
-                        int32_t my_address_var_id = SPVM_OP_get_address_var_id(compiler, op_cur);
+                        int32_t my_address_var_id = SPVM_OP_get_object_var_id(compiler, op_cur);
                         opcode.operand0 = my_address_var_id;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -3910,13 +3910,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF);
                       if (op_cur->first->id == SPVM_OP_C_ID_UNDEF) {
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                         
                         opcode.operand0 = var_id_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       else {
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->first);
                         
                         opcode.operand0 = var_id_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -3965,8 +3965,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_OBJECT);
-                        var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
-                        var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                        var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_cur->first);
+                        var_id_in2 = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                       }
                       else {
                         assert(0);
@@ -3987,11 +3987,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF);
                       if (op_cur->first->id == SPVM_OP_C_ID_UNDEF) {
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                         opcode.operand0 = var_id_in;
                       }
                       else {
-                        int32_t var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                        int32_t var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->first);
                         opcode.operand0 = var_id_in;
                       }
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -4002,8 +4002,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
                       
-                      int32_t var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
-                      int32_t var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                      int32_t var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_cur->first);
+                      int32_t var_id_in2 = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                       if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
                           assert(0);
@@ -4037,8 +4037,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_OBJECT);
-                        var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
-                        var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                        var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_cur->first);
+                        var_id_in2 = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                       }
                       
                       opcode.operand0 = var_id_in1;
@@ -4049,7 +4049,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     break;
                   }
                   case SPVM_OP_C_ID_ISA: {
-                    int32_t var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                    int32_t var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_cur->first);
                     SPVM_OP* op_type = op_cur->last;
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
 
@@ -4103,8 +4103,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(0);
                     }
                     
-                    int32_t var_id_in1 = SPVM_OP_get_address_var_id(compiler, op_cur->first);
-                    int32_t var_id_in2 = SPVM_OP_get_address_var_id(compiler, op_cur->last);
+                    int32_t var_id_in1 = SPVM_OP_get_object_var_id(compiler, op_cur->first);
+                    int32_t var_id_in2 = SPVM_OP_get_object_var_id(compiler, op_cur->last);
                     
                     opcode.operand0 = var_id_in1;
                     opcode.operand1 = var_id_in2;
@@ -4151,7 +4151,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_OBJECT);
-                        var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                        var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->first);
                       }
                       else {
                         assert(0);
@@ -4201,7 +4201,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT);
 
                               // Term of argument
-                              int32_t var_id_arg = SPVM_OP_get_address_var_id(compiler, op_term_arg);
+                              int32_t var_id_arg = SPVM_OP_get_object_var_id(compiler, op_term_arg);
                               
                               opcode.operand0 = var_id_arg;
                               
@@ -4263,7 +4263,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               int32_t var_id_arg;
                               if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT);
-                                var_id_arg = SPVM_OP_get_address_var_id(compiler, op_term_arg);
+                                var_id_arg = SPVM_OP_get_object_var_id(compiler, op_term_arg);
                               }
                               else {
                                 switch (arg_type->basic_type->id) {
@@ -4396,7 +4396,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_OBJECT);
-                          var_id_in = SPVM_OP_get_address_var_id(compiler, op_cur->first);
+                          var_id_in = SPVM_OP_get_object_var_id(compiler, op_cur->first);
                         }
                         else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                           SPVM_PACKAGE* value_package = return_type->basic_type->package;
