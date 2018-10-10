@@ -1140,72 +1140,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
-  if (sub->mortal_stack_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
-  }
-  
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
-
-  // Condition flag
-  SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
-  
-  // Convert string
-  SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string[30];\n");
-
-  // Exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
-
-  // byte variable declarations
-  int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
-  if (byte_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_byte byte_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  // short variable declarations
-  int32_t short_vars_alloc_length = sub->short_vars_alloc_length;
-  if (short_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_short short_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  // int variable declarations
-  int32_t int_vars_alloc_length = sub->int_vars_alloc_length;
-  if (int_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_int int_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  // long variable declarations
-  int32_t long_vars_alloc_length = sub->long_vars_alloc_length;
-  if (long_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_long long_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  // float variable declarations
-  int32_t float_vars_alloc_length = sub->float_vars_alloc_length;
-  if (float_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_float float_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  // double variable declarations
-  int32_t double_vars_alloc_length = sub->double_vars_alloc_length;
-  if (double_vars_alloc_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_double double_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
 
   // object variable declarations
   int32_t object_vars_alloc_length = sub->object_vars_alloc_length;
@@ -1222,333 +1158,74 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
+
+  // double variable declarations
+  int32_t double_vars_alloc_length = sub->double_vars_alloc_length;
+  if (double_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_double double_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // float variable declarations
+  int32_t float_vars_alloc_length = sub->float_vars_alloc_length;
+  if (float_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_float float_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // long variable declarations
+  int32_t long_vars_alloc_length = sub->long_vars_alloc_length;
+  if (long_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_long long_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // int variable declarations
+  int32_t int_vars_alloc_length = sub->int_vars_alloc_length;
+  if (int_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_int int_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // Exception
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
+
+  // Condition flag
+  SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
+
+  if (sub->mortal_stack_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
+  }
+  
+  // short variable declarations
+  int32_t short_vars_alloc_length = sub->short_vars_alloc_length;
+  if (short_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_short short_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // byte variable declarations
+  int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
+  if (byte_vars_alloc_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE_byte byte_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_alloc_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  // Convert string
+  SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string[30];\n");
   
   // Initialize variables with type information
   if (sub->my_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Initialize variables\n");
-  }
-  if (byte_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t byte_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, runtime_my->byte_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        byte_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, runtime_my->byte_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        byte_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  if (short_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t short_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, runtime_my->short_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        short_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, runtime_my->short_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        short_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  if (int_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t int_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_INT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->int_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        int_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_INT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->int_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        int_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  if (long_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t long_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, runtime_my->long_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        long_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, runtime_my->long_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        long_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  if (float_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t float_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, runtime_my->float_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        float_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, runtime_my->float_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        float_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-
-  if (double_vars_alloc_length > 0) {
-    int32_t my_index;
-    int32_t double_var_id = 0;
-    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-      
-      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-      
-      // Reference type
-      if (my_type_is_ref) {
-      }
-      else if (my_type_is_value_t) {
-        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
-        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
-        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
-        
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
-        assert(first_field);
-        
-        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
-          switch (first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              SPVM_STRING_BUFFER_add(string_buffer, "  ");
-              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, runtime_my->double_var_id + field_index);
-              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-              
-              break;
-            }
-          }
-        }
-        double_var_id++;
-      }
-      // Object type
-      else if (my_type_is_object_type) {
-      }
-      // Numeric type
-      else {
-        switch (runtime_my->basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  ");
-            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, runtime_my->double_var_id);
-            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-            
-            break;
-          }
-        }
-        double_var_id++;
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
 
   if (object_vars_alloc_length > 0) {
@@ -1618,7 +1295,331 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       SPVM_STRING_BUFFER_add(string_buffer, "\n");
     }
   }
-  
+
+  if (double_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t double_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, runtime_my->double_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        double_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, runtime_my->double_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        double_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  if (float_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t float_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, runtime_my->float_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        float_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, runtime_my->float_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        float_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  if (long_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t long_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_LONG: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, runtime_my->long_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        long_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, runtime_my->long_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        long_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  if (short_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t short_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, runtime_my->short_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        short_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, runtime_my->short_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        short_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  if (byte_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t byte_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, runtime_my->byte_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        byte_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, runtime_my->byte_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        byte_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
+  if (int_vars_alloc_length > 0) {
+    int32_t my_index;
+    int32_t int_var_id = 0;
+    for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
+      SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
+      
+      int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
+      
+      // Reference type
+      if (my_type_is_ref) {
+      }
+      else if (my_type_is_value_t) {
+        int32_t runtime_my_basic_type_id = runtime_my->basic_type_id;
+        SPVM_RUNTIME_BASIC_TYPE* runtime_my_basic_type = &runtime->basic_types[runtime_my_basic_type_id];
+        SPVM_RUNTIME_PACKAGE* runtime_my_package = &runtime->packages[runtime_my_basic_type->package_id];
+        
+        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(runtime_my_package->fields, 0);
+        assert(first_field);
+        
+        for (int32_t field_index = 0; field_index < runtime_my_package->fields->length; field_index++) {
+          switch (first_field->basic_type_id) {
+            case SPVM_BASIC_TYPE_C_ID_INT: {
+              SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->int_var_id + field_index);
+              SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+              
+              break;
+            }
+          }
+        }
+        int_var_id++;
+      }
+      // Object type
+      else if (my_type_is_object_type) {
+      }
+      // Numeric type
+      else {
+        switch (runtime_my->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  ");
+            SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, runtime_my->int_var_id);
+            SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
+            
+            break;
+          }
+        }
+        int_var_id++;
+      }
+    }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  }
+
   // Copy arguments to variables with type information
   if (sub->arg_ids_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Copy arguments to variables\n");
