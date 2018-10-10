@@ -46,26 +46,18 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
-  int32_t exception_flag = 0;
+  // Call native sub
   if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
-    int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
-    exception_flag = SPVM_RUNTIME_call_sub_native(env, sub_id, stack);
-    SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
+    return SPVM_RUNTIME_call_sub_native(env, sub_id, stack);
   }
+  // Call precompiled sub
   else if (sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED) {
-    exception_flag = SPVM_RUNTIME_call_sub_precompile(env, sub_id, stack);
+    return SPVM_RUNTIME_call_sub_precompile(env, sub_id, stack);
   }
+  // Call normal sub
   else {
-    exception_flag = SPVM_RUNTIME_call_sub_vm(env, sub_id, stack);
+    return SPVM_RUNTIME_call_sub_vm(env, sub_id, stack);
   }
-  
-  // Set default exception message
-  if (exception_flag && runtime->exception == NULL) {
-    void* exception = env->new_string_raw(env, "Error", 0);
-    env->set_exception(env, exception);
-  }
-  
-  return exception_flag;
 }
 
 int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
@@ -91,9 +83,23 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
 
+  // Enter scope
+  int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
+
   // Call native subrotuine
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
-  return (*native_address)(env, stack);
+  int32_t exception_flag = (*native_address)(env, stack);
+  
+  // Leave scope
+  SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
+
+  // Set default exception message
+  if (exception_flag && runtime->exception == NULL) {
+    void* exception = env->new_string_raw(env, "Error", 0);
+    env->set_exception(env, exception);
+  }
+  
+  return exception_flag;
 }
 
 int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
