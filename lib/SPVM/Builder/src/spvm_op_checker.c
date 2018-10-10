@@ -2768,7 +2768,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               if (my_var_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", my->op_my->file, my->op_my->line);
               }
-              my->var_id = my_var_id;
+              my->index = my_var_id;
               my_var_id += width;
               
               if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {

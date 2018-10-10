@@ -7,7 +7,7 @@ struct SPVM_my {
   SPVM_OP* op_my;
   SPVM_TYPE* type;
   SPVM_OP* op_name;
-  int32_t var_id;
+  int32_t index;
   int32_t is_tmp;
   int32_t byte_var_id;
   int32_t short_var_id;

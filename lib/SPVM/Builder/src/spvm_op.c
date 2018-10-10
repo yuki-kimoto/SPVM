@@ -1099,7 +1099,7 @@ int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->var_id;
+  return op_var->uv.var->my->index;
 }
 
 int32_t SPVM_OP_get_byte_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
