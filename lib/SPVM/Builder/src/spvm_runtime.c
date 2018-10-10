@@ -43,7 +43,7 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Constant pool sub
+  // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
   int32_t exception_flag = 0;
@@ -74,12 +74,9 @@ int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VAL
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Constant pool sub
+  // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
 
-  // Subroutine is Precompile
-  assert(sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED);
-  
   // Call precompile subroutine
   int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_precompile_addresses[sub->id];
   return (*precompile_address)(env, stack);
@@ -91,11 +88,8 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Constant pool sub
+  // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-
-  // Subroutine is native
-  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC);
 
   // Call native subrotuine
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
@@ -1931,7 +1925,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        assert(mortal_stack_top < sub->mortal_stack_length);
         mortal_stack[mortal_stack_top] = opcode->operand0;
         mortal_stack_top++;
         

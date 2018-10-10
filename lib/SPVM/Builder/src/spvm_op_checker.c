@@ -478,7 +478,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                         }
                         // String
-                        else if (type->dimension == 1 && type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                        else if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           add_constant = 1;
                           
                           if (sub->info_string_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
@@ -1912,10 +1912,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_CROAK: {
                         SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                        if (first_type->dimension == 1 && first_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_BYTE) {
+                        if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                           SPVM_yyerror_format(compiler, "croak argument must be string at %s line %d\n", op_cur->file, op_cur->line);
-                          
-                          return;
                         }
                         break;
                       }
