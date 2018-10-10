@@ -144,10 +144,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   // Call subroutine argument stack top
   int32_t call_sub_arg_stack_top = 0;
   
-  int32_t sub_return_basic_type_id = sub->return_basic_type_id;
-  int32_t sub_return_type_dimension = sub->return_type_dimension;
-  int32_t sub_return_type_flag = sub->return_type_flag;
-  
   // Mortal stack
   int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
@@ -3684,6 +3680,9 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   
   // Decrement ref count of return value
   if (!exception_flag) {
+    int32_t sub_return_basic_type_id = sub->return_basic_type_id;
+    int32_t sub_return_type_dimension = sub->return_type_dimension;
+    int32_t sub_return_type_flag = sub->return_type_flag;
     if (SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag)) {
       if (*(void**)&stack[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
