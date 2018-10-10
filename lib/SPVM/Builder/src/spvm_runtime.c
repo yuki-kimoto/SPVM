@@ -104,6 +104,12 @@ int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
 
 int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   (void)env;
+
+  // Condition flag
+  register int32_t condition_flag = 0;
+  
+  // Opcode relative index
+  register int32_t opcode_rel_index = 0;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -148,12 +154,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
 
-  // Condition flag
-  register int32_t condition_flag = 0;
-  
-  // Opcode relative index
-  register int32_t opcode_rel_index = 0;
-
   // short variables
   SPVM_VALUE_short* short_vars = NULL;
   int32_t short_vars_alloc_length = sub->short_vars_alloc_length;
@@ -189,6 +189,11 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   }
   if (byte_vars_alloc_length > 0) {
     byte_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_byte) * byte_vars_alloc_length);
+  }
+
+  // Mortal stack
+  if (sub->mortal_stack_length > 0) {
+    mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(int32_t) * sub->mortal_stack_length);
   }
 
   {
@@ -288,7 +293,7 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       
       // If arg is object, increment reference count
       if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        void* object = *(void**)&object_vars[arg->address_var_id];
+        void* object = *(void**)&object_vars[arg->object_var_id];
         if (object != NULL) {
           SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
         }
@@ -296,11 +301,6 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
       
       stack_index += arg_width;
     }
-  }
-  
-  // Mortal stack
-  if (sub->mortal_stack_length > 0) {
-    mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(int32_t) * sub->mortal_stack_length);
   }
   
   while (1) {
