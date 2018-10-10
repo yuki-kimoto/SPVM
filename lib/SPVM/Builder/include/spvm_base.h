@@ -24,10 +24,6 @@ typedef struct SPVM_runtime_info_constant SPVM_RUNTIME_INFO_CONSTANT;
 struct SPVM_runtime_info_type;
 typedef struct SPVM_runtime_info_type SPVM_RUNTIME_INFO_TYPE;
 
-// spvm_runtime_builder.h
-struct SPVM_runtime_builder;
-typedef struct SPVM_runtime_builder SPVM_RUNTIME_BUILDER;
-
 // spvm_runtime_my.h
 struct SPVM_runtime_my;
 typedef struct SPVM_runtime_my SPVM_RUNTIME_MY;

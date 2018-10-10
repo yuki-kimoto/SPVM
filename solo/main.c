@@ -12,7 +12,6 @@
 #include "spvm_sub.h"
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_sub.h"
-#include "spvm_runtime_builder.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_api.h"
@@ -113,7 +112,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   // Create run-time
-  SPVM_ENV* env = SPVM_RUNTIME_BUILDER_build_runtime_env(portable);
+  SPVM_ENV* env = SPVM_RUNTIME_build_runtime_env(portable);
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Free compiler

@@ -106,6 +106,8 @@ struct SPVM_runtime {
   SPVM_PORTABLE* portable;
 };
 
+SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime);
+SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable);
 void SPVM_RUNTIME_free(SPVM_ENV* env);
 
 #endif
