@@ -2751,8 +2751,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           {
             int32_t my_index;
             int32_t my_var_id = 0;
-            int32_t my_numeric_var_id = 0;
-            int32_t my_address_var_id = 0;
             int32_t my_byte_var_id = 0;
             int32_t my_short_var_id = 0;
             int32_t my_int_var_id = 0;
@@ -2807,20 +2805,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     break;
                   }
                 }
-                my->numeric_var_id = my_numeric_var_id;
-                my_numeric_var_id += width;
               }
               else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                my->address_var_id = my_address_var_id;
-                my_address_var_id += width;
-
                 my->object_var_id = my_object_var_id;
                 my_object_var_id += width;
               }
               else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                my->address_var_id = my_address_var_id;
-                my_address_var_id += width;
-
                 my->ref_var_id = my_ref_var_id;
                 my_ref_var_id += width;
               }
@@ -2870,8 +2860,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   default:
                     assert(0);
                 }
-                my->numeric_var_id = my_numeric_var_id;
-                my_numeric_var_id += width;
               }
               else {
                 assert(0);
@@ -2882,8 +2870,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             sub->args_alloc_length = args_alloc_length;
 
             sub->vars_alloc_length = my_var_id;
-            sub->numeric_vars_alloc_length = my_numeric_var_id;
-            sub->address_vars_alloc_length = my_address_var_id;
 
             sub->byte_vars_alloc_length = my_byte_var_id;
             sub->short_vars_alloc_length = my_short_var_id;

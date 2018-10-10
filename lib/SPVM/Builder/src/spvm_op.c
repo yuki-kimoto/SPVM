@@ -1102,22 +1102,6 @@ int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op_var->uv.var->my->var_id;
 }
 
-int32_t SPVM_OP_get_address_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->address_var_id;
-}
-
-int32_t SPVM_OP_get_numeric_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->numeric_var_id;
-}
-
 int32_t SPVM_OP_get_byte_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   

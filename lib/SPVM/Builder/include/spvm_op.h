@@ -251,8 +251,6 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name);
 
 int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op_var);
-int32_t SPVM_OP_get_address_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
-int32_t SPVM_OP_get_numeric_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
 int32_t SPVM_OP_get_byte_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
 int32_t SPVM_OP_get_short_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
 int32_t SPVM_OP_get_int_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
