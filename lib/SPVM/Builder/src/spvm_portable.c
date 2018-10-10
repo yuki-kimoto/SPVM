@@ -47,9 +47,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
   portable->args_capacity = 8;
-  portable->args_unit = 13;
+  portable->args_unit = 12;
   portable->mys_capacity = 8;
-  portable->mys_unit = 13;
+  portable->mys_unit = 12;
   portable->info_package_var_ids_capacity = 8;
   portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
@@ -317,19 +317,18 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
   }
   
   int32_t* new_portable_arg = (int32_t*)&portable->args[portable->args_unit * portable->args_length];
-  new_portable_arg[0] = my->var_id;
-  new_portable_arg[1] = my->type->basic_type->id;
-  new_portable_arg[2] = my->type->dimension;
-  new_portable_arg[3] = my->type->flag;
-  new_portable_arg[4] = my->byte_var_id;
-  new_portable_arg[5] = my->short_var_id;
-  new_portable_arg[6] = my->int_var_id;
-  new_portable_arg[7] = my->long_var_id;
-  new_portable_arg[8] = my->float_var_id;
-  new_portable_arg[9] = my->double_var_id;
-  new_portable_arg[10] = my->object_var_id;
-  new_portable_arg[11] = my->ref_var_id;
-  new_portable_arg[12] = my->value_field_basic_type_id ;
+  new_portable_arg[0] = my->type->basic_type->id;
+  new_portable_arg[1] = my->type->dimension;
+  new_portable_arg[2] = my->type->flag;
+  new_portable_arg[3] = my->byte_var_id;
+  new_portable_arg[4] = my->short_var_id;
+  new_portable_arg[5] = my->int_var_id;
+  new_portable_arg[6] = my->long_var_id;
+  new_portable_arg[7] = my->float_var_id;
+  new_portable_arg[8] = my->double_var_id;
+  new_portable_arg[9] = my->object_var_id;
+  new_portable_arg[10] = my->ref_var_id;
+  new_portable_arg[11] = my->value_field_basic_type_id ;
 
   portable->args_length++;
 }
@@ -346,19 +345,18 @@ void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
   }
   
   int32_t* new_portable_my = (int32_t*)&portable->mys[portable->mys_unit * portable->mys_length];
-  new_portable_my[0] = my->var_id;
-  new_portable_my[1] = my->type->basic_type->id;
-  new_portable_my[2] = my->type->dimension;
-  new_portable_my[3] = my->type->flag;
-  new_portable_my[4] = my->byte_var_id;
-  new_portable_my[5] = my->short_var_id;
-  new_portable_my[6] = my->int_var_id;
-  new_portable_my[7] = my->long_var_id;
-  new_portable_my[8] = my->float_var_id;
-  new_portable_my[9] = my->double_var_id;
-  new_portable_my[10] = my->object_var_id;
-  new_portable_my[11] = my->ref_var_id;
-  new_portable_my[12] = my->value_field_basic_type_id;
+  new_portable_my[0] = my->type->basic_type->id;
+  new_portable_my[1] = my->type->dimension;
+  new_portable_my[2] = my->type->flag;
+  new_portable_my[3] = my->byte_var_id;
+  new_portable_my[4] = my->short_var_id;
+  new_portable_my[5] = my->int_var_id;
+  new_portable_my[6] = my->long_var_id;
+  new_portable_my[7] = my->float_var_id;
+  new_portable_my[8] = my->double_var_id;
+  new_portable_my[9] = my->object_var_id;
+  new_portable_my[10] = my->ref_var_id;
+  new_portable_my[11] = my->value_field_basic_type_id;
   
   portable->mys_length++;
 }
