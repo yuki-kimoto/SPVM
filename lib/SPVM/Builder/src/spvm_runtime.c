@@ -48,58 +48,33 @@ int32_t SPVM_RUNTIME_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) 
   
   // Call native sub
   if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
-    return SPVM_RUNTIME_call_sub_native(env, sub_id, stack);
+    // Enter scope
+    int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
+
+    // Call native subrotuine
+    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
+    int32_t exception_flag = (*native_address)(env, stack);
+    
+    // Leave scope
+    SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
+
+    // Set default exception message
+    if (exception_flag && runtime->exception == NULL) {
+      void* exception = env->new_string_raw(env, "Error", 0);
+      env->set_exception(env, exception);
+    }
+    
+    return exception_flag;
   }
   // Call precompiled sub
   else if (sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED) {
-    return SPVM_RUNTIME_call_sub_precompile(env, sub_id, stack);
+    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_precompile_addresses[sub->id];
+    return (*precompile_address)(env, stack);
   }
-  // Call normal sub
+  // Call sub virtual machine
   else {
     return SPVM_RUNTIME_call_sub_vm(env, sub_id, stack);
   }
-}
-
-int32_t SPVM_RUNTIME_call_sub_precompile(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  // Sub
-  SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-
-  // Call precompile subroutine
-  int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_precompile_addresses[sub->id];
-  return (*precompile_address)(env, stack);
-}
-
-int32_t SPVM_RUNTIME_call_sub_native(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  // Sub
-  SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-
-  // Enter scope
-  int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
-
-  // Call native subrotuine
-  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
-  int32_t exception_flag = (*native_address)(env, stack);
-  
-  // Leave scope
-  SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
-
-  // Set default exception message
-  if (exception_flag && runtime->exception == NULL) {
-    void* exception = env->new_string_raw(env, "Error", 0);
-    env->set_exception(env, exception);
-  }
-  
-  return exception_flag;
 }
 
 int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
