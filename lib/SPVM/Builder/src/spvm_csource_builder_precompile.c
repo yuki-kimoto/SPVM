@@ -1217,37 +1217,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   }
 
   if (object_vars_alloc_length > 0) {
-    {
-      int32_t my_index;
-      int32_t object_var_id = 0;
-      for (my_index = 0; my_index < sub->my_ids_length; my_index++) {
-        SPVM_RUNTIME_MY* runtime_my = &runtime->mys[sub->my_ids_base + my_index];
-        
-        int32_t my_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-        int32_t my_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-        int32_t my_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, runtime_my->basic_type_id, runtime_my->type_dimension, runtime_my->type_flag);
-        
-        // Reference type
-        if (my_type_is_ref) {
-        }
-        // Value type
-        else if (my_type_is_value_t) {
-          
-        }
-        // Object type
-        else if (my_type_is_object_type) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, runtime_my->object_var_id);
-          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-          object_var_id++;
-        }
-        // Numeric type
-        else {
-          
-        }
-      }
-      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+    for (int32_t var_index = 0; var_index < object_vars_alloc_length; var_index++) {
+      SPVM_STRING_BUFFER_add(string_buffer, "  ");
+      SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, var_index);
+      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
+    SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
 
   if (ref_vars_alloc_length > 0) {
