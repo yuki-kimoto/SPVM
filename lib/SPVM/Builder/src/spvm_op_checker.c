@@ -2869,8 +2869,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
             sub->args_alloc_length = args_alloc_length;
 
-            sub->vars_alloc_length = my_var_id;
-
             sub->byte_vars_alloc_length = my_byte_var_id;
             sub->short_vars_alloc_length = my_short_var_id;
             sub->int_vars_alloc_length = my_int_var_id;
