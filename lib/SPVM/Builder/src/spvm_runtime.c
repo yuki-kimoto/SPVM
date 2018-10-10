@@ -3681,15 +3681,10 @@ int32_t SPVM_RUNTIME_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stac
   }
 
   label_END_SUB:
-    
-  // Croak
+  
+  // Decrement ref count of return value
   if (!exception_flag) {
-    
-    int32_t sub_return_type_is_object = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-    int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-    
-    // Decrement ref count of return value
-    if (sub_return_type_is_object && !sub_return_type_is_value_type) {
+    if (SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag)) {
       if (*(void**)&stack[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
       }
