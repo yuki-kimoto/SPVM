@@ -1094,76 +1094,12 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op_var;
 }
 
-int32_t SPVM_OP_get_my_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_get_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->index;
-}
-
-int32_t SPVM_OP_get_byte_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->byte_var_id;
-}
-
-int32_t SPVM_OP_get_short_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->short_var_id;
-}
-
-int32_t SPVM_OP_get_int_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->int_var_id;
-}
-
-int32_t SPVM_OP_get_long_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->long_var_id;
-}
-
-int32_t SPVM_OP_get_float_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->float_var_id;
-}
-
-int32_t SPVM_OP_get_double_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->double_var_id;
-}
-
-int32_t SPVM_OP_get_object_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->object_var_id;
-}
-
-int32_t SPVM_OP_get_ref_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
-  
-  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
-  
-  return op_var->uv.var->my->ref_var_id;
+  return op_var->uv.var->my->var_id;
 }
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {

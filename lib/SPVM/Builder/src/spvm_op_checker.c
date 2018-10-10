@@ -2768,50 +2768,50 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               if (my_var_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_yyerror_format(compiler, "Too many variable declarations at %s line %d\n", my->op_my->file, my->op_my->line);
               }
-              my->index = my_var_id;
+              my->var_id = my_var_id;
               my_var_id += width;
               
               if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
                 switch(numeric_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                    my->byte_var_id = my_byte_var_id;
+                    my->var_id = my_byte_var_id;
                     my_byte_var_id++;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                    my->short_var_id = my_short_var_id;
+                    my->var_id = my_short_var_id;
                     my_short_var_id++;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
-                    my->int_var_id = my_int_var_id;
+                    my->var_id = my_int_var_id;
                     my_int_var_id++;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
-                    my->long_var_id = my_long_var_id;
+                    my->var_id = my_long_var_id;
                     my_long_var_id++;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                    my->float_var_id = my_float_var_id;
+                    my->var_id = my_float_var_id;
                     my_float_var_id++;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                    my->double_var_id = my_double_var_id;
+                    my->var_id = my_double_var_id;
                     my_double_var_id++;
                     break;
                   }
                 }
               }
               else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                my->object_var_id = my_object_var_id;
+                my->var_id = my_object_var_id;
                 my_object_var_id += width;
               }
               else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                my->ref_var_id = my_ref_var_id;
+                my->var_id = my_ref_var_id;
                 my_ref_var_id += width;
               }
               else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
@@ -2828,32 +2828,32 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 
                 switch (field_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                    my->byte_var_id = my_byte_var_id;
+                    my->var_id = my_byte_var_id;
                     my_byte_var_id += width;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                    my->short_var_id = my_short_var_id;
+                    my->var_id = my_short_var_id;
                     my_short_var_id += width;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
-                    my->int_var_id = my_int_var_id;
+                    my->var_id = my_int_var_id;
                     my_int_var_id += width;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
-                    my->long_var_id = my_long_var_id;
+                    my->var_id = my_long_var_id;
                     my_long_var_id += width;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                    my->float_var_id = my_float_var_id;
+                    my->var_id = my_float_var_id;
                     my_float_var_id += width;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                    my->double_var_id = my_double_var_id;
+                    my->var_id = my_double_var_id;
                     my_double_var_id += width;
                     break;
                   }
