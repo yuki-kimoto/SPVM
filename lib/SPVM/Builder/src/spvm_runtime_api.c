@@ -96,6 +96,19 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
+
+  // Exception flag
+  int32_t exception_flag = 0;
+
+  // Operation code base
+  int32_t sub_opcodes_base = sub->opcodes_base;
+
+  // Call subroutine argument stack top
+  int32_t call_sub_arg_stack_top = 0;
+  
+  // Mortal stack
+  int32_t* mortal_stack = NULL;
+  int32_t mortal_stack_top = 0;
   
   // object variables
   void** object_vars = NULL;
@@ -115,39 +128,21 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // int variables
   SPVM_VALUE_int* int_vars = NULL;
 
-  // Exception flag
-  int32_t exception_flag = 0;
-
-  // Operation code base
-  int32_t sub_opcodes_base = sub->opcodes_base;
-
-  // Call subroutine argument stack top
-  int32_t call_sub_arg_stack_top = 0;
-  
-  // Mortal stack
-  int32_t* mortal_stack = NULL;
-  int32_t mortal_stack_top = 0;
-
   // short variables
   SPVM_VALUE_short* short_vars = NULL;
-  int32_t short_vars_alloc_length = sub->short_vars_alloc_length;
   
   // byte variables
   SPVM_VALUE_byte* byte_vars = NULL;
-  int32_t byte_vars_alloc_length = sub->byte_vars_alloc_length;
-  
-  // Buffer for string convertion
-  char string_convert_buffer[30];
   
   // Alloc memory
   if (sub->object_vars_alloc_length > 0) {
     object_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(void*) * sub->object_vars_alloc_length);
   }
-  if (sub->double_vars_alloc_length > 0) {
-    double_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_double) * sub->double_vars_alloc_length);
-  }
   if (sub->ref_vars_alloc_length > 0) {
     ref_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(void*) * sub->ref_vars_alloc_length);
+  }
+  if (sub->double_vars_alloc_length > 0) {
+    double_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_double) * sub->double_vars_alloc_length);
   }
   if (sub->long_vars_alloc_length > 0) {
     long_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_long) * sub->long_vars_alloc_length);
@@ -158,17 +153,20 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   if (sub->int_vars_alloc_length > 0) {
     int_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_int) * sub->int_vars_alloc_length);
   }
-  if (short_vars_alloc_length > 0) {
-    short_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_short) * short_vars_alloc_length);
+  if (sub->short_vars_alloc_length > 0) {
+    short_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_short) * sub->short_vars_alloc_length);
   }
-  if (byte_vars_alloc_length > 0) {
-    byte_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_byte) * byte_vars_alloc_length);
+  if (sub->byte_vars_alloc_length > 0) {
+    byte_vars = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_byte) * sub->byte_vars_alloc_length);
   }
 
   // Mortal stack
   if (sub->mortal_stack_length > 0) {
     mortal_stack = SPVM_RUNTIME_ALLOCATOR_alloc_memory_block_zero(runtime, sizeof(int32_t) * sub->mortal_stack_length);
   }
+
+  // Buffer for string convertion
+  char string_convert_buffer[30];
   
   // Copy arguments to variables
   {
