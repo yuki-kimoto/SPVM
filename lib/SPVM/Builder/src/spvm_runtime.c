@@ -12,11 +12,9 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_object.h"
-#include "spvm_util_allocator.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
@@ -126,7 +124,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
   };
   
   int32_t env_length = 85;
-  SPVM_ENV* env = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * env_length);
+  SPVM_ENV* env = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
   
   return env;
@@ -134,7 +132,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
 
 SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
-  SPVM_RUNTIME* runtime = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
   
   runtime->portable = portable;
   
@@ -166,10 +164,10 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->info_string_lengths = portable->info_string_lengths;
 
   // Native sub addresses
-  runtime->sub_native_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
+  runtime->sub_native_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   
   // Precompile sub addresses
-  runtime->sub_precompile_addresses = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
+  runtime->sub_precompile_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   
   // build runtime info_switch_info info_switch_infos
   int32_t info_switch_info_ints_index = 0;
@@ -198,7 +196,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
 
   // build packages
   runtime->packages_length = portable->packages_length;
-  runtime->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
+  runtime->packages = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
   for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
     int32_t* portable_package = (int32_t*)&portable->packages[i];
     
@@ -315,11 +313,11 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   }
 
   // Initialize Package Variables
-  runtime->package_vars_heap = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
+  runtime->package_vars_heap = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
 
   runtime->mortal_stack_capacity = 1;
 
-  runtime->mortal_stack = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
+  runtime->mortal_stack = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
   return env;
 }

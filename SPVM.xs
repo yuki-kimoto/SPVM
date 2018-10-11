@@ -41,7 +41,6 @@
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_runtime_allocator.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
