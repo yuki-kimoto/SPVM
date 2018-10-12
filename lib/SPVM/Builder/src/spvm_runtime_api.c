@@ -148,37 +148,46 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   int32_t vars_offset = 0;
   if (total_vars_alloc_length > 0) {
     vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_vars_alloc_length);
-  }
-    
-  // Alloc memory
-  if (sub->object_vars_alloc_length > 0) {
-    object_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(void*) * sub->object_vars_alloc_length);
-  }
-  if (sub->ref_vars_alloc_length > 0) {
-    ref_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(void*) * sub->ref_vars_alloc_length);
-  }
-  if (sub->double_vars_alloc_length > 0) {
-    double_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_double) * sub->double_vars_alloc_length);
-  }
-  if (sub->long_vars_alloc_length > 0) {
-    long_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_long) * sub->long_vars_alloc_length);
-  }
-  if (sub->float_vars_alloc_length > 0) {
-    float_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_float) * sub->float_vars_alloc_length);
-  }
-  if (sub->int_vars_alloc_length > 0) {
-    int_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_int) * sub->int_vars_alloc_length);
-  }
-  if (sub->short_vars_alloc_length > 0) {
-    short_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_short) * sub->short_vars_alloc_length);
-  }
-  if (sub->byte_vars_alloc_length > 0) {
-    byte_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE_byte) * sub->byte_vars_alloc_length);
-  }
 
-  // Mortal stack
-  if (sub->mortal_stack_length > 0) {
-    mortal_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(int32_t) * sub->mortal_stack_length);
+    // Alloc memory
+    if (sub->object_vars_alloc_length > 0) {
+      object_vars = (void**)&vars[vars_offset];
+      vars_offset += sub->object_vars_alloc_length;
+    }
+    if (sub->ref_vars_alloc_length > 0) {
+      ref_vars = (void**)&vars[vars_offset];
+      vars_offset += sub->ref_vars_alloc_length;
+    }
+    if (sub->double_vars_alloc_length > 0) {
+      double_vars = (double*)&vars[vars_offset];
+      vars_offset += sub->double_vars_alloc_length;
+    }
+    if (sub->long_vars_alloc_length > 0) {
+      long_vars = (SPVM_VALUE_long*)&vars[vars_offset];
+      vars_offset += sub->long_vars_alloc_length;
+    }
+    if (sub->float_vars_alloc_length > 0) {
+      float_vars = (float*)&vars[vars_offset];
+      vars_offset += sub->float_vars_alloc_length;
+    }
+    if (sub->int_vars_alloc_length > 0) {
+      int_vars = (SPVM_VALUE_int*)&vars[vars_offset];
+      vars_offset += sub->int_vars_alloc_length;
+    }
+    if (sub->short_vars_alloc_length > 0) {
+      short_vars = (SPVM_VALUE_short*)&vars[vars_offset];
+      vars_offset += sub->short_vars_alloc_length;
+    }
+    if (sub->byte_vars_alloc_length > 0) {
+      byte_vars = (SPVM_VALUE_byte*)&vars[vars_offset];
+      vars_offset += sub->byte_vars_alloc_length;
+    }
+
+    // Mortal stack
+    if (sub->mortal_stack_length > 0) {
+      mortal_stack = (int32_t*)&vars[vars_offset];
+      vars_offset += sub->mortal_stack_length;
+    }
   }
 
   // Buffer for string convertion
@@ -3676,16 +3685,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     }
   }
   
-  SPVM_RUNTIME_API_free_memory_block(runtime, mortal_stack);
-  SPVM_RUNTIME_API_free_memory_block(runtime, byte_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, short_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, int_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, long_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, float_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, double_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, object_vars);
-  SPVM_RUNTIME_API_free_memory_block(runtime, ref_vars);
-
   SPVM_RUNTIME_API_free_memory_block(runtime, vars);
   
   return exception_flag;
