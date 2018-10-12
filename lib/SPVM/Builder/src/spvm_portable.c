@@ -98,8 +98,28 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   else {
     new_portable_sub[5] = -1;
   }
+  
+  // Get file base name
+  const char* sub_file_base = NULL;
+  {
+    const char* file = sub->file;
 
-  new_portable_sub[6] = SPVM_PORTABLE_push_symbol(portable, sub->file);
+    int32_t file_length = (int32_t)strlen(file);
+    int32_t found_sep = 0;
+    for (int32_t i = file_length - 1; i >= 0; i--) {
+      char ch = file[i];
+      if (ch == '/' || ch == '\\') {
+        sub_file_base = &file[i + 1];
+        found_sep = 1;
+        break;
+      }
+    }
+    if (!found_sep) {
+      sub_file_base = file;
+    }
+  }
+
+  new_portable_sub[6] = SPVM_PORTABLE_push_symbol(portable, sub_file_base);
   new_portable_sub[7] = sub->line;
   new_portable_sub[8] = sub->args_alloc_length;
   new_portable_sub[9] = sub->return_type->basic_type->id;
