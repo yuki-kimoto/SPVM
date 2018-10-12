@@ -36,9 +36,6 @@ my $DBL_MIN = POSIX::DBL_MIN();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-=pod
-# [Now browken this tests]
-
 # Argument is value reference and numeric reference mixed
 {
   {
@@ -87,7 +84,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
   }
 }
-=cut
 
 # Argument is numeric reference
 {

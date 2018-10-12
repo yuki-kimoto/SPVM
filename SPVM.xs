@@ -1021,32 +1021,32 @@ call_sub(...)
               switch (first_field->basic_type_id) {
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
                   int8_t value = (int8_t)SvIV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].bval = value;
+                  ((SPVM_VALUE_byte*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_SHORT: {
                   int16_t value = (int16_t)SvIV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].sval = value;
+                  ((SPVM_VALUE_short*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_INT: {
                   int32_t value = (int32_t)SvIV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].ival = value;
+                  ((SPVM_VALUE_int*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_LONG: {
                   int64_t value = (int64_t)SvIV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].lval = value;
+                  ((SPVM_VALUE_long*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                   float value = (float)SvNV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].fval = value;
+                  ((SPVM_VALUE_float*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                   double value = (double)SvNV(sv_field_value);
-                  ref_stack[ref_stack_top + field_index].dval = value;
+                  ((SPVM_VALUE_double*)&ref_stack[ref_stack_top])[field_index] = value;
                   break;
                 }
                 default:
@@ -1403,27 +1403,27 @@ call_sub(...)
             SV* sv_field_value;
             switch (arg_first_field->basic_type_id) {
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].bval));
+                sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_byte*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].sval));
+                sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_short*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_INT: {
-                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].ival));
+                sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_int*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_LONG: {
-                sv_field_value = sv_2mortal(newSViv(ref_stack[ref_stack_id + field_index].lval));
+                sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_long*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                sv_field_value = sv_2mortal(newSVnv(ref_stack[ref_stack_id + field_index].fval));
+                sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_float*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                sv_field_value = sv_2mortal(newSVnv(ref_stack[ref_stack_id + field_index].dval));
+                sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_double*)&ref_stack[ref_stack_id])[field_index]));
                 break;
               }
               default:

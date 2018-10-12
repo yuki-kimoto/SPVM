@@ -1,3 +1,6 @@
+0.0380 2018-10-12
+  - improve call subroutine performance by reduce malloc count
+  - fix XS value reference bugs
 0.0379 2018-10-08
   - fix temporary variable memory position bugs
   - fix string eq bugs
