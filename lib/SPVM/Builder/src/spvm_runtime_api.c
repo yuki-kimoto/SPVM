@@ -132,6 +132,24 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // byte variables
   SPVM_VALUE_byte* byte_vars = NULL;
   
+  int32_t total_vars_alloc_length =
+    sub->object_vars_alloc_length +
+    sub->ref_vars_alloc_length +
+    sub->double_vars_alloc_length +
+    sub->long_vars_alloc_length +
+    sub->float_vars_alloc_length +
+    sub->int_vars_alloc_length +
+    sub->short_vars_alloc_length +
+    sub->byte_vars_alloc_length +
+    sub->mortal_stack_length;
+  
+  SPVM_VALUE* vars = NULL;
+  
+  int32_t vars_offset = 0;
+  if (total_vars_alloc_length > 0) {
+    vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_vars_alloc_length);
+  }
+    
   // Alloc memory
   if (sub->object_vars_alloc_length > 0) {
     object_vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(void*) * sub->object_vars_alloc_length);
@@ -3667,6 +3685,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_RUNTIME_API_free_memory_block(runtime, double_vars);
   SPVM_RUNTIME_API_free_memory_block(runtime, object_vars);
   SPVM_RUNTIME_API_free_memory_block(runtime, ref_vars);
+
+  SPVM_RUNTIME_API_free_memory_block(runtime, vars);
   
   return exception_flag;
 }
