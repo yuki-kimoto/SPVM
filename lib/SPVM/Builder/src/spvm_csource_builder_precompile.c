@@ -1074,17 +1074,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_S
 
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
-  // Subroutine name
-  const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
-  
   // Return type
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
         
   // Subroutine name. Replace : to _
   SPVM_STRING_BUFFER_add(string_buffer, "SPVM_PRECOMPILE_");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_abs_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
   {
-    int32_t index = string_buffer->length - strlen(sub_abs_name);
+    int32_t index = string_buffer->length - (strlen(package_name) + 2 + strlen(sub_name));
     
     while (index < string_buffer->length) {
       if (string_buffer->buffer[index] == ':') {
