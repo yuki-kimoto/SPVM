@@ -150,44 +150,33 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     vars = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_vars_alloc_length);
 
     // Alloc memory
-    if (sub->object_vars_alloc_length > 0) {
-      object_vars = (void**)&vars[vars_offset];
-      vars_offset += sub->object_vars_alloc_length;
-    }
-    if (sub->ref_vars_alloc_length > 0) {
-      ref_vars = (void**)&vars[vars_offset];
-      vars_offset += sub->ref_vars_alloc_length;
-    }
-    if (sub->double_vars_alloc_length > 0) {
-      double_vars = (double*)&vars[vars_offset];
-      vars_offset += sub->double_vars_alloc_length;
-    }
-    if (sub->long_vars_alloc_length > 0) {
-      long_vars = (SPVM_VALUE_long*)&vars[vars_offset];
-      vars_offset += sub->long_vars_alloc_length;
-    }
-    if (sub->float_vars_alloc_length > 0) {
-      float_vars = (float*)&vars[vars_offset];
-      vars_offset += sub->float_vars_alloc_length;
-    }
-    if (sub->int_vars_alloc_length > 0) {
-      int_vars = (SPVM_VALUE_int*)&vars[vars_offset];
-      vars_offset += sub->int_vars_alloc_length;
-    }
-    if (sub->short_vars_alloc_length > 0) {
-      short_vars = (SPVM_VALUE_short*)&vars[vars_offset];
-      vars_offset += sub->short_vars_alloc_length;
-    }
-    if (sub->byte_vars_alloc_length > 0) {
-      byte_vars = (SPVM_VALUE_byte*)&vars[vars_offset];
-      vars_offset += sub->byte_vars_alloc_length;
-    }
+    object_vars = (void**)&vars[vars_offset];
+    vars_offset += sub->object_vars_alloc_length;
+    
+    ref_vars = (void**)&vars[vars_offset];
+    vars_offset += sub->ref_vars_alloc_length;
+    
+    double_vars = (double*)&vars[vars_offset];
+    vars_offset += sub->double_vars_alloc_length;
+    
+    long_vars = (SPVM_VALUE_long*)&vars[vars_offset];
+    vars_offset += sub->long_vars_alloc_length;
+    
+    float_vars = (float*)&vars[vars_offset];
+    vars_offset += sub->float_vars_alloc_length;
+    
+    int_vars = (SPVM_VALUE_int*)&vars[vars_offset];
+    vars_offset += sub->int_vars_alloc_length;
+    
+    short_vars = (SPVM_VALUE_short*)&vars[vars_offset];
+    vars_offset += sub->short_vars_alloc_length;
+    
+    byte_vars = (SPVM_VALUE_byte*)&vars[vars_offset];
+    vars_offset += sub->byte_vars_alloc_length;
 
     // Mortal stack
-    if (sub->mortal_stack_length > 0) {
-      mortal_stack = (int32_t*)&vars[vars_offset];
-      vars_offset += sub->mortal_stack_length;
-    }
+    mortal_stack = (int32_t*)&vars[vars_offset];
+    vars_offset += sub->mortal_stack_length;
   }
 
   // Buffer for string convertion
