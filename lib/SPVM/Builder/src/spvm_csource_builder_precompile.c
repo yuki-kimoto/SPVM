@@ -3281,7 +3281,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t decl_sub_return_type_flag = decl_sub->return_type_flag;
         
         SPVM_RUNTIME_PACKAGE* decl_sub_package = &runtime->packages[decl_sub->package_id];
-        const char* decl_sub_abs_name = runtime->symbols[decl_sub->abs_name_id];
         const char* decl_sub_name = runtime->symbols[decl_sub->name_id];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
         const char* decl_sub_package_name = runtime->symbols[decl_sub_package->name_id];
@@ -3295,7 +3294,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t decl_sub_args_length = decl_sub->arg_ids_length;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "->");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
@@ -3327,9 +3328,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         // Subroutine inline expantion in same package
         if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_abs_name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_name);
           {
-            int32_t index = string_buffer->length - strlen(decl_sub_abs_name);
+            int32_t index = string_buffer->length - (strlen(decl_sub_package_name) + 2 + strlen(decl_sub_name));
             
             while (index < string_buffer->length) {
               if (string_buffer->buffer[index] == ':') {
