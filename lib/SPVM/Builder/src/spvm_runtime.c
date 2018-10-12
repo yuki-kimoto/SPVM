@@ -274,7 +274,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
     SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
     
-    
     int32_t package_id = sub->package_id;
     
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
@@ -286,6 +285,20 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     const char* sub_signature = runtime->symbols[sub->signature_id];
     SPVM_LIST_push(package->sub_signatures, (char*)sub_signature);
     SPVM_HASH_insert(package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
+    
+    // Variable allocation max length
+    int32_t vars_alloc_length = 
+      sub->byte_vars_alloc_length +
+      sub->short_vars_alloc_length +
+      sub->int_vars_alloc_length +
+      sub->long_vars_alloc_length +
+      sub->float_vars_alloc_length +
+      sub->double_vars_alloc_length +
+      sub->object_vars_alloc_length +
+      sub->ref_vars_alloc_length;
+    if (vars_alloc_length > runtime->vars_alloc_length_max) {
+      runtime->vars_alloc_length_max = vars_alloc_length;
+    }
   }
 
   // build runtime basic type symtable

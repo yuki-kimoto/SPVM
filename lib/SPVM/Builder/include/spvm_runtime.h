@@ -103,6 +103,9 @@ struct SPVM_runtime {
   // Memory blocks count
   int32_t memory_blocks_count;
   
+  // Variable allocation max length
+  int32_t vars_alloc_length_max;
+  
   SPVM_PORTABLE* portable;
 };
 
