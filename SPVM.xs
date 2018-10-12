@@ -179,10 +179,6 @@ get_subs(...)
       const char* sub_name = runtime->symbols[sub->name_id];
       SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
       
-      // Subroutine name
-      const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
-      SV* sv_sub_abs_name = sv_2mortal(newSVpvn(sub_abs_name, strlen(sub_abs_name)));
-      
       // Subroutine id
       int32_t sub_id = sub->id;
       SV* sv_sub_id = sv_2mortal(newSViv(sub_id));
@@ -203,7 +199,6 @@ get_subs(...)
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
       (void)hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
-      (void)hv_store(hv_sub, "abs_name", strlen("abs_name"), SvREFCNT_inc(sv_sub_abs_name), 0);
       (void)hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
       (void)hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
       (void)hv_store(hv_sub, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
