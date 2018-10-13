@@ -102,10 +102,12 @@ package SPVM::List : private {
     if ($self->{length} - 1 < 0) {
       return undef;
     }
-    --$self->{length};
     my $ret = $self->{values}[$self->{offset}];
     $self->{values}[$self->{offset}] = undef;
-    $self->{offset}++;
+    --$self->{length};
+    if (++$self->{offset} >= $self->{capacity}) {
+      $self->{offset} = 0;
+    }
     return $ret;
   }
 
