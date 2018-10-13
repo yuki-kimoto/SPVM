@@ -139,10 +139,11 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   SPVM_ENV* env = SPVM_RUNTIME_create_env(runtime);
   
   // Share runtime information with portable
+  runtime->basic_types = portable->basic_types;
+  runtime->basic_types_length = portable->basic_types_length;
+
   runtime->symbols = portable->symbols;
   runtime->symbols_length = portable->symbols_length;
-  runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)portable->basic_types;
-  runtime->basic_types_length = portable->basic_types_length;
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
   runtime->fields_length = portable->fields_length;
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;

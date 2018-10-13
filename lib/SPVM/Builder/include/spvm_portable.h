@@ -9,10 +9,8 @@ struct SPVM_portable {
   int32_t symbols_capacity;
   int32_t symbols_length;
 
-  int32_t basic_types_unit;
-  int32_t basic_types_capacity;
   int32_t basic_types_length;
-  int32_t* basic_types;
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
 
   int32_t packages_unit;
   int32_t packages_capacity;
@@ -92,6 +90,7 @@ struct SPVM_portable {
 
   int32_t opcodes_length;
   int64_t* opcodes;
+  int8_t is_static;
 };
 
 SPVM_PORTABLE* SPVM_PORTABLE_new();

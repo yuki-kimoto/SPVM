@@ -32,6 +32,15 @@
 #include "spvm_case_info.h"
 #include "spvm_constant.h"
 
+#include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_package.h"
+#include "spvm_runtime_sub.h"
+#include "spvm_runtime_field.h"
+#include "spvm_runtime_package_var.h"
+#include "spvm_runtime_my.h"
+#include "spvm_runtime_info_type.h"
+#include "spvm_runtime_info_switch_info.h"
+#include "spvm_runtime_info_case_info.h"
 
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
   SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));
@@ -40,8 +49,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   
   portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
 
-  portable->basic_types_capacity = 8;
-  portable->basic_types_unit = 3;
   portable->fields_capacity = 8;
   portable->fields_unit = 10;
   portable->package_vars_capacity = 8;
@@ -223,11 +230,20 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
   
   // Portable basic type
-  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->basic_types_unit * portable->basic_types_capacity);
+  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_BASIC_TYPE) * (compiler->basic_types->length + 1));
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-    SPVM_PORTABLE_push_basic_type(portable, basic_type);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &portable->basic_types[basic_type_id];
+    runtime_basic_type->name_id = SPVM_PORTABLE_push_symbol(portable, basic_type->name);
+    runtime_basic_type->id = basic_type->id;
+    if (basic_type->package) {
+      runtime_basic_type->package_id = basic_type->package->id;
+    }
+    else {
+      runtime_basic_type->package_id = -1;
+    }
   }
+  portable->basic_types_length = compiler->basic_types->length;
   
   // Portable fields
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->fields_unit * portable->fields_capacity);
@@ -529,29 +545,6 @@ void SPVM_PORTABLE_push_info_string_length(SPVM_PORTABLE* portable, int32_t info
   portable->info_string_lengths_length++;
 }
 
-void SPVM_PORTABLE_push_basic_type(SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* basic_type) {
-  
-  if (portable->basic_types_length >= portable->basic_types_capacity) {
-    int32_t new_portable_basic_types_capacity = portable->basic_types_capacity * 2;
-    int32_t* new_portable_basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->basic_types_unit * new_portable_basic_types_capacity);
-    memcpy(new_portable_basic_types, portable->basic_types, sizeof(int32_t) * portable->basic_types_unit * portable->basic_types_length);
-    free(portable->basic_types);
-    portable->basic_types = new_portable_basic_types;
-    portable->basic_types_capacity = new_portable_basic_types_capacity;
-  }
-  
-  int32_t* new_portable_basic_type = (int32_t*)&portable->basic_types[portable->basic_types_unit * portable->basic_types_length];
-  new_portable_basic_type[0] = SPVM_PORTABLE_push_symbol(portable, basic_type->name);
-  new_portable_basic_type[1] = basic_type->id;
-  if (basic_type->package) {
-    new_portable_basic_type[2] = basic_type->package->id;
-  }
-  else {
-    new_portable_basic_type[2] = -1;
-  }
-  portable->basic_types_length++;
-}
-
 void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   
   if (portable->fields_length >= portable->fields_capacity) {
@@ -649,64 +642,67 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
 }
 
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
-  free(portable->basic_types);
-  portable->basic_types = NULL;
-
-  free(portable->fields);
-  portable->fields = NULL;
-
-  free(portable->subs);
-  portable->subs = NULL;
-
-  free(portable->mys);
-  portable->mys = NULL;
-
-  free(portable->info_package_var_ids);
-  portable->info_package_var_ids = NULL;
-
-  free(portable->info_sub_ids);
-  portable->info_sub_ids = NULL;
-
-  free(portable->info_field_ids);
-  portable->info_field_ids = NULL;
-
-  free(portable->info_types);
-  portable->info_types = NULL;
-
-  free(portable->mys);
-  portable->info_constants = NULL;
-
-  free(portable->mys);
-  portable->mys = NULL;
   
-  free(portable->info_switch_info_ints);
-  portable->info_switch_info_ints = NULL;
-  
-  free(portable->info_long_values);
-  portable->info_long_values = NULL;
-  
-  free(portable->info_double_values);
-  portable->info_double_values = NULL;
-  
-  free(portable->info_string_lengths);
-  portable->info_string_lengths = NULL;
-  
-  free(portable->opcodes);
-  portable->opcodes = NULL;
-  
-  for (int32_t i = 0; i < portable->symbols_length; i++) {
-    free(portable->symbols[i]);
-    portable->symbols[i] = NULL;
+  if (!portable->is_static) {
+    free(portable->basic_types);
+    portable->basic_types = NULL;
+
+    free(portable->fields);
+    portable->fields = NULL;
+
+    free(portable->subs);
+    portable->subs = NULL;
+
+    free(portable->mys);
+    portable->mys = NULL;
+
+    free(portable->info_package_var_ids);
+    portable->info_package_var_ids = NULL;
+
+    free(portable->info_sub_ids);
+    portable->info_sub_ids = NULL;
+
+    free(portable->info_field_ids);
+    portable->info_field_ids = NULL;
+
+    free(portable->info_types);
+    portable->info_types = NULL;
+
+    free(portable->mys);
+    portable->info_constants = NULL;
+
+    free(portable->mys);
+    portable->mys = NULL;
+    
+    free(portable->info_switch_info_ints);
+    portable->info_switch_info_ints = NULL;
+    
+    free(portable->info_long_values);
+    portable->info_long_values = NULL;
+    
+    free(portable->info_double_values);
+    portable->info_double_values = NULL;
+    
+    free(portable->info_string_lengths);
+    portable->info_string_lengths = NULL;
+    
+    free(portable->opcodes);
+    portable->opcodes = NULL;
+    
+    for (int32_t i = 0; i < portable->symbols_length; i++) {
+      free(portable->symbols[i]);
+      portable->symbols[i] = NULL;
+    }
+    free(portable->symbols);
+    portable->symbols = NULL;
+    
+    for (int32_t i = 0; i < portable->info_string_values_length; i++) {
+      free(portable->info_string_values[i]);
+      portable->info_string_values[i] = NULL;
+    }
+    free(portable->info_string_values);
+    portable->info_string_values = NULL;
+    
+    free(portable);
   }
-  free(portable->symbols);
-  portable->symbols = NULL;
-  
-  for (int32_t i = 0; i < portable->info_string_values_length; i++) {
-    free(portable->info_string_values[i]);
-    portable->info_string_values[i] = NULL;
-  }
-  free(portable->info_string_values);
-  portable->info_string_values = NULL;
-  
-  free(portable);
 }

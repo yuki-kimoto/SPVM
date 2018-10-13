@@ -166,8 +166,15 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_portable.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_api.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_basic_type.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_sub.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_field.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package_var.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_my.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_info_type.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_info_switch_info.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_info_case_info.h\"\n");
 
   // Add native sub headers
   SPVM_CSOURCE_BUILDER_EXE_add_native_headers(env, string_buffer);
@@ -179,17 +186,30 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_PORTABLE* portable = SPVM_PORTABLE_new();\n");
 
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->is_static = 1;\n");
+
   // basic_types
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types_unit * portable->basic_types_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->basic_types_unit * portable->basic_types_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_BASIC_TYPE basic_types[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t basic_type_id = 0; basic_type_id < portable->basic_types_length; basic_type_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &portable->basic_types[basic_type_id];
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->name_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->package_id);
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
+    if (basic_type_id == portable->basic_types_length - 1) {
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
+    }
+    else {
+      SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+    }
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = basic_types;\n");
   
   // basic_types_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types_length = ");
