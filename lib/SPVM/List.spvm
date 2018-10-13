@@ -1,4 +1,4 @@
-package SPVM::List {
+package SPVM::List : private {
   has values   : private object[];
   has capacity : private int;
   has offset   : private int;
