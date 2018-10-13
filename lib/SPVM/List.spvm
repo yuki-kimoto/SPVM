@@ -40,8 +40,9 @@ package SPVM::List : private {
 
   sub new : SPVM::List () {
     my $self = new SPVM::List;
-    $self->{offset} = 0;
-    $self->{length} = 0;
+    my $default_capacity = 16;
+    $self->{capacity} = $default_capacity;
+    $self->{values} = new object [$default_capacity];
     return $self;
   }
 
