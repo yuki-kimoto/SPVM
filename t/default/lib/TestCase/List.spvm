@@ -48,7 +48,7 @@ package TestCase::List {
   }
 
   sub _assert_croak_message : void ($croak : string) {
-    my $error_prefix_size = TestCase::Extension->native_use_strlen($croak);
+    my $error_prefix_size = @$croak;
     for (my $i = 0; $i < $error_prefix_size; $i++) {
       if ($@->[$i] != $croak->[$i]) {
         croak "croak message mismatch. at string subscript " . $i;
