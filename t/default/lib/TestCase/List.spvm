@@ -46,15 +46,6 @@ package TestCase::List {
     }
   }
 
-  sub _assert_croak_message : void ($croak : string) {
-    my $error_prefix_size = @$croak;
-    for (my $i = 0; $i < $error_prefix_size; $i++) {
-      if ($@->[$i] != $croak->[$i]) {
-        croak "croak message mismatch. at string subscript " . $i;
-      }
-    }
-  }
-
   sub test_ctor_default : int () {
     _assert(SPVM::List->new, new object[0], 0, 0, 0);
     return 1;
@@ -227,11 +218,12 @@ package TestCase::List {
       eval {
         $list->set(0, SPVM::Int->new(1));
       }
-      if (!$@) {
+      my $error = $@;
+      $@ = undef;
+      if (!$error) {
+        warn($error);
         return 0;
       }
-      _assert_croak_message("Modification of non-creatable array value attempted, subscript 0");
-      $@ = undef;
     }
     # negative index
     {
@@ -239,11 +231,12 @@ package TestCase::List {
       eval {
         $list->set(-3, SPVM::Int->new(1));
       }
-      if (!$@) {
+      my $error = $@;
+      $@ = undef;
+      if (!$error) {
+        warn($error);
         return 0;
       }
-      _assert_croak_message("Modification of non-creatable array value attempted, subscript -3");
-      $@ = undef;
       return 1;
     }
   }
@@ -388,11 +381,12 @@ package TestCase::List {
       eval {
         $list->splice(-3, 0, $replace);
       }
-      if (!$@) {
+      my $error = $@;
+      $@ = undef;
+      if (!$error) {
+        warn($error);
         return 0;
       }
-      _assert_croak_message("Modification of non-creatable array value attempted, subscript -3");
-      $@ = undef;
     }
     return 1;
   }
