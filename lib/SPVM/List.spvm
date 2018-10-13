@@ -80,10 +80,10 @@ package SPVM::List : private {
     if ($self->{length} - 1 < 0) {
       return undef;
     }
-    my $target = $self->{offset} + $self->{length} - 1;
+    my $target = ($self->{offset} + $self->{length} - 1) % $self->{capacity};
     my $ret = $self->{values}[$target];
     $self->{values}[$target] = undef;
-    $self->{length}--;
+    --$self->{length};
     return $ret;
   }
 
