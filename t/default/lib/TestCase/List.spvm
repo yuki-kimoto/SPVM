@@ -35,17 +35,6 @@ package TestCase::List {
     }
   }
 
-  sub _assert_array : void ($got : object [], $expected : object []) {
-    if (@$got != @$expected) {
-      croak "Array size mismatch. got: " . @$got . ", expected: " . @$expected;
-    }
-    for (my $i = 0; $i < @$expected; $i++) {
-      if ($got->[$i] != $expected->[$i]) {
-        croak "Array content mismatch. subscript " . $i;
-      }
-    }
-  }
-
   sub equals_array : int ($got : object [], $expected : object []) {
     if (@$got != @$expected) {
       warn("Array size mismatch. got: " . @$got . ", expected: " . @$expected);
