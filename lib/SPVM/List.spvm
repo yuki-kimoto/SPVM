@@ -26,22 +26,6 @@ package SPVM::List : private {
     $self->{length} = 0;
   }
 
-  sub _range_check : int ($self : self, $index : int) {
-    if (-$self->{length} <= $index && $index < $self->{length}) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-
-  sub _fix_negative_index : int ($self : self, $index : int) {
-    if ($index < 0) {
-      return $index + $self->{length};
-    } else {
-      return $index;
-    }
-  }
-
   sub _values : object[] ($self : self) {
     return $self->{values};
   }
