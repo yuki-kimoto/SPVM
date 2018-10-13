@@ -88,9 +88,14 @@ package SPVM::List : private {
   }
 
   sub unshift : void ($self : self, $value : object) {
-    $self->_reallocate($self->{length} + 1, 1, 0);
-    $self->{values}[--$self->{offset}] = $value;
-    $self->{length}++;
+    if ($self->{length} + 1 > $self->{capacity}) {
+      $self->_reallocate;
+    }
+    if (--$self->{offset} < 0) {
+      $self->{offset} += $self->{capacity};
+    }
+    $self->{values}[$self->{offset}] = $value;
+    ++$self->{length};
   }
 
   sub shift : object ($self : self) {
