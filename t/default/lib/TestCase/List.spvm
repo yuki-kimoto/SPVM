@@ -1,5 +1,4 @@
 package TestCase::List {
-  use TestCase::Extension;
   use SPVM::Int;
   use SPVM::List;
 
