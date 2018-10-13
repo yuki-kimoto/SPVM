@@ -47,18 +47,17 @@ package SPVM::List : private {
   }
 
   sub new_with_capacity : SPVM::List ($capacity : int) {
-    my $self = SPVM::List->new;
-    if ($capacity < 0) {
-      croak "capacity must not be negative, capacity " . $capacity;
-    }
-    $self->_reallocate($capacity, 0, 0);
+    my $self = new SPVM::List;
+    $self->{capacity} = $capacity;
+    $self->{values} = new object [$capacity];
     return $self;
   }
 
   sub new_with_array : SPVM::List ($objects : object[]) {
-    my $self = SPVM::List->new;
-    $self->_reallocate(@$objects, 0, @$objects);
-    for (my $i = 0; $i < @$objects; $i++) {
+    my $self = new SPVM::List;
+    $self->{capacity} = @$objects;
+    $self->{values} = new object [@$objects];
+    for (my $i = 0; $i < @$objects; ++$i) {
       $self->{values}[$i] = $objects->[$i];
     }
     $self->{length} = @$objects;
