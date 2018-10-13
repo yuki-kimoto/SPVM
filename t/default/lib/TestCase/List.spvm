@@ -2,14 +2,15 @@ package TestCase::List {
   use SPVM::Int;
   use SPVM::List;
 
-  sub check_fields : void ($list : SPVM::List, $objects : object[], $capacity : int, $offset : int, $length : int) {
+  sub check_fields : int ($list : SPVM::List, $objects : object[], $capacity : int, $offset : int, $length : int) {
     # check_fields fields
     if ($list->_capacity != $capacity ||
         $list->_offset   != $offset ||
         $list->length    != $length) {
-      croak "List fields mismatch.\n\t" .
+      warn("List fields mismatch.\n\t" .
           "got:      (capacity: " . $list->_capacity . ", offset: " . $list->_offset . ", length: " . $list->length . ")\n\t" .
-          "expected: (capacity: " . $capacity . ", offset: " . $offset . ", length: " . $length . ")";
+          "expected: (capacity: " . $capacity . ", offset: " . $offset . ", length: " . $length . ")");
+      return 0;
     }
 
     # check_fields values
@@ -22,17 +23,21 @@ package TestCase::List {
       $len_exp = @$objects;
     }
     if ($len_got != $len_exp) {
-      croak "List values length mismatch.\n\t" .
+      warn("List values length mismatch.\n\t" .
           "got:      " . $len_got . "\n\t" .
-          "expected: " . $len_exp;
+          "expected: " . $len_exp);
+      return 0;
     }
     if ($len_exp) {
       for (my $i = 0; $i < @$objects; $i++) {
         if ($list->_values->[$i] != $objects->[$i]) {
-          croak "List content mismatch. at subscript " . $i;
+          warn("List content mismatch. at subscript " . $i);
+          return 0;
         }
       }
     }
+    
+    return 1;
   }
 
   sub equals_array : int ($got : object [], $expected : object []) {
@@ -50,30 +55,48 @@ package TestCase::List {
   }
 
   sub test_ctor_default : int () {
-    check_fields(SPVM::List->new, new object[0], 0, 0, 0);
+    unless (check_fields(SPVM::List->new, new object[0], 0, 0, 0)) {
+      return 0;
+    }
     return 1;
   }
 
   sub test_ctor_with_capacity : int () {
-    check_fields(SPVM::List->new_with_capacity(0), new object[0], 0, 0, 0);
-    check_fields(SPVM::List->new_with_capacity(1), new object[1], 1, 0, 0);
-    check_fields(SPVM::List->new_with_capacity(2), new object[2], 2, 1, 0);
-    check_fields(SPVM::List->new_with_capacity(10), new object[10], 10, 5, 0);
+    unless (check_fields(SPVM::List->new_with_capacity(0), new object[0], 0, 0, 0)) {
+      return 0;
+    }
+    unless (check_fields(SPVM::List->new_with_capacity(1), new object[1], 1, 0, 0)) {
+      return 0;
+    }
+    unless (check_fields(SPVM::List->new_with_capacity(2), new object[2], 2, 1, 0)) {
+      return 0;
+    }
+    unless (check_fields(SPVM::List->new_with_capacity(10), new object[10], 10, 5, 0)) {
+      return 0;
+    }
     return 1;
   }
 
   sub test_ctor_with_array : int () {
-    check_fields(SPVM::List->new_with_array(new object[0]), new object[0], 0, 0, 0);
-    check_fields(SPVM::List->new_with_array(new object[1]), new object[1], 1, 0, 1);
+    unless (check_fields(SPVM::List->new_with_array(new object[0]), new object[0], 0, 0, 0)) {
+      return 0;
+    }
+    unless (check_fields(SPVM::List->new_with_array(new object[1]), new object[1], 1, 0, 1)) {
+      return 0;
+    }
 
     my $v1 = SPVM::Int->new(1);
-    check_fields(SPVM::List->new_with_array([(object) $v1]), [(object) $v1], 1, 0, 1);
+    unless (check_fields(SPVM::List->new_with_array([(object) $v1]), [(object) $v1], 1, 0, 1)) {
+      return 0;
+    }
 
     my $v2 = SPVM::Int->new(2);
     my $vals = new object[4];
     $vals->[1] = $v1;
     $vals->[3] = $v2;
-    check_fields(SPVM::List->new_with_array($vals), $vals, 4, 0, 4);
+    unless (check_fields(SPVM::List->new_with_array($vals), $vals, 4, 0, 4)) {
+      return 0;
+    }
 
     return 1;
   }
@@ -93,20 +116,28 @@ package TestCase::List {
 
     my $v1 = SPVM::Int->new(1);
     $list->push($v1);
-    check_fields($list, [(object) $v1], 1, 0, 1);
+    unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+      return 0;
+    }
 
     my $v2 = SPVM::Int->new(2);
     $list->push($v2);
-    check_fields($list, [(object) $v1, $v2], 2, 0, 2);
+    unless (check_fields($list, [(object) $v1, $v2], 2, 0, 2)) {
+      return 0;
+    }
 
     my $v3 = SPVM::Int->new(3);
     $list->push($v3);
-    check_fields($list, [(object) $v1, $v2, $v3, undef], 4, 0, 3);
+    unless (check_fields($list, [(object) $v1, $v2, $v3, undef], 4, 0, 3)) {
+      return 0;
+    }
 
     # no reallocate
     my $v4 = SPVM::Int->new(4);
     $list->push($v4);
-    check_fields($list, [(object) $v1, $v2, $v3, $v4], 4, 0, 4);
+    unless (check_fields($list, [(object) $v1, $v2, $v3, $v4], 4, 0, 4)) {
+      return 0;
+    }
 
     return 1;
   }
@@ -117,7 +148,9 @@ package TestCase::List {
     if (((SPVM::Int)$list->pop)->val != 2) { return 0; }
     if ($list->pop != undef) { return 0; }
     if (((SPVM::Int)$list->pop)->val != 1) { return 0; }
-    check_fields($list, new object[4], 4, 0, 0);
+    unless (check_fields($list, new object[4], 4, 0, 0)) {
+      return 0;
+    }
     if ($list->pop != undef) { return 0; } # empty list returns undef
     return 1;
   }
@@ -127,15 +160,21 @@ package TestCase::List {
 
     my $v1 = SPVM::Int->new(1);
     $list->unshift($v1);
-    check_fields($list, [(object) $v1], 1, 0, 1);
+    unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+      return 0;
+    }
 
     my $v2 = SPVM::Int->new(2);
     $list->unshift($v2);
-    check_fields($list, [(object) $v2, $v1], 2, 0, 2);
+    unless (check_fields($list, [(object) $v2, $v1], 2, 0, 2)) {
+      return 0;
+    }
 
     my $v3 = SPVM::Int->new(3);
     $list->unshift($v3);
-    check_fields($list, [(object) $v3, $v2, $v1, undef], 4, 0, 3);
+    unless (check_fields($list, [(object) $v3, $v2, $v1, undef], 4, 0, 3)) {
+      return 0;
+    }
 
     my $v4 = SPVM::Int->new(4);
     $list->unshift($v4);
@@ -144,13 +183,17 @@ package TestCase::List {
     $vals->[2] = $v3;
     $vals->[3] = $v2;
     $vals->[4] = $v1;
-    check_fields($list, $vals, 6, 1, 4);
+    unless (check_fields($list, $vals, 6, 1, 4)) {
+      return 0;
+    }
 
     # no reallocate
     my $v5 = SPVM::Int->new(5);
     $list->unshift($v5);
     $vals->[0] = $v5;
-    check_fields($list, $vals, 6, 0, 5);
+    unless (check_fields($list, $vals, 6, 0, 5)) {
+      return 0;
+    }
 
     return 1;
   }
@@ -161,7 +204,9 @@ package TestCase::List {
     if ($list->shift != undef) { return 0; }
     if (((SPVM::Int)$list->shift)->val != 2) { return 0; }
     if ($list->shift != undef) { return 0; }
-    check_fields($list, new object[4], 4, 4, 0);
+    unless (check_fields($list, new object[4], 4, 4, 0)) {
+      return 0;
+    }
     if ($list->shift != undef) { return 0; } # empty list returns undef
     return 1;
   }
@@ -177,7 +222,9 @@ package TestCase::List {
 
       my $v1 = SPVM::Int->new(1);
       $list->unshift($v1);
-      check_fields($list, [(object) $v1], 1, 0, 1);
+      unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+        return 0;
+      }
     }
     # shift all elements and push once
     {
@@ -188,7 +235,9 @@ package TestCase::List {
 
       my $v1 = SPVM::Int->new(1);
       $list->push($v1);
-      check_fields($list, [(object) $v1], 1, 0, 1);
+      unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+        return 0;
+      }
     }
     return 1;
   }
@@ -200,16 +249,22 @@ package TestCase::List {
     my $v2 = SPVM::Int->new(3);
     $list->set(0, $v1);
     $list->set(1, $v2);
-    check_fields($list, [(object) $v1, $v2], 2, 0, 2);
+    unless (check_fields($list, [(object) $v1, $v2], 2, 0, 2)) {
+      return 0;
+    }
 
     my $v3 = SPVM::Int->new(4);
     my $v4 = SPVM::Int->new(5);
     $list->set(-1, $v3);
     $list->set(-2, $v4);
-    check_fields($list, [(object) $v4, $v3], 2, 0, 2);
+    unless (check_fields($list, [(object) $v4, $v3], 2, 0, 2)) {
+      return 0;
+    }
 
     $list->set(1, undef);
-    check_fields($list, [(object) $v4, undef], 2, 0, 2);
+    unless (check_fields($list, [(object) $v4, undef], 2, 0, 2)) {
+      return 0;
+    }
 
     return 1;
   }
@@ -292,7 +347,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      check_fields($list, [(object) $v2], 1, 0, 1);
+      unless (check_fields($list, [(object) $v2], 1, 0, 1)) {
+        return 0;
+      }
     }
     # extract right corner
     {
@@ -301,7 +358,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      check_fields($list, [(object) $v1], 1, 0, 1);
+      unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+        return 0;
+      }
     }
     # extract inside
     {
@@ -310,7 +369,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $v5], 2, 0, 2);
+      unless (check_fields($list, [(object) $v1, $v5], 2, 0, 2)) {
+        return 0;
+      }
     }
     # replace list at left corner
     {
@@ -319,7 +380,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      check_fields($list, [(object) $vi1, $vi2, $v2], 3, 0, 3);
+      unless (check_fields($list, [(object) $vi1, $vi2, $v2], 3, 0, 3)) {
+        return 0;
+      }
     }
     # replace list at right corner
     {
@@ -328,7 +391,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $vi1, $vi2], 3, 0, 3);
+      unless (check_fields($list, [(object) $v1, $vi1, $vi2], 3, 0, 3)) {
+        return 0;
+      }
     }
     # insert list back with cut_length = 0
     {
@@ -337,7 +402,9 @@ package TestCase::List {
       unless (equals_array($extracted, new object[0])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4)) {
+        return 0;
+      }
     }
     # insert list back with cut_length > 0
     {
@@ -346,7 +413,9 @@ package TestCase::List {
       unless (equals_array($extracted, new object[0])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4)) {
+        return 0;
+      }
     }
     # replace list at center
     {
@@ -355,7 +424,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $vi1, $vi2, $v5], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $vi1, $vi2, $v5], 4, 0, 4)) {
+        return 0;
+      }
     }
     # replace list with negative cut_offset
     {
@@ -364,7 +435,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v3])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4)) {
+        return 0;
+      }
     }
     # replace list with negative cut_length
     {
@@ -373,7 +446,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4)) {
+        return 0;
+      }
     }
     # replace list with negative cut_offset and cut_length
     {
@@ -382,7 +457,9 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4)) {
+        return 0;
+      }
     }
     return 1;
   }
@@ -400,7 +477,9 @@ package TestCase::List {
       unless (equals_array($extracted, new object[0])) {
         return 0;
       }
-      check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
+      unless (check_fields($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4)) {
+        return 0;
+      }
     }
     # cut_offset is less than -list->length
     {
