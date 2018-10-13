@@ -112,20 +112,11 @@ package SPVM::List : private {
   }
 
   sub set : void ($self : self, $index : int, $value : object) {
-    if (!$self->_range_check($index)) {
-      # do not allow autovivification
-      croak "Modification of non-creatable array value attempted, subscript " . $index;
-    }
-    $index = $self->_fix_negative_index($index);
-    $self->{values}[$self->{offset} + $index] = $value;
+    $self->{values}[($self->{offset} + $index) % $self->{capacity}] = $value;
   }
 
   sub get : object ($self : self, $index : int) {
-    if (!$self->_range_check($index)) {
-      return undef;
-    }
-    $index = $self->_fix_negative_index($index);
-    return $self->{values}[$self->{offset} + $index];
+    return $self->{values}[($self->{offset} + $index) % $self->{capacity}];
   }
 
   sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
