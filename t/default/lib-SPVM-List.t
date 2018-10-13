@@ -21,13 +21,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::List->test_pop);
   ok(TestCase::List->test_unshift);
   ok(TestCase::List->test_shift);
-  ok(TestCase::List->test_pass_through_border);
+  ok(TestCase::List->test_offset_by_alternate_push_and_shift);
+  ok(TestCase::List->test_offset_by_alternate_unshift_and_pop);
   ok(TestCase::List->test_set);
-  ok(TestCase::List->test_set_out_of_range);
   ok(TestCase::List->test_get);
-  ok(TestCase::List->test_get_out_of_range);
   ok(TestCase::List->test_splice);
-  ok(TestCase::List->test_splice_with_list_out_of_range);
 }
 
 # All object is freed
