@@ -46,6 +46,20 @@ package TestCase::List {
     }
   }
 
+  sub equals_array : int ($got : object [], $expected : object []) {
+    if (@$got != @$expected) {
+      warn("Array size mismatch. got: " . @$got . ", expected: " . @$expected);
+      return 0;
+    }
+    for (my $i = 0; $i < @$expected; $i++) {
+      if ($got->[$i] != $expected->[$i]) {
+        warn("Array content mismatch. subscript " . $i);
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   sub test_ctor_default : int () {
     _assert(SPVM::List->new, new object[0], 0, 0, 0);
     return 1;
@@ -286,77 +300,99 @@ package TestCase::List {
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, undef);
-      _assert_array($extracted, [(object) $v1]);
+      unless (equals_array($extracted, [(object) $v1])) {
+        return 0;
+      }
       _assert($list, [(object) $v2], 1, 0, 1);
     }
     # extract right corner
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, undef);
-      _assert_array($extracted, [(object) $v2]);
+      unless (equals_array($extracted, [(object) $v2])) {
+        return 0;
+      }
       _assert($list, [(object) $v1], 1, 0, 1);
     }
     # extract inside
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4, $v5]);
       my $extracted = $list->splice(1, 3, undef);
-      _assert_array($extracted, [(object) $v2, $v3, $v4]);
+      unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $v5], 2, 0, 2);
     }
     # replace list at left corner
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, $replace);
-      _assert_array($extracted, [(object) $v1]);
+      unless (equals_array($extracted, [(object) $v1])) {
+        return 0;
+      }
       _assert($list, [(object) $vi1, $vi2, $v2], 3, 0, 3);
     }
     # replace list at right corner
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, $replace);
-      _assert_array($extracted, [(object) $v2]);
+      unless (equals_array($extracted, [(object) $v2])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $vi1, $vi2], 3, 0, 3);
     }
     # insert list back with cut_length = 0
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(2, 0, $replace);
-      _assert_array($extracted, new object[0]);
+      unless (equals_array($extracted, new object[0])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
     }
     # insert list back with cut_length > 0
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(2, 10, $replace);
-      _assert_array($extracted, new object[0]);
+      unless (equals_array($extracted, new object[0])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
     }
     # replace list at center
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4, $v5]);
       my $extracted = $list->splice(1, 3, $replace);
-      _assert_array($extracted, [(object) $v2, $v3, $v4]);
+      unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $vi1, $vi2, $v5], 4, 0, 4);
     }
     # replace list with negative cut_offset
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3]);
       my $extracted = $list->splice(-1, 1, $replace);
-      _assert_array($extracted, [(object) $v3]);
+      unless (equals_array($extracted, [(object) $v3])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
     }
     # replace list with negative cut_length
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3]);
       my $extracted = $list->splice(1, -1, $replace);
-      _assert_array($extracted, [(object) $v2]);
+      unless (equals_array($extracted, [(object) $v2])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4);
     }
     # replace list with negative cut_offset and cut_length
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3]);
       my $extracted = $list->splice(-2, -1, $replace);
-      _assert_array($extracted, [(object) $v2]);
+      unless (equals_array($extracted, [(object) $v2])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $vi1, $vi2, $v3], 4, 0, 4);
     }
     return 1;
@@ -372,7 +408,9 @@ package TestCase::List {
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(10, 10, $replace);
-      _assert_array($extracted, new object[0]);
+      unless (equals_array($extracted, new object[0])) {
+        return 0;
+      }
       _assert($list, [(object) $v1, $v2, $vi1, $vi2], 4, 0, 4);
     }
     # cut_offset is less than -list->length
