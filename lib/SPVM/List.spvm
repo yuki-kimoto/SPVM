@@ -69,8 +69,11 @@ package SPVM::List : private {
   }
 
   sub push : void ($self : self, $value : object) {
-    $self->_reallocate($self->{length} + 1, 0, 1);
-    $self->{values}[$self->{offset} + $self->{length}++] = $value;
+    if ($self->{length} + 1 > $self->{capacity}) {
+      $self->_reallocate;
+    }
+    $self->{values}[($self->{offset} + $self->{length}) % $self->{capacity}] = $value;
+    ++$self->{length};
   }
 
   sub pop : object ($self : self) {
