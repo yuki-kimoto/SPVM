@@ -19,13 +19,6 @@ package SPVM::List : private {
     $self->{values} = $new_values;
   }
 
-  sub _clear : void ($self : self) {
-    $self->{values} = new object [0];
-    $self->{capacity} = 0;
-    $self->{offset} = 0;
-    $self->{length} = 0;
-  }
-
   sub _values : object[] ($self : self) {
     return $self->{values};
   }
