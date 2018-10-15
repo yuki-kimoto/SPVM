@@ -405,20 +405,21 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_string_values
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* info_string_values[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_string_values_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_string_values_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_string_value_id = 0; info_string_value_id < portable->info_string_values_length; info_string_value_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    \"");
     {
-      for (int32_t j = 0; j < portable->info_string_lengths_length; j++) {
-        SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->info_string_values[i][j]);
+      int32_t string_length = strlen(portable->info_string_values[info_string_value_id]);
+      for (int32_t j = 0; j < string_length; j++) {
+        SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->info_string_values[info_string_value_id][j]);
       }
     }
-    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "\",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values = info_string_values;\n");
 
   // symbols
   SPVM_STRING_BUFFER_add(string_buffer, "  char* symbols[");
