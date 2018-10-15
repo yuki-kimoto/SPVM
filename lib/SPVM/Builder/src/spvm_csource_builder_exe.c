@@ -201,12 +201,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->package_id);
     SPVM_STRING_BUFFER_add(string_buffer, "}");
-    if (basic_type_id == portable->basic_types_length - 1) {
-      SPVM_STRING_BUFFER_add(string_buffer, "\n");
-    }
-    else {
-      SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-    }
+
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->basic_types = basic_types;\n");
