@@ -138,10 +138,10 @@ sub bind_subs {
     
     my $category = $self->category;
     if ($category eq 'native') {
-      $self->bind_sub_native($sub_abs_name, $cfunc_address);
+      $self->bind_sub_native($package_name, $sub_name, $cfunc_address);
     }
     elsif ($category eq 'precompile') {
-      $self->bind_sub_precompile($sub_abs_name, $cfunc_address);
+      $self->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
     }
   }
 }

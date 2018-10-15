@@ -459,8 +459,9 @@ bind_sub_native(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_native_sub_name = ST(1);
-  SV* sv_native_address = ST(2);
+  SV* sv_package_name = ST(1);
+  SV* sv_sub_name = ST(2);
+  SV* sv_native_address = ST(3);
 
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
@@ -473,15 +474,19 @@ bind_sub_native(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
-  // Native subroutine name
-  const char* native_sub_name = SvPV_nolen(sv_native_sub_name);
+  // Package name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  // Subroutine name
+  const char* sub_name = SvPV_nolen(sv_sub_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Set native address to subroutine
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, native_sub_name, strlen(native_sub_name));
-  runtime->sub_native_addresses[runtime_sub->id] = native_address;
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  runtime->sub_native_addresses[sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -531,11 +536,11 @@ bind_sub_precompile(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_sub_abs_name = ST(1);
-  SV* sv_sub_native_address = ST(2);
+  SV* sv_package_name = ST(1);
+  SV* sv_sub_name = ST(2);
+  SV* sv_precompile_address = ST(3);
   
-  const char* sub_abs_name = SvPV_nolen(sv_sub_abs_name);
-  void* sub_precompile_address = INT2PTR(void*, SvIV(sv_sub_native_address));
+  void* sub_precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
   // Env
   SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
@@ -548,9 +553,16 @@ bind_sub_precompile(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name));
-  runtime_sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
-  runtime->sub_precompile_addresses[runtime_sub->id] = sub_precompile_address;
+  // Package name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  // Subroutine name
+  const char* sub_name = SvPV_nolen(sv_sub_name);
+  
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
+  runtime->sub_precompile_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }
