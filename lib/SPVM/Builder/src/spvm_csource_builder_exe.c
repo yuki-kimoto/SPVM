@@ -381,28 +381,28 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_long_values
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int64_t info_long_values[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_long_values_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_long_values_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_long_values[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_long(string_buffer, portable->info_long_values[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_long_value_id = 0; info_long_value_id < portable->info_long_values_length; info_long_value_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_long(string_buffer, portable->info_long_values[info_long_value_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_long_values = info_long_values;\n");
 
   // info_double_values
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  double info_double_values[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_double_values_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_double_values_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_double(string_buffer, portable->info_double_values[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_double_value_id = 0; info_double_value_id < portable->info_double_values_length; info_double_value_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_double(string_buffer, portable->info_double_values[info_double_value_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values = info_double_values;\n");
 
   // info_string_values
   SPVM_STRING_BUFFER_add(string_buffer, "  char* info_string_values[");
