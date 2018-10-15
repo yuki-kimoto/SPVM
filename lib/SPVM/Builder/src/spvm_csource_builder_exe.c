@@ -274,16 +274,28 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // args
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->args_unit * portable->args_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->args_unit * portable->args_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->args[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->args[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_MY args[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->args_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t arg_id = 0; arg_id < portable->args_length; arg_id++) {
+    SPVM_RUNTIME_MY* runtime_arg = &portable->args[arg_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_dimension);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_flag);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->var_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->value_field_basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
+
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->args = args;\n");
 
   // mys
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_MY mys[");

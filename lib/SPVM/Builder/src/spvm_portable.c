@@ -54,9 +54,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
   portable->args_capacity = 8;
-  portable->args_unit = 5;
   portable->mys_capacity = 8;
-  portable->mys_unit = 5;
   portable->info_package_var_ids_capacity = 8;
   portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
@@ -260,7 +258,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   
   // Portable args
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->args_unit * portable->args_capacity);
+  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->args_capacity);
 
   // Portable args
   portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->mys_capacity);
@@ -338,24 +336,24 @@ int32_t SPVM_PORTABLE_push_symbol(SPVM_PORTABLE* portable, const char* string) {
   return id;
 }
 
-void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* my) {
-
+void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
+  
   if (portable->args_length >= portable->args_capacity) {
     int32_t new_portable_args_capacity = portable->args_capacity * 2;
-    int32_t* new_portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->args_unit * new_portable_args_capacity);
-    memcpy(new_portable_args, portable->args, sizeof(int32_t) * portable->args_unit * portable->args_length);
+    SPVM_RUNTIME_MY* new_portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * new_portable_args_capacity);
+    memcpy(new_portable_args, portable->args, sizeof(SPVM_RUNTIME_MY) * portable->args_length);
     free(portable->args);
     portable->args = new_portable_args;
     portable->args_capacity = new_portable_args_capacity;
   }
   
-  int32_t* new_portable_arg = (int32_t*)&portable->args[portable->args_unit * portable->args_length];
-  new_portable_arg[0] = my->type->basic_type->id;
-  new_portable_arg[1] = my->type->dimension;
-  new_portable_arg[2] = my->type->flag;
-  new_portable_arg[3] = my->var_id;
-  new_portable_arg[4] = my->value_field_basic_type_id ;
-
+  SPVM_RUNTIME_MY* new_portable_arg = &portable->args[portable->args_length];
+  new_portable_arg->basic_type_id = arg->type->basic_type->id;
+  new_portable_arg->type_dimension = arg->type->dimension;
+  new_portable_arg->type_flag = arg->type->flag;
+  new_portable_arg->var_id = arg->var_id;
+  new_portable_arg->value_field_basic_type_id = arg->value_field_basic_type_id;
+  
   portable->args_length++;
 }
 
