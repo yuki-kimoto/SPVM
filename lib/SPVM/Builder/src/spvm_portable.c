@@ -50,7 +50,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
 
   portable->fields_capacity = 8;
-  portable->fields_unit = 10;
   portable->package_vars_capacity = 8;
   portable->package_vars_unit = 8;
   portable->args_capacity = 8;
@@ -241,7 +240,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->basic_types_length = compiler->basic_types->length;
   
   // Portable fields
-  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->fields_unit * portable->fields_capacity);
+  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * portable->fields_capacity);
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_PORTABLE_push_field(portable, field);
@@ -544,34 +543,34 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   
   if (portable->fields_length >= portable->fields_capacity) {
     int32_t new_portable_fields_capacity = portable->fields_capacity * 2;
-    int32_t* new_portable_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->fields_unit * new_portable_fields_capacity);
-    memcpy(new_portable_fields, portable->fields, sizeof(int32_t) * portable->fields_unit * portable->fields_length);
+    SPVM_RUNTIME_FIELD* new_portable_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * new_portable_fields_capacity);
+    memcpy(new_portable_fields, portable->fields, sizeof(SPVM_RUNTIME_FIELD) * portable->fields_length);
     free(portable->fields);
     portable->fields = new_portable_fields;
     portable->fields_capacity = new_portable_fields_capacity;
   }
   
-  int32_t* new_portable_field = (int32_t*)&portable->fields[portable->fields_unit * portable->fields_length];
+  SPVM_RUNTIME_FIELD* new_portable_field = &portable->fields[portable->fields_length];
 
-  new_portable_field[0] = field->id;
-  new_portable_field[1] = field->index;
-  new_portable_field[2] = field->flag;
-  new_portable_field[3] = SPVM_PORTABLE_push_symbol(portable, field->name);
-  new_portable_field[4] = SPVM_PORTABLE_push_symbol(portable, field->abs_name);
-  new_portable_field[5] = SPVM_PORTABLE_push_symbol(portable, field->signature);
+  new_portable_field->id = field->id;
+  new_portable_field->index = field->index;
+  new_portable_field->flag = field->flag;
+  new_portable_field->name_id = SPVM_PORTABLE_push_symbol(portable, field->name);
+  new_portable_field->abs_name_id = SPVM_PORTABLE_push_symbol(portable, field->abs_name);
+  new_portable_field->signature_id = SPVM_PORTABLE_push_symbol(portable, field->signature);
   if (field->type->basic_type) {
-    new_portable_field[6] = field->type->basic_type->id;
+    new_portable_field->basic_type_id = field->type->basic_type->id;
   }
   else {
-    new_portable_field[6] = -1;
+    new_portable_field->basic_type_id = -1;
   }
-  new_portable_field[7] = field->type->dimension;
-  new_portable_field[8] = field->type->flag;
+  new_portable_field->type_dimension = field->type->dimension;
+  new_portable_field->type_flag = field->type->flag;
   if (field->package) {
-    new_portable_field[9] = field->package->id;
+    new_portable_field->package_id = field->package->id;
   }
   else {
-    new_portable_field[9] = -1;
+    new_portable_field->package_id = -1;
   }
   
   portable->fields_length++;

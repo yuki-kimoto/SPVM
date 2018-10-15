@@ -17,10 +17,9 @@ struct SPVM_portable {
   int32_t packages_length;
   int32_t* packages;
 
-  int32_t fields_unit;
   int32_t fields_capacity;
   int32_t fields_length;
-  int32_t* fields;
+  SPVM_RUNTIME_FIELD* fields;
 
   int32_t package_vars_unit;
   int32_t package_vars_capacity;
