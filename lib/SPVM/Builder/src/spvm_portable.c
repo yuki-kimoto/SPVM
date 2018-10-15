@@ -58,9 +58,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_package_var_ids_capacity = 8;
   portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
-  portable->info_field_ids_unit = 1;
   portable->info_sub_ids_capacity = 8;
-  portable->info_sub_ids_unit = 1;
   portable->info_types_capacity = 8;
   portable->subs_capacity = 8;
   portable->subs_unit = 44;
@@ -270,10 +268,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_unit * portable->info_package_var_ids_capacity);
 
   // Portable info field  ids
-  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_field_ids_unit * portable->info_field_ids_capacity);
+  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_field_ids_capacity);
 
   // Portable info sub ids
-  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_unit * portable->info_sub_ids_capacity);
+  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_capacity);
 
   // Portable switch info
   portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
@@ -447,15 +445,15 @@ void SPVM_PORTABLE_push_info_field_id(SPVM_PORTABLE* portable, int32_t info_fiel
 
   if (portable->info_field_ids_length >= portable->info_field_ids_capacity) {
     int32_t new_portable_info_field_ids_capacity = portable->info_field_ids_capacity * 2;
-    int32_t* new_portable_info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_field_ids_unit * new_portable_info_field_ids_capacity);
-    memcpy(new_portable_info_field_ids, portable->info_field_ids, sizeof(int32_t) * portable->info_field_ids_unit * portable->info_field_ids_length);
+    int32_t* new_portable_info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_field_ids_capacity);
+    memcpy(new_portable_info_field_ids, portable->info_field_ids, sizeof(int32_t) * portable->info_field_ids_length);
     free(portable->info_field_ids);
     portable->info_field_ids = new_portable_info_field_ids;
     portable->info_field_ids_capacity = new_portable_info_field_ids_capacity;
   }
   
-  int32_t* new_portable_info_field_id = (int32_t*)&portable->info_field_ids[portable->info_field_ids_unit * portable->info_field_ids_length];
-  new_portable_info_field_id[0] = info_field_id;
+  int32_t* new_portable_info_field_id = (int32_t*)&portable->info_field_ids[portable->info_field_ids_length];
+  *new_portable_info_field_id = info_field_id;
 
   portable->info_field_ids_length++;
 }
@@ -464,15 +462,15 @@ void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id
 
   if (portable->info_sub_ids_length >= portable->info_sub_ids_capacity) {
     int32_t new_portable_info_sub_ids_capacity = portable->info_sub_ids_capacity * 2;
-    int32_t* new_portable_info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_unit * new_portable_info_sub_ids_capacity);
-    memcpy(new_portable_info_sub_ids, portable->info_sub_ids, sizeof(int32_t) * portable->info_sub_ids_unit * portable->info_sub_ids_length);
+    int32_t* new_portable_info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_sub_ids_capacity);
+    memcpy(new_portable_info_sub_ids, portable->info_sub_ids, sizeof(int32_t) * portable->info_sub_ids_length);
     free(portable->info_sub_ids);
     portable->info_sub_ids = new_portable_info_sub_ids;
     portable->info_sub_ids_capacity = new_portable_info_sub_ids_capacity;
   }
   
-  int32_t* new_portable_info_sub_id = (int32_t*)&portable->info_sub_ids[portable->info_sub_ids_unit * portable->info_sub_ids_length];
-  new_portable_info_sub_id[0] = info_sub_id;
+  int32_t* new_portable_info_sub_id = (int32_t*)&portable->info_sub_ids[portable->info_sub_ids_length];
+  *new_portable_info_sub_id = info_sub_id;
 
   portable->info_sub_ids_length++;
 }
@@ -665,12 +663,6 @@ void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
     free(portable->info_types);
     portable->info_types = NULL;
 
-    free(portable->mys);
-    portable->info_constants = NULL;
-
-    free(portable->mys);
-    portable->mys = NULL;
-    
     free(portable->info_switch_info_ints);
     portable->info_switch_info_ints = NULL;
     
