@@ -318,14 +318,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_HASH_insert(runtime->field_symtable, runtime_field_name, strlen(runtime_field_name), runtime_field);
   }
 
-  // build sub symtable
-  runtime->sub_symtable = SPVM_HASH_new(0);
-  for (int32_t sub_id = 0; sub_id < runtime->subs_length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-    const char* sub_abs_name = runtime->symbols[sub->abs_name_id];
-    SPVM_HASH_insert(runtime->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
-  }
-
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
 
@@ -357,7 +349,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   
   SPVM_HASH_free(runtime->basic_type_symtable);
   SPVM_HASH_free(runtime->field_symtable);
-  SPVM_HASH_free(runtime->sub_symtable);
   
   for (int32_t switch_index = 0; switch_index < runtime->info_switch_infos->length; switch_index++) {
     SPVM_RUNTIME_INFO_SWITCH_INFO* info_switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, switch_index);
