@@ -188,10 +188,13 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   for (int32_t basic_type_id = 0; basic_type_id < portable->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &portable->basic_types[basic_type_id];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->name_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".package_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->package_id);
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
@@ -280,14 +283,19 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   for (int32_t arg_id = 0; arg_id < portable->args_length; arg_id++) {
     SPVM_RUNTIME_MY* runtime_arg = &portable->args[arg_id];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_dimension = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_dimension);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_flag);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".var_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->var_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".value_field_basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->value_field_basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
@@ -304,14 +312,19 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   for (int32_t my_id = 0; my_id < portable->mys_length; my_id++) {
     SPVM_RUNTIME_MY* runtime_my = &portable->mys[my_id];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_dimension = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->type_dimension);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->type_flag);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".var_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->var_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".value_field_basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->value_field_basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
@@ -328,10 +341,13 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   for (int32_t info_type_id = 0; info_type_id < portable->info_types_length; info_type_id++) {
     SPVM_RUNTIME_INFO_TYPE* runtime_info_type = &portable->info_types[info_type_id];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".dimension = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->dimension);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->flag);
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
@@ -389,14 +405,19 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_OPCODE* opcode = &portable->opcodes[opcode_id];
 
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode->id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".operand3 = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".operand0 = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".operand1 = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".operand2 = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
