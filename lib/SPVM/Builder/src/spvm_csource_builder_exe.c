@@ -357,16 +357,16 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_switch_infos
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_switch_info_ints_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_switch_info_ints[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_infos_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_switch_info_int_id = 0; info_switch_info_int_id < portable->info_switch_info_ints_length; info_switch_info_int_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints[info_switch_info_int_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints = info_switch_info_ints;\n");
 
   // info_string_lengths
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_string_lengths[");
