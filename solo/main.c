@@ -81,6 +81,15 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT64_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_NATIVE_SPVM__CORE__NANF(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_NATIVE_SPVM__CORE__NAN(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_NATIVE_SPVM__CORE__PI(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__csub(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__csubf(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__cmul(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__cdiv(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__caddf(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__cmulf(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__cdivf(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_NATIVE_SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t main(int32_t argc, const char *argv[]) {
   
@@ -122,130 +131,508 @@ int32_t main(int32_t argc, const char *argv[]) {
 
   // Bind native subroutine
   {
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__print = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::print", strlen("SPVM::CORE::print"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__print->id] = SPVM_NATIVE_SPVM__CORE__print;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__acos = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::acos", strlen("SPVM::CORE::acos"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__acos->id] = SPVM_NATIVE_SPVM__CORE__acos;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__asin = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::asin", strlen("SPVM::CORE::asin"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__asin->id] = SPVM_NATIVE_SPVM__CORE__asin;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__atan = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::atan", strlen("SPVM::CORE::atan"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__atan->id] = SPVM_NATIVE_SPVM__CORE__atan;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__atan2 = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::atan2", strlen("SPVM::CORE::atan2"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__atan2->id] = SPVM_NATIVE_SPVM__CORE__atan2;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__acosh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::acosh", strlen("SPVM::CORE::acosh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__acosh->id] = SPVM_NATIVE_SPVM__CORE__acosh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__asinh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::asinh", strlen("SPVM::CORE::asinh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__asinh->id] = SPVM_NATIVE_SPVM__CORE__asinh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__atanh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::atanh", strlen("SPVM::CORE::atanh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__atanh->id] = SPVM_NATIVE_SPVM__CORE__atanh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__abs = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::abs", strlen("SPVM::CORE::abs"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__abs->id] = SPVM_NATIVE_SPVM__CORE__abs;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__cos = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::cos", strlen("SPVM::CORE::cos"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__cos->id] = SPVM_NATIVE_SPVM__CORE__cos;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__cosh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::cosh", strlen("SPVM::CORE::cosh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__cosh->id] = SPVM_NATIVE_SPVM__CORE__cosh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__cbrt = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::cbrt", strlen("SPVM::CORE::cbrt"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__cbrt->id] = SPVM_NATIVE_SPVM__CORE__cbrt;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__ceil = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::ceil", strlen("SPVM::CORE::ceil"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__ceil->id] = SPVM_NATIVE_SPVM__CORE__ceil;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__exp = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::exp", strlen("SPVM::CORE::exp"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__exp->id] = SPVM_NATIVE_SPVM__CORE__exp;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__exp2 = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::exp2", strlen("SPVM::CORE::exp2"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__exp2->id] = SPVM_NATIVE_SPVM__CORE__exp2;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__expm1 = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::expm1", strlen("SPVM::CORE::expm1"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__expm1->id] = SPVM_NATIVE_SPVM__CORE__expm1;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__erf = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::erf", strlen("SPVM::CORE::erf"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__erf->id] = SPVM_NATIVE_SPVM__CORE__erf;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__erfc = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::erfc", strlen("SPVM::CORE::erfc"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__erfc->id] = SPVM_NATIVE_SPVM__CORE__erfc;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__fabs = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::fabs", strlen("SPVM::CORE::fabs"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__fabs->id] = SPVM_NATIVE_SPVM__CORE__fabs;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__floor = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::floor", strlen("SPVM::CORE::floor"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__floor->id] = SPVM_NATIVE_SPVM__CORE__floor;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__hypot = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::hypot", strlen("SPVM::CORE::hypot"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__hypot->id] = SPVM_NATIVE_SPVM__CORE__hypot;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isinff = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isinff", strlen("SPVM::CORE::isinff"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isinff->id] = SPVM_NATIVE_SPVM__CORE__isinff;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isfinitef = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isfinitef", strlen("SPVM::CORE::isfinitef"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isfinitef->id] = SPVM_NATIVE_SPVM__CORE__isfinitef;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isnanf = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isnanf", strlen("SPVM::CORE::isnanf"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isnanf->id] = SPVM_NATIVE_SPVM__CORE__isnanf;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isinf = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isinf", strlen("SPVM::CORE::isinf"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isinf->id] = SPVM_NATIVE_SPVM__CORE__isinf;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isfinite = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isfinite", strlen("SPVM::CORE::isfinite"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isfinite->id] = SPVM_NATIVE_SPVM__CORE__isfinite;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__isnan = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::isnan", strlen("SPVM::CORE::isnan"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__isnan->id] = SPVM_NATIVE_SPVM__CORE__isnan;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__log = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::log", strlen("SPVM::CORE::log"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__log->id] = SPVM_NATIVE_SPVM__CORE__log;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__log10 = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::log10", strlen("SPVM::CORE::log10"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__log10->id] = SPVM_NATIVE_SPVM__CORE__log10;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__log1p = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::log1p", strlen("SPVM::CORE::log1p"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__log1p->id] = SPVM_NATIVE_SPVM__CORE__log1p;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__labs = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::labs", strlen("SPVM::CORE::labs"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__labs->id] = SPVM_NATIVE_SPVM__CORE__labs;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__lgamma = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::lgamma", strlen("SPVM::CORE::lgamma"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__lgamma->id] = SPVM_NATIVE_SPVM__CORE__lgamma;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__nearbyint = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::nearbyint", strlen("SPVM::CORE::nearbyint"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__nearbyint->id] = SPVM_NATIVE_SPVM__CORE__nearbyint;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__pow = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::pow", strlen("SPVM::CORE::pow"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__pow->id] = SPVM_NATIVE_SPVM__CORE__pow;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__round = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::round", strlen("SPVM::CORE::round"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__round->id] = SPVM_NATIVE_SPVM__CORE__round;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__remainder = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::remainder", strlen("SPVM::CORE::remainder"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__remainder->id] = SPVM_NATIVE_SPVM__CORE__remainder;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__sin = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::sin", strlen("SPVM::CORE::sin"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__sin->id] = SPVM_NATIVE_SPVM__CORE__sin;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__sinh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::sinh", strlen("SPVM::CORE::sinh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__sinh->id] = SPVM_NATIVE_SPVM__CORE__sinh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__sqrt = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::sqrt", strlen("SPVM::CORE::sqrt"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__sqrt->id] = SPVM_NATIVE_SPVM__CORE__sqrt;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__time = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::time", strlen("SPVM::CORE::time"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__time->id] = SPVM_NATIVE_SPVM__CORE__time;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__tan = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::tan", strlen("SPVM::CORE::tan"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__tan->id] = SPVM_NATIVE_SPVM__CORE__tan;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__tanh = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::tanh", strlen("SPVM::CORE::tanh"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__tanh->id] = SPVM_NATIVE_SPVM__CORE__tanh;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__tgamma = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::tgamma", strlen("SPVM::CORE::tgamma"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__tgamma->id] = SPVM_NATIVE_SPVM__CORE__tgamma;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__warn = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::warn", strlen("SPVM::CORE::warn"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__warn->id] = SPVM_NATIVE_SPVM__CORE__warn;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__DBL_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::DBL_MAX", strlen("SPVM::CORE::DBL_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__DBL_MAX->id] = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__DBL_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::DBL_MIN", strlen("SPVM::CORE::DBL_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__DBL_MIN->id] = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__E = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::E", strlen("SPVM::CORE::E"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__E->id] = SPVM_NATIVE_SPVM__CORE__E;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__FLT_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::FLT_MAX", strlen("SPVM::CORE::FLT_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__FLT_MAX->id] = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__FLT_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::FLT_MIN", strlen("SPVM::CORE::FLT_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__FLT_MIN->id] = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INFINITYF = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INFINITYF", strlen("SPVM::CORE::INFINITYF"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INFINITYF->id] = SPVM_NATIVE_SPVM__CORE__INFINITYF;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INFINITY = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INFINITY", strlen("SPVM::CORE::INFINITY"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INFINITY->id] = SPVM_NATIVE_SPVM__CORE__INFINITY;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT8_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT8_MIN", strlen("SPVM::CORE::INT8_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT8_MIN->id] = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT8_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT8_MAX", strlen("SPVM::CORE::INT8_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT8_MAX->id] = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT16_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT16_MIN", strlen("SPVM::CORE::INT16_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT16_MIN->id] = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT16_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT16_MAX", strlen("SPVM::CORE::INT16_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT16_MAX->id] = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT32_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT32_MIN", strlen("SPVM::CORE::INT32_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT32_MIN->id] = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT32_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT32_MAX", strlen("SPVM::CORE::INT32_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT32_MAX->id] = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT64_MIN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT64_MIN", strlen("SPVM::CORE::INT64_MIN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT64_MIN->id] = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__INT64_MAX = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::INT64_MAX", strlen("SPVM::CORE::INT64_MAX"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__INT64_MAX->id] = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__NANF = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::NANF", strlen("SPVM::CORE::NANF"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__NANF->id] = SPVM_NATIVE_SPVM__CORE__NANF;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__NAN = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::NAN", strlen("SPVM::CORE::NAN"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__NAN->id] = SPVM_NATIVE_SPVM__CORE__NAN;
-    SPVM_RUNTIME_SUB* sub_SPVM__CORE__PI = SPVM_HASH_fetch(runtime->sub_symtable, "SPVM::CORE::PI", strlen("SPVM::CORE::PI"));
-    runtime->sub_native_addresses[sub_SPVM__CORE__PI->id] = SPVM_NATIVE_SPVM__CORE__PI;
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cadd";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cadd;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "csub";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__csub;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cmul";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cmul;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cdiv";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cdiv;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "caddf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__caddf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "csubf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__csubf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cmulf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cmulf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cdivf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cdivf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "new_fcomplex";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__new_fcomplex;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "new_dcomplex";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__new_dcomplex;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "print";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__print;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "warn";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__warn;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "time";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__time;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INFINITYF";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INFINITYF;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "NANF";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__NANF;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isinff";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isinff;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isfinitef";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isfinitef;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isnanf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isnanf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INFINITY";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INFINITY;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "NAN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__NAN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isinf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isinf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isfinite";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isfinite;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "isnan";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isnan;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "PI";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__PI;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "E";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__E;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "acos";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__acos;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "asin";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__asin;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "atan";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atan;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "atan2";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atan2;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cos";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cos;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "sin";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sin;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "tan";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tan;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "acosh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__acosh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "asinh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__asinh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "atanh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atanh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cosh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cosh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "sinh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sinh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "tanh";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tanh;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "exp";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__exp;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "exp2";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__exp2;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "expm1";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__expm1;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "log";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "log10";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log10;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "log1p";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log1p;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "abs";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__abs;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "labs";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__labs;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "cbrt";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cbrt;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "fabs";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__fabs;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "hypot";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__hypot;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "pow";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__pow;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "sqrt";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sqrt;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "erf";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__erf;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "erfc";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__erfc;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "lgamma";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__lgamma;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "tgamma";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tgamma;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "ceil";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__ceil;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "floor";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__floor;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "nearbyint";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__nearbyint;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "round";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__round;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "remainder";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__remainder;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT8_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT8_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT16_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT16_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT32_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT32_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT64_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "INT64_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "FLT_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "FLT_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "DBL_MAX";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
+  }
+  {
+    const char* package_name = "SPVM::CORE";
+    const char* sub_name = "DBL_MIN";
+    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
   }
 #endif
 
