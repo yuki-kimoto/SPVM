@@ -260,17 +260,43 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // package_vars
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars_unit * portable->package_vars_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->package_vars_unit * portable->package_vars_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE_VAR package_vars[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t package_var_id = 0; package_var_id < portable->package_vars_length; package_var_id++) {
+    SPVM_RUNTIME_PACKAGE_VAR* runtime_package_var = &portable->package_vars[package_var_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->name_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".abs_name_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->abs_name_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".signature_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->signature_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".basic_type_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_dimension = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->type_dimension);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".type_flag = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->type_flag);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".package_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package_var->package_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
 
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars = package_vars;\n");
+  
   // package_vars_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->package_vars_length = ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->package_vars_length);

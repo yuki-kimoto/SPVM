@@ -51,7 +51,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 
   portable->fields_capacity = 8;
   portable->package_vars_capacity = 8;
-  portable->package_vars_unit = 8;
   portable->args_capacity = 8;
   portable->mys_capacity = 8;
   portable->info_package_var_ids_capacity = 8;
@@ -247,7 +246,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable package_vars
-  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->package_vars_unit * portable->package_vars_capacity);
+  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable->package_vars_capacity);
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     SPVM_PORTABLE_push_package_var(portable, package_var);
@@ -580,29 +579,29 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
   
   if (portable->package_vars_length >= portable->package_vars_capacity) {
     int32_t new_portable_package_vars_capacity = portable->package_vars_capacity * 2;
-    int32_t* new_portable_package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->package_vars_unit * new_portable_package_vars_capacity);
-    memcpy(new_portable_package_vars, portable->package_vars, sizeof(int32_t) * portable->package_vars_unit * portable->package_vars_length);
+    SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE_VAR) * new_portable_package_vars_capacity);
+    memcpy(new_portable_package_vars, portable->package_vars, sizeof(SPVM_RUNTIME_PACKAGE_VAR) * portable->package_vars_length);
     free(portable->package_vars);
     portable->package_vars = new_portable_package_vars;
     portable->package_vars_capacity = new_portable_package_vars_capacity;
   }
   
-  int32_t* new_portable_package_var = (int32_t*)&portable->package_vars[portable->package_vars_unit * portable->package_vars_length];
+  SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_var = &portable->package_vars[portable->package_vars_length];
 
-  new_portable_package_var[0] = package_var->id;
-  new_portable_package_var[1] = SPVM_PORTABLE_push_symbol(portable, package_var->name);
-  new_portable_package_var[2] = SPVM_PORTABLE_push_symbol(portable, package_var->abs_name);
-  new_portable_package_var[3] = SPVM_PORTABLE_push_symbol(portable, package_var->signature);
+  new_portable_package_var->id = package_var->id;
+  new_portable_package_var->name_id = SPVM_PORTABLE_push_symbol(portable, package_var->name);
+  new_portable_package_var->abs_name_id = SPVM_PORTABLE_push_symbol(portable, package_var->abs_name);
+  new_portable_package_var->signature_id = SPVM_PORTABLE_push_symbol(portable, package_var->signature);
   if (package_var->type->basic_type) {
-    new_portable_package_var[4] = package_var->type->basic_type->id;
+    new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
   }
   else {
-    new_portable_package_var[4] = -1;
+    new_portable_package_var->basic_type_id = -1;
   }
-  new_portable_package_var[5] = package_var->type->dimension;
-  new_portable_package_var[6] = package_var->type->flag;
+  new_portable_package_var->type_dimension = package_var->type->dimension;
+  new_portable_package_var->type_flag = package_var->type->flag;
   assert(package_var->package);
-  new_portable_package_var[7] = package_var->package->id;
+  new_portable_package_var->package_id = package_var->package->id;
   
   portable->package_vars_length++;
 }
