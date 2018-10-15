@@ -108,13 +108,13 @@ sub get_shared_lib_path_runtime {
 }
 
 sub create_cfunc_name {
-  my ($self, $sub_abs_name) = @_;
+  my ($self, $package_name, $sub_name) = @_;
   
   my $category = $self->category;
   my $prefix = 'SPVM_' . uc($category) . '_';
   
   # Precompile Subroutine names
-  my $sub_abs_name_under_score = $sub_abs_name;
+  my $sub_abs_name_under_score = "${package_name}::$sub_name";
   $sub_abs_name_under_score =~ s/:/_/g;
   my $cfunc_name = "$prefix$sub_abs_name_under_score";
   
@@ -127,13 +127,13 @@ sub bind_subs {
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
-    my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
+    my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
     my $cfunc_address = SPVM::Builder::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     unless ($cfunc_address) {
-      my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
+      my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
       $cfunc_name =~ s/:/_/g;
-      confess "Can't find function address of $sub_abs_name(). C function name must be $cfunc_name";
+      confess "Can't find function address of $cfunc_name";
     }
     
     my $category = $self->category;
