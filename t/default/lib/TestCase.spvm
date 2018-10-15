@@ -6,6 +6,7 @@ package TestCase {
   use TestCase::Private;
   use TestCase::Point_i3;
   use TestCase::Data::Weaken;
+  use TestCase::Switch;
 
   use SPVM::Byte;
   use SPVM::Short;
