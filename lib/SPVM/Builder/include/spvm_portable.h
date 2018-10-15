@@ -89,7 +89,7 @@ struct SPVM_portable {
   int32_t info_string_lengths_length;
 
   int32_t opcodes_length;
-  int64_t* opcodes;
+  SPVM_OPCODE* opcodes;
   int8_t is_static;
 };
 
