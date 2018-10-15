@@ -40,7 +40,7 @@ struct SPVM_portable {
   int32_t mys_unit;
   int32_t mys_capacity;
   int32_t mys_length;
-  int32_t* mys;
+  SPVM_RUNTIME_MY* mys;
 
   int32_t info_package_var_ids_unit;
   int32_t info_package_var_ids_capacity;

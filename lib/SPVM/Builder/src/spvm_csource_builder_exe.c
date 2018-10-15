@@ -286,16 +286,28 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // mys
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys_unit * portable->mys_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->mys_unit * portable->mys_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_MY mys[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->mys_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t my_id = 0; my_id < portable->mys_length; my_id++) {
+    SPVM_RUNTIME_MY* runtime_my = &portable->mys[my_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->type_dimension);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->type_flag);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->var_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->value_field_basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
+
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->mys = mys;\n");
 
   // info_types
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_INFO_TYPE info_types[");

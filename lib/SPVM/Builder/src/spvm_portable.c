@@ -263,7 +263,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->args_unit * portable->args_capacity);
 
   // Portable args
-  portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->mys_unit * portable->mys_capacity);
+  portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->mys_capacity);
 
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
@@ -363,19 +363,19 @@ void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
   
   if (portable->mys_length >= portable->mys_capacity) {
     int32_t new_portable_mys_capacity = portable->mys_capacity * 2;
-    int32_t* new_portable_mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->mys_unit * new_portable_mys_capacity);
-    memcpy(new_portable_mys, portable->mys, sizeof(int32_t) * portable->mys_unit * portable->mys_length);
+    SPVM_RUNTIME_MY* new_portable_mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * new_portable_mys_capacity);
+    memcpy(new_portable_mys, portable->mys, sizeof(SPVM_RUNTIME_MY) * portable->mys_length);
     free(portable->mys);
     portable->mys = new_portable_mys;
     portable->mys_capacity = new_portable_mys_capacity;
   }
   
-  int32_t* new_portable_my = (int32_t*)&portable->mys[portable->mys_unit * portable->mys_length];
-  new_portable_my[0] = my->type->basic_type->id;
-  new_portable_my[1] = my->type->dimension;
-  new_portable_my[2] = my->type->flag;
-  new_portable_my[3] = my->var_id;
-  new_portable_my[4] = my->value_field_basic_type_id;
+  SPVM_RUNTIME_MY* new_portable_my = &portable->mys[portable->mys_length];
+  new_portable_my->basic_type_id = my->type->basic_type->id;
+  new_portable_my->type_dimension = my->type->dimension;
+  new_portable_my->type_flag = my->type->flag;
+  new_portable_my->var_id = my->var_id;
+  new_portable_my->value_field_basic_type_id = my->value_field_basic_type_id;
   
   portable->mys_length++;
 }
