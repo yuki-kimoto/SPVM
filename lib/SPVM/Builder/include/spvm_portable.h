@@ -57,10 +57,9 @@ struct SPVM_portable {
   int32_t info_field_ids_length;
   int32_t* info_field_ids;
   
-  int32_t info_types_unit;
   int32_t info_types_capacity;
   int32_t info_types_length;
-  int32_t* info_types;
+  SPVM_RUNTIME_INFO_TYPE* info_types;
 
   int32_t info_constants_unit;
   int32_t info_constants_capacity;

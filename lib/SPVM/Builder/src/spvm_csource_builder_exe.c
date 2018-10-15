@@ -186,8 +186,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->basic_types_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
   for (int32_t basic_type_id = 0; basic_type_id < portable->basic_types_length; basic_type_id++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    {");
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &portable->basic_types[basic_type_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->name_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_basic_type->id);
@@ -298,52 +298,64 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
 
   // info_types
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types_unit * portable->info_types_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_types_unit * portable->info_types_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_INFO_TYPE info_types[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_type_id = 0; info_type_id < portable->info_types_length; info_type_id++) {
+    SPVM_RUNTIME_INFO_TYPE* runtime_info_type = &portable->info_types[info_type_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->basic_type_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->dimension);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_info_type->flag);
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
+
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types = info_types;\n");
+  
+  // info_types_length
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_types_length = ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_types_length);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // info_field_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_field_ids[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_field_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_field_id_id = 0; info_field_id_id < portable->info_field_ids_length; info_field_id_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_field_ids[info_field_id_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_field_ids = info_field_ids;\n");
 
   // info_package_var_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_package_var_ids[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_package_var_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_package_var_id_id = 0; info_package_var_id_id < portable->info_package_var_ids_length; info_package_var_id_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_package_var_ids[info_package_var_id_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_package_var_ids = info_package_var_ids;\n");
 
   // info_sub_ids
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_sub_ids[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->info_sub_ids_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t info_sub_id_id = 0; info_sub_id_id < portable->info_sub_ids_length; info_sub_id_id++) {
+    SPVM_STRING_BUFFER_add(string_buffer, "    ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_sub_ids[info_sub_id_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_sub_ids = info_sub_ids;\n");
 
   // opcodes
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OPCODE opcodes[");

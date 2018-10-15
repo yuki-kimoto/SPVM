@@ -64,7 +64,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->info_sub_ids_capacity = 8;
   portable->info_sub_ids_unit = 1;
   portable->info_types_capacity = 8;
-  portable->info_types_unit = 3;
   portable->subs_capacity = 8;
   portable->subs_unit = 44;
   portable->packages_capacity = 8;
@@ -266,6 +265,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Portable args
   portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->mys_unit * portable->mys_capacity);
 
+  // Portable info_types
+  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
+
   // Portable info package var ids
   portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_unit * portable->info_package_var_ids_capacity);
 
@@ -274,9 +276,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable info sub ids
   portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_unit * portable->info_sub_ids_capacity);
-
-  // Portable info_types
-  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * portable->info_types_capacity);
 
   // Portable switch info
   portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
@@ -385,17 +384,17 @@ void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type)
 
   if (portable->info_types_length >= portable->info_types_capacity) {
     int32_t new_portable_info_types_capacity = portable->info_types_capacity * 2;
-    int32_t* new_portable_info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_types_unit * new_portable_info_types_capacity);
-    memcpy(new_portable_info_types, portable->info_types, sizeof(int32_t) * portable->info_types_unit * portable->info_types_length);
+    SPVM_RUNTIME_INFO_TYPE* new_portable_info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * new_portable_info_types_capacity);
+    memcpy(new_portable_info_types, portable->info_types, sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_length);
     free(portable->info_types);
     portable->info_types = new_portable_info_types;
     portable->info_types_capacity = new_portable_info_types_capacity;
   }
   
-  int32_t* new_portable_info_type = (int32_t*)&portable->info_types[portable->info_types_unit * portable->info_types_length];
-  new_portable_info_type[0] = info_type->basic_type->id;
-  new_portable_info_type[1] = info_type->dimension;
-  new_portable_info_type[2] = info_type->flag;
+  SPVM_RUNTIME_INFO_TYPE* new_portable_info_type = &portable->info_types[portable->info_types_length];
+  new_portable_info_type->basic_type_id = info_type->basic_type->id;
+  new_portable_info_type->dimension = info_type->dimension;
+  new_portable_info_type->flag = info_type->flag;
 
   portable->info_types_length++;
 }
