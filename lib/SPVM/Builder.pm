@@ -47,6 +47,15 @@ sub new {
   return $self;
 }
 
+sub get_package_names {
+  my ($self) = @_;
+  
+  my $packages = $self->{packages};
+  my @package_names = keys %$packages;
+  
+  return \@package_names;
+}
+
 sub get_package_load_path {
   my ($self, $package_name) = @_;
   
@@ -168,8 +177,8 @@ my $package_name_h = {};
 
 sub bind_to_perl {
   my $self = shift;
-
-  my $package_names = $self->info->get_package_names;
+  
+  my $package_names = $self->get_package_names;
   for my $package_name (@$package_names) {
     
     my $sub_names = $self->info->get_sub_names($package_name);

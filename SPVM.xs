@@ -258,46 +258,6 @@ get_sub_names(...)
   XSRETURN(1);
 }
 
-SV*
-get_package_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-  
-  AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
-  
-  {
-    int32_t package_index;
-    for (package_index = 0; package_index < runtime->packages_length; package_index++) {
-      SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_index];
-      
-      // Package name
-      const char* package_name = runtime->symbols[package->name_id];
-      SV* sv_package_name = sv_2mortal(newSVpvn(package_name, strlen(package_name)));
-      
-      av_push(av_package_names, SvREFCNT_inc((SV*)sv_package_name));
-    }
-  }
-  
-  SV* sv_package_names = sv_2mortal(newRV_inc((SV*)av_package_names));
-  
-  XPUSHs(sv_package_names);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*

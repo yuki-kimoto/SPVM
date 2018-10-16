@@ -40,7 +40,7 @@ sub builder { shift->{builder} }
 sub build {
   my ($self, $opt) = @_;
   
-  my $package_names = $self->info->get_package_names;
+  my $package_names = $self->builder->get_package_names;
   for my $package_name (@$package_names) {
     
     my $category = $self->{category};
