@@ -34,7 +34,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   hash->entries_length = 0;
   
   // Initialize key buffer
-  hash->key_buffer_capacity = 0xFF;
+  hash->key_buffer_capacity = 1;
   int64_t hash_key_buffer_byte_size = (int64_t)hash->key_buffer_capacity;
   hash->key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(hash_key_buffer_byte_size);
   hash->key_buffer_length = 0;
