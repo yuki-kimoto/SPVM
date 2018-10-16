@@ -75,8 +75,8 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   
   int32_t key_buffer_capacity = hash->key_buffer_capacity;
   
-  if (key_buffer_length + length >= key_buffer_capacity) {
-    int32_t new_key_buffer_capacity = (key_buffer_length + length) * 2;
+  if (key_buffer_length + length + sizeof(int32_t) >= key_buffer_capacity) {
+    int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
     int64_t new_key_buffer_byte_size = (int64_t)new_key_buffer_capacity;
     char* new_key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_key_buffer_byte_size);
