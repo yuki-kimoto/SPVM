@@ -410,6 +410,20 @@ compile_spvm(...)
   }
   
   if (compiler->error_count == 0) {
+    // Copy package load path to builder
+    for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+      const char* package_name = package->name;
+      const char* package_load_path = package->load_path;
+      SV* sv_package_load_path = sv_2mortal(newSVpv(package_load_path, 0));
+
+      SV** sv_package_load_pathes_ptr = hv_fetch(hv_self, "package_load_pathes", strlen("package_load_pathes"), 0);
+      SV* sv_package_load_pathes = sv_package_load_pathes_ptr ? *sv_package_load_pathes_ptr : &PL_sv_undef;
+      HV* hv_package_load_pathes = (HV*)SvRV(sv_package_load_pathes);
+      
+      (void)hv_store(hv_self, package_name, strlen(package_name), SvREFCNT_inc(sv_package_load_path), 0);
+    }
+    
     // Build portable info
     SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
     
