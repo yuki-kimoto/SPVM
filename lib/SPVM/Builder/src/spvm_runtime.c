@@ -198,16 +198,16 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   // build packages
   runtime->packages_length = portable->packages_length;
   runtime->packages = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
-  for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i += portable->packages_unit) {
-    int32_t* portable_package = (int32_t*)&portable->packages[i];
+  for (int32_t i = 0; i < portable->packages_length; i++) {
+    SPVM_RUNTIME_PACKAGE* portable_package = &portable->packages[i];
+    SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[i];
     
-    SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[i / portable->packages_unit];
-    runtime_package->id = portable_package[0];
-    runtime_package->name_id = portable_package[1];
-    runtime_package->destructor_sub_id = portable_package[2];
-    runtime_package->category = portable_package[3];
-    runtime_package->load_path_id = portable_package[4];
-    runtime_package->flag = portable_package[5];
+    runtime_package->id = portable_package->id;
+    runtime_package->name_id = portable_package->name_id;
+    runtime_package->destructor_sub_id = portable_package->destructor_sub_id;
+    runtime_package->category = portable_package->category;
+    runtime_package->load_path_id = portable_package->load_path_id;
+    runtime_package->flag = portable_package->flag;
   }
 
   // build package symtable

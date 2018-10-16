@@ -17,7 +17,6 @@
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
 #include "spvm_sub.h"
-#include "spvm_sub.h"
 #include "spvm_field.h"
 #include "spvm_package_var.h"
 #include "spvm_native.h"
@@ -60,7 +59,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->subs_capacity = 8;
   portable->subs_unit = 44;
   portable->packages_capacity = 8;
-  portable->packages_unit = 6;
   
   portable->info_switch_info_ints_capacity = 8;
 
@@ -292,7 +290,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable packages
-  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->packages_unit * portable->packages_capacity);
+  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable->packages_capacity);
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
@@ -609,26 +607,26 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   
   if (portable->packages_length >= portable->packages_capacity) {
     int32_t new_portable_packages_capacity = portable->packages_capacity * 2;
-    int32_t* new_portable_packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->packages_unit * new_portable_packages_capacity);
-    memcpy(new_portable_packages, portable->packages, sizeof(int32_t) * portable->packages_unit * portable->packages_length);
+    SPVM_RUNTIME_PACKAGE* new_portable_packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * new_portable_packages_capacity);
+    memcpy(new_portable_packages, portable->packages, sizeof(SPVM_RUNTIME_PACKAGE) * portable->packages_length);
     free(portable->packages);
     portable->packages = new_portable_packages;
     portable->packages_capacity = new_portable_packages_capacity;
   }
   
-  int32_t* new_portable_package = (int32_t*)&portable->packages[portable->packages_unit * portable->packages_length];
-
-  new_portable_package[0] = package->id;
-  new_portable_package[1] = SPVM_PORTABLE_push_symbol(portable, package->name);
+  SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[portable->packages_length];
+  
+  new_portable_package->id = package->id;
+  new_portable_package->name_id = SPVM_PORTABLE_push_symbol(portable, package->name);
   if (package->sub_destructor) {
-    new_portable_package[2] = package->sub_destructor->id;
+    new_portable_package->destructor_sub_id = package->sub_destructor->id;
   }
   else {
-    new_portable_package[2] = -1;
+    new_portable_package->destructor_sub_id = -1;
   }
-  new_portable_package[3] = package->category;
-  new_portable_package[4] = SPVM_PORTABLE_push_symbol(portable, package->load_path);
-  new_portable_package[5] = package->flag;
+  new_portable_package->category = package->category;
+  new_portable_package->load_path_id = SPVM_PORTABLE_push_symbol(portable, package->load_path);
+  new_portable_package->flag = package->flag;
   
   portable->packages_length++;
 }

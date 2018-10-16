@@ -320,17 +320,37 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // packages
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_unit * portable->packages_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-  for (int32_t i = 0; i < portable->packages_unit * portable->packages_length; i++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, i);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages[i]);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE packages[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
+  for (int32_t package_id = 0; package_id < portable->packages_length; package_id++) {
+    SPVM_RUNTIME_PACKAGE* runtime_package = &portable->packages[package_id];
+    SPVM_STRING_BUFFER_add(string_buffer, "    {");
+    SPVM_STRING_BUFFER_add(string_buffer, ".id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->name_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".destructor_sub_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->destructor_sub_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".category = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->category);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".load_path_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->load_path_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".flag = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->flag);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, "}");
 
+    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages = packages;\n");
+  
   // packages_length
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->packages_length = ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_length);

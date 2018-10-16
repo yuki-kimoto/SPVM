@@ -12,10 +12,9 @@ struct SPVM_portable {
   int32_t basic_types_length;
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
 
-  int32_t packages_unit;
   int32_t packages_capacity;
   int32_t packages_length;
-  int32_t* packages;
+  SPVM_RUNTIME_PACKAGE* packages;
 
   int32_t fields_capacity;
   int32_t fields_length;
