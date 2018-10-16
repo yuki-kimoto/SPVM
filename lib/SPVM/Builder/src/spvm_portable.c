@@ -85,7 +85,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub->id = sub->id;
   new_portable_sub->flag = sub->flag;
   new_portable_sub->name_id = SPVM_PORTABLE_push_symbol(portable, sub->name);
-  new_portable_sub->abs_name_id = SPVM_PORTABLE_push_symbol(portable, sub->abs_name);
   new_portable_sub->signature_id = SPVM_PORTABLE_push_symbol(portable, sub->signature);
   if (sub->package) {
     new_portable_sub->package_id = sub->package->id;

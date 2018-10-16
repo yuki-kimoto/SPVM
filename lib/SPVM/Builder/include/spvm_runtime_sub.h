@@ -7,7 +7,6 @@
 struct SPVM_runtime_sub {
   int32_t id;
   int32_t name_id;
-  int32_t abs_name_id;
   int32_t signature_id;
   int32_t package_id;
   int32_t file_id;

@@ -314,9 +314,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->name_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".abs_name_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->abs_name_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".signature_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->signature_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
