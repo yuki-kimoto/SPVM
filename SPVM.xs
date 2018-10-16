@@ -199,7 +199,6 @@ get_subs(...)
       HV* hv_sub = (HV*)sv_2mortal((SV*)newHV());
       
       (void)hv_store(hv_sub, "name", strlen("name"), SvREFCNT_inc(sv_sub_name), 0);
-      (void)hv_store(hv_sub, "is_enum", strlen("is_enum"), SvREFCNT_inc(sv_sub_is_enum), 0);
       (void)hv_store(hv_sub, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
       (void)hv_store(hv_sub, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
       
