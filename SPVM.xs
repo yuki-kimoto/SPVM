@@ -386,6 +386,18 @@ compile_spvm(...)
       
       (void)hv_store(hv_package_load_pathes, package_name, strlen(package_name), SvREFCNT_inc(sv_package_load_path), 0);
     }
+    for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
+      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+      const char* package_name = package->name;
+      const char* package_load_path = package->load_path;
+      SV* sv_package_load_path = sv_2mortal(newSVpv(package_load_path, 0));
+
+      SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
+      SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
+      HV* hv_packages = (HV*)SvRV(sv_packages);
+      
+      (void)hv_store(hv_packages, "load_path", strlen("load_path"), SvREFCNT_inc(sv_package_load_path), 0);
+    }
     
     // Build portable info
     SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);

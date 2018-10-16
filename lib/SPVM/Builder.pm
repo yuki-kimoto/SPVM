@@ -43,6 +43,8 @@ sub new {
   $self->{cbuilder_precompile} = $builder_c_precompile;
   
   $self->{package_load_pathes} = {};
+
+  $self->{packages} = {};
   
   return $self;
 }
