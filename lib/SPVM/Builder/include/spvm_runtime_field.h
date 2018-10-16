@@ -9,7 +9,6 @@ struct SPVM_runtime_field {
   int32_t index;
   int32_t flag;
   int32_t name_id;
-  int32_t abs_name_id;
   int32_t signature_id;
   int32_t basic_type_id;
   int32_t type_dimension;

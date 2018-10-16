@@ -225,9 +225,7 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->flag);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->abs_name_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");    SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->abs_name_id);
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->name_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".signature_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->signature_id);
@@ -243,9 +241,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".package_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->package_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".name_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->name_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 

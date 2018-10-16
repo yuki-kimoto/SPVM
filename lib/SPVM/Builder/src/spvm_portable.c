@@ -550,7 +550,6 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   new_portable_field->index = field->index;
   new_portable_field->flag = field->flag;
   new_portable_field->name_id = SPVM_PORTABLE_push_symbol(portable, field->name);
-  new_portable_field->abs_name_id = SPVM_PORTABLE_push_symbol(portable, field->abs_name);
   new_portable_field->signature_id = SPVM_PORTABLE_push_symbol(portable, field->signature);
   if (field->type->basic_type) {
     new_portable_field->basic_type_id = field->type->basic_type->id;
