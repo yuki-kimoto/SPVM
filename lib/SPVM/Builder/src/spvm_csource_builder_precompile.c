@@ -40,16 +40,6 @@
 #include "spvm_field.h"
 #include "spvm_type.h"
 
-const char* SPVM_CSOURCE_BUILDER_create_sub_abs_name(SPVM_ENV* env, const char* package_name, const char* sub_name) {
-  int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(sub_name));
-  
-  char* sub_abs_name = SPVM_RUNTIME_API_safe_malloc_zero(length + 1);
-  
-  sprintf(sub_abs_name, "%s::%s", package_name, sub_name);
-  
-  return sub_abs_name;
-}
-
 const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(SPVM_ENV* env, int32_t ctype_id) {
   switch (ctype_id) {
     case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE:
@@ -1436,17 +1426,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get package variable id\n");
   }
   {
-    SPVM_HASH* package_var_abs_name_symtable = SPVM_HASH_new(1);
+    SPVM_HASH* package_var_id_symtable = SPVM_HASH_new(1);
     for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids_length; info_package_var_ids_index++) {
       int32_t package_var_id = runtime->info_package_var_ids[sub->info_package_var_ids_base + info_package_var_ids_index];
       SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
       SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
       const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
       const char* package_var_name = runtime->symbols[package_var->name_id];
-      const char* package_var_abs_name = runtime->symbols[package_var->abs_name_id];
       const char* package_var_signature = runtime->symbols[package_var->signature_id];
       
-      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_abs_name_symtable, package_var_abs_name, strlen(package_var_abs_name));
+      char package_var_id_str[sizeof(int32_t)];
+      memcpy(&package_var_id_str, &package_var_id, sizeof(int32_t));
+      SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package_var_id_symtable, package_var_id_str, sizeof(int32_t));
       if (!found_package_var) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
         SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
@@ -1467,10 +1458,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(package_var_abs_name_symtable, package_var_abs_name, strlen(package_var_abs_name), package_var);
+        SPVM_HASH_insert(package_var_id_symtable, package_var_id_str, sizeof(int32_t), package_var);
       }
     }
-    SPVM_HASH_free(package_var_abs_name_symtable);
+    SPVM_HASH_free(package_var_id_symtable);
   }
 
   // Get sub id
@@ -1478,17 +1469,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
   }
   {
-    SPVM_HASH* sub_abs_name_symtable = SPVM_HASH_new(1);
+    SPVM_HASH* sub_id_symtable = SPVM_HASH_new(1);
     for (int32_t info_sub_ids_index = 0; info_sub_ids_index < sub->info_sub_ids_length; info_sub_ids_index++) {
       int32_t sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + info_sub_ids_index];
       SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
       SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
       const char* sub_package_name = runtime->symbols[sub_package->name_id];
-      const char* sub_signature = runtime->symbols[sub->signature_id];
       const char* sub_name = runtime->symbols[sub->name_id];
-      char* sub_abs_name = (char*)SPVM_CSOURCE_BUILDER_create_sub_abs_name(env, sub_package_name, sub_name);
+      const char* sub_signature = runtime->symbols[sub->signature_id];
       
-      SPVM_FIELD* found_sub = SPVM_HASH_fetch(sub_abs_name_symtable, sub_abs_name, strlen(sub_abs_name));
+      char sub_id_str[sizeof(int32_t)];
+      memcpy(&sub_id_str, &sub_id, sizeof(int32_t));
+      SPVM_RUNTIME_SUB* found_sub = SPVM_HASH_fetch(sub_id_symtable, sub_id_str, sizeof(int32_t));
       
       if (!found_sub) {
         SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
@@ -1510,11 +1502,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
-        SPVM_HASH_insert(sub_abs_name_symtable, sub_abs_name, strlen(sub_abs_name), sub);
+        SPVM_HASH_insert(sub_id_symtable, sub_id_str, sizeof(int32_t), sub);
       }
-      free(sub_abs_name);
     }
-    SPVM_HASH_free(sub_abs_name_symtable);
+    SPVM_HASH_free(sub_id_symtable);
   }
 
   // Get basic type id
