@@ -54,7 +54,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->args_capacity = 8;
   portable->mys_capacity = 8;
   portable->info_package_var_ids_capacity = 8;
-  portable->info_package_var_ids_unit = 1;
   portable->info_field_ids_capacity = 8;
   portable->info_sub_ids_capacity = 8;
   portable->info_types_capacity = 8;
@@ -263,7 +262,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
 
   // Portable info package var ids
-  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_unit * portable->info_package_var_ids_capacity);
+  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_capacity);
 
   // Portable info field  ids
   portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_field_ids_capacity);
@@ -426,14 +425,14 @@ void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t inf
 
   if (portable->info_package_var_ids_length >= portable->info_package_var_ids_capacity) {
     int32_t new_portable_info_package_var_ids_capacity = portable->info_package_var_ids_capacity * 2;
-    int32_t* new_portable_info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_unit * new_portable_info_package_var_ids_capacity);
-    memcpy(new_portable_info_package_var_ids, portable->info_package_var_ids, sizeof(int32_t) * portable->info_package_var_ids_unit * portable->info_package_var_ids_length);
+    int32_t* new_portable_info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_package_var_ids_capacity);
+    memcpy(new_portable_info_package_var_ids, portable->info_package_var_ids, sizeof(int32_t) * portable->info_package_var_ids_length);
     free(portable->info_package_var_ids);
     portable->info_package_var_ids = new_portable_info_package_var_ids;
     portable->info_package_var_ids_capacity = new_portable_info_package_var_ids_capacity;
   }
   
-  int32_t* new_portable_info_package_var_id = (int32_t*)&portable->info_package_var_ids[portable->info_package_var_ids_unit * portable->info_package_var_ids_length];
+  int32_t* new_portable_info_package_var_id = (int32_t*)&portable->info_package_var_ids[portable->info_package_var_ids_length];
   new_portable_info_package_var_id[0] = info_package_var_id;
 
   portable->info_package_var_ids_length++;
