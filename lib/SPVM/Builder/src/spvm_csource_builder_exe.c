@@ -471,9 +471,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".category = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->category);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".load_path_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->load_path_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->flag);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");

@@ -9,7 +9,6 @@ struct SPVM_runtime_package {
   int32_t name_id;
   int32_t destructor_sub_id;
   int32_t category;
-  int32_t load_path_id;
   int32_t flag;
   SPVM_LIST* package_vars;
   SPVM_HASH* package_var_symtable;

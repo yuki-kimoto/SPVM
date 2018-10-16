@@ -206,7 +206,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     runtime_package->name_id = portable_package->name_id;
     runtime_package->destructor_sub_id = portable_package->destructor_sub_id;
     runtime_package->category = portable_package->category;
-    runtime_package->load_path_id = portable_package->load_path_id;
     runtime_package->flag = portable_package->flag;
   }
 

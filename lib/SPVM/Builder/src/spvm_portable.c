@@ -621,7 +621,6 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
     new_portable_package->destructor_sub_id = -1;
   }
   new_portable_package->category = package->category;
-  new_portable_package->load_path_id = SPVM_PORTABLE_push_symbol(portable, package->load_path);
   new_portable_package->flag = package->flag;
   
   portable->packages_length++;
