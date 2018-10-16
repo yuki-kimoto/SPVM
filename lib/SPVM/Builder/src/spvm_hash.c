@@ -75,7 +75,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   
   int32_t key_buffer_capacity = hash->key_buffer_capacity;
   
-  if (key_buffer_length + length + sizeof(int32_t) >= key_buffer_capacity) {
+  if (key_buffer_length + length + (int32_t)sizeof(int32_t) >= key_buffer_capacity) {
     int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
     int64_t new_key_buffer_byte_size = (int64_t)new_key_buffer_capacity;
@@ -111,10 +111,13 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_l
   
   hash->entries[index].key_index = hash->key_buffer_length;
   
-  memcpy(&hash->key_buffer[hash->key_buffer_length], key, key_length);
-  hash->key_buffer[hash->key_buffer_length + key_length] = '\0';
+  // Copy key length
+  memcpy(&hash->key_buffer[hash->key_buffer_length], &key_length, sizeof(int32_t));
   
-  hash->key_buffer_length += key_length + 1;
+  // Copy key
+  memcpy(&hash->key_buffer[hash->key_buffer_length + sizeof(int32_t)], key, key_length);
+  
+  hash->key_buffer_length += sizeof(int32_t) + key_length;
   
   hash->entries[index].value = value;
   hash->entries[index].next_index = -1;
@@ -136,13 +139,13 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   {
     int32_t i;
     for (i = 0; i < hash->entries_length; i++) {
-      const char* key = &hash->key_buffer[hash->entries[i].key_index];
-      
-      assert(key);
+      int32_t key_length;
+      memcpy(&key_length, &hash->key_buffer[hash->entries[i].key_index], sizeof(int32_t));
+      const char* key = &hash->key_buffer[hash->entries[i].key_index + sizeof(int32_t)];
       
       void* value = hash->entries[i].value;
       
-      SPVM_HASH_insert_norehash(new_hash, key, strlen(key), value);
+      SPVM_HASH_insert_norehash(new_hash, key, key_length, value);
     }
   }
   
@@ -178,19 +181,17 @@ void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length,
     
     int32_t entry_index = hash->table[table_index];
     while (1) {
-      int32_t match_string = 0;
-      if (length == 0) {
-        if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
-          match_string = 1;
-        }
+      int32_t match = 0;
+      int32_t key_length;
+      memcpy(&key_length, &hash->key_buffer[hash->entries[entry_index].key_index], sizeof(int32_t));
+      if (key_length == 0 && length == 0) {
+        match = 1;
       }
-      else if (memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
-        && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
-      {
-        match_string = 1;
+      else if (key_length == length && memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index + sizeof(int32_t)], length) == 0) {
+        match = 1;
       }
       
-      if (match_string) {
+      if (match) {
         hash->entries[entry_index].value = value;
         break;
       }
@@ -244,19 +245,17 @@ void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
   while (1) {
     assert(entry_index >= -1);
     if (entry_index != -1) {
-      int32_t match_string = 0;
-      if (length == 0) {
-        if (strlen(&hash->key_buffer[hash->entries[entry_index].key_index]) == 0) {
-          match_string = 1;
-        }
+      int32_t match = 0;
+      int32_t key_length;
+      memcpy(&key_length, &hash->key_buffer[hash->entries[entry_index].key_index], sizeof(int32_t));
+      if (length == 0 && key_length == 0) {
+        match = 1;
       }
-      else if (memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index], length) == 0
-        && length == (int32_t)strlen(&hash->key_buffer[hash->entries[entry_index].key_index]))
-      {
-        match_string = 1;
+      else if (key_length == length && memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index + sizeof(int32_t)], length) == 0) {
+        match = 1;
       }
       
-      if (match_string) {
+      if (match) {
         return hash->entries[entry_index].value;
       }
       else {
