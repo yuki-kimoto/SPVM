@@ -41,6 +41,9 @@ package SPVM::List : private {
 
   sub new_with_capacity : SPVM::List ($capacity : int) {
     my $self = new SPVM::List;
+    unless ($capacity > 0) {
+      croak "capacity must be positive";
+    }
     $self->{capacity} = $capacity;
     $self->{values} = new object [$capacity];
     return $self;

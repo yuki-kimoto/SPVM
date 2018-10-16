@@ -72,12 +72,23 @@ package TestCase::List {
   }
 
   sub test_ctor_with_capacity : int () {
-    unless (check_fields(SPVM::List->new_with_capacity(0), new object[0], 0, 0, 0)) {
-      return 0;
-    }
     unless (check_fields(SPVM::List->new_with_capacity(20000), new object[20000], 20000, 0, 0)) {
       return 0;
     }
+    eval {
+      SPVM::List->new_with_capacity(0);
+    }
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    eval {
+      SPVM::List->new_with_capacity(-1);
+    }
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
     return 1;
   }
 
@@ -116,7 +127,7 @@ package TestCase::List {
   }
 
   sub test_push : int () {
-    my $list = SPVM::List->new_with_capacity(0);
+    my $list = SPVM::List->new_with_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
     $list->push($v1);
@@ -167,7 +178,7 @@ package TestCase::List {
   }
 
   sub test_unshift : int () {
-    my $list = SPVM::List->new_with_capacity(0);
+    my $list = SPVM::List->new_with_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
     $list->unshift($v1);
