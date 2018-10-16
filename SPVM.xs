@@ -380,23 +380,25 @@ compile_spvm(...)
       const char* package_load_path = package->load_path;
       SV* sv_package_load_path = sv_2mortal(newSVpv(package_load_path, 0));
 
-      SV** sv_package_load_pathes_ptr = hv_fetch(hv_self, "package_load_pathes", strlen("package_load_pathes"), 0);
-      SV* sv_package_load_pathes = sv_package_load_pathes_ptr ? *sv_package_load_pathes_ptr : &PL_sv_undef;
-      HV* hv_package_load_pathes = (HV*)SvRV(sv_package_load_pathes);
-      
-      (void)hv_store(hv_package_load_pathes, package_name, strlen(package_name), SvREFCNT_inc(sv_package_load_path), 0);
-    }
-    for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
-      const char* package_name = package->name;
-      const char* package_load_path = package->load_path;
-      SV* sv_package_load_path = sv_2mortal(newSVpv(package_load_path, 0));
-
       SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
       SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
       HV* hv_packages = (HV*)SvRV(sv_packages);
       
-      (void)hv_store(hv_packages, "load_path", strlen("load_path"), SvREFCNT_inc(sv_package_load_path), 0);
+      // Create package info hash reference if not exists
+      {
+        SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+        if (!sv_package_info_ptr) {
+          HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
+          SV* sv_package_info = sv_2mortal(newRV_inc(hv_package_info));
+          (void)hv_store(hv_packages, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
+        }
+      }
+      
+      // Package load path
+      SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+      SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
+      HV* hv_package_info = (HV*)SvRV(sv_package_info);
+      (void)hv_store(hv_package_info, "load_path", strlen("load_path"), SvREFCNT_inc(sv_package_load_path), 0);
     }
     
     // Build portable info

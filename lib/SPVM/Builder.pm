@@ -42,8 +42,6 @@ sub new {
   weaken $builder_c_precompile->{builder};
   $self->{cbuilder_precompile} = $builder_c_precompile;
   
-  $self->{package_load_pathes} = {};
-
   $self->{packages} = {};
   
   return $self;
@@ -52,7 +50,7 @@ sub new {
 sub get_package_load_path {
   my ($self, $package_name) = @_;
   
-  return $self->{package_load_pathes}{$package_name};
+  return $self->{packages}{$package_name}{load_path};
 }
 
 sub build_spvm {
