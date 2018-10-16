@@ -299,42 +299,6 @@ get_package_names(...)
   XSRETURN(1);
 }
 
-SV*
-get_package_load_path(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-
-  SV* sv_package_name = ST(1);
-  
-  const char* package_name = SvPV_nolen(sv_package_name);
-  
-  // Subroutine information
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));;
-  
-  const char* package_load_path = runtime->symbols[package->load_path_id];
-  
-  SV* sv_package_load_path = sv_2mortal(newSVpvn(package_load_path, strlen(package_load_path)));
-  
-  XPUSHs(sv_package_load_path);
-  
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
@@ -421,7 +385,7 @@ compile_spvm(...)
       SV* sv_package_load_pathes = sv_package_load_pathes_ptr ? *sv_package_load_pathes_ptr : &PL_sv_undef;
       HV* hv_package_load_pathes = (HV*)SvRV(sv_package_load_pathes);
       
-      (void)hv_store(hv_self, package_name, strlen(package_name), SvREFCNT_inc(sv_package_load_path), 0);
+      (void)hv_store(hv_package_load_pathes, package_name, strlen(package_name), SvREFCNT_inc(sv_package_load_path), 0);
     }
     
     // Build portable info

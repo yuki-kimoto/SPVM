@@ -47,6 +47,12 @@ sub new {
   return $self;
 }
 
+sub get_package_load_path {
+  my ($self, $package_name) = @_;
+  
+  return $self->{package_load_pathes}{$package_name};
+}
+
 sub build_spvm {
   my $self = shift;
   
