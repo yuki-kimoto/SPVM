@@ -1204,7 +1204,6 @@ call_sub(...)
   int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
   int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
   int32_t sub_return_type_flag = runtime_sub->return_type_flag;
-  int32_t sub_return_type_width = SPVM_RUNTIME_API_get_width(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
 
   int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
   int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
