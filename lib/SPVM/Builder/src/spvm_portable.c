@@ -343,7 +343,9 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
   new_portable_arg->type_flag = arg->type->flag;
   new_portable_arg->var_id = arg->var_id;
   new_portable_arg->value_field_basic_type_id = arg->value_field_basic_type_id;
-  
+  new_portable_arg->runtime_type = arg->runtime_type;
+  new_portable_arg->type_width = arg->type_width;
+
   portable->args_length++;
 }
 
