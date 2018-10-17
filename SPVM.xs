@@ -872,7 +872,7 @@ call_sub(...)
           default:
             assert(0);
         }
-        arg_var_id++;
+        arg_var_id += type_width;
       }
       else if (arg_type_is_value_type) {
         if (sv_derived_from(sv_value, "HASH")) {
@@ -931,7 +931,7 @@ call_sub(...)
                 assert(0);
             }
           }
-          arg_var_id += arg_package->fields->length;
+          arg_var_id += type_width;
         }
         else {
           croak("%dth argument must be hash reference", arg_index + 1);
@@ -955,7 +955,7 @@ call_sub(...)
             croak("%dth argument must be SPVM::Data object", arg_index);
           }
         }
-        arg_var_id++;
+        arg_var_id += type_width;
       }
       else if (arg_type_is_ref_type) {
         args_contain_ref = 1;
@@ -1003,7 +1003,7 @@ call_sub(...)
           ref_stack_ids[arg_index] = ref_stack_top;
 
           ref_stack_top++;
-          arg_var_id++;
+          arg_var_id += type_width;
         }
         else if (arg_type_is_value_ref_type) {
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1073,7 +1073,7 @@ call_sub(...)
 
           int32_t fields_length = arg_package->fields->length;
           ref_stack_top += fields_length;
-          arg_var_id++;
+          arg_var_id += type_width;
         }
         else {
           assert(0);
