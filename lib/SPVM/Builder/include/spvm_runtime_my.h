@@ -10,6 +10,8 @@ struct SPVM_runtime_my {
   uint16_t type_flag;
   uint8_t type_dimension;
   uint8_t value_field_basic_type_id;
+  uint8_t runtime_type;
+  uint8_t type_width;
 };
 
 SPVM_RUNTIME_MY* SPVM_RUNTIME_MY_new();
