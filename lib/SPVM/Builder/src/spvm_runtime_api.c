@@ -196,99 +196,97 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       
       int32_t type_width = arg->type_width;
       
-      if (SPVM_RUNTIME_API_is_numeric_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        switch (arg->runtime_type) {
-          case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
-            byte_vars[arg->var_id] = *(SPVM_VALUE_byte*)&stack[stack_index];
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
-            short_vars[arg->var_id] = *(SPVM_VALUE_short*)&stack[stack_index];
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
-            int_vars[arg->var_id] = *(SPVM_VALUE_int*)&stack[stack_index];
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
-            long_vars[arg->var_id] = *(SPVM_VALUE_long*)&stack[stack_index];
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
-            float_vars[arg->var_id] = *(SPVM_VALUE_float*)&stack[stack_index];
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
-            double_vars[arg->var_id] = *(SPVM_VALUE_double*)&stack[stack_index];
-            break;
-          }
-          default: {
-            assert(0);
-            break;
-          }
+      switch (arg->runtime_type) {
+        case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
+          byte_vars[arg->var_id] = *(SPVM_VALUE_byte*)&stack[stack_index];
+          break;
         }
-      }
-      else if (SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        switch (arg->runtime_type) {
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              byte_vars[arg->var_id + field_index] = *(SPVM_VALUE_byte*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              short_vars[arg->var_id + field_index] = *(SPVM_VALUE_short*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              int_vars[arg->var_id + field_index] = *(SPVM_VALUE_int*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              long_vars[arg->var_id + field_index] = *(SPVM_VALUE_long*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              float_vars[arg->var_id + field_index] = *(SPVM_VALUE_float*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE: {
-            for (int32_t field_index = 0; field_index < type_width; field_index++) {
-              double_vars[arg->var_id + field_index] = *(SPVM_VALUE_double*)&stack[stack_index + field_index];
-            }
-            break;
-          }
-          default: {
-            assert(0);
-          }
+        case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
+          short_vars[arg->var_id] = *(SPVM_VALUE_short*)&stack[stack_index];
+          break;
         }
-      }
-      else if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        object_vars[arg->var_id] = *(void**)&stack[stack_index];
-      }
-      else if (SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        ref_vars[arg->var_id] = *(void**)&stack[stack_index];
-      }
-      else {
-        assert(0);
-      }
-      
-      // If arg is object, increment reference count
-      if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        void* object = *(void**)&object_vars[arg->var_id];
-        if (object != NULL) {
-          SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
+        case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
+          int_vars[arg->var_id] = *(SPVM_VALUE_int*)&stack[stack_index];
+          break;
         }
+        case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
+          long_vars[arg->var_id] = *(SPVM_VALUE_long*)&stack[stack_index];
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
+          float_vars[arg->var_id] = *(SPVM_VALUE_float*)&stack[stack_index];
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
+          double_vars[arg->var_id] = *(SPVM_VALUE_double*)&stack[stack_index];
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            byte_vars[arg->var_id + field_index] = *(SPVM_VALUE_byte*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            short_vars[arg->var_id + field_index] = *(SPVM_VALUE_short*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            int_vars[arg->var_id + field_index] = *(SPVM_VALUE_int*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            long_vars[arg->var_id + field_index] = *(SPVM_VALUE_long*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            float_vars[arg->var_id + field_index] = *(SPVM_VALUE_float*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE: {
+          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+            double_vars[arg->var_id + field_index] = *(SPVM_VALUE_double*)&stack[stack_index + field_index];
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+          object_vars[arg->var_id] = *(void**)&stack[stack_index];
+
+          // If arg is object, increment reference count
+          void* object = *(void**)&object_vars[arg->var_id];
+          if (object != NULL) {
+            SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE:
+        {
+          ref_vars[arg->var_id] = *(void**)&stack[stack_index];
+          break;
+        }
+        default:
+          assert(0);
       }
-      
+
       stack_index += type_width;
     }
   }
