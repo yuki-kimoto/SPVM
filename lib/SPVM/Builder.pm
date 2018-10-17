@@ -8,7 +8,6 @@ use Carp 'confess';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
-use SPVM::Builder::Info;
 use SPVM::Builder::C;
 
 use Scalar::Util 'weaken';
@@ -29,10 +28,6 @@ sub new {
   
   bless $self, $class;
   
-  $self->{info} = SPVM::Builder::Info->new;
-  $self->{info}{builder} = $self;
-  weaken($self->{info}{builder});
-  
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
     info => $self->{info},
@@ -45,6 +40,42 @@ sub new {
   $self->{packages} = {};
   
   return $self;
+}
+
+sub get_native_sub_names {
+  my ($self, $package_name) = @_;
+
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  
+  my @native_sub_names;
+  for my $sub_name (keys %$subs) {
+    my $sub = $subs->{$sub_name};
+    if ($sub->{have_native_desc}) {
+      push @native_sub_names, $sub_name;
+    }
+  }
+  
+  return \@native_sub_names;
+}
+
+sub get_precompile_sub_names {
+  my ($self, $package_name) = @_;
+
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  
+  my @precompile_sub_names;
+  for my $sub_name (keys %$subs) {
+    my $sub = $subs->{$sub_name};
+    if ($sub->{have_precompile_desc}) {
+      push @precompile_sub_names, $sub_name;
+    }
+  }
+  
+  return \@precompile_sub_names;
 }
 
 sub get_sub_names {
@@ -120,7 +151,7 @@ sub build_shared_lib_native_dist {
   
   $self->compile_spvm;
 
-  my $sub_names = $self->info->get_native_sub_names($package_name);
+  my $sub_names = $self->get_native_sub_names($package_name);
 
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
@@ -143,7 +174,7 @@ sub build_shared_lib_precompile_dist {
     die "Compile error";
   }
   
-  my $sub_names = $self->info->get_precompile_sub_names($package_name);
+  my $sub_names = $self->get_precompile_sub_names($package_name);
 
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},

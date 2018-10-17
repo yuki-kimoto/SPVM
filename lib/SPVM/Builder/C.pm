@@ -46,10 +46,10 @@ sub build {
     my $category = $self->{category};
     my $sub_names;
     if ($category eq 'native') {
-      $sub_names = $self->info->get_native_sub_names($package_name)
+      $sub_names = $self->builder->get_native_sub_names($package_name)
     }
     elsif ($category eq 'precompile') {
-      $sub_names = $self->info->get_precompile_sub_names($package_name)
+      $sub_names = $self->builder->get_precompile_sub_names($package_name)
     }
     
     if (@$sub_names) {

@@ -65,7 +65,6 @@ lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
-lib/SPVM/Builder/Info.pm
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_basic_type.c
 lib/SPVM/Builder/src/spvm_block.c
