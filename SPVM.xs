@@ -349,16 +349,63 @@ compile_spvm(...)
         SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
         if (!sv_package_info_ptr) {
           HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
-          SV* sv_package_info = sv_2mortal(newRV_inc(hv_package_info));
+          SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
           (void)hv_store(hv_packages, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
         }
       }
       
-      // Package load path
+      // Package
       SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
       SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
       HV* hv_package_info = (HV*)SvRV(sv_package_info);
+      
+      // Package load path
       (void)hv_store(hv_package_info, "load_path", strlen("load_path"), SvREFCNT_inc(sv_package_load_path), 0);
+
+      // Create subs hash reference if not exists
+      {
+        SV** sv_subs_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+        if (!sv_subs_ptr) {
+          HV* hv_subs = (HV*)sv_2mortal((SV*)newHV());
+          SV* sv_subs = sv_2mortal(newRV_inc((SV*)hv_subs));
+          (void)hv_store(hv_packages, "subs", strlen("subs"), SvREFCNT_inc(sv_subs), 0);
+        }
+      }
+
+      // Subroutines
+      SV** sv_subs_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+      SV* sv_subs = sv_subs_ptr ? *sv_subs_ptr : &PL_sv_undef;
+      HV* hv_subs = (HV*)SvRV(sv_subs);
+      
+      for (int32_t sub_id = 0; sub_id < package->subs->length; sub_id++) {
+        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_id);
+        const char* sub_name = sub->name;
+        SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
+
+        // Create sub info hash reference if not exists
+        {
+          SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
+          if (!sv_sub_info_ptr) {
+            HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
+            SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
+            (void)hv_store(hv_subs, sub_name, strlen(sub_name), SvREFCNT_inc(sv_sub_info), 0);
+          }
+        }
+        SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
+        SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
+        HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
+        
+        // Subroutine have_native_desc
+        int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
+        SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
+
+        // Subroutine have_precompile_desc
+        int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
+        SV* sv_sub_have_precompile_desc = sv_2mortal(newSViv(sub_have_precompile_desc));
+
+        (void)hv_store(hv_sub_info, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
+        (void)hv_store(hv_sub_info, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
+      }
     }
     
     // Build portable info
