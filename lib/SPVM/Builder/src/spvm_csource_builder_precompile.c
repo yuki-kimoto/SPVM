@@ -1209,10 +1209,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
       SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
 
-      int32_t arg_type_is_value_t = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-      int32_t arg_type_is_ref = SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-      
       // Numeric type
       int32_t type_width = arg->type_width;
       switch (arg->runtime_type) {
@@ -1330,6 +1326,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, stack_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->var_id);
+          SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->var_id);
+          SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
+
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE:
@@ -1357,21 +1360,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         }
       }
       stack_index += type_width;
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  }
-  
-  // If arg is object, increment reference count
-  {
-    for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
-      if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, " != NULL) { SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, "); }\n");
-      }
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
