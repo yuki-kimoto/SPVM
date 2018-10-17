@@ -1715,7 +1715,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->op_package = op_package;
   
   // Add package
-  package->id = compiler->packages->length;
   SPVM_LIST_push(compiler->packages, package);
   SPVM_HASH_insert(compiler->package_symtable, package_name, strlen(package_name), package);
 

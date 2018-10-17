@@ -3460,8 +3460,28 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
+int32_t SPVM_OP_CHECKER_compare_package_names(const void *a, const void *b) {
+  
+  SPVM_PACKAGE* package1 = *(SPVM_PACKAGE**)a;
+  SPVM_PACKAGE* package2 = *(SPVM_PACKAGE**)b;
+  
+  return strcmp(package1->name, package2->name);
+}
+
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
   int32_t package_index;
+  
+  /*
+  // Reorder packages by package name
+  qsort(compiler->packages->values, compiler->packages->length, sizeof(void*), SPVM_OP_CHECKER_compare_package_names);
+  */
+  
+  // Set package id
+  for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    package->id = package_index;
+  }
+  
   for (package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     
