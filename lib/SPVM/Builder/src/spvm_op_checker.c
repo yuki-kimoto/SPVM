@@ -2881,6 +2881,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
             // Resolve my runtime type and width
             int32_t type_width;
+            int32_t data_width;
             int32_t runtime_type;
             for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
               SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
@@ -2888,6 +2889,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               
               if (SPVM_TYPE_is_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
                 type_width = 1;
+                data_width = 1;
                 switch (my_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_BYTE;
@@ -2929,7 +2931,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                 assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
 
-                type_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+                type_width = value_package->fields->length;
+                data_width = value_package->fields->length;
                 switch (field_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE;
@@ -2962,32 +2965,44 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               else if (SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
                 type_width = 1;
+                data_width = 1;
                 runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT;
               }
               else if (SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-                type_width = 1;
                 switch (my_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_INT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                    type_width = 1;
+                    data_width = 1;
                     runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE;
                     break;
                   }
@@ -3000,6 +3015,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                     assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+
+                    type_width = 1;
+                    data_width = value_package->fields->length;
 
                     switch (field_type->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -3040,6 +3058,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               
               my->runtime_type = runtime_type;
               my->type_width = type_width;
+              my->data_width = data_width;
             }
           }
 
