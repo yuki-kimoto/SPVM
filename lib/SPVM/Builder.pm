@@ -47,6 +47,17 @@ sub new {
   return $self;
 }
 
+sub get_sub_names {
+  my ($self, $package_name) = @_;
+  
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  my @sub_names = keys %$subs;
+  
+  return \@sub_names;
+}
+
 sub get_package_names {
   my ($self) = @_;
   
@@ -181,7 +192,7 @@ sub bind_to_perl {
   my $package_names = $self->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $sub_names = $self->info->get_sub_names($package_name);
+    my $sub_names = $self->get_sub_names($package_name);
     
     for my $sub_name (@$sub_names) {
       my $sub_abs_name = "${package_name}::$sub_name";

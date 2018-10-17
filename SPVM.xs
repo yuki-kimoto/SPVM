@@ -213,51 +213,6 @@ get_subs(...)
   XSRETURN(1);
 }
 
-SV*
-get_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-
-  SV* sv_package_name = ST(1);
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  {
-    int32_t sub_index;
-    for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
-      
-      SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
-      
-      // Subroutine name
-      const char* sub_name = runtime->symbols[sub->name_id];
-      SV* sv_sub_name = sv_2mortal(newSVpvn(sub_name, strlen(sub_name)));
-      
-      av_push(av_sub_names, SvREFCNT_inc((SV*)sv_sub_name));
-    }
-  }
-  
-  SV* sv_subs = sv_2mortal(newRV_inc((SV*)av_sub_names));
-  
-  XPUSHs(sv_subs);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
@@ -364,16 +319,16 @@ compile_spvm(...)
 
       // Create subs hash reference if not exists
       {
-        SV** sv_subs_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+        SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
         if (!sv_subs_ptr) {
           HV* hv_subs = (HV*)sv_2mortal((SV*)newHV());
           SV* sv_subs = sv_2mortal(newRV_inc((SV*)hv_subs));
-          (void)hv_store(hv_packages, "subs", strlen("subs"), SvREFCNT_inc(sv_subs), 0);
+          (void)hv_store(hv_package_info, "subs", strlen("subs"), SvREFCNT_inc(sv_subs), 0);
         }
       }
 
       // Subroutines
-      SV** sv_subs_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+      SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
       SV* sv_subs = sv_subs_ptr ? *sv_subs_ptr : &PL_sv_undef;
       HV* hv_subs = (HV*)SvRV(sv_subs);
       
