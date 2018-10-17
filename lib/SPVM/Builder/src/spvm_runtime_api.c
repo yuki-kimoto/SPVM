@@ -194,9 +194,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
       SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
       
-      int32_t type_width;
+      int32_t type_width = arg->type_width;
       if (SPVM_RUNTIME_API_is_numeric_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        type_width = 1;
         switch (arg->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             byte_vars[arg->var_id] = *(SPVM_VALUE_byte*)&stack[stack_index];
@@ -229,7 +228,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
       }
       else if (SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        type_width = SPVM_RUNTIME_API_get_width(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
         switch (arg->value_field_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             for (int32_t field_index = 0; field_index < type_width; field_index++) {
@@ -273,11 +271,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
       }
       else if (SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        type_width = 1;
         object_vars[arg->var_id] = *(void**)&stack[stack_index];
       }
       else if (SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag)) {
-        type_width = 1;
         ref_vars[arg->var_id] = *(void**)&stack[stack_index];
       }
       else {
