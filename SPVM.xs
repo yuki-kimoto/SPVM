@@ -836,6 +836,7 @@ call_sub(...)
 
       SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[runtime_arg->basic_type_id];
       
+      int32_t type_width = runtime_arg->type_width;
       if (arg_type_is_numeric_type) {
         switch (arg_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
