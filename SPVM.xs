@@ -784,18 +784,18 @@ call_sub(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
-  SPVM_RUNTIME_PACKAGE* runtime_package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  if (runtime_package == NULL) {
+  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  if (package == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
-  SPVM_RUNTIME_SUB* runtime_sub = SPVM_HASH_fetch(runtime_package->sub_symtable, sub_name, strlen(sub_name));
-  if (runtime_sub == NULL) {
+  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  if (sub == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
-  const char* runtime_sub_signature = runtime->symbols[runtime_sub->signature_id];
-  int32_t runtime_sub_id = env->get_sub_id(env, package_name, runtime_sub_signature);
-  if (runtime_sub_id < 0) {
-    croak("Subroutine not found %s %s", package_name, runtime_sub_signature);
+  const char* sub_signature = runtime->symbols[sub->signature_id];
+  int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
+  if (sub_id < 0) {
+    croak("Subroutine not found %s %s", package_name, sub_signature);
   }
 
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
@@ -809,34 +809,34 @@ call_sub(...)
   int32_t args_contain_ref = 0;
   {
     // If class method, first argument is ignored
-    if (runtime_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
+    if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
       arg_start++;
     }
     
     int32_t arg_index;
     // Check argument count
-    if (items - arg_start != runtime_sub->arg_ids_length) {
+    if (items - arg_start != sub->arg_ids_length) {
       croak("Argument count is defferent");
     }
     
     int32_t arg_var_id = 0;
-    for (arg_index = 0; arg_index < runtime_sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
+    for (arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
+      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
 
-      int32_t arg_type_is_numeric_type = SPVM_RUNTIME_API_is_numeric_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-      int32_t arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      int32_t arg_type_is_numeric_type = SPVM_RUNTIME_API_is_numeric_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
 
       SV* sv_value = ST(arg_index + arg_start);
       
-      int32_t arg_basic_type_id = runtime_arg->basic_type_id;
-      int32_t arg_type_dimension = runtime_arg->type_dimension;
-      int32_t arg_type_flag = runtime_arg->type_flag;
+      int32_t arg_basic_type_id = arg->basic_type_id;
+      int32_t arg_type_dimension = arg->type_dimension;
+      int32_t arg_type_flag = arg->type_flag;
 
-      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[runtime_arg->basic_type_id];
+      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
       
-      int32_t type_width = runtime_arg->type_width;
+      int32_t type_width = arg->type_width;
       if (arg_type_is_numeric_type) {
         switch (arg_basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
@@ -1083,9 +1083,9 @@ call_sub(...)
   }
   
   // Return type id
-  int32_t sub_return_basic_type_id = runtime_sub->return_basic_type_id;
-  int32_t sub_return_type_dimension = runtime_sub->return_type_dimension;
-  int32_t sub_return_type_flag = runtime_sub->return_type_flag;
+  int32_t sub_return_basic_type_id = sub->return_basic_type_id;
+  int32_t sub_return_type_dimension = sub->return_type_dimension;
+  int32_t sub_return_type_flag = sub->return_type_flag;
 
   int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
   int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
@@ -1094,7 +1094,7 @@ call_sub(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
   if (sub_return_type_is_value_type) {
-    excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+    excetpion_flag = env->call_sub(env, sub_id, stack);
     
     SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub_return_basic_type_id];
 
@@ -1144,7 +1144,7 @@ call_sub(...)
     }
   }
   else if (sub_return_type_is_object_type) {
-    excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+    excetpion_flag = env->call_sub(env, sub_id, stack);
     if (!excetpion_flag) {
       void* return_value = stack[0].oval;
       sv_return_value = NULL;
@@ -1168,46 +1168,46 @@ call_sub(...)
   else {
     switch (sub_return_basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].bval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].sval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].ival));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSViv(stack[0].lval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
         }
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        excetpion_flag = env->call_sub(env, runtime_sub_id, stack);
+        excetpion_flag = env->call_sub(env, sub_id, stack);
         if (!excetpion_flag) {
           sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
         }
@@ -1220,26 +1220,26 @@ call_sub(...)
   
   if (args_contain_ref) {
     int32_t arg_var_id = 0;
-    for (int32_t arg_index = 0; arg_index < runtime_sub->arg_ids_length; arg_index++) {
+    for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
 
-      SPVM_RUNTIME_MY* runtime_arg = &runtime->args[runtime_sub->arg_ids_base + arg_index];
+      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
 
-      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-      int32_t arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+      int32_t arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
       
-      int32_t arg_basic_type_id = runtime_arg->basic_type_id;
-      int32_t arg_type_dimension = runtime_arg->type_dimension;
-      int32_t arg_type_flag = runtime_arg->type_flag;
+      int32_t arg_basic_type_id = arg->basic_type_id;
+      int32_t arg_type_dimension = arg->type_dimension;
+      int32_t arg_type_flag = arg->type_flag;
 
-      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[runtime_arg->basic_type_id];
+      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
 
       if (arg_type_is_ref_type) {
         int32_t ref_stack_id = ref_stack_ids[arg_index];
         
-        int32_t arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
-        int32_t arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, runtime_arg->basic_type_id, runtime_arg->type_dimension, runtime_arg->type_flag);
+        int32_t arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
+        int32_t arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);
