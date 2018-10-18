@@ -1160,17 +1160,17 @@ call_sub(...)
           }
         }
         else if (arg_type_is_value_ref_type) {
-          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-          assert(arg_package);
+          switch (arg->runtime_type) {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
             
-          if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
-            HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-            
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-            assert(first_field);
-            
-            switch (first_field->basic_type_id) {
-              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1186,9 +1186,27 @@ call_sub(...)
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   ((SPVM_VALUE_byte*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
+            }
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
+            
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1204,9 +1222,27 @@ call_sub(...)
                   int16_t value = (int16_t)SvIV(sv_field_value);
                   ((SPVM_VALUE_short*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              case SPVM_BASIC_TYPE_C_ID_INT: {
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
+            }
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
+            
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1222,9 +1258,27 @@ call_sub(...)
                   int32_t value = (int32_t)SvIV(sv_field_value);
                   ((SPVM_VALUE_int*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              case SPVM_BASIC_TYPE_C_ID_LONG: {
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
+            }
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
+            
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1240,9 +1294,27 @@ call_sub(...)
                   int64_t value = (int64_t)SvIV(sv_field_value);
                   ((SPVM_VALUE_long*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
+            }
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
+            
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1258,9 +1330,27 @@ call_sub(...)
                   float value = (float)SvNV(sv_field_value);
                   ((SPVM_VALUE_float*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
+            }
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
+              if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+                
+                SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+                assert(arg_package);
+            
+                SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+                assert(first_field);
+                
                 for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                   SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                   const char* field_name = runtime->symbols[field->name_id];
@@ -1276,21 +1366,21 @@ call_sub(...)
                   double value = (double)SvNV(sv_field_value);
                   ((SPVM_VALUE_double*)&ref_stack[ref_stack_top])[field_index] = value;
                 }
-                break;
+                stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+                ref_stack_ids[arg_index] = ref_stack_top;
+                int32_t fields_length = arg_package->fields->length;
+                ref_stack_top += fields_length;
+                arg_var_id++;
               }
-              default:
-                assert(0);
+              else {
+                croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+              }
+              break;
             }
-          }
-          else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            default:
+              assert(0);
           }
 
-          stack[arg_var_id].oval = &ref_stack[ref_stack_top];
-          ref_stack_ids[arg_index] = ref_stack_top;
-          int32_t fields_length = arg_package->fields->length;
-          ref_stack_top += fields_length;
-          arg_var_id++;
         }
         else {
           assert(0);
