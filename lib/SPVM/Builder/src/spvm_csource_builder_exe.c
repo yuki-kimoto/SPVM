@@ -505,9 +505,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".var_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->var_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".value_field_basic_type_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->value_field_basic_type_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->runtime_type);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -538,9 +535,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".var_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->var_id);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".value_field_basic_type_id = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->value_field_basic_type_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_my->runtime_type);

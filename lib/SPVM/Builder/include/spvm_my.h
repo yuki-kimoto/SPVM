@@ -10,7 +10,6 @@ struct SPVM_my {
   uint16_t index;
   uint16_t var_id;
   uint8_t runtime_type;
-  uint8_t value_field_basic_type_id;
   uint8_t type_width;
   uint8_t data_width;
   uint8_t is_tmp;
