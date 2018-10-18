@@ -842,37 +842,42 @@ call_sub(...)
           case SPVM_BASIC_TYPE_C_ID_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
             stack[arg_var_id].bval = value;
+            arg_var_id++;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
             stack[arg_var_id].sval = value;
+            arg_var_id++;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
             stack[arg_var_id].ival = value;
+            arg_var_id++;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
             stack[arg_var_id].lval = value;
+            arg_var_id++;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
             float value = (float)SvNV(sv_value);
             stack[arg_var_id].fval = value;
+            arg_var_id++;
             break;
           }
           case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
             double value = (double)SvNV(sv_value);
             stack[arg_var_id].dval = value;
+            arg_var_id++;
             break;
           }
           default:
             assert(0);
         }
-        arg_var_id += type_width;
       }
       else if (arg_type_is_value_type) {
         if (sv_derived_from(sv_value, "HASH")) {
