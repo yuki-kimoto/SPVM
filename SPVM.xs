@@ -1094,14 +1094,14 @@ call_sub(...)
         arg_var_id++;
       }
       else if (arg_type_is_ref_type) {
-        args_contain_ref = 1;
         int32_t arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg_basic_type_id, arg_type_dimension, arg_type_flag);
         int32_t arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg_basic_type_id, arg_type_dimension, arg_type_flag);
         
         if (arg_type_is_numeric_ref_type) {
-          SV* sv_value_deref = SvRV(sv_value);
           switch (arg->runtime_type) {
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               int8_t value = (int8_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].bval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1111,6 +1111,8 @@ call_sub(...)
               break;
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               int16_t value = (int16_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].sval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1120,6 +1122,8 @@ call_sub(...)
               break;
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               int32_t value = (int32_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].ival = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1129,6 +1133,8 @@ call_sub(...)
               break;
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               int64_t value = (int64_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].lval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1138,6 +1144,8 @@ call_sub(...)
               break;
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               float value = (float)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].fval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1147,6 +1155,8 @@ call_sub(...)
               break;
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
+              args_contain_ref = 1;
+              SV* sv_value_deref = SvRV(sv_value);
               double value = (double)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].dval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1163,6 +1173,7 @@ call_sub(...)
           switch (arg->runtime_type) {
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1199,6 +1210,7 @@ call_sub(...)
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1235,6 +1247,7 @@ call_sub(...)
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1271,6 +1284,7 @@ call_sub(...)
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1307,6 +1321,7 @@ call_sub(...)
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -1343,6 +1358,7 @@ call_sub(...)
             }
             case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
               if (sv_derived_from(sv_value, "REF") && sv_derived_from(SvRV(sv_value), "HASH")) {
+                args_contain_ref = 1;
                 HV* hv_value = (HV*)SvRV(SvRV(sv_value));
                 
                 SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
