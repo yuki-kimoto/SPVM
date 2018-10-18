@@ -344,6 +344,7 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
   new_portable_arg->var_id = arg->var_id;
   new_portable_arg->runtime_type = arg->runtime_type;
   new_portable_arg->type_width = arg->type_width;
+  new_portable_arg->data_width = arg->data_width;
 
   portable->args_length++;
 }
@@ -364,6 +365,8 @@ void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
   new_portable_my->type_dimension = my->type->dimension;
   new_portable_my->type_flag = my->type->flag;
   new_portable_my->var_id = my->var_id;
+  new_portable_my->type_width = my->type_width;
+  new_portable_my->data_width = my->data_width;
   
   portable->mys_length++;
 }
