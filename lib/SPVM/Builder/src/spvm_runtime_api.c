@@ -194,67 +194,78 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
       SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
       
-      int32_t type_width = arg->type_width;
-      
+      int32_t data_width = arg->data_width;
       switch (arg->runtime_type) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
           byte_vars[arg->var_id] = *(SPVM_VALUE_byte*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
           short_vars[arg->var_id] = *(SPVM_VALUE_short*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
           int_vars[arg->var_id] = *(SPVM_VALUE_int*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
           long_vars[arg->var_id] = *(SPVM_VALUE_long*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
           float_vars[arg->var_id] = *(SPVM_VALUE_float*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
           double_vars[arg->var_id] = *(SPVM_VALUE_double*)&stack[stack_index];
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             byte_vars[arg->var_id + field_index] = *(SPVM_VALUE_byte*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             short_vars[arg->var_id + field_index] = *(SPVM_VALUE_short*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             int_vars[arg->var_id + field_index] = *(SPVM_VALUE_int*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             long_vars[arg->var_id + field_index] = *(SPVM_VALUE_long*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             float_vars[arg->var_id + field_index] = *(SPVM_VALUE_float*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE: {
-          for (int32_t field_index = 0; field_index < type_width; field_index++) {
+          for (int32_t field_index = 0; field_index < data_width; field_index++) {
             double_vars[arg->var_id + field_index] = *(SPVM_VALUE_double*)&stack[stack_index + field_index];
           }
+          stack_index += data_width;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
@@ -265,6 +276,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           if (object != NULL) {
             SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);
           }
+          stack_index++;
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE:
@@ -281,13 +293,12 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE:
         {
           ref_vars[arg->var_id] = *(void**)&stack[stack_index];
+          stack_index++;
           break;
         }
         default:
           assert(0);
       }
-
-      stack_index += type_width;
     }
   }
   
