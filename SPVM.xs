@@ -838,38 +838,38 @@ call_sub(...)
       
       int32_t type_width = arg->type_width;
       if (arg_type_is_numeric_type) {
-        switch (arg_basic_type_id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE : {
+        switch (arg->runtime_type) {
+          case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
             int8_t value = (int8_t)SvIV(sv_value);
             stack[arg_var_id].bval = value;
             arg_var_id++;
             break;
           }
-          case  SPVM_BASIC_TYPE_C_ID_SHORT : {
+          case SPVM_TYPE_C_RUNTIME_TYPE_SHORT : {
             int16_t value = (int16_t)SvIV(sv_value);
             stack[arg_var_id].sval = value;
             arg_var_id++;
             break;
           }
-          case  SPVM_BASIC_TYPE_C_ID_INT : {
+          case SPVM_TYPE_C_RUNTIME_TYPE_INT : {
             int32_t value = (int32_t)SvIV(sv_value);
             stack[arg_var_id].ival = value;
             arg_var_id++;
             break;
           }
-          case  SPVM_BASIC_TYPE_C_ID_LONG : {
+          case SPVM_TYPE_C_RUNTIME_TYPE_LONG : {
             int64_t value = (int64_t)SvIV(sv_value);
             stack[arg_var_id].lval = value;
             arg_var_id++;
             break;
           }
-          case  SPVM_BASIC_TYPE_C_ID_FLOAT : {
+          case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT : {
             float value = (float)SvNV(sv_value);
             stack[arg_var_id].fval = value;
             arg_var_id++;
             break;
           }
-          case  SPVM_BASIC_TYPE_C_ID_DOUBLE : {
+          case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE : {
             double value = (double)SvNV(sv_value);
             stack[arg_var_id].dval = value;
             arg_var_id++;
@@ -1100,8 +1100,8 @@ call_sub(...)
         
         if (arg_type_is_numeric_ref_type) {
           SV* sv_value_deref = SvRV(sv_value);
-          switch (arg_basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          switch (arg->runtime_type) {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
               int8_t value = (int8_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].bval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1110,7 +1110,7 @@ call_sub(...)
               arg_var_id++;
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
               int16_t value = (int16_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].sval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1119,7 +1119,7 @@ call_sub(...)
               arg_var_id++;
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
               int32_t value = (int32_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].ival = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1128,7 +1128,7 @@ call_sub(...)
               arg_var_id++;
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
               int64_t value = (int64_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].lval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1137,7 +1137,7 @@ call_sub(...)
               arg_var_id++;
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
               float value = (float)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].fval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
@@ -1146,7 +1146,7 @@ call_sub(...)
               arg_var_id++;
               break;
             }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
               double value = (double)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].dval = value;
               stack[arg_var_id].oval = &ref_stack[ref_stack_top];
