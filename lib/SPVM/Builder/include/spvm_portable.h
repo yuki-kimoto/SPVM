@@ -32,10 +32,6 @@ struct SPVM_portable {
   int32_t args_length;
   SPVM_RUNTIME_MY* args;
 
-  int32_t mys_capacity;
-  int32_t mys_length;
-  SPVM_RUNTIME_MY* mys;
-
   int32_t info_package_var_ids_capacity;
   int32_t info_package_var_ids_length;
   int32_t* info_package_var_ids;

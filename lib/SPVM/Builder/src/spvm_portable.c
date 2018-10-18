@@ -51,7 +51,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   portable->fields_capacity = 8;
   portable->package_vars_capacity = 8;
   portable->args_capacity = 8;
-  portable->mys_capacity = 8;
   portable->info_package_var_ids_capacity = 8;
   portable->info_field_ids_capacity = 8;
   portable->info_sub_ids_capacity = 8;
@@ -140,8 +139,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub->info_string_values_base = portable->info_string_values_length;
   new_portable_sub->info_string_values_length = sub->info_string_constants->length;
   new_portable_sub->opcodes_length = sub->opcodes_length;
-  new_portable_sub->my_ids_base = portable->mys_length;
-  new_portable_sub->my_ids_length = sub->mys->length;
   new_portable_sub->call_type_id = sub->call_type_id;
   new_portable_sub->byte_vars_alloc_length = sub->byte_vars_alloc_length;
   new_portable_sub->short_vars_alloc_length = sub->short_vars_alloc_length;
@@ -156,11 +153,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
     SPVM_PORTABLE_push_arg(portable, my);
   }
-  for (int32_t my_id = 0; my_id < sub->mys->length; my_id++) {
-    SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_id);
-    SPVM_PORTABLE_push_my(portable, my);
-  }
-  
 
   for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < sub->info_package_var_ids->length; info_package_var_ids_index++) {
     int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(sub->info_package_var_ids, info_package_var_ids_index);
@@ -249,9 +241,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Portable args
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->args_capacity);
-
-  // Portable args
-  portable->mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->mys_capacity);
 
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
@@ -346,27 +335,6 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
   new_portable_arg->type_width = arg->type_width;
 
   portable->args_length++;
-}
-
-void SPVM_PORTABLE_push_my(SPVM_PORTABLE* portable, SPVM_MY* my) {
-  
-  if (portable->mys_length >= portable->mys_capacity) {
-    int32_t new_portable_mys_capacity = portable->mys_capacity * 2;
-    SPVM_RUNTIME_MY* new_portable_mys = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * new_portable_mys_capacity);
-    memcpy(new_portable_mys, portable->mys, sizeof(SPVM_RUNTIME_MY) * portable->mys_length);
-    free(portable->mys);
-    portable->mys = new_portable_mys;
-    portable->mys_capacity = new_portable_mys_capacity;
-  }
-  
-  SPVM_RUNTIME_MY* new_portable_my = &portable->mys[portable->mys_length];
-  new_portable_my->basic_type_id = my->type->basic_type->id;
-  new_portable_my->type_dimension = my->type->dimension;
-  new_portable_my->type_flag = my->type->flag;
-  new_portable_my->var_id = my->var_id;
-  new_portable_my->type_width = my->type_width;
-  
-  portable->mys_length++;
 }
 
 void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type) {
@@ -638,9 +606,6 @@ void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
 
     free(portable->subs);
     portable->subs = NULL;
-
-    free(portable->mys);
-    portable->mys = NULL;
 
     free(portable->info_package_var_ids);
     portable->info_package_var_ids = NULL;

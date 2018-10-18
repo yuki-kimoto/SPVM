@@ -23,7 +23,6 @@ struct SPVM_runtime_sub {
   int32_t info_double_values_base;
   int32_t info_string_values_base;
   int32_t opcodes_length;
-  int32_t my_ids_base;
   uint16_t return_type_flag;
   uint16_t flag;
   uint16_t mortal_stack_length;
@@ -36,7 +35,6 @@ struct SPVM_runtime_sub {
   uint16_t info_long_values_length;
   uint16_t info_double_values_length;
   uint16_t info_string_values_length;
-  uint16_t my_ids_length;
   uint16_t byte_vars_alloc_length;
   uint16_t short_vars_alloc_length;
   uint16_t int_vars_alloc_length;
