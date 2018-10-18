@@ -11,7 +11,6 @@ struct SPVM_my {
   uint16_t var_id;
   uint8_t runtime_type;
   uint8_t type_width;
-  uint8_t data_width;
   uint8_t is_tmp;
 };
 
