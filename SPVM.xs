@@ -1540,159 +1540,131 @@ call_sub(...)
   }
   
   if (args_contain_ref) {
-    int32_t arg_var_id = 0;
     for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
-
-      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
-
-      int32_t arg_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-      int32_t arg_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-      int32_t arg_type_is_ref_type = SPVM_RUNTIME_API_is_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
       
-      int32_t arg_basic_type_id = arg->basic_type_id;
-      int32_t arg_type_dimension = arg->type_dimension;
-      int32_t arg_type_flag = arg->type_flag;
-
-      SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
-
-      if (arg_type_is_ref_type) {
-        int32_t ref_stack_id = ref_stack_ids[arg_index];
-        
-        int32_t arg_type_is_numeric_ref_type = SPVM_RUNTIME_API_is_numeric_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-        int32_t arg_type_is_value_ref_type = SPVM_RUNTIME_API_is_value_ref_type(env, arg->basic_type_id, arg->type_dimension, arg->type_flag);
-        
-        if (arg_type_is_numeric_ref_type) {
-          switch (arg->runtime_type) {
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].sval);
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].ival);
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setiv(sv_value_deref, ref_stack[ref_stack_id].lval);
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setnv(sv_value_deref, ref_stack[ref_stack_id].fval);
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE : {
-              SV* sv_value_deref = SvRV(sv_value);
-              sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
-              break;
-            }
-          }
+      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
+      int32_t ref_stack_id = ref_stack_ids[arg_index];
+      switch (arg->runtime_type) {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
+          break;
         }
-        else if (arg_type_is_value_ref_type) {
-          int32_t ref_stack_id = ref_stack_ids[arg_index];
-          
-          switch (arg->runtime_type) {
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-          
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_byte*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_short*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_int*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_long*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_float*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
-              HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-              assert(arg_package);
-              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-              assert(arg_first_field);
-              for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
-                SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
-                const char* field_name = runtime->symbols[field->name_id];
-                SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_double*)&ref_stack[ref_stack_id])[field_index]));
-                (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-              }
-              break;
-            }
-            default:
-              assert(0);
-          }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].sval);
+          break;
         }
-        else {
-          assert(0);
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].ival);
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].lval);
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setnv(sv_value_deref, ref_stack[ref_stack_id].fval);
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE : {
+          SV* sv_value_deref = SvRV(sv_value);
+          sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_byte*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_short*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_int*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_long*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_float*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
+          SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
+          HV* hv_value = (HV*)SvRV(SvRV(sv_value));
+          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+          assert(arg_package);
+          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          assert(arg_first_field);
+          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
+            const char* field_name = runtime->symbols[field->name_id];
+            SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_double*)&ref_stack[ref_stack_id])[field_index]));
+            (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+          }
+          break;
         }
       }
     }
