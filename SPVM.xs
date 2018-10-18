@@ -880,17 +880,17 @@ call_sub(...)
         }
       }
       else if (arg_type_is_value_type) {
-        if (sv_derived_from(sv_value, "HASH")) {
-          HV* hv_value = (HV*)SvRV(sv_value);
+        switch (arg->runtime_type) {
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
 
-          SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
-          assert(arg_package);
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
 
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
-          assert(arg_first_field);
-          
-          switch (arg_first_field->basic_type_id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
+              
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -907,9 +907,22 @@ call_sub(...)
                 stack[arg_var_id + field_index].bval = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
+          }
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
+
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
+
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
+              
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -926,9 +939,21 @@ call_sub(...)
                 stack[arg_var_id + field_index].sval = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
+          }
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
+
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
+
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -945,9 +970,21 @@ call_sub(...)
                 stack[arg_var_id + field_index].ival = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
+          }
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
+
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
+
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -964,9 +1001,21 @@ call_sub(...)
                 stack[arg_var_id + field_index].lval = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
+          }
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
+
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
+
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -983,9 +1032,21 @@ call_sub(...)
                 stack[arg_var_id + field_index].fval = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
+          }
+          case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE: {
+            if (sv_derived_from(sv_value, "HASH")) {
+              HV* hv_value = (HV*)SvRV(sv_value);
+
+              SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
+              assert(arg_package);
+
+              SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+              assert(arg_first_field);
               for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
                 SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
                 const char* field_name = runtime->symbols[field->name_id];
@@ -1002,14 +1063,14 @@ call_sub(...)
                 stack[arg_var_id + field_index].dval = value;
               }
               arg_var_id += arg_package->fields->length;
-              break;
             }
-            default:
-              assert(0);
+            else {
+              croak("%dth argument must be hash reference", arg_index + 1);
+            }
+            break;
           }
-        }
-        else {
-          croak("%dth argument must be hash reference", arg_index + 1);
+          default:
+            assert(0);
         }
       }
       else if (arg_type_is_object_type) {
@@ -1043,42 +1104,60 @@ call_sub(...)
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               int8_t value = (int8_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].bval = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_SHORT: {
               int16_t value = (int16_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].sval = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_INT: {
               int32_t value = (int32_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].ival = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_LONG: {
               int64_t value = (int64_t)SvIV(sv_value_deref);
               ref_stack[ref_stack_top].lval = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_FLOAT: {
               float value = (float)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].fval = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
               double value = (double)SvNV(sv_value_deref);
               ref_stack[ref_stack_top].dval = value;
+              stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+              ref_stack_ids[arg_index] = ref_stack_top;
+              ref_stack_top++;
+              arg_var_id++;
               break;
             }
             default:
               assert(0);
           }
-
-          stack[arg_var_id].oval = &ref_stack[ref_stack_top];
-          ref_stack_ids[arg_index] = ref_stack_top;
-
-          ref_stack_top++;
-          arg_var_id++;
         }
         else if (arg_type_is_value_ref_type) {
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
