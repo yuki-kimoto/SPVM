@@ -259,8 +259,8 @@ compile_spvm(...)
       SV* sv_subs = sv_subs_ptr ? *sv_subs_ptr : &PL_sv_undef;
       HV* hv_subs = (HV*)SvRV(sv_subs);
       
-      for (int32_t sub_id = 0; sub_id < package->subs->length; sub_id++) {
-        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_id);
+      for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
+        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
         const char* sub_name = sub->name;
         SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
 

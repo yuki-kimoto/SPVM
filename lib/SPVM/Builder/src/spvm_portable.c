@@ -224,8 +224,8 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   int32_t info_sub_ids_total_length = 0;
   int32_t info_string_values_total_length = 0;
   int32_t info_string_lengths_total_length = 0;
-  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
     args_total_length += sub->args->length;
     info_types_total_length += sub->info_types->length;
     info_long_values_total_length += sub->info_long_constants->length;
@@ -275,7 +275,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
-  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
+  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     SPVM_PORTABLE_push_sub(portable, sub);
   }
