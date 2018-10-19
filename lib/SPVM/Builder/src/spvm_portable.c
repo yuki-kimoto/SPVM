@@ -231,16 +231,30 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Culcrate info length
   int32_t args_total_length = 0;
+  int32_t info_types_total_length = 0;
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     args_total_length += sub->args->length;
+    info_types_total_length += sub->info_types->length;
   }
   
   // Portable args
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * args_total_length);
 
   // Portable info_types
-  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
+  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * info_types_total_length);
+
+  // Portable long values
+  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_long_values_capacity);
+
+  // Portable double values
+  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * portable->info_double_values_capacity);
+
+  // OPCode
+  int32_t opcode_length = compiler->opcode_array->length;
+  portable->opcodes_length = opcode_length;
+  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
+  memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
 
   // Portable info package var ids
   portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_capacity);
@@ -254,17 +268,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Portable switch info
   portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
 
-  // Portable long values
-  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_long_values_capacity);
-
-  // Portable double values
-  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * portable->info_double_values_capacity);
-
   // Portable string values
   portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->info_string_values_capacity);
 
   portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
-  
+
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
@@ -278,12 +286,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
   }
-  
-  // OPCode
-  int32_t opcode_length = compiler->opcode_array->length;
-  portable->opcodes_length = opcode_length;
-  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
-  memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
   
   return portable;
 }
@@ -327,15 +329,6 @@ void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
 
 void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type) {
 
-  if (portable->info_types_length >= portable->info_types_capacity) {
-    int32_t new_portable_info_types_capacity = portable->info_types_capacity * 2;
-    SPVM_RUNTIME_INFO_TYPE* new_portable_info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * new_portable_info_types_capacity);
-    memcpy(new_portable_info_types, portable->info_types, sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_length);
-    free(portable->info_types);
-    portable->info_types = new_portable_info_types;
-    portable->info_types_capacity = new_portable_info_types_capacity;
-  }
-  
   SPVM_RUNTIME_INFO_TYPE* new_portable_info_type = &portable->info_types[portable->info_types_length];
   new_portable_info_type->basic_type_id = info_type->basic_type->id;
   new_portable_info_type->dimension = info_type->dimension;
