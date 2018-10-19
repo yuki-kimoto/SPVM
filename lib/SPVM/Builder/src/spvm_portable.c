@@ -232,10 +232,24 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Culcrate info length
   int32_t args_total_length = 0;
   int32_t info_types_total_length = 0;
+  int32_t info_long_values_total_length = 0;
+  int32_t info_double_values_total_length = 0;
+  int32_t info_package_var_ids_total_length = 0;
+  int32_t info_field_ids_total_length = 0;
+  int32_t info_sub_ids_total_length = 0;
+  int32_t info_string_values_total_length = 0;
+  int32_t info_string_lengths_total_length = 0;
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     args_total_length += sub->args->length;
     info_types_total_length += sub->info_types->length;
+    info_long_values_total_length += sub->info_long_constants->length;
+    info_double_values_total_length += sub->info_double_constants->length;
+    info_package_var_ids_total_length += sub->info_package_var_ids->length;
+    info_field_ids_total_length += sub->info_field_ids->length;
+    info_sub_ids_total_length += sub->info_sub_ids->length;
+    info_string_values_total_length += sub->info_string_constants->length;
+    info_string_lengths_total_length += sub->info_string_constants->length;
   }
   
   // Portable args
