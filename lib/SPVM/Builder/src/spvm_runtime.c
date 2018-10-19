@@ -46,7 +46,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_double_array_elements,
     SPVM_RUNTIME_API_get_object_array_element,
     SPVM_RUNTIME_API_set_object_array_element,
-    SPVM_RUNTIME_API_get_field_index,
+    SPVM_RUNTIME_API_get_field_id,
     SPVM_RUNTIME_API_get_byte_field,
     SPVM_RUNTIME_API_get_short_field,
     SPVM_RUNTIME_API_get_int_field,

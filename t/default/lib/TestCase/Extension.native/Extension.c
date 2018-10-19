@@ -23,7 +23,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_byte_field(SPVM_ENV* env, SP
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(byte)byte_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(byte)byte_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -39,7 +39,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_short_field(SPVM_ENV* env, S
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(short)short_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(short)short_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -55,7 +55,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_int_field(SPVM_ENV* env, SPV
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(int)int_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(int)int_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -71,7 +71,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_long_field(SPVM_ENV* env, SP
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(long)long_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(long)long_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -87,7 +87,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_float_field(SPVM_ENV* env, S
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(float)float_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(float)float_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -103,7 +103,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_double_field(SPVM_ENV* env, 
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(double)double_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(double)double_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -119,7 +119,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_object_field(SPVM_ENV* env, 
   
   void* object_simple = stack[0].oval;
   
-  int32_t field_index_object_simple_object_value = env->get_field_index(env, "TestCase::Simple", "(TestCase::Minimal)object_value");
+  int32_t field_index_object_simple_object_value = env->get_field_id(env, "TestCase::Simple", "(TestCase::Minimal)object_value");
   if (field_index_object_simple_object_value < 0) {
     return SPVM_EXCEPTION;
   }
@@ -130,7 +130,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_object_field(SPVM_ENV* env, 
   }
   void* object_minimal = env->new_object(env, basic_type_id);
   
-  int32_t field_index_minimal_x = env->get_field_index(env, "TestCase::Minimal", "(int)x");
+  int32_t field_index_minimal_x = env->get_field_id(env, "TestCase::Minimal", "(int)x");
   if (field_index_minimal_x < 0) {
     return SPVM_EXCEPTION;
   }
@@ -147,7 +147,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_byte_field(SPVM_ENV* env, SP
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(byte)byte_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(byte)byte_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -170,7 +170,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_short_field(SPVM_ENV* env, S
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(short)short_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(short)short_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -193,7 +193,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_int_field(SPVM_ENV* env, SPV
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(int)int_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(int)int_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -216,7 +216,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_long_field(SPVM_ENV* env, SP
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(long)long_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(long)long_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -239,7 +239,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_float_field(SPVM_ENV* env, S
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(float)float_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(float)float_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -262,7 +262,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_double_field(SPVM_ENV* env, 
 
   void* object = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, "TestCase::Simple", "(double)double_value");
+  int32_t field_index = env->get_field_id(env, "TestCase::Simple", "(double)double_value");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -285,14 +285,14 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_object_field(SPVM_ENV* env, 
   
   void* object_simple = stack[0].oval;
   
-  int32_t field_index_object_simple_object_value = env->get_field_index(env, "TestCase::Simple", "(TestCase::Minimal)object_value");
+  int32_t field_index_object_simple_object_value = env->get_field_id(env, "TestCase::Simple", "(TestCase::Minimal)object_value");
   if (field_index_object_simple_object_value < 0) {
     return SPVM_EXCEPTION;
   }
   
   void* object_minimal = env->get_object_field(env, object_simple, field_index_object_simple_object_value);
   
-  int32_t field_index_minimal_x = env->get_field_index(env, "TestCase::Minimal", "(int)x");
+  int32_t field_index_minimal_x = env->get_field_id(env, "TestCase::Minimal", "(int)x");
   if (field_index_minimal_x < 0) {
     return SPVM_EXCEPTION;
   }
@@ -330,7 +330,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_byte_field(SPVM_ENV* env
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(byte)x_byte");
+  int32_t field_index = env->get_field_id(env, test_case, "(byte)x_byte");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -348,7 +348,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_short_field(SPVM_ENV* en
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(short)x_short");
+  int32_t field_index = env->get_field_id(env, test_case, "(short)x_short");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -366,7 +366,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_int_field(SPVM_ENV* env,
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(int)x_int");
+  int32_t field_index = env->get_field_id(env, test_case, "(int)x_int");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -384,7 +384,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_long_field(SPVM_ENV* env
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(long)x_long");
+  int32_t field_index = env->get_field_id(env, test_case, "(long)x_long");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -402,7 +402,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_float_field(SPVM_ENV* en
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(float)x_float");
+  int32_t field_index = env->get_field_id(env, test_case, "(float)x_float");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -420,7 +420,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_double_field(SPVM_ENV* e
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(double)x_double");
+  int32_t field_index = env->get_field_id(env, test_case, "(double)x_double");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
@@ -438,7 +438,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_get_object_field(SPVM_ENV* e
   
   void* test_case = stack[0].oval;
   
-  int32_t field_index = env->get_field_index(env, test_case, "(TestCase::Minimal)minimal");
+  int32_t field_index = env->get_field_id(env, test_case, "(TestCase::Minimal)minimal");
   if (field_index < 0) {
     return SPVM_EXCEPTION;
   }
