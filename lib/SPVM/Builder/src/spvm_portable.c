@@ -260,14 +260,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
   
   // Portable subs
-  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * compiler->subs->length);
+  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     SPVM_PORTABLE_push_sub(portable, sub);
   }
   
   // Portable packages
-  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable->packages_capacity);
+  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->packages->length + 1));
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
@@ -560,15 +560,6 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
 }
 
 void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) {
-  
-  if (portable->packages_length >= portable->packages_capacity) {
-    int32_t new_portable_packages_capacity = portable->packages_capacity * 2;
-    SPVM_RUNTIME_PACKAGE* new_portable_packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * new_portable_packages_capacity);
-    memcpy(new_portable_packages, portable->packages, sizeof(SPVM_RUNTIME_PACKAGE) * portable->packages_length);
-    free(portable->packages);
-    portable->packages = new_portable_packages;
-    portable->packages_capacity = new_portable_packages_capacity;
-  }
   
   SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[portable->packages_length];
   
