@@ -228,10 +228,16 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     SPVM_PORTABLE_push_package_var(portable, package_var);
   }
-  
+
+  // Culcrate info length
+  int32_t args_total_length = 0;
+  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+    args_total_length += sub->args->length;
+  }
   
   // Portable args
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * portable->args_capacity);
+  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * args_total_length);
 
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * portable->info_types_capacity);
@@ -307,15 +313,6 @@ int32_t SPVM_PORTABLE_push_symbol(SPVM_PORTABLE* portable, const char* string) {
 }
 
 void SPVM_PORTABLE_push_arg(SPVM_PORTABLE* portable, SPVM_MY* arg) {
-  
-  if (portable->args_length >= portable->args_capacity) {
-    int32_t new_portable_args_capacity = portable->args_capacity * 2;
-    SPVM_RUNTIME_MY* new_portable_args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * new_portable_args_capacity);
-    memcpy(new_portable_args, portable->args, sizeof(SPVM_RUNTIME_MY) * portable->args_length);
-    free(portable->args);
-    portable->args = new_portable_args;
-    portable->args_capacity = new_portable_args_capacity;
-  }
   
   SPVM_RUNTIME_MY* new_portable_arg = &portable->args[portable->args_length];
   new_portable_arg->basic_type_id = arg->type->basic_type->id;
