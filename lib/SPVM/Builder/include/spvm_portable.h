@@ -5,9 +5,6 @@
 
 // Field information
 struct SPVM_portable {
-  int32_t* constant_pool;
-  int32_t constant_pool_length;
-  
   char** symbols;
   int32_t symbols_capacity;
   int32_t symbols_length;
