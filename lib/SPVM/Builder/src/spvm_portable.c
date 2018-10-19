@@ -216,14 +216,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->basic_types_length = compiler->basic_types->length;
   
   // Portable fields
-  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * portable->fields_capacity);
+  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_PORTABLE_push_field(portable, field);
   }
   
   // Portable package_vars
-  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable->package_vars_capacity);
+  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->package_vars->length + 1));
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     SPVM_PORTABLE_push_package_var(portable, package_var);
@@ -436,15 +436,6 @@ void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_IN
 
 void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   
-  if (portable->fields_length >= portable->fields_capacity) {
-    int32_t new_portable_fields_capacity = portable->fields_capacity * 2;
-    SPVM_RUNTIME_FIELD* new_portable_fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * new_portable_fields_capacity);
-    memcpy(new_portable_fields, portable->fields, sizeof(SPVM_RUNTIME_FIELD) * portable->fields_length);
-    free(portable->fields);
-    portable->fields = new_portable_fields;
-    portable->fields_capacity = new_portable_fields_capacity;
-  }
-  
   SPVM_RUNTIME_FIELD* new_portable_field = &portable->fields[portable->fields_length];
 
   new_portable_field->id = field->id;
@@ -471,15 +462,6 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
 }
 
 void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var) {
-  
-  if (portable->package_vars_length >= portable->package_vars_capacity) {
-    int32_t new_portable_package_vars_capacity = portable->package_vars_capacity * 2;
-    SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE_VAR) * new_portable_package_vars_capacity);
-    memcpy(new_portable_package_vars, portable->package_vars, sizeof(SPVM_RUNTIME_PACKAGE_VAR) * portable->package_vars_length);
-    free(portable->package_vars);
-    portable->package_vars = new_portable_package_vars;
-    portable->package_vars_capacity = new_portable_package_vars_capacity;
-  }
   
   SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_var = &portable->package_vars[portable->package_vars_length];
 
