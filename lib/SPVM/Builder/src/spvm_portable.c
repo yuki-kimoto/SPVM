@@ -276,7 +276,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
   for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
     SPVM_PORTABLE_push_sub(portable, sub);
   }
   

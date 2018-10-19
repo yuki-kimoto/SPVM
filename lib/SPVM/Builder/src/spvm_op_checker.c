@@ -167,7 +167,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   char tmp_buffer2[UINT16_MAX];
   
   // Check trees
-  int32_t sub_id = 0;
   {
     int32_t package_index;
     for (package_index = 0; package_index < compiler->packages->length; package_index++) {
@@ -180,10 +179,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
           SPVM_PACKAGE* package = sub->package;
           SPVM_TYPE* package_type = package->op_type->uv.type;
-          
-          // Set subroutine id
-          sub->id = sub_id++;
-          
           
           // Destructor must receive own package object
           if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
