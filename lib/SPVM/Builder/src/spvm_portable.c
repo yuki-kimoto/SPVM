@@ -253,16 +253,16 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable args
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * args_total_length);
+  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * (args_total_length + 1));
 
   // Portable info_types
-  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * info_types_total_length);
+  portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * (info_types_total_length + 1));
 
   // Portable long values
-  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable->info_long_values_capacity);
+  portable->info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (info_long_values_total_length + 1));
 
   // Portable double values
-  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * portable->info_double_values_capacity);
+  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * (info_double_values_total_length + 1));
 
   // OPCode
   int32_t opcode_length = compiler->opcode_array->length;
@@ -433,15 +433,6 @@ void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id
 
 void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_long_value) {
 
-  if (portable->info_long_values_length >= portable->info_long_values_capacity) {
-    int32_t new_portable_info_long_values_capacity = portable->info_long_values_capacity * 2;
-    int64_t* new_portable_info_long_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * new_portable_info_long_values_capacity);
-    memcpy(new_portable_info_long_values, portable->info_long_values, sizeof(int64_t) * portable->info_long_values_length);
-    free(portable->info_long_values);
-    portable->info_long_values = new_portable_info_long_values;
-    portable->info_long_values_capacity = new_portable_info_long_values_capacity;
-  }
-  
   portable->info_long_values[portable->info_long_values_length] = info_long_value;
 
   portable->info_long_values_length++;
@@ -449,15 +440,6 @@ void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_lo
 
 void SPVM_PORTABLE_push_info_double_value(SPVM_PORTABLE* portable, double info_double_value) {
 
-  if (portable->info_double_values_length >= portable->info_double_values_capacity) {
-    int32_t new_portable_info_double_values_capacity = portable->info_double_values_capacity * 2;
-    double* new_portable_info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * new_portable_info_double_values_capacity);
-    memcpy(new_portable_info_double_values, portable->info_double_values, sizeof(int64_t) * portable->info_double_values_length);
-    free(portable->info_double_values);
-    portable->info_double_values = new_portable_info_double_values;
-    portable->info_double_values_capacity = new_portable_info_double_values_capacity;
-  }
-  
   portable->info_double_values[portable->info_double_values_length] = info_double_value;
 
   portable->info_double_values_length++;
