@@ -271,21 +271,22 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
 
   // Portable info package var ids
-  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_package_var_ids_capacity);
+  portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_package_var_ids_total_length + 1));
 
   // Portable info field  ids
-  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_field_ids_capacity);
+  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_field_ids_total_length + 1));
 
   // Portable info sub ids
-  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_sub_ids_capacity);
+  portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_sub_ids_total_length + 1));
+
+  // Portable string values
+  portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * (info_string_values_total_length + 1));
+ 
+  // Portable string length
+  portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_string_lengths_total_length + 1));
 
   // Portable switch info
   portable->info_switch_info_ints = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_switch_info_ints_capacity);
-
-  // Portable string values
-  portable->info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->info_string_values_capacity);
-
-  portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
@@ -351,6 +352,59 @@ void SPVM_PORTABLE_push_info_type(SPVM_PORTABLE* portable, SPVM_TYPE* info_type)
   portable->info_types_length++;
 }
 
+void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id) {
+
+  int32_t* new_portable_info_package_var_id = (int32_t*)&portable->info_package_var_ids[portable->info_package_var_ids_length];
+  new_portable_info_package_var_id[0] = info_package_var_id;
+
+  portable->info_package_var_ids_length++;
+}
+
+void SPVM_PORTABLE_push_info_field_id(SPVM_PORTABLE* portable, int32_t info_field_id) {
+
+  int32_t* new_portable_info_field_id = (int32_t*)&portable->info_field_ids[portable->info_field_ids_length];
+  *new_portable_info_field_id = info_field_id;
+
+  portable->info_field_ids_length++;
+}
+
+void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id) {
+
+  int32_t* new_portable_info_sub_id = (int32_t*)&portable->info_sub_ids[portable->info_sub_ids_length];
+  *new_portable_info_sub_id = info_sub_id;
+
+  portable->info_sub_ids_length++;
+}
+
+void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_long_value) {
+
+  portable->info_long_values[portable->info_long_values_length] = info_long_value;
+
+  portable->info_long_values_length++;
+}
+
+void SPVM_PORTABLE_push_info_double_value(SPVM_PORTABLE* portable, double info_double_value) {
+
+  portable->info_double_values[portable->info_double_values_length] = info_double_value;
+
+  portable->info_double_values_length++;
+}
+
+void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* info_string_value, int32_t string_length) {
+
+  portable->info_string_values[portable->info_string_values_length] = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
+  memcpy(portable->info_string_values[portable->info_string_values_length], info_string_value, string_length);
+
+  portable->info_string_values_length++;
+}
+
+void SPVM_PORTABLE_push_info_string_length(SPVM_PORTABLE* portable, int32_t info_string_length) {
+
+  portable->info_string_lengths[portable->info_string_lengths_length] = info_string_length;
+
+  portable->info_string_lengths_length++;
+}
+
 void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_INFO* info_switch_info) {
   
   SPVM_LIST* case_infos = info_switch_info->cases_ordered;
@@ -378,104 +432,6 @@ void SPVM_PORTABLE_push_info_switch_info(SPVM_PORTABLE* portable, SPVM_SWITCH_IN
     portable->info_switch_info_ints_length += 2;
   }
   portable->info_switch_infos_length++;
-}
-
-void SPVM_PORTABLE_push_info_package_var_id(SPVM_PORTABLE* portable, int32_t info_package_var_id) {
-
-  if (portable->info_package_var_ids_length >= portable->info_package_var_ids_capacity) {
-    int32_t new_portable_info_package_var_ids_capacity = portable->info_package_var_ids_capacity * 2;
-    int32_t* new_portable_info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_package_var_ids_capacity);
-    memcpy(new_portable_info_package_var_ids, portable->info_package_var_ids, sizeof(int32_t) * portable->info_package_var_ids_length);
-    free(portable->info_package_var_ids);
-    portable->info_package_var_ids = new_portable_info_package_var_ids;
-    portable->info_package_var_ids_capacity = new_portable_info_package_var_ids_capacity;
-  }
-  
-  int32_t* new_portable_info_package_var_id = (int32_t*)&portable->info_package_var_ids[portable->info_package_var_ids_length];
-  new_portable_info_package_var_id[0] = info_package_var_id;
-
-  portable->info_package_var_ids_length++;
-}
-
-void SPVM_PORTABLE_push_info_field_id(SPVM_PORTABLE* portable, int32_t info_field_id) {
-
-  if (portable->info_field_ids_length >= portable->info_field_ids_capacity) {
-    int32_t new_portable_info_field_ids_capacity = portable->info_field_ids_capacity * 2;
-    int32_t* new_portable_info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_field_ids_capacity);
-    memcpy(new_portable_info_field_ids, portable->info_field_ids, sizeof(int32_t) * portable->info_field_ids_length);
-    free(portable->info_field_ids);
-    portable->info_field_ids = new_portable_info_field_ids;
-    portable->info_field_ids_capacity = new_portable_info_field_ids_capacity;
-  }
-  
-  int32_t* new_portable_info_field_id = (int32_t*)&portable->info_field_ids[portable->info_field_ids_length];
-  *new_portable_info_field_id = info_field_id;
-
-  portable->info_field_ids_length++;
-}
-
-void SPVM_PORTABLE_push_info_sub_id(SPVM_PORTABLE* portable, int32_t info_sub_id) {
-
-  if (portable->info_sub_ids_length >= portable->info_sub_ids_capacity) {
-    int32_t new_portable_info_sub_ids_capacity = portable->info_sub_ids_capacity * 2;
-    int32_t* new_portable_info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_sub_ids_capacity);
-    memcpy(new_portable_info_sub_ids, portable->info_sub_ids, sizeof(int32_t) * portable->info_sub_ids_length);
-    free(portable->info_sub_ids);
-    portable->info_sub_ids = new_portable_info_sub_ids;
-    portable->info_sub_ids_capacity = new_portable_info_sub_ids_capacity;
-  }
-  
-  int32_t* new_portable_info_sub_id = (int32_t*)&portable->info_sub_ids[portable->info_sub_ids_length];
-  *new_portable_info_sub_id = info_sub_id;
-
-  portable->info_sub_ids_length++;
-}
-
-void SPVM_PORTABLE_push_info_long_value(SPVM_PORTABLE* portable, int64_t info_long_value) {
-
-  portable->info_long_values[portable->info_long_values_length] = info_long_value;
-
-  portable->info_long_values_length++;
-}
-
-void SPVM_PORTABLE_push_info_double_value(SPVM_PORTABLE* portable, double info_double_value) {
-
-  portable->info_double_values[portable->info_double_values_length] = info_double_value;
-
-  portable->info_double_values_length++;
-}
-
-void SPVM_PORTABLE_push_info_string_value(SPVM_PORTABLE* portable, const char* info_string_value, int32_t string_length) {
-
-  if (portable->info_string_values_length >= portable->info_string_values_capacity) {
-    int32_t new_portable_info_string_values_capacity = portable->info_string_values_capacity * 2;
-    char** new_portable_info_string_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_portable_info_string_values_capacity);
-    memcpy(new_portable_info_string_values, portable->info_string_values, sizeof(char*) * portable->info_string_values_length);
-    free(portable->info_string_values);
-    portable->info_string_values = new_portable_info_string_values;
-    portable->info_string_values_capacity = new_portable_info_string_values_capacity;
-  }
-  
-  portable->info_string_values[portable->info_string_values_length] = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
-  memcpy(portable->info_string_values[portable->info_string_values_length], info_string_value, string_length);
-
-  portable->info_string_values_length++;
-}
-
-void SPVM_PORTABLE_push_info_string_length(SPVM_PORTABLE* portable, int32_t info_string_length) {
-
-  if (portable->info_string_lengths_length >= portable->info_string_lengths_capacity) {
-    int32_t new_portable_info_string_lengths_capacity = portable->info_string_lengths_capacity * 2;
-    int32_t* new_portable_info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * new_portable_info_string_lengths_capacity);
-    memcpy(new_portable_info_string_lengths, portable->info_string_lengths, sizeof(int32_t) * portable->info_string_lengths_length);
-    free(portable->info_string_lengths);
-    portable->info_string_lengths = new_portable_info_string_lengths;
-    portable->info_string_lengths_capacity = new_portable_info_string_lengths_capacity;
-  }
-  
-  portable->info_string_lengths[portable->info_string_lengths_length] = info_string_length;
-
-  portable->info_string_lengths_length++;
 }
 
 void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
