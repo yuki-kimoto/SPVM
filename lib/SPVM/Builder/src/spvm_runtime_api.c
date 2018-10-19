@@ -4952,6 +4952,18 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->ref_count;
 }
 
+int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  return field->index;
+}
+
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* signature) {
   (void)env;
   
@@ -4971,9 +4983,9 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
     return -2;
   }
   
-  int32_t field_index = field->index;
+  int32_t field_id = field->id;
   
-  return field_index;
+  return field_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* signature) {
@@ -5059,116 +5071,200 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
   }
 }
 
-int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  SPVM_VALUE_byte value = *(SPVM_VALUE_byte*)&fields[field->index];
 
-  SPVM_VALUE_byte value = *(SPVM_VALUE_byte*)&fields[field_index];
+  return value;
+}
+
+int16_t SPVM_RUNTIME_API_get_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  SPVM_VALUE_short value = *(SPVM_VALUE_short*)&fields[field->index];
   
   return value;
 }
 
-int16_t SPVM_RUNTIME_API_get_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+int32_t SPVM_RUNTIME_API_get_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  SPVM_VALUE_short value = *(SPVM_VALUE_short*)&fields[field_index];
+  SPVM_VALUE_int value = *(SPVM_VALUE_int*)&fields[field->index];
   
   return value;
 }
 
-int32_t SPVM_RUNTIME_API_get_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+int64_t SPVM_RUNTIME_API_get_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  SPVM_VALUE_int value = *(SPVM_VALUE_int*)&fields[field_index];
+  SPVM_VALUE_long value = *(SPVM_VALUE_long*)&fields[field->index];
   
   return value;
 }
 
-int64_t SPVM_RUNTIME_API_get_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+float SPVM_RUNTIME_API_get_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  SPVM_VALUE_long value = *(SPVM_VALUE_long*)&fields[field_index];
+  SPVM_VALUE_float value = *(SPVM_VALUE_float*)&fields[field->index];
   
   return value;
 }
 
-float SPVM_RUNTIME_API_get_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  SPVM_VALUE_float value = *(SPVM_VALUE_float*)&fields[field_index];
+  SPVM_VALUE_double value = *(SPVM_VALUE_double*)&fields[field->index];
   
   return value;
 }
 
-double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  // Get field value
   SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  SPVM_VALUE_double value = *(SPVM_VALUE_double*)&fields[field_index];
+  void* value = SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(*(SPVM_VALUE_object*)&fields[field->index]);
   
   return value;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index) {
+void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int8_t value) {
 
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  void* value = SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(*(SPVM_VALUE_object*)&fields[field_index]);
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_byte*)&fields[field->index] = value;
+}
+
+void SPVM_RUNTIME_API_set_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int16_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  return value;
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_short*)&fields[field->index] = value;
 }
 
-void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value) {
+void SPVM_RUNTIME_API_set_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int32_t value) {
 
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_byte*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int16_t value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_short*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int32_t value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_int*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int64_t value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_long*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, float value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_float*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, double value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-
-  *(SPVM_VALUE_double*)&fields[field_index] = value;
-}
-
-void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value) {
-
-  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  void* object_field_address = (SPVM_VALUE_object*)&fields[field_index];
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_int*)&fields[field->index] = value;
+}
+
+void SPVM_RUNTIME_API_set_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int64_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_long*)&fields[field->index] = value;
+}
+
+void SPVM_RUNTIME_API_set_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, float value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_float*)&fields[field->index] = value;
+}
+
+void SPVM_RUNTIME_API_set_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, double value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  *(SPVM_VALUE_double*)&fields[field->index] = value;
+}
+
+void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, SPVM_OBJECT* value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  
+  // Get field value
+  SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
+  void* object_field_address = (SPVM_VALUE_object*)&fields[field->index];
 
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, value);
 }
