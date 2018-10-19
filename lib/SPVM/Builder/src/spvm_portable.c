@@ -180,22 +180,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   portable->symbols_capacity = 32;
 
-  portable->fields_capacity = 8;
-  portable->package_vars_capacity = 8;
-  portable->args_capacity = 8;
-  portable->info_package_var_ids_capacity = 8;
-  portable->info_field_ids_capacity = 8;
-  portable->info_sub_ids_capacity = 8;
-  portable->info_types_capacity = 8;
-  portable->subs_capacity = 8;
-  portable->packages_capacity = 8;
-  
   portable->info_switch_info_ints_capacity = 8;
-
-  portable->info_long_values_capacity = 8;
-  portable->info_double_values_capacity = 8;
-  portable->info_string_values_capacity = 8;
-  portable->info_string_lengths_capacity = 8;
 
   portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
 
