@@ -44,41 +44,11 @@
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
   SPVM_PORTABLE* portable = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_PORTABLE));
 
-  portable->symbols_capacity = 32;
-  
-  portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
-
-  portable->fields_capacity = 8;
-  portable->package_vars_capacity = 8;
-  portable->args_capacity = 8;
-  portable->info_package_var_ids_capacity = 8;
-  portable->info_field_ids_capacity = 8;
-  portable->info_sub_ids_capacity = 8;
-  portable->info_types_capacity = 8;
-  portable->subs_capacity = 8;
-  portable->packages_capacity = 8;
-  
-  portable->info_switch_info_ints_capacity = 8;
-
-  portable->info_long_values_capacity = 8;
-  portable->info_double_values_capacity = 8;
-  portable->info_string_values_capacity = 8;
-  portable->info_string_lengths_capacity = 8;
-  
   return portable;
 }
 
 void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
 
-  if (portable->subs_length >= portable->subs_capacity) {
-    int32_t new_portable_subs_capacity = portable->subs_capacity * 2;
-    SPVM_RUNTIME_SUB* new_portable_subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * new_portable_subs_capacity);
-    memcpy(new_portable_subs, portable->subs, sizeof(SPVM_RUNTIME_SUB) * portable->subs_length);
-    free(portable->subs);
-    portable->subs = new_portable_subs;
-    portable->subs_capacity = new_portable_subs_capacity;
-  }
-  
   SPVM_RUNTIME_SUB* new_portable_sub = &portable->subs[portable->subs_length];
 
   new_portable_sub->id = sub->id;
@@ -207,7 +177,28 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
 
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
+
+  portable->symbols_capacity = 32;
+
+  portable->fields_capacity = 8;
+  portable->package_vars_capacity = 8;
+  portable->args_capacity = 8;
+  portable->info_package_var_ids_capacity = 8;
+  portable->info_field_ids_capacity = 8;
+  portable->info_sub_ids_capacity = 8;
+  portable->info_types_capacity = 8;
+  portable->subs_capacity = 8;
+  portable->packages_capacity = 8;
   
+  portable->info_switch_info_ints_capacity = 8;
+
+  portable->info_long_values_capacity = 8;
+  portable->info_double_values_capacity = 8;
+  portable->info_string_values_capacity = 8;
+  portable->info_string_lengths_capacity = 8;
+
+  portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
+
   // Portable basic type
   portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_BASIC_TYPE) * (compiler->basic_types->length + 1));
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
@@ -269,7 +260,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_string_lengths = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable->info_string_lengths_capacity);
   
   // Portable subs
-  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * portable->subs_capacity);
+  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * compiler->subs->length);
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     SPVM_PORTABLE_push_sub(portable, sub);
