@@ -82,7 +82,7 @@ void SPVM_STRING_BUFFER_add_basic_type_id_name(SPVM_STRING_BUFFER* string_buffer
 void SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name) {
   
   
-  SPVM_STRING_BUFFER_add(string_buffer, "package_var_id_");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_GLOBAL_VAR_PACKAGE_VAR_ID_");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, &package_var_name[1]);
