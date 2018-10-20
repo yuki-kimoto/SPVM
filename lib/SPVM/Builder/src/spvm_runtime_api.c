@@ -5067,7 +5067,7 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
     return basic_type_id;
   }
   else {
-    return -1;
+    return 0;
   }
 }
 
