@@ -194,14 +194,15 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   portable->basic_types_length = compiler->basic_types->length;
   
-  // Portable fields
+  // Portable fields(0 index is dummy)
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
+  portable->fields_length++;
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
     SPVM_PORTABLE_push_field(portable, field);
   }
   
-  // Portable package_vars
+  // Portable package_vars(0 index is dummy)
   portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->package_vars->length + 1));
   portable->package_vars_length++;
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {

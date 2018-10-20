@@ -233,7 +233,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   }
 
   // Register field info to package
-  for (int32_t field_id = 0; field_id < runtime->fields_length; field_id++) {
+  for (int32_t field_id = 1; field_id < runtime->fields_length; field_id++) {
     SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
     
     int32_t package_id = field->package_id;

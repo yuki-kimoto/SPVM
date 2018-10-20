@@ -4973,14 +4973,14 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   // Package
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (!package) {
-    return -1;
+    return 0;
   }
   
   // Field
   SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(package->field_signature_symtable, signature, strlen(signature));
   
   if (!field) {
-    return -2;
+    return 0;
   }
   
   int32_t field_id = field->id;
