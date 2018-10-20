@@ -40,5 +40,21 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
+  package->info_package_var_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_package_var_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_sub_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_sub_ids_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_field_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_long_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_long_constant_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_double_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_double_constant_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_string_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_string_constant_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  
   return package;
 }
