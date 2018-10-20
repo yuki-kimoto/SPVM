@@ -254,7 +254,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   }
   
   // Register package_var info to package
-  for (int32_t package_var_id = 0; package_var_id < runtime->package_vars_length; package_var_id++) {
+  for (int32_t package_var_id = 1; package_var_id < runtime->package_vars_length; package_var_id++) {
     SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
     
     int32_t package_id = package_var->package_id;

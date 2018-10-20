@@ -203,6 +203,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Portable package_vars
   portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->package_vars->length + 1));
+  portable->package_vars_length++;
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     SPVM_PORTABLE_push_package_var(portable, package_var);

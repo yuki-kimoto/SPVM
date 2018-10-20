@@ -4997,14 +4997,14 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   // Package
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (!package) {
-    return -1;
+    return 0;
   }
   
   // Field
   SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_signature_symtable, signature, strlen(signature));
   
   if (!package_var) {
-    return -2;
+    return 0;
   }
   
   int32_t package_var_id = package_var->id;
