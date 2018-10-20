@@ -211,9 +211,9 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
 
   // build package symtable
   runtime->package_symtable = SPVM_HASH_new(0);
-  for (int32_t package_id = 0; package_id < runtime->packages_length; package_id++) {
+  for (int32_t package_index = 0; package_index < runtime->packages_length; package_index++) {
     
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_index];
     const char* package_name = runtime->symbols[package->name_id];
     SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
     
@@ -352,9 +352,9 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   }
   SPVM_LIST_free(runtime->info_switch_infos);
 
-  for (int32_t package_id = 0; package_id < runtime->packages_length; package_id++) {
+  for (int32_t package_index = 0; package_index < runtime->packages_length; package_index++) {
     
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_index];
     
     SPVM_LIST_free(package->fields);
     SPVM_LIST_free(package->field_signatures);

@@ -450,8 +450,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_PACKAGE packages[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->packages_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
-  for (int32_t package_id = 0; package_id < portable->packages_length; package_id++) {
-    SPVM_RUNTIME_PACKAGE* runtime_package = &portable->packages[package_id];
+  for (int32_t package_index = 0; package_index < portable->packages_length; package_index++) {
+    SPVM_RUNTIME_PACKAGE* runtime_package = &portable->packages[package_index];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
     SPVM_STRING_BUFFER_add(string_buffer, ".id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->id);
