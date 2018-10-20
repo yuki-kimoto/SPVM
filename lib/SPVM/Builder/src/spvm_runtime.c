@@ -271,8 +271,8 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   }
 
   // Register sub info to package
-  for (int32_t sub_index = 0; sub_index < runtime->subs_length; sub_index++) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_index];
+  for (int32_t sub_id = 1; sub_id < runtime->subs_length; sub_id++) {
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
     
     int32_t package_id = sub->package_id;
     

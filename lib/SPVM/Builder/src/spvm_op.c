@@ -1692,7 +1692,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         assert(sub->op_sub->file);
         
-        sub->id = compiler->subs->length;
+        sub->id = compiler->subs->length + 1;
         
         SPVM_LIST_push(compiler->subs, sub);
         SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);

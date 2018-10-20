@@ -271,8 +271,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable subs
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
-  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
+  portable->subs_length++;
+  for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
     SPVM_PORTABLE_push_sub(portable, sub);
   }
   
@@ -472,7 +473,7 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
     new_portable_package->destructor_sub_id = package->sub_destructor->id;
   }
   else {
-    new_portable_package->destructor_sub_id = -1;
+    new_portable_package->destructor_sub_id = 0;
   }
   new_portable_package->category = package->category;
   new_portable_package->flag = package->flag;

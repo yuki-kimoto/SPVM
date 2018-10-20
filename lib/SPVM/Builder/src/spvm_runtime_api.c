@@ -3696,7 +3696,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Package
-  int32_t sub_id = -1;
+  int32_t sub_id = 0;
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (package) {
   
@@ -4673,7 +4673,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->destructor_sub_id >= 0) {
+  if (package->destructor_sub_id > 0) {
     object->has_destructor = 1;
   }
   
@@ -4712,7 +4712,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
   
   // Has destructor
-  if (package->destructor_sub_id >= 0) {
+  if (package->destructor_sub_id > 0) {
     object->has_destructor = 1;
   }
   
@@ -5019,12 +5019,12 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (package == NULL) {
-    return -1;
+    return 0;
   }
   
   SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
-    return -1;
+    return 0;
   }
   
   int32_t sub_id = sub->id;
@@ -5041,12 +5041,12 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   const char* basic_type_name = runtime->symbols[basic_type->name_id];
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));  
   if (package == NULL) {
-    return -1;
+    return 0;
   }
   
   SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_signature, strlen(sub_signature));
   if (sub == NULL) {
-    return -1;
+    return 0;
   }
   
   return sub->id;
