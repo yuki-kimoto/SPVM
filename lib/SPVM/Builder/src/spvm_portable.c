@@ -248,7 +248,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // OPCode
   int32_t opcode_length = compiler->opcode_array->length;
   portable->opcodes_length = opcode_length;
-  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * opcode_length);
+  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
 
   // Portable info package var ids
