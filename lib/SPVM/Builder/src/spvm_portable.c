@@ -429,7 +429,7 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
     new_portable_field->basic_type_id = field->type->basic_type->id;
   }
   else {
-    new_portable_field->basic_type_id = -1;
+    new_portable_field->basic_type_id = 0;
   }
   new_portable_field->type_dimension = field->type->dimension;
   new_portable_field->type_flag = field->type->flag;
@@ -452,7 +452,7 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
     new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
   }
   else {
-    new_portable_package_var->basic_type_id = -1;
+    new_portable_package_var->basic_type_id = 0;
   }
   new_portable_package_var->type_dimension = package_var->type->dimension;
   new_portable_package_var->type_flag = package_var->type->flag;
