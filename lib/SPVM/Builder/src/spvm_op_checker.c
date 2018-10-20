@@ -2149,6 +2149,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         else {
                           op_cur->uv.package_var_access->info_package_var_id = package->info_package_var_ids->length;
                           SPVM_LIST_push(package->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
+                          SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_name, strlen(package_var_name), (void*)(intptr_t)op_cur->uv.package_var_access->info_package_var_id);
+                          
                           if (package->info_package_var_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                             SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                           }

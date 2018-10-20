@@ -207,6 +207,10 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     runtime_package->destructor_sub_id = portable_package->destructor_sub_id;
     runtime_package->category = portable_package->category;
     runtime_package->flag = portable_package->flag;
+    runtime_package->flag = portable_package->flag;
+
+    runtime_package->info_package_var_ids_base = portable_package->info_package_var_ids_base;
+    runtime_package->info_package_var_ids_length = portable_package->info_package_var_ids_length;
   }
 
   // build package symtable
