@@ -975,7 +975,23 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(env, string_buffer);
-  
+
+  // Package variable id declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Package variable id declarations\n");
+  {
+    for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < package->info_package_var_ids_length; info_package_var_ids_index++) {
+      int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_ids_index];
+      SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
+      SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
+      const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+      const char* package_var_name = runtime->symbols[package_var->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    }
+  }
+
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
   {
@@ -1064,6 +1080,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "} while (0)\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#endif\n");
+
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
