@@ -58,9 +58,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   if (sub->package) {
     new_portable_sub->package_id = sub->package->id;
   }
-  else {
-    new_portable_sub->package_id = -1;
-  }
   
   // Get file base name
   const char* sub_file_base = NULL;
@@ -194,9 +191,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     if (basic_type->package) {
       runtime_basic_type->package_id = basic_type->package->id;
     }
-    else {
-      runtime_basic_type->package_id = -1;
-    }
   }
   portable->basic_types_length = compiler->basic_types->length;
   
@@ -280,8 +274,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_PORTABLE_push_sub(portable, sub);
   }
   
-  // Portable packages
+  // Portable packages(0 index is dummy)
   portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->packages->length + 1));
+  portable->packages_length++;
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
     SPVM_PORTABLE_push_package(portable, package);
@@ -438,9 +433,6 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
   new_portable_field->type_flag = field->type->flag;
   if (field->package) {
     new_portable_field->package_id = field->package->id;
-  }
-  else {
-    new_portable_field->package_id = -1;
   }
   
   portable->fields_length++;

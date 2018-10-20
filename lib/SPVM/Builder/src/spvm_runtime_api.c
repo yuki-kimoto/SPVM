@@ -3770,7 +3770,7 @@ int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t
     assert(basic_type->name_id >= 0);
     
     const char* basic_type_name = runtime->symbols[basic_type->name_id];
-    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? &runtime->packages[basic_type->package_id] : NULL;
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id ? &runtime->packages[basic_type->package_id] : NULL;
     
     assert(package);
     
@@ -3791,8 +3791,8 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
   SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object_basic_type_id >= 0 ? &runtime->basic_types[object_basic_type_id] : NULL;
   SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = interface_basic_type_id >= 0 ? &runtime->basic_types[interface_basic_type_id] : NULL;
 
-  SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id >= 0 ? &runtime->packages[object_basic_type->package_id] : NULL;
-  SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id >= 0 ? &runtime->packages[interface_basic_type->package_id] : NULL;
+  SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id ? &runtime->packages[object_basic_type->package_id] : NULL;
+  SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id ? &runtime->packages[interface_basic_type->package_id] : NULL;
   
   assert(object_package);
   assert(interface_package);
@@ -3822,7 +3822,7 @@ int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int
   int32_t is_value_t;
   if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = runtime->symbols[basic_type->name_id];;
-    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id >= 0 ? &runtime->packages[basic_type->package_id] : NULL;
+    SPVM_RUNTIME_PACKAGE* package = basic_type->package_id ? &runtime->packages[basic_type->package_id] : NULL;
     // Package
     if (package) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
