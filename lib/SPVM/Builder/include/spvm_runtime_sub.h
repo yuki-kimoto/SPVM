@@ -22,7 +22,7 @@ struct SPVM_runtime_sub {
   int32_t info_long_values_base;
   int32_t info_double_values_base;
   int32_t info_string_values_base;
-  int32_t opcodes_length;
+  uint16_t opcodes_length;
   uint16_t return_type_flag;
   uint16_t flag;
   uint16_t mortal_stack_length;

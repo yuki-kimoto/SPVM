@@ -47,8 +47,6 @@ lib/SPVM/Builder/include/spvm_runtime_api.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_info_case_info.h
-lib/SPVM/Builder/include/spvm_runtime_info_constant.h
-lib/SPVM/Builder/include/spvm_runtime_info_string_info.h
 lib/SPVM/Builder/include/spvm_runtime_info_switch_info.h
 lib/SPVM/Builder/include/spvm_runtime_info_type.h
 lib/SPVM/Builder/include/spvm_runtime_my.h
