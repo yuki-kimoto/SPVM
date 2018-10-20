@@ -4647,7 +4647,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
   
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id < 0) {
+  if (basic_type->package_id == 0) {
     package = NULL;
   }
   else {
@@ -4688,7 +4688,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
 
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id < 0) {
+  if (basic_type->package_id == 0) {
     package = NULL;
   }
   else {
@@ -4849,7 +4849,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
     SPVM_RUNTIME_PACKAGE* package;
-    if (basic_type->package_id < 0) {
+    if (basic_type->package_id == 0) {
       package = NULL;
     }
     else {
