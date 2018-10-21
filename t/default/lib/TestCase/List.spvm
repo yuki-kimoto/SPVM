@@ -62,14 +62,20 @@ package TestCase::List {
   }
 
   sub test_ctor_default : int () {
-    unless (check_fields(SPVM::List->new, new object[16], 16, 0, 0)) {
+    unless (check_fields(SPVM::List->new, 16, -16, 0)) {
+      return 0;
+    }
+    unless (equals_array(SPVM::List->new->_values, new object[16])) {
       return 0;
     }
     return 1;
   }
 
   sub test_ctor_with_capacity : int () {
-    unless (check_fields(SPVM::List->new_with_capacity(20000), new object[20000], 20000, 0, 0)) {
+    unless (check_fields(SPVM::List->new_with_capacity(20000), 20000, -20000, 0)) {
+      return 0;
+    }
+    unless (equals_array(SPVM::List->new_with_capacity(20000)->_values, new object[20000])) {
       return 0;
     }
     eval {
@@ -90,23 +96,41 @@ package TestCase::List {
   }
 
   sub test_ctor_with_array : int () {
-    unless (check_fields(SPVM::List->new_with_array(new object[0]), new object[0], 0, 0, 0)) {
+    my $list = SPVM::List->new_with_array(new object[0]);
+    unless (check_fields($list, 0, 0, 0)) {
       return 0;
     }
-    unless (check_fields(SPVM::List->new_with_array(new object[1]), new object[1], 1, 0, 1)) {
+    unless (equals_array($list->_values, new object[0])) {
+      return 0;
+    }
+
+    $list = SPVM::List->new_with_array(new object[1]);
+    unless (check_fields($list, 1, -1, 1)) {
+      return 0;
+    }
+    unless (equals_array($list->_values, new object[1])) {
       return 0;
     }
 
     my $v1 = SPVM::Int->new(1);
-    unless (check_fields(SPVM::List->new_with_array([(object) $v1]), [(object) $v1], 1, 0, 1)) {
+    my $vals = [(object) $v1];
+    $list = SPVM::List->new_with_array($vals);
+    unless (check_fields($list, 1, -1, 1)) {
+      return 0;
+    }
+    unless (equals_array($list->_values, $vals)) {
       return 0;
     }
 
     my $v2 = SPVM::Int->new(2);
-    my $vals = new object[4];
+    $vals = new object[4];
     $vals->[1] = $v1;
     $vals->[3] = $v2;
-    unless (check_fields(SPVM::List->new_with_array($vals), $vals, 4, 0, 4)) {
+    $list = SPVM::List->new_with_array($vals);
+    unless (check_fields($list, 4, -4, 4)) {
+      return 0;
+    }
+    unless (equals_array($list->_values, $vals)) {
       return 0;
     }
 
@@ -128,26 +152,38 @@ package TestCase::List {
 
     my $v1 = SPVM::Int->new(1);
     $list->push($v1);
-    unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+    unless (check_fields($list, 1, -1, 1)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1]))) {
       return 0;
     }
 
     my $v2 = SPVM::Int->new(2);
     $list->push($v2);
-    unless (check_fields($list, [(object) $v1, $v2], 2, 0, 2)) {
+    unless (check_fields($list, 2, -2, 2)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2]))) {
       return 0;
     }
 
     my $v3 = SPVM::Int->new(3);
     $list->push($v3);
-    unless (check_fields($list, [(object) $v1, $v2, $v3, undef], 4, 0, 3)) {
+    unless (check_fields($list, 4, -4, 3)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $v3]))) {
       return 0;
     }
 
     # no reallocation
     my $v4 = SPVM::Int->new(3);
     $list->push($v4);
-    unless (check_fields($list, [(object) $v1, $v2, $v3, $v4], 4, 0, 4)) {
+    unless (check_fields($list, 4, -4, 4)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4]))) {
       return 0;
     }
 
@@ -165,7 +201,13 @@ package TestCase::List {
     unless (((SPVM::Int)$list->pop)->val == 1) {
       return 0;
     }
-    unless (check_fields($list, new object[3], 3, 0, 0)) {
+    unless (check_fields($list, 3, -3, 0)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new)) {
+      return 0;
+    }
+    unless (equals_array($list->_values, new object[3])) {
       return 0;
     }
     unless ($list->pop == undef) { # empty list returns undef
@@ -179,31 +221,35 @@ package TestCase::List {
 
     my $v1 = SPVM::Int->new(1);
     $list->unshift($v1);
-    unless (check_fields($list, [(object) $v1], 1, 0, 1)) {
+    unless (check_fields($list, 1, -1, 1)) {
       return 0;
     }
 
     my $v2 = SPVM::Int->new(2);
     $list->unshift($v2);
-    unless (check_fields($list, [(object) $v1, $v2], 2, 1, 2)) {
+    unless (check_fields($list, 2, -1, 2)) {
       return 0;
     }
 
     my $v3 = SPVM::Int->new(3);
     $list->unshift($v3);
-    unless (check_fields($list, [(object) $v2, $v1, undef, $v3], 4, 3, 3)) {
+    unless (check_fields($list, 4, -1, 3)) {
       return 0;
     }
 
     my $v4 = SPVM::Int->new(4);
     $list->unshift($v4);
-    unless (check_fields($list, [(object) $v2, $v1, $v4, $v3], 4, 2, 4)) {
+    unless (check_fields($list, 4, -2, 4)) {
       return 0;
     }
 
     my $v5 = SPVM::Int->new(5);
     $list->unshift($v5);
-    unless (check_fields($list, [(object) $v4, $v3, $v2, $v1, undef, undef, undef, $v5], 8, 7, 5)) {
+    unless (check_fields($list, 8, -1, 5)) {
+      return 0;
+    }
+
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v5, $v4, $v3, $v2, $v1]))) {
       return 0;
     }
 
@@ -221,10 +267,13 @@ package TestCase::List {
     unless (((SPVM::Int)$list->shift)->val == 2) {
       return 0;
     }
-    unless (check_fields($list, new object[3], 3, 0, 0)) {
+    unless (check_fields($list, 3, -3, 0)) {
       return 0;
     }
     unless ($list->shift == undef) { # empty list returns undef
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array(new object[0]))) {
       return 0;
     }
     return 1;
@@ -235,7 +284,7 @@ package TestCase::List {
     for (my $i = 0; $i < 16; $i++) {
       $list->push(1);
       $list->shift;
-      unless (check_fields($list, new object[4], 4, ($i + 1) % 4, 0)) {
+      unless (check_fields($list, 4, ($i + 1) % 4 - 4, 0)) {
         return 0;
       }
     }
@@ -247,7 +296,7 @@ package TestCase::List {
     for (my $i = 0; $i < 16; $i++) {
       $list->unshift(1);
       $list->pop;
-      unless (check_fields($list, new object[4], 4, (3 - $i + 16) % 4, 0)) {
+      unless (check_fields($list, 4, (3 - $i + 16) % 4 - 4, 0)) {
         return 0;
       }
     }
@@ -260,9 +309,12 @@ package TestCase::List {
     my $v1 = SPVM::Int->new(2);
     $list->set(0, undef);
     $list->set(1, $v1);
-    my $expected = new object [2];
+    unless (check_fields($list, 2, -2, 2)) {
+      return 0;
+    }
+    my $expected = new object[2];
     $expected->[1] = $v1;
-    unless (check_fields($list, $expected, 2, 0, 2)) {
+    unless (equals_list_deeply($list, SPVM::List->new_with_array($expected))) {
       return 0;
     }
 
