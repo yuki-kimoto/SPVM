@@ -136,6 +136,7 @@ package SPVM::List : private {
     return $self->{values}[$target];
   }
 
+  # range of $cut_offset: [0, $cut_length]
   sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
     if ($cut_offset > $self->{length}) {
       warn("splice_with_list() offset past end of array");
@@ -144,13 +145,20 @@ package SPVM::List : private {
     }
 
     # fit cut_length to the end.
-    if ($cut_offset + $cut_length > $self->{length}) {
+    if ($cut_length > $self->{length}) {
+      $cut_length = $self->{length};
+    }
+    if ($cut_offset > $self->{length} - $cut_length) { # always $self->{length} - $cut_length >= 0
       $cut_length = $self->{length} - $cut_offset;
     }
 
     my $extracted = new object [$cut_length];
     for (my $i = 0; $i < $cut_length; ++$i) {
-      $extracted->[$i] = $self->{values}[($self->{offset} + $cut_offset + $i) % $self->{capacity}];
+      my $target = $self->{offset} + $i;
+      if ($target > 0) { $target -= $self->{capacity}; } # to avoid overflow on the next statement
+      $target += $cut_offset;
+      if ($target < 0) { $target += $self->{capacity}; }
+      $extracted->[$i] = $self->{values}[$target];
     }
 
     my $replace_length = 0;
@@ -158,23 +166,89 @@ package SPVM::List : private {
       $replace_length = @$replace;
     }
 
-    my $new_values = new object [$self->{length} - $cut_length + $replace_length];
-    for (my $i = 0; $i < $cut_offset; ++$i) {
-      $new_values->[$i] = $self->{values}[($self->{offset} + $i) % $self->{capacity}];
+    my $new_values_length : int;
+    if ($new_values_length > INT32_MAX() - $replace_length) {
+      $replace_length = INT32_MAX() - $new_values_length;
+      $new_values_length = INT32_MAX();
     }
-    for (my $i = 0; $i < $replace_length; ++$i) {
-      $new_values->[$cut_offset + $i] = $replace->[$i];
-    }
-    for (my $i = 0; $i < $self->{length} - $cut_offset - $cut_length; ++$i) {
-      $new_values->[$cut_offset + $replace_length + $i] =
-          $self->{values}[($self->{offset} + $cut_offset + $cut_length + $i) % $self->{capacity}];
+    else {
+      $new_values_length = $self->{length} - $cut_length + $replace_length;
     }
 
-    $self->{capacity} = @$new_values;
-    $self->{offset} = 0;
-    $self->{length} = @$new_values;
-    $self->{values} = $new_values;
+    if ($new_values_length <= $self->{capacity} &&
+        $cut_offset == 0) {
+      # no reallocation
+      # O(max($cut_length, $replace_length))
+      my $new_offset = $self->{offset} + $cut_length;
+      if ($new_offset < 0) { $self->{capacity}; }
+      $new_offset -= $replace_length;
+      if ($new_offset >= 0) {$new_offset -= $self->{capacity};}
+      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
+        my $target = $self->{offset} + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        $self->{values}[$target] = undef; # deallocate
+      }
+      for (my $i = 0; $i < $replace_length; ++$i) {
+        my $target = $new_offset + $i;
+        if ($target < 0) { $new_offset += $self->{capacity}; }
+        $self->{values}[$target] = $replace->[$i];
+      }
+      $self->{offset} = $new_offset;
+      $self->{length} = $new_values_length;
+    }
+    elsif ($new_values_length <= $self->{capacity} &&
+        $cut_offset + $cut_length == $self->{length}) {
+      # no reallocation
+      # O(max($cut_length, $replace_length))
+      for (my $i = 0; $i < $replace_length; ++$i) {
+        my $target = $self->{offset} + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        $self->{values}[$target] = $replace->[$i];
+      }
+      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
+        my $target = $self->{offset} + $cut_length;
+        if ($target > 0) { $target -= $self->{capacity}; }
+        $target += $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        $self->{values}[$target] = undef;
+      }
+      $self->{length} = $new_values_length;
+    }
+    else {
+      # need reallocation
+      my $new_values = new object [$new_values_length];
 
+      for (my $new_index = 0; $new_index < $cut_offset; ++$new_index) {
+        my $old_index = $self->{offset} + $new_index;
+        if ($old_index < 0) { $old_index += $self->{capacity}; }
+        $new_values->[$new_index] = $self->{values}[$old_index];
+      }
+      for (my $replace_index = 0; $replace_index < $replace_length; ++$replace_index) {
+        my $new_index = $cut_offset - $new_values_length; # to avoid overflow on the next statement
+        $new_index += $replace_index;
+        if ($new_index < 0) { $new_index += $new_values_length; }
+        $new_values->[$new_index] = $replace->[$replace_index];
+      }
+      for (my $i = 0; $i < $self->{length} - $cut_offset - $cut_length; ++$i) { # always $self->{length} - $cut_length >= 0
+        my $old_index = $self->{offset} + $cut_offset;
+        if ($old_index > 0) { $old_index -= $self->{capacity}; }
+        $old_index += $cut_length;
+        if ($old_index > 0) { $old_index -= $self->{capacity}; }
+        $old_index += $i;
+        if ($old_index < 0) { $old_index += $self->{capacity}; }
+        my $new_index = $cut_offset - $new_values_length;
+        $new_index += $replace_length;
+        if ($new_index > 0) { $new_index -= $new_values_length; } # to avoid overflow on the next statement
+        $new_index += $i;
+        if ($new_index < 0) { $new_index += $new_values_length; }
+        $new_values->[$new_index] = $self->{values}[$old_index];
+      }
+
+      $self->{capacity} = $new_values_length;
+      $self->{offset} = -$new_values_length;
+      $self->{length} = $new_values_length;
+      $self->{values} = $new_values;
+    }
     return $extracted;
   }
 }
