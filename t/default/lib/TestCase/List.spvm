@@ -2,7 +2,7 @@ package TestCase::List {
   use SPVM::Int;
   use SPVM::List;
 
-  sub check_fields : int ($list : SPVM::List, $objects : object[], $capacity : int, $offset : int, $length : int) {
+  sub check_fields : int ($list : SPVM::List, $capacity : int, $offset : int, $length : int) {
     # check_fields fields
     unless ($list->_capacity == $capacity && $list->_offset == $offset && $list->length == $length) {
       warn("List fields mismatch.\n\t" .
@@ -10,31 +10,28 @@ package TestCase::List {
           "expected: (capacity: " . $capacity . ", offset: " . $offset . ", length: " . $length . ")");
       return 0;
     }
+    return 1;
+  }
 
-    # check_fields values
-    my $len_got = 0;
-    if ($list->_values) {
-      $len_got = @{$list->_values};
-    }
-    my $len_exp = 0;
-    if ($objects) {
-      $len_exp = @$objects;
-    }
-    unless ($len_got == $len_exp) {
-      warn("List values length mismatch.\n\t" .
-          "got:      " . $len_got . "\n\t" .
-          "expected: " . $len_exp);
+  sub equals_list_deeply : int ($got : SPVM::List, $expected : SPVM::List) {
+    unless ($got->length == $expected->length) {
+      warn("Length mismatch. Try check_fields() first");
       return 0;
     }
-    if ($len_exp) {
-      for (my $i = 0; $i < @$objects; $i++) {
-        unless ($list->_values->[$i] == $objects->[$i]) {
-          warn("List content mismatch. at subscript " . $i);
-          return 0;
-        }
+    for (my $i = 0; $i < $expected->length; $i++) {
+      my $got_index = $i + $got->_offset;
+      if ($got_index < 0) {
+        $got_index += $got->_capacity;
+      }
+      my $expected_index = $i + $expected->_offset;
+      if ($expected_index < 0) {
+        $expected_index += $expected->_capacity;
+      }
+      unless ($got->_values->[$got_index] == $expected->_values->[$expected_index]) {
+        warn("List content mismatch.");
+        return 0;
       }
     }
-    
     return 1;
   }
 
