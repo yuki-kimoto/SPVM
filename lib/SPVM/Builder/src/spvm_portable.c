@@ -101,11 +101,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     info_types_total_length += sub->info_types->length;
     info_long_values_total_length += sub->info_long_constants->length;
     info_double_values_total_length += sub->info_double_constants->length;
-    info_package_var_ids_total_length += sub->info_package_var_ids->length;
     info_field_ids_total_length += sub->info_field_ids->length;
     info_sub_ids_total_length += sub->info_sub_ids->length;
     info_string_values_total_length += sub->info_string_constants->length;
     info_string_lengths_total_length += sub->info_string_constants->length;
+  }
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    info_package_var_ids_total_length += package->info_package_var_ids->length;
   }
   
   // Portable args
