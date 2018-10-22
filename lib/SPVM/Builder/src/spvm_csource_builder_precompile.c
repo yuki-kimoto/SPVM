@@ -922,30 +922,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BU
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+  SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+  SPVM_STRING_BUFFER_add(string_buffer, "      if (");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+  SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, " ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
   SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    };\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
@@ -977,30 +980,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+  SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+  SPVM_STRING_BUFFER_add(string_buffer, "      if (");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+  SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, " ");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
   SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
   SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    };\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
@@ -1465,55 +1471,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     }
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
-
-/*
-  // Get field id and index
-  {
-    SPVM_HASH* field_id_symtable = SPVM_HASH_new(1);
-    for (int32_t info_field_ids_index = 0; info_field_ids_index < package->info_field_ids_length; info_field_ids_index++) {
-      int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_ids_index];
-      SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-      SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-      const char* field_package_name = runtime->symbols[field_package->name_id];
-      const char* field_name = runtime->symbols[field->name_id];
-      const char* field_signature = runtime->symbols[field->signature_id];
-      
-      char field_id_str[sizeof(int32_t)];
-      memcpy(&field_id_str, &field_id, sizeof(int32_t));
-      
-      SPVM_FIELD* found_field = SPVM_HASH_fetch(field_id_symtable, field_id_str, sizeof(int32_t));
-      if (!found_field) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Field not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-        SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
-        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        
-        SPVM_HASH_insert(field_id_symtable, field_id_str, sizeof(int32_t), field);
-      }
-    }
-    SPVM_HASH_free(field_id_symtable);
-  }
-*/
 
   // Get sub id
   if (sub->info_sub_ids_length > 0) {
@@ -4084,30 +4041,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    };\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -4188,30 +4148,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    };\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4246,30 +4209,33 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(");
+        SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Field not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Field not found ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_package_name);
         SPVM_STRING_BUFFER_add(string_buffer, " ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = env->get_field_index(env, ");
         SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    };\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
