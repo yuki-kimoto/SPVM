@@ -1043,7 +1043,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           opcode.operand0 = var_id_out;
                           opcode.operand1 = var_id_invocant;
-                          opcode.operand2 = field_access->sub_rel_id;
+                          opcode.operand2 = field_access->info_field_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -3256,7 +3256,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_invocant = SPVM_OP_get_var_id(compiler, op_term_invocant);
 
                           opcode.operand0 = var_id_invocant;
-                          opcode.operand1 = field_access->sub_rel_id;
+                          opcode.operand1 = field_access->info_field_id;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                           SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
@@ -3306,7 +3306,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_invocant = SPVM_OP_get_var_id(compiler, op_term_invocant);
                           
                           opcode.operand0 = var_id_invocant;
-                          opcode.operand1 = field_access->sub_rel_id;
+                          opcode.operand1 = field_access->info_field_id;
                           opcode.operand2 = var_id_in;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -3486,7 +3486,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t var_id_invocant = SPVM_OP_get_var_id(compiler, op_term_invocant);
 
                       opcode.operand0 = var_id_invocant;
-                      opcode.operand1 = op_cur->uv.field_access->sub_rel_id;
+                      opcode.operand1 = op_cur->uv.field_access->info_field_id;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                       SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);

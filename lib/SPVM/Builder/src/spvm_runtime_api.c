@@ -2138,8 +2138,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         break;
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         void* object = *(void**)&object_vars[opcode->operand0];
@@ -2979,9 +2979,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         continue;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-        int32_t rel_id = opcode->operand2;
-
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -2999,8 +2998,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3018,8 +3017,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3037,8 +3036,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3056,8 +3055,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3075,8 +3074,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3094,8 +3093,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        int32_t rel_id = opcode->operand2;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand2;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3108,7 +3107,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
-          void* object_field = *(void**)&fields[field_index];;
+          void* object_field = *(void**)&fields[field_index];
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(object_field));
         }
         break;
@@ -3116,8 +3115,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3135,8 +3134,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3154,8 +3153,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3173,8 +3172,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3192,8 +3191,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3211,8 +3210,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
         
@@ -3230,8 +3229,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 
@@ -3250,8 +3249,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = *(void**)&object_vars[opcode->operand0];
 
-        int32_t rel_id = opcode->operand1;
-        int32_t field_id = runtime->info_field_ids[sub->info_field_ids_base + rel_id];
+        int32_t info_field_id = opcode->operand1;
+        int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_index = field->index;
 

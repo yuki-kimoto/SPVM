@@ -2235,9 +2235,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term_invocker);
-                        SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                        SPVM_PACKAGE* invocant_package = SPVM_HASH_fetch(compiler->package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                         
-                        if (!(type && package)) {
+                        if (!(type && invocant_package)) {
                           SPVM_yyerror_format(compiler, "Can't access field at %s line %d\n", op_cur->file, op_cur->line);
                           return;
                         }
@@ -2271,8 +2271,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_LIST_push(sub->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
 
                         // Add info field id
+                        char field_id_string[sizeof(int32_t)];
+                        memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));
                         const char* field_name = op_cur->uv.field_access->field->name;
-                        int32_t found_field_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_field_id_symtable, field_name, strlen(field_name));
+                        int32_t found_field_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_field_id_symtable, field_id_string, sizeof(int32_t));
                         if (found_field_id_plus1 > 0) {
                           op_cur->uv.field_access->info_field_id = found_field_id_plus1 - 1;
                         }
@@ -2280,7 +2282,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur->uv.field_access->info_field_id = package->info_field_ids->length;
                           SPVM_LIST_push(package->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
                           int32_t info_field_id_plus1 = op_cur->uv.field_access->info_field_id + 1;
-                          SPVM_HASH_insert(package->info_field_id_symtable, field_name, strlen(field_name), (void*)(intptr_t)info_field_id_plus1);
+                          SPVM_HASH_insert(package->info_field_id_symtable, field_id_string, sizeof(int32_t), (void*)(intptr_t)info_field_id_plus1);
                         }
                         if (package->info_field_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
