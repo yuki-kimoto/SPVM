@@ -198,23 +198,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   // build packages
   runtime->packages_length = portable->packages_length;
   runtime->packages = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
-  for (int32_t i = 0; i < portable->packages_length; i++) {
-    SPVM_RUNTIME_PACKAGE* portable_package = &portable->packages[i];
-    SPVM_RUNTIME_PACKAGE* runtime_package = &runtime->packages[i];
-    
-    runtime_package->id = portable_package->id;
-    runtime_package->name_id = portable_package->name_id;
-    runtime_package->destructor_sub_id = portable_package->destructor_sub_id;
-    runtime_package->category = portable_package->category;
-    runtime_package->flag = portable_package->flag;
-    runtime_package->flag = portable_package->flag;
-
-    runtime_package->info_package_var_ids_base = portable_package->info_package_var_ids_base;
-    runtime_package->info_package_var_ids_length = portable_package->info_package_var_ids_length;
-
-    runtime_package->info_field_ids_base = portable_package->info_field_ids_base;
-    runtime_package->info_field_ids_length = portable_package->info_field_ids_length;
-  }
+  memcpy(runtime->packages, portable->packages, sizeof(SPVM_RUNTIME_PACKAGE) * runtime->packages_length);
 
   // build package symtable
   runtime->package_symtable = SPVM_HASH_new(0);
