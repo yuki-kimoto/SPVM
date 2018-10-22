@@ -2135,8 +2135,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         
                         // Add info package var id
+                        char package_var_id_string[sizeof(int32_t)];
+                        memcpy(package_var_id_string, &op_cur->uv.package_var_access->package_var->id, sizeof(int32_t));
                         const char* package_var_name = op_cur->uv.package_var_access->package_var->name;
-                        int32_t found_package_var_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_package_var_id_symtable, package_var_name, strlen(package_var_name));
+                        int32_t found_package_var_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t));
                         if (found_package_var_id_plus1 > 0) {
                           op_cur->uv.package_var_access->info_package_var_id = found_package_var_id_plus1 - 1;
                         }
@@ -2144,12 +2146,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           op_cur->uv.package_var_access->info_package_var_id = package->info_package_var_ids->length;
                           SPVM_LIST_push(package->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
                           int32_t info_package_var_id_plus1 = op_cur->uv.package_var_access->info_package_var_id + 1;
-                          SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_name, strlen(package_var_name), (void*)(intptr_t)info_package_var_id_plus1);
+                          SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), (void*)(intptr_t)info_package_var_id_plus1);
                         }
                         if (package->info_package_var_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        
+                        }                        
                         break;
                       }
                       case SPVM_OP_C_ID_ARRAY_ACCESS: {
