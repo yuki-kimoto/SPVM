@@ -465,7 +465,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               if (package->info_long_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                                 SPVM_yyerror_format(compiler, "Too many long constants at %s line %d\n", op_cur->file, op_cur->line);
                               }
-                              op_cur->uv.constant->info_constant_id = package->info_long_constants->length;
+                              op_cur->uv.constant->info_long_constant_id = package->info_long_constants->length;
                               SPVM_LIST_push(package->info_long_constants, op_cur->uv.constant);
                               
                               /*
@@ -495,6 +495,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               op_cur->uv.constant->sub_rel_info_double_id = sub->info_double_constants->length;
                               SPVM_LIST_push(sub->info_double_constants, op_cur->uv.constant);
+
+                              if (package->info_double_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                SPVM_yyerror_format(compiler, "Too many double constants at %s line %d\n", op_cur->file, op_cur->line);
+                              }
+                              op_cur->uv.constant->info_double_constant_id = package->info_double_constants->length;
+                              SPVM_LIST_push(package->info_double_constants, op_cur->uv.constant);
                             }
                           }
                         }
