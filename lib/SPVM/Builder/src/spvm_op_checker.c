@@ -2265,12 +2265,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                         }
                         
-                        if (sub->info_field_ids->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many field access at %s line %d\n", op_cur->file, op_cur->line);
-                        }
-                        op_cur->uv.field_access->sub_rel_id = sub->info_field_ids->length;
-                        SPVM_LIST_push(sub->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
-
                         // Add info field id
                         char field_id_string[sizeof(int32_t)];
                         memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));

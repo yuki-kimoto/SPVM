@@ -7,7 +7,6 @@ struct SPVM_field_access {
   SPVM_OP* op_term;
   SPVM_OP* op_name;
   SPVM_FIELD* field;
-  int32_t sub_rel_id;
   int32_t info_field_id;
 };
 
