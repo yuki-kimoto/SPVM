@@ -3640,15 +3640,30 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
-  int32_t package_index;
+  
+  // Sort package by package name
+  for (int32_t i = 0; i < (compiler->packages->length - 1); i++) {
+    for (int32_t j = (compiler->packages->length - 1); j > i; j--) {
+      SPVM_PACKAGE* package1 = SPVM_LIST_fetch(compiler->packages, j-1);
+      SPVM_PACKAGE* package2 = SPVM_LIST_fetch(compiler->packages, j);
+      
+      void** values = compiler->packages->values;
+
+      if (strcmp(package1->name, package2->name) > 0) {
+        SPVM_PACKAGE* temp = values[j-1];
+        values[j-1] = values[j];
+        values[j] = temp;
+      }
+    }
+  }
   
   // Set package id
-  for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     package->id = package_index + 1;
   }
   
-  for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     
     const char* package_name = package->op_name->uv.name;
