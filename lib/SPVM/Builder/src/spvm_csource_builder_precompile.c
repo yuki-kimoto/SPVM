@@ -1046,6 +1046,25 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     }
   }
 
+  // Field id and index declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Field id and index declarations\n");
+  {
+    for (int32_t info_field_ids_index = 0; info_field_ids_index < package->info_field_ids_length; info_field_ids_index++) {
+      int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_ids_index];
+      SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+      SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
+      const char* field_package_name = runtime->symbols[field_package->name_id];
+      const char* field_name = runtime->symbols[field->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    }
+  }
+
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
   {
