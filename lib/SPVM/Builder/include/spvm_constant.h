@@ -10,7 +10,6 @@ struct SPVM_constant {
   SPVM_VALUE value;
   int32_t string_length;
   int32_t id;
-  int32_t sub_rel_id;
   int32_t sub_rel_info_long_id;
   int32_t sub_rel_info_double_id;
   int32_t sub_rel_info_string_id;
