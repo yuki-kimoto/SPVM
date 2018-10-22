@@ -2269,6 +2269,22 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         op_cur->uv.field_access->sub_rel_id = sub->info_field_ids->length;
                         SPVM_LIST_push(sub->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
+
+                        // Add info field id
+                        const char* field_name = op_cur->uv.field_access->field->name;
+                        int32_t found_field_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_field_id_symtable, field_name, strlen(field_name));
+                        if (found_field_id_plus1 > 0) {
+                          op_cur->uv.field_access->info_field_id = found_field_id_plus1 - 1;
+                        }
+                        else {
+                          op_cur->uv.field_access->info_field_id = package->info_field_ids->length;
+                          SPVM_LIST_push(package->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
+                          int32_t info_field_id_plus1 = op_cur->uv.field_access->info_field_id + 1;
+                          SPVM_HASH_insert(package->info_field_id_symtable, field_name, strlen(field_name), (void*)(intptr_t)info_field_id_plus1);
+                        }
+                        if (package->info_field_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                        }
                         
                         // If invocker is array access and array access object is value_t, this op become array field access
                         if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
