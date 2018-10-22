@@ -2091,8 +2091,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
-        int32_t rel_id = opcode->operand2;
-        int64_t long_value = runtime->info_long_values[sub->info_long_values_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        int64_t long_value = runtime->info_long_values[package->info_long_values_base + info_constant_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);

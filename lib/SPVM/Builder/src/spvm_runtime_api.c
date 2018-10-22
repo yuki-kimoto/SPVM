@@ -791,8 +791,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int_vars[opcode->operand0] = *(SPVM_VALUE_int*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
-        int32_t rel_id = opcode->operand2;
-        int64_t long_value = runtime->info_long_values[sub->info_long_values_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        int64_t long_value = runtime->info_long_values[package->info_long_values_base + info_constant_id];
         long_vars[opcode->operand0] = long_value;
         break;
       }
