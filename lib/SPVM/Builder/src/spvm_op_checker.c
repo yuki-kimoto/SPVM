@@ -462,6 +462,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               op_cur->uv.constant->sub_rel_info_long_id = sub->info_long_constants->length;
                               SPVM_LIST_push(sub->info_long_constants, op_cur->uv.constant);
 
+                              if (package->info_long_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                SPVM_yyerror_format(compiler, "Too many long constants at %s line %d\n", op_cur->file, op_cur->line);
+                              }
+                              op_cur->uv.constant->info_constant_id = package->info_long_constants->length;
+                              SPVM_LIST_push(package->info_long_constants, op_cur->uv.constant);
+                              
+                              /*
                               // Add long value
                               char long_value_string[sizeof(int64_t)];
                               memcpy(long_value_string, &op_cur->uv.constant->value.lval, sizeof(int64_t));
@@ -478,6 +485,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               if (package->info_long_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                                 SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                               }
+                              */
+                              
                             }
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                               add_constant = 1;
@@ -486,23 +495,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               op_cur->uv.constant->sub_rel_info_double_id = sub->info_double_constants->length;
                               SPVM_LIST_push(sub->info_double_constants, op_cur->uv.constant);
-                              
-                              // Add double value
-                              char double_value_string[sizeof(double)];
-                              memcpy(double_value_string, &op_cur->uv.constant->value.lval, sizeof(double));
-                              int32_t found_double_constant_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_double_constant_symtable, double_value_string, sizeof(double));
-                              if (found_double_constant_id_plus1 > 0) {
-                                op_cur->uv.constant->info_constant_id = found_double_constant_id_plus1 - 1;
-                              }
-                              else {
-                                op_cur->uv.constant->info_constant_id = package->info_double_constants->length;
-                                SPVM_LIST_push(package->info_double_constants, (void*)(intptr_t)op_cur->uv.constant);
-                                int32_t info_double_constant_id_plus1 = op_cur->uv.constant->info_constant_id + 1;
-                                SPVM_HASH_insert(package->info_double_constant_symtable, double_value_string, sizeof(double), (void*)(intptr_t)info_double_constant_id_plus1);
-                              }
-                              if (package->info_double_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                                SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                              }
                             }
                           }
                         }
