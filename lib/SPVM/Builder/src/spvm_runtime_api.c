@@ -132,57 +132,60 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // byte variables
   SPVM_VALUE_byte* byte_vars = NULL;
   
-  int32_t total_call_stack_length =
-    sub->object_vars_alloc_length +
-    sub->ref_vars_alloc_length +
-    sub->double_vars_alloc_length +
-    sub->long_vars_alloc_length +
-    sub->float_vars_alloc_length +
-    sub->int_vars_alloc_length +
-    sub->short_vars_alloc_length +
-    sub->byte_vars_alloc_length +
-    sub->mortal_stack_length;
-  
+  // Alloc variable memory
   SPVM_VALUE* call_stack = NULL;
   int32_t call_stack_offset = 0;
-  if (total_call_stack_length > 0) {
-    call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_call_stack_length);
+  {
+    int32_t total_call_stack_length =
+      sub->object_vars_alloc_length +
+      sub->ref_vars_alloc_length +
+      sub->double_vars_alloc_length +
+      sub->long_vars_alloc_length +
+      sub->float_vars_alloc_length +
+      sub->int_vars_alloc_length +
+      sub->short_vars_alloc_length +
+      sub->byte_vars_alloc_length +
+      sub->mortal_stack_length;
+    
+    if (total_call_stack_length > 0) {
+      call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_call_stack_length);
 
-    // Double variables
-    double_vars = (double*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->double_vars_alloc_length;
-    
-    // Long varialbes
-    long_vars = (SPVM_VALUE_long*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->long_vars_alloc_length;
-    
-    // Float variables
-    float_vars = (float*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->float_vars_alloc_length;
-    
-    // Int variables
-    int_vars = (SPVM_VALUE_int*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->int_vars_alloc_length;
+      // Double variables
+      double_vars = (double*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->double_vars_alloc_length;
+      
+      // Long varialbes
+      long_vars = (SPVM_VALUE_long*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->long_vars_alloc_length;
+      
+      // Float variables
+      float_vars = (float*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->float_vars_alloc_length;
+      
+      // Int variables
+      int_vars = (SPVM_VALUE_int*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->int_vars_alloc_length;
 
-    // Mortal stack
-    mortal_stack = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->mortal_stack_length;
+      // Mortal stack
+      mortal_stack = (int32_t*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->mortal_stack_length;
 
-    // Short variables
-    short_vars = (SPVM_VALUE_short*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->short_vars_alloc_length;
-    
-    // Byte variables
-    byte_vars = (SPVM_VALUE_byte*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->byte_vars_alloc_length;
+      // Short variables
+      short_vars = (SPVM_VALUE_short*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->short_vars_alloc_length;
+      
+      // Byte variables
+      byte_vars = (SPVM_VALUE_byte*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->byte_vars_alloc_length;
 
-    // Object variables
-    object_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += sub->object_vars_alloc_length;
-    
-    // Refernce variables
-    ref_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += sub->ref_vars_alloc_length;
+      // Object variables
+      object_vars = (void**)&call_stack[call_stack_offset];
+      call_stack_offset += sub->object_vars_alloc_length;
+      
+      // Refernce variables
+      ref_vars = (void**)&call_stack[call_stack_offset];
+      call_stack_offset += sub->ref_vars_alloc_length;
+    }
   }
 
   // Buffer for string convertion
