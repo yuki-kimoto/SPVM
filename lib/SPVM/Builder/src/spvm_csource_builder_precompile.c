@@ -1087,6 +1087,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     }
   }
 
+  // Basic type id declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Basic type id declarations\n");
+  {
+    for (int32_t info_types_index = 0; info_types_index < package->info_types_length; info_types_index++) {
+      SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_types_index];
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[type->basic_type_id];
+      const char* basic_type_name = runtime->symbols[basic_type->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    }
+  }
+  
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
   {
