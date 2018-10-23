@@ -143,6 +143,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     numeric_area_byte_size += sub->int_vars_alloc_length * 4;
     numeric_area_byte_size += sub->float_vars_alloc_length * 4;
     numeric_area_byte_size += sub->short_vars_alloc_length * 2;
+    numeric_area_byte_size += sub->mortal_stack_length * 2;
     numeric_area_byte_size += sub->byte_vars_alloc_length * 1;
     
     if (numeric_area_byte_size % 8 != 0) {
@@ -187,13 +188,13 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       int_vars = (SPVM_VALUE_int*)&call_stack[call_stack_offset];
       call_stack_offset += sub->int_vars_alloc_length;
 
-      // Mortal stack
-      mortal_stack = (uint16_t*)&call_stack[call_stack_offset];
-      call_stack_offset += sub->mortal_stack_length;
-
       // Short variables
       short_vars = (SPVM_VALUE_short*)&call_stack[call_stack_offset];
       call_stack_offset += sub->short_vars_alloc_length;
+
+      // Mortal stack
+      mortal_stack = (uint16_t*)&call_stack[call_stack_offset];
+      call_stack_offset += sub->mortal_stack_length;
       
       // Byte variables
       byte_vars = (SPVM_VALUE_byte*)&call_stack[call_stack_offset];
