@@ -134,7 +134,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   
   // Alloc variable memory
   SPVM_VALUE* call_stack = NULL;
-  int32_t call_stack_offset = 0;
   {
     // Numeric area byte size
     int32_t numeric_area_byte_size = 0;
@@ -172,6 +171,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     if (total_call_stack_length > 0) {
       call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_call_stack_length);
 
+      int32_t call_stack_offset = 0;
+      
       // Double variables
       double_vars = (double*)&call_stack[call_stack_offset];
       call_stack_offset += sub->double_vars_alloc_length;
