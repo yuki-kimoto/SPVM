@@ -98,7 +98,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
     args_total_length += sub->args->length;
-    info_types_total_length += sub->info_types->length;
   }
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
@@ -109,6 +108,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     info_string_values_total_length += package->info_string_constants->length;
     info_string_lengths_total_length += package->info_string_constants->length;
     info_sub_ids_total_length += package->info_sub_ids->length;
+    info_types_total_length += package->info_types->length;
   }
   
   // Portable args
@@ -202,6 +202,9 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   new_portable_package->info_switch_infos_base = portable->info_switch_infos_length;
   new_portable_package->info_switch_infos_length = package->info_switch_infos->length;
 
+  new_portable_package->info_types_base = portable->info_types_length;
+  new_portable_package->info_types_length = package->info_types->length;
+
   for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < package->info_package_var_ids->length; info_package_var_ids_index++) {
     int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, info_package_var_ids_index);
     
@@ -243,6 +246,11 @@ void SPVM_PORTABLE_push_package(SPVM_PORTABLE* portable, SPVM_PACKAGE* package) 
   for (int32_t info_switch_info_id = 0; info_switch_info_id < package->info_switch_infos->length; info_switch_info_id++) {
     SPVM_SWITCH_INFO* info_switch_info = SPVM_LIST_fetch(package->info_switch_infos, info_switch_info_id);
     SPVM_PORTABLE_push_info_switch_info(portable, info_switch_info);
+  }
+
+  for (int32_t info_type_id = 0; info_type_id < package->info_types->length; info_type_id++) {
+    SPVM_TYPE* info_type = SPVM_LIST_fetch(package->info_types, info_type_id);
+    SPVM_PORTABLE_push_info_type(portable, info_type);
   }
 
   portable->packages_length++;
@@ -290,8 +298,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub->mortal_stack_length = sub->mortal_stack_length;
   new_portable_sub->arg_ids_base = portable->args_length;
   new_portable_sub->arg_ids_length = sub->args->length;
-  new_portable_sub->info_types_base = portable->info_types_length;
-  new_portable_sub->info_types_length = sub->info_types->length;
   new_portable_sub->opcodes_length = sub->opcodes_length;
   new_portable_sub->call_type_id = sub->call_type_id;
   new_portable_sub->byte_vars_alloc_length = sub->byte_vars_alloc_length;
@@ -306,11 +312,6 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
     SPVM_PORTABLE_push_arg(portable, my);
-  }
-
-  for (int32_t info_type_id = 0; info_type_id < sub->info_types->length; info_type_id++) {
-    SPVM_TYPE* info_type = SPVM_LIST_fetch(sub->info_types, info_type_id);
-    SPVM_PORTABLE_push_info_type(portable, info_type);
   }
 
   portable->subs_length++;

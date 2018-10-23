@@ -410,8 +410,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       case SPVM_OPCODE_C_ID_ISA_OBJECT: {
         void* object = *(void**)&object_vars[opcode->operand0];
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t check_basic_type_id = type->basic_type_id;
         int32_t check_type_dimension = type->dimension;
         
@@ -428,8 +428,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_ISA_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand0];
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t check_basic_type_id = type->basic_type_id;
         int32_t check_type_dimension = type->dimension;
         
@@ -1956,8 +1956,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t basic_type_id = type->basic_type_id;
         
         void* object = env->new_object_raw(env, basic_type_id);
@@ -2060,8 +2060,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t basic_type_id = type->basic_type_id;
         
         int32_t length = int_vars[opcode->operand2];
@@ -2077,8 +2077,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t basic_type_id = type->basic_type_id;
         int32_t element_dimension = type->dimension - 1;
         
@@ -2095,8 +2095,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_ARRAY: {
-        int32_t rel_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[sub->info_types_base + rel_id];
+        int32_t info_constant_id = opcode->operand1;
+        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
         int32_t basic_type_id = type->basic_type_id;
         
         // length
@@ -2312,8 +2312,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {
-          int32_t rel_id = opcode->operand2;
-          SPVM_RUNTIME_INFO_TYPE* check_type = &runtime->info_types[sub->info_types_base + rel_id];
+          int32_t info_constant_id = opcode->operand2;
+          SPVM_RUNTIME_INFO_TYPE* check_type = &runtime->info_types[package->info_types_base + info_constant_id];
           int32_t check_basic_type_id = check_type->basic_type_id;
           int32_t check_type_dimension = check_type->dimension;
           
@@ -2336,8 +2336,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {
-          int32_t rel_id = opcode->operand2;
-          SPVM_RUNTIME_INFO_TYPE* interface_type = &runtime->info_types[sub->info_types_base + rel_id];
+          int32_t info_constant_id = opcode->operand2;
+          SPVM_RUNTIME_INFO_TYPE* interface_type = &runtime->info_types[package->info_types_base + info_constant_id];
           int32_t interface_basic_type_id = interface_type->basic_type_id;
           int32_t interface_type_dimension = interface_type->dimension;
           
