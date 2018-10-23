@@ -1071,6 +1071,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     }
   }
 
+  // Sub id declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Sub id declarations\n");
+  {
+    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < package->info_sub_ids_length; info_sub_ids_index++) {
+      int32_t sub_id = runtime->info_sub_ids[package->info_sub_ids_base + info_sub_ids_index];
+      SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
+      SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      const char* sub_name = runtime->symbols[sub->name_id];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+    }
+  }
+
   // Subroutine decrations
   SPVM_STRING_BUFFER_add(string_buffer, "// Function Declarations\n");
   {
@@ -3280,23 +3296,27 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         // Call subroutine
         if (is_sub) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+          SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = env->get_sub_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+          SPVM_STRING_BUFFER_add(string_buffer, "      if (");
           SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Subroutine not found ");
+          SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_raw(env, \"Subroutine not found ");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, " ");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_signature);
           SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "        return SPVM_EXCEPTION;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_sub_id = ");
           SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, decl_sub_package_name, decl_sub_name);
