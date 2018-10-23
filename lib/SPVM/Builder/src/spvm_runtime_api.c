@@ -105,7 +105,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   int32_t call_sub_arg_stack_top = 0;
   
   // Mortal stack
-  int32_t* mortal_stack = NULL;
+  uint16_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
   
   // object variables
@@ -188,7 +188,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       call_stack_offset += sub->int_vars_alloc_length;
 
       // Mortal stack
-      mortal_stack = (int32_t*)&call_stack[call_stack_offset];
+      mortal_stack = (uint16_t*)&call_stack[call_stack_offset];
       call_stack_offset += sub->mortal_stack_length;
 
       // Short variables
