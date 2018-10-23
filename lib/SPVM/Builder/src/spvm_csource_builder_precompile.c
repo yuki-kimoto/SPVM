@@ -1488,41 +1488,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
 
-  // Get basic type id
-  if (package->info_types_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  // Get basic type id\n");
-  }
-  {
-    SPVM_HASH* basic_type_symtable = SPVM_HASH_new(1);
-    int32_t type_index;
-    for (type_index = 0; type_index < package->info_types_length; type_index++) {
-      SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + type_index];
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[type->basic_type_id];
-      const char* basic_type_name = runtime->symbols[basic_type->name_id];
-      
-      SPVM_RUNTIME_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(basic_type_symtable, basic_type_name, strlen(basic_type_name));
-      if (!found_basic_type) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* exception = env->new_string_raw(env, \"Basic type not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->set_exception(env, exception);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    return SPVM_EXCEPTION;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        
-        SPVM_HASH_insert(basic_type_symtable, basic_type_name, strlen(basic_type_name), basic_type);
-      }
-    }
-    SPVM_HASH_free(basic_type_symtable);
-  }
-  
   SPVM_OPCODE* opcodes = runtime->opcodes;
   int32_t sub_opcodes_base = sub->opcodes_base;
   int32_t opcodes_length = sub->opcodes_length;
@@ -1660,6 +1625,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t dimension = type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1693,6 +1674,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t dimension = type->dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2585,6 +2580,21 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* basic_type_name = runtime->symbols[basic_type->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2714,13 +2724,30 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* basic_type_name = runtime->symbols[basic_type->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = *(SPVM_VALUE_int*)&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (length >= 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_object_array_raw(env, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ", length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_object_array_raw(env, basic_type_id, length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
@@ -2743,13 +2770,30 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t element_dimension = type->dimension - 1;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = *(SPVM_VALUE_int*)&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (length >= 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_multi_array_raw(env, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_multi_array_raw(env, basic_type_id, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, element_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ", length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&");
@@ -2774,13 +2818,30 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* basic_type_name = runtime->symbols[basic_type->name_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length = *(SPVM_VALUE_int*)&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (length >= 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_value_t_array_raw(env, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, basic_type_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ", length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* object = env->new_value_t_array_raw(env, basic_type_id, length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
@@ -3134,6 +3195,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* cast_basic_type_name = runtime->symbols[cast_basic_type->name_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3175,6 +3252,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* cast_basic_type_name = runtime->symbols[cast_basic_type->name_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t ");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+        SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, " == 0) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Basic type not found ");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      return SPVM_EXCEPTION;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
