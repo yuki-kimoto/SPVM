@@ -35,9 +35,6 @@ struct SPVM_sub {
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
   int32_t call_type_id;
-  
-  SPVM_LIST* info_types;
-  
   int32_t id;
   void* precompile_address;
   void* native_address;
