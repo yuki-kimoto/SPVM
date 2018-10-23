@@ -136,6 +136,27 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   SPVM_VALUE* call_stack = NULL;
   int32_t call_stack_offset = 0;
   {
+    // Numeric area byte size
+    int32_t numeric_area_byte_size = 0;
+    numeric_area_byte_size += sub->long_vars_alloc_length * 8;
+    numeric_area_byte_size += sub->double_vars_alloc_length * 8;
+    numeric_area_byte_size += sub->int_vars_alloc_length * 4;
+    numeric_area_byte_size += sub->float_vars_alloc_length * 4;
+    numeric_area_byte_size += sub->short_vars_alloc_length * 2;
+    numeric_area_byte_size += sub->byte_vars_alloc_length * 1;
+    
+    if (numeric_area_byte_size % 8 != 0) {
+      numeric_area_byte_size += (8 - (numeric_area_byte_size % 8));
+    }
+    
+    // Address area byte size
+    int32_t address_area_byte_size = 0;
+    address_area_byte_size += sub->object_vars_alloc_length * sizeof(void*);
+    address_area_byte_size += sub->ref_vars_alloc_length * sizeof(void*);
+    
+    // Total area byte size
+    int32_t total_area_byte_size = numeric_area_byte_size + address_area_byte_size;
+    
     int32_t total_call_stack_length =
       sub->object_vars_alloc_length +
       sub->ref_vars_alloc_length +
