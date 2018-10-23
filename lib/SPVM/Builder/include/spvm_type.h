@@ -47,6 +47,7 @@ struct SPVM_type {
   int32_t flag;
   int32_t sub_rel_id;
   int8_t is_self;
+  int32_t info_constant_id;
 };
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
