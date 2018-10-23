@@ -500,11 +500,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         else if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           add_constant = 1;
                           
-                          if (package->info_string_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                            SPVM_yyerror_format(compiler, "Too many string constants at %s line %d\n", op_cur->file, op_cur->line);
+                          char* string_value_string = op_cur->uv.constant->value.oval;
+                          int32_t string_length = op_cur->uv.constant->string_length;
+                          int32_t found_string_constant_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_string_constant_symtable, string_value_string, string_length);
+                          if (found_string_constant_id_plus1 > 0) {
+                            op_cur->uv.constant->info_string_constant_id = found_string_constant_id_plus1 - 1;
                           }
-                          op_cur->uv.constant->info_string_constant_id = package->info_string_constants->length;
-                          SPVM_LIST_push(package->info_string_constants, op_cur->uv.constant);
+                          else {
+                            op_cur->uv.constant->info_string_constant_id = package->info_string_constants->length;
+                            SPVM_LIST_push(package->info_string_constants, (void*)(intptr_t)op_cur->uv.constant);
+                            int32_t info_string_constant_id_plus1 = op_cur->uv.constant->info_string_constant_id + 1;
+                            SPVM_HASH_insert(package->info_string_constant_symtable, string_value_string, string_length, (void*)(intptr_t)info_string_constant_id_plus1);
+                          }
+                          if (package->info_string_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                            SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                          }
                         }
                         
                         break;
