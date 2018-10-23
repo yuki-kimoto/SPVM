@@ -148,14 +148,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   if (total_call_stack_length > 0) {
     call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_call_stack_length);
 
-    // Object variables
-    object_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += sub->object_vars_alloc_length;
-    
-    // Refernce variables
-    ref_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += sub->ref_vars_alloc_length;
-    
     // Double variables
     double_vars = (double*)&call_stack[call_stack_offset];
     call_stack_offset += sub->double_vars_alloc_length;
@@ -171,7 +163,11 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     // Int variables
     int_vars = (SPVM_VALUE_int*)&call_stack[call_stack_offset];
     call_stack_offset += sub->int_vars_alloc_length;
-    
+
+    // Mortal stack
+    mortal_stack = (int32_t*)&call_stack[call_stack_offset];
+    call_stack_offset += sub->mortal_stack_length;
+
     // Short variables
     short_vars = (SPVM_VALUE_short*)&call_stack[call_stack_offset];
     call_stack_offset += sub->short_vars_alloc_length;
@@ -180,13 +176,19 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     byte_vars = (SPVM_VALUE_byte*)&call_stack[call_stack_offset];
     call_stack_offset += sub->byte_vars_alloc_length;
 
-    // Mortal stack
-    mortal_stack = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += sub->mortal_stack_length;
+    // Object variables
+    object_vars = (void**)&call_stack[call_stack_offset];
+    call_stack_offset += sub->object_vars_alloc_length;
+    
+    // Refernce variables
+    ref_vars = (void**)&call_stack[call_stack_offset];
+    call_stack_offset += sub->ref_vars_alloc_length;
   }
 
   // Buffer for string convertion
-  char string_convert_buffer[30];
+  // double need 17 digit
+  // int64_t need 21 gidit (-9223372036854775808 + (null character))
+  char string_convert_buffer[21];
   
   // Copy arguments to variables
   {
