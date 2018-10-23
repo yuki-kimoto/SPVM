@@ -1965,7 +1965,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           case SPVM_BASIC_TYPE_C_ID_LONG:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_LONG);
                             opcode.operand1 = constant->info_long_constant_id;
-                            opcode.operand2 = constant->sub_rel_info_long_id;
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
@@ -1976,7 +1975,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE);
                             opcode.operand1 = constant->info_double_constant_id;
-                            opcode.operand2 = constant->sub_rel_info_double_id;
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             break;
                           default:
@@ -2527,7 +2525,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CONSTANT* constant = op_assign_src->first->uv.constant;
 
                           opcode.operand0 = var_id_out;
-                          opcode.operand2 = constant->sub_rel_info_string_id;
+                          opcode.operand1 = constant->info_string_constant_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }

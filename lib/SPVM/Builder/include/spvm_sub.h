@@ -37,10 +37,8 @@ struct SPVM_sub {
   int32_t call_type_id;
   
   SPVM_LIST* info_sub_ids;
-  SPVM_LIST* info_field_ids;
   SPVM_LIST* info_types;
   SPVM_LIST* info_switch_infos;
-  SPVM_LIST* info_string_constants;
   
   int32_t id;
   void* precompile_address;

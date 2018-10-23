@@ -500,11 +500,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         else if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           add_constant = 1;
                           
-                          if (sub->info_string_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          if (package->info_string_constants->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                             SPVM_yyerror_format(compiler, "Too many string constants at %s line %d\n", op_cur->file, op_cur->line);
                           }
-                          op_cur->uv.constant->sub_rel_info_string_id = sub->info_string_constants->length;
-                          SPVM_LIST_push(sub->info_string_constants, op_cur->uv.constant);
+                          op_cur->uv.constant->info_string_constant_id = package->info_string_constants->length;
+                          SPVM_LIST_push(package->info_string_constants, op_cur->uv.constant);
                         }
                         
                         break;

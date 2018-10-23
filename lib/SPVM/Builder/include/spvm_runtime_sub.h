@@ -17,7 +17,6 @@ struct SPVM_runtime_sub {
   int32_t info_sub_ids_base;
   int32_t info_types_base;
   int32_t info_switch_infos_base;
-  int32_t info_string_values_base;
   uint16_t opcodes_length;
   uint16_t return_type_flag;
   uint16_t flag;
@@ -26,7 +25,6 @@ struct SPVM_runtime_sub {
   uint16_t info_sub_ids_length;
   uint16_t info_types_length;
   uint16_t info_switch_infos_length;
-  uint16_t info_string_values_length;
   uint16_t byte_vars_alloc_length;
   uint16_t short_vars_alloc_length;
   uint16_t int_vars_alloc_length;
