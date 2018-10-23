@@ -17,7 +17,6 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   sub->mys = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->object_arg_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
-  sub->info_sub_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   

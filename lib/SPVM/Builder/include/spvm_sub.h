@@ -36,7 +36,6 @@ struct SPVM_sub {
   int32_t mortal_stack_length;
   int32_t call_type_id;
   
-  SPVM_LIST* info_sub_ids;
   SPVM_LIST* info_types;
   SPVM_LIST* info_switch_infos;
   
