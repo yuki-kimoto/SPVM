@@ -1473,13 +1473,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   }
 
   // Get sub id
-  if (sub->info_sub_ids_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  // Get sub id\n");
-  }
   {
     SPVM_HASH* sub_id_symtable = SPVM_HASH_new(1);
-    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < sub->info_sub_ids_length; info_sub_ids_index++) {
-      int32_t sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + info_sub_ids_index];
+    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < package->info_sub_ids_length; info_sub_ids_index++) {
+      int32_t sub_id = runtime->info_sub_ids[package->info_sub_ids_base + info_sub_ids_index];
       SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
       SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
       const char* sub_package_name = runtime->symbols[sub_package->name_id];
@@ -3302,8 +3299,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         }
         
         int32_t var_id = opcode->operand0;
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
 
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
 

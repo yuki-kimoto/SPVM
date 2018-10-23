@@ -2358,8 +2358,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2367,8 +2367,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2379,8 +2379,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2391,8 +2391,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2403,8 +2403,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2415,8 +2415,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2427,8 +2427,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2439,8 +2439,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2451,8 +2451,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_BYTE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2466,8 +2466,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_SHORT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2481,8 +2481,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_INT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2496,8 +2496,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_LONG:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2511,8 +2511,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_FLOAT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2526,8 +2526,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_SUB_VALUE_DOUBLE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t call_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t call_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* call_sub = &runtime->subs[call_sub_id];
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
@@ -2541,8 +2541,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2553,8 +2553,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2568,8 +2568,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2583,8 +2583,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2598,8 +2598,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2613,8 +2613,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2628,8 +2628,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2643,8 +2643,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2658,8 +2658,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_BYTE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2676,8 +2676,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_SHORT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2694,8 +2694,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_INT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2712,8 +2712,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_FLOAT:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
@@ -2730,8 +2730,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_VALUE_DOUBLE:
       {
-        int32_t rel_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[sub->info_sub_ids_base + rel_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];

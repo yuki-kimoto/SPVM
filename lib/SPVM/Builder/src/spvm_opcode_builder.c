@@ -703,7 +703,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
 
                           opcode.operand0 = var_id_out;
-                          opcode.operand1 = call_sub->sub_rel_id;
+                          opcode.operand1 = call_sub->info_constant_id;
                           opcode.operand2 = first_arg_var_id;
                         }
                         else {
@@ -800,7 +800,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           opcode.operand0 = var_id_out;
-                          opcode.operand1 = call_sub->sub_rel_id;
+                          opcode.operand1 = call_sub->info_constant_id;
                         }
                         
                         int32_t call_sub_return_type_width = SPVM_TYPE_get_width(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag);
@@ -4316,12 +4316,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_VOID);
-                        opcode.operand1 = call_sub->sub_rel_id;
+                        opcode.operand1 = call_sub->info_constant_id;
                         opcode.operand2 = first_arg_var_id;
                       }
                       else {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_VOID);
-                        opcode.operand1 = call_sub->sub_rel_id;
+                        opcode.operand1 = call_sub->info_constant_id;
                       }
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

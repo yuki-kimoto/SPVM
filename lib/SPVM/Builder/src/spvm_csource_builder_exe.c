@@ -352,6 +352,12 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".info_string_values_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_string_values_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".info_sub_ids_base = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_sub_ids_base);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".info_sub_ids_length = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_sub_ids_length);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
@@ -411,12 +417,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".arg_ids_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->arg_ids_length);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_sub_ids_base = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->info_sub_ids_base);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_sub_ids_length = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->info_sub_ids_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".info_types_base = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->info_types_base);
