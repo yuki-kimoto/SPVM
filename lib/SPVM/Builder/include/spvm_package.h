@@ -37,7 +37,7 @@ struct SPVM_package {
   SPVM_LIST* info_package_var_ids;
   SPVM_HASH* info_package_var_id_symtable;
   SPVM_LIST* info_sub_ids;
-  SPVM_HASH* info_sub_ids_symtable;
+  SPVM_HASH* info_sub_id_symtable;
   SPVM_LIST* info_field_ids;
   SPVM_HASH* info_field_id_symtable;
   SPVM_LIST* info_types;

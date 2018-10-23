@@ -2145,10 +2145,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           sub->call_sub_arg_stack_max = call_sub_args_count;
                         }
 
-                        op_cur->uv.call_sub->info_constant_id = package->info_sub_ids->length;
-                        SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
+                        // Add info sub id
+                        char sub_id_string[sizeof(int32_t)];
+                        memcpy(sub_id_string, &op_cur->uv.call_sub->sub->id, sizeof(int32_t));
+                        int32_t found_sub_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));
+                        if (found_sub_id_plus1 > 0) {
+                          op_cur->uv.call_sub->info_constant_id = found_sub_id_plus1 - 1;
+                        }
+                        else {
+                          op_cur->uv.call_sub->info_constant_id = package->info_sub_ids->length;
+                          SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
+                          int32_t info_sub_id_plus1 = op_cur->uv.call_sub->info_constant_id + 1;
+                          SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)info_sub_id_plus1);
+                        }
                         if (package->info_sub_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_yyerror_format(compiler, "Too many call sub at %s line %d\n", op_cur->file, op_cur->line);
+                          SPVM_yyerror_format(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                         }
                         
                         if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
