@@ -2916,8 +2916,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
 
-        int32_t rel_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, sub->info_switch_infos_base + rel_id);
+        int32_t info_constant_id = opcode->operand2;
+        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, sub->info_switch_infos_base + info_constant_id);
         SPVM_LIST* case_infos = switch_info->case_infos;
         
         // default

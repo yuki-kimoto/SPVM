@@ -565,7 +565,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         op_cur->uv.switch_info->sub_rel_id = sub->info_switch_infos->length;
                         SPVM_LIST_push(sub->info_switch_infos, op_cur->uv.switch_info);
-                      
+
+                        if (package->info_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                          SPVM_yyerror_format(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
+                        }
+                        op_cur->uv.switch_info->info_constant_id = package->info_switch_infos->length;
+                        SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
+                        
                         break;
                       }
                       case SPVM_OP_C_ID_CASE: {
