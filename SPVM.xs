@@ -1944,7 +1944,7 @@ set_array_elements_bin(...)
   int32_t length = env->get_array_length(env, array);
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
+  int32_t is_array_type = dimension > 0;
 
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
@@ -2151,7 +2151,7 @@ set_array_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
+  int32_t is_array_type = dimension > 0;
 
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
@@ -2352,7 +2352,7 @@ get_array_element(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
+  int32_t is_array_type = dimension > 0;
 
   SV* sv_value = NULL;
   int32_t is_object = 0;
@@ -2428,7 +2428,7 @@ get_array_element(...)
         env->inc_ref_count(env, value);
       }
       
-      int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
+      int32_t element_type_is_array_type = element_type_dimension > 0;
       if (element_type_is_array_type) {
         sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
       }
@@ -2522,7 +2522,7 @@ get_array_elements(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
+  int32_t is_array_type = dimension > 0;
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
@@ -2603,7 +2603,7 @@ get_array_elements(...)
           env->inc_ref_count(env, value);
         }
         
-        int32_t element_type_is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, element_type_dimension, 0);
+        int32_t element_type_is_array_type = element_type_dimension > 0;
         SV* sv_value;
         if (element_type_is_array_type) {
           sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
@@ -2726,7 +2726,7 @@ get_array_elements_bin(...)
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, basic_type_id, dimension, 0);
+  int32_t is_array_type = dimension > 0;
   
   SV* sv_bin;
   if (is_array_type) {
