@@ -24,7 +24,6 @@ struct SPVM_object {
   uint8_t has_destructor;
   uint8_t in_destroy;
   uint8_t category;
-  uint8_t type_flag;
 };
 
 #endif

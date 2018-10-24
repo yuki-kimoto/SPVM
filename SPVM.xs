@@ -1723,7 +1723,6 @@ set_array_elements(...)
   
   int32_t array_basic_type_id  = array->basic_type_id;
   int32_t array_type_dimension = array->type_dimension;
-  int32_t array_type_flag = array->type_flag;
   int32_t is_array_type = array_type_dimension > 0;
   
   if (is_array_type) {
