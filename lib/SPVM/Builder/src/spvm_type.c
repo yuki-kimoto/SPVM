@@ -89,7 +89,24 @@ int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_i
     }
   }
   else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
-    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT;
+    if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT;
+    }
+    else if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+    }
+    else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+    }
+    else if (SPVM_TYPE_is_value_array_type(compiler, basic_type_id, dimension, flag)) {
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY;
+    }
+    else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
+    }
+    else {
+      assert(0);
+    }
   }
   else if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
     switch (basic_type_id) {

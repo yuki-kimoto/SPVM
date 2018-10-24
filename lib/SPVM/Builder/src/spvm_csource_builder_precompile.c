@@ -1452,7 +1452,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->var_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -5007,8 +5012,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
+  switch (sub->return_runtime_type) {
+    case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+    case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+    {
+      SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
+    }
+    break;
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   

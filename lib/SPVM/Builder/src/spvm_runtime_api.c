@@ -300,7 +300,12 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        {
           object_vars[arg->var_id] = *(void**)&stack[stack_index];
 
           // If arg is object, increment reference count
@@ -3702,9 +3707,16 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT) {
-      if (*(void**)&stack[0] != NULL) {
-        SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
+    switch (sub->return_runtime_type) {
+      case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+      case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+      case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+      case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+      case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+      {
+        if (*(void**)&stack[0] != NULL) {
+          SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
+        }
       }
     }
   }
@@ -4448,7 +4460,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->elements_length = length;
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4469,7 +4481,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length)
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
 
   return object;
 }
@@ -4490,7 +4502,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4515,7 +4527,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length) 
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4536,7 +4548,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4557,7 +4569,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_NUMERIC_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4581,8 +4593,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   // Set array length
   object->elements_length = length;
   
-  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
-  
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
   
   return object;
 }
@@ -4604,7 +4615,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   // Set array length
   object->elements_length = length;
   
-  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
   
   return object;
 }
@@ -4657,7 +4668,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
   // Set array length
   object->elements_length = length;
 
-  object->category = SPVM_OBJECT_C_CATEGORY_VALUE_T_ARRAY;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY;
 
   return object;
 }
@@ -4693,7 +4704,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->elements_length = fields_length;
 
   // Object type id
-  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
   if (package->destructor_sub_id > 0) {
@@ -4732,7 +4743,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->elements_length = 1;
 
   // Object type id
-  object->category = SPVM_OBJECT_C_CATEGORY_OBJECT;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
   if (package->destructor_sub_id > 0) {
@@ -4885,7 +4896,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
 
-    if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT_ARRAY) {
+    if (object->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       int32_t length = object->elements_length;
       {
         int32_t index;
@@ -4904,7 +4915,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
-    else if (object->category == SPVM_OBJECT_C_CATEGORY_OBJECT) {
+    else if (object->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE) {
       
       if (object->has_destructor) {
         if (object->in_destroy) {

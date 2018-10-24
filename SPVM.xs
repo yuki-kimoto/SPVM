@@ -1051,7 +1051,12 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+        case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+        case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        {
           if (!SvOK(sv_value)) {
             stack[arg_var_id].oval = NULL;
           }
@@ -1450,7 +1455,12 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+    case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+    case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+    {
       excetpion_flag = env->call_sub(env, sub_id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
