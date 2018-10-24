@@ -1734,7 +1734,7 @@ set_array_elements(...)
   int32_t array_basic_type_id  = array->basic_type_id;
   int32_t array_type_dimension = array->type_dimension;
   int32_t array_type_flag = array->type_flag;
-  int32_t is_array_type = SPVM_RUNTIME_API_is_array_type(env, array_basic_type_id, array_type_dimension, array_type_flag);
+  int32_t is_array_type = array_type_dimension > 0;
   
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array_basic_type_id];
