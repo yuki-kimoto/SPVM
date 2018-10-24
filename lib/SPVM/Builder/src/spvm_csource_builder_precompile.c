@@ -1230,12 +1230,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
 
-  int32_t sub_return_basic_type_id = sub->return_basic_type_id;
-  int32_t sub_return_type_dimension = sub->return_type_dimension;
-  int32_t sub_return_type_flag = sub->return_type_flag;
-  
-  int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-  
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
   
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(env, string_buffer, package_name, sub_name);
@@ -5013,7 +5007,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  if (sub_return_type_is_object_type) {
+  if (sub->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT) {
     SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");

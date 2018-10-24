@@ -3702,10 +3702,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    int32_t sub_return_basic_type_id = sub->return_basic_type_id;
-    int32_t sub_return_type_dimension = sub->return_type_dimension;
-    int32_t sub_return_type_flag = sub->return_type_flag;
-    if (SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag)) {
+    if (sub->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT) {
       if (*(void**)&stack[0] != NULL) {
         SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
       }
