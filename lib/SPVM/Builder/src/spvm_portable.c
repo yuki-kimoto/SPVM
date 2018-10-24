@@ -308,7 +308,7 @@ void SPVM_PORTABLE_push_sub(SPVM_PORTABLE* portable, SPVM_SUB* sub) {
   new_portable_sub->double_vars_alloc_length = sub->double_vars_alloc_length;
   new_portable_sub->object_vars_alloc_length = sub->object_vars_alloc_length;
   new_portable_sub->ref_vars_alloc_length = sub->ref_vars_alloc_length;
-  new_portable_sub->runtime_type = sub->runtime_type;
+  new_portable_sub->return_runtime_type = sub->return_runtime_type;
   
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);

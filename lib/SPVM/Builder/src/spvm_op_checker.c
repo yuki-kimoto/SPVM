@@ -2949,7 +2949,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             sub->object_vars_alloc_length = my_object_var_id;
             sub->ref_vars_alloc_length = my_ref_var_id;
             
-            sub->runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
+            sub->return_runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
 
             // Resolve my runtime type and width
             for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {

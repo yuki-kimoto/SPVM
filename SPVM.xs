@@ -94,23 +94,6 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   }
 }
 
-SV* SPVM_XS_UTIL_create_sv_type_name(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension) {
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
-  const char* basic_type_name = runtime->symbols[basic_type->id];
-  assert(basic_type);
-
-  SV* sv_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-  
-  int32_t dim_index;
-  for (dim_index = 0; dim_index < dimension; dim_index++) {
-    sv_catpv(sv_type_name, "[]");
-  }
-  
-  return sv_type_name;
-}
-
 MODULE = SPVM::Data		PACKAGE = SPVM::Data
 
 SV*
@@ -1403,140 +1386,147 @@ call_sub(...)
     }
   }
   
-  // Return type id
-  int32_t sub_return_basic_type_id = sub->return_basic_type_id;
-  int32_t sub_return_type_dimension = sub->return_type_dimension;
-  int32_t sub_return_type_flag = sub->return_type_flag;
-
-  int32_t sub_return_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-  int32_t sub_return_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, sub_return_basic_type_id, sub_return_type_dimension, sub_return_type_flag);
-  
-  // Return count
+  // Return
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
-  if (sub_return_type_is_value_type) {
-    excetpion_flag = env->call_sub(env, sub_id, stack);
-    
-    SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub_return_basic_type_id];
+  switch (sub->return_runtime_type) {
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE:
+    {
+      int32_t sub_return_basic_type_id = sub->return_basic_type_id;
+      int32_t sub_return_type_dimension = sub->return_type_dimension;
 
-    SPVM_RUNTIME_PACKAGE* sub_return_package = &runtime->packages[sub_return_basic_type->package_id];
-    assert(sub_return_package);
-    
-    SPVM_RUNTIME_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
-    assert(sub_return_first_field);
-    
-    HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-    for (int32_t field_index = 0; field_index < sub_return_package->fields->length; field_index++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
-      const char* field_name = runtime->symbols[field->name_id];
+      excetpion_flag = env->call_sub(env, sub_id, stack);
       
-      SV* sv_field_value = NULL;
-      switch (sub_return_first_field->basic_type_id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
-          break;
-        }
-        default:
-          assert(0);
-      }
+      SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub_return_basic_type_id];
+
+      SPVM_RUNTIME_PACKAGE* sub_return_package = &runtime->packages[sub_return_basic_type->package_id];
+      assert(sub_return_package);
       
-      (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
-      sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
-    }
-  }
-  else if (sub_return_type_is_object_type) {
-    excetpion_flag = env->call_sub(env, sub_id, stack);
-    if (!excetpion_flag) {
-      void* return_value = stack[0].oval;
-      sv_return_value = NULL;
-      if (return_value != NULL) {
-        env->inc_ref_count(env, return_value);
+      SPVM_RUNTIME_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
+      assert(sub_return_first_field);
+      
+      HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
+      for (int32_t field_index = 0; field_index < sub_return_package->fields->length; field_index++) {
+        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
+        const char* field_name = runtime->symbols[field->name_id];
         
-        if (sub_return_type_dimension == 0) {
-          SV* sv_return_type_name = SPVM_XS_UTIL_create_sv_type_name(env, sub_return_basic_type_id, sub_return_type_dimension);
+        SV* sv_field_value = NULL;
+        switch (sub_return_first_field->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
+            break;
+          }
+          default:
+            assert(0);
+        }
+        
+        (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
+        sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        void* return_value = stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
           
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_return_type_name));
+          if (sub->return_type_dimension == 0) {
+            SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[sub->return_basic_type_id];
+            const char* basic_type_name = runtime->symbols[sub->return_basic_type_id];
+
+            SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+            
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
+          }
+          else if (sub->return_type_dimension > 0) {
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
+          }
+          else {
+            assert(0);
+          }
         }
-        else if (sub_return_type_dimension > 0) {
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
+        else {
+          sv_return_value = &PL_sv_undef;
         }
       }
-      else {
-        sv_return_value = &PL_sv_undef;
-      }
+      break;
     }
-  }
-  else {
-    switch (sub_return_basic_type_id) {
-      case SPVM_BASIC_TYPE_C_ID_VOID:  {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSViv(stack[0].bval));
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSViv(stack[0].sval));
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_INT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSViv(stack[0].ival));
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_LONG: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSViv(stack[0].lval));
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
-        }
-        break;
-      }
-      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        excetpion_flag = env->call_sub(env, sub_id, stack);
-        if (!excetpion_flag) {
-          sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
-        }
-        break;
-      }
-      default:
-        assert(0);
+    case SPVM_TYPE_C_RUNTIME_TYPE_VOID: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      break;
     }
+    case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].bval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].sval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].ival));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].lval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
+      }
+      break;
+    }
+    default:
+      assert(0);
   }
   
   if (args_contain_ref) {
@@ -1681,7 +1671,7 @@ call_sub(...)
   // Success
   else {
     int32_t return_count;
-    if (sub_return_type_dimension == 0 && sub_return_basic_type_id == SPVM_BASIC_TYPE_C_ID_VOID) {
+    if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VOID) {
       return_count = 0;
     }
     else {

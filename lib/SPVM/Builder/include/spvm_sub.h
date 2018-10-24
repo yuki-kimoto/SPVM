@@ -57,7 +57,7 @@ struct SPVM_sub {
   int32_t double_vars_alloc_length;
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
-  int32_t runtime_type;
+  int32_t return_runtime_type;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

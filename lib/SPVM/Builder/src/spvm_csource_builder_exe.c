@@ -460,8 +460,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".ref_vars_alloc_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->ref_vars_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->runtime_type);
+    SPVM_STRING_BUFFER_add(string_buffer, ".return_runtime_type = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->return_runtime_type);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
