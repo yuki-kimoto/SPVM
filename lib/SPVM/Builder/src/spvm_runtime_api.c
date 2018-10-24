@@ -448,8 +448,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t check_type_dimension = type->dimension;
         
         if (object) {
-          int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);
         }
         else {
@@ -466,8 +466,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t check_type_dimension = type->dimension;
         
         if (object) {
-          int32_t object_basic_type_id = *(int32_t*)(object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension = *(int32_t*)(object + (intptr_t)env->object_type_dimension_byte_offset);
+          int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           condition_flag = env->has_interface(env, object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);
         }
         else {
@@ -2350,9 +2350,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t check_type_dimension = check_type->dimension;
           
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           
-          if (object_basic_type_id == check_basic_type_id && object_type_dimension_id == check_type_dimension) {
+          if (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
@@ -2374,9 +2374,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t interface_type_dimension = interface_type->dimension;
           
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           
-          if (env->has_interface(env, object_basic_type_id, object_type_dimension_id, interface_basic_type_id, interface_type_dimension)) {
+          if (env->has_interface(env, object_basic_type_id, object_type_dimension, interface_basic_type_id, interface_type_dimension)) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
@@ -3569,8 +3569,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_byte_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_byte_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             byte_vars[opcode->operand0] = *(SPVM_VALUE_byte*)&fields[0];
           }
@@ -3591,8 +3591,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_short_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_short_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             short_vars[opcode->operand0] = *(SPVM_VALUE_short*)&fields[0];
           }
@@ -3613,8 +3613,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_int_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_int_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             int_vars[opcode->operand0] = *(SPVM_VALUE_int*)&fields[0];
           }
@@ -3635,8 +3635,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_long_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_long_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             long_vars[opcode->operand0] = *(SPVM_VALUE_long*)&fields[0];
           }
@@ -3657,8 +3657,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_float_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_float_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             float_vars[opcode->operand0] = *(SPVM_VALUE_float*)&fields[0];
           }
@@ -3680,8 +3680,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
-          int32_t object_type_dimension_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_double_object && object_type_dimension_id == 0) {
+          int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
+          if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_double_object && object_type_dimension == 0) {
             SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
             double_vars[opcode->operand0] = *(SPVM_VALUE_double*)&fields[0];
           }
