@@ -1738,10 +1738,8 @@ set_array_elements(...)
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array_basic_type_id];
     int32_t element_type_dimension = array_type_dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, array_basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, array_basic_type_id, element_type_dimension, 0);
     
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       for (int32_t index = 0; index < length; index++) {
         SV** sv_value_ptr = av_fetch(av_values, index, 0);
         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
@@ -1806,7 +1804,7 @@ set_array_elements(...)
         }
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       for (int32_t index = 0; index < length; index++) {
         SV** sv_value_ptr = av_fetch(av_values, index, 0);
         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
@@ -1948,10 +1946,8 @@ set_array_elements_bin(...)
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
@@ -2028,7 +2024,7 @@ set_array_elements_bin(...)
           assert(0);
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       croak("Object array is not supported");
     }
     else {
@@ -2155,10 +2151,8 @@ set_array_element(...)
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
     
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       if (sv_derived_from(sv_value, "HASH")) {
         SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
         assert(package);
@@ -2217,7 +2211,7 @@ set_array_element(...)
         croak("Element must be hash reference");
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       if (!SvOK(sv_value)) {
         env->set_object_array_element(env, array, index, NULL);
       }
@@ -2357,10 +2351,8 @@ get_array_element(...)
   int32_t is_object = 0;
   if (is_array_type) {
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
       
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -2416,7 +2408,7 @@ get_array_element(...)
         sv_value = sv_2mortal(newRV_inc((SV*)hv_value));
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       
       // Element type id
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -2527,10 +2519,8 @@ get_array_elements(...)
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -2591,7 +2581,7 @@ get_array_elements(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       for (int32_t index = 0; index < length; index++) {
         // Element type id
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -2731,10 +2721,8 @@ get_array_elements_bin(...)
   if (is_array_type) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
-    int32_t element_type_is_value_type = SPVM_RUNTIME_API_is_value_type(env, basic_type_id, element_type_dimension, 0);
-    int32_t element_type_is_object_type = SPVM_RUNTIME_API_is_object_type(env, basic_type_id, element_type_dimension, 0);
 
-    if (element_type_is_value_type) {
+    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
@@ -2784,7 +2772,7 @@ get_array_elements_bin(...)
           croak("Invalid type");
       }
     }
-    else if (element_type_is_object_type) {
+    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       croak("Objec type is not supported");
     }
     else {
