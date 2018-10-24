@@ -2948,39 +2948,36 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
             sub->object_vars_alloc_length = my_object_var_id;
             sub->ref_vars_alloc_length = my_ref_var_id;
+            
+            sub->runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
 
             // Resolve my runtime type and width
-            int32_t type_width;
-            int32_t runtime_type;
             for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
               SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
               SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
               
+              my->runtime_type = SPVM_TYPE_get_runtime_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+              
+              int32_t type_width;
               if (SPVM_TYPE_is_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
                 type_width = 1;
                 switch (my_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_BYTE;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_SHORT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_INT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_LONG;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_FLOAT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE;
                     break;
                   }
                   default: {
@@ -3002,27 +2999,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 type_width = value_package->fields->length;
                 switch (field_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE;
                     break;
                   }
                   default: {
@@ -3032,38 +3023,31 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               else if (SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
                 type_width = 1;
-                runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT;
               }
               else if (SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
                 switch (my_type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_INT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                     type_width = 1;
-                    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE;
                     break;
                   }
                   default: {
@@ -3080,27 +3064,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                     switch (field_type->basic_type->id) {
                       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE;
                         break;
                       }
                       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT;
                         break;
                       }
                       case SPVM_BASIC_TYPE_C_ID_INT: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT;
                         break;
                       }
                       case SPVM_BASIC_TYPE_C_ID_LONG: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG;
                         break;
                       }
                       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT;
                         break;
                       }
                       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE;
                         break;
                       }
                       default: {
@@ -3115,7 +3093,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 assert(0);
               }
               
-              my->runtime_type = runtime_type;
               my->type_width = type_width;
             }
           }

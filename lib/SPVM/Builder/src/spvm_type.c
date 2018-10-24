@@ -158,6 +158,9 @@ int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_i
       }
     }
   }
+  else if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
+    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VOID;
+  }
   else {
     assert(0);
   }
