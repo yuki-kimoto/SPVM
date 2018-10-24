@@ -58,6 +58,8 @@ int32_t SPVM_TYPE_has_interface(
   int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag
 );
 
+int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+
 SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_byte_type(SPVM_COMPILER* compiler);

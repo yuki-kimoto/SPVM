@@ -10,9 +10,160 @@
 #include "spvm_hash.h"
 #include "spvm_yacc_util.h"
 #include "spvm_package.h"
+#include "spvm_field.h"
 #include "spvm_limit.h"
 #include "spvm_basic_type.h"
 #include "spvm_sub.h"
+
+int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  int32_t runtime_type;
+  if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_BYTE;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_SHORT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_INT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_LONG;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_FLOAT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE;
+        break;
+      }
+      default: {
+        assert(0);
+        break;
+      }
+    }
+  }
+  else if (SPVM_TYPE_is_value_type(compiler, basic_type_id, dimension, flag)) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+    SPVM_PACKAGE* value_package = basic_type->package;
+    
+    SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+    
+    SPVM_TYPE* field_type = first_field->type;
+
+    switch (field_type->basic_type->id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE;
+        break;
+      }
+      default: {
+        assert(0);
+      }
+    }
+  }
+  else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
+    runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT;
+  }
+  else if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
+    switch (basic_type_id) {
+      case SPVM_BASIC_TYPE_C_ID_BYTE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_SHORT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_INT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_INT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_LONG: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT;
+        break;
+      }
+      case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+        runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE;
+        break;
+      }
+      default: {
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+        SPVM_PACKAGE* value_package = basic_type->package;
+        
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+        
+        SPVM_TYPE* field_type = first_field->type;
+
+        switch (field_type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE;
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT;
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT;
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG;
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT;
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE;
+            break;
+          }
+          default: {
+            assert(0);
+          }
+        }
+        break;
+      }
+    }
+  }
+  else {
+    assert(0);
+  }
+  
+  return runtime_type;
+}
 
 int32_t SPVM_TYPE_has_interface(
   SPVM_COMPILER* compiler,
