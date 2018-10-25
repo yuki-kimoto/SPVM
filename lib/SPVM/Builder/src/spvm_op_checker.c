@@ -4022,12 +4022,6 @@ const char* SPVM_OP_CHECKER_create_field_signature(SPVM_COMPILER* compiler, SPVM
   
   // Calcurate signature length
   {
-    // Field name
-    length += strlen(field->op_name->uv.name);
-
-    // :
-    length += 1;
-
     // Basic type
     length += strlen(field->type->basic_type->name);
     
@@ -4040,14 +4034,6 @@ const char* SPVM_OP_CHECKER_create_field_signature(SPVM_COMPILER* compiler, SPVM
   // Calcurate field signature length
   char* bufptr = field_signature;
   {
-    // Field name
-    memcpy(bufptr, field->op_name->uv.name, strlen(field->op_name->uv.name));
-    bufptr += strlen(field->op_name->uv.name);
-
-    // :
-    memcpy(bufptr, ":", 1);
-    bufptr += 1;
-
     // Basic type
     memcpy(bufptr, field->type->basic_type->name, strlen(field->type->basic_type->name));
     bufptr += strlen(field->type->basic_type->name);

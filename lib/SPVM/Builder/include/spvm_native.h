@@ -54,7 +54,7 @@ struct SPVM_env {
   double* (*get_double_array_elements)(SPVM_ENV*, void*);
   void* (*get_object_array_element)(SPVM_ENV*, void*, int32_t index);
   void (*set_object_array_element)(SPVM_ENV*, void*, int32_t index, void* value);
-  int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*);
+  int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*, const char*);
   int32_t (*get_field_index)(SPVM_ENV*, int32_t);
   int8_t (*get_byte_field)(SPVM_ENV*, void*, int32_t);
   int16_t (*get_short_field)(SPVM_ENV*, void*, int32_t);

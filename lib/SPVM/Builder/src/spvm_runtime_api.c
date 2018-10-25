@@ -4808,7 +4808,7 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id) {
   return field->index;
 }
 
-int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -4821,9 +4821,13 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   }
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(package->field_signature_symtable, signature, strlen(signature));
-  
+  SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
   if (!field) {
+    return 0;
+  }
+
+  // Signature
+  if (strcmp(signature, runtime->symbols[field->signature_id]) != 0) {
     return 0;
   }
   
