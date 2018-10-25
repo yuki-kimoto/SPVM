@@ -3857,10 +3857,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
-        
         const char* sub_signature = SPVM_OP_CHECKER_create_sub_signature(compiler, sub);
         sub->signature = sub_signature;
-        SPVM_LIST_push(sub->package->sub_signatures, (char*)sub_signature);
       }
     }
 
@@ -3869,10 +3867,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->fields->length; i++) {
         SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
-        
         const char* field_signature = SPVM_OP_CHECKER_create_field_signature(compiler, field);
         field->signature = field_signature;
-        SPVM_LIST_push(field->package->field_signatures, (char*)field_signature);
       }
     }
 
@@ -3881,10 +3877,8 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->package_vars->length; i++) {
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-        
         const char* package_var_signature = SPVM_OP_CHECKER_create_package_var_signature(compiler, package_var);
         package_var->signature = package_var_signature;
-        SPVM_LIST_push(package_var->package->package_var_signatures, (char*)package_var_signature);
       }
     }
 

@@ -24,12 +24,9 @@ struct SPVM_package {
   SPVM_HASH* package_var_symtable;
   SPVM_LIST* subs;
   SPVM_HASH* sub_symtable;
-  SPVM_LIST* sub_signatures;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
-  SPVM_LIST* field_signatures;
   SPVM_LIST* object_field_indexes;
-  SPVM_LIST* package_var_signatures;
   SPVM_SUB* sub_destructor;
   SPVM_LIST* info_package_var_ids;
   SPVM_HASH* info_package_var_id_symtable;

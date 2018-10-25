@@ -210,14 +210,11 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     
     package->fields = SPVM_LIST_new(0);
     package->field_symtable = SPVM_HASH_new(0);
-    package->field_signatures = SPVM_LIST_new(0);
     package->object_field_indexes = SPVM_LIST_new(0);
     package->package_vars = SPVM_LIST_new(0);
     package->package_var_symtable = SPVM_HASH_new(0);
-    package->package_var_signatures = SPVM_LIST_new(0);
     package->subs = SPVM_LIST_new(0);
     package->sub_symtable = SPVM_HASH_new(0);
-    package->sub_signatures = SPVM_LIST_new(0);
   }
 
   // Register field info to package
@@ -232,9 +229,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     const char* field_name = runtime->symbols[field->name_id];
     SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
     
-    const char* field_signature = runtime->symbols[field->signature_id];
-    SPVM_LIST_push(package->field_signatures, (char*)field_signature);
-
     switch (field->runtime_type) {
       case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
       case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
@@ -259,9 +253,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(package->package_vars, package_var);
     const char* package_var_name = runtime->symbols[package_var->name_id];
     SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
-    
-    const char* package_var_signature = runtime->symbols[package_var->signature_id];
-    SPVM_LIST_push(package->package_var_signatures, (char*)package_var_signature);
   }
 
   // Register sub info to package
@@ -275,10 +266,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(package->subs, sub);
     const char* sub_name = runtime->symbols[sub->name_id];
     SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
-    
-    const char* sub_signature = runtime->symbols[sub->signature_id];
-    SPVM_LIST_push(package->sub_signatures, (char*)sub_signature);
-    
+
     // Variable allocation max length
     int32_t vars_alloc_length = 
       sub->byte_vars_alloc_length +
@@ -348,17 +336,13 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   for (int32_t package_id = 1; package_id < runtime->packages_length; package_id++) {
     
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    SPVM_LIST_free(package->fields);
-    SPVM_LIST_free(package->field_signatures);
-    SPVM_LIST_free(package->package_vars);
     SPVM_LIST_free(package->subs);
-    SPVM_LIST_free(package->sub_signatures);
-    SPVM_LIST_free(package->object_field_indexes);
-
-    SPVM_HASH_free(package->field_symtable);
-    SPVM_HASH_free(package->package_var_symtable);
     SPVM_HASH_free(package->sub_symtable);
+    SPVM_LIST_free(package->fields);
+    SPVM_HASH_free(package->field_symtable);
+    SPVM_LIST_free(package->package_vars);
+    SPVM_HASH_free(package->package_var_symtable);
+    SPVM_LIST_free(package->object_field_indexes);
   }
   SPVM_HASH_free(runtime->package_symtable);
 
