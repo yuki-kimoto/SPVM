@@ -28,7 +28,7 @@
 %type <opval> opt_packages packages package anon_package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub opt_args args arg invocant has use our
+%type <opval> sub anon_sub opt_args args arg invocant has use our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -260,6 +260,12 @@ sub
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
+     }
+
+anon_sub
+  : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, NULL, $2, $4, $6, $1, $8);
      }
 
 opt_args
@@ -753,6 +759,25 @@ new
       $$ = SPVM_OP_build_new(compiler, op_new, $1, NULL);
     }
   | sub
+    {
+      // Package
+      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);
+      
+      // Create class block
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_list_declarations = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, $1);
+      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
+      
+      // Build package
+      SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+      
+      // New
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
+      
+      $$ = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
+    }
+  | anon_sub
     {
       // Package
       SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);
