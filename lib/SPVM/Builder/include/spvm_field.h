@@ -20,6 +20,7 @@ struct SPVM_field {
   int32_t index;
   int32_t flag;
   int32_t rel_id;
+  int32_t runtime_type;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

@@ -3803,6 +3803,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
             SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
           }
         }
+        
+        // Set runtime type
+        field->runtime_type = SPVM_TYPE_get_runtime_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       }
     }
     

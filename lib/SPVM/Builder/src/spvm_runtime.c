@@ -238,9 +238,17 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     const char* field_signature = runtime->symbols[field->signature_id];
     SPVM_LIST_push(package->field_signatures, (char*)field_signature);
     SPVM_HASH_insert(package->field_signature_symtable, field_signature, strlen(field_signature), field);
-    
-    if (SPVM_RUNTIME_API_is_object_type(env, field->basic_type_id, field->type_dimension, field->type_flag)) {
-      SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
+
+    switch (field->runtime_type) {
+      case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+      case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+      case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
+      case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+      case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+      {
+        SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
+        break;
+      }
     }
   }
   

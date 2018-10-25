@@ -463,10 +463,10 @@ void SPVM_PORTABLE_push_field(SPVM_PORTABLE* portable, SPVM_FIELD* field) {
     new_portable_field->basic_type_id = 0;
   }
   new_portable_field->type_dimension = field->type->dimension;
-  new_portable_field->type_flag = field->type->flag;
   if (field->package) {
     new_portable_field->package_id = field->package->id;
   }
+  new_portable_field->runtime_type = field->runtime_type;
   
   portable->fields_length++;
 }
