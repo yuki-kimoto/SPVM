@@ -8,19 +8,6 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);
 
-// Check type
-int32_t SPVM_RUNTIME_API_is_value_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_numeric_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_array_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_value_ref_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_package_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_any_object_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_is_numeric_type(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_RUNTIME_API_get_width(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t flag);
-
 // Get
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* array);
