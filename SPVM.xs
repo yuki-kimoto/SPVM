@@ -776,7 +776,7 @@ call_sub(...)
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
   const char* sub_signature = runtime->symbols[sub->signature_id];
-  int32_t sub_id = env->get_sub_id(env, package_name, sub_signature);
+  int32_t sub_id = env->get_sub_id(env, package_name, sub_name, sub_signature);
   if (sub_id < 0) {
     croak("Subroutine not found %s %s", package_name, sub_signature);
   }

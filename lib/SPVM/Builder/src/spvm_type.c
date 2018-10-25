@@ -206,14 +206,18 @@ int32_t SPVM_TYPE_has_interface(
   assert(interface->subs->length == 1);
   SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
   
-  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_signature_symtable, sub_interface->signature, strlen(sub_interface->signature));
+  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_interface->name, strlen(sub_interface->name));
+  if (!found_sub) {
+    return 0;
+  }
   
-  if (found_sub) {
+  if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
     return 1;
   }
   else {
     return 0;
   }
+  
 }
 
 SPVM_TYPE* SPVM_TYPE_clone_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {

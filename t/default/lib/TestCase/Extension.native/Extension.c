@@ -696,7 +696,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VAL
   (void)env;
   (void)stack;
   
-  int32_t sub_id = env->get_sub_id(env, "TestCase::Extension", "get_my_value:int(int)");
+  int32_t sub_id = env->get_sub_id(env, "TestCase::Extension", "get_my_value", "int(int)");
   if (sub_id < 0) {
     return SPVM_EXCEPTION;
   }

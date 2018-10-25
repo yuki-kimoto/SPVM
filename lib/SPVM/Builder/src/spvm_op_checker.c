@@ -3861,7 +3861,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         const char* sub_signature = SPVM_OP_CHECKER_create_sub_signature(compiler, sub);
         sub->signature = sub_signature;
         SPVM_LIST_push(sub->package->sub_signatures, (char*)sub_signature);
-        SPVM_HASH_insert(sub->package->sub_signature_symtable, sub_signature, strlen(sub_signature), sub);
       }
     }
 
@@ -3874,7 +3873,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         const char* field_signature = SPVM_OP_CHECKER_create_field_signature(compiler, field);
         field->signature = field_signature;
         SPVM_LIST_push(field->package->field_signatures, (char*)field_signature);
-        SPVM_HASH_insert(field->package->field_signature_symtable, field_signature, strlen(field_signature), field);
       }
     }
 
@@ -3887,7 +3885,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         const char* package_var_signature = SPVM_OP_CHECKER_create_package_var_signature(compiler, package_var);
         package_var->signature = package_var_signature;
         SPVM_LIST_push(package_var->package->package_var_signatures, (char*)package_var_signature);
-        SPVM_HASH_insert(package_var->package->package_var_signature_symtable, package_var_signature, strlen(package_var_signature), package_var);
       }
     }
 
@@ -3900,12 +3897,6 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
   
   // Calcurate signature length
   {
-    // Subroutine name
-    length += strlen(sub->op_name->uv.name);
-
-    // :
-    length += 1;
-    
     // Return type basic type
     length += strlen(sub->return_type->basic_type->name);
     
@@ -3951,14 +3942,6 @@ const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_S
   // Calcurate sub signature length
   char* bufptr = sub_signature;
   {
-    // Subroutine name
-    memcpy(bufptr, sub->op_name->uv.name, strlen(sub->op_name->uv.name));
-    bufptr += strlen(sub->op_name->uv.name);
-
-    // :
-    memcpy(bufptr, ":", 1);
-    bufptr += 1;
-
     // Return type
     memcpy(bufptr, sub->return_type->basic_type->name, strlen(sub->return_type->basic_type->name));
     bufptr += strlen(sub->return_type->basic_type->name);

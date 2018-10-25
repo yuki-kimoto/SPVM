@@ -28,11 +28,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   package->sub_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->sub_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->field_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->field_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->package_var_signatures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->package_var_signature_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   package->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
