@@ -1,5 +1,14 @@
 0.0382 2018-10-25
   - remove no needed runtime type check.
+  - change sub signature
+    [before](int)foo(int,int)
+    [after]foo:int(int,int)
+  - change field signature
+    [before](int)foo
+    [after]foo:int
+  - change package variable signature
+    [before](int)$FOO
+    [after]$FOO:int
 0.0381 2018-10-24
   - remove directory path from runtime file name
   - reduce runtime constant pool size
