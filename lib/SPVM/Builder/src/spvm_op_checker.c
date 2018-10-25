@@ -4069,12 +4069,6 @@ const char* SPVM_OP_CHECKER_create_package_var_signature(SPVM_COMPILER* compiler
   
   // Calcurate signature length
   {
-    // Package variable name
-    length += strlen(package_var->op_var->uv.var->op_name->uv.name);
-
-    // :
-    length += 1;
-
     // Basic type
     length += strlen(package_var->type->basic_type->name);
     
@@ -4087,14 +4081,6 @@ const char* SPVM_OP_CHECKER_create_package_var_signature(SPVM_COMPILER* compiler
   // Calcurate package_var signature length
   char* bufptr = package_var_signature;
   {
-    // Package variable name
-    memcpy(bufptr, package_var->op_var->uv.var->op_name->uv.name, strlen(package_var->op_var->uv.var->op_name->uv.name));
-    bufptr += strlen(package_var->op_var->uv.var->op_name->uv.name);
-
-    // :
-    memcpy(bufptr, ":", 1);
-    bufptr += 1;
-
     // Basic type
     memcpy(bufptr, package_var->type->basic_type->name, strlen(package_var->type->basic_type->name));
     bufptr += strlen(package_var->type->basic_type->name);

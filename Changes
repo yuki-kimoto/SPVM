@@ -9,6 +9,9 @@
   - change package variable signature
     [before](int)$FOO
     [after]$FOO:int
+  - change get_package_var_id argument, and signature contain only type
+    [before]int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* signature);
+    [after]int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
 0.0381 2018-10-24
   - remove directory path from runtime file name
   - reduce runtime constant pool size

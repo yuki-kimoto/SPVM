@@ -4832,22 +4832,26 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   return field_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
   (void)env;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  // Package
+  // Package name
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (!package) {
     return 0;
   }
   
-  // Field
-  SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_signature_symtable, signature, strlen(signature));
-  
+  // Package variable name
+  SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
   if (!package_var) {
+    return 0;
+  }
+  
+  // Signature
+  if (strcmp(signature, runtime->symbols[package_var->signature_id]) != 0) {
     return 0;
   }
   

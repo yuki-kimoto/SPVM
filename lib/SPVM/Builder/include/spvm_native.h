@@ -120,7 +120,7 @@ struct SPVM_env {
   void* (*new_value_t_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
-  int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* signature);
+  int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
   void* runtime_package_vars_heap_byte_offset;
   void* runtime;
   int32_t (*has_interface)(SPVM_ENV*, int32_t package_basic_type_id, int32_t package_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
