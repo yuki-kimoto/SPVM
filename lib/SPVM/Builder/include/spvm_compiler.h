@@ -44,9 +44,6 @@ struct SPVM_compiler {
   // Current op field by outer declaration
   SPVM_LIST* cur_op_fields_outer;
   
-  // Current case statements in switch statement
-  SPVM_LIST* cur_op_cases;
-
   // Include pathes
   SPVM_LIST* module_include_pathes;
 
