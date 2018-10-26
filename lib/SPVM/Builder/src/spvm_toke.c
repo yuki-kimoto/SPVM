@@ -1209,10 +1209,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return OBJECT;
                 }
                 else if (strcmp(keyword, "outer") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_OUTER, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  
-                  return DESCRIPTOR;
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OUTER);
+                  return OUTER;
                 }
                 break;
               case 'p' :

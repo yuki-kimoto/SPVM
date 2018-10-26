@@ -158,6 +158,7 @@ enum {
   SPVM_OP_C_ID_LONG_REF,
   SPVM_OP_C_ID_FLOAT_REF,
   SPVM_OP_C_ID_DOUBLE_REF,
+  SPVM_OP_C_ID_OUTER,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];

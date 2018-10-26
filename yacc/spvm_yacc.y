@@ -20,7 +20,7 @@
 %token <opval> DESCRIPTOR CONST
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT
-%token <opval> RETURN WEAKEN CROAK NEW
+%token <opval> RETURN WEAKEN CROAK NEW OUTER
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND
 
@@ -958,6 +958,10 @@ my_var
   | MY var
     {
       $$ = SPVM_OP_build_my(compiler, $1, $2, NULL);
+    }
+  | MY var ':' OUTER type
+    {
+      $$ = SPVM_OP_build_my(compiler, $1, $2, $5);
     }
 
 var
