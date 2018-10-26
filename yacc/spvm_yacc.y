@@ -265,7 +265,7 @@ sub
 anon_sub
   : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, NULL, $2, $4, $6, $1, $8);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8);
      }
 
 opt_args

@@ -203,21 +203,37 @@ int32_t SPVM_TYPE_has_interface(
   SPVM_PACKAGE* package = package_basic_type->package;
   SPVM_PACKAGE* interface = interface_basic_type->package;
   
-  assert(interface->subs->length == 1);
-  SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
-  
-  SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_interface->name, strlen(sub_interface->name));
-  if (!found_sub) {
-    return 0;
+  // Package which have only anon sub
+  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+    assert(package->subs->length == 1);
+    assert(interface->subs->length == 1);
+    SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+    SPVM_SUB* found_sub = SPVM_LIST_fetch(package->subs, 0);
+    
+    if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
-  
-  if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
-    return 1;
-  }
+  // Normal package
   else {
-    return 0;
+    assert(interface->subs->length == 1);
+    SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+    
+    SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_interface->name, strlen(sub_interface->name));
+    if (!found_sub) {
+      return 0;
+    }
+    
+    if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
-  
 }
 
 SPVM_TYPE* SPVM_TYPE_clone_type(SPVM_COMPILER* compiler, SPVM_TYPE* type) {

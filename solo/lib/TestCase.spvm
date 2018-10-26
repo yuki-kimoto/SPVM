@@ -14,6 +14,7 @@ package TestCase {
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
   use SPVM::Complex_d2;
+  use SPVM::Comparator;
 
   use TestCase::Point_b3;
   use TestCase::Point_s3;
@@ -60,6 +61,15 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+
+    {
+      my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+        return -1;
+      };
+      
+      my $anon_sub2 : SPVM::Comparator = $anon_sub;
+    }
+    
     {
       my $i : int;
       
@@ -220,7 +230,7 @@ SPVM::Test - SPVM test module
       my $ret = $anon_sub->compare(4L, 5L);
       print($ret . "\n");
     }
-    
+
     {
       my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
       print($array->[7] . "\n");
