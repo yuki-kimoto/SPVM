@@ -67,7 +67,11 @@ SPVM::Test - SPVM test module
         return -1;
       };
       
-      my $anon_sub2 : SPVM::Comparator = $anon_sub;
+      my $ret = $anon_sub->(undef, undef);
+      
+      print("AAAAAAAAAAAAA" . $ret . "\n");
+      
+      my $comparator : SPVM::Comparator = $anon_sub;
     }
     
     {
