@@ -231,7 +231,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
             
             // Run OPs
-            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+            SPVM_OP* op_base = sub->op_block;
             SPVM_OP* op_cur = op_base;
             int32_t finish = 0;
             while (op_cur) {
@@ -2635,7 +2635,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // set assign_to_var flag - Second tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Run OPs
-            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+            SPVM_OP* op_base = sub->op_block;
             SPVM_OP* op_cur = op_base;
             int32_t finish = 0;
             while (op_cur) {
@@ -2682,7 +2682,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Create temporary variables for not assigned values - Third tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Run OPs
-            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+            SPVM_OP* op_base = sub->op_block;
             SPVM_OP* op_cur = op_base;
             int32_t finish = 0;
             while (op_cur) {
@@ -3103,7 +3103,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
             
             // Run OPs
-            SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+            SPVM_OP* op_base = sub->op_block;
             SPVM_OP* op_cur = op_base;
             int32_t finish = 0;
             while (op_cur) {

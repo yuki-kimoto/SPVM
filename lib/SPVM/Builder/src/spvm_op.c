@@ -841,19 +841,6 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_get_op_block_from_op_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub) {
-  (void)compiler;
-  
-  SPVM_OP* op_block = op_sub->last;
-  
-  if (op_block->id == SPVM_OP_C_ID_BLOCK) {
-    return op_block;
-  }
-  else {
-    return NULL;
-  }
-}
-
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_eval_block) {
   
   SPVM_OP_insert_child(compiler, op_eval, op_eval->last, op_eval_block);

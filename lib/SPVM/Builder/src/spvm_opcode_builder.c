@@ -161,7 +161,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           sub->opcodes_base = sub_opcodes_base;
           
           // Run OPs
-          SPVM_OP* op_base = SPVM_OP_get_op_block_from_op_sub(compiler, sub->op_sub);
+          SPVM_OP* op_base = sub->op_block;
           SPVM_OP* op_cur = op_base;
           int32_t finish = 0;
           
