@@ -1634,6 +1634,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t i;
     for (i = 0; i < package->subs->length; i++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
+      
+      if (sub->flag & SPVM_SUB_C_FLAG_IS_ANON_SUB) {
+        package->flag |= SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB;
+        assert(package->subs->length == 1);
+      }
 
       sub->rel_id = i;
       
@@ -1841,6 +1846,16 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   if (op_descriptors == NULL) {
     op_descriptors = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
   }
+
+  SPVM_SUB* sub = SPVM_SUB_new(compiler);
+
+  if (!op_name_sub) {
+    sub->flag |= SPVM_SUB_C_FLAG_IS_ANON_SUB;
+    
+    // Anon sub name
+    char* name_sub = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1);
+    SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, name_sub, op_sub->file, op_sub->line);
+  }
   
   // Build OP_SUB
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
@@ -1853,7 +1868,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
   
   // Create sub information
-  SPVM_SUB* sub = SPVM_SUB_new(compiler);
   sub->op_name = op_name_sub;
   
   sub->file = op_sub->file;
