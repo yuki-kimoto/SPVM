@@ -1605,6 +1605,22 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
 
+  // Sort package variables
+  for (int32_t i = 0; i < (package->package_vars->length - 1); i++) {
+    for (int32_t j = (package->package_vars->length - 1); j > i; j--) {
+      SPVM_PACKAGE_VAR* package_var1 = SPVM_LIST_fetch(package->package_vars, j-1);
+      SPVM_PACKAGE_VAR* package_var2 = SPVM_LIST_fetch(package->package_vars, j);
+      
+      void** values = package->package_vars->values;
+
+      if (strcmp(package_var1->name, package_var2->name) > 0) {
+        SPVM_PACKAGE_VAR* temp = values[j-1];
+        values[j-1] = values[j];
+        values[j] = temp;
+      }
+    }
+  }
+
   // Package variable declarations
   {
     int32_t i;
@@ -1634,6 +1650,22 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         // Add op package
         package_var->package = package;
+      }
+    }
+  }
+  
+  // Sort subs
+  for (int32_t i = 0; i < (package->subs->length - 1); i++) {
+    for (int32_t j = (package->subs->length - 1); j > i; j--) {
+      SPVM_SUB* sub1 = SPVM_LIST_fetch(package->subs, j-1);
+      SPVM_SUB* sub2 = SPVM_LIST_fetch(package->subs, j);
+      
+      void** values = package->subs->values;
+
+      if (strcmp(sub1->name, sub2->name) > 0) {
+        SPVM_SUB* temp = values[j-1];
+        values[j-1] = values[j];
+        values[j] = temp;
       }
     }
   }
