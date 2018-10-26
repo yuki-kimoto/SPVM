@@ -1825,11 +1825,6 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
 
-  // Build OP
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_name_field);
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_descriptors);
-  SPVM_OP_insert_child(compiler, op_field, op_field->last, op_type);
-  
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
   
