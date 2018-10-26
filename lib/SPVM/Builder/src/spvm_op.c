@@ -1878,10 +1878,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
   
   // Build OP_SUB
-  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_args);
-  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_descriptors);
-  SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_return_type);
   if (op_block) {
     op_block->uv.block->id = SPVM_BLOCK_C_ID_SUB;
     SPVM_OP_insert_child(compiler, op_sub, op_sub->last, op_block);
