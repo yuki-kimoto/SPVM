@@ -4924,15 +4924,29 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
     return 0;
   }
   
-  // Subroutine name
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  if (sub == NULL) {
-    return 0;
+  // Package which have only anon sub
+  SPVM_RUNTIME_SUB* sub;
+  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+    // Subroutine name
+    sub = SPVM_LIST_fetch(package->subs, 0);
+     
+    // Signature
+    if (strcmp(signature, runtime->symbols[sub->signature_id]) != 0) {
+      return 0;
+    }
   }
-  
-  // Signature
-  if (strcmp(signature, runtime->symbols[sub->signature_id]) != 0) {
-    return 0;
+  // Normal sub
+  else {
+    // Subroutine name
+    sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    if (sub == NULL) {
+      return 0;
+    }
+    
+    // Signature
+    if (strcmp(signature, runtime->symbols[sub->signature_id]) != 0) {
+      return 0;
+    }
   }
   
   return sub->id;
