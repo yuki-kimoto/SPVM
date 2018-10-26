@@ -7,6 +7,20 @@ package TestCase::Sub {
   use TestCase::Point_f3;
   use TestCase::Point_d3;
   
+  sub anon_sub_call_anon_sub : int () {
+    my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
+      return $x1 + $x2;
+    };
+    
+    my $total = $anon_sub->(1, 3);
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub return_value_byte_sub : TestCase::Point_b3 () {
     my $value : TestCase::Point_b3;
     $value->{x} = INT8_MIN();

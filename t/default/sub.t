@@ -22,6 +22,11 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Anon package
+{
+  ok(TestCase::Sub->anon_sub_call_anon_sub());
+}
+
 # Return value
 {
   ok(TestCase::Sub->return_value_byte);
