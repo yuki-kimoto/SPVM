@@ -55,6 +55,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
+  
+  compiler->cur_op_fields_outer = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);

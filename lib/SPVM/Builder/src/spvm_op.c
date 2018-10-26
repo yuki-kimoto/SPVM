@@ -1559,6 +1559,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
+  // Outer variable become field declaration
+  for (int32_t i = 0; i < compiler->cur_op_fields_outer->length; i++) {
+    SPVM_OP* op_field = SPVM_LIST_fetch(compiler->cur_op_fields_outer, i);
+    SPVM_LIST_push(package->fields, op_field->uv.field);
+  }
+  compiler->cur_op_fields_outer = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  
   // Field declarations
   {
     int32_t i;
@@ -1753,7 +1760,6 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   
   // Declaration
   op_var->uv.var->is_declaration = 1;
-  op_var->uv.var->is_outer = 1;
   
   // Create my var information
   SPVM_MY* my = op_my->uv.my;
@@ -1767,6 +1773,24 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   my->op_name = op_name;
   
   op_var->uv.var->my = my;
+
+  // outer variables
+  op_var->uv.var->is_outer = 1;
+
+  // Filed name OP
+  SPVM_OP* op_name_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
+  op_name_field->uv.name = op_var->uv.var->op_name->uv.name;
+  
+  // Field type op
+  /*
+  SPVM_OP* op_type_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
+  SPVM_TYPE* type_field = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+  op_type_field->uv.type = type_field;
+  SPVM_OP* op_has = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, op_my->file, op_my->line);
+  SPVM_OP_build_has(compiler, op_has, op_name_field, NULL, op_type_field);
+  SPVM_LIST_push(compiler->cur_op_fields_outer, op_has);
+  */
+  
   
   return op_var;
 }

@@ -41,6 +41,9 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
+  // Current op field by outer declaration
+  SPVM_LIST* cur_op_fields_outer;
+  
   // Current case statements in switch statement
   SPVM_LIST* cur_op_cases;
 
