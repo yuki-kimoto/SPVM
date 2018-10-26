@@ -21,6 +21,11 @@
   - change get_sub_id_method_call argument, and signature contain only type
     [before]int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, void* object, const char* signature);
     [after]int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, void* object, const char* field_name, const char* signature);
+  - support anon sub
+    my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+      ...;
+    };
+    
 0.0381 2018-10-24
   - remove directory path from runtime file name
   - reduce runtime constant pool size
