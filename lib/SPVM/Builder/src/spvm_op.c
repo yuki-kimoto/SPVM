@@ -1595,9 +1595,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     else {
       field->id = compiler->fields->length + 1;
       field->rel_id = i;
+      
       SPVM_LIST_push(compiler->fields, field);
       SPVM_HASH_insert(compiler->field_symtable, field_abs_name, strlen(field_abs_name), field);
-      
       SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
       
       // Add op package
@@ -1808,13 +1808,14 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   
   op_var->uv.var->my = my;
 
-  // Filed name OP
-  SPVM_OP* op_name_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-  op_name_field->uv.name = op_var->uv.var->op_name->uv.name;
-  
   // outer variables
   if (is_outer) {
     op_var->uv.var->is_outer = 1;
+    
+    // Filed name OP
+    SPVM_OP* op_name_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
+    
+    op_name_field->uv.name = op_var->uv.var->op_name->uv.name + 1;
     SPVM_OP* op_type_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
     SPVM_TYPE* type_field = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
     op_type_field->uv.type = type_field;
