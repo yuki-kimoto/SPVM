@@ -25,6 +25,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Anon package
 {
   ok(TestCase::Sub->anon_sub_call_anon_sub());
+  ok(TestCase::Sub->anon_sub_call_anon_sub_from_interface());
 }
 
 # Return value

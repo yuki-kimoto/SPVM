@@ -6,6 +6,7 @@ package TestCase::Sub {
   use TestCase::Point_l3;
   use TestCase::Point_f3;
   use TestCase::Point_d3;
+  use SPVM::Comparator;
   
   sub anon_sub_call_anon_sub : int () {
     my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
@@ -15,6 +16,24 @@ package TestCase::Sub {
     my $total = $anon_sub->(1, 3);
     
     unless ($total == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub anon_sub_call_anon_sub_from_interface : int () {
+    my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $x1_num = (int)$x1;
+      my $x2_num = (int)$x2;
+      return $x1_num + $x2_num;
+    };
+    
+    my $comparator : SPVM::Comparator = $anon_sub;
+    
+    my $total = $comparator->compare(2, 3);
+    
+    unless ($total == 5) {
       return 0;
     }
     
