@@ -1744,15 +1744,16 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   SPVM_MY* my = SPVM_MY_new(compiler);
   SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_var->file, op_var->line);
   
-  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, 0);
   
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, int32_t is_outer) {
   
   // Declaration
   op_var->uv.var->is_declaration = 1;
+  op_var->uv.var->is_outer = 1;
   
   // Create my var information
   SPVM_MY* my = op_my->uv.my;

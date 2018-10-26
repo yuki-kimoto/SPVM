@@ -3161,21 +3161,21 @@ yyreduce:
   case 169:
 #line 955 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (4)].opval), (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval), 0);
     ;}
     break;
 
   case 170:
 #line 959 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (2)].opval), (yyvsp[(2) - (2)].opval), NULL, 0);
     ;}
     break;
 
   case 171:
 #line 963 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(2) - (5)].opval), (yyvsp[(5) - (5)].opval));
+      (yyval.opval) = SPVM_OP_build_my(compiler, (yyvsp[(1) - (5)].opval), (yyvsp[(2) - (5)].opval), (yyvsp[(5) - (5)].opval), 1);
     ;}
     break;
 
