@@ -49,7 +49,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type
   if (type) {
     op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   }
-  SPVM_OP_build_my(compiler, op_my, op_var, op_type, 0);
+  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   op_my->uv.my->is_tmp = 1;
   

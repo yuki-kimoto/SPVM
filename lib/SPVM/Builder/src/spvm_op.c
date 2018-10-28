@@ -1546,13 +1546,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Outer variable become field declaration
-  for (int32_t i = 0; i < compiler->cur_op_fields_outer->length; i++) {
-    SPVM_OP* op_field = SPVM_LIST_fetch(compiler->cur_op_fields_outer, i);
-    SPVM_LIST_push(package->fields, op_field->uv.field);
-  }
-  compiler->cur_op_fields_outer = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  
   // Sort fields(except value package)
   if (package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
     for (int32_t i = 0; i < (package->fields->length - 1); i++) {
@@ -1785,12 +1778,12 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   SPVM_MY* my = SPVM_MY_new(compiler);
   SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_var->file, op_var->line);
   
-  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type, 0);
+  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type, int32_t is_outer) {
+SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type) {
   
   // Declaration
   op_var->uv.var->is_declaration = 1;
@@ -1808,22 +1801,6 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   
   op_var->uv.var->my = my;
 
-  // outer variables
-  if (is_outer) {
-    op_var->uv.var->is_outer = 1;
-    
-    // Filed name OP
-    SPVM_OP* op_name_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-    
-    op_name_field->uv.name = op_var->uv.var->op_name->uv.name + 1;
-    SPVM_OP* op_type_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, op_type->file, op_type->line);
-    SPVM_TYPE* type_field = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
-    op_type_field->uv.type = type_field;
-    SPVM_OP* op_has = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, op_my->file, op_my->line);
-    SPVM_OP_build_has(compiler, op_has, op_name_field, NULL, op_type_field);
-    SPVM_LIST_push(compiler->cur_op_fields_outer, op_has);
-  }
-  
   return op_var;
 }
 

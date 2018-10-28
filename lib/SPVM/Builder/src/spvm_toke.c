@@ -1208,10 +1208,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OBJECT);
                   return OBJECT;
                 }
-                else if (strcmp(keyword, "outer") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OUTER);
-                  return OUTER;
-                }
                 break;
               case 'p' :
                 if (strcmp(keyword, "package") == 0) {

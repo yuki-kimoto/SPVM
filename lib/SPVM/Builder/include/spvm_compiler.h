@@ -41,9 +41,6 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Current op field by outer declaration
-  SPVM_LIST* cur_op_fields_outer;
-  
   // Include pathes
   SPVM_LIST* module_include_pathes;
 
