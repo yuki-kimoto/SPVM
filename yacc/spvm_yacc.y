@@ -255,19 +255,22 @@ has
 sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9, NULL);
      }
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL);
      }
 
 anon_sub
   : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
-
+  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $11, $2);
+     }
 opt_args
   :	/* Empty */
     {
