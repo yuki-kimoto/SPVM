@@ -4,6 +4,18 @@ package SPVM::List : private {
   has offset   : private int; # range of offset: [-capacity, -1)
   has length   : private int;
 
+  sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new object [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $self->{offset} + $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{offset} = -$new_capacity;
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+
   sub _reallocate : void ($self : self) {
     my $new_capacity : int;
     if ($self->{capacity} > INT32_MAX() / 2) {
@@ -15,15 +27,7 @@ package SPVM::List : private {
     unless ($new_capacity) {
       $new_capacity = 1;
     }
-    my $new_values = new object [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $self->{offset} + $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
-    }
-    $self->{offset} = -$new_capacity;
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
+    $self->_reallocate_with_capacity($new_capacity);
   }
 
   sub _values : object[] ($self : self) {
@@ -170,6 +174,10 @@ package SPVM::List : private {
     }
     else {
       $new_values_length = $self->{length} - $cut_length + $replace_length;
+    }
+
+    if ($new_values_length > $self->{capacity}) {
+      $self->_reallocate_with_capacity($new_values_length);
     }
 
     if ($new_values_length <= $self->{capacity} &&
