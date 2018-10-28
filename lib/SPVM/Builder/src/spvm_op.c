@@ -1894,15 +1894,9 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
 }
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_list_capture_vars) {
-  if (op_args == NULL) {
-    op_args = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
-  }
-  if (op_descriptors == NULL) {
-    op_descriptors = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
-  }
-
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
-
+  
+  // Anon sub
   if (!op_name_sub) {
     sub->flag |= SPVM_SUB_C_FLAG_IS_ANON_SUB;
     
@@ -1911,7 +1905,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     op_name_sub = SPVM_OP_new_op_name(compiler, name_sub, op_sub->file, op_sub->line);
   }
   
-  // Build OP_SUB
+  // Block is sub block
   if (op_block) {
     op_block->uv.block->id = SPVM_BLOCK_C_ID_SUB;
   }
@@ -1924,23 +1918,25 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   sub->name = sub->op_name->uv.name;
   
   // Descriptors
-  SPVM_OP* op_descriptor = op_descriptors->first;
-  while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-    SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
-    
-    if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
-      sub->flag |= SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
+  if (op_descriptors) {
+    SPVM_OP* op_descriptor = op_descriptors->first;
+    while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
+      SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
+      
+      if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
+        sub->flag |= SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
+      }
+      else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_PRECOMPILE) {
+        sub->flag |= SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
+      }
+      else {
+        SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+      }
     }
-    else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_PRECOMPILE) {
-      sub->flag |= SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
-    }
-    else {
-      SPVM_yyerror_format(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
-    }
-  }
 
-  if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC)) {
-    SPVM_yyerror_format(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
+    if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC)) {
+      SPVM_yyerror_format(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
+    }
   }
 
   // Native subroutine can't have block
@@ -1949,7 +1945,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
   
   // sub args
-  {
+  if (op_args) {
     int32_t sub_index = 0;
     SPVM_OP* op_arg = op_args->first;
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
