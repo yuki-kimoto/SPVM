@@ -5,9 +5,6 @@ package SPVM::List : private {
   has length   : private int;
 
   sub _reallocate : void ($self : self) {
-    unless ($self->{capacity} < INT32_MAX()) {
-      croak "Too much memory allocated. capacity should be within INT32_MAX()";
-    }
     my $new_capacity : int;
     if ($self->{capacity} > INT32_MAX() / 2) {
       $new_capacity = INT32_MAX();
