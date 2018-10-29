@@ -49,7 +49,7 @@ package TestCase::Convert {
   }
 
   sub convert_to_interface : int () {
-    my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+    my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       return 5;
     };
     

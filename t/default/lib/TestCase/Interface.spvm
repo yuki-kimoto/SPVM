@@ -23,7 +23,7 @@ package TestCase::Interface {
   }
   
   sub comparator : int () {
-      my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         

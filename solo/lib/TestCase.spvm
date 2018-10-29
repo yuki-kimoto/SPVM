@@ -245,11 +245,11 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $anon_sub = sub compare : long ($self : self, $x1 : long, $x2 : long) {
+      my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
         return $x1 * $x2;
       };
       
-      my $ret = $anon_sub->compare(4L, 5L);
+      my $ret = $anon_sub->(4L, 5L);
       print($ret . "\n");
     }
 

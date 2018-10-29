@@ -3819,7 +3819,13 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
   const char* sub_interface_name = runtime->symbols[sub_interface->name_id];
   const char* sub_interface_signature = runtime->symbols[sub_interface->signature_id];
   
-  SPVM_RUNTIME_SUB* found_sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
+  SPVM_RUNTIME_SUB* found_sub;
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+    found_sub = SPVM_LIST_fetch(object_package->subs, 0);
+  }
+  else {
+    found_sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
+  } 
   if (!found_sub) {
     return 0;
   }

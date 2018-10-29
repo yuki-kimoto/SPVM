@@ -25,7 +25,7 @@
     my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
       ...;
     };
-    
+  - remove new sub syntax.
 0.0381 2018-10-24
   - remove directory path from runtime file name
   - reduce runtime constant pool size
