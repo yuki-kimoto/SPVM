@@ -880,31 +880,60 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
                             if (anon_sub->captures->length) {
                               
+                              // Check capture variable exists
+                              for (int32_t caputre_index = 0; caputre_index < anon_sub->captures->length; caputre_index++) {
+                                SPVM_MY* capture_my = SPVM_LIST_fetch(anon_sub->captures, caputre_index);
+                                const char* capture_name = capture_my->op_name->uv.name;
+
+                                // Search same name variable
+                                SPVM_MY* found_my = NULL;
+                                for (int32_t stack_my_index = my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
+                                  SPVM_MY* my = SPVM_LIST_fetch(my_stack, stack_my_index);
+                                  if (strcmp(capture_name, my->op_name->uv.name) == 0) {
+                                    found_my = my;
+                                    break;
+                                  }
+                                }
+                                if (!found_my) {
+                                  SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", capture_name, op_cur->file, op_cur->line);
+                                }
+                              }
+                              
+                              
                               // [Before]
                               // NEW
                               //   TYPE
                               // [After]
                               // SEQUENCE
-                              //   ASSIGN
-                              //    NEW
-                              //      TYPE
-                              //    VAR_TMP_NEW
-                              // FIELD_ACCESS
-                              //    VAR_TMP_NEW2
-                              //    NAME
-                              // FIELD_ACCESS
-                              //    VAR_TMP_NEW2
-                              //    NAME
-                              // VAR_TMP_NEW
+                              //   ASSIGN_NEW
+                              //     NEW
+                              //       TYPE
+                              //     VAR_TMP_NEW
+                              // ASSIGN_FIELD_ACCESS1
+                              //   VAR_CAPTURE1
+                              //   FIELD_ACCESS1
+                              //     VAR_TMP_NEW1
+                              //     NAME_FIELD1
+                              // ASSIGN_FIELD_ACCESS2
+                              //   VAR_CAPTURE2
+                              //   FIELD_ACCESS2
+                              //     VAR_TMP_NEW2
+                              //     NAME_FIELD2
+                              // VAR_TMP_NEW_RET
                               
                               /*
+                              const char* file = op_cur->file;
+                              int32_t line = op_cur->line;
+                              
+                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                              
                               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                               SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
                               SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp_new->uv.var->my);
                               SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
                               
-                              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
+                              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_cur);
 
                               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
                               
