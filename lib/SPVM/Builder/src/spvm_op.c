@@ -1536,6 +1536,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, capture_my->type->op_type);
         SPVM_LIST_push(package->fields, op_field->uv.field);
+        op_field->uv.field->is_captured = 1;
       }
     }
     

@@ -21,6 +21,7 @@ struct SPVM_field {
   int32_t flag;
   int32_t rel_id;
   int32_t runtime_type;
+  int8_t is_captured;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

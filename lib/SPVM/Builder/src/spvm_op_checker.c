@@ -2063,29 +2063,55 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           var->my = found_my;
                         }
                         else {
-                          int32_t is_package_var;
-                          SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(compiler->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
-                          if (!found_package_var) {
-                            found_package_var = SPVM_HASH_fetch(package->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
-                          }
-                          if (found_package_var) {
-                            // Var OP
-                            SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
-                            SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_name_package_var);
-                            op_package_var_access->uv.package_var_access->package_var = found_package_var;
+                          // Variable is capture var
+                          int32_t is_capture_var;
+                          SPVM_FIELD* found_capture_field = SPVM_HASH_fetch(package->field_symtable, var->op_name->uv.name + 1, strlen(var->op_name->uv.name) - 1);
+                          if (found_capture_field && found_capture_field->is_captured) {
+                            
+                            // Capture var is converted to field access
+                            SPVM_MY* arg_first_my = SPVM_LIST_fetch(sub->args, 0);
+                            assert(arg_first_my);
+                            SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_my->op_name->uv.name, op_cur->file, op_cur->line);
+                            SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
+                            op_term_invoker->uv.var->my = arg_first_my;
+                            SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name + 1, op_cur->file, op_cur->line);
+                            SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
+                            op_field_access->uv.field_access->field = found_capture_field;
                             
                             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                            SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+                            SPVM_OP_replace_op(compiler, op_stab, op_field_access);
                             
-                            op_package_var_access->is_lvalue = op_cur->is_lvalue;
+                            op_field_access->is_lvalue = op_cur->is_lvalue;
                             
-                            op_cur = op_package_var_access;
+                            op_cur = op_field_access;
                             continue;
                           }
-                          // Error
                           else {
-                            SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
-                            return;
+                            // Variable is package var
+                            int32_t is_package_var;
+                            SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(compiler->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
+                            if (!found_package_var) {
+                              found_package_var = SPVM_HASH_fetch(package->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
+                            }
+                            if (found_package_var) {
+                              // Var OP
+                              SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
+                              SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_name_package_var);
+                              op_package_var_access->uv.package_var_access->package_var = found_package_var;
+                              
+                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                              SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+                              
+                              op_package_var_access->is_lvalue = op_cur->is_lvalue;
+                              
+                              op_cur = op_package_var_access;
+                              continue;
+                            }
+                            // Error
+                            else {
+                              SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                              return;
+                            }
                           }
                         }
                         

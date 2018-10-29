@@ -65,18 +65,13 @@ SPVM::Test - SPVM test module
     {
       my $anon_sub = [$capture : int] sub : int ($self : self, $x1 : object, $x2 : object) {
         $self->{capture} = 5;
+        
+        print($capture . "\n");
+        
         return -1;
       };
       
-      my $ret = $anon_sub->(undef, undef);
-      
-      print($ret . "\n");
-      
-      my $comparator : SPVM::Comparator = $anon_sub;
-      
-      my $ret2 = $comparator->compare(undef, undef);
-      
-      print($ret . "\n");
+      $anon_sub->(undef, undef);
     }
 
     {
