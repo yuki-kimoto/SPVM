@@ -26,6 +26,24 @@
       ...;
     };
   - remove new sub syntax.
+  - support anon sub capture variable
+    {
+      my $capture1 = 7;
+      my $capture2 = 10;
+      my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+        print($capture1 . "\n");
+        print($capture2 . "\n");
+
+        $self->{capture1} = 5;
+        
+        print($capture1 . "\n");
+        
+        return -1;
+      };
+      
+      $anon_sub->(undef, undef);
+    }
+  
 0.0381 2018-10-24
   - remove directory path from runtime file name
   - reduce runtime constant pool size

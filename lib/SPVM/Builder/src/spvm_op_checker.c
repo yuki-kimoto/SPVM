@@ -872,34 +872,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_NEW: {
                         assert(op_cur->first);
-
+                              
                         if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
                           SPVM_PACKAGE* new_package = op_cur->first->uv.type->basic_type->package;
                           
                           if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                            SPVM_OP* op_type = op_cur->first;
+                          
                             SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
                             if (anon_sub->captures->length) {
-                              
-                              // Check capture variable exists
-                              for (int32_t caputre_index = 0; caputre_index < anon_sub->captures->length; caputre_index++) {
-                                SPVM_MY* capture_my = SPVM_LIST_fetch(anon_sub->captures, caputre_index);
-                                const char* capture_name = capture_my->op_name->uv.name;
-
-                                // Search same name variable
-                                SPVM_MY* found_my = NULL;
-                                for (int32_t stack_my_index = my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
-                                  SPVM_MY* my = SPVM_LIST_fetch(my_stack, stack_my_index);
-                                  if (strcmp(capture_name, my->op_name->uv.name) == 0) {
-                                    found_my = my;
-                                    break;
-                                  }
-                                }
-                                if (!found_my) {
-                                  SPVM_yyerror_format(compiler, "%s is not declared at %s line %d\n", capture_name, op_cur->file, op_cur->line);
-                                }
-                              }
-                              
-                              
                               // [Before]
                               // NEW
                               //   TYPE
@@ -920,8 +901,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               //     VAR_TMP_NEW2
                               //     NAME_FIELD2
                               // VAR_TMP_NEW_RET
-                              
-                              /*
+                            
                               const char* file = op_cur->file;
                               int32_t line = op_cur->line;
                               
@@ -937,112 +917,65 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
                               
-                              int32_t length;
-                              {
-                                SPVM_OP* op_term_element = op_list_elements->first;
-                                int32_t index = 0;
-                                while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
-                                  if (index == 0) {
-                                    
-                                    if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
-                                      SPVM_yyerror_format(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
-                                    }
+                              // Check capture variable exists
+                              for (int32_t caputre_index = 0; caputre_index < anon_sub->captures->length; caputre_index++) {
+                                SPVM_MY* capture_my = SPVM_LIST_fetch(anon_sub->captures, caputre_index);
+                                const char* capture_name = capture_my->op_name->uv.name;
 
-                                    SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
-                                    
-                                    op_term_element->no_need_check = 1;
-
-                                    // Create element type
-                                    if (op_type_element == NULL) {
-                                      SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                                      type_element->basic_type = type_term_element->basic_type;
-                                      type_element->dimension = type_term_element->dimension;
-                                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                                        type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
-                                      }
-                                      op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
-                                    }
-                                    
-                                    if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
-                                      {
-                                        SPVM_OP* op_type_tmp = op_type_element;
-                                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                                        }
-                                      }
-                                    }
-                                                            
-                                    // Create array type
-                                    if (op_type_new == NULL) {
-                                      SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                                      type_new->basic_type = type_term_element->basic_type;
-                                      type_new->dimension = type_term_element->dimension + 1;
-                                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                                        type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
-                                      }
-                                      op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
-                                    }
-
-                                    if (!SPVM_TYPE_is_numeric_type(compiler, op_type_new->uv.type->basic_type->id, op_type_new->uv.type->dimension, op_type_new->uv.type->flag)) {
-                                      {
-                                        SPVM_OP* op_type_tmp = op_type_new;
-                                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                                        }
-                                      }
-                                    }
-                                    
-                                    op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
+                                // Search same name variable
+                                SPVM_MY* found_my = NULL;
+                                for (int32_t stack_my_index = my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
+                                  SPVM_MY* my = SPVM_LIST_fetch(my_stack, stack_my_index);
+                                  if (strcmp(capture_name, my->op_name->uv.name) == 0) {
+                                    found_my = my;
+                                    break;
                                   }
-                                  
-                                  SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
-                                  
-                                  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
-
-                                  SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
-                                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
-
-                                  SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
-                                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
-                                  
-                                  SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
-                                  
-                                  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
-                                  
-                                  index++;
-                                  op_term_element = op_stab;
                                 }
-                                length = index;
-                              }
-                              
-                              SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
-                              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
+                                if (!found_my) {
+                                  SPVM_yyerror_format(compiler, "Capture variable \"%s\" is not declared at %s line %d\n", capture_name, op_cur->file, op_cur->line);
+                                  break;
+                                }
+                                
+                                // Create field assignment
+                                SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->op_name->uv.name , op_cur->file, op_cur->line);
+                                SPVM_OP* op_term_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
+                                op_term_invoker->uv.var->my = found_my;
+                                SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name + 1, op_cur->file, op_cur->line);
+                                SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
+                                
+                                SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, found_my->op_name->uv.name, op_cur->file, op_cur->line);
+                                SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
+                                op_var_capture->uv.var->my = found_my;
 
-                              SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-                              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
+                                SPVM_FIELD* capture_field = SPVM_HASH_fetch(new_package->field_symtable, found_my->op_name->uv.name + 1, strlen(found_my->op_name->uv.name) - 1);
+                                op_field_access->uv.field_access->field = capture_field;
+                                
+                                SPVM_OP* op_assign_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                                SPVM_OP_build_assign(compiler, op_assign_field_access, op_field_access, op_var_capture);
+                                
+                                SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_field_access);
+                              }
                               
                               SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
                               
                               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
-
-                              if (length == 0) {
-                                SPVM_yyerror_format(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
-                              }
-                              
-                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                               
                               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                               
-                              op_array_init->first = op_sequence;
-                              
                               op_cur = op_sequence->first;
-
-                              */
+                              
+                              SPVM_DUMPER_dump_ast(compiler, op_sequence);
+                              
+                              {
+                                SPVM_OP* op_type_tmp = op_type;
+                                op_type_tmp->uv.type->info_constant_id = package->info_types->length;
+                                SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
+                                if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                  SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                                }
+                              }
+                              
+                              continue;
                             }
                           }
                           

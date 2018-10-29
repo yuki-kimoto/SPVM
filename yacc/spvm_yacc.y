@@ -796,7 +796,6 @@ new
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
-      
       $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
 

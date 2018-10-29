@@ -26,6 +26,7 @@
 #include "spvm_opcode_array.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
+#include "spvm_field_access.h"
 
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   int32_t indent = 8;
@@ -93,6 +94,11 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
       printf(" \"%s\"", package_var_access->op_name->uv.name);
       printf(" (id :%d)", package_var_access->package_var->id);
+    }
+    else if (id == SPVM_OP_C_ID_FIELD_ACCESS) {
+      SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
+      printf(" \"%s\"", field_access->op_name->uv.name);
+      printf(" (id :%d)", field_access->field->id);
     }
     else if (id == SPVM_OP_C_ID_NAME) {
       printf(" \"%s\"", op_cur->uv.name);
