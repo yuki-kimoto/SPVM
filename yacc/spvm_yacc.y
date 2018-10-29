@@ -26,7 +26,7 @@
 %token <opval> AMPERSAND
 
 %type <opval> grammar
-%type <opval> opt_packages packages package anon_package package_block
+%type <opval> opt_packages packages package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub anon_sub opt_args args arg invocant has use our
@@ -113,16 +113,6 @@ package
   | PACKAGE basic_type ':' opt_descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
-    }
-
-anon_package
-  : PACKAGE package_block
-    {
-      $$ = SPVM_OP_build_package(compiler, $1, NULL, $2, NULL);
-    }
-  | PACKAGE ':' opt_descriptors package_block
-    {
-      $$ = SPVM_OP_build_package(compiler, $1, NULL, $4, $3);
     }
 
 package_block
@@ -763,19 +753,6 @@ new
   | NEW array_type '{' opt_normal_terms '}'
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, $4);
-    }
-  | anon_package
-    {
-      // Package
-      SPVM_OP* op_package = $1;
-      
-      // Type
-      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, $1->file, $1->line);
-
-      // New
-      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_package->file, op_package->line);
-
-      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
   | anon_sub
     {

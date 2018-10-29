@@ -964,8 +964,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               
                               op_cur = op_sequence->first;
                               
-                              SPVM_DUMPER_dump_ast(compiler, op_sequence);
-                              
                               {
                                 SPVM_OP* op_type_tmp = op_type;
                                 op_type_tmp->uv.type->info_constant_id = package->info_types->length;

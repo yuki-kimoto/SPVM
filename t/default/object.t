@@ -23,11 +23,6 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Anon package
-{
-  ok(TestCase::Object->anon_package());
-}
-
 # Create object
 {
   # Check object count at least 1 to check object count system itself

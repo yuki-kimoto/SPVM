@@ -419,23 +419,21 @@ SPVM::Test - SPVM test module
     
     # sort
     {
-      my $comparator = package {
-        sub compare : int ($self : self, $object1 : object, $object2 : object) {
-          my $minimal1 = (TestCase::Minimal)$object1;
-          my $minimal2 = (TestCase::Minimal)$object2;
-          
-          my $x1 = $minimal1->{x};
-          my $x2 = $minimal2->{x};
-          
-          if ($x1 > $x2) {
-            return 1;
-          }
-          elsif ($x1 < $x2) {
-            return -1;
-          }
-          else {
-            return 0;
-          }
+      my $comparator  = sub : int ($self : self, $object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+        
+        my $x1 = $minimal1->{x};
+        my $x2 = $minimal2->{x};
+        
+        if ($x1 > $x2) {
+          return 1;
+        }
+        elsif ($x1 < $x2) {
+          return -1;
+        }
+        else {
+          return 0;
         }
       };
       
@@ -454,23 +452,6 @@ SPVM::Test - SPVM test module
       
       print($minimals->[0]{x} . " " . $minimals->[1]{x} . " " . $minimals->[2]{x} . "\n");
     }
-    # Anon package
-    {
-      my $point = package {
-        has x : int;
-        has y : int;
-        sub clear : void ($self : self) {
-          $self->{x} = 0;
-          $self->{y} = 0;
-        }
-      };
-      
-      $point->{x} = 3;
-      print($point->{x} . "\n");
-      $point->clear;
-      print($point->{x} . "\n");
-    }
-    
     if (!(1 == 2)) {
       
     }

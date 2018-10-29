@@ -1,4 +1,4 @@
-0.0382 2018-10-25
+0.0382 2018-10-29
   - remove no needed runtime type check.
   - change sub signature
     [before](int)foo(int,int)
@@ -26,6 +26,7 @@
       ...;
     };
   - remove new sub syntax.
+  - remove anon package syntax
   - support anon sub capture variable
     {
       my $capture1 = 7;
