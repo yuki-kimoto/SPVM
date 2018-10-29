@@ -14,6 +14,7 @@
   #include "spvm_type.h"
   #include "spvm_block.h"
   #include "spvm_list.h"
+  #include "spvm_package.h"
 %}
 
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
@@ -765,10 +766,16 @@ new
     }
   | anon_package
     {
-      // New
-      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
+      // Package
+      SPVM_OP* op_package = $1;
+      
+      // Type
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, $1->file, $1->line);
 
-      $$ = SPVM_OP_build_new(compiler, op_new, $1, NULL);
+      // New
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_package->file, op_package->line);
+
+      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
   | sub
     {
@@ -783,11 +790,14 @@ new
       
       // Build package
       SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+
+      // Type
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, $1->file, $1->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
+      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
   | anon_sub
     {
@@ -802,11 +812,14 @@ new
       
       // Build package
       SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+
+      // Type
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, $1->file, $1->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
+      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
 
 array_init

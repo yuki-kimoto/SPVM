@@ -265,22 +265,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_LIST_push(op_switch_stack, op_cur);
                     break;
                   }
-                  case SPVM_OP_C_ID_NEW: {
-                    // If new package { ... } syntax, replace package to type
-                    if (op_cur->first->id == SPVM_OP_C_ID_PACKAGE) {
-                      SPVM_OP* op_package = op_cur->first;
-                      SPVM_PACKAGE* package = op_package->uv.package;
-
-                      SPVM_TYPE* type = package->op_type->uv.type;
-                      
-                      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_package->file, op_package->line);
-                      
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
-                      SPVM_OP_replace_op(compiler, op_stab, op_type);
-                    }
-                    
-                    break;
-                  }
                 }
               }
               // [END]Preorder traversal position
