@@ -877,7 +877,144 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_PACKAGE* new_package = op_cur->first->uv.type->basic_type->package;
                           
                           if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
-                            
+                            SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
+                            if (anon_sub->captures->length) {
+                              
+                              // [Before]
+                              // NEW
+                              //   TYPE
+                              // [After]
+                              // SEQUENCE
+                              //   ASSIGN
+                              //    NEW
+                              //      TYPE
+                              //    VAR_TMP_NEW
+                              // FIELD_ACCESS
+                              //    VAR_TMP_NEW2
+                              //    NAME
+                              // FIELD_ACCESS
+                              //    VAR_TMP_NEW2
+                              //    NAME
+                              // VAR_TMP_NEW
+                              
+                              /*
+                              SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
+                              SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+                              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+                              SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp_new->uv.var->my);
+                              SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
+                              
+                              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
+
+                              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
+                              
+                              int32_t length;
+                              {
+                                SPVM_OP* op_term_element = op_list_elements->first;
+                                int32_t index = 0;
+                                while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+                                  if (index == 0) {
+                                    
+                                    if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
+                                      SPVM_yyerror_format(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
+                                    }
+
+                                    SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
+                                    
+                                    op_term_element->no_need_check = 1;
+
+                                    // Create element type
+                                    if (op_type_element == NULL) {
+                                      SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+                                      type_element->basic_type = type_term_element->basic_type;
+                                      type_element->dimension = type_term_element->dimension;
+                                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                        type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
+                                      }
+                                      op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
+                                    }
+                                    
+                                    if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
+                                      {
+                                        SPVM_OP* op_type_tmp = op_type_element;
+                                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
+                                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
+                                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                                        }
+                                      }
+                                    }
+                                                            
+                                    // Create array type
+                                    if (op_type_new == NULL) {
+                                      SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                                      type_new->basic_type = type_term_element->basic_type;
+                                      type_new->dimension = type_term_element->dimension + 1;
+                                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
+                                        type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
+                                      }
+                                      op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
+                                    }
+
+                                    if (!SPVM_TYPE_is_numeric_type(compiler, op_type_new->uv.type->basic_type->id, op_type_new->uv.type->dimension, op_type_new->uv.type->flag)) {
+                                      {
+                                        SPVM_OP* op_type_tmp = op_type_new;
+                                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
+                                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
+                                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                                          SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                                        }
+                                      }
+                                    }
+                                    
+                                    op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
+                                  }
+                                  
+                                  SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+                                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+                                  
+                                  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
+
+                                  SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
+
+                                  SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
+                                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
+                                  
+                                  SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
+                                  
+                                  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
+                                  
+                                  index++;
+                                  op_term_element = op_stab;
+                                }
+                                length = index;
+                              }
+                              
+                              SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
+                              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
+
+                              SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
+                              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
+                              
+                              SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                              
+                              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
+
+                              if (length == 0) {
+                                SPVM_yyerror_format(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
+                              }
+                              
+                              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                              
+                              SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+                              
+                              op_array_init->first = op_sequence;
+                              
+                              op_cur = op_sequence->first;
+
+                              */
+                            }
                           }
                           
                           SPVM_OP* op_type = op_cur->first;
