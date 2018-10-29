@@ -16,7 +16,7 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   sub->args = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->mys = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->object_arg_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->capture_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  sub->captures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return sub;
 }

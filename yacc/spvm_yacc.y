@@ -269,7 +269,16 @@ anon_sub
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $11, $2);
+       SPVM_OP* op_list_args;
+       if ($2->id == SPVM_OP_C_ID_LIST) {
+         op_list_args = $2;
+       }
+       else {
+         op_list_args = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
+         SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
+       }
+       
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $11, op_list_args);
      }
 opt_args
   :	/* Empty */

@@ -29,7 +29,7 @@ struct SPVM_sub {
   SPVM_OP* op_constant;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
-  SPVM_LIST* capture_vars;
+  SPVM_LIST* captures;
   int32_t opcodes_base;
   int32_t opcodes_length;
   int32_t call_sub_arg_stack_max;

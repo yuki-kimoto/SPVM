@@ -1511,19 +1511,35 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
   }
   
-  // Divide declarations to field, sub, enum, package variable, use
+  // Declarations
   SPVM_OP* op_decls = op_block->first;
   SPVM_OP* op_decl = op_decls->first;
   while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
+    // Field declarations
     if (op_decl->id == SPVM_OP_C_ID_FIELD) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(package->fields, op_decl->uv.field);
     }
+    // Sub declarations
     else if (op_decl->id == SPVM_OP_C_ID_SUB) {
       SPVM_LIST_push(package->subs, op_decl->uv.sub);
+      
+      // Captures is added to field
+      SPVM_LIST* captures = op_decl->uv.sub->captures;
+      for (int32_t i = 0; i < captures->length; i++) {
+        SPVM_MY* capture_my = SPVM_LIST_fetch(captures, i);
+        
+        SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_my->op_my->file, capture_my->op_my->line);
+        SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_my->op_name->uv.name + 1, capture_my->op_my->file, capture_my->op_my->line);
+        
+        SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, capture_my->type->op_type);
+        SPVM_LIST_push(package->fields, op_field->uv.field);
+      }
     }
+    
+    // Enum declarations
     else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
       SPVM_OP* op_enum_block = op_decl->first;
       SPVM_OP* op_enumeration_values = op_enum_block->first;
@@ -1532,6 +1548,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
     }
+    // Package var declarations
     else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_yyerror_format(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
@@ -1539,7 +1556,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
     }
     else if (op_decl->id == SPVM_OP_C_ID_USE) {
-      // Static import
     }
     else {
       assert(0);
@@ -1870,7 +1886,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_list_capture_vars) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures) {
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   
   // Anon sub
@@ -1940,6 +1956,14 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       }
       SPVM_LIST_push(sub->args, op_arg->uv.var->my);
       sub_index++;
+    }
+  }
+
+  // Capture variables
+  if (op_captures) {
+    SPVM_OP* op_capture = op_captures->first;
+    while ((op_capture = SPVM_OP_sibling(compiler, op_capture))) {
+      SPVM_LIST_push(sub->captures, op_capture->uv.var->my);
     }
   }
   
