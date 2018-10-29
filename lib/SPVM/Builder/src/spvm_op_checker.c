@@ -874,6 +874,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         assert(op_cur->first);
 
                         if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
+                          SPVM_PACKAGE* new_package = op_cur->first->uv.type->basic_type->package;
+                          
+                          if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                            
+                          }
+                          
                           SPVM_OP* op_type = op_cur->first;
                           
                           SPVM_TYPE* type = op_type->uv.type;
