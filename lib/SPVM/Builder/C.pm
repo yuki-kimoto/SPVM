@@ -213,8 +213,13 @@ sub compile_objects {
   # Config
   my $build_config;
   if (-f $config_file) {
-    $build_config = do $config_file
-      or confess "Can't parser $config_file: $!$@";
+    open my $config_fh, '<', $config_file
+      or confess "Can't open $config_file: $!";
+    my $config_content = do { local $/; <$config_fh> };
+    $build_config = eval "$config_content";
+    if (my $messge = $@) {
+      confess "Can't parser $config_file: $@";
+    }
   }
   else {
     $build_config = SPVM::Builder::Util::new_default_build_config;
@@ -300,8 +305,13 @@ sub link_shared_lib {
   # Config
   my $build_config;
   if (-f $config_file) {
-    $build_config = do $config_file
-      or confess "Can't parser $config_file: $!$@";
+    open my $config_fh, '<', $config_file
+      or confess "Can't open $config_file: $!";
+    my $config_content = do { local $/; <$config_fh> };
+    $build_config = eval "$config_content";
+    if (my $messge = $@) {
+      confess "Can't parser $config_file: $@";
+    }
   }
   else {
     $build_config = SPVM::Builder::Util::new_default_build_config;
