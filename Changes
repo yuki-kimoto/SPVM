@@ -1,6 +1,15 @@
 0.0383 2018-10-30
   - remove array list syntax. This syntax is very unnatural.
     [(1, 2), (3, 4)]
+
+  - change new_fcomplex_array definition
+    
+      sub new_fcomplex_array : SPVM::Complex_f2[] ($re_values : float[], $im_values : float[]);
+  
+  - change new_dcomplex_array definition
+  
+      sub new_dcomplex_array : SPVM::Complex_d2[] ($re_values : double[], $im_values : double[]);
+
 0.0382 2018-10-29
   - remove no needed runtime type check.
   - change sub signature
