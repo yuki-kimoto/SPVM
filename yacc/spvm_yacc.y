@@ -607,38 +607,9 @@ normal_terms
       
       $$ = op_list;
     }
-  | normal_terms ',' '(' normal_terms ')'
-    {
-      SPVM_OP* op_list;
-      if ($1->id == SPVM_OP_C_ID_LIST) {
-        op_list = $1;
-      }
-      else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
-      }
-      
-      if ($4->id == SPVM_OP_C_ID_LIST) {
-        SPVM_OP* op_term = $4->first;
-        while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
-          SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
-          op_term = op_stab;
-        }
-      }
-      else {
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $4);
-      }
-      
-      $$ = op_list;
-    }
   | normal_terms ','
     {
       $$ = $1;
-    }
-  | '(' normal_terms ')'
-    {
-      $$ = $2;
     }
   | normal_term
     {

@@ -1,3 +1,6 @@
+0.0383 2018-10-30
+  - remove array list syntax. This syntax is very unnatural.
+    [(1, 2), (3, 4)]
 0.0382 2018-10-29
   - remove no needed runtime type check.
   - change sub signature

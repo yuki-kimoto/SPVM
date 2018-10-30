@@ -258,7 +258,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
+      my $array = [1, 2,    5, 7,    9, 3,    4, 10];
       print($array->[7] . "\n");
     }
     {

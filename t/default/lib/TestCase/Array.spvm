@@ -119,15 +119,6 @@ package TestCase::Array {
     return $total;
   }
 
-  sub array_init_list : int () {
-    my $array = [(1, 2, 3), (4, 5), (6), 7];
-    
-    if ($array->[0] == 1 && $array->[1] == 2 && $array->[2] == 3 && $array->[3] == 4 && $array->[4] == 5 && $array->[5] == 6 && $array->[6] == 7) {
-      return 1;
-    }
-    return 0;
-  }
-
   sub array_init_byte : int () {
     my $nums = new byte[] {(byte)1, (byte)2, INT8_MAX()};
     

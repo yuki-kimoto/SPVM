@@ -189,7 +189,7 @@ package TestCase::Complex {
   }
 
   sub test_new_fcomplex_array : int () {
-    my $z_array = new_fcomplex_array([(FLT_MIN(), 1), (2, 3), (4, 5)]);
+    my $z_array = new_fcomplex_array([FLT_MIN(), 1,    2, 3,    4, 5]);
 
     if ($z_array->[0]{re} == FLT_MIN() && $z_array->[0]{im} == 1
       && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
@@ -202,7 +202,7 @@ package TestCase::Complex {
   }
 
   sub test_new_dcomplex_array : int () {
-    my $z_array = new_dcomplex_array([(DBL_MIN(), 1), (2, 3), (4, 5)]);
+    my $z_array = new_dcomplex_array([DBL_MIN(), 1,    2, 3,    4, 5]);
 
     if ($z_array->[0]{re} == DBL_MIN() && $z_array->[0]{im} == 1
       && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
