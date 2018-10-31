@@ -7,6 +7,35 @@ package TestCase::Sub {
   use TestCase::Point_f3;
   use TestCase::Point_d3;
   use SPVM::Comparator;
+
+  sub anon_sub_capture : int () {
+    my $capture1 = 7;
+    my $capture2 = 10;
+    my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+      
+      unless ($capture1 == 7) {
+        return 0;
+      }
+      
+      unless ($capture2 == 10) {
+        return 0;
+      }
+      
+      unless ($self->{capture1} == 7) {
+        return 0;
+      }
+
+      $self->{capture1} = 5;
+      
+      unless ($capture1 == 5) {
+        return 0;
+      }
+      
+      return 1;
+    };
+    
+    return $anon_sub->(undef, undef);
+  }
   
   sub anon_sub_call_anon_sub : int () {
     my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
