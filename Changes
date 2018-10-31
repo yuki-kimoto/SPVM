@@ -1,6 +1,7 @@
 0.0384 2018-10-31
   - remove ${$var} dereference syntax. use $$var always.
   - allow brace in variable ${foo}.
+  - support variable expansion.
 0.0383 2018-10-30
   - remove array list syntax. This syntax is very unnatural.
     [(1, 2), (3, 4)]

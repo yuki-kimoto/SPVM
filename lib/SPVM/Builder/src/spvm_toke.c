@@ -671,7 +671,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return CONSTANT;
       }
       case '"': {
-        if (state_var_expansion != SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
+        if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
+          // $var-> is invalid
+          if (*compiler->bufptr == '-' && *(compiler->bufptr + 1) == '>') {
+            fprintf(stderr, "Don't support variable expansion of array access or field access at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            exit(EXIT_FAILURE);
+          }
+        }
+        else {
           compiler->bufptr++;
         }
 
