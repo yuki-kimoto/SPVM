@@ -44,13 +44,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t expect_sub_name = compiler->expect_sub_name;
   compiler->expect_sub_name = 0;
   
-  // Expect variable expansion variable
-  int32_t expect_var_expand_start = compiler->expect_var_expansion_start;
-  compiler->expect_var_expansion_start = 0;
-
-  // Expect variable expansion string
-  int32_t expect_var_expand_end = compiler->expect_var_expansion_end;
-  compiler->expect_var_expansion_end = 0;
+  // Expect variable expansion state
+  int32_t expect_var_expansion_state = compiler->expect_var_expansion_state;
+  compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_DEFAULT;
   
   while(1) {
     // Get current character
@@ -743,7 +739,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else if (*char_ptr == '$') {
-                compiler->expect_var_expansion_start = 1;
+                compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR;
                 break;
               }
               else {
