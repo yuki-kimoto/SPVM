@@ -733,10 +733,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str[str_length] = '\0';
                   str_length++;
                 }
+                else if (*char_ptr == '$') {
+                  str[str_length] = '$';
+                  str_length++;
+                }
                 else {
                   fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
                   exit(EXIT_FAILURE);
                 }
+              }
+              else if (*char_ptr == '$') {
+                compiler->expect_var_expansion_start = 1;
+                break;
               }
               else {
                 str[str_length] = *char_ptr;
