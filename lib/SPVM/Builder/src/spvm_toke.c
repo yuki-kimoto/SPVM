@@ -797,18 +797,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = op;
             return DEREF;
           }
-          
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
-          memcpy(var_name, cur_token_ptr, str_len);
-          var_name[str_len] = '\0';
+          // Variable name
+          else {
+            int32_t str_len = (compiler->bufptr - cur_token_ptr);
+            char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
+            memcpy(var_name, cur_token_ptr, str_len);
+            var_name[str_len] = '\0';
 
-          // Name OP
-          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
+            // Name OP
+            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
 
-          yylvalp->opval = op_name;
-          
-          return VAR_NAME;
+            yylvalp->opval = op_name;
+            
+            return VAR_NAME;
+          }
         }
         /* Number literal */
         else if (isdigit(ch)) {
