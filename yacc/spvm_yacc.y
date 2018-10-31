@@ -857,10 +857,6 @@ deref
     {
       $$ = SPVM_OP_build_deref(compiler, $1, $2);
     }
-  | DEREF '{' var '}'
-    {
-      $$ = SPVM_OP_build_deref(compiler, $1, $3);
-    }
 
 ref
   : REF var
