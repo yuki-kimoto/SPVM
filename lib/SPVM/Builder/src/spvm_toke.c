@@ -52,7 +52,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // Get current character
     char ch = *compiler->bufptr;
     
-    if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
+    // Variable expansion state
+    if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
+      ch = '.';
+    }
+    else if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT) {
+      ch = '.';
+    }
+    else if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
       ch = '"';
     }
     
@@ -204,22 +211,34 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         continue;
       
       /* Cancat */
-      case '.':
-        compiler->bufptr++;
-        if (*compiler->bufptr == '=') {
-          compiler->bufptr++;
-          SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
-          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT;
-          
-          yylvalp->opval = op_special_assign;
-          
-          return SPECIAL_ASSIGN;
-        }
-        else {
+      case '.': {
+        if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
+          compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR;
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONCAT);
           return '.';
         }
-      
+        else if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT) {
+          compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE;
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONCAT);
+          return '.';
+        }
+        else {
+          compiler->bufptr++;
+          if (*compiler->bufptr == '=') {
+            compiler->bufptr++;
+            SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
+            op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT;
+            
+            yylvalp->opval = op_special_assign;
+            
+            return SPECIAL_ASSIGN;
+          }
+          else {
+            yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONCAT);
+            return '.';
+          }
+        }
+      }
       /* Addition */
       case '+':
         compiler->bufptr++;
@@ -652,15 +671,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return CONSTANT;
       }
       case '"': {
-        if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
-          compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
-        }
-        else {
+        if (state_var_expansion != SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
           compiler->bufptr++;
         }
+
+        compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
         
         /* Save current position */
         const char* cur_token_ptr = compiler->bufptr;
+        
+        int8_t next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
         
         char* str;
         int32_t str_length = 0;
@@ -679,7 +699,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Variable expansion
             else if (*compiler->bufptr == '$' && *(compiler->bufptr - 1) != '\\') {
               finish = 1;
-              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR;
+              next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
             }
             // End of source file
             else if (*compiler->bufptr == '\0') {
@@ -763,7 +783,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         yylvalp->opval = op_constant;
         
         // Next is start from $
-        if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
+        if (next_state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
+          compiler->state_var_expansion = next_state_var_expansion;
           compiler->bufptr--;
         }
         
@@ -830,9 +851,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
 
             yylvalp->opval = op_name;
-
-            if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
-              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE;
+            
+            // Variable expansion next state is double quote
+            if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
+              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT;
             }
             
             return VAR_NAME;
