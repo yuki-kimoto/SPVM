@@ -1,0 +1,12 @@
+package TestCase::Var {
+  sub var_brace : int () {
+    
+    my ${var} = 5;
+    
+    unless (${var} == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

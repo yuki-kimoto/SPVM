@@ -15,6 +15,7 @@
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_api.h"
+#include "spvm_portable.h"
 
 #include <spvm_native.h>
 

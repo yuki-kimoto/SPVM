@@ -777,10 +777,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return DEREF;
           }
           else {
+            compiler->bufptr++;
+
+            int8_t have_brace = 0;
+            
+            if (*compiler->bufptr == '{') {
+              have_brace = 1;
+              compiler->bufptr++;
+            }
+            
             /* Save current position */
             const char* cur_token_ptr = compiler->bufptr;
-            
-            compiler->bufptr++;
             
             // Var name
             while (
@@ -797,11 +804,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
             }
+
+            int32_t var_name_length_without_sigil = compiler->bufptr - cur_token_ptr;
+            char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + var_name_length_without_sigil + 1);
+            var_name[0] = '$';
+            memcpy(&var_name[1], cur_token_ptr, var_name_length_without_sigil);
+            var_name[1 + var_name_length_without_sigil] = '\0';
             
-            int32_t str_len = (compiler->bufptr - cur_token_ptr);
-            char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
-            memcpy(var_name, cur_token_ptr, str_len);
-            var_name[str_len] = '\0';
+            if (have_brace) {
+              if (*compiler->bufptr == '}') {
+                compiler->bufptr++;
+              }
+              else {
+                fprintf(stderr, "Need close brace at end of variable at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
+                exit(EXIT_FAILURE);
+              }
+            }
 
             // Name OP
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);

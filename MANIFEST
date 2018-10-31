@@ -280,6 +280,7 @@ t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
+t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/list.t
 t/default/literal.t
@@ -296,6 +297,7 @@ t/default/sub.t
 t/default/switch.t
 t/default/unless.t
 t/default/value_t_array.t
+t/default/var.t
 t/default/weaken.t
 t/exe.t
 t/lib/TestAuto.pm

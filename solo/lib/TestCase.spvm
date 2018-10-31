@@ -61,7 +61,9 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
-    
+    {
+      my ${var} = 5;
+    }
     
     {
       my $capture1 = 7;
