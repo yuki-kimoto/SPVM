@@ -667,6 +667,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (*compiler->bufptr == '"' && *(compiler->bufptr - 1) != '\\') {
               finish = 1;
             }
+            // Variable expansion
+            else if (*compiler->bufptr == '$' && *(compiler->bufptr - 1) != '\\') {
+              finish = 1;
+              compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR;
+            }
             // End of source file
             else if (*compiler->bufptr == '\0') {
               finish = 1;
@@ -737,10 +742,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
                   exit(EXIT_FAILURE);
                 }
-              }
-              else if (*char_ptr == '$') {
-                compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR;
-                break;
               }
               else {
                 str[str_length] = *char_ptr;
