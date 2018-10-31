@@ -45,8 +45,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->expect_sub_name = 0;
   
   // Expect variable expansion state
-  int32_t expect_var_expansion_state = compiler->expect_var_expansion_state;
-  compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_DEFAULT;
+  int32_t state_var_expansion = compiler->state_var_expansion;
+  compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
   
   while(1) {
     // Get current character
@@ -670,7 +670,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Variable expansion
             else if (*compiler->bufptr == '$' && *(compiler->bufptr - 1) != '\\') {
               finish = 1;
-              compiler->expect_var_expansion_state = SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR;
+              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR;
             }
             // End of source file
             else if (*compiler->bufptr == '\0') {
@@ -758,7 +758,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         yylvalp->opval = op_constant;
         
         // Next is start from $
-        if (compiler->expect_var_expansion_state == SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR) {
+        if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
           compiler->bufptr--;
         }
         

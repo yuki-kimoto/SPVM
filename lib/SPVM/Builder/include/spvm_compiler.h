@@ -7,10 +7,10 @@
 #include "spvm_native.h"
 
 enum {
-  SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_DEFAULT,
-  SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR,
-  SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_CONCAT,
-  SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_STRING,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_CONCAT,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE,
 };
 
 // Parser information
@@ -37,7 +37,7 @@ struct SPVM_compiler {
   int8_t expect_sub_name;
 
   // Expect variable expansion start
-  int8_t expect_var_expansion_state;
+  int8_t state_var_expansion;
   
   // Current enum value
   int32_t current_enum_value;
