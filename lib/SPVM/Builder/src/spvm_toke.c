@@ -757,6 +757,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         yylvalp->opval = op_constant;
         
+        // Next is start from $
+        if (compiler->expect_var_expansion_state == SPVM_TOKE_C_EXPECT_VAR_EXPANSION_STATE_VAR) {
+          compiler->bufptr--;
+        }
+        
         return CONSTANT;
       }
       case '\\':
