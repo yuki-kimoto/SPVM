@@ -13,7 +13,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Array
 {
-  ok(TestCase::Unless->var_brace);
+  ok(TestCase::Var->var_brace);
 }
 
 # All object is freed

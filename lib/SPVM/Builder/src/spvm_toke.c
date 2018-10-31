@@ -52,6 +52,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // Get current character
     char ch = *compiler->bufptr;
     
+    if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
+      ch = '"';
+    }
+    
     // line end
     switch (ch) {
       case '\0':
@@ -648,7 +652,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return CONSTANT;
       }
       case '"': {
-        compiler->bufptr++;
+        if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
+          compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
+        }
+        else {
+          compiler->bufptr++;
+        }
         
         /* Save current position */
         const char* cur_token_ptr = compiler->bufptr;
@@ -732,10 +741,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (*char_ptr == '0') {
                   str[str_length] = '\0';
-                  str_length++;
-                }
-                else if (*char_ptr == '$') {
-                  str[str_length] = '$';
                   str_length++;
                 }
                 else {
@@ -825,6 +830,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
 
             yylvalp->opval = op_name;
+
+            if (compiler->state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
+              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE;
+            }
             
             return VAR_NAME;
           }
