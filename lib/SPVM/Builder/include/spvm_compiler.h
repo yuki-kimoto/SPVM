@@ -27,7 +27,13 @@ struct SPVM_compiler {
   char* befbufptr;
 
   // Expect subroutine name
-  int32_t expect_sub_name;
+  int8_t expect_sub_name;
+
+  // Expect variable expansion start
+  int8_t expect_var_expansion_start;
+
+  // Expect variable expansion end
+  int8_t expect_var_expansion_end;
   
   // Current enum value
   int32_t current_enum_value;

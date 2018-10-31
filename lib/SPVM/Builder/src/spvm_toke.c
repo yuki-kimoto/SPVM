@@ -40,9 +40,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Constant minus sign
   int32_t minus = 0;
   
-  // Expect name
+  // Expect sub name
   int32_t expect_sub_name = compiler->expect_sub_name;
   compiler->expect_sub_name = 0;
+  
+  // Expect variable expansion variable
+  int32_t expect_var_expand_start = compiler->expect_var_expansion_start;
+  compiler->expect_var_expansion_start = 0;
+
+  // Expect variable expansion string
+  int32_t expect_var_expand_end = compiler->expect_var_expansion_end;
+  compiler->expect_var_expansion_end = 0;
   
   while(1) {
     // Get current character
