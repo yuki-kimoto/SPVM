@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_tree_info.h
+struct SPVM_tree_info;
+typedef struct SPVM_tree_info SPVM_TREE_INFO;
+
 // spvm_portable.h
 struct SPVM_portable;
 typedef struct SPVM_portable SPVM_PORTABLE;
