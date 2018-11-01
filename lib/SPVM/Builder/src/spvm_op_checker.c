@@ -2014,7 +2014,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     op_package_var_access->is_lvalue = op_cur->is_lvalue;
                     
                     op_cur = op_package_var_access;
-                    continue;
+                    
+                    SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, tree_info);
                   }
                   // Error
                   else {
