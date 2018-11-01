@@ -33,6 +33,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_tree_info.h"
 
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
 
@@ -218,6 +219,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           // Check subroutine - First tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+            SPVM_TREE_INFO* tree_info = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_TREE_INFO));
+            
             // Eval block stack length
             int32_t eval_block_stack_length = 0;
             

@@ -71,7 +71,9 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   int32_t i;
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
-    free(block);
+    if (block != NULL) {
+      free(block);
+    }
   }
   
   // Free lists
@@ -79,7 +81,9 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
     int32_t i;
     for (i = 0; i < allocator->lists->length; i++) {
       SPVM_LIST* list = SPVM_LIST_fetch(allocator->lists, i);
-      SPVM_LIST_free(list);
+      if (list != NULL) {
+        SPVM_LIST_free(list);
+      }
     }
   }
   SPVM_LIST_free(allocator->lists);
@@ -89,7 +93,9 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
     int32_t i;
     for (i = 0; i < allocator->hashes->length; i++) {
       SPVM_HASH* hash = SPVM_LIST_fetch(allocator->hashes, i);
-      SPVM_HASH_free(hash);
+      if (hash != NULL) {
+        SPVM_HASH_free(hash);
+      }
     }
   }
   SPVM_LIST_free(allocator->hashes);
