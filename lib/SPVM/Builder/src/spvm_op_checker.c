@@ -237,21 +237,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Switch stack
             tree_info->op_switch_stack = SPVM_LIST_new(0);
             
-            // Eval block stack length
-            int32_t eval_block_stack_length = 0;
-            
-            // Loop block stack length
-            int32_t loop_block_stack_length = 0;
-            
-            // My stack
-            SPVM_LIST* my_stack = SPVM_LIST_new(0);
-            
-            // Block my base stack
-            SPVM_LIST* block_my_base_stack = SPVM_LIST_new(0);
-            
-            // Switch stack
-            SPVM_LIST* op_switch_stack = SPVM_LIST_new(0);
-            
             // Run OPs
             SPVM_OP* op_base = sub->op_block;
             SPVM_OP* op_cur = op_base;
@@ -267,24 +252,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 switch (op_cur->id) {
                   // Start scope
                   case SPVM_OP_C_ID_BLOCK: {
-                    int32_t block_my_base = my_stack->length;
-                    SPVM_LIST_push(block_my_base_stack, (void*)(intptr_t)block_my_base);
+                    int32_t block_my_base = tree_info->my_stack->length;
+                    SPVM_LIST_push(tree_info->block_my_base_stack, (void*)(intptr_t)block_my_base);
                     
                     if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-                      loop_block_stack_length++;
+                      tree_info->loop_block_stack_length++;
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                       // Eval block max length
-                      eval_block_stack_length++;
-                      if (eval_block_stack_length > sub->eval_stack_max_length) {
-                        sub->eval_stack_max_length = eval_block_stack_length;
+                      tree_info->eval_block_stack_length++;
+                      if (tree_info->eval_block_stack_length > sub->eval_stack_max_length) {
+                        sub->eval_stack_max_length = tree_info->eval_block_stack_length;
                       }
                     }
                     
                     break;
                   }
                   case SPVM_OP_C_ID_SWITCH: {
-                    SPVM_LIST_push(op_switch_stack, op_cur);
+                    SPVM_LIST_push(tree_info->op_switch_stack, op_cur);
                     break;
                   }
                 }
@@ -328,7 +313,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                         SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
                         SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp_new->uv.var->my);
-                        SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
+                        SPVM_LIST_push(tree_info->my_stack, op_var_tmp_new->uv.var->my);
                         
                         SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -442,7 +427,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_NEXT: {
-                        if (loop_block_stack_length == 0) {
+                        if (tree_info->loop_block_stack_length == 0) {
                           SPVM_yyerror_format(compiler, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -450,7 +435,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_LAST: {
-                        if (loop_block_stack_length == 0 && op_switch_stack->length == 0) {
+                        if (tree_info->loop_block_stack_length == 0 && tree_info->op_switch_stack->length == 0) {
                           SPVM_yyerror_format(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                           
                           return;
@@ -570,7 +555,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
                         
-                        SPVM_LIST_pop(op_switch_stack);
+                        SPVM_LIST_pop(tree_info->op_switch_stack);
 
                         if (package->info_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_yyerror_format(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
@@ -581,8 +566,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_CASE: {
-                        if (op_switch_stack->length > 0) {
-                          SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
+                        if (tree_info->op_switch_stack->length > 0) {
+                          SPVM_OP* op_switch = SPVM_LIST_fetch(tree_info->op_switch_stack, tree_info->op_switch_stack->length - 1);
                           SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                           op_cur->uv.case_info->index = switch_info->cases->length;
                           SPVM_LIST_push(switch_info->cases, op_cur->uv.case_info);
@@ -590,8 +575,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_DEFAULT: {
-                        if (op_switch_stack->length > 0) {
-                          SPVM_OP* op_switch = SPVM_LIST_fetch(op_switch_stack, op_switch_stack->length - 1);
+                        if (tree_info->op_switch_stack->length > 0) {
+                          SPVM_OP* op_switch = SPVM_LIST_fetch(tree_info->op_switch_stack, tree_info->op_switch_stack->length - 1);
                           SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                           
                           if (switch_info->op_default) {
@@ -933,7 +918,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                               SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
                               SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp_new->uv.var->my);
-                              SPVM_LIST_push(my_stack, op_var_tmp_new->uv.var->my);
+                              SPVM_LIST_push(tree_info->my_stack, op_var_tmp_new->uv.var->my);
                               
                               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_cur);
 
@@ -946,8 +931,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
                                 // Search same name variable
                                 SPVM_MY* found_my = NULL;
-                                for (int32_t stack_my_index = my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
-                                  SPVM_MY* my = SPVM_LIST_fetch(my_stack, stack_my_index);
+                                for (int32_t stack_my_index = tree_info->my_stack->length - 1; stack_my_index >= 0; stack_my_index--) {
+                                  SPVM_MY* my = SPVM_LIST_fetch(tree_info->my_stack, stack_my_index);
                                   if (strcmp(capture_name, my->op_name->uv.name) == 0) {
                                     found_my = my;
                                     break;
@@ -1483,7 +1468,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
                         SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
                         SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp1->uv.var->my);
-                        SPVM_LIST_push(my_stack, op_var_tmp1->uv.var->my);
+                        SPVM_LIST_push(tree_info->my_stack, op_var_tmp1->uv.var->my);
 
                         SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
                   
@@ -1562,7 +1547,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
                         SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp1->uv.var->my);
-                        SPVM_LIST_push(my_stack, op_var_tmp1->uv.var->my);
+                        SPVM_LIST_push(tree_info->my_stack, op_var_tmp1->uv.var->my);
                         
                         SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
                   
@@ -2063,25 +2048,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       // End of scope
                       case SPVM_OP_C_ID_BLOCK: {
                         // Pop block my variable base
-                        assert(block_my_base_stack->length > 0);
-                        int32_t block_my_base = (intptr_t)SPVM_LIST_pop(block_my_base_stack);
+                        assert(tree_info->block_my_base_stack->length > 0);
+                        int32_t block_my_base = (intptr_t)SPVM_LIST_pop(tree_info->block_my_base_stack);
                           
-                        int32_t my_stack_pop_count = my_stack->length - block_my_base;
+                        int32_t my_stack_pop_count = tree_info->my_stack->length - block_my_base;
                         
                         {
                           int32_t i;
                           for (i = 0; i < my_stack_pop_count; i++) {
-                            SPVM_LIST_pop(my_stack);
+                            SPVM_LIST_pop(tree_info->my_stack);
                           }
                         }
 
                         // Pop loop block my variable base
                         if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-                          loop_block_stack_length--;
+                          tree_info->loop_block_stack_length--;
                         }
                         // Pop try block my variable base
                         else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
-                          eval_block_stack_length--;
+                          tree_info->eval_block_stack_length--;
                         }
 
                         
@@ -2116,11 +2101,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           // Redeclaration error if same name variable is declare in same block
                           int32_t found = 0;
-                          int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(block_my_base_stack, block_my_base_stack->length - 1);
+                          int32_t block_my_base = (intptr_t)SPVM_LIST_fetch(tree_info->block_my_base_stack, tree_info->block_my_base_stack->length - 1);
                           {
                             int32_t i;
-                            for (i = block_my_base; i < my_stack->length; i++) {
-                              SPVM_MY* bef_my = SPVM_LIST_fetch(my_stack, i);
+                            for (i = block_my_base; i < tree_info->my_stack->length; i++) {
+                              SPVM_MY* bef_my = SPVM_LIST_fetch(tree_info->my_stack, i);
                               if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
                                 // Temporaly variable is not duplicated
                                 if (my->op_name->uv.name[0] != '@') {
@@ -2139,7 +2124,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else {
                             if (!my->is_tmp) {
                               SPVM_LIST_push(sub->mys, my);
-                              SPVM_LIST_push(my_stack, my);
+                              SPVM_LIST_push(tree_info->my_stack, my);
                             }
                           }
                           
@@ -2157,8 +2142,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_MY* found_my = NULL;
                         {
                           int32_t i;
-                          for (i = my_stack->length - 1; i >= 0; i--) {
-                            SPVM_MY* my = SPVM_LIST_fetch(my_stack, i);
+                          for (i = tree_info->my_stack->length - 1; i >= 0; i--) {
+                            SPVM_MY* my = SPVM_LIST_fetch(tree_info->my_stack, i);
                             assert(my);
                             if (strcmp(var->op_name->uv.name, my->op_name->uv.name) == 0) {
                               found_my = my;
@@ -2388,7 +2373,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
                           SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                          SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
+                          SPVM_LIST_push(tree_info->my_stack, op_var_tmp->uv.var->my);
                           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
                           SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_array);
@@ -2409,7 +2394,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           
                           SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
                           SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                          SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
+                          SPVM_LIST_push(tree_info->my_stack, op_var_tmp->uv.var->my);
                           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
                           SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
@@ -2523,7 +2508,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
                             SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                            SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
+                            SPVM_LIST_push(tree_info->my_stack, op_var_tmp->uv.var->my);
 
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2544,7 +2529,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
                             SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                            SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
+                            SPVM_LIST_push(tree_info->my_stack, op_var_tmp->uv.var->my);
                             
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2572,7 +2557,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
                             SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                            SPVM_LIST_push(my_stack, op_var_tmp->uv.var->my);
+                            SPVM_LIST_push(tree_info->my_stack, op_var_tmp->uv.var->my);
                             
                             SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                             SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_invocker);
@@ -2762,9 +2747,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
             // Free list
-            SPVM_LIST_free(my_stack);
-            SPVM_LIST_free(block_my_base_stack);
-            SPVM_LIST_free(op_switch_stack);
+            SPVM_LIST_free(tree_info->my_stack);
+            SPVM_LIST_free(tree_info->block_my_base_stack);
+            SPVM_LIST_free(tree_info->op_switch_stack);
           }
 
           // set assign_to_var flag - Second tree traversal
