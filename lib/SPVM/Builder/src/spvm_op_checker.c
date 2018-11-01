@@ -228,9 +228,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               
-              op_array_init->first = op_sequence;
+              op_cur = op_sequence;
               
-              op_cur = op_sequence->first;
+              SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
               
               break;
             }
