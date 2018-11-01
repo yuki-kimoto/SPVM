@@ -219,7 +219,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           // Check subroutine - First tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
-            SPVM_TREE_INFO* tree_info = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_TREE_INFO));
+            SPVM_TREE_INFO tree_info_struct = {0};
+            SPVM_TREE_INFO* tree_info = &tree_info_struct;
+
+            // Eval block stack length
+            tree_info->eval_block_stack_length = 0;
+            
+            // Loop block stack length
+            tree_info->loop_block_stack_length = 0;
+            
+            // My stack
+            tree_info->my_stack = SPVM_LIST_new(0);
+            
+            // Block my base stack
+            tree_info->block_my_base_stack = SPVM_LIST_new(0);
+            
+            // Switch stack
+            tree_info->op_switch_stack = SPVM_LIST_new(0);
             
             // Eval block stack length
             int32_t eval_block_stack_length = 0;
