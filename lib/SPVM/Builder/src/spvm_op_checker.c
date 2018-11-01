@@ -1519,7 +1519,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP_replace_op(compiler, op_stab, op_assign);
               
-              op_cur = op_term_mutable;
+              op_cur = op_assign;
+              
+              SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
               
               break;
             }
