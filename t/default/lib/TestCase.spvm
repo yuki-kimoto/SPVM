@@ -352,7 +352,7 @@ package TestCase {
   }
   
   # Sum
-  sub sum_byte : byte ($a : byte, $b :byte,) {
+  sub sum_byte : byte ($a : byte, $b :byte) {
     
     my $total = (byte)((int)$a + (int)$b);
     

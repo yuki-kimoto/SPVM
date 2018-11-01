@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND
+%token <opval> AMPERSAND DOT3
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -36,7 +36,7 @@
 %type <opval> block eval_block
 %type <opval> expression
 %type <opval> unop binop
-%type <opval> call_sub
+%type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
 %type <opval> deref ref assign incdec
 %type <opval> new array_init isa
@@ -244,21 +244,21 @@ has
     }
 
 sub
-  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
+  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8);
      }
-  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
+  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8);
      }
 
 anon_sub
-  : opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
+  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $8, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7);
      }
-  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args ')' block
+  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -269,8 +269,9 @@ anon_sub
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $11, op_list_args);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10);
      }
+
 opt_args
   :	/* Empty */
     {
@@ -328,10 +329,6 @@ args
       
       $$ = op_list;
     }
-  | args ','
-    {
-      $$ = $1;
-    }
   | arg
 
 arg
@@ -339,6 +336,13 @@ arg
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }
+
+opt_vaarg
+  : /* Empty */
+    {
+      $$ = NULL;
+    }
+  | DOT3
 
 invocant
   : var ':' SELF

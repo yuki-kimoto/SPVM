@@ -159,6 +159,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "LONG_REF",
   "FLOAT_REF",
   "DOUBLE_REF",
+  "DOT3",
 };
 
 SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line) {
@@ -1887,7 +1888,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3) {
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   
   // Anon sub
@@ -1910,6 +1911,10 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   sub->file = op_sub->file;
   sub->line = op_sub->line;
   sub->name = sub->op_name->uv.name;
+  
+  if (op_dot3) {
+    sub->have_vaarg = 1;
+  }
   
   // Descriptors
   if (op_descriptors) {
@@ -2101,7 +2106,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
   
   // Build subroutine
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL);
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL);
   
   // Set constant
   op_sub->uv.sub->op_constant = op_constant;
