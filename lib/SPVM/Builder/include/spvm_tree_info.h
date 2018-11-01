@@ -4,6 +4,12 @@
 #include "spvm_base.h"
 
 struct SPVM_tree_info {
+  // Package
+  SPVM_PACKAGE* package;
+  
+  // Subroutine
+  SPVM_SUB* sub;
+  
   // Eval block stack length
   int32_t eval_block_stack_length;
   

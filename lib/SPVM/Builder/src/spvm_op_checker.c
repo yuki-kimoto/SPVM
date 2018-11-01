@@ -221,6 +221,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             SPVM_TREE_INFO tree_info_struct = {0};
             SPVM_TREE_INFO* tree_info = &tree_info_struct;
+            
+            // Package
+            tree_info->package = package;
+            
+            // Sub
+            tree_info->sub = sub;
 
             // Eval block stack length
             tree_info->eval_block_stack_length = 0;
