@@ -218,7 +218,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           // Check subroutine - First tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+            // Eval block stack length
             int32_t eval_block_stack_length = 0;
+            
+            // Loop block stack length
             int32_t loop_block_stack_length = 0;
             
             // My stack
