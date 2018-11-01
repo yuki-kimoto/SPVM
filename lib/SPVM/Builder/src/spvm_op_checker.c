@@ -1993,7 +1993,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_field_access->is_lvalue = op_cur->is_lvalue;
                   
                   op_cur = op_field_access;
-                  continue;
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_field_access, tree_info);
                 }
                 else {
                   // Variable is package var
