@@ -3944,6 +3944,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         
         // Argument limit check
         int32_t arg_allow_count = 0;
+        SPVM_TYPE* last_arg_type = NULL;
         for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
           SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
 
@@ -3958,9 +3959,17 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           else {
             arg_allow_count++;
           }
+          
+          if (arg_index == sub->args->length - 1) {
+            last_arg_type = arg_type;
+          }
         }
         if (arg_allow_count > 255) {
           SPVM_yyerror_format(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        }
+        
+        if (sub->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
+          SPVM_yyerror_format(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
       }
     }
