@@ -101,7 +101,7 @@ sub get_array_elements_string { SPVM::PerlAPI::get_array_elements_string($SPVM_E
 
 =head1 NAME
 
-SPVM - Fast array and numeric operation, and provide easy way to C/C++ Binding
+SPVM - Static Perl Virtual Machine. Fast calcuration & Easy C/C++ Binding
 
 =head1 SYNOPSIS
 
