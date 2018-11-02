@@ -409,6 +409,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
                 
                 op_cur = op_false;
+                
+                SPVM_OP_CHECKER_check_tree(compiler, op_false, tree_info);
               }
               else {
                 if (op_first->id == SPVM_OP_C_ID_IF) {
@@ -446,7 +448,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
-                op_cur = op_true;
+                op_cur = op_bool;
+                
+                SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
               }
               // term == term
               else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
@@ -498,7 +502,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
-                op_cur = op_false;
+                op_cur = op_bool;
+                
+                SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
               }
               // term != term
               else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
