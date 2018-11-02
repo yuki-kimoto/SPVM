@@ -94,6 +94,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
           switch (op_cur->id) {
             case SPVM_OP_C_ID_ARRAY_INIT: {
               SPVM_OP* op_array_init = op_cur;
+
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               
               SPVM_OP* op_list_elements = op_cur->first;
               SPVM_OP* op_type_new_default = op_cur->last;
@@ -221,8 +223,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (length == 0) {
                 SPVM_yyerror_format(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
               }
-              
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               
@@ -405,8 +405,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
-                
-                op_cur = op_false;
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_false, tree_info);
               }
@@ -2332,8 +2330,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
-
-                  op_cur = op_assign;
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
                 }
@@ -2355,8 +2351,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
-
-                  op_cur = op_assign;
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
                 }
