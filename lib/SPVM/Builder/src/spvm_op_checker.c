@@ -715,10 +715,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     //     NAME_FIELD2
                     // VAR_TMP_NEW_RET
                     
-                    op_cur->no_need_check = 1;
+                    SPVM_OP* op_new = op_cur;
+                    
+                    op_new->no_need_check = 1;
                   
-                    const char* file = op_cur->file;
-                    int32_t line = op_cur->line;
+                    const char* file = op_new->file;
+                    int32_t line = op_new->line;
                     
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                     
@@ -726,7 +728,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                     SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
                     
-                    SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_cur);
+                    SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
                     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
                     
