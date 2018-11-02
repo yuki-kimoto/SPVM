@@ -2285,6 +2285,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_yyerror_format(compiler, "value_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
                   }
                   else {
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
                     SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
                     op_array_field_access->is_lvalue = op_cur->is_lvalue;
                     
@@ -2300,7 +2302,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
                     SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
                     
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                     SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                     
                     op_cur = op_array_field_access;
