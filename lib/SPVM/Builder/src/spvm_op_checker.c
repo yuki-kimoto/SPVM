@@ -2086,6 +2086,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Variable length arguments
                 if (vaarg_last_arg_is_not_array) {
                   
+                  SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_sub->file, op_call_sub->line);
+                  
                   const char* file = op_cur->file;
                   int32_t line = op_cur->line;
                   
@@ -2120,23 +2122,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   int32_t vaarg_index = 0;
                   
                   SPVM_OP* op_term_element = op_list_args->first;
-                  SPVM_OP* op_stab_first = NULL;
-                  SPVM_OP* op_stab_before = NULL;
                   while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
-                    if(arg_index == sub_args_count - 2) {
-                      op_stab_before = op_term_element;
+                    op_term_element->no_need_check = 1;
+
+                    if (arg_index < sub_args_count - 1) {
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+                      SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_term_element);
+                      op_term_element = op_stab;
                     }
-                    else if (arg_index >= sub_args_count - 1) {
-                      op_term_element->no_need_check = 1;
-                      
+                    else {
                       op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
 
                       SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                       SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
-                      
-                      if (op_stab_first == NULL) {
-                        op_stab_first = op_stab;
-                      }
                       
                       SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
@@ -2167,12 +2165,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
-                  SPVM_OP_replace_op(compiler, op_stab_first, op_sequence);
-                  op_sequence->sibparent = op_call_sub;
-                  op_sequence->moresib = 0;
-                  op_stab_before->sibparent = op_sequence;
-                  op_stab_before->moresib = 1;
-                  SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+                  SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
+
+                  SPVM_OP* op_stab_args_new = SPVM_OP_cut_op(compiler, op_call_sub->last);
+                  
+                  SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
+
+                  SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, tree_info);
                 }
                 
                 int32_t call_sub_args_count = 0;
@@ -3024,6 +3023,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     
                     // Cut new op
                     SPVM_OP* op_target = op_cur;
+                    
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
 
                     // Assing op
