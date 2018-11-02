@@ -2082,7 +2082,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
 
                 // Variable length arguments
-                if (0) {
+                if (vaarg_last_arg_is_not_array) {
                   SPVM_OP* op_array_init = op_cur;
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
