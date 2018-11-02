@@ -95,7 +95,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_ARRAY_INIT: {
               SPVM_OP* op_array_init = op_cur;
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              op_cur = op_stab;
               
               SPVM_OP* op_list_elements = op_array_init->first;
               SPVM_OP* op_type_new_default = op_array_init->last;
@@ -120,6 +119,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
+              op_cur = op_sequence;
               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
               SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
               
@@ -225,7 +225,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-              
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
               
               break;
@@ -432,14 +431,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // undef == undef
               if (op_first->id == SPVM_OP_C_ID_UNDEF && op_last->id == SPVM_OP_C_ID_UNDEF) {
+
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 SPVM_OP* op_true = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
                 SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_first->file, op_first->line);
+                op_cur = op_bool;
                 
                 SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_true);
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                op_cur = op_stab;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
@@ -485,14 +484,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // undef != undef
               if (op_first->id == SPVM_OP_C_ID_UNDEF && op_last->id == SPVM_OP_C_ID_UNDEF) {
+
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
                 SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_first->file, op_first->line);
+                op_cur = op_bool;
                 
                 SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_false);
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                op_cur = op_stab;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
