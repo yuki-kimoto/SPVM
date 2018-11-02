@@ -2061,9 +2061,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               // Normal subroutine
               else {
-              
-                int32_t vaarg_need_create_array = 0;
-                SPVM_TYPE* vaarg_element_type = NULL;
+                
+                // Variable length argument. Last argument is not array.
+                int32_t vaarg_last_arg_is_not_array = 0;
+                SPVM_TYPE* vaarg_last_arg_type = NULL;
                 if (sub_is_vaarg) {
                   int32_t arg_index = 0;
                   SPVM_OP* op_term = op_list_args->first;
@@ -2071,40 +2072,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (arg_index == sub_args_count - 1) {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
                       if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        vaarg_need_create_array = 1;
-                        vaarg_element_type = type;
+                        vaarg_last_arg_is_not_array = 1;
+                        vaarg_last_arg_type = type;
                       }
                     }
                     
                     arg_index++;
                   }
                 }
-                
-                int32_t call_sub_args_count = 0;
-                {
-                  SPVM_OP* op_term = op_list_args->first;
-                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                    call_sub_args_count++;
-                    if (call_sub_args_count > sub_args_count) {
-                      SPVM_yyerror_format(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
-                      
-                      return;
-                    }
-                    
-                    SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
-                    
-                    // Check if source can be assigned to dist
-                    // If needed, numeric convertion op is added
-                    op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
-                  }
-                }
-                
-                if (call_sub_args_count < sub_args_count) {
-                  SPVM_yyerror_format(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
-                  
-                  return;
-                }
-                
+
                 // Variable length arguments
                 if (0) {
                   SPVM_OP* op_array_init = op_cur;
@@ -2240,7 +2216,31 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                   SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+                }
+                
+                int32_t call_sub_args_count = 0;
+                {
+                  SPVM_OP* op_term = op_list_args->first;
+                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+                    call_sub_args_count++;
+                    if (call_sub_args_count > sub_args_count) {
+                      SPVM_yyerror_format(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                      
+                      return;
+                    }
+                    
+                    SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
+                    
+                    // Check if source can be assigned to dist
+                    // If needed, numeric convertion op is added
+                    op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
+                  }
+                }
+                
+                if (call_sub_args_count < sub_args_count) {
+                  SPVM_yyerror_format(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                   
+                  return;
                 }
                 
                 // Update operand stack max
