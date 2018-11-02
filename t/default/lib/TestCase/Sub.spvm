@@ -8,6 +8,27 @@ package TestCase::Sub {
   use TestCase::Point_d3;
   use SPVM::Comparator;
 
+  sub test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_pass_each_values : int () {
+    return test_vaarg_pass_each_values("a", 1, 2, 3);
+  }
+  
   sub anon_sub_capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
