@@ -2311,6 +2311,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                     
                     op_cur = op_array_field_access;
+                    
+                    SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, tree_info);
                   }
                 }
               }
@@ -2335,6 +2337,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
+
+                  op_cur = op_assign;
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
                 }
                 
                 // If array access index term is not var, create assign operator
@@ -2356,6 +2362,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
+
+                  op_cur = op_assign;
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
                 }
               }
               else {
