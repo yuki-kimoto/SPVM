@@ -439,10 +439,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_true);
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                op_cur = op_stab;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
-                
-                op_cur = op_bool;
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
               }
@@ -493,10 +492,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_false);
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                op_cur = op_stab;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
-                
-                op_cur = op_bool;
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
               }
