@@ -61,6 +61,10 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+
+    {
+      vaarg(10, 20, 30);
+    }
     
     {
       my $var1 = 1;
@@ -1689,6 +1693,11 @@ SPVM::Test - SPVM test module
   sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : SPVM::Complex_d2&) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
+  }
+
+  sub vaarg : void ($flag : int, $nums : int[]...) {
+    print($nums->[0] . "\n");
+    print($nums->[1] . "\n");
   }
 }
 

@@ -2172,6 +2172,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
 
                   SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, tree_info);
+                  
+                  op_list_args = op_list_args_new;
                 }
                 
                 int32_t call_sub_args_count = 0;
