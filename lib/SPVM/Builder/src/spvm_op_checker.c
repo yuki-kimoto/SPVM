@@ -94,11 +94,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
           switch (op_cur->id) {
             case SPVM_OP_C_ID_ARRAY_INIT: {
               SPVM_OP* op_array_init = op_cur;
-
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              op_cur = op_stab;
               
-              SPVM_OP* op_list_elements = op_cur->first;
-              SPVM_OP* op_type_new_default = op_cur->last;
+              SPVM_OP* op_list_elements = op_array_init->first;
+              SPVM_OP* op_type_new_default = op_array_init->last;
               
               const char* file = op_list_elements->file;
               int32_t line = op_list_elements->line;
@@ -225,8 +225,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-              
-              op_cur = op_sequence;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
               
