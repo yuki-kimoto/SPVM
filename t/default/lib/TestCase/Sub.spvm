@@ -8,6 +8,69 @@ package TestCase::Sub {
   use TestCase::Point_d3;
   use SPVM::Comparator;
 
+  sub test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_objects_pass_array : int () {
+    return test_vaarg_objects_pass_array("a", [(object)1, 2, 3]);
+  }
+
+  sub test_vaarg_objects_pass_each_values : int ($string : string, $nums : object[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_objects_pass_each_values : int () {
+    return test_vaarg_objects_pass_each_values("a", 1, 2, 3);
+  }
+
+  sub test_vaarg_pass_array : int ($string : string, $nums : int[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_pass_array : int () {
+    return test_vaarg_pass_array("a", [1, 2, 3]);
+  }
+
   sub test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
     
     unless ($string eq "a") {

@@ -24,7 +24,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # variable length arguments
 {
+  ok(TestCase::Sub->vaarg_objects_pass_each_values);
+  ok(TestCase::Sub->vaarg_objects_pass_array);
   ok(TestCase::Sub->vaarg_pass_each_values);
+  ok(TestCase::Sub->vaarg_pass_array);
 }
 
 # Anon sub

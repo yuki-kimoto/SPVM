@@ -2066,7 +2066,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Variable length argument. Last argument is not array.
                 int32_t vaarg_last_arg_is_not_array = 0;
-                SPVM_TYPE* vaarg_last_arg_type = NULL;
                 if (sub_is_vaarg) {
                   int32_t arg_index = 0;
                   SPVM_OP* op_term = op_list_args->first;
@@ -2075,7 +2074,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
                       if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         vaarg_last_arg_is_not_array = 1;
-                        vaarg_last_arg_type = type;
                       }
                     }
                     
@@ -2093,18 +2091,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // New
                   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
+                  
+                  SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub->sub->args->length - 1);
+                  SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
                   // Create new type
                   SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
                   type_new->basic_type = vaarg_last_arg_type->basic_type;
-                  type_new->dimension = vaarg_last_arg_type->dimension + 1;
+                  type_new->dimension = vaarg_last_arg_type->dimension;
                   type_new->flag = vaarg_last_arg_type->flag;
                   SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, type_new, op_cur->file, op_cur->line);
                   
                   // Create element type
                   SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
                   type_element->basic_type = vaarg_last_arg_type->basic_type;
-                  type_element->dimension = vaarg_last_arg_type->dimension;
+                  type_element->dimension = vaarg_last_arg_type->dimension - 1;
                   type_element->flag = vaarg_last_arg_type->flag;
                   SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
                   
