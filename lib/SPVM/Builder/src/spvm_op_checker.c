@@ -1999,17 +1999,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     found_package_var = SPVM_HASH_fetch(package->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
                   }
                   if (found_package_var) {
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
                     // Var OP
                     SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
                     SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_name_package_var);
                     op_package_var_access->uv.package_var_access->package_var = found_package_var;
-                    
                     op_package_var_access->is_lvalue = op_cur->is_lvalue;
-
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                    SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
-                    
                     op_cur = op_package_var_access;
+
+                    SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, tree_info);
                   }
@@ -2289,6 +2288,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, op_cur->file, op_cur->line);
                     op_array_field_access->is_lvalue = op_cur->is_lvalue;
+
+                    op_cur = op_array_field_access;
                     
                     SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
                     array_field_access->field = field;
@@ -2303,8 +2304,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
-                    
-                    op_cur = op_array_field_access;
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, tree_info);
                   }
