@@ -2206,6 +2206,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                
+                SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
               }
               
               // If array access index term is not var, create assign operator
@@ -2227,6 +2229,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
+
+                SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
               }
               
               break;
@@ -2400,6 +2404,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
+
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
                 }
               }
               
