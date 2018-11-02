@@ -722,6 +722,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     //     VAR_TMP_NEW2
                     //     NAME_FIELD2
                     // VAR_TMP_NEW_RET
+                    
+                    op_cur->no_need_check = 1;
                   
                     const char* file = op_cur->file;
                     int32_t line = op_cur->line;
@@ -783,7 +785,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                     
-                    op_cur = op_sequence->first;
+                    SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
                     
                     {
                       SPVM_OP* op_type_tmp = op_type;
@@ -793,8 +795,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                         SPVM_yyerror_format(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                       }
                     }
-                    
-                    continue;
                   }
                 }
                 
@@ -1994,11 +1994,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name + 1, op_cur->file, op_cur->line);
                   SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
                   op_field_access->uv.field_access->field = found_capture_field;
+
+                  
+                  op_field_access->is_lvalue = op_cur->is_lvalue;
                   
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   SPVM_OP_replace_op(compiler, op_stab, op_field_access);
-                  
-                  op_field_access->is_lvalue = op_cur->is_lvalue;
                   
                   op_cur = op_field_access;
                   
@@ -2017,10 +2018,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_name_package_var);
                     op_package_var_access->uv.package_var_access->package_var = found_package_var;
                     
+                    op_package_var_access->is_lvalue = op_cur->is_lvalue;
+
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                     SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
-                    
-                    op_package_var_access->is_lvalue = op_cur->is_lvalue;
                     
                     op_cur = op_package_var_access;
                     
