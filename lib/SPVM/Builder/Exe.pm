@@ -118,20 +118,7 @@ sub build_exe_file {
     my $native_dir = $native_package_load_path;
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir;
-    if (-f $native_dir) {
-      $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
-    }
-    else {
-      $input_dir = "$build_dir/work";
-      $builder_c_native->create_source_precompile(
-        $native_package_name,
-        [],
-        {
-          work_dir => $input_dir,
-        }
-      );
-    }
+    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
     $builder_c_native->compile(
       $native_package_name,
       {
@@ -285,10 +272,28 @@ sub link_executable {
   my $build_dir = $self->{build_dir};
   
   my $object_files = [];
-  push @$object_files, glob "$build_dir/my_main.o";
   push @$object_files, glob "$build_dir/spvm/*.o";
   
   my $builder = $self->builder;
+  
+
+  my $native_object_files = [];
+  my $native_package_names = $builder->get_native_package_names;
+  my $core_native_object_file;
+  for my $native_package_name (@$native_package_names) {
+    my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
+    my $native_package_base_name = $native_package_name;
+    $native_package_base_name =~ s/^.+:://;
+    my $native_object_file = "$build_dir/work/$native_package_path/$native_package_base_name.o";
+    if ($native_package_name eq 'SPVM::CORE') {
+      $core_native_object_file = $native_object_file;
+    }
+    else {
+      push @$native_object_files, $native_object_file;
+    }
+  }
+  push @$object_files, $core_native_object_file;
+  push @$object_files, @$native_object_files;
   
   my $precompile_object_files = [];
   my $precompile_package_names = $builder->get_precompile_package_names;
@@ -301,17 +306,7 @@ sub link_executable {
   }
   push @$object_files, @$precompile_object_files;
   
-  my $native_object_files = [];
-  my $native_package_names = $builder->get_native_package_names;
-  for my $native_package_name (@$native_package_names) {
-    my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
-    my $native_package_base_name = $native_package_name;
-    $native_package_base_name =~ s/^.+:://;
-    my $native_object_file = "$build_dir/work/$native_package_path/$native_package_base_name.o";
-    push @$native_object_files, $native_object_file;
-  }
-  push @$object_files, @$native_object_files;
-  
+  push @$object_files, glob "$build_dir/my_main.o";
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   
