@@ -1,3 +1,6 @@
+#ifndef SPVM_CORE_C
+#define SPVM_CORE_C
+
 #include "spvm_base.h"
 #include "spvm_native.h"
 
@@ -741,3 +744,5 @@ int32_t SPVM_NATIVE_SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;;
 }
+
+#endif

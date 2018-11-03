@@ -150,7 +150,6 @@ sub compile {
 
   # Build directory
   my $work_dir = $opt->{work_dir};
-  warn("AAAAAAAAAA $package_name $work_dir");
 
   unless (defined $work_dir && -d $work_dir) {
     confess "Work directory must be specified for " . $self->category . " build";
