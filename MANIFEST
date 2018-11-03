@@ -243,8 +243,6 @@ t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension2.c
 t/default/lib/TestCase/Extension2.native/Extension2.config
-t/default/lib/TestCase/Extension2.native/Extension2_util.c
-t/default/lib/TestCase/Extension2.native/Extension2_util.h
 t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/Float.spvm
 t/default/lib/TestCase/Increment.spvm
