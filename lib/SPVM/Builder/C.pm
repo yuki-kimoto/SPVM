@@ -150,6 +150,8 @@ sub compile {
 
   # Build directory
   my $work_dir = $opt->{work_dir};
+  warn("AAAAAAAAAA $package_name $work_dir");
+
   unless (defined $work_dir && -d $work_dir) {
     confess "Work directory must be specified for " . $self->category . " build";
   }
@@ -489,8 +491,6 @@ sub build_shared_lib_native_dist {
 sub create_source_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
-  my $input_dir = $opt->{input_dir};
-
   my $work_dir = $opt->{work_dir};
   mkpath $work_dir;
   

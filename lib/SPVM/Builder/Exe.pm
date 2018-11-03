@@ -100,6 +100,10 @@ sub build_exe_file {
   }
   
   my $quiet = $self->{quiet};
+  
+  # Create workd dir
+  my $work_dir = "$build_dir/work";
+  mkpath $work_dir;
 
   # Build native packages
   my $builder_c_native = SPVM::Builder::C->new(
@@ -111,7 +115,23 @@ sub build_exe_file {
   my $native_package_names = $builder->get_native_package_names;
   for my $native_package_name (@$native_package_names) {
     my $native_package_load_path = $builder->get_package_load_path($native_package_name);
-    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
+    my $native_dir = $native_package_load_path;
+    $native_dir =~ s/\.spvm$//;
+    $native_dir .= 'native';
+    my $input_dir;
+    if (-f $native_dir) {
+      $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
+    }
+    else {
+      $input_dir = "$build_dir/work";
+      $builder_c_native->create_source_precompile(
+        $native_package_name,
+        [],
+        {
+          work_dir => $input_dir,
+        }
+      );
+    }
     $builder_c_native->compile(
       $native_package_name,
       {
@@ -132,7 +152,24 @@ sub build_exe_file {
   my $precompile_package_names = $builder->get_precompile_package_names;
   for my $precompile_package_name (@$precompile_package_names) {
     my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
-    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($precompile_package_load_path, $precompile_package_name);
+    my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
+    my $precompile_dir = $precompile_package_load_path;
+    $precompile_dir =~ s/\.spvm$//;
+    $precompile_dir .= 'precompile';
+    my $input_dir;
+    if (-f $precompile_dir) {
+      $input_dir = SPVM::Builder::Util::remove_package_part_from_path($precompile_package_load_path, $precompile_package_name);
+    }
+    else {
+      $input_dir = "$build_dir/work";
+      $builder_c_precompile->create_source_precompile(
+        $precompile_package_name,
+        [],
+        {
+          work_dir => $input_dir,
+        }
+      );
+    }
     $builder_c_precompile->compile(
       $precompile_package_name,
       {
