@@ -169,11 +169,6 @@ sub compile {
   # shared lib file
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
-
-  # Return if source code is chaced and exists shared lib file
-  if ($opt->{is_cached} && -f $shared_lib_file) {
-    return;
-  }
   
   # Quiet output
   my $quiet = $self->quiet;
@@ -212,6 +207,10 @@ sub compile {
   my $src_exe = $build_config->get_src_ext;
   my $src_file = "$input_config_dir/$package_base_name.$src_exe";
   
+  unless (-f $src_file) {
+    confess "Can't find source file $src_file: $!";
+  }
+
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;
   
@@ -228,13 +227,29 @@ sub compile {
   
   # Object file
   my $object_file = "$work_object_dir/$package_base_name.o";
+
+  # Do compile. This is same as make command
+  my $do_compile;
+  if (!-f $object_file) {
+    $do_compile = 1;
+  }
+  else {
+    my $mod_time_src = (stat($src_file))[9];
+    my $mod_time_object = (stat($object_file))[9];
+    
+    if ($mod_time_src > $mod_time_object) {
+      $do_compile = 1;
+    }
+  }
   
-  # Compile source file
-  $cbuilder->compile(
-    source => $src_file,
-    object_file => $object_file,
-    extra_compiler_flags => $build_config->get_extra_compiler_flags,
-  );
+  if ($do_compile) {
+    # Compile source file
+    $cbuilder->compile(
+      source => $src_file,
+      object_file => $object_file,
+      extra_compiler_flags => $build_config->get_extra_compiler_flags,
+    );
+  }
   
   return $object_file;
 }
@@ -258,11 +273,6 @@ sub link {
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
-  # Return if source code is chaced and exists shared lib file
-  if ($opt->{is_cached} && -f $shared_lib_file) {
-    return;
-  }
-  
   # Quiet output
   my $quiet = $self->quiet;
  
@@ -362,7 +372,6 @@ sub build_shared_lib_precompile_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  my $is_cached;
   $self->create_source_precompile(
     $package_name,
     $sub_names,
@@ -370,7 +379,6 @@ sub build_shared_lib_precompile_runtime {
       input_dir => $input_dir,
       work_dir => $work_dir,
       output_dir => $work_dir,
-      is_cached => \$is_cached,
     }
   );
   
@@ -381,7 +389,6 @@ sub build_shared_lib_precompile_runtime {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      is_cached => $is_cached,
     }
   );
 }
@@ -431,7 +438,6 @@ sub build_shared_lib_precompile_dist {
   $module_base_name =~ s/^.+:://;
   my $config_file = "$input_dir/$module_base_name.config";
 
-  my $is_cached;
   $self->create_source_precompile(
     $package_name,
     $sub_names,
@@ -439,7 +445,6 @@ sub build_shared_lib_precompile_dist {
       input_dir => $input_dir,
       work_dir => $work_dir,
       output_dir => $work_dir,
-      is_cached => \$is_cached,
     }
   );
   
@@ -450,7 +455,6 @@ sub build_shared_lib_precompile_dist {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      is_cached => $is_cached,
     }
   );
 }
@@ -489,8 +493,6 @@ sub create_source_precompile {
   
   my $output_dir = $opt->{output_dir};
   
-  my $is_cached_ref = $opt->{is_cached};
-  
   my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
   my $work_src_dir = "$work_dir/$package_path";
   mkpath $work_src_dir;
@@ -513,16 +515,11 @@ sub create_source_precompile {
   
   # Create c source file
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
-  open my $fh, '>', $source_file
-    or die "Can't create $source_file";
-  print $fh $package_csource;
-  close $fh;
-  
   if ($package_csource ne $old_package_csource) {
-    $$is_cached_ref = 0;
-  }
-  else {
-    $$is_cached_ref = 1;
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
+    print $fh $package_csource;
+    close $fh;
   }
 }
 
