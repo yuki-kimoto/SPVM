@@ -153,7 +153,7 @@ sub build_shared_lib {
   my $object_file = $self->compile($package_name, $opt);
   
   # Link object files and create shared library
-  $self->link_shared_lib(
+  $self->link(
     $package_name,
     $sub_names,
     [$object_file],
@@ -249,7 +249,7 @@ sub compile {
   return $object_file;
 }
 
-sub link_shared_lib {
+sub link {
   my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
 
   # Build directory
