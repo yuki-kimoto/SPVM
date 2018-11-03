@@ -21,17 +21,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub info {
-  my $self = shift;
-  
-  return $self->{info};
-}
-
-sub category {
-  my $self = shift;
-  
-  $self->{category};
-}
+sub category { shift->{category} }
 
 sub quiet { shift->{quiet} }
 
