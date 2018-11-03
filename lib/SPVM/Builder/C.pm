@@ -363,7 +363,7 @@ sub build_shared_lib_precompile_runtime {
   mkpath $output_dir;
   
   my $is_cached;
-  $self->create_precompile_csource(
+  $self->create_source_precompile(
     $package_name,
     $sub_names,
     {
@@ -432,7 +432,7 @@ sub build_shared_lib_precompile_dist {
   my $config_file = "$input_dir/$module_base_name.config";
 
   my $is_cached;
-  $self->create_precompile_csource(
+  $self->create_source_precompile(
     $package_name,
     $sub_names,
     {
@@ -479,7 +479,7 @@ sub build_shared_lib_native_dist {
   );
 }
 
-sub create_precompile_csource {
+sub create_source_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   my $input_dir = $opt->{input_dir};
