@@ -442,6 +442,15 @@ sub build_shared_lib_precompile_dist {
     }
   );
   
+  $self->copy_source_precompile_dist(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $work_dir,
+      output_dir => $output_dir,
+    }
+  );
+  
   $self->build_shared_lib(
     $package_name,
     $sub_names,
@@ -515,6 +524,29 @@ sub create_source_precompile {
     print $fh $package_csource;
     close $fh;
   }
+}
+
+sub copy_source_precompile_dist {
+  my ($self, $package_name, $sub_names, $opt) = @_;
+  
+  my $input_dir = $opt->{input_dir};
+
+  my $output_dir = $opt->{output_dir};
+  
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
+  my $input_src_dir = "$input_dir/$package_path";
+  my $output_src_dir = "$output_dir/$package_path";
+
+  mkpath $output_src_dir;
+  
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $input_source_file = "$input_src_dir/$module_base_name.c";
+  my $output_source_file = "$output_src_dir/$module_base_name.c";
+  
+  copy $input_source_file, $output_source_file
+    or confess "Can't copy $input_source_file to $output_source_file: $!";
 }
 
 1;

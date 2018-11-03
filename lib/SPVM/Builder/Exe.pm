@@ -100,24 +100,48 @@ sub build_exe_file {
   }
   
   my $quiet = $self->{quiet};
-  
-  # Build native packages - Compile C source codes and link them to SPVM native subroutine
+
+  # Build native packages
   my $builder_c_native = SPVM::Builder::C->new(
-    build_dir => $builder->{build_dir},
+    build_dir => $build_dir,
     category => 'native',
     builder => $builder,
     quiet => $quiet,
   );
-  $builder_c_native->build;
+  my $native_package_names = $builder->get_native_package_names;
+  for my $native_package_name (@$native_package_names) {
+    my $native_package_load_path = $builder->get_package_load_path($native_package_name);
+    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
+    $builder_c_native->compile(
+      $native_package_name,
+      {
+        input_dir => $input_dir,
+        work_dir => "$build_dir/work",
+        output_dir => "$build_dir/work",
+      }
+    );
+  }
 
-  # Build precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+  # Build precompile packages
   my $builder_c_precompile = SPVM::Builder::C->new(
-    build_dir => $builder->{build_dir},
+    build_dir => $build_dir,
     category => 'precompile',
     builder => $builder,
     quiet => $quiet,
   );
-  $builder_c_precompile->build;
+  my $precompile_package_names = $builder->get_precompile_package_names;
+  for my $precompile_package_name (@$precompile_package_names) {
+    my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
+    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($precompile_package_load_path, $precompile_package_name);
+    $builder_c_precompile->compile(
+      $precompile_package_name,
+      {
+        input_dir => $input_dir,
+        work_dir => "$build_dir/work",
+        output_dir => "$build_dir/work",
+      }
+    );
+  }
 
   # Compile SPVM csource
   $self->compile_spvm_csources;
@@ -232,23 +256,17 @@ sub link_executable {
   my $precompile_object_files = [];
   my $precompile_package_names = $builder->get_precompile_package_names;
   for my $precompile_package_name (@$precompile_package_names) {
-    warn("AAAAAAAAAA $precompile_package_name");
     my $precompile_package_path = SPVM::Builder::Util::convert_package_name_to_path($precompile_package_name, 'precompile');
     my $precompile_package_base_name = $precompile_package_name;
     $precompile_package_base_name =~ s/^.+:://;
     my $precompile_object_file = "$build_dir/work/$precompile_package_path/$precompile_package_base_name.o";
     push @$precompile_object_files, $precompile_object_file;
-    warn("CCCCCCCCCCCC $precompile_object_file");
   }
   push @$object_files, @$precompile_object_files;
-  
-  use Data::Dumper;
-  warn Dumper $object_files;
   
   my $native_object_files = [];
   my $native_package_names = $builder->get_native_package_names;
   for my $native_package_name (@$native_package_names) {
-    warn("BBBBBBBB $native_package_name");
     my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
     my $native_package_base_name = $native_package_name;
     $native_package_base_name =~ s/^.+:://;

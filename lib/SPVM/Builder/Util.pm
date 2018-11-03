@@ -81,6 +81,7 @@ sub remove_package_part_from_path {
   my $package_path = $package_name;
   $package_path =~ s/::/\//g;
   $path =~ s/$package_path$//;
+  $path =~ s/[\\\/]$//;
   
   return $path;
 }
