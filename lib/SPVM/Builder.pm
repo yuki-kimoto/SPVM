@@ -30,7 +30,6 @@ sub new {
   
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self
   );
@@ -138,12 +137,6 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub info {
-  my $self = shift;
-  
-  return $self->{info};
-}
-
 sub build_shared_lib_native_dist {
   my ($self, $package_name) = @_;
   
@@ -155,7 +148,6 @@ sub build_shared_lib_native_dist {
 
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'native',
     builder => $self,
     quiet => 0,
@@ -178,7 +170,6 @@ sub build_shared_lib_precompile_dist {
 
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self,
     quiet => 0,
@@ -192,7 +183,6 @@ sub build_precompile {
 
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self,
     quiet => 1,
@@ -206,7 +196,6 @@ sub build_native {
 
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'native',
     builder => $self,
     quiet => 1,
