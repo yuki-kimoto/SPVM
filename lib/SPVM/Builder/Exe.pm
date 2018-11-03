@@ -60,8 +60,6 @@ sub new {
   return bless $self, $class;
 }
 
-sub library_path { shift->{library_path} }
-
 sub build_exe_file {
   my ($self) = @_;
   
@@ -150,11 +148,14 @@ sub create_exe_file {
 
   my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
   my $extra_linker_flag = '';
-  my $object_files = [];
-  push @$object_files, glob "$build_dir/*.$dlext";
-  
+  my $library_paths = $self->{library_path};
+  for my $library_path (@$library_paths) {
+    $extra_linker_flag .= " -L$library_path";
+  }
   $extra_linker_flag .= " -L$build_dir";
   
+  my $object_files = [];
+  push @$object_files, glob "$build_dir/*.$dlext";
   for my $object_file (@$object_files) {
     my $module_shared_lib_name = basename $object_file;
     $module_shared_lib_name =~ s/^lib//;
