@@ -150,7 +150,7 @@ sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_file = $self->compile_object($package_name, $sub_names, $opt);
+  my $object_file = $self->compile($package_name, $opt);
   
   # Link object files and create shared library
   $self->link_shared_lib(
@@ -161,8 +161,8 @@ sub build_shared_lib {
   );
 }
 
-sub compile_object {
-  my ($self, $package_name, $sub_names, $opt) = @_;
+sub compile {
+  my ($self, $package_name, $opt) = @_;
 
   # Build directory
   my $work_dir = $opt->{work_dir};
