@@ -56,6 +56,11 @@ sub new {
   unless (exists $self->{library_path}) {
     $self->{library_path} = [];
   }
+
+  # Library
+  unless (exists $self->{library}) {
+    $self->{library} = [];
+  }
   
   return bless $self, $class;
 }
@@ -148,11 +153,19 @@ sub create_exe_file {
 
   my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
   my $extra_linker_flag = '';
+  
+  # Add library path
   my $library_paths = $self->{library_path};
   for my $library_path (@$library_paths) {
     $extra_linker_flag .= " -L$library_path";
   }
   $extra_linker_flag .= " -L$build_dir";
+  
+  # Add library
+  my $librarys = $self->{library};
+  for my $library (@$librarys) {
+    $extra_linker_flag .= " -l$library";
+  }
   
   my $object_files = [];
   push @$object_files, glob "$build_dir/*.$dlext";
