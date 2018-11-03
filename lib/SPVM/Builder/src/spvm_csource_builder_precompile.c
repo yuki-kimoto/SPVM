@@ -1147,7 +1147,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
   
   // API header
   SPVM_STRING_BUFFER_add(string_buffer, "#include <spvm_native.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <SPVM/CORE.native/CORE.c>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Inline macro function
@@ -2981,7 +2980,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_OBJECT* exception = env->new_string_raw(env, \"Object to weaken an object field must not be undefined.\", 0);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, \"Object to weaken an object field must not be undefined.\", 0);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
@@ -3509,12 +3508,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
               index++;
             }
           }
-          SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
-        }
-        // Inline expansion is done in native core function
-        else if (strcmp(decl_sub_package_name, "SPVM::CORE") == 0 && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_NATIVE_SPVM__CORE__");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_name);
           SPVM_STRING_BUFFER_add(string_buffer, "(env, stack);\n");
         }
         // Call subroutine

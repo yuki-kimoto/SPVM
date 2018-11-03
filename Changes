@@ -1,5 +1,6 @@
 0.0386 2018-11-03
   - Extension can only allow one file.
+  - spvmmcc create one exe file not depend sharaed library.
 0.0385 2018-11-02
   - SPVM LICENSE is changed to MIT LICENSE
   

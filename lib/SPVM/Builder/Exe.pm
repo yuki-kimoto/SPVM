@@ -139,7 +139,6 @@ sub build_exe_file {
   my $precompile_package_names = $builder->get_precompile_package_names;
   for my $precompile_package_name (@$precompile_package_names) {
     my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
-    my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
     my $precompile_dir = $precompile_package_load_path;
     $precompile_dir =~ s/\.spvm$//;
     $precompile_dir .= 'precompile';
@@ -276,7 +275,6 @@ sub link_executable {
   
   my $builder = $self->builder;
   
-
   my $native_object_files = [];
   my $native_package_names = $builder->get_native_package_names;
   my $core_native_object_file;
@@ -316,7 +314,7 @@ sub link_executable {
   my $exe_name = $self->{exe_name};
   
   my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
-  my $extra_linker_flag = '';
+  my $extra_linker_flag = "-lm $original_extra_linker_flag" ;
   
   # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;
