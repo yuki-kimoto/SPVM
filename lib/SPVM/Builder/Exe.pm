@@ -47,12 +47,20 @@ sub new {
     $self->{build_dir} = 'spvm_build/exe';
   }
   
+  # Quiet output
   unless (exists $self->{quiet}) {
     $self->{quiet} = 0;
   }
   
+  # Library paths
+  unless (exists $self->{library_path}) {
+    $self->{library_path} = [];
+  }
+  
   return bless $self, $class;
 }
+
+sub library_path { shift->{library_path} }
 
 sub build_exe_file {
   my ($self) = @_;

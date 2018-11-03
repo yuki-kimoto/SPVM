@@ -14,6 +14,7 @@ SPVM::Builder::Util::getopt
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'q|quiet'   => \my $quiet,
+  'L|library-path=s' => \my @library_paths,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
@@ -25,6 +26,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   exe_name => $name,
   package_name => $package_name,
   quiet => $quiet,
+  library_path => \@library_paths,
 );
 $build_exe->build_exe_file;
 
