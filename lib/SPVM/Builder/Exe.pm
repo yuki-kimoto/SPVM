@@ -102,7 +102,6 @@ sub build_exe_file {
   # Build native packages - Compile C source codes and link them to SPVM native subroutine
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $builder->{build_dir},
-    info => $builder->{info},
     category => 'native',
     builder => $builder,
     quiet => $quiet,
@@ -113,7 +112,6 @@ sub build_exe_file {
   # Build precompile packages - Compile C source codes and link them to SPVM precompile subroutine
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $builder->{build_dir},
-    info => $builder->{info},
     category => 'precompile',
     builder => $builder,
     quiet => $quiet,
