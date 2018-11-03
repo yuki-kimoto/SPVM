@@ -47,13 +47,7 @@ sub build {
       my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
       
       # Try runtime compile if shared library is not found
-      if (-f $shared_lib_path) {
-        # Copy distribution shared lib to build directory
-        if ($self->{copy_dist}) {
-          $self->copy_shared_lib_to_build_dir($package_name, $category);
-        }
-      }
-      else {
+      unless (-f $shared_lib_path) {
         if ($category eq 'native') {
           $self->build_shared_lib_native_runtime($package_name, $sub_names);
         }
