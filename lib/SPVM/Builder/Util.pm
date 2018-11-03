@@ -220,6 +220,9 @@ sub new_default_build_config {
   # Optimize
   $build_config->set_optimize('-O3');
   
+  # Source exetension
+  $build_config->set_src_ext('c');
+  
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {

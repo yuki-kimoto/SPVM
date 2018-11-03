@@ -14,6 +14,20 @@ sub new {
   return bless $self, $class;
 }
 
+sub set_src_ext {
+  my ($self, $src_ext) = @_;
+  
+  $self->{src_ext} = $src_ext;
+  
+  return $self;
+}
+
+sub get_src_ext {
+  my ($self) = @_;
+  
+  return $self->{src_ext};
+}
+
 sub replace_all_config {
   my ($self, $config) = @_;
   

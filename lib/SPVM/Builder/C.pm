@@ -150,18 +150,18 @@ sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile_objects($package_name, $sub_names, $opt);
+  my $object_file = $self->compile_object($package_name, $sub_names, $opt);
   
   # Link object files and create shared library
   $self->link_shared_lib(
     $package_name,
     $sub_names,
-    $object_files,
+    [$object_file],
     $opt
   );
 }
 
-sub compile_objects {
+sub compile_object {
   my ($self, $package_name, $sub_names, $opt) = @_;
 
   # Build directory
@@ -195,18 +195,11 @@ sub compile_objects {
   my $work_object_dir = "$work_dir/$package_path";
   mkpath $work_object_dir;
   
-  # Correct source files
-  my $src_files = [];
-  my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$input_src_dir/*") {
-    if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
-      push @$src_files, $src_file;
-    }
-  }
-  
-  # Config file
+  # Package base name
   my $package_base_name = $package_name;
   $package_base_name =~ s/^.+:://;
+  
+  # Config file
   my $input_config_dir = $input_src_dir;
   my $config_file = "$input_config_dir/$package_base_name.config";
   
@@ -224,6 +217,10 @@ sub compile_objects {
   else {
     $build_config = SPVM::Builder::Util::new_default_build_config;
   }
+
+  # Source file
+  my $src_exe = $build_config->get_src_ext;
+  my $src_file = "$input_config_dir/$package_base_name.$src_exe";
   
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;
@@ -238,28 +235,18 @@ sub compile_objects {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
-  for my $src_file (@$src_files) {
-    # Object file
-    my $object_file = "$work_object_dir/" . basename($src_file);
-    $object_file =~ s/\.c$//;
-    $object_file =~ s/\.C$//;
-    $object_file =~ s/\.cpp$//;
-    $object_file =~ s/\.i$//;
-    $object_file =~ s/\.s$//;
-    $object_file =~ s/\.cxx$//;
-    $object_file =~ s/\.cc$//;
-    $object_file .= '.o';
-    
-    # Compile source file
-    $cbuilder->compile(
-      source => $src_file,
-      object_file => $object_file,
-      extra_compiler_flags => $build_config->get_extra_compiler_flags,
-    );
-    push @$object_files, $object_file;
-  }
   
-  return $object_files;
+  # Object file
+  my $object_file = "$work_object_dir/$package_base_name.o";
+  
+  # Compile source file
+  $cbuilder->compile(
+    source => $src_file,
+    object_file => $object_file,
+    extra_compiler_flags => $build_config->get_extra_compiler_flags,
+  );
+  
+  return $object_file;
 }
 
 sub link_shared_lib {
