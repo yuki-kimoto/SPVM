@@ -171,6 +171,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             int32_t opcodes_length = opcode_array->length - sub->opcodes_base;
             if (opcodes_length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
               SPVM_COMPILER_error(compiler, "Too many opcodes", op_cur->file, op_cur->line);
+              return;
             }
             
             // [START]Preorder traversal position
