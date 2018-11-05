@@ -53,6 +53,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
     int32_t rel_line = op_cur->line - sub->op_sub->line;
     if (op_cur->line >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
       SPVM_COMPILER_error(compiler, "Too many lines at %s line %d\n", op_cur->file, op_cur->line);
+      return;
     }
     
     // [START]Preorder traversal position
@@ -136,6 +137,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
                       SPVM_COMPILER_error(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
+                      return;
                     }
 
                     SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
@@ -160,6 +162,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                         SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                         if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                          return;
                         }
                       }
                     }
@@ -182,6 +185,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                         SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                         if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                          return;
                         }
                       }
                     }
@@ -222,17 +226,20 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (length == 0) {
                 SPVM_COMPILER_error(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
+                return;
               }
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
             case SPVM_OP_C_ID_NEXT: {
               if (tree_info->loop_block_stack_length == 0) {
                 SPVM_COMPILER_error(compiler, "next statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               break;
@@ -240,7 +247,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_LAST: {
               if (tree_info->loop_block_stack_length == 0 && tree_info->op_switch_stack->length == 0) {
                 SPVM_COMPILER_error(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               break;
@@ -271,6 +277,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                     if (package->info_long_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                       SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                      return;
                     }
                     
                   }
@@ -292,6 +299,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                     if (package->info_double_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                       SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                      return;
                     }
                   }
                 }
@@ -314,6 +322,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 if (package->info_string_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                   SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
@@ -328,7 +337,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check type
               if (!term_type || !(term_type->dimension == 0 && term_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT)) {
                 SPVM_COMPILER_error(compiler, "Switch condition must be int value at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -346,11 +354,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
                     SPVM_COMPILER_error(compiler, "case value must be constant at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                   
                   SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
                   if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
                     SPVM_COMPILER_error(compiler, "case value must be int constant at %s line %d\n", case_info->op_case_info->file, case_info->op_case_info->line);
+                    return;
                   }
                   case_info->constant = constant;
                 }
@@ -362,6 +372,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (package->info_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_COMPILER_error(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               op_cur->uv.switch_info->info_constant_id = package->info_switch_infos->length;
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
@@ -384,6 +395,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 if (switch_info->op_default) {
                   SPVM_COMPILER_error(compiler, "Duplicate default statement at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
                 else {
                   switch_info->op_default = op_cur;
@@ -404,6 +416,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_false, tree_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 if (op_first->id == SPVM_OP_C_ID_IF) {
@@ -419,6 +434,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "Invalid boolean type at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                 }
               }
@@ -443,6 +459,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               // term == term
               else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
@@ -452,6 +471,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // numeric == numeric
                 if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                   SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
                 // object == object
                 else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
@@ -459,6 +481,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "Invalid == comparison at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               // term == undef
@@ -466,6 +489,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                 if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                   SPVM_COMPILER_error(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               // undef == term
@@ -473,6 +497,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                   SPVM_COMPILER_error(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
@@ -496,6 +521,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_bool, tree_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               // term != term
               else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
@@ -505,6 +533,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // numeric != numeric
                 if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                   SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
                 // numeric != object
                 else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
@@ -512,6 +543,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "Invalid != comparison at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               // term != undef
@@ -520,6 +552,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                   SPVM_COMPILER_error(compiler, "!= left value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               // undef != term
@@ -528,6 +561,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                   SPVM_COMPILER_error(compiler, "!= right value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
@@ -540,9 +574,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid < comparison at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
 
               break;
@@ -554,9 +592,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid <= comparison at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -568,9 +610,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid > comparison at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -582,9 +628,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid <= comparison at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -596,25 +646,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                   SPVM_COMPILER_error(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  
                   return;
                 }
               }
               else {
                 SPVM_COMPILER_error(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -627,25 +680,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                   SPVM_COMPILER_error(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  
                   return;
                 }
               }
               else {
                 SPVM_COMPILER_error(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -658,25 +714,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
                   SPVM_COMPILER_error(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  
                   return;
                 }
               }
               else {
                 SPVM_COMPILER_error(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -726,6 +785,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                     SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                     
                     SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -777,6 +839,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                     
                     {
                       SPVM_OP* op_type_tmp = op_type;
@@ -784,6 +849,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                       if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                         SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                        return;
                       }
                     }
                   }
@@ -803,6 +869,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   assert(index_type);
                   if (SPVM_TYPE_is_numeric_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
                     SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_index_term);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                     
                     SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_term);
                     
@@ -823,6 +892,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Numeric type
                 else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   SPVM_COMPILER_error(compiler, "new operator can't receive numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
                 // Object type
                 else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
@@ -830,16 +900,20 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
                     SPVM_COMPILER_error(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                   else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
                     SPVM_COMPILER_error(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                   else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
                     SPVM_COMPILER_error(compiler, "Can't create object of struct package at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                   else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PRIVATE) {
                     if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
                       SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
+                      return;
                     }
                   }
                 }
@@ -854,6 +928,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                     if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                       SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                      return;
                     }
                   }
                 }
@@ -873,13 +948,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler,
-                  "^ operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "^ operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -889,14 +965,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler,
-                  "| operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "| operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -906,13 +983,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler,
-                  "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -923,6 +1001,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left term must be object type
               if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
                 SPVM_COMPILER_error(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               // Right type must be object type
@@ -930,10 +1009,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Right type must be not any object type
                 if (SPVM_TYPE_is_any_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
                   SPVM_COMPILER_error(compiler, "isa rigth type must be not any object type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               else {
                 SPVM_COMPILER_error(compiler, "isa rigth type must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
 
               if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
@@ -944,6 +1025,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                   if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                     SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                    return;
                   }
                 }
               }
@@ -1112,7 +1194,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // First value must be array
               if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "right of @ or len must be array at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -1126,7 +1207,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "increment operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -1174,6 +1254,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1185,7 +1268,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -1233,7 +1315,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
-              
+              if (compiler->error_count > 0) {
+                return;
+              }
               break;
             }
             case SPVM_OP_C_ID_POST_INC:
@@ -1244,7 +1328,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "increment operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
@@ -1276,6 +1359,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
               SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
+              if (compiler->error_count > 0) {
+                return;
+              }
 
               SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
         
@@ -1310,6 +1396,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_sequence;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1321,7 +1410,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "decrement operand must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
@@ -1354,6 +1442,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
               
               SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_mutable_type, op_cur->file, op_cur->line);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
         
@@ -1388,6 +1479,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_sequence;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, tree_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1515,6 +1609,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1540,6 +1637,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check if source can be assigned to dist
               // If needed, numeric convertion op is added
               SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1556,6 +1656,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Can't return refernece type
                 if (SPVM_TYPE_is_ref_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag)) {
                   SPVM_COMPILER_error(compiler, "Can't return reference type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
                 
                 // Undef
@@ -1574,6 +1675,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_SUB* sub = call_sub->sub;
                   if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
                     SPVM_COMPILER_error(compiler, "Can't return value of void subroutine at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                 }
                 // Normal
@@ -1591,7 +1693,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 if (is_invalid) {
                   SPVM_COMPILER_error(compiler, "Invalid return type at %s line %d\n", op_cur->file, op_cur->line);
-                  
                   return;
                 }
               }
@@ -1603,11 +1704,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1617,11 +1720,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "~ operator right value must be integral type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1631,11 +1736,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1646,33 +1753,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must not be undef
               if (!first_type) {
                 SPVM_COMPILER_error(compiler, "+ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value must not be undef
               if (!last_type) {
                 SPVM_COMPILER_error(compiler, "+ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Left value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "+ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Right value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Upgrade type
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
                                               
               break;
             }
@@ -1683,33 +1789,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must not be undef
               if (!first_type) {
                 SPVM_COMPILER_error(compiler, "- operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value Must not be undef
               if (!last_type) {
                 SPVM_COMPILER_error(compiler, "- operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Left value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "- operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Right value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Upgrade type
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1720,33 +1825,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must not be undef
               if (!first_type) {
                 SPVM_COMPILER_error(compiler, "* operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value Must not be undef
               if (!last_type) {
                 SPVM_COMPILER_error(compiler, "* operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Left value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "* operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Right value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "* operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Upgrade type
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               break;
             }
@@ -1757,33 +1861,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must not be undef
               if (!first_type) {
                 SPVM_COMPILER_error(compiler, "/ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value Must not be undef
               if (!last_type) {
                 SPVM_COMPILER_error(compiler, "/ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Left value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "/ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Right value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "/ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Upgrade type
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
 
               break;
             }
@@ -1794,33 +1897,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must not be undef
               if (!first_type) {
                 SPVM_COMPILER_error(compiler, "%% operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value Must not be undef
               if (!last_type) {
                 SPVM_COMPILER_error(compiler, "%% operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Left value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "%% operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
 
               // Right value must not be object type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "%% operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Upgrade type
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
                                               
               break;
             }
@@ -1831,19 +1933,27 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left type is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_string_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               // Left type is not string type
               else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "\".\" operator left value must be string at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               // Right value is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_string_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               // Right value is not string type
               else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "\".\" operator right value must be string at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -1852,6 +1962,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "croak argument must be string at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               break;
             }
@@ -1888,6 +1999,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
               if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_value_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
                 SPVM_COMPILER_error(compiler, "Refernece target must be numeric type or value type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -1898,6 +2010,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_value_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
                 SPVM_COMPILER_error(compiler, "Dereference target must be numeric reference type or value reference type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -1928,7 +2041,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 if (found) {
                   SPVM_COMPILER_error(compiler, "redeclaration of my \"%s\" at %s line %d\n", my->op_name->uv.name, my->op_my->file, my->op_my->line);
-                  
                   return;
                 }
                 else {
@@ -1939,7 +2051,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Type can't be detected
                 if (!op_cur->is_lvalue && my->type == NULL) {
                   SPVM_COMPILER_error(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
-                  
                   return;
                 }
               }
@@ -1989,6 +2100,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur = op_field_access;
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_field_access, tree_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
                 else {
                   // Variable is package var
@@ -2010,6 +2124,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, tree_info);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                   }
                   // Error
                   else {
@@ -2027,22 +2144,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check sub name
               SPVM_OP_CHECKER_resolve_call_sub(compiler, op_cur, package->op_package);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               SPVM_OP* op_list_args = op_cur->last;
               
               SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
 
               if (!call_sub->sub) {
-                SPVM_COMPILER_error(compiler, "unknown sub \"%s\" at %s line %d\n",
-                  op_cur->first->uv.name, op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "unknown sub \"%s\" at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
               if (call_sub->call_type_id != call_sub->sub->call_type_id) {
-                SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s\" at %s line %d\n",
-                  op_cur->first->uv.name, op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s\" at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2113,6 +2229,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                   SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                   SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                   
                   SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -2173,6 +2292,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
 
                   SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, tree_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                   
                   op_list_args = op_list_args_new;
                 }
@@ -2184,7 +2306,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     call_sub_args_count++;
                     if (call_sub_args_count > sub_args_count) {
                       SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
-                      
                       return;
                     }
                     
@@ -2193,12 +2314,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     // Check if source can be assigned to dist
                     // If needed, numeric convertion op is added
                     op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                   }
                 }
                 
                 if (call_sub_args_count < sub_args_count) {
                   SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
-                  
                   return;
                 }
                 
@@ -2222,10 +2345,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 if (package->info_sub_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                   SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
                 
                 if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
                   SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
@@ -2235,10 +2360,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check field name
               SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_cur, package->op_package);
+              if (compiler->error_count > 0) {
+                return;
+              }
+              
               if (!op_cur->uv.package_var_access->package_var) {
-                SPVM_COMPILER_error(compiler, "Package variable not found \"%s\" at %s line %d\n",
-                  op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
-                
+                SPVM_COMPILER_error(compiler, "Package variable not found \"%s\" at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2258,6 +2385,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               if (package->info_package_var_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }                        
               break;
             }
@@ -2268,24 +2396,25 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left value must be array
               if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "left value must be array at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
               // Right value must be integer
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_BASIC_TYPE_C_ID_INT) {
                   SPVM_COMPILER_error(compiler, "array index must be int type at %s line %d\n", op_cur->file, op_cur->line);
-                  
                   return;
                 }
               }
               else {
                 SPVM_COMPILER_error(compiler, "array index must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                
                 return;
               }
               
@@ -2302,6 +2431,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
                 
                 SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+
                 SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
                 SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_array);
@@ -2310,6 +2443,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               
               // If array access index term is not var, create assign operator
@@ -2323,6 +2459,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
                 
                 SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
                 SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
                 SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_index);
@@ -2331,6 +2471,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
               
               break;
@@ -2353,14 +2496,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check field name
               SPVM_OP_CHECKER_resolve_field_access(compiler, op_cur);
+              if (compiler->error_count > 0) {
+                return;
+              }
               
               SPVM_FIELD* field = op_cur->uv.field_access->field;
               
               if (!field) {
                 char* type_name = tmp_buffer;
                 SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
-                SPVM_COMPILER_error(compiler, "Unknown field %s::%s at %s line %d\n",
-                  type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Unknown field %s::%s at %s line %d\n", type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2368,8 +2513,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
                   char* type_name = tmp_buffer;
                   SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
-                  SPVM_COMPILER_error(compiler, "Can't access to private field %s::%s at %s line %d\n",
-                    type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't access to private field %s::%s at %s line %d\n", type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
@@ -2389,6 +2534,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               if (package->info_field_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               // If invocker is array access and array access object is value_t, this op become array field access
@@ -2401,6 +2547,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (is_basic_type_value_t) {
                   if (array_element_type->dimension != 0) {
                     SPVM_COMPILER_error(compiler, "value_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
                   }
                   else {
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
@@ -2425,6 +2572,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, tree_info);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                   }
                 }
               }
@@ -2440,6 +2590,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_array);
                   
                   SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
 
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2449,6 +2602,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
                 
                 // If array access index term is not var, create assign operator
@@ -2461,6 +2617,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_index);
                   
                   SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -2470,6 +2629,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
               }
               else {
@@ -2489,6 +2651,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_invocker);
                   
                   SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, term_index_type, op_cur->file, op_cur->line);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                   SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_term_invocker);
@@ -2497,6 +2662,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, tree_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                 }
               }
               
@@ -2510,10 +2678,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
               
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n",
-                  field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                
-                break;
+                SPVM_COMPILER_error(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
               }
               
               break;
@@ -2525,7 +2691,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_COMPILER_error(compiler, "weaken is only used for object element at %s line %d\n", op_cur->file, op_cur->line);
-                break;
+                return;
               }
               
               break;
@@ -2635,6 +2801,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
                 SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
                 SPVM_COMPILER_error(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
+                return;
               }
               
               if (SPVM_TYPE_is_object_type(compiler, op_dist->uv.type->basic_type->id, op_dist->uv.type->dimension, op_dist->uv.type->flag)) {
@@ -2645,6 +2812,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                   if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                     SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
+                    return;
                   }
                 }
                 break;
@@ -2801,6 +2969,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve basic types
   SPVM_OP_CHECKER_resolve_basic_types(compiler);
+  if (compiler->error_count > 0) {
+    return;
+  }
   
   // Resolve packages
   SPVM_OP_CHECKER_resolve_packages(compiler);
@@ -2840,6 +3011,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             
             if (error) {
               SPVM_COMPILER_error(compiler, "DESTROY argument must be self\n", sub->op_sub->file, sub->op_sub->line);
+              return;
             }
           }
           
@@ -2856,6 +3028,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           
           if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             SPVM_COMPILER_error(compiler, "Interface sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
+            return;
           }
           
           // Check subroutine - First tree traversal
@@ -2885,6 +3058,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             tree_info->op_switch_stack = SPVM_LIST_new(0);
             
             SPVM_OP_CHECKER_check_tree(compiler, sub->op_block, tree_info);
+            if (compiler->error_count > 0) {
+              return;
+            }
             
             // Free list
             SPVM_LIST_free(tree_info->my_stack);
@@ -3018,6 +3194,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Create temporary variable
                   if (create_tmp_var) {
                     SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, tmp_var_type, op_cur->file, op_cur->line);
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
+                    
                     SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                     
                     if (op_var_tmp == NULL) {
@@ -3100,6 +3280,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               int32_t width = SPVM_TYPE_get_width(compiler, type->basic_type->id, type->dimension, type->flag);
               if (my_var_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                 SPVM_COMPILER_error(compiler, "Too many variable declarations at %s line %d\n", my->op_my->file, my->op_my->line);
+                return;
               }
               my->var_id = my_var_id;
               my_var_id += width;
@@ -3738,22 +3919,26 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist,
   }
   else {
     SPVM_COMPILER_error(compiler, "Can't assign to empty type at %s line %d\n", op_src->file, op_src->line);
+    return NULL;
   }
     
   if (!can_assign) {
     if (narrowing_convertion_error) {
       SPVM_COMPILER_error(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
+      return NULL;
     }
     else {
       SPVM_TYPE_sprint_type_name(compiler, compiler->buffer1, src_type->basic_type->id, src_type->dimension, src_type->flag);
       SPVM_TYPE_sprint_type_name(compiler, compiler->buffer2, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
       SPVM_COMPILER_error(compiler, "Can't convert %s to %s at %s line %d\n", compiler->buffer1, compiler->buffer2, op_src->file, op_src->line);
+      return NULL;
     }
   }
 
   // Const check
   if (!(dist_type->flag & SPVM_TYPE_C_FLAG_CONST) && (src_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
     SPVM_COMPILER_error(compiler, "Can't convert const type to not const type at %s line %d\n", op_src->file, op_src->line);
+    return NULL;
   }
 
   if (need_convertion) {
@@ -3795,6 +3980,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
       SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, basic_type_name, strlen(basic_type_name));
       if (!found_package) {
         SPVM_COMPILER_error(compiler, "Unknown package \"%s\" at %s line %d\n", basic_type_name, op_type->file, op_type->line);
+        return;
       }
     }
     
@@ -3802,6 +3988,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
         SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or value_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
+        return;
       }
     }
     
@@ -3809,6 +3996,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     if (type->basic_type->package && type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
       if (type->dimension > 1) {
         SPVM_COMPILER_error(compiler, "Array of interface is invalid at %s line %d\n", op_type->file, op_type->line);
+        return;
       }
     }
   }
@@ -3973,19 +4161,23 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       // Can't have subroutines
       if (package->subs->length > 0) {
         SPVM_COMPILER_error(compiler, "value_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
       }
       // Can't have package variables
       if (package->package_vars->length > 0) {
         SPVM_COMPILER_error(compiler, "value_t package can't have package variables at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
       }
       
       // At least have one field
       if (package->fields->length == 0) {
         SPVM_COMPILER_error(compiler, "value_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
       }
       // Max fields length is 16
       else if (package->fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
         SPVM_COMPILER_error(compiler, "Too many fields at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
       }
       else {
         SPVM_LIST* fields = package->fields;
@@ -3993,54 +4185,55 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
           SPVM_COMPILER_error(compiler, "value_t package must have numeric field at %s line %d\n", first_field->op_field->file, first_field->op_field->line);
+          return;
         }
         else {
           int32_t field_index;
-          int32_t numeric_field_error = 0;
           for (field_index = 0; field_index < package->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(fields, field_index);
             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
             if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
               SPVM_COMPILER_error(compiler, "field must have %s type at %s line %d\n", field_type->basic_type->name, field->op_field->file, field->op_field->line);
-              numeric_field_error = 1;
+              return;
             }
           }
-          if (!numeric_field_error) {
-            // Check type name
-            char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
-            switch (first_field_type->basic_type->id) {
-              case SPVM_BASIC_TYPE_C_ID_BYTE:
-                sprintf(tail_name, "_b%d", fields->length);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_SHORT:
-                sprintf(tail_name, "_s%d", fields->length);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_INT:
-                sprintf(tail_name, "_i%d", fields->length);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_LONG:
-                sprintf(tail_name, "_l%d", fields->length);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                sprintf(tail_name, "_f%d", fields->length);
-                break;
-              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                sprintf(tail_name, "_d%d", fields->length);
-                break;
-              default:
-                assert(0);
-            }
-            int32_t tail_name_length = (int32_t)strlen(tail_name);
-            
-            char* found_pos_ptr = strstr(package_name, tail_name);
-            if (found_pos_ptr) {
-              if (*(found_pos_ptr + tail_name_length) != '\0') {
-                SPVM_COMPILER_error(compiler, "package name must end with %s at %s line %d\n", tail_name, package->op_package->file, package->op_package->line);
-              }
-            }
-            else {
+          
+          // Check type name
+          char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
+          switch (first_field_type->basic_type->id) {
+            case SPVM_BASIC_TYPE_C_ID_BYTE:
+              sprintf(tail_name, "_b%d", fields->length);
+              break;
+            case SPVM_BASIC_TYPE_C_ID_SHORT:
+              sprintf(tail_name, "_s%d", fields->length);
+              break;
+            case SPVM_BASIC_TYPE_C_ID_INT:
+              sprintf(tail_name, "_i%d", fields->length);
+              break;
+            case SPVM_BASIC_TYPE_C_ID_LONG:
+              sprintf(tail_name, "_l%d", fields->length);
+              break;
+            case SPVM_BASIC_TYPE_C_ID_FLOAT:
+              sprintf(tail_name, "_f%d", fields->length);
+              break;
+            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+              sprintf(tail_name, "_d%d", fields->length);
+              break;
+            default:
+              assert(0);
+          }
+          int32_t tail_name_length = (int32_t)strlen(tail_name);
+          
+          char* found_pos_ptr = strstr(package_name, tail_name);
+          if (found_pos_ptr) {
+            if (*(found_pos_ptr + tail_name_length) != '\0') {
               SPVM_COMPILER_error(compiler, "package name must end with %s at %s line %d\n", tail_name, package->op_package->file, package->op_package->line);
+              return;
             }
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "package name must end with %s at %s line %d\n", tail_name, package->op_package->file, package->op_package->line);
+            return;
           }
         }
       }
@@ -4057,6 +4250,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
         if (is_value_t) {
           SPVM_COMPILER_error(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
+          return;
         }
         else {
           // Add object field indexes
@@ -4080,6 +4274,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         
         if (is_value_t) {
           SPVM_COMPILER_error(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
+          return;
         }
       }
     }
@@ -4114,10 +4309,12 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
         if (arg_allow_count > 255) {
           SPVM_COMPILER_error(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+          return;
         }
         
         if (sub->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
           SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+          return;
         }
       }
     }
@@ -4128,6 +4325,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         const char* sub_signature = SPVM_OP_CHECKER_create_sub_signature(compiler, sub);
+        if (compiler->error_count > 0) {
+          return;
+        }
         sub->signature = sub_signature;
       }
     }
@@ -4138,6 +4338,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       for (i = 0; i < package->fields->length; i++) {
         SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
         const char* field_signature = SPVM_OP_CHECKER_create_field_signature(compiler, field);
+        if (compiler->error_count > 0) {
+          return;
+        }
         field->signature = field_signature;
       }
     }
@@ -4148,6 +4351,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       for (i = 0; i < package->package_vars->length; i++) {
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
         const char* package_var_signature = SPVM_OP_CHECKER_create_package_var_signature(compiler, package_var);
+        if (compiler->error_count > 0) {
+          return;
+        }
         package_var->signature = package_var_signature;
       }
     }

@@ -188,8 +188,8 @@ compile_spvm(...)
 
   // Compile SPVM
   SPVM_COMPILER_compile(compiler);
+
   SV* sv_compile_success;
-  
   if (compiler->error_count > 0) {
     sv_compile_success = sv_2mortal(newSViv(0));
   }
