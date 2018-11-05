@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <inttypes.h>
+#include <assert.h>
 
 
 #include "spvm_compiler.h"
@@ -99,7 +100,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message)
     memcpy(token, compiler->befbufptr + empty_count, length);
     token[length] = '\0';
     
-    fprintf(stderr, "Error: unexpected token \"%s\" at %s line %" PRId32 "\n", token, compiler->cur_file, compiler->cur_line);
+    fprintf(stderr, "Error: unexpected token \"%s\" at %s line %d\n", token, compiler->cur_file, compiler->cur_line);
     free(token);
   }
 }
@@ -109,43 +110,13 @@ void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
   
   switch(type) {
     case NAME: {
-      fprintf(file, "\"%s\"", yylval.opval->uv.name);
+      fprintf(file, "%s", yylval.opval->uv.name);
       break;
     }
     case VAR_NAME: {
       const char* var_name = yylval.opval->uv.name;
-      fprintf(file, "\"%s\"", var_name);
+      fprintf(file, "%s", var_name);
       break;
-    }
-    case CONSTANT: {
-      SPVM_CONSTANT* constant = yylval.opval->uv.constant;
-      
-      if (constant->type->dimension == 0) {
-        switch(constant->type->basic_type->id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE:
-            fprintf(file, "int %" PRId8, constant->value.bval);
-            break;
-          case SPVM_BASIC_TYPE_C_ID_SHORT:
-            fprintf(file, "int %" PRId16, constant->value.sval);
-            break;
-          case SPVM_BASIC_TYPE_C_ID_INT:
-            fprintf(file, "int %" PRId32, constant->value.ival);
-            break;
-          case SPVM_BASIC_TYPE_C_ID_LONG:
-            fprintf(file, "long %" PRId64, constant->value.lval);
-            break;
-          case SPVM_BASIC_TYPE_C_ID_FLOAT:
-            fprintf(file, "float %f", constant->value.fval);
-            break;
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-            fprintf(file, "double %f", constant->value.dval);
-            break;
-        }
-      }
-      else if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-        fprintf(file, "string %s", (char*)constant->value.oval);
-        break;
-      }
     }
   }
 }

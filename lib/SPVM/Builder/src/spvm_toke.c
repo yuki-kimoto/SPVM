@@ -147,7 +147,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       fprintf(stderr, " %s", include_path);
                     }
                   }
-                  fprintf(stderr, ") at %s line %" PRId32 "\n", op_use->file, op_use->line);
+                  fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
                 }
                 else {
                   fprintf(stderr, "Can't find file %s\n", cur_file);
@@ -161,14 +161,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fseek(fh, 0, SEEK_END);
               int32_t file_size = (int32_t)ftell(fh);
               if (file_size < 0) {
-                fprintf(stderr, "Can't read file %s at %s line %" PRId32 "\n", cur_file, op_use->file, op_use->line);
+                fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                 exit(EXIT_FAILURE);
               }
               fseek(fh, 0, SEEK_SET);
               char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
               if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
                 if (op_use) {
-                  fprintf(stderr, "Can't read file %s at %s line %" PRId32 "\n", cur_file, op_use->file, op_use->line);
+                  fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                 }
                 else {
                   fprintf(stderr, "Can't read file %s\n", cur_file);
@@ -652,7 +652,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
             else {
-              fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %d\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
           }
@@ -776,7 +776,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                 }
                 else {
-                  fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %" PRId32 "\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
+                  fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %d\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
                   exit(EXIT_FAILURE);
                 }
               }
@@ -854,7 +854,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
               else {
-                fprintf(stderr, "Need close brace at end of variable at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
+                fprintf(stderr, "Need close brace at end of variable at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 exit(EXIT_FAILURE);
               }
             }
@@ -998,7 +998,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
-              fprintf(stderr, "Invalid float literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "Invalid float literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
@@ -1008,7 +1008,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
-              fprintf(stderr, "Invalid double literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "Invalid double literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
@@ -1041,11 +1041,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              fprintf(stderr, "Invalid int literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "Invalid int literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             else if (out_of_range) {
-              fprintf(stderr, "int literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "int literal out of range %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
@@ -1078,11 +1078,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              fprintf(stderr, "Invalid long literal %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "Invalid long literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             else if (out_of_range) {
-              fprintf(stderr, "long literal out of range %s at %s line %" PRId32 "\n", num_str, compiler->cur_file, compiler->cur_line);
+              fprintf(stderr, "long literal out of range %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
               exit(EXIT_FAILURE);
             }
             op_constant = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
@@ -1404,7 +1404,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Symbol name can't conatain __
           if (strstr(keyword, "__")) {
-            fprintf(stderr, "Symbol name can't contain __ at %s line %" PRId32 "\n", compiler->cur_file, compiler->cur_line);
+            fprintf(stderr, "Symbol name can't contain __ at %s line %d\n", compiler->cur_file, compiler->cur_line);
             exit(1);
           }
           
