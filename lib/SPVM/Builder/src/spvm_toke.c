@@ -619,19 +619,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           if (*compiler->bufptr == '\\') {
             compiler->bufptr++;
-            if (*compiler->bufptr == '"') {
-              ch = '"';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == '\'') {
-              ch = '\'';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == '\\') {
-              ch = '\\';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'r') {
+            if (*compiler->bufptr == 'r') {
               ch = 0x0D;
               compiler->bufptr++;
             }
@@ -652,8 +640,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
             else {
-              fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %d\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              ch = *compiler->bufptr;
             }
           }
           else {
@@ -662,8 +649,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           if (*compiler->bufptr != '\'') {
-            fprintf(stderr, "syntax error: character literal don't finish with '\n");
-            exit(EXIT_FAILURE);
+            SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d", compiler->cur_file, compiler->cur_line);
           }
           compiler->bufptr++;
         }
@@ -679,8 +665,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
           // $var-> is invalid
           if (*compiler->bufptr == '-' && *(compiler->bufptr + 1) == '>') {
-            fprintf(stderr, "Don't support variable expansion of array access or field access at %s line %d\n", compiler->cur_file, compiler->cur_line);
-            exit(EXIT_FAILURE);
+            SPVM_COMPILER_error(compiler, "Don't support variable expansion of array access or field access at %s line %d\n", compiler->cur_file, compiler->cur_line);
           }
         }
         else {
@@ -725,8 +710,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->bufptr == '\0') {
-            fprintf(stderr, "syntax error: string don't finish with '\"'\n");
-            exit(EXIT_FAILURE);
+            SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d\n", compiler->cur_file, compiler->cur_line);
           }
           
           int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr);
