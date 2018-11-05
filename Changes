@@ -1,3 +1,5 @@
+0.0387 2018-11-05
+  - improve compile error check logic and fix some bugs.
 0.0386 2018-11-03
   - Extension can only allow one file.
   - spvmmcc create one exe file not depend sharaed library.
