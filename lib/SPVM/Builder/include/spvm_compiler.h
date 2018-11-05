@@ -122,4 +122,8 @@ void SPVM_COMPILER_push_long_pool(SPVM_COMPILER* compiler, int64_t long_value);
 void SPVM_COMPILER_push_string_pool(SPVM_COMPILER* compiler, const char* string, int32_t string_length);
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
+const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field);
+const char* SPVM_COMPILER_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var);
+
 #endif

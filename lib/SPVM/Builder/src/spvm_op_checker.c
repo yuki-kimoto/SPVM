@@ -4279,10 +4279,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
-        const char* sub_signature = SPVM_OP_CHECKER_create_sub_signature(compiler, sub);
-        if (compiler->error_count > 0) {
-          return;
-        }
+        const char* sub_signature = SPVM_COMPILER_create_sub_signature(compiler, sub);
         sub->signature = sub_signature;
       }
     }
@@ -4292,10 +4289,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->fields->length; i++) {
         SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
-        const char* field_signature = SPVM_OP_CHECKER_create_field_signature(compiler, field);
-        if (compiler->error_count > 0) {
-          return;
-        }
+        const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);
         field->signature = field_signature;
       }
     }
@@ -4305,187 +4299,10 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       int32_t i;
       for (i = 0; i < package->package_vars->length; i++) {
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-        const char* package_var_signature = SPVM_OP_CHECKER_create_package_var_signature(compiler, package_var);
-        if (compiler->error_count > 0) {
-          return;
-        }
+        const char* package_var_signature = SPVM_COMPILER_create_package_var_signature(compiler, package_var);
         package_var->signature = package_var_signature;
       }
     }
 
   }
-}
-
-const char* SPVM_OP_CHECKER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
-  
-  int32_t length = 0;
-  
-  // Calcurate signature length
-  {
-    // Return type basic type
-    length += strlen(sub->return_type->basic_type->name);
-    
-    // Return type dimension
-    length += sub->return_type->dimension * 2;
-    
-    // (
-    length += 1;
-    
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
-        // self
-        length += 4;
-      }
-      else {
-        SPVM_MY* arg_my_sub = SPVM_LIST_fetch(sub->args, arg_index);
-        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, arg_my_sub->op_my);
-        
-        // Ref
-        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
-          length += 1;
-        }
-        
-        // TYPE
-        length += strlen(type_arg_sub->basic_type->name);
-        
-        // Dimension
-        length += type_arg_sub->dimension * 2;
-      }
-      // ,
-      if (arg_index != sub->args->length - 1) {
-        length += 1;
-      }
-    }
-    
-    // )
-    length += 1;
-  }
-  
-  char* sub_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
-  
-  // Calcurate sub signature length
-  char* bufptr = sub_signature;
-  {
-    // Return type
-    memcpy(bufptr, sub->return_type->basic_type->name, strlen(sub->return_type->basic_type->name));
-    bufptr += strlen(sub->return_type->basic_type->name);
-    
-    int32_t dim_index;
-    for (dim_index = 0; dim_index < sub->return_type->dimension; dim_index++) {
-      memcpy(bufptr, "[]", 2);
-      bufptr += 2;
-    }
-    
-    // (
-    *bufptr = '(';
-    bufptr += 1;
-    
-    int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      // self
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
-        memcpy(bufptr, "self", 4);
-        bufptr += 4;
-      }
-      else {
-        SPVM_MY* arg_my_sub = SPVM_LIST_fetch(sub->args, arg_index);
-        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, arg_my_sub->op_my);
-        
-        // Ref
-        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
-          *bufptr = '&';
-          bufptr += 1;
-        }
-        
-        // TYPE
-        memcpy(bufptr, type_arg_sub->basic_type->name, strlen(type_arg_sub->basic_type->name));
-        bufptr += strlen(type_arg_sub->basic_type->name);
-
-        int32_t dim_index;
-        for (dim_index = 0; dim_index < type_arg_sub->dimension; dim_index++) {
-          memcpy(bufptr, "[]", 2);
-          bufptr += 2;
-        }
-      }
-
-      // ,
-      if (arg_index != sub->args->length - 1) {
-        memcpy(bufptr, ",", 1);
-        bufptr += 1;
-      }
-    }
-    
-    // )
-    memcpy(bufptr, ")", 1);
-    bufptr += 1;
-  }
-  
-  return sub_signature;
-}
-
-const char* SPVM_OP_CHECKER_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
-  
-  int32_t length = 0;
-  
-  // Calcurate signature length
-  {
-    // Basic type
-    length += strlen(field->type->basic_type->name);
-    
-    // Type dimension
-    length += field->type->dimension * 2;
-  }
-  
-  char* field_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
-  
-  // Calcurate field signature length
-  char* bufptr = field_signature;
-  {
-    // Basic type
-    memcpy(bufptr, field->type->basic_type->name, strlen(field->type->basic_type->name));
-    bufptr += strlen(field->type->basic_type->name);
-    
-    // Type dimension
-    int32_t dim_index;
-    for (dim_index = 0; dim_index < field->type->dimension; dim_index++) {
-      memcpy(bufptr, "[]", 2);
-      bufptr += 2;
-    }
-  }
-  
-  return field_signature;
-}
-
-const char* SPVM_OP_CHECKER_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var) {
-  
-  int32_t length = 0;
-  
-  // Calcurate signature length
-  {
-    // Basic type
-    length += strlen(package_var->type->basic_type->name);
-    
-    // Type dimension
-    length += package_var->type->dimension * 2;
-  }
-  
-  char* package_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
-  
-  // Calcurate package_var signature length
-  char* bufptr = package_var_signature;
-  {
-    // Basic type
-    memcpy(bufptr, package_var->type->basic_type->name, strlen(package_var->type->basic_type->name));
-    bufptr += strlen(package_var->type->basic_type->name);
-    
-    // Type dimension
-    int32_t dim_index;
-    for (dim_index = 0; dim_index < package_var->type->dimension; dim_index++) {
-      memcpy(bufptr, "[]", 2);
-      bufptr += 2;
-    }
-  }
-  
-  return package_var_signature;
 }
