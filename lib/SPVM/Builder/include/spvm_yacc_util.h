@@ -16,7 +16,6 @@ extern int SPVM_yydebug;
 
 int SPVM_yyparse(SPVM_COMPILER* compiler);
 void SPVM_yyerror(SPVM_COMPILER* compiler, const char* s);
-void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message, ...);
 void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval);
 
 #endif

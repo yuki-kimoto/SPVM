@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
@@ -28,6 +29,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
 #include "spvm_my.h"
+
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -297,6 +299,53 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
       SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
     }
   }
+}
+
+void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
+  
+  int32_t message_length = 0;
+  
+  // Message template
+  int32_t message_template_length = (int32_t)strlen(message_template);
+  
+  va_list args;
+  va_start(args, message_template);
+
+  message_length += message_template_length;
+  
+  // Argument count
+  char* found_ptr = (char*)message_template;
+  while (1) {
+    found_ptr = strchr(found_ptr, '%');
+    if (found_ptr) {
+      if (*(found_ptr + 1) == 's') {
+        char* arg = va_arg(args, char*);
+        message_length += strlen(arg);
+      }
+      else if (*(found_ptr + 1) == 'd') {
+        (void) va_arg(args, int);
+        message_length += 30;
+      }
+      else {
+        assert(0);
+      }
+      found_ptr++;
+    }
+    else {
+      break;
+    }
+  }
+  va_end(args);
+  
+  char* message = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
+  
+  va_start(args, message_template);
+  vsprintf(message, message_template, args);
+  va_end(args);
+
+  compiler->error_count++;
+  
+  fprintf(stderr, "%s", message);
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {

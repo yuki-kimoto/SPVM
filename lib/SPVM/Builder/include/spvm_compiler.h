@@ -120,5 +120,6 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_push_long_pool(SPVM_COMPILER* compiler, int64_t long_value);
 void SPVM_COMPILER_push_string_pool(SPVM_COMPILER* compiler, const char* string, int32_t string_length);
+void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
 #endif
