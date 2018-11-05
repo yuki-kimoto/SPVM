@@ -739,46 +739,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             while (char_ptr != compiler->bufptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
-                if (*char_ptr == '"') {
-                  str[str_length] = '"';
-                  str_length++;
-                }
-                else if (*char_ptr == '\'') {
-                  str[str_length] = '\'';
-                  str_length++;
-                }
-                else if (*char_ptr == '\\') {
-                  str[str_length] = '\\';
-                  str_length++;
-                }
-                else if (*char_ptr == 'r') {
+                if (*char_ptr == 'r') {
                   str[str_length] = 0x0D;
-                  str_length++;
                 }
                 else if (*char_ptr == 'n') {
                   str[str_length] = 0x0A;
-                  str_length++;
                 }
                 else if (*char_ptr == 't') {
                   str[str_length] = '\t';
-                  str_length++;
                 }
                 else if (*char_ptr == 'b') {
                   str[str_length] = '\b';
-                  str_length++;
                 }
                 else if (*char_ptr == 'f') {
                   str[str_length] = '\f';
-                  str_length++;
                 }
                 else if (*char_ptr == '0') {
                   str[str_length] = '\0';
-                  str_length++;
                 }
                 else {
-                  fprintf(stderr, "Invalid escape character \"%c%c\" at %s line %d\n", *(compiler->bufptr -1),*compiler->bufptr, compiler->cur_file, compiler->cur_line);
-                  exit(EXIT_FAILURE);
+                  str[str_length] = *char_ptr;
                 }
+                str_length++;
               }
               else {
                 str[str_length] = *char_ptr;
@@ -854,8 +836,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
               else {
-                fprintf(stderr, "Need close brace at end of variable at %s line %d\n", compiler->cur_file, compiler->cur_line);
-                exit(EXIT_FAILURE);
+                SPVM_COMPILER_error(compiler, "Need close brace at end of variable at %s line %d\n", compiler->cur_file, compiler->cur_line);
               }
             }
 
@@ -998,8 +979,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
-              fprintf(stderr, "Invalid float literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             op_constant = SPVM_OP_new_op_constant_float(compiler, (float)num, compiler->cur_file, compiler->cur_line);
           }
@@ -1008,8 +988,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             double num = strtod(num_str, &end);
             
             if (*end != '\0') {
-              fprintf(stderr, "Invalid double literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             op_constant = SPVM_OP_new_op_constant_double(compiler, num, compiler->cur_file, compiler->cur_line);
           }
@@ -1041,12 +1020,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              fprintf(stderr, "Invalid int literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "Invalid int literal %s at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             else if (out_of_range) {
-              fprintf(stderr, "int literal out of range %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "int literal out of range %s at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             op_constant = SPVM_OP_new_op_constant_int(compiler, num, compiler->cur_file, compiler->cur_line);
           }
@@ -1078,12 +1055,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              fprintf(stderr, "Invalid long literal %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "Invalid long literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             else if (out_of_range) {
-              fprintf(stderr, "long literal out of range %s at %s line %d\n", num_str, compiler->cur_file, compiler->cur_line);
-              exit(EXIT_FAILURE);
+              SPVM_COMPILER_error(compiler, "long literal out of range at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
             op_constant = SPVM_OP_new_op_constant_long(compiler, num, compiler->cur_file, compiler->cur_line);
           }
@@ -1404,8 +1379,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Symbol name can't conatain __
           if (strstr(keyword, "__")) {
-            fprintf(stderr, "Symbol name can't contain __ at %s line %d\n", compiler->cur_file, compiler->cur_line);
-            exit(1);
+            SPVM_COMPILER_error(compiler, "Symbol name can't contain __ at %s line %d\n", compiler->cur_file, compiler->cur_line);
           }
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
