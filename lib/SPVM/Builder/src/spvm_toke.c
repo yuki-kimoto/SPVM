@@ -65,7 +65,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     
     // line end
     switch (ch) {
-      case '\0':
+      case '\0': {
         compiler->cur_file = NULL;
         compiler->cur_src = NULL;
         compiler->bufptr = NULL;
@@ -78,11 +78,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (op_use_stack->length > 0) {
             SPVM_OP* op_use = SPVM_LIST_pop(op_use_stack);
             
-            assert(op_use->uv.use->op_type);
-            assert(op_use->uv.use->op_type->uv.type->dimension == 0);
             const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
-            
-            assert(package_name);
             
             SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
             
@@ -90,7 +86,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               continue;
             }
             else {
-              
               // change :: to / and add ".spvm"
               int32_t module_path_base_length = (int32_t)(strlen(package_name) + 6);
               char* module_path_base = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, module_path_base_length + 1);
@@ -137,20 +132,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               if (!fh) {
-                if (op_use) {
-                  fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
-                  {
-                    int32_t i;
-                    for (i = 0; i < module_include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                      fprintf(stderr, " %s", include_path);
-                    }
+                fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
+                {
+                  int32_t i;
+                  for (i = 0; i < module_include_pathes_length; i++) {
+                    const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                    fprintf(stderr, " %s", include_path);
                   }
-                  fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
                 }
-                else {
-                  fprintf(stderr, "Can't find file %s\n", cur_file);
-                }
+                fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
                 exit(EXIT_FAILURE);
               }
               
@@ -166,12 +156,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fseek(fh, 0, SEEK_SET);
               char* cur_src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_size + 1);
               if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
-                if (op_use) {
-                  fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                }
-                else {
-                  fprintf(stderr, "Can't read file %s\n", cur_file);
-                }
+                fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                 exit(EXIT_FAILURE);
               }
               fclose(fh);
@@ -195,20 +180,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           return 0;
         }
-      
+      }
       /* Skip space character */
       case ' ':
       case '\t':
       case '\r':
         compiler->bufptr++;
         continue;
-
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
-        
         continue;
-      
       /* Cancat */
       case '.': {
         if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
