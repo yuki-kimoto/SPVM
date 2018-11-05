@@ -284,9 +284,12 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_yydebug = 0;
 #endif
   
-  /* call SPVM_yyparse */
+  /* Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {
+    return;
+  }
+  if (compiler->error_count > 0) {
     return;
   }
   
@@ -296,7 +299,7 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     return;
   }
 
-  // Build bytecode
+  // Build operation code
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   if (compiler->error_count > 0) {
     return;

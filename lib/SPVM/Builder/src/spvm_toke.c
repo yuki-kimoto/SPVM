@@ -144,7 +144,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
-                exit(EXIT_FAILURE);
+                compiler->error_count++;
+                return 0;
               }
               
               compiler->cur_file = cur_file;
@@ -153,14 +154,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               fseek(fh, 0, SEEK_END);
               int32_t file_size = (int32_t)ftell(fh);
               if (file_size < 0) {
-                fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                exit(EXIT_FAILURE);
+                SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                return 0;
               }
               fseek(fh, 0, SEEK_SET);
               char* cur_src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_size + 1);
               if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
-                fprintf(stderr, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                exit(EXIT_FAILURE);
+                SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                return 0;
               }
               fclose(fh);
               cur_src[file_size] = '\0';

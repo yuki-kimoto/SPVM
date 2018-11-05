@@ -54,7 +54,7 @@ CHECK {
   if ($BUILDER) {
     my $compile_success = $BUILDER->build_spvm();
     unless ($compile_success) {
-      die "SPVM compile error";
+      exit(255);
     }
     
     # Set env
