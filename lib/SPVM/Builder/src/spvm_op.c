@@ -1366,12 +1366,6 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, S
   
   SPVM_FIELD_ACCESS* field_access = SPVM_FIELD_ACCESS_new(compiler);
   
-  if (strchr(op_name_field->uv.name, ':')) {
-    SPVM_COMPILER_error(compiler, "field name \"%s\" can't contain :: at %s line %d\n",
-      op_name_field, op_name_field->file, op_name_field->line);
-    return NULL;
-  }
-  
   field_access->op_term = op_term;
   field_access->op_name = op_name_field;
   op_field_access->uv.field_access = field_access;
@@ -1463,7 +1457,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) && islower(package_name[0])) {
     SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
-    return NULL;
   }
 
   SPVM_HASH* package_symtable = compiler->package_symtable;
@@ -1472,7 +1465,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, package_name, strlen(package_name));
   if (found_package) {
     SPVM_COMPILER_error(compiler, "redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
-    return NULL;
   }
   
   SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
@@ -1507,12 +1499,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
-          return NULL;
       }
     }
     if (duplicate_descriptors > 1) {
       SPVM_COMPILER_error(compiler, "Invalid descriptor combination at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
-      return NULL;
     }
   }
   
@@ -1524,7 +1514,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     if (op_decl->id == SPVM_OP_C_ID_FIELD) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_COMPILER_error(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
-        return NULL;
       }
       SPVM_LIST_push(package->fields, op_decl->uv.field);
     }
@@ -1559,7 +1548,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_COMPILER_error(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
-        return NULL;
       }
       SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
     }
@@ -1592,7 +1580,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   for (int32_t i = 0; i < package->fields->length; i++) {
     if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
       SPVM_COMPILER_error(compiler, "Pointer package can't have field at %s line %d\n", op_decl->file, op_decl->line);
-      return NULL;
       continue;
     }
 
@@ -1606,11 +1593,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, field->op_field->file, field->op_field->line);
-      return NULL;
     }
     else if (package->fields->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
       SPVM_COMPILER_error(compiler, "Too many field declarations at %s line %d\n", field->op_field->file, field->op_field->line);
-      return NULL;
     }
     else {
       field->id = compiler->fields->length + 1;
@@ -1655,11 +1640,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       if (found_package_var) {
         SPVM_COMPILER_error(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, package_var->op_package_var->file, package_var->op_package_var->line);
-        return NULL;
       }
       else if (package->package_vars->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_COMPILER_error(compiler, "Too many package variable declarations at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
-        return NULL;
       }
       else {
         const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_name);
@@ -1730,13 +1713,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       // Subroutine in interface package must be method
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
         SPVM_COMPILER_error(compiler, "Subroutine in interface package must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
-        return NULL;
       }
       
       // If Subroutine is anon, sub must be method
       if (strlen(sub_name) == 0 && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
         SPVM_COMPILER_error(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
-        return NULL;
       }
       
       
@@ -1744,11 +1725,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       if (found_sub) {
         SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, sub->op_sub->file, sub->op_sub->line);
-        return NULL;
       }
       else if (package->subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_COMPILER_error(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
-        return NULL;
       }
       // Unknown sub
       else {
@@ -1777,7 +1756,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
     if (package->subs->length != 1) {
       SPVM_COMPILER_error(compiler, "Interface must have only one method at %s line %d\n", op_package->file, op_package->line);
-      return NULL;
     }
   }
   
@@ -1853,7 +1831,6 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   if (invalid_name) {
     SPVM_COMPILER_error(compiler, "Invalid package variable name %s at %s line %d\n", name, op_var->file, op_var->line);
-    return NULL;
   }
   
   package_var->op_var = op_var;
@@ -1894,7 +1871,6 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid field descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
-          return NULL;
       }
     }
   }
@@ -1946,20 +1922,17 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       }
       else {
         SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
-        return NULL;
       }
     }
 
     if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC)) {
       SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
-      return NULL;
     }
   }
 
   // Native subroutine can't have block
   if ((sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) && op_block) {
     SPVM_COMPILER_error(compiler, "Native subroutine can't have block", op_block->file, op_block->line);
-    return NULL;
   }
   
   // sub args
@@ -2009,7 +1982,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     // DESTROY return type must be void
     if (!(sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
       SPVM_COMPILER_error(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
-      return NULL;
     }
   }
   
@@ -2094,7 +2066,6 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
     }
     else {
       SPVM_COMPILER_error(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);
-      return NULL;
     }
     
     compiler->current_enum_value++;
@@ -2162,7 +2133,6 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   
   if (strstr(sub_name, "::")) {
     SPVM_COMPILER_error(compiler, "subroutine name can't conatin :: at %s line %d\n", op_name_sub->file, op_name_sub->line);
-    return NULL;
   }
   
   // Method call
@@ -2206,7 +2176,6 @@ SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
     SPVM_COMPILER_error(compiler, "inc/dec target value must be mutable at %s line %d\n", op_first->file, op_first->line);
-    return NULL;
   }
   
   return op_incdec;
@@ -2377,7 +2346,6 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   
   if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
     SPVM_COMPILER_error(compiler, "special assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
-    return NULL;
   }
   
   return op_special_assign;
@@ -2395,7 +2363,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
     SPVM_COMPILER_error(compiler, "assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
-    return NULL;
   }
   
   return op_assign;
@@ -2467,7 +2434,6 @@ SPVM_OP* SPVM_OP_build_const_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_typ
   
   if (!(basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE && dimension == 1)) {
     SPVM_COMPILER_error(compiler, "const only can specify byte array at %s line %d\n", op_type->file, op_type->line);
-    return NULL;
   }
   
   type->flag |= SPVM_TYPE_C_FLAG_CONST;
