@@ -14,6 +14,7 @@ package TestCase {
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
   use SPVM::Complex_d2;
+  use SPVM::Comparator;
 
   use TestCase::Point_b3;
   use TestCase::Point_s3;
@@ -60,6 +61,51 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+
+    {
+      vaarg(10, 20, 30);
+    }
+    
+    {
+      my $var1 = 1;
+      my $var2 = 2;
+      
+      my $string = "a $var1 ppp $var2 qqq";
+    }
+    
+    {
+      my $capture1 = 7;
+      my $capture2 = 10;
+      my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+        print($capture1 . "\n");
+        print($capture2 . "\n");
+
+        $self->{capture1} = 5;
+        
+        print($capture1 . "\n");
+        
+        return -1;
+      };
+      
+      $anon_sub->(undef, undef);
+    }
+
+    {
+      my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+        return -1;
+      };
+      
+      my $ret = $anon_sub->(undef, undef);
+      
+      print($ret . "\n");
+      
+      my $comparator : SPVM::Comparator = $anon_sub;
+      
+      my $ret2 = $comparator->compare(undef, undef);
+      
+      print($ret . "\n");
+    }
+    
     {
       my $i : int;
       
@@ -213,16 +259,16 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $anon_sub = sub compare : long ($self : self, $x1 : long, $x2 : long) {
+      my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
         return $x1 * $x2;
       };
       
-      my $ret = $anon_sub->compare(4L, 5L);
+      my $ret = $anon_sub->(4L, 5L);
       print($ret . "\n");
     }
-    
+
     {
-      my $array = [(1, 2, 5, 7, 9), (3, 4), (10)];
+      my $array = [1, 2,    5, 7,    9, 3,    4, 10];
       print($array->[7] . "\n");
     }
     {
@@ -383,23 +429,21 @@ SPVM::Test - SPVM test module
     
     # sort
     {
-      my $comparator = package {
-        sub compare : int ($self : self, $object1 : object, $object2 : object) {
-          my $minimal1 = (TestCase::Minimal)$object1;
-          my $minimal2 = (TestCase::Minimal)$object2;
-          
-          my $x1 = $minimal1->{x};
-          my $x2 = $minimal2->{x};
-          
-          if ($x1 > $x2) {
-            return 1;
-          }
-          elsif ($x1 < $x2) {
-            return -1;
-          }
-          else {
-            return 0;
-          }
+      my $comparator  = sub : int ($self : self, $object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+        
+        my $x1 = $minimal1->{x};
+        my $x2 = $minimal2->{x};
+        
+        if ($x1 > $x2) {
+          return 1;
+        }
+        elsif ($x1 < $x2) {
+          return -1;
+        }
+        else {
+          return 0;
         }
       };
       
@@ -418,23 +462,6 @@ SPVM::Test - SPVM test module
       
       print($minimals->[0]{x} . " " . $minimals->[1]{x} . " " . $minimals->[2]{x} . "\n");
     }
-    # Anon package
-    {
-      my $point = package {
-        has x : int;
-        has y : int;
-        sub clear : void ($self : self) {
-          $self->{x} = 0;
-          $self->{y} = 0;
-        }
-      };
-      
-      $point->{x} = 3;
-      print($point->{x} . "\n");
-      $point->clear;
-      print($point->{x} . "\n");
-    }
-    
     if (!(1 == 2)) {
       
     }
@@ -1666,6 +1693,11 @@ SPVM::Test - SPVM test module
   sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : SPVM::Complex_d2&) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
+  }
+
+  sub vaarg : void ($flag : int, $nums : int[]...) {
+    print($nums->[0] . "\n");
+    print($nums->[1] . "\n");
   }
 }
 

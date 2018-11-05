@@ -21,17 +21,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub info {
-  my $self = shift;
-  
-  return $self->{info};
-}
-
-sub category {
-  my $self = shift;
-  
-  $self->{category};
-}
+sub category { shift->{category} }
 
 sub quiet { shift->{quiet} }
 
@@ -40,16 +30,16 @@ sub builder { shift->{builder} }
 sub build {
   my ($self, $opt) = @_;
   
-  my $package_names = $self->info->get_package_names;
+  my $package_names = $self->builder->get_package_names;
   for my $package_name (@$package_names) {
     
     my $category = $self->{category};
     my $sub_names;
     if ($category eq 'native') {
-      $sub_names = $self->info->get_native_sub_names($package_name)
+      $sub_names = $self->builder->get_native_sub_names($package_name)
     }
     elsif ($category eq 'precompile') {
-      $sub_names = $self->info->get_precompile_sub_names($package_name)
+      $sub_names = $self->builder->get_precompile_sub_names($package_name)
     }
     
     if (@$sub_names) {
@@ -57,13 +47,7 @@ sub build {
       my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
       
       # Try runtime compile if shared library is not found
-      if (-f $shared_lib_path) {
-        # Copy distribution shared lib to build directory
-        if ($self->{copy_dist}) {
-          $self->copy_shared_lib_to_build_dir($package_name, $category);
-        }
-      }
-      else {
+      unless (-f $shared_lib_path) {
         if ($category eq 'native') {
           $self->build_shared_lib_native_runtime($package_name, $sub_names);
         }
@@ -108,13 +92,13 @@ sub get_shared_lib_path_runtime {
 }
 
 sub create_cfunc_name {
-  my ($self, $sub_abs_name) = @_;
+  my ($self, $package_name, $sub_name) = @_;
   
   my $category = $self->category;
   my $prefix = 'SPVM_' . uc($category) . '_';
   
   # Precompile Subroutine names
-  my $sub_abs_name_under_score = $sub_abs_name;
+  my $sub_abs_name_under_score = "${package_name}::$sub_name";
   $sub_abs_name_under_score =~ s/:/_/g;
   my $cfunc_name = "$prefix$sub_abs_name_under_score";
   
@@ -127,21 +111,21 @@ sub bind_subs {
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
-    my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
+    my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
     my $cfunc_address = SPVM::Builder::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
     
     unless ($cfunc_address) {
-      my $cfunc_name = $self->create_cfunc_name($sub_abs_name);
+      my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
       $cfunc_name =~ s/:/_/g;
-      confess "Can't find function address of $sub_abs_name(). C function name must be $cfunc_name";
+      confess "Can't find function address of $cfunc_name";
     }
     
     my $category = $self->category;
     if ($category eq 'native') {
-      $self->bind_sub_native($sub_abs_name, $cfunc_address);
+      $self->bind_sub_native($package_name, $sub_name, $cfunc_address);
     }
     elsif ($category eq 'precompile') {
-      $self->bind_sub_precompile($sub_abs_name, $cfunc_address);
+      $self->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
     }
   }
 }
@@ -150,22 +134,23 @@ sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile_objects($package_name, $sub_names, $opt);
+  my $object_file = $self->compile($package_name, $opt);
   
   # Link object files and create shared library
-  $self->link_shared_lib(
+  $self->link(
     $package_name,
     $sub_names,
-    $object_files,
+    [$object_file],
     $opt
   );
 }
 
-sub compile_objects {
-  my ($self, $package_name, $sub_names, $opt) = @_;
+sub compile {
+  my ($self, $package_name, $opt) = @_;
 
   # Build directory
   my $work_dir = $opt->{work_dir};
+
   unless (defined $work_dir && -d $work_dir) {
     confess "Work directory must be specified for " . $self->category . " build";
   }
@@ -179,11 +164,6 @@ sub compile_objects {
   # shared lib file
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
-
-  # Return if source code is chaced and exists shared lib file
-  if ($opt->{is_cached} && -f $shared_lib_file) {
-    return;
-  }
   
   # Quiet output
   my $quiet = $self->quiet;
@@ -195,31 +175,37 @@ sub compile_objects {
   my $work_object_dir = "$work_dir/$package_path";
   mkpath $work_object_dir;
   
-  # Correct source files
-  my $src_files = [];
-  my @valid_exts = ('c', 'C', 'cpp', 'i', 's', 'cxx', 'cc');
-  for my $src_file (glob "$input_src_dir/*") {
-    if (grep { $src_file =~ /\.$_$/ } @valid_exts) {
-      push @$src_files, $src_file;
-    }
-  }
-  
-  # Config file
+  # Package base name
   my $package_base_name = $package_name;
   $package_base_name =~ s/^.+:://;
+  
+  # Config file
   my $input_config_dir = $input_src_dir;
   my $config_file = "$input_config_dir/$package_base_name.config";
   
   # Config
   my $build_config;
   if (-f $config_file) {
-    $build_config = do $config_file
-      or confess "Can't parser $config_file: $!$@";
+    open my $config_fh, '<', $config_file
+      or confess "Can't open $config_file: $!";
+    my $config_content = do { local $/; <$config_fh> };
+    $build_config = eval "$config_content";
+    if (my $messge = $@) {
+      confess "Can't parser $config_file: $@";
+    }
   }
   else {
     $build_config = SPVM::Builder::Util::new_default_build_config;
   }
+
+  # Source file
+  my $src_exe = $build_config->get_src_ext;
+  my $src_file = "$input_config_dir/$package_base_name.$src_exe";
   
+  unless (-f $src_file) {
+    confess "Can't find source file $src_file: $!";
+  }
+
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;
   
@@ -233,31 +219,37 @@ sub compile_objects {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
-  for my $src_file (@$src_files) {
-    # Object file
-    my $object_file = "$work_object_dir/" . basename($src_file);
-    $object_file =~ s/\.c$//;
-    $object_file =~ s/\.C$//;
-    $object_file =~ s/\.cpp$//;
-    $object_file =~ s/\.i$//;
-    $object_file =~ s/\.s$//;
-    $object_file =~ s/\.cxx$//;
-    $object_file =~ s/\.cc$//;
-    $object_file .= '.o';
+  
+  # Object file
+  my $object_file = "$work_object_dir/$package_base_name.o";
+
+  # Do compile. This is same as make command
+  my $do_compile;
+  if (!-f $object_file) {
+    $do_compile = 1;
+  }
+  else {
+    my $mod_time_src = (stat($src_file))[9];
+    my $mod_time_object = (stat($object_file))[9];
     
+    if ($mod_time_src > $mod_time_object) {
+      $do_compile = 1;
+    }
+  }
+  
+  if ($do_compile) {
     # Compile source file
     $cbuilder->compile(
       source => $src_file,
       object_file => $object_file,
       extra_compiler_flags => $build_config->get_extra_compiler_flags,
     );
-    push @$object_files, $object_file;
   }
   
-  return $object_files;
+  return $object_file;
 }
 
-sub link_shared_lib {
+sub link {
   my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
 
   # Build directory
@@ -276,11 +268,6 @@ sub link_shared_lib {
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
 
-  # Return if source code is chaced and exists shared lib file
-  if ($opt->{is_cached} && -f $shared_lib_file) {
-    return;
-  }
-  
   # Quiet output
   my $quiet = $self->quiet;
  
@@ -300,8 +287,13 @@ sub link_shared_lib {
   # Config
   my $build_config;
   if (-f $config_file) {
-    $build_config = do $config_file
-      or confess "Can't parser $config_file: $!$@";
+    open my $config_fh, '<', $config_file
+      or confess "Can't open $config_file: $!";
+    my $config_content = do { local $/; <$config_fh> };
+    $build_config = eval "$config_content";
+    if (my $messge = $@) {
+      confess "Can't parser $config_file: $@";
+    }
   }
   else {
     $build_config = SPVM::Builder::Util::new_default_build_config;
@@ -352,7 +344,7 @@ sub get_shared_lib_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = $self->info->get_package_load_path($package_name);
+  my $module_load_path = $self->builder->get_package_load_path($package_name);
   
   my $shared_lib_path = SPVM::Builder::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
   
@@ -375,15 +367,13 @@ sub build_shared_lib_precompile_runtime {
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
   
-  my $is_cached;
-  $self->create_precompile_csource(
+  $self->create_source_precompile(
     $package_name,
     $sub_names,
     {
       input_dir => $input_dir,
       work_dir => $work_dir,
       output_dir => $work_dir,
-      is_cached => \$is_cached,
     }
   );
   
@@ -394,7 +384,6 @@ sub build_shared_lib_precompile_runtime {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      is_cached => $is_cached,
     }
   );
 }
@@ -402,7 +391,7 @@ sub build_shared_lib_precompile_runtime {
 sub build_shared_lib_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $package_load_path = $self->info->get_package_load_path($package_name);
+  my $package_load_path = $self->builder->get_package_load_path($package_name);
   my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($package_load_path, $package_name);
 
   # Build directory
@@ -444,15 +433,22 @@ sub build_shared_lib_precompile_dist {
   $module_base_name =~ s/^.+:://;
   my $config_file = "$input_dir/$module_base_name.config";
 
-  my $is_cached;
-  $self->create_precompile_csource(
+  $self->create_source_precompile(
     $package_name,
     $sub_names,
     {
       input_dir => $input_dir,
       work_dir => $work_dir,
       output_dir => $work_dir,
-      is_cached => \$is_cached,
+    }
+  );
+  
+  $self->copy_source_precompile_dist(
+    $package_name,
+    $sub_names,
+    {
+      input_dir => $work_dir,
+      output_dir => $output_dir,
     }
   );
   
@@ -463,7 +459,6 @@ sub build_shared_lib_precompile_dist {
       input_dir => $work_dir,
       work_dir => $work_dir,
       output_dir => $output_dir,
-      is_cached => $is_cached,
     }
   );
 }
@@ -492,17 +487,13 @@ sub build_shared_lib_native_dist {
   );
 }
 
-sub create_precompile_csource {
+sub create_source_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
-  my $input_dir = $opt->{input_dir};
-
   my $work_dir = $opt->{work_dir};
   mkpath $work_dir;
   
   my $output_dir = $opt->{output_dir};
-  
-  my $is_cached_ref = $opt->{is_cached};
   
   my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
   my $work_src_dir = "$work_dir/$package_path";
@@ -526,17 +517,35 @@ sub create_precompile_csource {
   
   # Create c source file
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
-  open my $fh, '>', $source_file
-    or die "Can't create $source_file";
-  print $fh $package_csource;
-  close $fh;
-  
   if ($package_csource ne $old_package_csource) {
-    $$is_cached_ref = 0;
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
+    print $fh $package_csource;
+    close $fh;
   }
-  else {
-    $$is_cached_ref = 1;
-  }
+}
+
+sub copy_source_precompile_dist {
+  my ($self, $package_name, $sub_names, $opt) = @_;
+  
+  my $input_dir = $opt->{input_dir};
+
+  my $output_dir = $opt->{output_dir};
+  
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
+  my $input_src_dir = "$input_dir/$package_path";
+  my $output_src_dir = "$output_dir/$package_path";
+
+  mkpath $output_src_dir;
+  
+  my $module_base_name = $package_name;
+  $module_base_name =~ s/^.+:://;
+  
+  my $input_source_file = "$input_src_dir/$module_base_name.c";
+  my $output_source_file = "$output_src_dir/$module_base_name.c";
+  
+  copy $input_source_file, $output_source_file
+    or confess "Can't copy $input_source_file to $output_source_file: $!";
 }
 
 1;

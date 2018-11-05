@@ -13,6 +13,7 @@ enum {
   SPVM_PACKAGE_C_FLAG_IS_PRIVATE = 1,
   SPVM_PACKAGE_C_FLAG_IS_ANON = 2,
   SPVM_PACKAGE_C_FLAG_IS_POINTER = 4,
+  SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB = 8,
 };
 
 extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
@@ -24,16 +25,25 @@ struct SPVM_package {
   SPVM_HASH* package_var_symtable;
   SPVM_LIST* subs;
   SPVM_HASH* sub_symtable;
-  SPVM_LIST* sub_signatures;
-  SPVM_HASH* sub_signature_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
-  SPVM_LIST* field_signatures;
-  SPVM_HASH* field_signature_symtable;
   SPVM_LIST* object_field_indexes;
-  SPVM_LIST* package_var_signatures;
-  SPVM_HASH* package_var_signature_symtable;
   SPVM_SUB* sub_destructor;
+  SPVM_LIST* info_package_var_ids;
+  SPVM_HASH* info_package_var_id_symtable;
+  SPVM_LIST* info_sub_ids;
+  SPVM_HASH* info_sub_id_symtable;
+  SPVM_LIST* info_field_ids;
+  SPVM_HASH* info_field_id_symtable;
+  SPVM_LIST* info_types;
+  SPVM_HASH* info_type_symtable;
+  SPVM_LIST* info_switch_infos;
+  SPVM_LIST* info_long_constants;
+  SPVM_HASH* info_long_constant_symtable;
+  SPVM_LIST* info_double_constants;
+  SPVM_HASH* info_double_constant_symtable;
+  SPVM_LIST* info_string_constants;
+  SPVM_HASH* info_string_constant_symtable;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;

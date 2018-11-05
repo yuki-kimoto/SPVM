@@ -43,14 +43,10 @@ lib/SPVM/Builder/include/spvm_package_var.h
 lib/SPVM/Builder/include/spvm_package_var_access.h
 lib/SPVM/Builder/include/spvm_portable.h
 lib/SPVM/Builder/include/spvm_runtime.h
-lib/SPVM/Builder/include/spvm_runtime_allocator.h
 lib/SPVM/Builder/include/spvm_runtime_api.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
-lib/SPVM/Builder/include/spvm_runtime_builder.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_info_case_info.h
-lib/SPVM/Builder/include/spvm_runtime_info_constant.h
-lib/SPVM/Builder/include/spvm_runtime_info_string_info.h
 lib/SPVM/Builder/include/spvm_runtime_info_switch_info.h
 lib/SPVM/Builder/include/spvm_runtime_info_type.h
 lib/SPVM/Builder/include/spvm_runtime_my.h
@@ -61,13 +57,13 @@ lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
+lib/SPVM/Builder/include/spvm_tree_info.h
 lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
-lib/SPVM/Builder/Info.pm
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_basic_type.c
 lib/SPVM/Builder/src/spvm_block.c
@@ -98,18 +94,9 @@ lib/SPVM/Builder/src/spvm_package_var.c
 lib/SPVM/Builder/src/spvm_package_var_access.c
 lib/SPVM/Builder/src/spvm_portable.c
 lib/SPVM/Builder/src/spvm_runtime.c
-lib/SPVM/Builder/src/spvm_runtime_allocator.c
 lib/SPVM/Builder/src/spvm_runtime_api.c
-lib/SPVM/Builder/src/spvm_runtime_basic_type.c
-lib/SPVM/Builder/src/spvm_runtime_builder.c
-lib/SPVM/Builder/src/spvm_runtime_field.c
 lib/SPVM/Builder/src/spvm_runtime_info_case.c
 lib/SPVM/Builder/src/spvm_runtime_info_switch_info.c
-lib/SPVM/Builder/src/spvm_runtime_info_type.c
-lib/SPVM/Builder/src/spvm_runtime_my.c
-lib/SPVM/Builder/src/spvm_runtime_package.c
-lib/SPVM/Builder/src/spvm_runtime_package_var.c
-lib/SPVM/Builder/src/spvm_runtime_sub.c
 lib/SPVM/Builder/src/spvm_string_buffer.c
 lib/SPVM/Builder/src/spvm_sub.c
 lib/SPVM/Builder/src/spvm_switch_info.c
@@ -150,6 +137,7 @@ lib/SPVM/Object.pm
 lib/SPVM/PerlAPI.pm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+LICENSE.txt
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -190,7 +178,6 @@ t/copy_default_to_precompile.pl
 t/default/array.t
 t/default/assign.t
 t/default/bit-operator.t
-t/default/call-sub.t
 t/default/comparison-operator.t
 t/default/complex.t
 t/default/concat.t
@@ -210,7 +197,6 @@ t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/BitOperator.spvm
 t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
-t/default/lib/TestCase/CallSub.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
@@ -258,8 +244,6 @@ t/default/lib/TestCase/Extension.native/Extension.c
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension2.c
 t/default/lib/TestCase/Extension2.native/Extension2.config
-t/default/lib/TestCase/Extension2.native/Extension2_util.c
-t/default/lib/TestCase/Extension2.native/Extension2_util.h
 t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/Float.spvm
 t/default/lib/TestCase/Increment.spvm
@@ -293,9 +277,11 @@ t/default/lib/TestCase/Short.spvm
 t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
+t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
+t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/list.t
 t/default/literal.t
@@ -308,9 +294,11 @@ t/default/perl-api.t
 t/default/ref.t
 t/default/special-assign.t
 t/default/string.t
+t/default/sub.t
 t/default/switch.t
 t/default/unless.t
 t/default/value_t_array.t
+t/default/var.t
 t/default/weaken.t
 t/exe.t
 t/lib/TestAuto.pm

@@ -8,7 +8,6 @@ use Carp 'confess';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
-use SPVM::Builder::Info;
 use SPVM::Builder::C;
 
 use Scalar::Util 'weaken';
@@ -29,20 +28,111 @@ sub new {
   
   bless $self, $class;
   
-  $self->{info} = SPVM::Builder::Info->new;
-  $self->{info}{builder} = $self;
-  weaken($self->{info}{builder});
-  
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self
   );
   weaken $builder_c_precompile->{builder};
   $self->{cbuilder_precompile} = $builder_c_precompile;
   
+  $self->{packages} = {};
+  
   return $self;
+}
+
+sub get_native_sub_names {
+  my ($self, $package_name) = @_;
+
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  
+  my @native_sub_names;
+  for my $sub_name (keys %$subs) {
+    my $sub = $subs->{$sub_name};
+    if ($sub->{have_native_desc}) {
+      push @native_sub_names, $sub_name;
+    }
+  }
+  
+  return \@native_sub_names;
+}
+
+sub get_precompile_sub_names {
+  my ($self, $package_name) = @_;
+
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  
+  my @precompile_sub_names;
+  for my $sub_name (keys %$subs) {
+    my $sub = $subs->{$sub_name};
+    if ($sub->{have_precompile_desc}) {
+      push @precompile_sub_names, $sub_name;
+    }
+  }
+  
+  return \@precompile_sub_names;
+}
+
+sub get_sub_names {
+  my ($self, $package_name) = @_;
+  
+  my $packages = $self->{packages};
+  my $package = $packages->{$package_name};
+  my $subs = $package->{subs};
+  my @sub_names = keys %$subs;
+  
+  return \@sub_names;
+}
+
+sub get_package_names {
+  my ($self) = @_;
+  
+  my $packages = $self->{packages};
+  my @package_names = keys %$packages;
+  
+  return \@package_names;
+}
+
+sub get_precompile_package_names {
+  my ($self) = @_;
+  
+  my $precompile_package_names = [];
+  
+  my $package_names = $self->get_package_names;
+  for my $package_name (@$package_names) {
+    my $sub_names = $self->get_precompile_sub_names($package_name);
+    if (@$sub_names) {
+      push @$precompile_package_names, $package_name;
+    }
+  }
+  
+  return $precompile_package_names;
+}
+
+sub get_native_package_names {
+  my ($self) = @_;
+  
+  my $native_package_names = [];
+  
+  my $package_names = $self->get_package_names;
+  for my $package_name (@$package_names) {
+    my $sub_names = $self->get_native_sub_names($package_name);
+    if (@$sub_names) {
+      push @$native_package_names, $package_name;
+    }
+  }
+  
+  return $native_package_names;
+}
+
+sub get_package_load_path {
+  my ($self, $package_name) = @_;
+  
+  return $self->{packages}{$package_name}{load_path};
 }
 
 sub build_spvm {
@@ -79,12 +169,6 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub info {
-  my $self = shift;
-  
-  return $self->{info};
-}
-
 sub build_shared_lib_native_dist {
   my ($self, $package_name) = @_;
   
@@ -92,11 +176,10 @@ sub build_shared_lib_native_dist {
   
   $self->compile_spvm;
 
-  my $sub_names = $self->info->get_native_sub_names($package_name);
+  my $sub_names = $self->get_native_sub_names($package_name);
 
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'native',
     builder => $self,
     quiet => 0,
@@ -115,11 +198,10 @@ sub build_shared_lib_precompile_dist {
     die "Compile error";
   }
   
-  my $sub_names = $self->info->get_precompile_sub_names($package_name);
+  my $sub_names = $self->get_precompile_sub_names($package_name);
 
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self,
     quiet => 0,
@@ -133,7 +215,6 @@ sub build_precompile {
 
   my $builder_c_precompile = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'precompile',
     builder => $self,
     quiet => 1,
@@ -147,7 +228,6 @@ sub build_native {
 
   my $builder_c_native = SPVM::Builder::C->new(
     build_dir => $self->{build_dir},
-    info => $self->{info},
     category => 'native',
     builder => $self,
     quiet => 1,
@@ -160,11 +240,11 @@ my $package_name_h = {};
 
 sub bind_to_perl {
   my $self = shift;
-
-  my $package_names = $self->info->get_package_names;
+  
+  my $package_names = $self->get_package_names;
   for my $package_name (@$package_names) {
     
-    my $sub_names = $self->info->get_sub_names($package_name);
+    my $sub_names = $self->get_sub_names($package_name);
     
     for my $sub_name (@$sub_names) {
       my $sub_abs_name = "${package_name}::$sub_name";

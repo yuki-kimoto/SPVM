@@ -18,7 +18,7 @@ my $file = basename $0;
   like($@, qr/\Q$file/);
   like($@, qr/$line/);
   like($@, qr/179/);
-  like($@, qr|/lib/TestCase/Exception.spvm|);
+  like($@, qr|Exception\.spvm|);
 }
 
 # Exception
@@ -47,7 +47,7 @@ my $file = basename $0;
     eval { TestCase::Exception->exception_croak_return_int() };
     like($@, qr/Error/);
     like($@, qr/exception_croak_return_int/);
-    like($@, qr/TestCase\/Exception\.spvm/);
+    like($@, qr/Exception\.spvm/);
   }
   {
     eval { TestCase::Exception->exception_croak_return_long() };

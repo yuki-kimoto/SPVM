@@ -9,17 +9,5 @@ package TestCase::Extension2 {
     return 0;
   }
 
-  sub spvm_extension2_binding : int () {
-    my $total = one();
-    
-    if ($total == 1) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
   native sub mul : int ($num1 : int, $num2 : int);
-
-  native sub one : int ();
 }

@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_tree_info.h
+struct SPVM_tree_info;
+typedef struct SPVM_tree_info SPVM_TREE_INFO;
+
 // spvm_portable.h
 struct SPVM_portable;
 typedef struct SPVM_portable SPVM_PORTABLE;
@@ -23,10 +27,6 @@ typedef struct SPVM_runtime_info_constant SPVM_RUNTIME_INFO_CONSTANT;
 // spvm_runtime_info_type.h
 struct SPVM_runtime_info_type;
 typedef struct SPVM_runtime_info_type SPVM_RUNTIME_INFO_TYPE;
-
-// spvm_runtime_builder.h
-struct SPVM_runtime_builder;
-typedef struct SPVM_runtime_builder SPVM_RUNTIME_BUILDER;
 
 // spvm_runtime_my.h
 struct SPVM_runtime_my;

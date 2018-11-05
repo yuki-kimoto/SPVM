@@ -58,9 +58,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Native Exception
 {
   is(TestCase::Extension2->mul(2, 3), 6);
-  is(TestCase::Extension2->one(), 1);
   ok(TestCase::Extension2->spvm_extension2());
-  ok(TestCase::Extension2->spvm_extension2_binding());
 }
 
 # Pointer

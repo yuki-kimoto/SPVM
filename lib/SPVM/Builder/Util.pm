@@ -81,6 +81,7 @@ sub remove_package_part_from_path {
   my $package_path = $package_name;
   $package_path =~ s/::/\//g;
   $path =~ s/$package_path$//;
+  $path =~ s/[\\\/]$//;
   
   return $path;
 }
@@ -220,10 +221,13 @@ sub new_default_build_config {
   # Optimize
   $build_config->set_optimize('-O3');
   
+  # Source exetension
+  $build_config->set_src_ext('c');
+  
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $build_config->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable");
+    $build_config->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
   }
   
   return $build_config;

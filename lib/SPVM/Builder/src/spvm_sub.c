@@ -16,18 +16,7 @@ SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler) {
   sub->args = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->mys = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   sub->object_arg_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-
-  sub->info_package_var_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_sub_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-
-  sub->info_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-
-  sub->info_long_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_double_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  sub->info_string_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  sub->captures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   return sub;
 }

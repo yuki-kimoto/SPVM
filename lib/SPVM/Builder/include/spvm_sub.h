@@ -18,6 +18,7 @@ enum {
   SPVM_SUB_C_FLAG_IS_STATIC = 64, 
   SPVM_SUB_C_FLAG_IS_RETURN_OBJECT_TYPE = 128,
   SPVM_SUB_C_FLAG_IS_RETURN_VALUE_TYPE = 256,
+  SPVM_SUB_C_FLAG_IS_ANON_SUB = 512,
 };
 
 // Method information
@@ -28,6 +29,7 @@ struct SPVM_sub {
   SPVM_OP* op_constant;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
+  SPVM_LIST* captures;
   int32_t opcodes_base;
   int32_t opcodes_length;
   int32_t call_sub_arg_stack_max;
@@ -35,17 +37,6 @@ struct SPVM_sub {
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
   int32_t call_type_id;
-  
-  SPVM_LIST* info_package_var_ids;
-  SPVM_LIST* info_sub_ids;
-  SPVM_LIST* info_field_ids;
-  SPVM_LIST* info_types;
-  SPVM_LIST* info_constants;
-  SPVM_LIST* info_switch_infos;
-  SPVM_LIST* info_long_constants;
-  SPVM_LIST* info_double_constants;
-  SPVM_LIST* info_string_constants;
-  
   int32_t id;
   void* precompile_address;
   void* native_address;
@@ -60,8 +51,16 @@ struct SPVM_sub {
   int32_t flag;
   int32_t args_alloc_length;
   int32_t vars_alloc_length;
-  int32_t numeric_vars_alloc_length;
-  int32_t address_vars_alloc_length;
+  int32_t byte_vars_alloc_length;
+  int32_t short_vars_alloc_length;
+  int32_t int_vars_alloc_length;
+  int32_t long_vars_alloc_length;
+  int32_t float_vars_alloc_length;
+  int32_t double_vars_alloc_length;
+  int32_t object_vars_alloc_length;
+  int32_t ref_vars_alloc_length;
+  int32_t return_runtime_type;
+  int8_t have_vaarg;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

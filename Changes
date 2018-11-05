@@ -1,3 +1,115 @@
+0.0386 2018-11-03
+  - Extension can only allow one file.
+  - spvmmcc create one exe file not depend sharaed library.
+0.0385 2018-11-02
+  - SPVM LICENSE is changed to MIT LICENSE
+  
+			MIT License
+
+			Copyright (c) [2018] [Yuki Kimoto]
+
+			Permission is hereby granted, free of charge, to any person obtaining a copy
+			of this software and associated documentation files (the "Software"), to deal
+			in the Software without restriction, including without limitation the rights
+			to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+			copies of the Software, and to permit persons to whom the Software is
+			furnished to do so, subject to the following conditions:
+
+			The above copyright notice and this permission notice shall be included in all
+			copies or substantial portions of the Software.
+
+			THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+			IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+			FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+			AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+			LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+			OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+			SOFTWARE.
+  - support variable length argument subroutine
+      
+      sub vaarg : void ($format : string, $nums : int[]...) { }
+
+      vaarg("ddd", 20, 30);
+
+0.0384 2018-10-31
+  - remove ${$var} dereference syntax. use $$var always.
+  - allow brace in variable ${foo}.
+  - support variable expansion.
+0.0383 2018-10-30
+  - remove array list syntax. This syntax is very unnatural.
+    [(1, 2), (3, 4)]
+
+  - change new_fcomplex_array definition
+    
+      sub new_fcomplex_array : SPVM::Complex_f2[] ($re_values : float[], $im_values : float[]);
+  
+  - change new_dcomplex_array definition
+  
+      sub new_dcomplex_array : SPVM::Complex_d2[] ($re_values : double[], $im_values : double[]);
+  
+  - fix do string bugs. use open and eval string to load config file.
+
+0.0382 2018-10-29
+  - remove no needed runtime type check.
+  - change sub signature
+    [before](int)foo(int,int)
+    [after]foo:int(int,int)
+  - change field signature
+    [before](int)foo
+    [after]foo:int
+  - change package variable signature
+    [before](int)$FOO
+    [after]$FOO:int
+  - change get_package_var_id argument, and signature contain only type
+    [before]int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* signature);
+    [after]int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+  - change get_field_id argument, and signature contain only type
+    [before]int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* signature);
+    [after]int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+  - change get_sub_id argument, and signature contain only type
+    [before]int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* signature);
+    [after]int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+  - change get_sub_id_method_call argument, and signature contain only type
+    [before]int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, void* object, const char* signature);
+    [after]int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, void* object, const char* field_name, const char* signature);
+  - support anon sub
+    my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+      ...;
+    };
+  - remove new sub syntax.
+  - remove anon package syntax
+  - support anon sub capture variable
+    {
+      my $capture1 = 7;
+      my $capture2 = 10;
+      my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+        print($capture1 . "\n");
+        print($capture2 . "\n");
+
+        $self->{capture1} = 5;
+        
+        print($capture1 . "\n");
+        
+        return -1;
+      };
+      
+      $anon_sub->(undef, undef);
+    }
+  
+0.0381 2018-10-24
+  - remove directory path from runtime file name
+  - reduce runtime constant pool size
+0.0380 2018-10-12
+  - improve call subroutine performance by reduce malloc count
+  - fix XS value reference bugs
+0.0379 2018-10-08
+  - fix temporary variable memory position bugs
+  - fix string eq bugs
+  - fix remainder bugs
+  - fix right shift precompile bug
+  - fix left shift precompile bug
+  - fix right shift unsigned precompile bug
+  - fix bit and bugs
 0.0378 2018-10-02
   - fix exe compiler error library bugs
 0.0377 2018-10-01

@@ -1,6 +1,296 @@
-package TestCase::CallSub {
+package TestCase::Sub {
   use TestCase::Minimal;
+  use TestCase::Point_b3;
+  use TestCase::Point_s3;
+  use TestCase::Point_i3;
+  use TestCase::Point_l3;
+  use TestCase::Point_f3;
+  use TestCase::Point_d3;
+  use SPVM::Comparator;
 
+  sub test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_objects_pass_array : int () {
+    return test_vaarg_objects_pass_array("a", [(object)1, 2, 3]);
+  }
+
+  sub test_vaarg_objects_pass_each_values : int ($string : string, $nums : object[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_objects_pass_each_values : int () {
+    return test_vaarg_objects_pass_each_values("a", 1, 2, 3);
+  }
+
+  sub test_vaarg_pass_array : int ($string : string, $nums : int[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_pass_array : int () {
+    return test_vaarg_pass_array("a", [1, 2, 3]);
+  }
+
+  sub test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
+    
+    unless ($string eq "a") {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub vaarg_pass_each_values : int () {
+    return test_vaarg_pass_each_values("a", 1, 2, 3);
+  }
+  
+  sub anon_sub_capture : int () {
+    my $capture1 = 7;
+    my $capture2 = 10;
+    my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+      
+      unless ($capture1 == 7) {
+        return 0;
+      }
+      
+      unless ($capture2 == 10) {
+        return 0;
+      }
+      
+      unless ($self->{capture1} == 7) {
+        return 0;
+      }
+
+      $self->{capture1} = 5;
+      
+      unless ($capture1 == 5) {
+        return 0;
+      }
+      
+      return 1;
+    };
+    
+    return $anon_sub->(undef, undef);
+  }
+  
+  sub anon_sub_call_anon_sub : int () {
+    my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
+      return $x1 + $x2;
+    };
+    
+    my $total = $anon_sub->(1, 3);
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub anon_sub_call_anon_sub_from_interface : int () {
+    my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $x1_num = (int)$x1;
+      my $x2_num = (int)$x2;
+      return $x1_num + $x2_num;
+    };
+    
+    my $comparator : SPVM::Comparator = $anon_sub;
+    
+    my $total = $comparator->compare(2, 3);
+    
+    unless ($total == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub return_value_byte_sub : TestCase::Point_b3 () {
+    my $value : TestCase::Point_b3;
+    $value->{x} = INT8_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_byte : int () {
+    my $value : TestCase::Point_b3 = return_value_byte_sub();
+    
+    if ($value->{x} == INT8_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_short_sub : TestCase::Point_s3 () {
+    my $value : TestCase::Point_s3;
+    $value->{x} = INT16_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_short : int () {
+    my $value : TestCase::Point_s3 = return_value_short_sub();
+    
+    if ($value->{x} == INT16_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_int_sub : TestCase::Point_i3 () {
+    my $value : TestCase::Point_i3;
+    $value->{x} = INT32_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_int : int () {
+    my $value : TestCase::Point_i3 = return_value_int_sub();
+    
+    if ($value->{x} == INT32_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_long_sub : TestCase::Point_l3 () {
+    my $value : TestCase::Point_l3;
+    $value->{x} = INT64_MIN();
+    $value->{y} = 1;
+    $value->{z} = 2;
+    
+    return $value;
+  }
+  
+  sub return_value_long : int () {
+    my $value : TestCase::Point_l3 = return_value_long_sub();
+    
+    if ($value->{x} == INT64_MIN()) {
+      if ($value->{y} == 1) {
+        if ($value->{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_float_sub : TestCase::Point_f3 () {
+    my $value : TestCase::Point_f3;
+    $value->{x} = FLT_MIN();
+    $value->{y} = 0.25f;
+    $value->{z} = 0.5f;
+    
+    return $value;
+  }
+  
+  sub return_value_float : int () {
+    my $value : TestCase::Point_f3 = return_value_float_sub();
+    
+    if ($value->{x} == FLT_MIN()) {
+      if ($value->{y} == 0.25f) {
+        if ($value->{z} == 0.5f) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub return_value_double_sub : TestCase::Point_d3 () {
+    my $value : TestCase::Point_d3;
+    $value->{x} = DBL_MIN();
+    $value->{y} = 0.25;
+    $value->{z} = 0.5;
+    
+    return $value;
+  }
+  
+  sub return_value_double : int () {
+    my $value : TestCase::Point_d3 = return_value_double_sub();
+    
+    if ($value->{x} == DBL_MIN()) {
+      if ($value->{y} == 0.25) {
+        if ($value->{z} == 0.5) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
   sub sub_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
     return $minimal;
   }

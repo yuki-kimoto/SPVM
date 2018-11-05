@@ -9,89 +9,56 @@ struct SPVM_portable {
   int32_t symbols_capacity;
   int32_t symbols_length;
 
-  int32_t basic_types_unit;
-  int32_t basic_types_capacity;
   int32_t basic_types_length;
-  int32_t* basic_types;
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
 
-  int32_t packages_unit;
-  int32_t packages_capacity;
   int32_t packages_length;
-  int32_t* packages;
+  SPVM_RUNTIME_PACKAGE* packages;
 
-  int32_t fields_unit;
-  int32_t fields_capacity;
   int32_t fields_length;
-  int32_t* fields;
+  SPVM_RUNTIME_FIELD* fields;
 
-  int32_t package_vars_unit;
-  int32_t package_vars_capacity;
   int32_t package_vars_length;
-  int32_t* package_vars;
+  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
 
-  int32_t subs_unit;
-  int32_t subs_capacity;
   int32_t subs_length;
-  int32_t* subs;
+  SPVM_RUNTIME_SUB* subs;
 
-  int32_t args_unit;
-  int32_t args_capacity;
   int32_t args_length;
-  int32_t* args;
+  SPVM_RUNTIME_MY* args;
 
-  int32_t mys_unit;
-  int32_t mys_capacity;
-  int32_t mys_length;
-  int32_t* mys;
-
-  int32_t info_package_var_ids_unit;
-  int32_t info_package_var_ids_capacity;
   int32_t info_package_var_ids_length;
   int32_t* info_package_var_ids;
 
-  int32_t info_sub_ids_unit;
-  int32_t info_sub_ids_capacity;
   int32_t info_sub_ids_length;
   int32_t* info_sub_ids;
 
-  int32_t info_field_ids_unit;
-  int32_t info_field_ids_capacity;
   int32_t info_field_ids_length;
   int32_t* info_field_ids;
   
-  int32_t info_types_unit;
-  int32_t info_types_capacity;
   int32_t info_types_length;
-  int32_t* info_types;
-
-  int32_t info_constants_unit;
-  int32_t info_constants_capacity;
-  int32_t info_constants_length;
-  int32_t* info_constants;
+  SPVM_RUNTIME_INFO_TYPE* info_types;
 
   int32_t info_switch_info_ints_capacity;
   int32_t info_switch_infos_length;
   int32_t info_switch_info_ints_length;
   int32_t* info_switch_info_ints;
 
-  int32_t info_long_values_capacity;
   int64_t* info_long_values;
   int32_t info_long_values_length;
 
-  int32_t info_double_values_capacity;
   double* info_double_values;
   int32_t info_double_values_length;
 
-  int32_t info_string_values_capacity;
   char** info_string_values;
   int32_t info_string_values_length;
 
-  int32_t info_string_lengths_capacity;
   int32_t* info_string_lengths;
   int32_t info_string_lengths_length;
 
   int32_t opcodes_length;
-  int64_t* opcodes;
+  SPVM_OPCODE* opcodes;
+  int8_t is_static;
 };
 
 SPVM_PORTABLE* SPVM_PORTABLE_new();

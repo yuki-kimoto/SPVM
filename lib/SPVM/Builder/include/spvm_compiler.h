@@ -6,6 +6,14 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
+enum {
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT,
+  SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE,
+};
+
 // Parser information
 struct SPVM_compiler {
   // Current parsed file name
@@ -27,7 +35,10 @@ struct SPVM_compiler {
   char* befbufptr;
 
   // Expect subroutine name
-  int32_t expect_sub_name;
+  int8_t expect_sub_name;
+
+  // Expect variable expansion start
+  int8_t state_var_expansion;
   
   // Current enum value
   int32_t current_enum_value;
@@ -41,9 +52,6 @@ struct SPVM_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Current case statements in switch statement
-  SPVM_LIST* cur_op_cases;
-
   // Include pathes
   SPVM_LIST* module_include_pathes;
 

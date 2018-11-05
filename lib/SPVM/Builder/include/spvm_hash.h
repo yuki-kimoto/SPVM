@@ -6,13 +6,13 @@
 // Hash table
 struct SPVM_hash {
   int32_t* table;
+  char* key_buffer;
   SPVM_HASH_ENTRY* entries;
   int32_t table_capacity;
   int32_t entries_capacity;
   int32_t entries_length;
   int32_t key_buffer_capacity;
   int32_t key_buffer_length;
-  char* key_buffer;
 };
 
 // Hash function

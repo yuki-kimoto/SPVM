@@ -22,6 +22,8 @@ use File::Path 'mkpath';
 
 use File::Basename 'dirname', 'basename';
 
+sub builder { shift->{builder} }
+
 sub new {
   my $class = shift;
   
@@ -47,8 +49,19 @@ sub new {
     $self->{build_dir} = 'spvm_build/exe';
   }
   
+  # Quiet output
   unless (exists $self->{quiet}) {
     $self->{quiet} = 0;
+  }
+  
+  # Library paths
+  unless (exists $self->{library_path}) {
+    $self->{library_path} = [];
+  }
+
+  # Library
+  unless (exists $self->{library}) {
+    $self->{library} = [];
   }
   
   return bless $self, $class;
@@ -88,33 +101,73 @@ sub build_exe_file {
   
   my $quiet = $self->{quiet};
   
-  # Build native packages - Compile C source codes and link them to SPVM native subroutine
+  # Create workd dir
+  my $work_dir = "$build_dir/work";
+  mkpath $work_dir;
+
+  # Build native packages
   my $builder_c_native = SPVM::Builder::C->new(
-    build_dir => $builder->{build_dir},
-    info => $builder->{info},
+    build_dir => $build_dir,
     category => 'native',
     builder => $builder,
     quiet => $quiet,
-    copy_dist => 1,
   );
-  $builder_c_native->build;
+  my $native_package_names = $builder->get_native_package_names;
+  for my $native_package_name (@$native_package_names) {
+    my $native_package_load_path = $builder->get_package_load_path($native_package_name);
+    my $native_dir = $native_package_load_path;
+    $native_dir =~ s/\.spvm$//;
+    $native_dir .= 'native';
+    my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($native_package_load_path, $native_package_name);
+    $builder_c_native->compile(
+      $native_package_name,
+      {
+        input_dir => $input_dir,
+        work_dir => "$build_dir/work",
+        output_dir => "$build_dir/work",
+      }
+    );
+  }
 
-  # Build precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+  # Build precompile packages
   my $builder_c_precompile = SPVM::Builder::C->new(
-    build_dir => $builder->{build_dir},
-    info => $builder->{info},
+    build_dir => $build_dir,
     category => 'precompile',
     builder => $builder,
     quiet => $quiet,
-    copy_dist => 1,
   );
-  $builder_c_precompile->build;
+  my $precompile_package_names = $builder->get_precompile_package_names;
+  for my $precompile_package_name (@$precompile_package_names) {
+    my $precompile_package_load_path = $builder->get_package_load_path($precompile_package_name);
+    my $precompile_dir = $precompile_package_load_path;
+    $precompile_dir =~ s/\.spvm$//;
+    $precompile_dir .= 'precompile';
+    my $input_dir;
+    if (-f $precompile_dir) {
+      $input_dir = SPVM::Builder::Util::remove_package_part_from_path($precompile_package_load_path, $precompile_package_name);
+    }
+    else {
+      $input_dir = "$build_dir/work";
+      $builder_c_precompile->create_source_precompile(
+        $precompile_package_name,
+        [],
+        {
+          work_dir => $input_dir,
+        }
+      );
+    }
+    $builder_c_precompile->compile(
+      $precompile_package_name,
+      {
+        input_dir => $input_dir,
+        work_dir => "$build_dir/work",
+        output_dir => "$build_dir/work",
+      }
+    );
+  }
 
   # Compile SPVM csource
   $self->compile_spvm_csources;
-
-  # Copy and rename shared libraray "libxxx.$Config{dlext"
-  $self->copy_rename_spvm_shared_lib;
 
   # Create main csouce
   $self->create_main_csource($package_name);
@@ -122,54 +175,8 @@ sub build_exe_file {
   # compile main
   $self->compile_main;
 
-  # Link and create exe file
-  $self->link_main($package_name);
-  
-  $self->create_exe_file;
-}
-
-sub create_exe_file {
-
-  my ($self) = @_;
-  
-  my $exe_name = $self->{exe_name};
-  
-  my $dlext = $Config{dlext};
-
-  my $build_dir = $self->{build_dir};
-  
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
-
-  my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
-  my $extra_linker_flag = '';
-  my $object_files = [];
-  push @$object_files, glob "$build_dir/*.$dlext";
-  
-  $extra_linker_flag .= " -L$build_dir";
-  
-  for my $object_file (@$object_files) {
-    my $module_shared_lib_name = basename $object_file;
-    $module_shared_lib_name =~ s/^lib//;
-    $module_shared_lib_name =~ s/\.$dlext$//;
-    $extra_linker_flag .= " -l$module_shared_lib_name";
-  }
-  $extra_linker_flag = "$extra_linker_flag $original_extra_linker_flag";
-  
-  # ExeUtils::CBuilder config
-  my $config = $build_config->to_hash;
-  
-  my $quiet = $self->{quiet};
-  
-  my $stab_file = "$build_dir/my_main_stab.c";
-  open my $stab_fh, '>', $stab_file
-    or croak "Can't create stab $stab_file: $!";
-  my $exe_file = "$build_dir/$exe_name";
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_lib_file = $cbuilder->link_executable(
-    objects => [$stab_file],
-    exe_file => $exe_file,
-    extra_linker_flags => $extra_linker_flag,
-  );
+  # Link executable
+  $self->link_executable($package_name);
 }
 
 sub compile_spvm_csources {
@@ -232,41 +239,6 @@ sub create_main_csource {
   close $fh;
 }
 
-sub copy_rename_spvm_shared_lib {
-  my ($self) = @_;
-
-  my $dlext = $Config{dlext};
-  
-  my $build_dir = $self->{build_dir};
-  my $build_lib_dir = "$build_dir/lib";
-  
-  find(
-    {
-      wanted => sub {
-        my $file_name = $File::Find::name;
-        if ($file_name =~ /\.$dlext$/) {
-          my $build_lib_dir_escape = quotemeta($build_lib_dir);
-          my $module_path = $file_name;
-          $module_path =~ s/^$build_lib_dir_escape//;
-          $module_path =~ s/^[\/\\]//;
-          
-          my $shared_lib_file = $module_path;
-          $shared_lib_file =~ s/\.$dlext$//;
-          $shared_lib_file =~ s/\./-/g;
-          $shared_lib_file .= ".$dlext";
-          $shared_lib_file =~ s/[\/\\]/__/g;
-          $shared_lib_file = "$build_dir/lib$shared_lib_file";
-          
-          copy $file_name, $shared_lib_file
-            or croak "Can't copy $file_name to $shared_lib_file: $!";
-        }
-      },
-      no_chdir => 1,
-    }
-    , $build_lib_dir
-  );
-}
-
 sub compile_main {
   my ($self) = @_;
   
@@ -291,7 +263,7 @@ sub compile_main {
   return $object_file;
 }
 
-sub link_main {
+sub link_executable {
   my ($self, $package_name) = @_;
   
   my $dlext = $Config{dlext};
@@ -299,42 +271,62 @@ sub link_main {
   my $build_dir = $self->{build_dir};
   
   my $object_files = [];
-  push @$object_files, glob "$build_dir/my_main.o";
   push @$object_files, glob "$build_dir/spvm/*.o";
+  
+  my $builder = $self->builder;
+  
+  my $native_object_files = [];
+  my $native_package_names = $builder->get_native_package_names;
+  my $core_native_object_file;
+  for my $native_package_name (@$native_package_names) {
+    my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
+    my $native_package_base_name = $native_package_name;
+    $native_package_base_name =~ s/^.+:://;
+    my $native_object_file = "$build_dir/work/$native_package_path/$native_package_base_name.o";
+    if ($native_package_name eq 'SPVM::CORE') {
+      $core_native_object_file = $native_object_file;
+    }
+    else {
+      push @$native_object_files, $native_object_file;
+    }
+  }
+  push @$object_files, $core_native_object_file;
+  push @$object_files, @$native_object_files;
+  
+  my $precompile_object_files = [];
+  my $precompile_package_names = $builder->get_precompile_package_names;
+  for my $precompile_package_name (@$precompile_package_names) {
+    my $precompile_package_path = SPVM::Builder::Util::convert_package_name_to_path($precompile_package_name, 'precompile');
+    my $precompile_package_base_name = $precompile_package_name;
+    $precompile_package_base_name =~ s/^.+:://;
+    my $precompile_object_file = "$build_dir/work/$precompile_package_path/$precompile_package_base_name.o";
+    push @$precompile_object_files, $precompile_object_file;
+  }
+  push @$object_files, @$precompile_object_files;
+  
+  push @$object_files, glob "$build_dir/my_main.o";
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   
   # CBuilder configs
   my $lddlflags = $build_config->get_lddlflags;
   
+  my $exe_name = $self->{exe_name};
+  
+  my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
+  my $extra_linker_flag = "-lm $original_extra_linker_flag" ;
+  
   # ExeUtils::CBuilder config
   my $config = $build_config->to_hash;
   
-  my $sub_names = [];
-  
-  my $cfunc_names = [];
-  for my $sub_name (@$sub_names) {
-    my $category = $self->category;
-    my $category_uc = uc $category;
-    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
-    $cfunc_name =~ s/:/_/g;
-    push @$cfunc_names, $cfunc_name;
-  }
-  
-  # This is dummy to suppress boot strap function
-  # This is bad hack
-  unless (@$cfunc_names) {
-    push @$cfunc_names, '';
-  }
-  
   my $quiet = $self->{quiet};
+  
+  my $exe_file = "$build_dir/$exe_name";
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $lib_file = "$build_dir/libmy_main.$dlext";
-  my $tmp_shared_lib_file = $cbuilder->link(
+  my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
-    package_name => $package_name,
-    dl_func_list => $cfunc_names,
-    lib_file => $lib_file,
+    exe_file => $exe_file,
+    extra_linker_flags => $extra_linker_flag,
   );
 }
 

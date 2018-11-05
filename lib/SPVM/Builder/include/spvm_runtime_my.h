@@ -5,10 +5,12 @@
 
 // Field information
 struct SPVM_runtime_my {
-  int32_t var_id;
   int32_t basic_type_id;
-  int32_t type_dimension;
-  int32_t type_flag;
+  uint16_t var_id;
+  uint16_t type_flag;
+  uint8_t type_dimension;
+  uint8_t runtime_type;
+  uint8_t type_width;
 };
 
 SPVM_RUNTIME_MY* SPVM_RUNTIME_MY_new();

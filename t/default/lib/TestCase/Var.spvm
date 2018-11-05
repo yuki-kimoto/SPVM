@@ -1,0 +1,26 @@
+package TestCase::Var {
+  sub var_brace : int () {
+    
+    my ${var} = 5;
+    
+    unless (${var} == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub var_expansion : int () {
+    
+    my $var1 = 1;
+    my $var2 = 2;
+    
+    my $string = "a $var1 b ${var2}c";
+    
+    unless ($string eq "a 1 b 2c") {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

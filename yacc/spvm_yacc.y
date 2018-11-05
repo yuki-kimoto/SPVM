@@ -14,6 +14,7 @@
   #include "spvm_type.h"
   #include "spvm_block.h"
   #include "spvm_list.h"
+  #include "spvm_package.h"
 %}
 
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
@@ -22,20 +23,20 @@
 %token <opval> NAME VAR_NAME CONSTANT
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND
+%token <opval> AMPERSAND DOT3
 
 %type <opval> grammar
-%type <opval> opt_packages packages package anon_package package_block
+%type <opval> opt_packages packages package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub opt_args args arg invocant has use our
+%type <opval> sub anon_sub opt_args args arg invocant has use our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block
 %type <opval> expression
 %type <opval> unop binop
-%type <opval> call_sub
+%type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
 %type <opval> deref ref assign incdec
 %type <opval> new array_init isa
@@ -112,16 +113,6 @@ package
   | PACKAGE basic_type ':' opt_descriptors package_block
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
-    }
-
-anon_package
-  : PACKAGE package_block
-    {
-      $$ = SPVM_OP_build_package(compiler, $1, NULL, $2, NULL);
-    }
-  | PACKAGE ':' opt_descriptors package_block
-    {
-      $$ = SPVM_OP_build_package(compiler, $1, NULL, $4, $3);
     }
 
 package_block
@@ -253,13 +244,32 @@ has
     }
 
 sub
-  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' block
+  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $9);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8);
      }
-  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args ')' ';'
+  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8);
+     }
+
+anon_sub
+  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7);
+     }
+  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+     {
+       SPVM_OP* op_list_args;
+       if ($2->id == SPVM_OP_C_ID_LIST) {
+         op_list_args = $2;
+       }
+       else {
+         op_list_args = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
+         SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
+       }
+       
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10);
      }
 
 opt_args
@@ -319,10 +329,6 @@ args
       
       $$ = op_list;
     }
-  | args ','
-    {
-      $$ = $1;
-    }
   | arg
 
 arg
@@ -330,6 +336,13 @@ arg
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }
+
+opt_vaarg
+  : /* Empty */
+    {
+      $$ = NULL;
+    }
+  | DOT3
 
 invocant
   : var ':' SELF
@@ -598,38 +611,9 @@ normal_terms
       
       $$ = op_list;
     }
-  | normal_terms ',' '(' normal_terms ')'
-    {
-      SPVM_OP* op_list;
-      if ($1->id == SPVM_OP_C_ID_LIST) {
-        op_list = $1;
-      }
-      else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
-      }
-      
-      if ($4->id == SPVM_OP_C_ID_LIST) {
-        SPVM_OP* op_term = $4->first;
-        while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
-          SPVM_OP_insert_child(compiler, op_list, op_list->last, op_term);
-          op_term = op_stab;
-        }
-      }
-      else {
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $4);
-      }
-      
-      $$ = op_list;
-    }
   | normal_terms ','
     {
       $$ = $1;
-    }
-  | '(' normal_terms ')'
-    {
-      $$ = $2;
     }
   | normal_term
     {
@@ -745,14 +729,7 @@ new
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, $4);
     }
-  | anon_package
-    {
-      // New
-      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
-
-      $$ = SPVM_OP_build_new(compiler, op_new, $1, NULL);
-    }
-  | sub
+  | anon_sub
     {
       // Package
       SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);
@@ -765,11 +742,13 @@ new
       
       // Build package
       SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+
+      // Type
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, $1->file, $1->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, $1->file, $1->line);
-      
-      $$ = SPVM_OP_build_new(compiler, op_new, op_package, NULL);
+      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
 
 array_init
@@ -881,10 +860,6 @@ deref
   : DEREF var
     {
       $$ = SPVM_OP_build_deref(compiler, $1, $2);
-    }
-  | DEREF '{' var '}'
-    {
-      $$ = SPVM_OP_build_deref(compiler, $1, $3);
     }
 
 ref

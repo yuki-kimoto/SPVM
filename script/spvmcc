@@ -14,18 +14,21 @@ SPVM::Builder::Util::getopt
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'q|quiet'   => \my $quiet,
+  'L|library-path=s' => \my @library_paths,
+  'l|library=s' => \my @library,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
 
-push @INC, @include_dirs;
-push @INC, 'lib';
+unshift @INC, @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
   exe_name => $name,
   package_name => $package_name,
   quiet => $quiet,
+  library_path => \@library_paths,
+  library => \@library,
 );
 $build_exe->build_exe_file;
 
@@ -47,6 +50,9 @@ spvmcc - SPVM compiler to create exe file
     -n, --name                     Excutable file name
     -I, --include-dir <directory>  Add package search path
     -B, --build-dir <directory>    Building diretory
+    -q, --quiet                    Quiet output
+    -L, --library-path <directory> Library searching path
+    -l, --library=s <file>         Library name
 
 =head1 DESCRIPTION
 
