@@ -20,26 +20,16 @@ void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message_template, 
   
   int32_t message_length = 0;
   
-  // Prefix
-  const char* prefix = "Error:";
-  int32_t prefix_length = (int32_t)strlen(prefix);
-   
   // Message template
   int32_t message_template_length = (int32_t)strlen(message_template);
   
-  // Messsage template with prefix
-  int32_t message_template_with_prefix_length = prefix_length + message_template_length;
-  char* message_template_with_prefix = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, message_template_with_prefix_length + 1);
-  strncpy(message_template_with_prefix, prefix, prefix_length);
-  strncpy(message_template_with_prefix + prefix_length, message_template, message_template_length);
-  message_template_with_prefix[message_template_with_prefix_length] = '\0';
-  message_length += message_template_with_prefix_length;
-  
   va_list args;
   va_start(args, message_template);
+
+  message_length += message_template_length;
   
   // Argument count
-  char* found_ptr = message_template_with_prefix;
+  char* found_ptr = message_template;
   while (1) {
     found_ptr = strchr(found_ptr, '%');
     if (found_ptr) {
@@ -65,7 +55,7 @@ void SPVM_yyerror_format(SPVM_COMPILER* compiler, const char* message_template, 
   char* message = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
   
   va_start(args, message_template);
-  vsprintf(message, message_template_with_prefix, args);
+  vsprintf(message, message_template, args);
   va_end(args);
 
   compiler->error_count++;
