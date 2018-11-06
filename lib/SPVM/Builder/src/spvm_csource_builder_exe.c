@@ -92,23 +92,13 @@ void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_P
       const char* sub_name = &runtime->string_pool[sub->name_id];
       const char* sub_package_name = &runtime->string_pool[sub_package->name_id];
       
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    runtime->sub_native_addresses[sub->id] = SPVM_NATIVE_");
-        SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "__");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-      }
+      SPVM_STRING_BUFFER_add(string_buffer, "  runtime->sub_native_addresses[");
+      SPVM_STRING_BUFFER_add_int(string_buffer, sub->id);
+      SPVM_STRING_BUFFER_add(string_buffer, "] = SPVM_NATIVE_");
+      SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "__");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
     }
   }
 }
@@ -124,23 +114,13 @@ void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_precompile_addresses(SPVM_ENV* env, SP
       const char* sub_name = &runtime->string_pool[sub->name_id];
       const char* sub_package_name = &runtime->string_pool[sub_package->name_id];
       
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* package_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    runtime->sub_precompile_addresses[sub->id] = SPVM_PRECOMPILE_");
-        SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "__");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-      }
+      SPVM_STRING_BUFFER_add(string_buffer, "  runtime->sub_precompile_addresses[");
+      SPVM_STRING_BUFFER_add_int(string_buffer, sub->id);
+      SPVM_STRING_BUFFER_add(string_buffer, "] = SPVM_PRECOMPILE_");
+      SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_package_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "__");
+      SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
     }
   }
 }
@@ -150,8 +130,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   
   SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include <string.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_hash.h\"\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_list.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_native.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_util_allocator.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_native.h\"\n");
