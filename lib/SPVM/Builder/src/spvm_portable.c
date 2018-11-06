@@ -294,7 +294,8 @@ void SPVM_PORTABLE_push_sub(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
     }
   }
 
-  new_portable_sub->file_id = SPVM_PORTABLE_push_symbol(compiler, portable, sub_file_base);
+  new_portable_sub->file_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1);
+  assert(new_portable_sub->file_id);
   new_portable_sub->line = sub->line;
   new_portable_sub->args_alloc_length = sub->args_alloc_length;
   new_portable_sub->return_basic_type_id = sub->return_type->basic_type->id;

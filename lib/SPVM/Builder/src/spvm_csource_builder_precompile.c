@@ -3675,7 +3675,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* sub_name = &runtime->string_pool[sub->name_id];
         SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
         const char* package_name = &runtime->string_pool[sub_package->name_id];
-        const char* file = runtime->symbols[sub->file_id];
+        const char* file = &runtime->string_pool[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
@@ -3708,7 +3708,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* sub_name = &runtime->string_pool[sub->name_id];
         SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
         const char* package_name = &runtime->string_pool[sub_package->name_id];
-        const char* file = runtime->symbols[sub->file_id];
+        const char* file = &runtime->string_pool[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
