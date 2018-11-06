@@ -177,7 +177,7 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
   SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[portable->packages_length];
   
   new_portable_package->id = package->id;
-  new_portable_package->name_id = SPVM_PORTABLE_push_symbol(compiler, portable, package->name);
+  new_portable_package->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->name, strlen(package->name) + 1);
   if (package->sub_destructor) {
     new_portable_package->destructor_sub_id = package->sub_destructor->id;
   }

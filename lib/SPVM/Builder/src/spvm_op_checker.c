@@ -34,6 +34,7 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 #include "spvm_tree_info.h"
+#include "spvm_string_buffer.h"
 
 void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_TREE_INFO* tree_info) {
 
@@ -4073,6 +4074,13 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
       if (package) {
         basic_type->package = package;
       }
+
+      // Add basic_type name to string pool
+      int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1);
+      if (found_string_pool_id == 0) {
+        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)basic_type->name, strlen(basic_type->name) + 1);
+        SPVM_HASH_insert(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1, (void*)(intptr_t)string_pool_id);
+      }
     }
   }
 }
@@ -4216,6 +4224,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         
         // Set runtime type
         field->runtime_type = SPVM_TYPE_get_runtime_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+
+        // Add field name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)field->name, strlen(field->name) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)field->name, strlen(field->name) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, field->name, strlen(field->name) + 1, (void*)(intptr_t)string_pool_id);
+        }
       }
     }
     
@@ -4271,6 +4286,27 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
           return;
         }
+        // Add sub name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)sub->name, strlen(sub->name) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub->name, strlen(sub->name) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, sub->name, strlen(sub->name) + 1, (void*)(intptr_t)string_pool_id);
+        }
+      }
+    }
+
+    // Check package_var
+    {
+      int32_t i;
+      for (i = 0; i < package->package_vars->length; i++) {
+        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
+        
+        // Add package_var name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)package_var->name, strlen(package_var->name) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var->name, strlen(package_var->name) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1, (void*)(intptr_t)string_pool_id);
+        }
       }
     }
 
@@ -4281,6 +4317,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         const char* sub_signature = SPVM_COMPILER_create_sub_signature(compiler, sub);
         sub->signature = sub_signature;
+        
+        // Add signature name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub->signature, strlen(sub->signature) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1, (void*)(intptr_t)string_pool_id);
+        }
       }
     }
 
@@ -4291,6 +4334,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
         const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);
         field->signature = field_signature;
+
+        // Add signature name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)field->signature, strlen(field->signature) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, field->signature, strlen(field->signature) + 1, (void*)(intptr_t)string_pool_id);
+        }
       }
     }
 
@@ -4301,6 +4351,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
         const char* package_var_signature = SPVM_COMPILER_create_package_var_signature(compiler, package_var);
         package_var->signature = package_var_signature;
+
+        // Add signature name to string pool
+        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
+        if (found_string_pool_id == 0) {
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var->signature, strlen(package_var->signature) + 1);
+          SPVM_HASH_insert(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1, (void*)(intptr_t)string_pool_id);
+        }
       }
     }
 

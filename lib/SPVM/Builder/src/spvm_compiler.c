@@ -460,13 +460,6 @@ const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB
     bufptr += 1;
   }
 
-  // Add signature name to string pool
-  int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_signature, strlen(sub_signature) + 1);
-  if (found_string_pool_id == 0) {
-    int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub_signature, strlen(sub_signature) + 1);
-    SPVM_HASH_insert(compiler->string_symtable, sub_signature, strlen(sub_signature) + 1, (void*)(intptr_t)string_pool_id);
-  }
-  
   return sub_signature;
 }
 
@@ -500,13 +493,6 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     }
   }
 
-  // Add signature name to string pool
-  int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field_signature, strlen(field_signature) + 1);
-  if (found_string_pool_id == 0) {
-    int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)field_signature, strlen(field_signature) + 1);
-    SPVM_HASH_insert(compiler->string_symtable, field_signature, strlen(field_signature) + 1, (void*)(intptr_t)string_pool_id);
-  }
-  
   return field_signature;
 }
 
@@ -540,13 +526,6 @@ const char* SPVM_COMPILER_create_package_var_signature(SPVM_COMPILER* compiler, 
     }
   }
 
-  // Add signature name to string pool
-  int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var_signature, strlen(package_var_signature) + 1);
-  if (found_string_pool_id == 0) {
-    int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var_signature, strlen(package_var_signature) + 1);
-    SPVM_HASH_insert(compiler->string_symtable, package_var_signature, strlen(package_var_signature) + 1, (void*)(intptr_t)string_pool_id);
-  }
-  
   return package_var_signature;
 }
 

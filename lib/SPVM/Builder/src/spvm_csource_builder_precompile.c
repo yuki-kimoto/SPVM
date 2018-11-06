@@ -916,7 +916,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-  const char* field_package_name = runtime->symbols[field_package->name_id];
+  const char* field_package_name = &runtime->string_pool[field_package->name_id];
   const char* field_name = &runtime->string_pool[field->name_id];
   const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -976,7 +976,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_RUNTIME* runtime = env->runtime;
 
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-  const char* field_package_name = runtime->symbols[field_package->name_id];
+  const char* field_package_name = &runtime->string_pool[field_package->name_id];
   const char* field_name = &runtime->string_pool[field->name_id];
   const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -1047,7 +1047,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_ids_index];
       SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
       SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-      const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+      const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
       const char* package_var_name = &runtime->string_pool[package_var->name_id];
       
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
@@ -1063,7 +1063,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_ids_index];
       SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
       SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-      const char* field_package_name = runtime->symbols[field_package->name_id];
+      const char* field_package_name = &runtime->string_pool[field_package->name_id];
       const char* field_name = &runtime->string_pool[field->name_id];
       
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
@@ -1082,7 +1082,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       int32_t sub_id = runtime->info_sub_ids[package->info_sub_ids_base + info_sub_ids_index];
       SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
       SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-      const char* sub_package_name = runtime->symbols[sub_package->name_id];
+      const char* sub_package_name = &runtime->string_pool[sub_package->name_id];
       const char* sub_name = runtime->symbols[sub->name_id];
       
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
@@ -2943,7 +2943,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_package_name = &runtime->string_pool[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -3429,7 +3429,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* decl_sub_package = &runtime->packages[decl_sub->package_id];
         const char* decl_sub_name = runtime->symbols[decl_sub->name_id];
         const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
-        const char* decl_sub_package_name = runtime->symbols[decl_sub_package->name_id];
+        const char* decl_sub_package_name = &runtime->string_pool[decl_sub_package->name_id];
         
         // Declare subroutine argument length
         int32_t decl_sub_args_length = decl_sub->arg_ids_length;
@@ -3674,7 +3674,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         const char* sub_name = runtime->symbols[sub->name_id];
         SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-        const char* package_name = runtime->symbols[sub_package->name_id];
+        const char* package_name = &runtime->string_pool[sub_package->name_id];
         const char* file = runtime->symbols[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
@@ -3707,7 +3707,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         const char* sub_name = runtime->symbols[sub->name_id];
         SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-        const char* package_name = runtime->symbols[sub_package->name_id];
+        const char* package_name = &runtime->string_pool[sub_package->name_id];
         const char* file = runtime->symbols[sub->file_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
@@ -4174,7 +4174,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_package_name = &runtime->string_pool[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -4283,7 +4283,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_package_name = &runtime->string_pool[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -4346,7 +4346,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t field_id = runtime->info_field_ids[package->info_field_ids_base + info_field_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
-        const char* field_package_name = runtime->symbols[field_package->name_id];
+        const char* field_package_name = &runtime->string_pool[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = &runtime->string_pool[field->signature_id];
 
@@ -4459,7 +4459,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-        const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+        const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
         const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
@@ -4532,7 +4532,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-        const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+        const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
         const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
@@ -4584,7 +4584,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-        const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+        const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
         const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
@@ -4657,7 +4657,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-        const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+        const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
         const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
@@ -4702,7 +4702,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
-        const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
+        const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
         const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
         

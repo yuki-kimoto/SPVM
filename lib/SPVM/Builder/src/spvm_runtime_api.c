@@ -2807,7 +2807,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           
           const char* sub_name = runtime->symbols[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-          const char* package_name = runtime->symbols[sub_package->name_id];
+          const char* package_name = &runtime->string_pool[sub_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
           
           // Exception stack trace
@@ -2826,7 +2826,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           
           const char* sub_name = runtime->symbols[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-          const char* package_name = runtime->symbols[sub_package->name_id];
+          const char* package_name = &runtime->string_pool[sub_package->name_id];
           const char* file = runtime->symbols[sub->file_id];
 
           // Exception stack trace
