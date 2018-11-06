@@ -267,7 +267,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->subs, sub);
-    const char* sub_name = runtime->symbols[sub->name_id];
+    const char* sub_name = &runtime->string_pool[sub->name_id];
     SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
 
     // Variable allocation max length
