@@ -29,7 +29,7 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
 #include "spvm_my.h"
-
+#include "spvm_string_buffer.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
@@ -57,6 +57,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
+  compiler->string_pool = SPVM_STRING_BUFFER_new(0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -534,6 +535,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
+  
+  // Free string pool
+  SPVM_STRING_BUFFER_free(compiler->string_pool);
   
   free(compiler);
 }
