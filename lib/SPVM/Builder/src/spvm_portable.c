@@ -477,7 +477,6 @@ void SPVM_PORTABLE_push_package_var(SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* p
 
   new_portable_package_var->id = package_var->id;
   new_portable_package_var->name_id = SPVM_PORTABLE_push_symbol(portable, package_var->name);
-  new_portable_package_var->abs_name_id = SPVM_PORTABLE_push_symbol(portable, package_var->abs_name);
   new_portable_package_var->signature_id = SPVM_PORTABLE_push_symbol(portable, package_var->signature);
   if (package_var->type->basic_type) {
     new_portable_package_var->basic_type_id = package_var->type->basic_type->id;

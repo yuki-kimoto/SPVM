@@ -7,7 +7,6 @@
 struct SPVM_runtime_package_var {
   int32_t id;
   int32_t name_id;
-  int32_t abs_name_id;
   int32_t signature_id;
   int32_t basic_type_id;
   int32_t type_dimension;
