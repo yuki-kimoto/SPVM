@@ -917,7 +917,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BU
   
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
   const char* field_package_name = runtime->symbols[field_package->name_id];
-  const char* field_name = runtime->symbols[field->name_id];
+  const char* field_name = &runtime->string_pool[field->name_id];
   const char* field_signature = runtime->symbols[field->signature_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -977,7 +977,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
 
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
   const char* field_package_name = runtime->symbols[field_package->name_id];
-  const char* field_name = runtime->symbols[field->name_id];
+  const char* field_name = &runtime->string_pool[field->name_id];
   const char* field_signature = runtime->symbols[field->signature_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1064,7 +1064,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
       SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
       const char* field_package_name = runtime->symbols[field_package->name_id];
-      const char* field_name = runtime->symbols[field->name_id];
+      const char* field_name = &runtime->string_pool[field->name_id];
       
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
       SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
@@ -2944,7 +2944,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
-        const char* field_name = runtime->symbols[field->name_id];
+        const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = runtime->symbols[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -4175,7 +4175,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
-        const char* field_name = runtime->symbols[field->name_id];
+        const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = runtime->symbols[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -4284,7 +4284,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
-        const char* field_name = runtime->symbols[field->name_id];
+        const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = runtime->symbols[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -4347,7 +4347,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
-        const char* field_name = runtime->symbols[field->name_id];
+        const char* field_name = &runtime->string_pool[field->name_id];
         const char* field_signature = runtime->symbols[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");

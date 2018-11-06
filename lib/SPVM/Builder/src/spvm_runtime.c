@@ -229,7 +229,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->fields, field);
-    const char* field_name = runtime->symbols[field->name_id];
+    const char* field_name = &runtime->string_pool[field->name_id];
     SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
     
     switch (field->runtime_type) {

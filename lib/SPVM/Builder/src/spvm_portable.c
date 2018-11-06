@@ -460,7 +460,7 @@ void SPVM_PORTABLE_push_field(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, 
   new_portable_field->id = field->id;
   new_portable_field->index = field->index;
   new_portable_field->flag = field->flag;
-  new_portable_field->name_id = SPVM_PORTABLE_push_symbol(compiler, portable, field->name);
+  new_portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
   new_portable_field->signature_id = SPVM_PORTABLE_push_symbol(compiler, portable, field->signature);
   if (field->type->basic_type) {
     new_portable_field->basic_type_id = field->type->basic_type->id;
