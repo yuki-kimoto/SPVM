@@ -15,15 +15,27 @@ use Getopt::Long 'GetOptions';
 use File::Basename 'basename';
 use File::Copy 'copy';
 
-# SPVM only support 64bit integer Perl
-my $ivsize = $Config{ivsize};
-if ($ivsize < 8) {
-  die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
-}
+# Check supported environment
+{
+  # SPVM only support 64bit integer Perl
+  my $ivsize = $Config{ivsize};
+  if ($ivsize < 8) {
+    die "SPVM don't support the Perl which \"ivsize\" is lower than 8";
+  }
 
-# SPVM only support NetBSD 7+
-if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
-  die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
+  # SPVM only support NetBSD 7+
+  if ($Config{osname} eq 'netbsd' && $Config{osvers} < 7) {
+    die "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
+  }
+
+  # Uunatural ccflags is not supported
+  # for example
+  # -D_REENTRANT -D_GNU_SOURCE -O2 -W -Wformat=2 -Wswitch -Wshadow -Wwrite-strings -Wuninitialized -Wall -pipe -mtune=native -march=native -fomit-frame-pointer -mfpmath=sse -pedantic -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wstrict-prototypes -fstack-protector -Wstack-protector -Wextra -Wbad-function-cast -Wcast-align -Wcast-qual -Wdisabled-optimization -Wendif-labels -Wfloat-equal -Wformat-nonliteral -Winline -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wpointer-arith -Wundef -Wformat-security -fno-strict-aliasing -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+  my $original_ccflag = $Config{ccflags};
+  my $original_ccflag_warnings_count = ($original_ccflag =~ s/-W/-W/g) || 0;
+  if ($original_ccflag_warnings_count > 5) {
+    die "SPVM don't support unnatural ccflags $original_ccflag";
+  }
 }
 
 my @defines;
