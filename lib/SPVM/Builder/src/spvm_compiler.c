@@ -58,6 +58,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->string_pool = SPVM_STRING_BUFFER_new(0);
+  compiler->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);

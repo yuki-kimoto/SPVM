@@ -112,6 +112,9 @@ struct SPVM_compiler {
   // String pool
   SPVM_STRING_BUFFER* string_pool;
   
+  // String symbol table
+  SPVM_HASH* string_symtable;
+  
   char buffer1[UINT16_MAX * 2];
   char buffer2[UINT16_MAX * 2];
 };
