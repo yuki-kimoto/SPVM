@@ -23,6 +23,7 @@
 #include "spvm_use.h"
 #include "spvm_basic_type.h"
 #include "spvm_my.h"
+#include "spvm_string_buffer.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -1352,6 +1353,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
           yylvalp->opval = op_name;
+          
+          // Add name to string pool
+          int32_t string_pool_id = SPVM_STRING_BUFFER_add(compiler->string_pool, keyword);
+          SPVM_HASH_insert(compiler->string_symtable, keyword, strlen(keyword), (void*)(intptr_t)string_pool_id);
           
           return NAME;
         }

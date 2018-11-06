@@ -383,7 +383,7 @@ build_package_csource_precompile(...)
   // Build package csource
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(env, string_buffer, package_name);
   
-  SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer + 1, string_buffer->length - 1));
   
   SPVM_STRING_BUFFER_free(string_buffer);
 
@@ -2856,7 +2856,7 @@ build_main_csource(...)
 
   SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(env, string_buffer, portable, package_name);
 
-  SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer + 1, string_buffer->length - 1));
 
   SPVM_STRING_BUFFER_free(string_buffer);
   
@@ -2864,6 +2864,4 @@ build_main_csource(...)
   XSRETURN(1);
 }
 
-
 MODULE = SPVM		PACKAGE = SPVM
-
