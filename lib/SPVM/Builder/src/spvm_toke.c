@@ -1355,8 +1355,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op_name;
           
           // Add name to string pool
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, keyword, strlen(keyword) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, keyword, strlen(keyword) + 1, (void*)(intptr_t)string_pool_id);
+          int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, keyword, strlen(keyword) + 1);
+          if (found_string_pool_id == 0) {
+            int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, keyword, strlen(keyword) + 1);
+            SPVM_HASH_insert(compiler->string_symtable, keyword, strlen(keyword) + 1, (void*)(intptr_t)string_pool_id);
+          }
           
           return NAME;
         }
