@@ -484,7 +484,7 @@ void SPVM_PORTABLE_push_package_var(SPVM_COMPILER* compiler, SPVM_PORTABLE* port
   new_portable_package_var->id = package_var->id;
   new_portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
   
-  new_portable_package_var->signature_id = SPVM_PORTABLE_push_symbol(compiler, portable, package_var->signature);
+  new_portable_package_var->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
   if (package_var->type->basic_type) {
     new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
   }

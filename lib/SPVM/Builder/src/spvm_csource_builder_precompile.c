@@ -4461,7 +4461,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
-        const char* package_var_signature = runtime->symbols[package_var->signature_id];
+        const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
         int32_t package_var_access_ctype_id;
         switch (opcode_id) {
@@ -4534,7 +4534,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
-        const char* package_var_signature = runtime->symbols[package_var->signature_id];
+        const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
@@ -4586,7 +4586,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
-        const char* package_var_signature = runtime->symbols[package_var->signature_id];
+        const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
         int32_t package_var_access_ctype_id;
         switch (opcode_id) {
@@ -4659,7 +4659,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
-        const char* package_var_signature = runtime->symbols[package_var->signature_id];
+        const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
@@ -4704,7 +4704,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = runtime->symbols[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
-        const char* package_var_signature = runtime->symbols[package_var->signature_id];
+        const char* package_var_signature = &runtime->string_pool[package_var->signature_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         

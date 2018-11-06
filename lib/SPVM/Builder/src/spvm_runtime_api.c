@@ -4878,7 +4878,7 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   }
   
   // Signature
-  if (strcmp(signature, runtime->symbols[package_var->signature_id]) != 0) {
+  if (strcmp(signature, &runtime->string_pool[package_var->signature_id]) != 0) {
     return 0;
   }
   
