@@ -47,6 +47,9 @@ struct SPVM_runtime {
   
   char** symbols;
   int32_t symbols_length;
+
+  char* string_pool;
+  int32_t string_pool_length;
   
   SPVM_OPCODE* opcodes;
   

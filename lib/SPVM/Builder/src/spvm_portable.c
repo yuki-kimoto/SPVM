@@ -40,6 +40,7 @@
 #include "spvm_runtime_info_type.h"
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
+#include "spvm_string_buffer.h"
 
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
   
@@ -56,6 +57,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->info_switch_info_ints_capacity = 8;
 
   portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
+  
+  portable->string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(compiler->string_pool->length + 1);
+  portable->string_pool_length = compiler->string_pool->length;
+  memcpy(portable->string_pool, compiler->string_pool->buffer, compiler->string_pool->length);
 
   // Portable basic type
   portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_BASIC_TYPE) * (compiler->basic_types->length + 1));
