@@ -4196,117 +4196,101 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
       }
     }
+
+    // Check package var
+    for (int32_t package_var_index = 0; package_var_index < package->package_vars->length; package_var_index++) {
+      SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, package_var_index);
+      SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, package_var->op_package_var);
+      int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
+      
+      // valut_t can't become package variable
+      if (is_value_t) {
+        SPVM_COMPILER_error(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
+        return;
+      }
+
+      // Add package_var name to string pool
+      int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)package_var->name, strlen(package_var->name) + 1);
+      if (found_string_pool_id == 0) {
+        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var->name, strlen(package_var->name) + 1);
+        SPVM_HASH_insert(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1, (void*)(intptr_t)string_pool_id);
+      }
+    }
     
     // Check fields
-    {
-      int32_t field_index;
-      for (field_index = 0; field_index < package->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
+    for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
-        if (strchr(field->op_name->uv.name, ':')) {
-          SPVM_COMPILER_error(compiler, "field name can't contain :: at %s line %d\n", field->op_name->file, field->op_name->line);
-          return;
-        }
+      if (strchr(field->op_name->uv.name, ':')) {
+        SPVM_COMPILER_error(compiler, "field name can't contain :: at %s line %d\n", field->op_name->file, field->op_name->line);
+        return;
+      }
 
-        // valut_t can't become field
-        int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-        if (is_value_t) {
-          SPVM_COMPILER_error(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
-          return;
+      // valut_t can't become field
+      int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      if (is_value_t) {
+        SPVM_COMPILER_error(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
+        return;
+      }
+      else {
+        // Add object field indexes
+        if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+          SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
         }
-        else {
-          // Add object field indexes
-          if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-            SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
-          }
-        }
-        
-        // Set runtime type
-        field->runtime_type = SPVM_TYPE_get_runtime_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      }
+      
+      // Set runtime type
+      field->runtime_type = SPVM_TYPE_get_runtime_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
 
-        // Add field name to string pool
-        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)field->name, strlen(field->name) + 1);
-        if (found_string_pool_id == 0) {
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)field->name, strlen(field->name) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, field->name, strlen(field->name) + 1, (void*)(intptr_t)string_pool_id);
-        }
+      // Add field name to string pool
+      int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)field->name, strlen(field->name) + 1);
+      if (found_string_pool_id == 0) {
+        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)field->name, strlen(field->name) + 1);
+        SPVM_HASH_insert(compiler->string_symtable, field->name, strlen(field->name) + 1, (void*)(intptr_t)string_pool_id);
       }
     }
     
-    // valut_t can't become package variable
-    {
-      int32_t package_var_index;
-      for (package_var_index = 0; package_var_index < package->package_vars->length; package_var_index++) {
-        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, package_var_index);
-        SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, package_var->op_package_var);
-        int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
+    // Check subs
+    for (int32_t i = 0; i < package->subs->length; i++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
+      
+      // Argument limit check
+      int32_t arg_allow_count = 0;
+      SPVM_TYPE* last_arg_type = NULL;
+      for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
+        SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+
+        SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
         
-        if (is_value_t) {
-          SPVM_COMPILER_error(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
-          return;
+        int32_t is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        
+        if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
+          arg_allow_count += arg_type->basic_type->package->fields->length;
+        }
+        else {
+          arg_allow_count++;
+        }
+        
+        if (arg_index == sub->args->length - 1) {
+          last_arg_type = arg_type;
         }
       }
-    }
-
-    // Check subroutines
-    {
-      int32_t i;
-      for (i = 0; i < package->subs->length; i++) {
-        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
-        
-        // Argument limit check
-        int32_t arg_allow_count = 0;
-        SPVM_TYPE* last_arg_type = NULL;
-        for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
-          SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-
-          SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
-          
-          int32_t is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-          int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-          
-          if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
-            arg_allow_count += arg_type->basic_type->package->fields->length;
-          }
-          else {
-            arg_allow_count++;
-          }
-          
-          if (arg_index == sub->args->length - 1) {
-            last_arg_type = arg_type;
-          }
-        }
-        if (arg_allow_count > 255) {
-          SPVM_COMPILER_error(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
-          return;
-        }
-        
-        if (sub->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
-          SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
-          return;
-        }
-        // Add sub name to string pool
-        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)sub->name, strlen(sub->name) + 1);
-        if (found_string_pool_id == 0) {
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub->name, strlen(sub->name) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, sub->name, strlen(sub->name) + 1, (void*)(intptr_t)string_pool_id);
-        }
+      if (arg_allow_count > 255) {
+        SPVM_COMPILER_error(compiler, "Over argument limit at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        return;
       }
-    }
-
-    // Check package_var
-    {
-      int32_t i;
-      for (i = 0; i < package->package_vars->length; i++) {
-        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-        
-        // Add package_var name to string pool
-        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)package_var->name, strlen(package_var->name) + 1);
-        if (found_string_pool_id == 0) {
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var->name, strlen(package_var->name) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1, (void*)(intptr_t)string_pool_id);
-        }
+      
+      if (sub->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
+        SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        return;
+      }
+      // Add sub name to string pool
+      int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)sub->name, strlen(sub->name) + 1);
+      if (found_string_pool_id == 0) {
+        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub->name, strlen(sub->name) + 1);
+        SPVM_HASH_insert(compiler->string_symtable, sub->name, strlen(sub->name) + 1, (void*)(intptr_t)string_pool_id);
       }
     }
 
