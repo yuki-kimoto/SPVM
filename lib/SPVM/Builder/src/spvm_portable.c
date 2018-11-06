@@ -52,11 +52,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
 
-  portable->symbols_capacity = 32;
-
   portable->info_switch_info_ints_capacity = 8;
-
-  portable->symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * portable->symbols_capacity);
   
   portable->string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(compiler->string_pool->length + 1);
   portable->string_pool_length = compiler->string_pool->length;
@@ -325,30 +321,6 @@ void SPVM_PORTABLE_push_sub(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
   portable->subs_length++;
 }
 
-int32_t SPVM_PORTABLE_push_symbol(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, const char* string) {
-  
-  int32_t id = portable->symbols_length;
-  if (portable->symbols_length >= portable->symbols_capacity) {
-    int32_t new_symbols_capacity = portable->symbols_capacity * 2;
-    char** new_symbols = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(char*) * new_symbols_capacity);
-    memcpy(new_symbols, portable->symbols, sizeof(char*) * portable->symbols_length);
-    free(portable->symbols);
-    portable->symbols = new_symbols;
-    portable->symbols_capacity = new_symbols_capacity;
-  }
-  
-  int32_t string_length = (int32_t)strlen(string);
-  
-  char* new_string = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
-  memcpy(new_string, string, string_length);
-  new_string[string_length] = '\0';
-  
-  portable->symbols[portable->symbols_length] = new_string;
-  portable->symbols_length++;
-  
-  return id;
-}
-
 void SPVM_PORTABLE_push_arg(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_MY* arg) {
   
   SPVM_RUNTIME_MY* new_portable_arg = &portable->args[portable->args_length];
@@ -538,13 +510,6 @@ void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
     
     free(portable->opcodes);
     portable->opcodes = NULL;
-    
-    for (int32_t i = 0; i < portable->symbols_length; i++) {
-      free(portable->symbols[i]);
-      portable->symbols[i] = NULL;
-    }
-    free(portable->symbols);
-    portable->symbols = NULL;
     
     for (int32_t i = 0; i < portable->info_string_values_length; i++) {
       free(portable->info_string_values[i]);

@@ -81,7 +81,7 @@ void SPVM_CSOURCE_BUILDER_EXE_add_precompile_headers(SPVM_ENV* env, SPVM_STRING_
   }
 }
 
-void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_PORTABLE* portable, SPVM_STRING_BUFFER* string_buffer) {
 
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -113,7 +113,7 @@ void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(SPVM_ENV* env, SPVM_S
   }
 }
 
-void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_precompile_addresses(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer) {
+void SPVM_CSOURCE_BUILDER_EXE_add_set_sub_precompile_addresses(SPVM_ENV* env, SPVM_PORTABLE* portable, SPVM_STRING_BUFFER* string_buffer) {
 
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -680,35 +680,13 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->string_pool_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-  // symbols
-  SPVM_STRING_BUFFER_add(string_buffer, "  char* symbols[");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->symbols_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
-  for (int32_t symbol_id = 0; symbol_id < portable->symbols_length; symbol_id++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    \"");
-    {
-      int32_t string_length = strlen(portable->symbols[symbol_id]);
-      for (int32_t j = 0; j < string_length; j++) {
-        SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->symbols[symbol_id][j]);
-      }
-    }
-    SPVM_STRING_BUFFER_add(string_buffer, "\",\n");
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->symbols = symbols;\n");
-  
-  // symbols_length
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->symbols_length = ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->symbols_length);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
   // Create run-time
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_ENV* env = SPVM_RUNTIME_build_runtime_env(portable);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME* runtime = env->runtime;\n");
 
-  SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(env, string_buffer);
+  SPVM_CSOURCE_BUILDER_EXE_add_set_sub_native_addresses(env, portable, string_buffer);
 
-  SPVM_CSOURCE_BUILDER_EXE_add_set_sub_precompile_addresses(env, string_buffer);
+  SPVM_CSOURCE_BUILDER_EXE_add_set_sub_precompile_addresses(env, portable, string_buffer);
 
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* package_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
