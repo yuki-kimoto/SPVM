@@ -1112,7 +1112,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
       SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       const char* sub_name = &runtime->string_pool[sub->name_id];
-      const char* sub_signature = runtime->symbols[sub->signature_id];
+      const char* sub_signature = &runtime->string_pool[sub->signature_id];
       if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
         SPVM_STRING_BUFFER_add(string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
@@ -3428,7 +3428,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         SPVM_RUNTIME_PACKAGE* decl_sub_package = &runtime->packages[decl_sub->package_id];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
-        const char* decl_sub_signature = runtime->symbols[decl_sub->signature_id];
+        const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
         const char* decl_sub_package_name = &runtime->string_pool[decl_sub_package->name_id];
         
         // Declare subroutine argument length

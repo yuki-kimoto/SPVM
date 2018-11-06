@@ -268,8 +268,8 @@ void SPVM_PORTABLE_push_sub(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
 
   new_portable_sub->id = sub->id;
   new_portable_sub->flag = sub->flag;
-  new_portable_sub->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->name, strlen(sub->name) + 1);;
-  new_portable_sub->signature_id = SPVM_PORTABLE_push_symbol(compiler, portable, sub->signature);
+  new_portable_sub->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->name, strlen(sub->name) + 1);
+  new_portable_sub->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1);;
   if (sub->package) {
     new_portable_sub->package_id = sub->package->id;
   }
