@@ -918,7 +918,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
   const char* field_package_name = runtime->symbols[field_package->name_id];
   const char* field_name = &runtime->string_pool[field->name_id];
-  const char* field_signature = runtime->symbols[field->signature_id];
+  const char* field_signature = &runtime->string_pool[field->signature_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -978,7 +978,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
   const char* field_package_name = runtime->symbols[field_package->name_id];
   const char* field_name = &runtime->string_pool[field->name_id];
-  const char* field_signature = runtime->symbols[field->signature_id];
+  const char* field_signature = &runtime->string_pool[field->signature_id];
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -2945,7 +2945,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
-        const char* field_signature = runtime->symbols[field->signature_id];
+        const char* field_signature = &runtime->string_pool[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -4176,7 +4176,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
-        const char* field_signature = runtime->symbols[field->signature_id];
+        const char* field_signature = &runtime->string_pool[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -4285,7 +4285,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
-        const char* field_signature = runtime->symbols[field->signature_id];
+        const char* field_signature = &runtime->string_pool[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -4348,7 +4348,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = runtime->symbols[field_package->name_id];
         const char* field_name = &runtime->string_pool[field->name_id];
-        const char* field_signature = runtime->symbols[field->signature_id];
+        const char* field_signature = &runtime->string_pool[field->signature_id];
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 

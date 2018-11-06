@@ -4850,7 +4850,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   }
 
   // Signature
-  if (strcmp(signature, runtime->symbols[field->signature_id]) != 0) {
+  if (strcmp(signature, &runtime->string_pool[field->signature_id]) != 0) {
     return 0;
   }
   
