@@ -646,7 +646,9 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_values = info_string_values;\n");
 
   // string_pool
-  SPVM_STRING_BUFFER_add(string_buffer, "  char string_pool[] = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char string_pool[/* ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->string_pool_length + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, " */] = \"");
   for (int32_t string_pool_id = 0; string_pool_id < portable->string_pool_length; string_pool_id++) {
     SPVM_STRING_BUFFER_add_hex_char(string_buffer,  portable->string_pool[string_pool_id]);
   }
