@@ -67,7 +67,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &portable->basic_types[basic_type_id];
-    runtime_basic_type->name_id = SPVM_PORTABLE_push_symbol(compiler, portable, basic_type->name);
+    runtime_basic_type->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1);
     runtime_basic_type->id = basic_type->id;
     if (basic_type->package) {
       runtime_basic_type->package_id = basic_type->package->id;

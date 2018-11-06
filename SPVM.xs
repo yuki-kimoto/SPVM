@@ -695,7 +695,7 @@ new_value_t_array_len(...)
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
   if (basic_type == NULL) {
-    const char* basic_type_name = runtime->symbols[basic_type->name_id];
+    const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
     croak("Can't load %s", basic_type_name);
   }
   
@@ -1469,8 +1469,8 @@ call_sub(...)
           env->inc_ref_count(env, return_value);
           
           if (sub->return_type_dimension == 0) {
-            SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[sub->return_basic_type_id];
-            const char* basic_type_name = runtime->symbols[sub->return_basic_type_id];
+            SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub->return_basic_type_id];
+            const char* basic_type_name = &runtime->string_pool[sub_return_basic_type->name_id];
 
             SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
             
@@ -2424,7 +2424,7 @@ get_array_element(...)
         sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
       }
       else {
-        const char* basic_type_name = runtime->symbols[basic_type->name_id];
+        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
         SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
         sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
       }
@@ -2598,7 +2598,7 @@ get_array_elements(...)
           sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
         }
         else {
-          const char* basic_type_name = runtime->symbols[basic_type->name_id];
+          const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
           SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
           sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
         }

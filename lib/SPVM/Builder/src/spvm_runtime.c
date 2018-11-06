@@ -289,7 +289,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->basic_type_symtable = SPVM_HASH_new(0);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    const char* runtime_basic_type_name = runtime->symbols[runtime_basic_type->name_id];
+    const char* runtime_basic_type_name = &runtime->string_pool[runtime_basic_type->name_id];
     SPVM_HASH_insert(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
   

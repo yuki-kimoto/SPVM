@@ -4460,7 +4460,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic
 
   // valut_t array dimension must be 1
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
-  const char* basic_type_name = runtime->symbols[basic_type->name_id];
+  const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));
   int32_t fields_length = package->fields->length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
@@ -4924,7 +4924,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   
   // Package name
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
-  const char* basic_type_name = runtime->symbols[basic_type->name_id];
+  const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));  
   if (package == NULL) {
     return 0;

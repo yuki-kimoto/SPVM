@@ -4065,22 +4065,19 @@ void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP
 void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   SPVM_LIST* basic_types = compiler->basic_types;
   
-  {
-    int32_t basic_type_index;
-    for (basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, basic_type_index);
-      int32_t basic_type_id = basic_type->id;
-      SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
-      if (package) {
-        basic_type->package = package;
-      }
+  for (int32_t basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, basic_type_index);
+    int32_t basic_type_id = basic_type->id;
+    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
+    if (package) {
+      basic_type->package = package;
+    }
 
-      // Add basic_type name to string pool
-      int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1);
-      if (found_string_pool_id == 0) {
-        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)basic_type->name, strlen(basic_type->name) + 1);
-        SPVM_HASH_insert(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1, (void*)(intptr_t)string_pool_id);
-      }
+    // Add basic_type name to string pool
+    int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1);
+    if (found_string_pool_id == 0) {
+      int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)basic_type->name, strlen(basic_type->name) + 1);
+      SPVM_HASH_insert(compiler->string_symtable, basic_type->name, strlen(basic_type->name) + 1, (void*)(intptr_t)string_pool_id);
     }
   }
 }
