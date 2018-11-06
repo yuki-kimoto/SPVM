@@ -254,7 +254,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
     SPVM_LIST_push(package->package_vars, package_var);
-    const char* package_var_name = runtime->symbols[package_var->name_id];
+    const char* package_var_name = &runtime->string_pool[package_var->name_id];
     SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
   }
 
