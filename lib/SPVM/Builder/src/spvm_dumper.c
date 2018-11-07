@@ -73,7 +73,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         printf(" string \"%s\"\n", (char*)constant->value.oval);
         break;
       }
-      printf(" (index %" PRId32 ")", constant->id);
     }
     else if (id == SPVM_OP_C_ID_PACKAGE_VAR) {
       SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
@@ -325,7 +324,6 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
       printf("      String \"%s\"\n", (char*)constant->value.oval);
     }
   }
-  printf("      address => %" PRId32 "\n", constant->id);
 }
 
 void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {

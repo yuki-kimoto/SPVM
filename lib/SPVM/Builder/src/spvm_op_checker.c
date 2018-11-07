@@ -3587,16 +3587,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Resolve constant id
-  {
-    int32_t constant_index;
-    for (constant_index = 0; constant_index < compiler->op_constants->length; constant_index++) {
-      SPVM_OP* op_constant = SPVM_LIST_fetch(compiler->op_constants, constant_index);
-      SPVM_CONSTANT* constant = op_constant->uv.constant;
-      constant->id = constant_index;
-    }
-  }
-
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
   if (compiler->error_count == 0) {

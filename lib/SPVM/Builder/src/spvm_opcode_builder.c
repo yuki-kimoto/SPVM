@@ -1981,8 +1981,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           default:
                             assert(0);
                         }
-                        
-                        assert(constant->id != -1);
  
                         opcode.operand0 = var_id_out;
                        
