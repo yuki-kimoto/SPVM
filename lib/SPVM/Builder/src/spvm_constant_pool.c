@@ -84,21 +84,6 @@ int32_t SPVM_CONSTANT_POOL_push_double(SPVM_COMPILER* compiler, SPVM_CONSTANT_PO
   return id;
 }
 
-int32_t SPVM_CONSTANT_POOL_push_string(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool, const char* string, int32_t length) {
-  
-  int32_t id = constant_pool->length;
-
-  // Add string length
-  SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, length);
-  
-  // Add string pool id
-  int32_t string_pool_id = (int32_t)(intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string, length);
-  assert(string_pool_id > 0);
-  SPVM_CONSTANT_POOL_push_int(compiler, constant_pool, string_pool_id);
-  
-  return id;
-}
-
 void SPVM_CONSTANT_POOL_free(SPVM_COMPILER* compiler, SPVM_CONSTANT_POOL* constant_pool) {
   (void)compiler;
   
