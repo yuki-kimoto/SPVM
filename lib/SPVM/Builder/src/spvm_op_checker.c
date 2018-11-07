@@ -280,7 +280,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                       return;
                     }
-                    
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                     add_constant = 1;
