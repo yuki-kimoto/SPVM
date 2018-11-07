@@ -18,14 +18,12 @@ struct SPVM_runtime_package {
   int32_t category;
   int32_t flag;
   int32_t info_package_var_ids_base;
-  int32_t info_field_ids_base;
   int32_t info_sub_ids_base;
   int32_t info_types_base;
   int32_t info_switch_infos_base;
   int32_t info_string_values_base;
   int32_t constant_pool_base;
   uint16_t info_package_var_ids_length;
-  uint16_t info_field_ids_length;
   uint16_t info_sub_ids_length;
   uint16_t info_types_length;
   uint16_t info_switch_infos_length;

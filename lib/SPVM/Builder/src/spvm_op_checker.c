@@ -2507,14 +2507,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // No duplicate field access field id
-              int32_t found_field_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_field_id_symtable, field_id_string, sizeof(int32_t));
-              if (found_field_id_plus1 > 0) {
-                op_cur->uv.field_access->info_field_id = found_field_id_plus1 - 1;
-              }
-              else {
+              SPVM_FIELD* found_field = SPVM_HASH_fetch(package->info_field_id_symtable, field_id_string, sizeof(int32_t));
+              if (found_field == NULL) {
                 SPVM_LIST_push(package->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
-                int32_t info_field_id_plus1 = op_cur->uv.field_access->info_field_id + 1;
-                SPVM_HASH_insert(package->info_field_id_symtable, field_id_string, sizeof(int32_t), (void*)(intptr_t)info_field_id_plus1);
+                SPVM_HASH_insert(package->info_field_id_symtable, field_id_string, sizeof(int32_t), op_cur->uv.field_access->field);
               }
               
               // If invocker is array access and array access object is value_t, this op become array field access

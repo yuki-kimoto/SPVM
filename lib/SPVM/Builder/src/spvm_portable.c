@@ -108,7 +108,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   int32_t args_total_length = 0;
   int32_t info_types_total_length = 0;
   int32_t info_package_var_ids_total_length = 0;
-  int32_t info_field_ids_total_length = 0;
   int32_t info_sub_ids_total_length = 0;
   int32_t info_string_values_total_length = 0;
   int32_t info_string_lengths_total_length = 0;
@@ -119,7 +118,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     info_package_var_ids_total_length += package->info_package_var_ids->length;
-    info_field_ids_total_length += package->info_field_ids->length;
     info_string_values_total_length += package->info_string_constants->length;
     info_string_lengths_total_length += package->info_string_constants->length;
     info_sub_ids_total_length += package->info_sub_ids->length;
@@ -140,9 +138,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable info package var ids
   portable->info_package_var_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_package_var_ids_total_length + 1));
-
-  // Portable info field  ids
-  portable->info_field_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_field_ids_total_length + 1));
 
   // Portable info sub ids
   portable->info_sub_ids = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (info_sub_ids_total_length + 1));
@@ -193,9 +188,6 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
   new_portable_package->info_package_var_ids_base = portable->info_package_var_ids_length;
   new_portable_package->info_package_var_ids_length = package->info_package_var_ids->length;
 
-  new_portable_package->info_field_ids_base = portable->info_field_ids_length;
-  new_portable_package->info_field_ids_length = package->info_field_ids->length;
-
   new_portable_package->info_string_values_base = portable->info_string_values_length;
   new_portable_package->info_string_values_length = package->info_string_constants->length;
 
@@ -217,12 +209,6 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
     SPVM_PORTABLE_push_info_package_var_id(compiler, portable, info_package_var_id);
   }
   
-  for (int32_t info_field_ids_index = 0; info_field_ids_index < package->info_field_ids->length; info_field_ids_index++) {
-    int32_t info_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, info_field_ids_index);
-    
-    SPVM_PORTABLE_push_info_field_id(compiler, portable, info_field_id);
-  }
-
   for (int32_t info_string_values_index = 0; info_string_values_index < package->info_string_constants->length; info_string_values_index++) {
     SPVM_CONSTANT* constant = SPVM_LIST_fetch(package->info_string_constants, info_string_values_index);
     SPVM_PORTABLE_push_info_string_value(compiler, portable, (char*)constant->value.oval, constant->string_length);
@@ -346,14 +332,6 @@ void SPVM_PORTABLE_push_info_package_var_id(SPVM_COMPILER* compiler, SPVM_PORTAB
   portable->info_package_var_ids_length++;
 }
 
-void SPVM_PORTABLE_push_info_field_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_field_id) {
-
-  int32_t* new_portable_info_field_id = (int32_t*)&portable->info_field_ids[portable->info_field_ids_length];
-  *new_portable_info_field_id = info_field_id;
-
-  portable->info_field_ids_length++;
-}
-
 void SPVM_PORTABLE_push_info_sub_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_sub_id) {
 
   int32_t* new_portable_info_sub_id = (int32_t*)&portable->info_sub_ids[portable->info_sub_ids_length];
@@ -469,9 +447,6 @@ void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
 
     free(portable->info_sub_ids);
     portable->info_sub_ids = NULL;
-
-    free(portable->info_field_ids);
-    portable->info_field_ids = NULL;
 
     free(portable->info_types);
     portable->info_types = NULL;
