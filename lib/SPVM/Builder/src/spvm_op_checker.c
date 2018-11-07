@@ -269,11 +269,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     memcpy(long_value_string, &op_cur->uv.constant->value.lval, sizeof(int64_t));
                     int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t));
                     if (found_constant_pool_id > 0) {
-                      op_cur->uv.constant->info_long_constant_id = found_constant_pool_id;
+                      op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
                     }
                     else {
                       int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_long(package->constant_pool, op_cur->uv.constant->value.lval);
-                      op_cur->uv.constant->info_long_constant_id = constant_pool_id;
+                      op_cur->uv.constant->constant_pool_id = constant_pool_id;
                       SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                     }
                     if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
