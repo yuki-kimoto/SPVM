@@ -17,19 +17,18 @@ struct SPVM_runtime_package {
   int32_t destructor_sub_id;
   int32_t category;
   int32_t flag;
-  int32_t info_package_var_ids_base;
   int32_t info_sub_ids_base;
   int32_t info_types_base;
   int32_t info_switch_infos_base;
   int32_t info_string_values_base;
   int32_t constant_pool_base;
-  uint16_t info_package_var_ids_length;
   uint16_t info_sub_ids_length;
   uint16_t info_types_length;
   uint16_t info_switch_infos_length;
   uint16_t info_string_values_length;
   uint16_t no_dup_field_access_field_ids_constant_pool_id;
   uint16_t no_dup_package_var_access_package_var_ids_constant_pool_id;
+  uint16_t no_dup_call_sub_sub_ids_constant_pool_id;
 };
 
 SPVM_RUNTIME_PACKAGE* SPVM_RUNTIME_PACKAGE_new();

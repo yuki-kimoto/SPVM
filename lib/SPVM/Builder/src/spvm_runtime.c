@@ -155,7 +155,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->package_vars_length = portable->package_vars_length;
   runtime->args = (SPVM_RUNTIME_MY*)portable->args;
   runtime->info_types = (SPVM_RUNTIME_INFO_TYPE*)portable->info_types;
-  runtime->info_package_var_ids = portable->info_package_var_ids;
   runtime->info_sub_ids = portable->info_sub_ids;
   runtime->opcodes = (SPVM_OPCODE*)portable->opcodes;
   runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;

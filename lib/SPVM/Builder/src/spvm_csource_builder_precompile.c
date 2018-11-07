@@ -1040,8 +1040,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(env, string_buffer);
 
-  // Field id and index declarations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Field id and index declarations\n");
+  // Package variable id declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Package variable id declarations\n");
   {
     int32_t no_dup_package_var_access_package_var_ids_length = runtime->constant_pool[package->constant_pool_base + package->no_dup_package_var_access_package_var_ids_constant_pool_id];
     for (int32_t constant_pool_index = 0; constant_pool_index < no_dup_package_var_access_package_var_ids_length; constant_pool_index++) {
@@ -1083,13 +1083,17 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Sub id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Sub id declarations\n");
   {
-    for (int32_t info_sub_ids_index = 0; info_sub_ids_index < package->info_sub_ids_length; info_sub_ids_index++) {
-      int32_t sub_id = runtime->info_sub_ids[package->info_sub_ids_base + info_sub_ids_index];
+    int32_t no_dup_call_sub_sub_ids_length = runtime->constant_pool[package->constant_pool_base + package->no_dup_call_sub_sub_ids_constant_pool_id];
+    for (int32_t constant_pool_index = 0; constant_pool_index < no_dup_call_sub_sub_ids_length; constant_pool_index++) {
+      int32_t sub_id = runtime->constant_pool[package->constant_pool_base + package->no_dup_call_sub_sub_ids_constant_pool_id + 1 + constant_pool_index];
       SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
       SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
       const char* sub_package_name = &runtime->string_pool[sub_package->name_id];
       const char* sub_name = &runtime->string_pool[sub->name_id];
       
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
       SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
       SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -3430,7 +3434,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         int32_t var_id = opcode->operand0;
         int32_t constant_pool_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->info_sub_ids[package->info_sub_ids_base + constant_pool_id];
+        int32_t decl_sub_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
 
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
 

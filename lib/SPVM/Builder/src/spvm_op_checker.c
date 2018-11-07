@@ -2311,22 +2311,24 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   sub->call_sub_arg_stack_max = call_sub_args_count;
                 }
 
-                // Add info sub id
+                // Call sub constant pool id
                 char sub_id_string[sizeof(int32_t)];
                 memcpy(sub_id_string, &op_cur->uv.call_sub->sub->id, sizeof(int32_t));
-                int32_t found_sub_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));
-                if (found_sub_id_plus1 > 0) {
-                  op_cur->uv.call_sub->info_constant_id = found_sub_id_plus1 - 1;
+                int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t));
+                if (found_constant_pool_id > 0) {
+                  op_cur->uv.call_sub->constant_pool_id = found_constant_pool_id;
                 }
                 else {
-                  op_cur->uv.call_sub->info_constant_id = package->info_sub_ids->length;
-                  SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
-                  int32_t info_sub_id_plus1 = op_cur->uv.call_sub->info_constant_id + 1;
-                  SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)info_sub_id_plus1);
+                  int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.call_sub->sub->id);
+                  op_cur->uv.call_sub->constant_pool_id = constant_pool_id;
+                  SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
                 }
-                if (package->info_sub_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                  SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
+
+                // No duplicate sub access sub id
+                SPVM_SUB* found_sub = SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));
+                if (found_sub == NULL) {
+                  SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
+                  SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), op_cur->uv.call_sub->sub);
                 }
                 
                 if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
@@ -3589,6 +3591,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       for (int32_t i = 0; i < package->info_field_ids->length; i++) {
         int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
         SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
+      }
+
+      // Add no duplicate sub access sub id to constant pool
+      package->no_dup_call_sub_sub_ids_constant_pool_id = package->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
+      for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
+        int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
       }
 
       if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
