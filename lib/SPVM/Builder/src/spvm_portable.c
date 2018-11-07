@@ -209,6 +209,7 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
   new_portable_package->info_types_length = package->info_types->length;
 
   new_portable_package->constant_pool_base = package->constant_pool_base;
+  new_portable_package->no_dup_field_access_field_ids_constant_pool_id = package->no_dup_field_access_field_ids_constant_pool_id;
 
   for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < package->info_package_var_ids->length; info_package_var_ids_index++) {
     int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, info_package_var_ids_index);

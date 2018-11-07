@@ -8,6 +8,7 @@ struct SPVM_field_access {
   SPVM_OP* op_name;
   SPVM_FIELD* field;
   int32_t info_field_id;
+  int32_t constant_pool_id;
 };
 
 SPVM_FIELD_ACCESS* SPVM_FIELD_ACCESS_new(SPVM_COMPILER* compiler);

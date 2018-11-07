@@ -276,10 +276,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       op_cur->uv.constant->constant_pool_id = constant_pool_id;
                       SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                     }
-                    if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                      SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", op_cur->file, op_cur->line);
-                      return;
-                    }
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                     add_constant = 1;
@@ -295,10 +291,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_double(package->constant_pool, op_cur->uv.constant->value.dval);
                       op_cur->uv.constant->constant_pool_id = constant_pool_id;
                       SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
-                    }
-                    if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                      SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", op_cur->file, op_cur->line);
-                      return;
                     }
                   }
                 }
@@ -2501,23 +2493,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              // Add info field id
+              // Field accesss constant pool id
               char field_id_string[sizeof(int32_t)];
               memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));
-              const char* field_name = op_cur->uv.field_access->field->name;
+              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, field_id_string, sizeof(int32_t));
+              if (found_constant_pool_id > 0) {
+                op_cur->uv.field_access->constant_pool_id = found_constant_pool_id;
+              }
+              else {
+                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.field_access->field->id);
+                op_cur->uv.field_access->constant_pool_id = constant_pool_id;
+                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, field_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
+              }
+
+              // No duplicate field access field id
               int32_t found_field_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_field_id_symtable, field_id_string, sizeof(int32_t));
               if (found_field_id_plus1 > 0) {
                 op_cur->uv.field_access->info_field_id = found_field_id_plus1 - 1;
               }
               else {
-                op_cur->uv.field_access->info_field_id = package->info_field_ids->length;
                 SPVM_LIST_push(package->info_field_ids, (void*)(intptr_t)op_cur->uv.field_access->field->id);
                 int32_t info_field_id_plus1 = op_cur->uv.field_access->info_field_id + 1;
                 SPVM_HASH_insert(package->info_field_id_symtable, field_id_string, sizeof(int32_t), (void*)(intptr_t)info_field_id_plus1);
-              }
-              if (package->info_field_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                return;
               }
               
               // If invocker is array access and array access object is value_t, this op become array field access
@@ -3579,6 +3576,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
       }
+      // Add no duplicate field access field id to constant pool
+      package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
+      for (int32_t i = 0; i < package->info_field_ids->length; i++) {
+        int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
+      }
+
+      if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+        SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
+      }
     }
   }
 
@@ -3591,7 +3600,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       constant->id = constant_index;
     }
   }
-
 
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
