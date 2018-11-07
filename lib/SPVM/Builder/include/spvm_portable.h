@@ -8,8 +8,8 @@ struct SPVM_portable {
   char* string_pool;
   int32_t string_pool_length;
 
-  int32_t* global_constant_pool;
-  int32_t global_constant_pool_length;
+  int32_t* constant_pool;
+  int32_t constant_pool_length;
 
   int32_t basic_types_length;
   SPVM_RUNTIME_BASIC_TYPE* basic_types;

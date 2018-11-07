@@ -663,21 +663,21 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->string_pool_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-  // global_constant_pool
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t global_constant_pool[/* ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->global_constant_pool_length + 1);
+  // constant_pool
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_pool[/* ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->constant_pool_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, " */] = {\n");
-  for (int32_t constant_pool_id = 0; constant_pool_id < portable->global_constant_pool_length; constant_pool_id++) {
+  for (int32_t constant_pool_id = 0; constant_pool_id < portable->constant_pool_length; constant_pool_id++) {
     SPVM_STRING_BUFFER_add(string_buffer, "    ");
-    SPVM_STRING_BUFFER_add_int(string_buffer,  portable->global_constant_pool[constant_pool_id]);
+    SPVM_STRING_BUFFER_add_int(string_buffer,  portable->constant_pool[constant_pool_id]);
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "};\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->global_constant_pool = global_constant_pool;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->constant_pool = constant_pool;\n");
 
   // constant_pool_length
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->global_constant_pool_length = ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->global_constant_pool_length);
+  SPVM_STRING_BUFFER_add(string_buffer, "  portable->constant_pool_length = ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, portable->constant_pool_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // Create run-time

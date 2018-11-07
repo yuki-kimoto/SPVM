@@ -2085,7 +2085,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
         int64_t long_value;
-        memcpy(&long_value, &runtime->global_constant_pool[package->constant_pool_base + constant_pool_id], sizeof(int64_t));
+        memcpy(&long_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(int64_t));
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
