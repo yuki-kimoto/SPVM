@@ -40,6 +40,8 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->info_sub_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->info_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_field_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_basic_type_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_basic_type_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->info_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
