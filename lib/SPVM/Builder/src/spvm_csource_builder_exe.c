@@ -330,6 +330,9 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".no_dup_field_access_field_ids_constant_pool_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->no_dup_field_access_field_ids_constant_pool_id);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".no_dup_package_var_access_package_var_ids_constant_pool_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->no_dup_package_var_access_package_var_ids_constant_pool_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");

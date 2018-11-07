@@ -1040,16 +1040,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(env, string_buffer);
 
-  // Package variable id declarations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Package variable id declarations\n");
+  // Field id and index declarations
+  SPVM_STRING_BUFFER_add(string_buffer, "// Field id and index declarations\n");
   {
-    for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < package->info_package_var_ids_length; info_package_var_ids_index++) {
-      int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_ids_index];
+    int32_t no_dup_package_var_access_package_var_ids_length = runtime->constant_pool[package->constant_pool_base + package->no_dup_package_var_access_package_var_ids_constant_pool_id];
+    for (int32_t constant_pool_index = 0; constant_pool_index < no_dup_package_var_access_package_var_ids_length; constant_pool_index++) {
+      int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + package->no_dup_package_var_access_package_var_ids_constant_pool_id + 1 + constant_pool_index];
       SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
       SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
       const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
       const char* package_var_name = &runtime->string_pool[package_var->name_id];
       
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
       SPVM_STRING_BUFFER_add_package_var_id_name(string_buffer, package_var_package_name, package_var_name);
       SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4459,8 +4463,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT:
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE:
       {
-        int32_t info_package_var_id = opcode->operand1;
-        int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
@@ -4532,8 +4536,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
-        int32_t info_package_var_id = opcode->operand1;
-        int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
@@ -4584,8 +4588,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
       {
-        int32_t info_package_var_id = opcode->operand0;
-        int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
+        int32_t constant_pool_id = opcode->operand0;
+        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
@@ -4657,8 +4661,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
-        int32_t info_package_var_id = opcode->operand0;
-        int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
+        int32_t constant_pool_id = opcode->operand0;
+        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
@@ -4702,8 +4706,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
-        int32_t info_package_var_id = opcode->operand0;
-        int32_t package_var_id = runtime->info_package_var_ids[package->info_package_var_ids_base + info_package_var_id];
+        int32_t constant_pool_id = opcode->operand0;
+        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];

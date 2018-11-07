@@ -2350,24 +2350,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              // Add info package var id
+              // Field accesss constant pool id
               char package_var_id_string[sizeof(int32_t)];
               memcpy(package_var_id_string, &op_cur->uv.package_var_access->package_var->id, sizeof(int32_t));
-              const char* package_var_name = op_cur->uv.package_var_access->package_var->name;
-              int32_t found_package_var_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t));
-              if (found_package_var_id_plus1 > 0) {
-                op_cur->uv.package_var_access->info_package_var_id = found_package_var_id_plus1 - 1;
+              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, package_var_id_string, sizeof(int32_t));
+              if (found_constant_pool_id > 0) {
+                op_cur->uv.package_var_access->constant_pool_id = found_constant_pool_id;
               }
               else {
-                op_cur->uv.package_var_access->info_package_var_id = package->info_package_var_ids->length;
-                SPVM_LIST_push(package->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
-                int32_t info_package_var_id_plus1 = op_cur->uv.package_var_access->info_package_var_id + 1;
-                SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), (void*)(intptr_t)info_package_var_id_plus1);
+                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.package_var_access->package_var->id);
+                op_cur->uv.package_var_access->constant_pool_id = constant_pool_id;
+                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, package_var_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
               }
-              if (package->info_package_var_ids->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }                        
+
+              // No duplicate package_var access package_var id
+              SPVM_FIELD* found_package_var = SPVM_HASH_fetch(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t));
+              if (found_package_var == NULL) {
+                SPVM_LIST_push(package->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
+                SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), op_cur->uv.package_var_access->package_var);
+              }
+              
               break;
             }
             case SPVM_OP_C_ID_ARRAY_ACCESS: {
@@ -3572,6 +3574,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
       }
+
+      // Add no duplicate package_var access package_var id to constant pool
+      package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
+      for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
+        int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
+      }
+      
       // Add no duplicate field access field id to constant pool
       package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
       SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);

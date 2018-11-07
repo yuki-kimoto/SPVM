@@ -1209,7 +1209,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         
                         opcode.operand0 = var_id_out;
-                        opcode.operand1 = package_var_access->info_package_var_id;
+                        opcode.operand1 = package_var_access->constant_pool_id;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
@@ -2885,7 +2885,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         int32_t package_var_access_id = package_var_access->package_var->id;
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF);
-                        opcode.operand0 = package_var_access->info_package_var_id;
+                        opcode.operand0 = package_var_access->constant_pool_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       // PACKAGE_VAR_ACCESS = VAR
@@ -2932,7 +2932,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                           
                         int32_t package_var_access_id = package_var_access->package_var->id;
                         
-                        opcode.operand0 = package_var_access->info_package_var_id;
+                        opcode.operand0 = package_var_access->constant_pool_id;
                         opcode.operand1 = var_id_in;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }

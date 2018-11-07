@@ -45,6 +45,7 @@ struct SPVM_package {
   SPVM_HASH* constant_pool_64bit_value_symtable;
   int32_t constant_pool_base;
   int32_t no_dup_field_access_field_ids_constant_pool_id;
+  int32_t no_dup_package_var_access_package_var_ids_constant_pool_id;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;

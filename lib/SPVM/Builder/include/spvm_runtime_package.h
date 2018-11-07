@@ -29,6 +29,7 @@ struct SPVM_runtime_package {
   uint16_t info_switch_infos_length;
   uint16_t info_string_values_length;
   uint16_t no_dup_field_access_field_ids_constant_pool_id;
+  uint16_t no_dup_package_var_access_package_var_ids_constant_pool_id;
 };
 
 SPVM_RUNTIME_PACKAGE* SPVM_RUNTIME_PACKAGE_new();
