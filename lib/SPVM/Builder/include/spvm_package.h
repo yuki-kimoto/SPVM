@@ -44,6 +44,7 @@ struct SPVM_package {
   SPVM_HASH* info_double_constant_symtable;
   SPVM_LIST* info_string_constants;
   SPVM_HASH* info_string_constant_symtable;
+  SPVM_CONSTANT_POOL* constant_pool;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
