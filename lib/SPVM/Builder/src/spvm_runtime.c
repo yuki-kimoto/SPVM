@@ -159,10 +159,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
   runtime->subs_length = portable->subs_length;
 
-  runtime->info_string_values = portable->info_string_values;
-  runtime->info_string_values_length = portable->info_string_values_length;
-  runtime->info_string_lengths = portable->info_string_lengths;
-
   // Native sub addresses
   runtime->sub_native_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   

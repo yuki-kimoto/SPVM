@@ -38,7 +38,6 @@ struct SPVM_package {
   SPVM_LIST* info_types;
   SPVM_HASH* info_type_symtable;
   SPVM_LIST* info_switch_infos;
-  SPVM_LIST* info_string_constants;
   SPVM_HASH* string_symtable;
   SPVM_CONSTANT_POOL* constant_pool;
   SPVM_HASH* constant_pool_32bit_value_symtable;

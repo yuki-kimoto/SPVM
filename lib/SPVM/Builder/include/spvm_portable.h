@@ -46,12 +46,6 @@ struct SPVM_portable {
   int32_t info_switch_info_ints_length;
   int32_t* info_switch_info_ints;
 
-  char** info_string_values;
-  int32_t info_string_values_length;
-
-  int32_t* info_string_lengths;
-  int32_t info_string_lengths_length;
-
   int32_t opcodes_length;
   SPVM_OPCODE* opcodes;
   int8_t is_static;
@@ -69,8 +63,6 @@ void SPVM_PORTABLE_push_info_switch_info(SPVM_COMPILER* compiler, SPVM_PORTABLE*
 void SPVM_PORTABLE_push_info_package_var_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_package_var_id);
 void SPVM_PORTABLE_push_info_field_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_field_id);
 void SPVM_PORTABLE_push_info_sub_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_sub_id);
-void SPVM_PORTABLE_push_info_string_value(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, const char* info_string_value, int32_t string_length);
-void SPVM_PORTABLE_push_info_string_length(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, int32_t info_string_length);
 void SPVM_PORTABLE_push_basic_type(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_BASIC_TYPE* basic_type);
 void SPVM_PORTABLE_push_field(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_FIELD* field);
 void SPVM_PORTABLE_push_package_var(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var);
