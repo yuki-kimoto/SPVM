@@ -622,18 +622,22 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
+  // New String
   if (constant->type->dimension == 1 && constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
     SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_constant->file, op_constant->line);
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
-    return op_new;
 
     // Add constant string to string pool
-    int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, constant->value.oval, strlen(constant->value.oval) + 1);
+    const char* string_value = constant->value.oval;
+    int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, constant->string_length + 1);
     if (found_string_pool_id == 0) {
       int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, constant->value.oval, constant->string_length + 1);
       SPVM_HASH_insert(compiler->string_symtable, constant->value.oval, constant->string_length + 1, (void*)(intptr_t)string_pool_id);
     }
+
+    return op_new;
   }
+  // Constant
   else {
     return op_constant;
   }

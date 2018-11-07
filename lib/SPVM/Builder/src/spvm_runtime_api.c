@@ -2155,9 +2155,10 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t info_constant_id = opcode->operand1;
-        const char* string_value = runtime->info_string_values[package->info_string_values_base + info_constant_id];
-        int32_t string_length = runtime->info_string_lengths[package->info_string_values_base + info_constant_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t string_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t string_pool_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        const char* string_value = &runtime->string_pool[string_pool_id];
         
         void* string = env->new_string_raw(env, string_value, string_length);
         

@@ -307,19 +307,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 add_constant = 1;
                 
-                char* string_value_string = op_cur->uv.constant->value.oval;
+                char* string_value = op_cur->uv.constant->value.oval;
                 int32_t string_length = op_cur->uv.constant->string_length;
-                int32_t found_string_constant_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_string_constant_symtable, string_value_string, string_length);
-                if (found_string_constant_id_plus1 > 0) {
-                  op_cur->uv.constant->info_string_constant_id = found_string_constant_id_plus1 - 1;
+                int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
+                if (found_constant_pool_id > 0) {
+                  op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
                 }
                 else {
-                  op_cur->uv.constant->info_string_constant_id = package->info_string_constants->length;
-                  SPVM_LIST_push(package->info_string_constants, (void*)(intptr_t)op_cur->uv.constant);
-                  int32_t info_string_constant_id_plus1 = op_cur->uv.constant->info_string_constant_id + 1;
-                  SPVM_HASH_insert(package->info_string_constant_symtable, string_value_string, string_length, (void*)(intptr_t)info_string_constant_id_plus1);
+                  int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
+                  int32_t string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
+                  assert(string_pool_id > 0);
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
+                  op_cur->uv.constant->constant_pool_id = constant_pool_id;
+                  SPVM_HASH_insert(package->string_symtable, string_value, string_length, (void*)(intptr_t)constant_pool_id);
                 }
-                if (package->info_string_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                   SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }

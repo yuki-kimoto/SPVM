@@ -2902,9 +2902,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t info_constant_id = opcode->operand1;
-        const char* string_value = runtime->info_string_values[package->info_string_values_base + info_constant_id];
-        int32_t string_length = runtime->info_string_lengths[package->info_string_values_base + info_constant_id];
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t string_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t string_pool_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        const char* string_value = &runtime->string_pool[string_pool_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
