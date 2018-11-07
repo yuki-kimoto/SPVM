@@ -47,6 +47,7 @@ struct SPVM_package {
   SPVM_CONSTANT_POOL* constant_pool;
   SPVM_HASH* constant_pool_32bit_value_symtable;
   SPVM_HASH* constant_pool_64bit_value_symtable;
+  int32_t constant_pool_base;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;

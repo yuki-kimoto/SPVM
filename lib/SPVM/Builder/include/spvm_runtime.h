@@ -71,6 +71,9 @@ struct SPVM_runtime {
   SPVM_RUNTIME_PACKAGE* packages;
   int32_t packages_length;
   
+  int32_t* global_constant_pool;
+  int32_t global_constant_pool_length;
+  
   int64_t* info_long_values;
   double* info_double_values;
   char** info_string_values;
