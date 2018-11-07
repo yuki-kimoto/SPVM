@@ -74,7 +74,6 @@ struct SPVM_runtime {
   int32_t* constant_pool;
   int32_t constant_pool_length;
   
-  double* info_double_values;
   char** info_string_values;
   int32_t info_string_values_length;
   int32_t* info_string_lengths;

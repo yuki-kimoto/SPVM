@@ -285,20 +285,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     add_constant = 1;
                     
                     // Add double constant
-                    char double_value_string[sizeof(double)];
-                    memcpy(double_value_string, &op_cur->uv.constant->value.lval, sizeof(double));
-                    int32_t found_double_constant_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_double_constant_symtable, double_value_string, sizeof(double));
-                    if (found_double_constant_id_plus1 > 0) {
-                      op_cur->uv.constant->info_double_constant_id = found_double_constant_id_plus1 - 1;
+                    char double_value_string[sizeof(int64_t)];
+                    memcpy(double_value_string, &op_cur->uv.constant->value.dval, sizeof(int64_t));
+                    int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t));
+                    if (found_constant_pool_id > 0) {
+                      op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
                     }
                     else {
-                      op_cur->uv.constant->info_double_constant_id = package->info_double_constants->length;
-                      SPVM_LIST_push(package->info_double_constants, (void*)(intptr_t)op_cur->uv.constant);
-                      int32_t info_double_constant_id_plus1 = op_cur->uv.constant->info_double_constant_id + 1;
-                      SPVM_HASH_insert(package->info_double_constant_symtable, double_value_string, sizeof(double), (void*)(intptr_t)info_double_constant_id_plus1);
+                      int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_double(package->constant_pool, op_cur->uv.constant->value.dval);
+                      op_cur->uv.constant->constant_pool_id = constant_pool_id;
+                      SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                     }
-                    if (package->info_double_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                      SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                    if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                      SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", op_cur->file, op_cur->line);
                       return;
                     }
                   }

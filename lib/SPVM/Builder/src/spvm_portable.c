@@ -107,7 +107,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // Culcrate info length
   int32_t args_total_length = 0;
   int32_t info_types_total_length = 0;
-  int32_t info_double_values_total_length = 0;
   int32_t info_package_var_ids_total_length = 0;
   int32_t info_field_ids_total_length = 0;
   int32_t info_sub_ids_total_length = 0;
@@ -121,7 +120,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     info_package_var_ids_total_length += package->info_package_var_ids->length;
     info_field_ids_total_length += package->info_field_ids->length;
-    info_double_values_total_length += package->info_double_constants->length;
     info_string_values_total_length += package->info_string_constants->length;
     info_string_lengths_total_length += package->info_string_constants->length;
     info_sub_ids_total_length += package->info_sub_ids->length;
@@ -133,9 +131,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable info_types
   portable->info_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO_TYPE) * (info_types_total_length + 1));
-
-  // Portable double values
-  portable->info_double_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(double) * (info_double_values_total_length + 1));
 
   // OPCode
   int32_t opcode_length = compiler->opcode_array->length;
@@ -201,9 +196,6 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
   new_portable_package->info_field_ids_base = portable->info_field_ids_length;
   new_portable_package->info_field_ids_length = package->info_field_ids->length;
 
-  new_portable_package->info_double_values_base = portable->info_double_values_length;
-  new_portable_package->info_double_values_length = package->info_double_constants->length;
-
   new_portable_package->info_string_values_base = portable->info_string_values_length;
   new_portable_package->info_string_values_length = package->info_string_constants->length;
 
@@ -228,11 +220,6 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
     int32_t info_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, info_field_ids_index);
     
     SPVM_PORTABLE_push_info_field_id(compiler, portable, info_field_id);
-  }
-
-  for (int32_t info_double_values_index = 0; info_double_values_index < package->info_double_constants->length; info_double_values_index++) {
-    SPVM_CONSTANT* constant = SPVM_LIST_fetch(package->info_double_constants, info_double_values_index);
-    SPVM_PORTABLE_push_info_double_value(compiler, portable, constant->value.dval);
   }
 
   for (int32_t info_string_values_index = 0; info_string_values_index < package->info_string_constants->length; info_string_values_index++) {
@@ -374,13 +361,6 @@ void SPVM_PORTABLE_push_info_sub_id(SPVM_COMPILER* compiler, SPVM_PORTABLE* port
   portable->info_sub_ids_length++;
 }
 
-void SPVM_PORTABLE_push_info_double_value(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, double info_double_value) {
-
-  portable->info_double_values[portable->info_double_values_length] = info_double_value;
-
-  portable->info_double_values_length++;
-}
-
 void SPVM_PORTABLE_push_info_string_value(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, const char* info_string_value, int32_t string_length) {
 
   portable->info_string_values[portable->info_string_values_length] = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
@@ -497,9 +477,6 @@ void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
 
     free(portable->info_switch_info_ints);
     portable->info_switch_info_ints = NULL;
-    
-    free(portable->info_double_values);
-    portable->info_double_values = NULL;
     
     free(portable->info_string_lengths);
     portable->info_string_lengths = NULL;

@@ -838,8 +838,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         float_vars[opcode->operand0] = *(float*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
-        int32_t info_constant_id = opcode->operand1;
-        double double_value = runtime->info_double_values[package->info_double_values_base + info_constant_id];
+        int32_t constant_pool_id = opcode->operand1;
+        double double_value;
+        memcpy(&double_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(double));
         double_vars[opcode->operand0] = double_value;
         break;
       }

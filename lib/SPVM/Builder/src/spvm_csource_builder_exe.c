@@ -306,12 +306,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".info_field_ids_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_field_ids_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_double_values_base = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_double_values_base);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_double_values_length = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_double_values_length);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".info_string_values_base = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_string_values_base);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
@@ -600,18 +594,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_string_lengths = info_string_lengths;\n");
-
-  // info_double_values
-  SPVM_STRING_BUFFER_add(string_buffer, "  double info_double_values[");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_double_values_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
-  for (int32_t info_double_value_id = 0; info_double_value_id < portable->info_double_values_length; info_double_value_id++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
-    SPVM_STRING_BUFFER_add_double(string_buffer, portable->info_double_values[info_double_value_id]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_double_values = info_double_values;\n");
 
   // info_string_values
   SPVM_STRING_BUFFER_add(string_buffer, "  char* info_string_values[");

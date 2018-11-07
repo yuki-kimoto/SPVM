@@ -2103,8 +2103,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
-        int32_t info_constant_id = opcode->operand1;
-        double double_value = runtime->info_double_values[package->info_double_values_base + info_constant_id];
+        int32_t constant_pool_id = opcode->operand1;
+        double double_value;
+        memcpy(&double_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(double));
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
