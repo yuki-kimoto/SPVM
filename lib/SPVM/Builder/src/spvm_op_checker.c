@@ -35,6 +35,7 @@
 #include "spvm_array_field_access.h"
 #include "spvm_tree_info.h"
 #include "spvm_string_buffer.h"
+#include "spvm_constant_pool.h"
 
 void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_TREE_INFO* tree_info) {
 
@@ -266,18 +267,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     // Add long constant
                     char long_value_string[sizeof(int64_t)];
                     memcpy(long_value_string, &op_cur->uv.constant->value.lval, sizeof(int64_t));
-                    int32_t found_long_constant_id_plus1 = (intptr_t)SPVM_HASH_fetch(package->info_long_constant_symtable, long_value_string, sizeof(int64_t));
-                    if (found_long_constant_id_plus1 > 0) {
-                      op_cur->uv.constant->info_long_constant_id = found_long_constant_id_plus1 - 1;
+                    int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t));
+                    if (found_constant_pool_id > 0) {
+                      op_cur->uv.constant->info_long_constant_id = found_constant_pool_id;
                     }
                     else {
-                      op_cur->uv.constant->info_long_constant_id = package->info_long_constants->length;
-                      SPVM_LIST_push(package->info_long_constants, (void*)(intptr_t)op_cur->uv.constant);
-                      int32_t info_long_constant_id_plus1 = op_cur->uv.constant->info_long_constant_id + 1;
-                      SPVM_HASH_insert(package->info_long_constant_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)info_long_constant_id_plus1);
+                      int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_long(package->constant_pool, op_cur->uv.constant->value.lval);
+                      op_cur->uv.constant->info_long_constant_id = constant_pool_id;
+                      SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                     }
-                    if (package->info_long_constants->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                      SPVM_COMPILER_error(compiler, "Too many package variable access at %s line %d\n", op_cur->file, op_cur->line);
+                    if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+                      SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", op_cur->file, op_cur->line);
                       return;
                     }
                   }
