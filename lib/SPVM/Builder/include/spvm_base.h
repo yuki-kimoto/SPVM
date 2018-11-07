@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_constant_pool.h
+struct SPVM_constant_pool;
+typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
+
 // spvm_tree_info.h
 struct SPVM_tree_info;
 typedef struct SPVM_tree_info SPVM_TREE_INFO;
