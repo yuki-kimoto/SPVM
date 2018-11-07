@@ -142,6 +142,9 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->string_pool = portable->string_pool;
   runtime->string_pool_length = portable->string_pool_length;
   
+  runtime->global_constant_pool = portable->global_constant_pool;
+  runtime->global_constant_pool_length = portable->global_constant_pool_length;
+  
   // Share runtime information with portable
   runtime->basic_types = portable->basic_types;
   runtime->basic_types_length = portable->basic_types_length;
