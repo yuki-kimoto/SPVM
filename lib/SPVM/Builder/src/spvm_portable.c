@@ -70,6 +70,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   int32_t global_constant_pool_index = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    package->constant_pool_base = global_constant_pool_index;
     memcpy(&portable->global_constant_pool[global_constant_pool_index], package->constant_pool->values, sizeof(int32_t) * package->constant_pool->length);
     global_constant_pool_index += package->constant_pool->length;
   }
@@ -222,6 +223,8 @@ void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable
 
   new_portable_package->info_types_base = portable->info_types_length;
   new_portable_package->info_types_length = package->info_types->length;
+
+  new_portable_package->constant_pool_base = package->constant_pool_base;
 
   for (int32_t info_package_var_ids_index = 0; info_package_var_ids_index < package->info_package_var_ids->length; info_package_var_ids_index++) {
     int32_t info_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, info_package_var_ids_index);
