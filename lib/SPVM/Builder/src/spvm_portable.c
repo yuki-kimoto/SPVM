@@ -41,6 +41,7 @@
 #include "spvm_runtime_info_switch_info.h"
 #include "spvm_runtime_info_case_info.h"
 #include "spvm_string_buffer.h"
+#include "spvm_constant_pool.h"
 
 SPVM_PORTABLE* SPVM_PORTABLE_new() {
   
@@ -57,6 +58,21 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(compiler->string_pool->length + 1);
   portable->string_pool_length = compiler->string_pool->length;
   memcpy(portable->string_pool, compiler->string_pool->buffer, compiler->string_pool->length);
+  
+  // Global constant pool
+  int32_t global_constant_pool_length = 0;
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    global_constant_pool_length += package->constant_pool->length;
+  }
+  portable->global_constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (global_constant_pool_length + 1));
+  portable->global_constant_pool_length = global_constant_pool_length;
+  int32_t global_constant_pool_index = 0;
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    memcpy(&portable->global_constant_pool[global_constant_pool_index], package->constant_pool->values, sizeof(int32_t) * package->constant_pool->length);
+    global_constant_pool_index += package->constant_pool->length;
+  }
 
   // Portable basic type
   portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_BASIC_TYPE) * (compiler->basic_types->length + 1));
