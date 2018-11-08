@@ -1697,7 +1697,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check if source can be assigned to dist
               // If needed, numeric convertion op is added
-              SPVM_OP_CHECKER_check_assign(compiler, op_term_dist, op_term_src);
+              dist_type = SPVM_OP_get_type(compiler, op_term_dist);
+              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_term_src);
               if (compiler->error_count > 0) {
                 return;
               }
@@ -2368,10 +2369,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                     
                     SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
+                    SPVM_TYPE* sub_arg_my_type = SPVM_OP_get_type(compiler, sub_arg_my->op_my);
                     
                     // Check if source can be assigned to dist
                     // If needed, numeric convertion op is added
-                    op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my->op_my, op_term);
+                    op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my_type, op_term);
                     if (compiler->error_count > 0) {
                       return;
                     }
@@ -3721,8 +3723,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
-  SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
+SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
   // Dist type is numeric type
