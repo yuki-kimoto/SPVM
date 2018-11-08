@@ -1950,7 +1950,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_BYTE:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR);
-                            *(SPVM_VALUE_byte*)&opcode.operand1 = *(SPVM_VALUE_byte*)&constant->value;
+                            opcode.operand1 = (uint16_t)(uint8_t)constant->value.bval;
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_INT:
