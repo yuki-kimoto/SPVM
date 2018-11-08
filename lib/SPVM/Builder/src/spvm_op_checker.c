@@ -1719,6 +1719,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_invalid = 0;
                 }
               }
+              // Numeric type
+              else if (SPVM_TYPE_is_numeric_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                if (op_term) {
+                  SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+                  if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
+                    is_invalid = 0;
+                  }
+                  else {
+                    is_invalid = 1;
+                  }
+                }
+                else {
+                  is_invalid = 1;
+                }
+              }
               // Object type
               else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term) {
@@ -1736,10 +1751,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_invalid = 1;
                 }
               }
-              // Ref type
-              else if (SPVM_TYPE_is_ref_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                assert(0);
-              }
               // Value type
               else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term) {
@@ -1756,54 +1767,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                // Term
-                if (op_term) {
-                  SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_term);
-                  SPVM_TYPE* sub_return_type = SPVM_OP_get_type(compiler, sub->return_type->op_type);
-                  
-                  int32_t is_invalid = 0;
-                  
-                  // Undef
-                  if (op_term->id == SPVM_OP_C_ID_UNDEF) {
-                    if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
-                      is_invalid = 1;
-                    }
-                    else {
-                      if (SPVM_TYPE_is_numeric_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag)) {
-                        is_invalid = 1;
-                      }
-                    }
-                  }
-                  else if (op_term->id == SPVM_OP_C_ID_CALL_SUB) {
-                    SPVM_CALL_SUB* call_sub = op_term->uv.call_sub;
-                    SPVM_SUB* sub = call_sub->sub;
-                    if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
-                      SPVM_COMPILER_error(compiler, "Can't return value of void subroutine at %s line %d\n", op_cur->file, op_cur->line);
-                      return;
-                    }
-                  }
-                  // Normal
-                  else if (op_term) {
-                    if (!(first_type->basic_type->id == sub_return_type->basic_type->id && first_type->dimension == sub_return_type->dimension)) {
-                      is_invalid = 1;
-                    }
-                  }
-                  // Empty
-                  else {
-                    if (!(sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-                      is_invalid = 1;
-                    }
-                  }
-                  
-                  if (is_invalid) {
-                    SPVM_COMPILER_error(compiler, "Invalid return type at %s line %d\n", op_cur->file, op_cur->line);
-                    return;
-                  }
-                }
-                else {
-                  SPVM_COMPILER_error(compiler, "Invalid return type at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
+                assert(0);
               }
 
               if (is_invalid) {
