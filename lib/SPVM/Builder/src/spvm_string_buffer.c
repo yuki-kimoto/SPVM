@@ -210,14 +210,20 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
   
   int32_t id = string_buffer->length;
   
-  int32_t max_length = 20;
+  int32_t max_length = 20 + 1;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32, value);
+  int32_t write_length;
+  if (value == INT32_MIN) {
+    write_length = sprintf(string_buffer->buffer + string_buffer->length, "INT32_MIN");
+  }
+  else {
+    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32 "L", value);
+  }
   
   string_buffer->length += write_length;
   
@@ -228,14 +234,20 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
   
   int32_t id = string_buffer->length;
 
-  int32_t max_length = 20;
+  int32_t max_length = 20 + 2;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId64, value);
+  int32_t write_length;
+  if (value == INT64_MIN) {
+    write_length = sprintf(string_buffer->buffer + string_buffer->length, "INT64_MIN");
+  }
+  else {
+    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId64 "LL", value);
+  }
   
   string_buffer->length += write_length;
   
@@ -246,14 +258,14 @@ int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float va
   
   int32_t id = string_buffer->length;
   
-  int32_t max_length = 20;
+  int32_t max_length = 20 + 1;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.40f", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.20ff", value);
   
   string_buffer->length += write_length;
   
@@ -271,7 +283,7 @@ int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double 
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.70f", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.20f", value);
   
   string_buffer->length += write_length;
   

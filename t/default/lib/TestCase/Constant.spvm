@@ -2,7 +2,7 @@ package TestCase::Constant {
   # constant int
   sub load_constant_int_min : int () {
    # LOAD_CONSTANT
-    return -2147483647;
+    return -2147483648;
   }
   sub load_constant_int_m32769 : int () {
     # LOAD_CONSTANT
