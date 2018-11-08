@@ -1,5 +1,12 @@
 package TestCase::Constant {
 
+  sub load_constant_long_middle : long () {
+    return 4611686018427387904L;
+  }
+  sub multiply_long_overflow : long () {
+    return 4611686018427387904L;
+  }
+  
   sub load_constant_char : int () {
     {
       my $ch = 'a';

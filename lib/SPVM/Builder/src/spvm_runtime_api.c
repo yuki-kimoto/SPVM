@@ -823,9 +823,10 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
-        int64_t long_value;
-        memcpy(&long_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(int64_t));
-        long_vars[opcode->operand0] = long_value;
+        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        
+        long_vars[opcode->operand0] = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT: {
@@ -836,9 +837,14 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
+        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+
+        SPVM_VALUE value;
+        value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
+
         double double_value;
-        memcpy(&double_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(double));
-        double_vars[opcode->operand0] = double_value;
+        double_vars[opcode->operand0] = value.dval;
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {

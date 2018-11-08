@@ -7,6 +7,7 @@
 #include "spvm_list.h"
 #include "spvm_op.h"
 #include "spvm_hash.h"
+#include "spvm_native.h"
 
 SPVM_CONSTANT_POOL* SPVM_CONSTANT_POOL_new(int32_t capacity) {
   
@@ -59,11 +60,8 @@ int32_t SPVM_CONSTANT_POOL_push_long(SPVM_CONSTANT_POOL* constant_pool, int64_t 
   
   int32_t id = constant_pool->length;
 
-  // Add long value
-  SPVM_CONSTANT_POOL_extend(constant_pool, 2);
-  memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int64_t));
-  
-  constant_pool->length += 2;
+  SPVM_CONSTANT_POOL_push_int(constant_pool, (int32_t)(uint32_t)(((uint64_t)value >> 32) & 0xFFFFFFFF));
+  SPVM_CONSTANT_POOL_push_int(constant_pool, (int32_t)(uint32_t)((uint64_t)value & 0xFFFFFFFF));
   
   return id;
 }
@@ -71,12 +69,14 @@ int32_t SPVM_CONSTANT_POOL_push_long(SPVM_CONSTANT_POOL* constant_pool, int64_t 
 int32_t SPVM_CONSTANT_POOL_push_double(SPVM_CONSTANT_POOL* constant_pool, double value) {
 
   int32_t id = constant_pool->length;
-
-  // Add double value
-  SPVM_CONSTANT_POOL_extend(constant_pool, 2);
-  memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(double));
-  constant_pool->length += 2;
   
+  SPVM_VALUE union_value;
+  union_value.dval = value;
+  int64_t long_value = union_value.lval;
+
+  SPVM_CONSTANT_POOL_push_int(constant_pool, (int32_t)(uint32_t)(((uint64_t)long_value >> 32) & 0xFFFFFFFF));
+  SPVM_CONSTANT_POOL_push_int(constant_pool, (int32_t)(uint32_t)((uint64_t)long_value & 0xFFFFFFFF));
+
   return id;
 }
 

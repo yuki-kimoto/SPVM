@@ -2086,9 +2086,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
-        int64_t long_value;
-        memcpy(&long_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(int64_t));
-
+        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        
+        int64_t long_value = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -2109,13 +2111,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
-        double double_value;
-        memcpy(&double_value, &runtime->constant_pool[package->constant_pool_base + constant_pool_id], sizeof(double));
+        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+
+        SPVM_VALUE value;
+        value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_double(string_buffer, double_value);
+        SPVM_STRING_BUFFER_add_double(string_buffer, value.dval);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
