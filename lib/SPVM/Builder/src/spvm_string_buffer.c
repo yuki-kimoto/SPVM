@@ -170,7 +170,7 @@ int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char 
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_byte(SPVM_STRING_BUFFER* string_buffer, int8_t value) {
+int32_t SPVM_STRING_BUFFER_add_char(SPVM_STRING_BUFFER* string_buffer, int8_t value) {
   
   int32_t id = string_buffer->length;
   

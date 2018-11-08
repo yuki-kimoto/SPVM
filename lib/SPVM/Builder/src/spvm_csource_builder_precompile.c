@@ -2068,11 +2068,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_byte(string_buffer, *(SPVM_VALUE_byte*)&opcode->operand1);
+        SPVM_STRING_BUFFER_add_char(string_buffer, *(SPVM_VALUE_byte*)&opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
