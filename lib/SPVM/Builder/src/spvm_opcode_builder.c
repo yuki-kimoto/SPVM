@@ -1953,11 +1953,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             *(SPVM_VALUE_byte*)&opcode.operand1 = *(SPVM_VALUE_byte*)&constant->value;
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_SHORT:
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_SHORT);
-                            *(SPVM_VALUE_short*)&opcode.operand1 = *(SPVM_VALUE_short*)&constant->value;
-                            var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
-                            break;
                           case SPVM_BASIC_TYPE_C_ID_INT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_INT);
                             *(SPVM_VALUE_int*)&opcode.operand1 = *(SPVM_VALUE_int*)&constant->value;
