@@ -50,7 +50,7 @@ int32_t SPVM_CONSTANT_POOL_push_int(SPVM_CONSTANT_POOL* constant_pool, int32_t v
 
   // Add int value
   SPVM_CONSTANT_POOL_extend(constant_pool, 1);
-  memcpy(&constant_pool->values[constant_pool->length], &value, sizeof(int32_t));
+  constant_pool->values[constant_pool->length] = value;
   constant_pool->length += 1;
   
   return id;
