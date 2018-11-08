@@ -160,11 +160,20 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
                       {
                         SPVM_OP* op_type_tmp = op_type_element;
+                        
                         op_type_tmp->uv.type->info_constant_id = package->info_types->length;
                         SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
                         if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                           return;
+                        }
+                        
+                        // No duplicate basic type id
+                        SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                        if (found_basic_type == NULL) {
+                          SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                          SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
                         }
                       }
                     }
@@ -188,6 +197,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                         if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                           SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                           return;
+                        }
+                        // No duplicate basic type id
+                        SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                        if (found_basic_type == NULL) {
+                          SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                          SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
                         }
                       }
                     }
@@ -841,6 +857,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                         SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                         return;
                       }
+                      // No duplicate basic type id
+                      SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                      if (found_basic_type == NULL) {
+                        SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                        SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
+                      }
                     }
                   }
                 }
@@ -919,6 +942,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                       SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                       return;
+                    }
+                    // No duplicate basic type id
+                    SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                    if (found_basic_type == NULL) {
+                      SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                      SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
                     }
                   }
                 }
@@ -1016,6 +1046,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
                     SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                     return;
+                  }
+                  // No duplicate basic type id
+                  SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                  if (found_basic_type == NULL) {
+                    SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                    SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
                   }
                 }
               }
@@ -2785,6 +2822,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
                     return;
                   }
+                  // No duplicate basic type id
+                  SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                  if (found_basic_type == NULL) {
+                    SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                    SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
+                  }
                 }
                 break;
               }
@@ -3599,6 +3643,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
         int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
         SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
+      }
+
+      // Add no duplicate basic type id to constant pool
+      package->no_dup_basic_type_ids_constant_pool_id = package->constant_pool->length;
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
+      for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
+        int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
       }
 
       if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
