@@ -161,13 +161,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       {
                         SPVM_OP* op_type_tmp = op_type_element;
                         
-                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                          return;
-                        }
-                        
                         // No duplicate basic type id
                         SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                         SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
@@ -207,12 +200,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (!SPVM_TYPE_is_numeric_type(compiler, op_type_new->uv.type->basic_type->id, op_type_new->uv.type->dimension, op_type_new->uv.type->flag)) {
                       {
                         SPVM_OP* op_type_tmp = op_type_new;
-                        op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                        SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                        if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                          SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                          return;
-                        }
                         // No duplicate basic type id
                         SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                         SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
@@ -877,12 +864,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     {
                       SPVM_OP* op_type_tmp = op_type;
-                      op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                      SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                      if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                        SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                        return;
-                      }
                       // No duplicate basic type id
                       SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                       SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
@@ -978,12 +959,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
                   {
                     SPVM_OP* op_type_tmp = op_type;
-                    op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                    SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                    if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                      SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                      return;
-                    }
                     // No duplicate basic type id
                     SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                     SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
@@ -1097,12 +1072,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 {
                   SPVM_OP* op_type_tmp = op_type;
-                  op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                  SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                  if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                    SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                    return;
-                  }
                   // No duplicate basic type id
                   SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
@@ -2887,12 +2856,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 {
                   SPVM_OP* op_type_tmp = op_dist;
-                  op_type_tmp->uv.type->info_constant_id = package->info_types->length;
-                  SPVM_LIST_push(package->info_types, op_type_tmp->uv.type);
-                  if (package->info_types->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-                    SPVM_COMPILER_error(compiler, "Too many types at %s line %d\n", op_type_tmp->file, op_type_tmp->line);
-                    return;
-                  }
                   // No duplicate basic type id
                   SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
                   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));

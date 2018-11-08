@@ -29,9 +29,6 @@ struct SPVM_portable {
   int32_t args_length;
   SPVM_RUNTIME_MY* args;
 
-  int32_t info_types_length;
-  SPVM_RUNTIME_INFO_TYPE* info_types;
-
   int32_t info_switch_info_ints_capacity;
   int32_t info_switch_infos_length;
   int32_t info_switch_info_ints_length;
@@ -51,7 +48,6 @@ void SPVM_PORTABLE_push_basic_type(SPVM_COMPILER* compiler, SPVM_PORTABLE* porta
 void SPVM_PORTABLE_push_field(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_FIELD* field);
 void SPVM_PORTABLE_push_package_var(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var);
 void SPVM_PORTABLE_push_package(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_PACKAGE* package);
-void SPVM_PORTABLE_push_info_type(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_TYPE* info_type);
 void SPVM_PORTABLE_push_info_switch_info(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_SWITCH_INFO* info_switch_info);
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable);
 

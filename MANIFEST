@@ -16,6 +16,7 @@ lib/SPVM/Builder/include/spvm_case_info.h
 lib/SPVM/Builder/include/spvm_compiler.h
 lib/SPVM/Builder/include/spvm_compiler_allocator.h
 lib/SPVM/Builder/include/spvm_constant.h
+lib/SPVM/Builder/include/spvm_constant_pool.h
 lib/SPVM/Builder/include/spvm_csource_builder_exe.h
 lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
 lib/SPVM/Builder/include/spvm_descriptor.h
@@ -48,7 +49,6 @@ lib/SPVM/Builder/include/spvm_runtime_basic_type.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_info_case_info.h
 lib/SPVM/Builder/include/spvm_runtime_info_switch_info.h
-lib/SPVM/Builder/include/spvm_runtime_info_type.h
 lib/SPVM/Builder/include/spvm_runtime_my.h
 lib/SPVM/Builder/include/spvm_runtime_package.h
 lib/SPVM/Builder/include/spvm_runtime_package_var.h
@@ -72,6 +72,7 @@ lib/SPVM/Builder/src/spvm_case_info.c
 lib/SPVM/Builder/src/spvm_compiler.c
 lib/SPVM/Builder/src/spvm_compiler_allocator.c
 lib/SPVM/Builder/src/spvm_constant.c
+lib/SPVM/Builder/src/spvm_constant_pool.c
 lib/SPVM/Builder/src/spvm_csource_builder_exe.c
 lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
 lib/SPVM/Builder/src/spvm_descriptor.c

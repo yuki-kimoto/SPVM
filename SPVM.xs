@@ -47,9 +47,6 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_my.h"
-#include "spvm_runtime_info_type.h"
-#include "spvm_runtime_info_switch_info.h"
-#include "spvm_runtime_info_case_info.h"
 
 #include "spvm_portable.h"
 #include "spvm_csource_builder_exe.h"
