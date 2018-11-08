@@ -1715,12 +1715,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 int32_t is_invalid = 0;
                 
-                // Can't return refernece type
-                if (SPVM_TYPE_is_ref_type(compiler, sub_return_type->basic_type->id, sub_return_type->dimension, sub_return_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "Can't return reference type at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
-                
                 // Undef
                 if (op_term->id == SPVM_OP_C_ID_UNDEF) {
                   if (sub->return_type->dimension == 0 && sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
@@ -4422,6 +4416,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         return;
       }
+
+      // Can't return refernece type
+      if (SPVM_TYPE_is_ref_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+        SPVM_COMPILER_error(compiler, "Can't return reference type at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        return;
+      }
+
       // Add sub name to string pool
       int32_t found_name_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)sub->name, strlen(sub->name) + 1);
       if (found_name_string_pool_id == 0) {
