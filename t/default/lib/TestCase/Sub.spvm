@@ -15,12 +15,12 @@ package TestCase::Sub {
 
   sub test_return_value_automatical_numeric_convertion_narrowing_byte : byte () {
     
-    return INT8_MIN();
+    return 127;
   }
 
   sub test_return_value_automatical_numeric_convertion_narrowing_short : short () {
     
-    return INT16_MIN();
+    return 32767;
   }
   
   sub return_value_automatical_numeric_convertion : int () {
@@ -32,15 +32,15 @@ package TestCase::Sub {
     }
     
     {
-      my $num : double = test_return_value_automatical_numeric_convertion_narrowing_byte();
-      unless ($num == INT8_MIN()) {
+      my $num : byte = test_return_value_automatical_numeric_convertion_narrowing_byte();
+      unless ($num == 127) {
         return 0;
       }
     }
 
     {
-      my $num : double = test_return_value_automatical_numeric_convertion_narrowing_short();
-      unless ($num == INT16_MIN()) {
+      my $num : short = test_return_value_automatical_numeric_convertion_narrowing_short();
+      unless ($num == 32767) {
         return 0;
       }
     }

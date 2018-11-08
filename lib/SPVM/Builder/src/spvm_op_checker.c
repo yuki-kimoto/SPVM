@@ -1724,6 +1724,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (op_term) {
                   // Automatical numeric convertion
                   op_term = SPVM_OP_CHECKER_check_assign(compiler, sub->return_type, op_term);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
                   
                   SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
                   if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
