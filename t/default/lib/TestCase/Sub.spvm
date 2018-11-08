@@ -12,12 +12,37 @@ package TestCase::Sub {
     
     return 2;
   }
+
+  sub test_return_value_automatical_numeric_convertion_narrowing_byte : byte () {
+    
+    return INT8_MIN();
+  }
+
+  sub test_return_value_automatical_numeric_convertion_narrowing_short : short () {
+    
+    return INT16_MIN();
+  }
   
   sub return_value_automatical_numeric_convertion : int () {
-    my $num : double = test_return_value_automatical_numeric_convertion_widening();
+    {
+      my $num : double = test_return_value_automatical_numeric_convertion_widening();
+      unless ($num == 2.0) {
+        return 0;
+      }
+    }
     
-    unless ($num == 2.0) {
-      return 0;
+    {
+      my $num : double = test_return_value_automatical_numeric_convertion_narrowing_byte();
+      unless ($num == INT8_MIN()) {
+        return 0;
+      }
+    }
+
+    {
+      my $num : double = test_return_value_automatical_numeric_convertion_narrowing_short();
+      unless ($num == INT16_MIN()) {
+        return 0;
+      }
     }
     
     return 1;
