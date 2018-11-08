@@ -50,8 +50,8 @@ struct SPVM_type {
   SPVM_BASIC_TYPE* basic_type;
   int32_t dimension;
   int32_t flag;
-  int32_t sub_rel_id;
   int32_t info_constant_id;
+  int32_t constant_pool_id;
   int8_t is_self;
 };
 
