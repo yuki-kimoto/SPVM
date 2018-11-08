@@ -11,6 +11,10 @@ use SPVM 'TestCase::Constant';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+{
+  ok(TestCase::Constant->load_constant_char);
+}
+
 # constant int
 {
   is(TestCase::Constant->load_constant_int_min(), -2147483648);

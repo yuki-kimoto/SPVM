@@ -816,7 +816,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR:
-        byte_vars[opcode->operand0] = *(SPVM_VALUE_byte*)&opcode->operand1;
+        byte_vars[opcode->operand0] = *(char*)&opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_GET_CONSTANT_INT:
         int_vars[opcode->operand0] = *(SPVM_VALUE_int*)&opcode->operand1;

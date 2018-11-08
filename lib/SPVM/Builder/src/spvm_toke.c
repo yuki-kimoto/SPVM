@@ -594,7 +594,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\'': {
         compiler->bufptr++;
         
-        int8_t ch;
+        char ch;
         // Null string
         if (*compiler->bufptr == '\'') {
           ch = '\0';
@@ -624,6 +624,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               ch = '\f';
               compiler->bufptr++;
             }
+            else if (*compiler->bufptr == '0') {
+              ch = '\0';
+              compiler->bufptr++;
+            }
             else {
               ch = *compiler->bufptr;
             }
@@ -633,10 +637,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           
-          if (*compiler->bufptr != '\'') {
-            SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d", compiler->cur_file, compiler->cur_line);
+          if (*compiler->bufptr == '\'') {
+            compiler->bufptr++;
           }
-          compiler->bufptr++;
+          else {
+            SPVM_COMPILER_error(compiler, "Can't find constant char terminator \"'\" at %s line %d\n", compiler->cur_file, compiler->cur_line);
+          }
         }
         
         // Constant 
@@ -696,6 +702,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           if (*compiler->bufptr == '\0') {
             SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            continue;
           }
           
           int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr);

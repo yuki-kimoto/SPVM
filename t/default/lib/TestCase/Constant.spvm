@@ -1,4 +1,22 @@
 package TestCase::Constant {
+
+  sub load_constant_char : int () {
+    {
+      my $ch = 'a';
+      unless ($ch == 97) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ch = '\0';
+      unless ($ch == 0) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   # constant int
   sub load_constant_int_min : int () {
    # LOAD_CONSTANT
