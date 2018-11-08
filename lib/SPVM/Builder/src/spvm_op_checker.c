@@ -1709,7 +1709,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_term = op_cur->first;
               
-              // void type
+              // Void type
               int32_t is_invalid = 0;
               if (SPVM_TYPE_is_void_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term) {
@@ -1719,12 +1719,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_invalid = 0;
                 }
               }
-              // object type
+              // Object type
               else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term->id == SPVM_OP_C_ID_UNDEF) {
                   is_invalid = 0;
                 }
                 else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                  is_invalid = 0;
+                }
+                else {
+                  is_invalid = 1;
+                }
+              }
+              // Ref type
+              else if (SPVM_TYPE_is_ref_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                assert(0);
+              }
+              // Value type
+              else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+                if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
                   is_invalid = 0;
                 }
                 else {
