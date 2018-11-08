@@ -1645,13 +1645,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       case SPVM_OPCODE_C_ID_ISA_OBJECT:
       {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-        int32_t dimension = type->dimension;
+        int32_t dimension = type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -1698,13 +1697,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_ISA_INTERFACE:
       {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-        int32_t dimension = type->dimension;
+        int32_t dimension = type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (");
@@ -2612,10 +2610,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
 
@@ -2760,10 +2757,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
 
@@ -2810,13 +2806,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-        int32_t element_dimension = type->dimension - 1;
+        int32_t element_dimension = type_dimension - 1;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -2864,10 +2859,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_VALUE_ARRAY: {
-        int32_t info_constant_id = opcode->operand1;
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t basic_type_id = type->basic_type_id;
-        int32_t type_dimension = type->dimension;
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
 
@@ -3248,11 +3242,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
-        int32_t info_constant_id = opcode->operand2;
+        int32_t constant_pool_id = opcode->operand2;
 
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t cast_basic_type_id = type->basic_type_id;
-        int32_t cast_type_dimension = type->dimension;
+        int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t cast_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[cast_basic_type_id];
         const char* cast_basic_type_name = &runtime->string_pool[cast_basic_type->name_id];
         
@@ -3309,11 +3302,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE: {
-        int32_t info_constant_id = opcode->operand2;
+        int32_t constant_pool_id = opcode->operand2;
 
-        SPVM_RUNTIME_INFO_TYPE* type = &runtime->info_types[package->info_types_base + info_constant_id];
-        int32_t cast_basic_type_id = type->basic_type_id;
-        int32_t cast_type_dimension = type->dimension;
+        int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t cast_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
         SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[cast_basic_type_id];
         const char* cast_basic_type_name = &runtime->string_pool[cast_basic_type->name_id];
         
@@ -3972,8 +3964,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
-        int32_t info_constant_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, package->info_switch_infos_base + info_constant_id);
+        int32_t constant_pool_id = opcode->operand2;
+        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, package->info_switch_infos_base + constant_pool_id);
         SPVM_LIST* case_infos = switch_info->case_infos;
 
         // default field_index
