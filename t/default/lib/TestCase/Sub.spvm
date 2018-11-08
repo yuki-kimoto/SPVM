@@ -7,7 +7,22 @@ package TestCase::Sub {
   use TestCase::Point_f3;
   use TestCase::Point_d3;
   use SPVM::Comparator;
-
+  
+  sub test_return_value_automatical_numeric_convertion_widening : double () {
+    
+    return 2;
+  }
+  
+  sub return_value_automatical_numeric_convertion : int () {
+    my $num : double = test_return_value_automatical_numeric_convertion_widening();
+    
+    unless ($num == 2.0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
     
     unless ($string eq "a") {

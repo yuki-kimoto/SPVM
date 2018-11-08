@@ -22,6 +22,10 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Retrun value automatical numeric convertion
+{
+  ok(TestCase::Sub->return_value_automatical_numeric_convertion);
+}
 # variable length arguments
 {
   ok(TestCase::Sub->vaarg_objects_pass_each_values);
