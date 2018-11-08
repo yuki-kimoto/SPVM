@@ -828,9 +828,12 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         long_vars[opcode->operand0] = long_value;
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT:
-        float_vars[opcode->operand0] = *(float*)&opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT: {
+        SPVM_VALUE value;
+        value.ival = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
+        float_vars[opcode->operand0] = value.fval;
         break;
+      }
       case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
         double double_value;

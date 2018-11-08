@@ -1966,7 +1966,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           case SPVM_BASIC_TYPE_C_ID_FLOAT:
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT);
-                            *(SPVM_VALUE_float*)&opcode.operand1 = *(SPVM_VALUE_float*)&constant->value;
+                            opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
+                            opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_DOUBLE:
