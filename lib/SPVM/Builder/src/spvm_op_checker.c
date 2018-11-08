@@ -1721,11 +1721,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               // Object type
               else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                if (op_term->id == SPVM_OP_C_ID_UNDEF) {
-                  is_invalid = 0;
-                }
-                else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                  is_invalid = 0;
+                if (op_term) {
+                  if (op_term->id == SPVM_OP_C_ID_UNDEF) {
+                    is_invalid = 0;
+                  }
+                  else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                    is_invalid = 0;
+                  }
+                  else {
+                    is_invalid = 1;
+                  }
                 }
                 else {
                   is_invalid = 1;
@@ -1737,9 +1742,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               // Value type
               else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
-                if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
-                  is_invalid = 0;
+                if (op_term) {
+                  SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+                  if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
+                    is_invalid = 0;
+                  }
+                  else {
+                    is_invalid = 1;
+                  }
                 }
                 else {
                   is_invalid = 1;
