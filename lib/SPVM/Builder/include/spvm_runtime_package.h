@@ -25,6 +25,7 @@ struct SPVM_runtime_package {
   uint16_t no_dup_field_access_field_ids_constant_pool_id;
   uint16_t no_dup_package_var_access_package_var_ids_constant_pool_id;
   uint16_t no_dup_call_sub_sub_ids_constant_pool_id;
+  uint16_t no_dup_basic_type_ids_constant_pool_id;
 };
 
 SPVM_RUNTIME_PACKAGE* SPVM_RUNTIME_PACKAGE_new();

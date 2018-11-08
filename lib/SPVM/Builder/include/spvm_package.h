@@ -48,6 +48,7 @@ struct SPVM_package {
   int32_t no_dup_field_access_field_ids_constant_pool_id;
   int32_t no_dup_package_var_access_package_var_ids_constant_pool_id;
   int32_t no_dup_call_sub_sub_ids_constant_pool_id;
+  int32_t no_dup_basic_type_ids_constant_pool_id;
   const char* load_path;
   SPVM_OP* op_type;
   int32_t id;
