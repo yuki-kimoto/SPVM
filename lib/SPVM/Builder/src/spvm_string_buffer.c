@@ -210,7 +210,7 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
   
   int32_t id = string_buffer->length;
   
-  int32_t max_length = 20 + 1;
+  int32_t max_length = 20;
   
   int32_t new_max_length = string_buffer->length + max_length;
   
@@ -222,7 +222,7 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
     write_length = sprintf(string_buffer->buffer + string_buffer->length, "INT32_MIN");
   }
   else {
-    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32 "L", value);
+    write_length = sprintf(string_buffer->buffer + string_buffer->length, "%" PRId32, value);
   }
   
   string_buffer->length += write_length;
