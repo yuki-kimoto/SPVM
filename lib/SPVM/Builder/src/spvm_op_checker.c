@@ -10,7 +10,6 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_compiler_allocator.h"
-#include "spvm_yacc_util.h"
 #include "spvm_op.h"
 #include "spvm_op_checker.h"
 #include "spvm_sub.h"

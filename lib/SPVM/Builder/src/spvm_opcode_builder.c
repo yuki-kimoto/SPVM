@@ -33,7 +33,6 @@
 #include "spvm_opcode.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
-#include "spvm_yacc_util.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 #include "spvm_constant_pool.h"
