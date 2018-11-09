@@ -69,18 +69,6 @@ package TestCase::List {
     return 1;
   }
 
-  # to verify test_splice if initial list's offset is not 0.
-  sub make_different_offset_list : SPVM::List ($objects : object[], $unshift_count : int) {
-    my $list = SPVM::List->new_with_capacity(@$objects);
-    for (my $i = 0; $i < $unshift_count; $i++) {
-      $list->unshift($objects->[$unshift_count - $i - 1]);
-    }
-    for (my $i = 0; $i < @$objects - $unshift_count; $i++) {
-      $list->push($objects->[$unshift_count + $i]);
-    }
-    return $list;
-  }
-
   sub test_ctor_default : int () {
     unless (check_fields(SPVM::List->new, 16, -16, 0)) {
       return 0;
@@ -361,98 +349,96 @@ package TestCase::List {
     my $vi1 = SPVM::Int->new(10);
     my $vi2 = SPVM::Int->new(11);
     my $replace = [(object) $vi1, $vi2];
-    for (my $unshift_count = 0; $unshift_count < 1; $unshift_count++) { # TODO: $unshift_count < 2 or remove this for-loop
-      # extract left-inside
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2, $v3, $v4, $v5], $unshift_count);
-        my $extracted = $list->splice(1, 2, undef);
-        unless (equals_array($extracted, [(object) $v2, $v3])) {
-          return 0;
-        }
-        unless (check_fields($list, 5, -3, 3)) {
-          return 0;
-        }
-        unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v4, $v5]))) {
-          return 0;
-        }
+    # extract left-inside
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $extracted = $list->splice(1, 2, undef);
+      unless (equals_array($extracted, [(object) $v2, $v3])) {
+        return 0;
       }
-      # extract right-inside
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2, $v3, $v4, $v5], $unshift_count);
-        my $extracted = $list->splice(2, 2, undef);
-        unless (equals_array($extracted, [(object) $v3, $v4])) {
-          return 0;
-        }
-        unless (check_fields($list, 5, -5, 3)) {
-          return 0;
-        }
-        unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $v5]))) {
-          return 0;
-        }
+      unless (check_fields($list, 5, -3, 3)) {
+        return 0;
       }
-      # replace list at left corner
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2], $unshift_count);
-        my $extracted = $list->splice(0, 1, $replace);
-        unless (equals_array($extracted, [(object) $v1])) {
-          return 0;
-        }
-        unless (check_fields($list, 3, -1, 3)) {
-          return 0;
-        }
-        unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $vi1, $vi2, $v2]))) {
-          return 0;
-        }
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v4, $v5]))) {
+        return 0;
       }
-      # replace list at right corner
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2], $unshift_count);
-        my $extracted = $list->splice(1, 1, $replace);
-        unless (equals_array($extracted, [(object) $v2])) {
-          return 0;
-        }
-        unless (check_fields($list, 3, -3, 3)) {
-          return 0;
-        }
-        unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $vi1, $vi2]))) {
-          return 0;
-        }
+    }
+    # extract right-inside
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $extracted = $list->splice(2, 2, undef);
+      unless (equals_array($extracted, [(object) $v3, $v4])) {
+        return 0;
       }
-      # replace list at center
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2, $v3, $v4, $v5], $unshift_count);
-        my $extracted = $list->splice(1, 3, $replace);
-        unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
-          return 0;
-        }
-        unless (check_fields($list, 5, -5, 4)) {
-          return 0;
-        }
+      unless (check_fields($list, 5, -5, 3)) {
+        return 0;
       }
-      # insert list back with cut_length = 0
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2], $unshift_count);
-        my $extracted = $list->splice(2, 0, $replace);
-        unless (equals_array($extracted, new object[0])) {
-          return 0;
-        }
-        unless (check_fields($list, 4, -4, 4)) {
-          return 0;
-        }
-        unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $vi1, $vi2]))) {
-          return 0;
-        }
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $v5]))) {
+        return 0;
       }
-      # insert list back with cut_length > 0
-      {
-        my $list = make_different_offset_list([(object) $v1, $v2], $unshift_count);
-        my $extracted = $list->splice(2, 10, $replace);
-        unless (equals_array($extracted, new object[0])) {
-          return 0;
-        }
-        unless (check_fields($list, 4, -4, 4)) {
-          return 0;
-        }
+    }
+    # replace list at left corner
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
+      my $extracted = $list->splice(0, 1, $replace);
+      unless (equals_array($extracted, [(object) $v1])) {
+        return 0;
+      }
+      unless (check_fields($list, 3, -1, 3)) {
+        return 0;
+      }
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $vi1, $vi2, $v2]))) {
+        return 0;
+      }
+    }
+    # replace list at right corner
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
+      my $extracted = $list->splice(1, 1, $replace);
+      unless (equals_array($extracted, [(object) $v2])) {
+        return 0;
+      }
+      unless (check_fields($list, 3, -3, 3)) {
+        return 0;
+      }
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $vi1, $vi2]))) {
+        return 0;
+      }
+    }
+    # replace list at center
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $extracted = $list->splice(1, 3, $replace);
+      unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
+        return 0;
+      }
+      unless (check_fields($list, 5, -5, 4)) {
+        return 0;
+      }
+    }
+    # insert list back with cut_length = 0
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
+      my $extracted = $list->splice(2, 0, $replace);
+      unless (equals_array($extracted, new object[0])) {
+        return 0;
+      }
+      unless (check_fields($list, 4, -4, 4)) {
+        return 0;
+      }
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2, $vi1, $vi2]))) {
+        return 0;
+      }
+    }
+    # insert list back with cut_length > 0
+    {
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
+      my $extracted = $list->splice(2, 10, $replace);
+      unless (equals_array($extracted, new object[0])) {
+        return 0;
+      }
+      unless (check_fields($list, 4, -4, 4)) {
+        return 0;
       }
     }
     return 1;
@@ -479,12 +465,12 @@ package TestCase::List {
       }
     }
     {
-      my $list = make_different_offset_list([(object) $v1, $v2], 1);
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, undef);
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      unless (check_fields($list, 2, -2, 1)) {
+      unless (check_fields($list, 2, -1, 1)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v2]))) {
@@ -506,12 +492,12 @@ package TestCase::List {
       }
     }
     {
-      my $list = make_different_offset_list([(object) $v1, $v2], 1);
+      my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, undef);
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      unless (check_fields($list, 2, -1, 1)) {
+      unless (check_fields($list, 2, -2, 1)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1]))) {
@@ -519,18 +505,16 @@ package TestCase::List {
       }
     }
     # cut_length = replace_length = 0
-    for (my $unshift_count = 0; $unshift_count < 1; $unshift_count++) { # TODO: $unshift_count < 2 or remove this for-loop
-      my $list = make_different_offset_list([(object) $v1, $v2], $unshift_count);
-      my $extracted = $list->splice(2, 0, undef);
-      unless (equals_array($extracted, new object[0])) {
-        return 0;
-      }
-      unless (check_fields($list, 2, -2, 2)) {
-        return 0;
-      }
-      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2]))) {
-        return 0;
-      }
+    my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
+    my $extracted = $list->splice(2, 0, undef);
+    unless (equals_array($extracted, new object[0])) {
+      return 0;
+    }
+    unless (check_fields($list, 2, -2, 2)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v2]))) {
+      return 0;
     }
     return 1;
   }
