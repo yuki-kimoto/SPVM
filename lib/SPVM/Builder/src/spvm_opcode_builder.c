@@ -3443,23 +3443,25 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t range = max - min + 1;
                       
                       // Match values and branchs
-                      for (int32_t i = min; i < range; i++) {
+                      for (int32_t i = min; i <= max; i++) {
                         // Match value
 
                         SPVM_CASE_INFO* found_case_info = NULL;
                         for (int32_t case_index = 0; case_index < switch_info->case_infos->length; case_index++) {
                           SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, case_index);
-                          if (min + i == case_info->constant->value.ival) {
+                          if (i == case_info->constant->value.ival) {
                             found_case_info = case_info;
+                            break;
                           }
                         }
                         
                         // Branch
+                        int32_t offset = i - min;
                         if (found_case_info) {
-                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + i] = found_case_info->opcode_rel_index;
+                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = found_case_info->opcode_rel_index;
                         }
                         else {
-                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + i] = default_bracnh;
+                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = default_bracnh;
                         }
                       }
                     }
