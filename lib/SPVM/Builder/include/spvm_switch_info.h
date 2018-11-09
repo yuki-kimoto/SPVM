@@ -10,7 +10,7 @@ enum {
 
 // Parser information
 struct SPVM_switch_info {
-  SPVM_LIST* cases;
+  SPVM_LIST* case_infos;
   SPVM_OP* op_default;
   int32_t id;
   int32_t default_opcode_rel_index;

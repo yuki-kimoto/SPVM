@@ -363,7 +363,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-              SPVM_LIST* cases = switch_info->cases;
+              SPVM_LIST* cases = switch_info->case_infos;
               int32_t length = cases->length;
               
               // Check case type
@@ -389,16 +389,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // sort by asc order
-              for (int32_t i = 0; i < switch_info->cases->length; i++) {
-                for (int32_t j = i + 1; j < switch_info->cases->length; j++) {
-                  SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->cases, i);
-                  SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->cases, j);
+              for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
+                  SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->case_infos, i);
+                  SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->case_infos, j);
                   int32_t match_i = case_i->constant->value.ival;
                   int32_t match_j = case_j->constant->value.ival;
                   
                   if (match_i > match_j) {
-                    SPVM_LIST_store(switch_info->cases, i, case_j);
-                    SPVM_LIST_store(switch_info->cases, j, case_i);
+                    SPVM_LIST_store(switch_info->case_infos, i, case_j);
+                    SPVM_LIST_store(switch_info->case_infos, j, case_i);
                   }
                 }
               }
@@ -415,11 +415,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur->uv.switch_info->constant_pool_id_new = package->constant_pool->length;
               
               // Min
-              SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->cases, 0);
+              SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->case_infos, 0);
               int32_t min = case_info_mini->constant->value.ival;
               
               // Max
-              SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->cases, switch_info->cases->length - 1);
+              SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
               int32_t max = case_info_max->constant->value.ival;
               
               // Decide switch type
@@ -457,11 +457,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
                 
                 // Case length
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->cases->length);
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->case_infos->length);
                 
                 // Match values and branchs
-                for (int32_t i = 0; i < switch_info->cases->length; i++) {
-                  SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                  SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
                   
                   // Match value
                   SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info->constant->value.ival);
@@ -477,8 +477,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (tree_info->op_switch_stack->length > 0) {
                 SPVM_OP* op_switch = SPVM_LIST_fetch(tree_info->op_switch_stack, tree_info->op_switch_stack->length - 1);
                 SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
-                op_cur->uv.case_info->index = switch_info->cases->length;
-                SPVM_LIST_push(switch_info->cases, op_cur->uv.case_info);
+                op_cur->uv.case_info->index = switch_info->case_infos->length;
+                SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
               }
               break;
             }

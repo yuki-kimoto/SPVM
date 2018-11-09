@@ -3391,12 +3391,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     int32_t var_id_in = SPVM_OP_get_var_id(compiler, op_cur->first);
                     opcode_switch_info.operand0 = var_id_in;
+
+                    opcode_switch_info.operand1 = switch_info->constant_pool_id_new;
                     
-                    // Default
-                    opcode_switch_info.operand1 = 0;
-                    
-                    // Case count
-                    int32_t cases_length = switch_info->cases->length;
                     opcode_switch_info.operand2 = switch_info->constant_pool_id;
 
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
@@ -3405,7 +3402,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_LIST_push(switch_info_stack, switch_info);
 
                     // Max
-                    SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->cases, switch_info->cases->length - 1);
+                    SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
                     int32_t max = case_info_max->constant->value.ival;
 
                     // Default
@@ -3417,8 +3414,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       // Max
 
                       // Match values and branchs
-                      for (int32_t i = 0; i < switch_info->cases->length; i++) {
-                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                      for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
                         
                         int32_t offset = max - case_info->constant->value.ival;
                         
@@ -3434,8 +3431,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       // Case length
                       
                       // Match values and branchs
-                      for (int32_t i = 0; i < switch_info->cases->length; i++) {
-                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                      for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
   
                         // Match value
                         

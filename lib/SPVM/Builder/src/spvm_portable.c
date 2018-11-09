@@ -255,7 +255,7 @@ void SPVM_PORTABLE_push_arg(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
 
 void SPVM_PORTABLE_push_info_switch_info(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_SWITCH_INFO* info_switch_info) {
   
-  SPVM_LIST* case_infos = info_switch_info->cases;
+  SPVM_LIST* case_infos = info_switch_info->case_infos;
   int32_t max_extend_length = 1 + case_infos->length * 2;
   
   if (portable->info_switch_info_ints_length + max_extend_length >= portable->info_switch_info_ints_capacity) {
