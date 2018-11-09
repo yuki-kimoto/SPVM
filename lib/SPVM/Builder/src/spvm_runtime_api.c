@@ -3024,27 +3024,24 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         continue;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
+        
+        int32_t constant_pool_id = opcode->operand1;
 
-        int32_t constant_pool_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, package->info_switch_infos_base + constant_pool_id);
-        SPVM_LIST* case_infos = switch_info->case_infos;
+        // Default branch
+        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         
-        // default
-        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
-        
-        // cases length
-        int32_t case_infos_length = case_infos->length;
-        
+        // Cases length
+        int32_t case_infos_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+
+
         if (case_infos_length > 0) {
-          
-          SPVM_RUNTIME_INFO_CASE_INFO* case_min = SPVM_LIST_fetch(case_infos, 0);
-          SPVM_RUNTIME_INFO_CASE_INFO* case_max = SPVM_LIST_fetch(case_infos, case_infos->length - 1);
-          
           // min
-          int32_t min = case_min->match;
+          int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
           
           // max
-          int32_t max = case_max->match;
+          int32_t max = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * (case_infos_length - 1))];
+
+
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
@@ -3057,8 +3054,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_RUNTIME_INFO_CASE_INFO* case_half = SPVM_LIST_fetch(case_infos, cur_half_pos);
-              int32_t cur_half = case_half->match;
+              int32_t cur_half = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * cur_half_pos)];
               
               if (int_vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;
@@ -3067,7 +3063,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
                 cur_max_pos = cur_half_pos - 1;
               }
               else {
-                opcode_rel_index = case_half->opcode_rel_index;
+                opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * cur_half_pos) + 1];
                 break;
               }
             }
