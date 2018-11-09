@@ -26,15 +26,15 @@
 #include "spvm_op_checker.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
-#include "spvm_my.h"
 #include "spvm_constant.h"
+#include "spvm_my.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
-#include "spvm_runtime_my.h"
+#include "spvm_runtime_arg.h"
 #include "spvm_string_buffer.h"
 #include "spvm_constant_pool.h"
 
@@ -108,7 +108,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable args
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_MY) * (args_total_length + 1));
+  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * (args_total_length + 1));
 
   // OPCode
   int32_t opcode_length = compiler->opcode_array->length;
@@ -215,8 +215,8 @@ void SPVM_PORTABLE_push_sub(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
   new_portable_sub->return_runtime_type = sub->return_runtime_type;
   
   for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
-    SPVM_MY* my = SPVM_LIST_fetch(sub->args, arg_id);
-    SPVM_PORTABLE_push_arg(compiler, portable, my);
+    SPVM_MY* my_arg = SPVM_LIST_fetch(sub->args, arg_id);
+    SPVM_PORTABLE_push_arg(compiler, portable, my_arg);
   }
 
   portable->subs_length++;
@@ -224,7 +224,7 @@ void SPVM_PORTABLE_push_sub(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
 
 void SPVM_PORTABLE_push_arg(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_MY* arg) {
   
-  SPVM_RUNTIME_MY* new_portable_arg = &portable->args[portable->args_length];
+  SPVM_RUNTIME_ARG* new_portable_arg = &portable->args[portable->args_length];
   new_portable_arg->basic_type_id = arg->type->basic_type->id;
   new_portable_arg->type_dimension = arg->type->dimension;
   new_portable_arg->type_flag = arg->type->flag;

@@ -34,8 +34,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
-#include "spvm_runtime_my.h"
-#include "spvm_my.h"
+#include "spvm_runtime_arg.h"
 
 #include "spvm_string_buffer.h"
 #include "spvm_portable.h"
@@ -138,7 +137,7 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_sub.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_field.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package_var.h\"\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_my.h\"\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_arg.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_opcode.h\"\n");
 
   // Add native sub headers
@@ -414,11 +413,11 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
   // args
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_MY args[");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_ARG args[");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->args_length + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
   for (int32_t arg_id = 0; arg_id < portable->args_length; arg_id++) {
-    SPVM_RUNTIME_MY* runtime_arg = &portable->args[arg_id];
+    SPVM_RUNTIME_ARG* runtime_arg = &portable->args[arg_id];
     SPVM_STRING_BUFFER_add(string_buffer, "    {");
     SPVM_STRING_BUFFER_add(string_buffer, ".basic_type_id = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->basic_type_id);

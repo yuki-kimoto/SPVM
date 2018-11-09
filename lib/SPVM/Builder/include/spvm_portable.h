@@ -26,7 +26,7 @@ struct SPVM_portable {
   SPVM_RUNTIME_SUB* subs;
 
   int32_t args_length;
-  SPVM_RUNTIME_MY* args;
+  SPVM_RUNTIME_ARG* args;
 
   int32_t opcodes_length;
   SPVM_OPCODE* opcodes;

@@ -1,10 +1,10 @@
-#ifndef SPVM_RUNTIME_MY_H
-#define SPVM_RUNTIME_MY_H
+#ifndef SPVM_RUNTIME_ARG_H
+#define SPVM_RUNTIME_ARG_H
 
 #include "spvm_base.h"
 
 // Field information
-struct SPVM_runtime_my {
+struct SPVM_runtime_arg {
   int32_t basic_type_id;
   uint16_t var_id;
   uint16_t type_flag;
@@ -13,6 +13,6 @@ struct SPVM_runtime_my {
   uint8_t type_width;
 };
 
-SPVM_RUNTIME_MY* SPVM_RUNTIME_MY_new();
+SPVM_RUNTIME_ARG* SPVM_RUNTIME_ARG_new();
 
 #endif

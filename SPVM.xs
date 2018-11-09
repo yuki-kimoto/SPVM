@@ -22,7 +22,6 @@
 #include "spvm_sub.h"
 #include "spvm_package.h"
 #include "spvm_sub.h"
-#include "spvm_my.h"
 #include "spvm_type.h"
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
@@ -46,7 +45,7 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
-#include "spvm_runtime_my.h"
+#include "spvm_runtime_arg.h"
 
 #include "spvm_portable.h"
 #include "spvm_csource_builder_exe.h"
@@ -801,7 +800,7 @@ call_sub(...)
     
     int32_t arg_var_id = 0;
     for (arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
+      SPVM_RUNTIME_ARG* arg = &runtime->args[sub->arg_ids_base + arg_index];
 
       SV* sv_value = ST(arg_index + arg_start);
       
@@ -1540,7 +1539,7 @@ call_sub(...)
     for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
       
-      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
+      SPVM_RUNTIME_ARG* arg = &runtime->args[sub->arg_ids_base + arg_index];
       int32_t ref_stack_id = ref_stack_ids[arg_index];
       switch (arg->runtime_type) {
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {

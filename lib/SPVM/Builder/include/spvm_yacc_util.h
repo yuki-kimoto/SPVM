@@ -1,5 +1,5 @@
-#ifndef SPVM_YACC_H
-#define SPVM_YACC_H
+#ifndef SPVM_YACC_UTIL_H
+#define SPVM_YACC_UTIL_H
 
 #include <stdio.h>
 #include "spvm_base.h"

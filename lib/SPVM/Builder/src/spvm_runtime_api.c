@@ -22,7 +22,7 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
-#include "spvm_runtime_my.h"
+#include "spvm_runtime_arg.h"
 #include "spvm_runtime_field.h"
 
 // Only use constant
@@ -221,7 +221,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = sub->arg_ids_base; arg_index < sub->arg_ids_base + sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_MY* arg = &runtime->args[arg_index];
+      SPVM_RUNTIME_ARG* arg = &runtime->args[arg_index];
       
       int32_t type_width = arg->type_width;
       switch (arg->runtime_type) {

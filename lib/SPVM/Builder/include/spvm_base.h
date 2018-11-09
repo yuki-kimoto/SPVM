@@ -16,25 +16,9 @@ typedef struct SPVM_tree_info SPVM_TREE_INFO;
 struct SPVM_portable;
 typedef struct SPVM_portable SPVM_PORTABLE;
 
-// spvm_runtime_info_case_info.h
-struct SPVM_runtime_info_case_info;
-typedef struct SPVM_runtime_info_case_info SPVM_RUNTIME_INFO_CASE_INFO;
-
-// spvm_runtime_info_switch_info.h
-struct SPVM_runtime_info_switch_info;
-typedef struct SPVM_runtime_info_switch_info SPVM_RUNTIME_INFO_SWITCH_INFO;
-
-// spvm_runtime_info_constant.h
-struct SPVM_runtime_info_constant;
-typedef struct SPVM_runtime_info_constant SPVM_RUNTIME_INFO_CONSTANT;
-
-// spvm_runtime_info_type.h
-struct SPVM_runtime_info_type;
-typedef struct SPVM_runtime_info_type SPVM_RUNTIME_INFO_TYPE;
-
-// spvm_runtime_my.h
-struct SPVM_runtime_my;
-typedef struct SPVM_runtime_my SPVM_RUNTIME_MY;
+// spvm_runtime_arg.h
+struct SPVM_runtime_arg;
+typedef struct SPVM_runtime_arg SPVM_RUNTIME_ARG;
 
 // spvm_runtime_package.h
 struct SPVM_runtime_package;

@@ -27,7 +27,7 @@
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
-#include "spvm_runtime_my.h"
+#include "spvm_runtime_arg.h"
 
 // Only use constant value
 #include "spvm_package.h"
@@ -1340,7 +1340,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
-      SPVM_RUNTIME_MY* arg = &runtime->args[sub->arg_ids_base + arg_index];
+      SPVM_RUNTIME_ARG* arg = &runtime->args[sub->arg_ids_base + arg_index];
 
       // Numeric type
       int32_t type_width = arg->type_width;
