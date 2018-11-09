@@ -396,7 +396,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              op_cur->uv.switch_info->info_constant_id = package->info_switch_infos->length;
+              op_cur->uv.switch_info->constant_pool_id = package->info_switch_infos->length;
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
               
               break;
