@@ -3410,12 +3410,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
                     int32_t max = case_info_max->constant->value.ival;
 
-                    // Default
-                    package->constant_pool->values[switch_info->constant_pool_id + 1] = switch_info->default_opcode_rel_index;
-                    
                     // Table switch constant pool
                     if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                      // Default
+                      package->constant_pool->values[switch_info->constant_pool_id + 1] = switch_info->default_opcode_rel_index;
+                    
                       // Min
+                      
                       // Max
 
                       // Match values and branchs
@@ -3432,6 +3433,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     // Lookup switch constant pool
                     else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                      // Default
+                      package->constant_pool->values[switch_info->constant_pool_id + 1] = switch_info->default_opcode_rel_index;
                       
                       // Case length
                       
