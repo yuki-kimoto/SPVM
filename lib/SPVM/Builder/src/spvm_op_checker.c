@@ -387,6 +387,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   case_info->constant = constant;
                 }
               }
+
+              // sort by asc order
+              for (int32_t i = 0; i < switch_info->cases->length; i++) {
+                for (int32_t j = i + 1; j < switch_info->cases->length; j++) {
+                  SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->cases, i);
+                  SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->cases, j);
+                  int32_t match_i = case_i->constant->value.ival;
+                  int32_t match_j = case_j->constant->value.ival;
+                  
+                  if (match_i > match_j) {
+                    SPVM_LIST_store(switch_info->cases, i, case_j);
+                    SPVM_LIST_store(switch_info->cases, j, case_i);
+                  }
+                }
+              }
               
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               
@@ -398,6 +413,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               op_cur->uv.switch_info->constant_pool_id = package->info_switch_infos->length;
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
+              
               
               break;
             }

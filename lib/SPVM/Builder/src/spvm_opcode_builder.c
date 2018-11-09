@@ -3410,36 +3410,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Pop switch information
                     SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
                     
-                    int32_t cases_length = (int32_t) switch_info->cases->length;
-                    
-                    {
-                      int32_t i;
-                      for (i = 0; i < cases_length; i++) {
-                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
-                        SPVM_LIST_push(switch_info->cases_ordered, case_info);
-                      }
-                    }
-                    // sort by asc order
-                    {
-                      int32_t i;
-                      for (i = 0; i < cases_length; i++) {
-                        int32_t j;
-                        {
-                          for (j = i + 1; j < cases_length; j++) {
-                            SPVM_CASE_INFO* case_i = SPVM_LIST_fetch(switch_info->cases_ordered, i);
-                            SPVM_CASE_INFO* case_j = SPVM_LIST_fetch(switch_info->cases_ordered, j);
-                            int32_t match_i = case_i->constant->value.ival;
-                            int32_t match_j = case_j->constant->value.ival;
-                            
-                            if (match_i > match_j) {
-                              SPVM_LIST_store(switch_info->cases_ordered, i, case_j);
-                              SPVM_LIST_store(switch_info->cases_ordered, j, case_i);
-                            }
-                          }
-                        }
-                      }
-                    }
-                    
                     // Set last position
                     while (last_goto_opcode_rel_index_stack->length > 0) {
                       
