@@ -3963,32 +3963,32 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
-        int32_t constant_pool_id = opcode->operand2;
-        SPVM_RUNTIME_INFO_SWITCH_INFO* switch_info = SPVM_LIST_fetch(runtime->info_switch_infos, package->info_switch_infos_base + constant_pool_id);
-        SPVM_LIST* case_infos = switch_info->case_infos;
-
-        // default branch
-        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+        int32_t constant_pool_id = opcode->operand1;
         
-        // case count
-        int32_t cases_length = case_infos->length;
+        // Default branch
+        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        
+        // Min
+        int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        
+        // Max
+        int32_t max = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
+        
+        // Range
+        int32_t range = max - min + 1;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-        {
-          int32_t case_index;
-          for (case_index = 0; case_index < cases_length; case_index++) {
-            SPVM_RUNTIME_INFO_CASE_INFO* case_info = SPVM_LIST_fetch(case_infos, case_index);
-            int32_t match = case_info->match;
-            int32_t opcode_rel_index = case_info->opcode_rel_index;
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "    case ");
-            SPVM_STRING_BUFFER_add_int(string_buffer, match);
-            SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-            SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-          }
+        for (int32_t i = min; i <= max; i++) {
+          int32_t offset = i - min;
+          int32_t opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 3 + offset];
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, i);
+          SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_rel_index);
@@ -4008,18 +4008,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-        {
-          int32_t case_index;
-          for (case_index = 0; case_index < case_infos_length; case_index++) {
-            int32_t match = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index)];
-            int32_t opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index) + 1];
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "    case ");
-            SPVM_STRING_BUFFER_add_int(string_buffer, match);
-            SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-            SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-          }
+        for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
+          int32_t match = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index)];
+          int32_t opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index) + 1];
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "    case ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, match);
+          SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_rel_index);
