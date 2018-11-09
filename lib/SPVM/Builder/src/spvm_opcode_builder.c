@@ -3386,8 +3386,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE opcode_switch_info;
                     memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
-
-                    opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
+                    
+                    if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                      opcode_switch_info.id = SPVM_OPCODE_C_ID_TABLE_SWITCH;
+                    }
+                    else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                      opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
+                    }
 
                     int32_t var_id_in = SPVM_OP_get_var_id(compiler, op_cur->first);
                     opcode_switch_info.operand0 = var_id_in;
@@ -3439,6 +3444,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Branch
                         package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + i + 1] = case_info->opcode_rel_index;
                       }
+                    }
+                    else {
+                      assert(0);
                     }
                     
                     break;
