@@ -75,8 +75,6 @@ struct SPVM_runtime {
   
   void** sub_native_addresses;
   void** sub_precompile_addresses;
-
-  SPVM_LIST* info_switch_infos;
   
   // Exception
   SPVM_OBJECT* exception;

@@ -24,8 +24,6 @@
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_my.h"
 #include "spvm_runtime_field.h"
-#include "spvm_runtime_info_switch_info.h"
-#include "spvm_runtime_info_case_info.h"
 
 // Only use constant
 #include "spvm_package.h"

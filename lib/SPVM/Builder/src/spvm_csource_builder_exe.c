@@ -35,8 +35,6 @@
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_my.h"
-#include "spvm_runtime_info_switch_info.h"
-#include "spvm_runtime_info_case_info.h"
 #include "spvm_my.h"
 
 #include "spvm_string_buffer.h"
@@ -141,8 +139,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_field.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_package_var.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_my.h\"\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_info_switch_info.h\"\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_runtime_info_case_info.h\"\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include \"spvm_opcode.h\"\n");
 
   // Add native sub headers
@@ -291,12 +287,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->flag);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_switch_infos_base = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_switch_infos_base);
-    SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".info_switch_infos_length = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->info_switch_infos_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".constant_pool_base = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->constant_pool_base);
@@ -487,18 +477,6 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "  portable->opcodes_length = ");
   SPVM_STRING_BUFFER_add_int(string_buffer, portable->opcodes_length);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
-  // info_switch_infos
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t info_switch_info_ints[");
-  SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints_length + 1);
-  SPVM_STRING_BUFFER_add(string_buffer, "] = {\n");
-  for (int32_t info_switch_info_int_id = 0; info_switch_info_int_id < portable->info_switch_info_ints_length; info_switch_info_int_id++) {
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, portable->info_switch_info_ints[info_switch_info_int_id]);
-    SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  portable->info_switch_info_ints = info_switch_info_ints;\n");
 
   // string_pool
   SPVM_STRING_BUFFER_add(string_buffer, "  char string_pool[/* ");
