@@ -443,10 +443,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CONSTANT_POOL_push_int(package->constant_pool, max);
                 
                 // Match values and branchs
-                for (int32_t i = 0; i < length; i++) {
-                  // Match value
-                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-                  
+                int32_t range = max - min + 1;
+                for (int32_t i = 0; i < range; i++) {
                   // Branch
                   SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
                 }

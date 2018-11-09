@@ -3429,22 +3429,38 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Table switch constant pool
                     if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
                       // Default
-                      package->constant_pool->values[switch_info->constant_pool_id_new] = switch_info->default_opcode_rel_index;
+                      int32_t default_bracnh = switch_info->default_opcode_rel_index;
+                      
+                      package->constant_pool->values[switch_info->constant_pool_id_new] = default_bracnh;
                       
                       // Min
+                      int32_t min = package->constant_pool->values[switch_info->constant_pool_id_new + 1];
                       
                       // Max
-
+                      int32_t max = package->constant_pool->values[switch_info->constant_pool_id_new + 2];
+                      
+                      // Length
+                      int32_t range = max - min + 1;
+                      
                       // Match values and branchs
-                      for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                        
-                        int32_t offset = max - case_info->constant->value.ival;
-                        
+                      for (int32_t i = min; i < range; i++) {
                         // Match value
+
+                        SPVM_CASE_INFO* found_case_info = NULL;
+                        for (int32_t case_index = 0; case_index < switch_info->case_infos->length; case_index++) {
+                          SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, case_index);
+                          if (min + i == case_info->constant->value.ival) {
+                            found_case_info = case_info;
+                          }
+                        }
                         
                         // Branch
-                        package->constant_pool->values[(switch_info->constant_pool_id_new + 3 + 2 * i) + offset + 1] = case_info->opcode_rel_index;
+                        if (found_case_info) {
+                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + i] = found_case_info->opcode_rel_index;
+                        }
+                        else {
+                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + i] = default_bracnh;
+                        }
                       }
                     }
                     // Lookup switch constant pool
