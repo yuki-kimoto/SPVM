@@ -403,7 +403,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
+              switch_info->id = 3;
               
               SPVM_LIST_pop(tree_info->op_switch_stack);
 
@@ -416,7 +416,33 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur->uv.switch_info->constant_pool_id_new = package->constant_pool->length;
               
-              if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+              // Table switch constant pool
+              if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                // Default branch
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+                
+                // Min
+                SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->cases, 0);
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info_mini->constant->value.ival);
+                
+                // Max
+                SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->cases, switch_info->cases->length - 1);
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info_max->constant->value.ival);
+                
+                // Length
+                int32_t length = case_info_max->constant->value.ival - case_info_mini->constant->value.ival + 1;
+                
+                // Match values and branchs
+                for (int32_t i = 0; i < length; i++) {
+                  // Match value
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+                  
+                  // Branch
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+                }
+              }
+              // Lookup switch constant pool
+              else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
                 // Default branch
                 SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
                 
