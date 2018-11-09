@@ -414,6 +414,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur->uv.switch_info->constant_pool_id = package->info_switch_infos->length;
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
               
+              op_cur->uv.switch_info->constant_pool_id_new = package->constant_pool->length;
+              
+              if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                // Default branch
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+                
+                // Case length
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->cases->length);
+                
+                // Match values and branchs
+                for (int32_t i = 0; i < switch_info->cases->length; i++) {
+                  SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                  
+                  // Match value
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info->constant->value.ival);
+                  
+                  // Branch
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+                }
+              }
               
               break;
             }
