@@ -36,6 +36,7 @@
 #include "spvm_yacc_util.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
+#include "spvm_constant_pool.h"
 
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id) {
   // Wide operation
@@ -3402,6 +3403,46 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     // Switch opcode index
                     SPVM_LIST_push(switch_info_stack, switch_info);
+
+                    // Max
+                    SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->cases, switch_info->cases->length - 1);
+                    int32_t max = case_info_max->constant->value.ival;
+
+                    // Default
+                    package->constant_pool->values[switch_info->constant_pool_id + 1] = switch_info->default_opcode_rel_index;
+                    
+                    // Table switch constant pool
+                    if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                      // Min
+                      // Max
+
+                      // Match values and branchs
+                      for (int32_t i = 0; i < switch_info->cases->length; i++) {
+                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+                        
+                        int32_t offset = max - case_info->constant->value.ival;
+                        
+                        // Match value
+                        
+                        // Branch
+                        package->constant_pool->values[(switch_info->constant_pool_id + 3 + 2 * i) + offset + 1] = case_info->opcode_rel_index;
+                      }
+                    }
+                    // Lookup switch constant pool
+                    else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                      
+                      // Case length
+                      
+                      // Match values and branchs
+                      for (int32_t i = 0; i < switch_info->cases->length; i++) {
+                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->cases, i);
+  
+                        // Match value
+                        
+                        // Branch
+                        package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + i + 1] = case_info->opcode_rel_index;
+                      }
+                    }
                     
                     break;
                   }
