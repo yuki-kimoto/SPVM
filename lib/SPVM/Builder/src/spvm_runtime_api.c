@@ -3033,7 +3033,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         // Cases length
         int32_t case_infos_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
 
-
         if (case_infos_length > 0) {
           // min
           int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
