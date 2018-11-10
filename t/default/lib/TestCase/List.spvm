@@ -356,7 +356,7 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v2, $v3])) {
         return 0;
       }
-      unless (check_fields($list, 5, -3, 3)) {
+      unless (check_fields($list, 5, -5, 3)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $v4, $v5]))) {
@@ -384,7 +384,7 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      unless (check_fields($list, 3, -1, 3)) {
+      unless (check_fields($list, 3, -3, 3)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $vi1, $vi2, $v2]))) {
@@ -457,7 +457,7 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      unless (check_fields($list, 2, -1, 1)) {
+      unless (check_fields($list, 2, -2, 1)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v2]))) {
@@ -470,7 +470,7 @@ package TestCase::List {
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      unless (check_fields($list, 2, -1, 1)) {
+      unless (check_fields($list, 2, -2, 1)) {
         return 0;
       }
       unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v2]))) {
