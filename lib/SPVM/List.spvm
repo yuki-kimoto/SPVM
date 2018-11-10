@@ -212,10 +212,6 @@ package SPVM::List : private {
     }
   }
 
-  sub _deallocate_sequence : void ($self : self) {
-    
-  }
-
   # range of $cut_offset: [0, $cut_length]
   # O($self->{capacity})
   sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
@@ -255,15 +251,28 @@ package SPVM::List : private {
     }
 
     $self->_rearrange_short_end_sequence($cut_offset, $cut_length, $replace_length);
-    $self->_deallocate_sequence();
 
+    # update fields
+    my $prev_offset = $self->{offset};
     if ($cut_offset < $self->{length} - $cut_offset - $cut_length) {
       $self->{offset} += $cut_length - $replace_length;
       if ($self->{offset} < -$self->{capacity}) { $self->{offset} += $self->{capacity}; }
       elsif ($self->{offset} >= 0) { $self->{offset} -= $self->{capacity}; }
     }
-
     $self->{length} += $replace_length - $cut_length;
+
+    # deallocate unused sequence
+    if ($cut_length > $replace_length) {
+      my $offset = $prev_offset;
+      if ($prev_offset == $self->{offset}) {
+        $offset += $self->{length};
+      }
+      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
+        my $target = $offset + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        $self->{values}[$target] = undef;
+      }
+    }
 
     # replace with new array
     for (my $i = 0; $i < $replace_length; ++$i) {
