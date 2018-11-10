@@ -1,8 +1,6 @@
 #ifndef SPVM_BASIC_TYPE_H
 #define SPVM_BASIC_TYPE_H
 
-#include <stdio.h>
-
 #include "spvm_base.h"
 
 enum {
@@ -32,8 +30,8 @@ extern const char* const SPVM_BASIC_TYPE_C_ID_NAMES[];
 
 struct SPVM_basic_type {
   const char* name;
-  int32_t id;
   SPVM_PACKAGE* package;
+  int32_t id;
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);

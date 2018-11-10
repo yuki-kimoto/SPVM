@@ -3,13 +3,6 @@
 
 #include "spvm_base.h"
 
-struct SPVM_block {
-  int32_t id;
-  int32_t have_object_var_decl;
-};
-
-SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);
-
 enum {
   // Block flag
   SPVM_BLOCK_C_ID_NORMAL,
@@ -21,5 +14,12 @@ enum {
   SPVM_BLOCK_C_ID_EVAL,
   SPVM_BLOCK_C_ID_LOOP_INIT,
 };
+
+struct SPVM_block {
+  int32_t id;
+  int32_t have_object_var_decl;
+};
+
+SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);
 
 #endif

@@ -10,12 +10,6 @@ struct SPVM_check_ast_info {
   // Subroutine
   SPVM_SUB* sub;
   
-  // Eval block stack length
-  int32_t eval_block_stack_length;
-  
-  // Loop block stack length
-  int32_t loop_block_stack_length;
-  
   // My stack
   SPVM_LIST* my_stack;
   
@@ -24,6 +18,12 @@ struct SPVM_check_ast_info {
   
   // Switch stack
   SPVM_LIST* op_switch_stack;
+
+  // Eval block stack length
+  int32_t eval_block_stack_length;
+  
+  // Loop block stack length
+  int32_t loop_block_stack_length;
 };
 
 SPVM_CHECK_AST_INFO* SPVM_CHECK_AST_INFO_new(SPVM_COMPILER* compiler);
