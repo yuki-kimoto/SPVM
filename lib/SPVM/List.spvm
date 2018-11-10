@@ -250,27 +250,35 @@ package SPVM::List : private {
       $extracted->[$i] = $self->{values}[$target];
     }
 
-    $self->_rearrange_short_end_sequence($cut_offset, $cut_length, $replace_length);
-
-    # update fields
-    my $prev_offset = $self->{offset};
-    if ($cut_offset < $self->{length} - $cut_offset - $cut_length) {
-      $self->{offset} += $cut_length - $replace_length;
-      if ($self->{offset} < -$self->{capacity}) { $self->{offset} += $self->{capacity}; }
-      elsif ($self->{offset} >= 0) { $self->{offset} -= $self->{capacity}; }
-    }
-    $self->{length} += $replace_length - $cut_length;
-
-    # deallocate unused sequence
+    my $last_sequence_length = $self->{length} - $cut_offset - $cut_length;
+    # move last sequence to forward
     if ($cut_length > $replace_length) {
-      my $offset = $prev_offset;
-      if ($prev_offset == $self->{offset}) {
-        $offset += $self->{length};
-      }
-      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
-        my $target = $offset + $i;
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $self->{offset} + $cut_offset + $cut_length + $i;
+        if ($origin < 0) { $origin += $self->{capacity}; }
+        if ($origin >= $self->{capacity}) { $origin -= $self->{capacity}; }
+        my $target = $self->{offset} + $cut_offset + $replace_length + $i;
         if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
+        $self->{values}[$target] = $self->{values}[$origin];
+      }
+      # deallocate unused sequence
+      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
+        my $target = $self->{offset} + $cut_offset + $replace_length + $last_sequence_length + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
         $self->{values}[$target] = undef;
+      }
+    }
+    else {
+      # move last sequence to backward
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $self->{offset} + $self->{length} - 1 - $i;
+        if ($origin < 0) { $origin += $self->{capacity}; }
+        my $target = $self->{offset} + $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
+        $self->{values}[$target] = $self->{values}[$origin];
       }
     }
 
@@ -282,6 +290,9 @@ package SPVM::List : private {
       }
       $self->{values}[$target] = $replace->[$i];
     }
+
+    # update fields
+    $self->{length} += $replace_length - $cut_length;
 
     return $extracted;
   }
