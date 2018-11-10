@@ -27,6 +27,10 @@ DEVELOPERS NOTE
       make manifest
       make disttest
       make dist
+    
+    Unit tests
+    
+      make && perl -Mblib t/default/convert.t
 
   SOLE TESTS
   

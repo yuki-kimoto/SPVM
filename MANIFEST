@@ -127,6 +127,7 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
+lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
 lib/SPVM/Object.pm
