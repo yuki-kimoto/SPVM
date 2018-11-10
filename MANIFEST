@@ -280,7 +280,6 @@ t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
-t/default/list.t
 t/default/literal.t
 t/default/logical-operator.t
 t/default/loop.t
