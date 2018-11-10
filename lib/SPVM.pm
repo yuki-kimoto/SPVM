@@ -256,6 +256,10 @@ L<SPVM::Document::NativeInterface>
 
 L<SPVM::Document::Language>
 
+=head1 NOTE
+
+B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
+
 =head1 SUPPORT
 
 If you have problems or find bugs, comment to GitHub Issue.
@@ -266,37 +270,13 @@ L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
+=head1 CORE DEVELOPER
+
 =head1 CONTRIBUTERS
 
-=over 4
-
-=item *
-
-L<akinomyoga|https://github.com/akinomyoga> (Koichi Murase)
-
-=item *
-
-L<[NAGAYASU Shinya|https://github.com/nagayasu-shinya>
-
-=item *
-
-L<Reini Urban|https://github.com/rurban>
-
-=item *
-
-L<chromatic|https://github.com/chromatic>
-
-=item *
-
-L<Kazutake Hiramatsu|https://github.com/kazhiramatsu>
+akinomyoga, NAGAYASU Shinya, Reini Urban, chromatic, Kazutake Hiramatsu
 
 =back
-
-=head1 NOTE
-
-B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
-
-Curent SPVM version is 0.3 serieses. This means implementation is finshed by 30% of version 1.0.
 
 =head1 COPYRIGHT & LICENSE
 
