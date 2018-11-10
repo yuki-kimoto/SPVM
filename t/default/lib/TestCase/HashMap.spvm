@@ -1,0 +1,8 @@
+package TestCase::HashMap {
+  use SPVM::Int;
+  use SPVM::HashMap;
+
+  sub basic : int () {
+    return 0;
+  }
+}

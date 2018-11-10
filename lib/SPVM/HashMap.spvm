@@ -1,0 +1,23 @@
+package SPVM::HashMap : private {
+  has states : private object [];
+  has bucket_count : private int;
+  has count : private int;
+
+  sub _hasher : int ($self : self, $key : string) {
+  }
+
+  sub count : int ($self : self) {
+  }
+
+  sub set : void ($self : self, $val : object) {
+  }
+
+  sub get : object ($self : self) {
+  }
+
+  sub load_factor : double () {
+  }
+
+  sub rehash : void () {
+  }
+}
