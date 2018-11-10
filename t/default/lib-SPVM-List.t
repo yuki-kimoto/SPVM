@@ -29,6 +29,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::List->test_splice_no_reallocation);
   ok(TestCase::List->test_splice_offset_is_valid_when_removed);
   ok(TestCase::List->test_splice_offset_is_valid_when_appended);
+  ok(TestCase::List->test_splice_deallocation);
 }
 
 # All object is freed

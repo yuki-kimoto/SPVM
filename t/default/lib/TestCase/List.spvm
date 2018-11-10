@@ -557,4 +557,13 @@ package TestCase::List {
     }
     return 1;
   }
+
+  sub test_splice_deallocation : int () {
+    my $list = SPVM::List->new_with_array([(object) SPVM::Int->new(1), SPVM::Int->new(2)]);
+    $list->splice(1, 1, undef);
+    unless ($list->_values->[1] == undef) {
+      return 0;
+    }
+    return 1;
+  }
 }
