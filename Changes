@@ -1,3 +1,6 @@
+0.0388 2018-11-10
+  - add table switch
+  - improve constant pool implementation
 0.0387 2018-11-07
   - improve compile error check logic and fix some bugs.
   - SPVM don't support unnatural ccflags.
