@@ -1,9 +1,9 @@
-#ifndef SPVM_TREE_INFO_H
-#define SPVM_TREE_INFO_H
+#ifndef SPVM_CHECK_AST_INFO_H
+#define SPVM_CHECK_AST_INFO_H
 
 #include "spvm_base.h"
 
-struct SPVM_tree_info {
+struct SPVM_check_ast_info {
   // Package
   SPVM_PACKAGE* package;
   
@@ -26,6 +26,6 @@ struct SPVM_tree_info {
   SPVM_LIST* op_switch_stack;
 };
 
-SPVM_TREE_INFO* SPVM_TREE_INFO_new(SPVM_COMPILER* compiler);
+SPVM_CHECK_AST_INFO* SPVM_CHECK_AST_INFO_new(SPVM_COMPILER* compiler);
 
 #endif

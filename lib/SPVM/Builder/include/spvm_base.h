@@ -8,9 +8,9 @@
 struct SPVM_constant_pool;
 typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
 
-// spvm_tree_info.h
-struct SPVM_tree_info;
-typedef struct SPVM_tree_info SPVM_TREE_INFO;
+// spvm_check_ast_info.h
+struct SPVM_check_ast_info;
+typedef struct SPVM_check_ast_info SPVM_CHECK_AST_INFO;
 
 // spvm_portable.h
 struct SPVM_portable;

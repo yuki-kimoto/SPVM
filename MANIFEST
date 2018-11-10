@@ -13,6 +13,7 @@ lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
 lib/SPVM/Builder/include/spvm_call_sub.h
 lib/SPVM/Builder/include/spvm_case_info.h
+lib/SPVM/Builder/include/spvm_check_ast_info.h
 lib/SPVM/Builder/include/spvm_compiler.h
 lib/SPVM/Builder/include/spvm_compiler_allocator.h
 lib/SPVM/Builder/include/spvm_constant.h
@@ -55,7 +56,6 @@ lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
-lib/SPVM/Builder/include/spvm_tree_info.h
 lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_util_allocator.h
