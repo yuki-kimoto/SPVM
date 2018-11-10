@@ -105,6 +105,9 @@ SPVM - Static Perl Virtual Machine. Fast calcuration & Easy C/C++ Binding
 
 =head1 SYNOPSIS
 
+SPVM Module:
+
+  # lib/MyMath.spvm
   package MyMath {
     sub sum : int ($nums : int[]) {
       
@@ -117,23 +120,48 @@ SPVM - Static Perl Virtual Machine. Fast calcuration & Easy C/C++ Binding
     }
   }
 
+Use SPVM Module from Perl
+  
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  use SPVM 'MyMath';
+  
+  # New int array
+  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  
+  # Call subroutine
+  my $total = MyMath->sum($sp_nums);
+  
+  print $total . "\n";
+
 =head1 DESCRIPTION
 
-SPVM provide B<fast array and numeric operation>.
+SPVM is Static Perl Virtual Machine. Provide fast calcuration & easy C/C++ Binding.
 
-SPVM provide B<easy way to Bind C/C++ Language to Perl>.
-
-=head1 FEATURES
+B<Features:>
 
 =over 4
 
-=item *
+=item * B<Fast culcuration>, B<Fast array operation>, B<Small memory>
 
-B<Fast array operation>, B<Fast numeric operation>, B<Static typing>, B<Virtual machine>, B<Precompile>, B<Pre compile>
+=item * B<Perl syntax>, B<Static typing>, B<Switch syntax>, B<Have language specification>
 
-=item *
+=item * B<Enum>, B<Type inference>, B<Anon subroutine>, B<Variable captures>
 
-B<Perlish syntax>, B<Easy way to C/C++ binding>, B<C99 math functions>
+=item * B<Array initialization>, 
+
+=item * B<Reference count GC>, B<Weaken reference>, B<Module system>
+
+=item * B<Exception>, B<Package variable>
+
+=item * B<Object oriented>, B<Inteface>, B<Value type>, B<Value array type>, B<Reference type>
+
+=item * B<Easy way to C/C++ binding>, B<Automatically Perl binding>, B<C99 math functions>
+
+=item * B<Dynamic linking>, B<Subroutine precompile>, B<AOT compile(create exe file)>
+
+=item * B<Native API(C level api)>, B<C99 standard>
 
 =back
 
