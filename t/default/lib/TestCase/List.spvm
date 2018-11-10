@@ -448,8 +448,7 @@ package TestCase::List {
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
     my $vi1 = SPVM::Int->new(10);
-    my $vi2 = SPVM::Int->new(11);
-    my $replace = [(object) $vi1, $vi2];
+    my $replace = [(object) $vi1];
     # extract left corner
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
@@ -466,14 +465,14 @@ package TestCase::List {
     }
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
-      my $extracted = $list->splice(0, 1, undef);
+      my $extracted = $list->splice(0, 1, $replace);
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
       }
-      unless (check_fields($list, 2, -2, 1)) {
+      unless (check_fields($list, 2, -2, 2)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $vi1, $v2]))) {
         return 0;
       }
     }
@@ -493,14 +492,14 @@ package TestCase::List {
     }
     {
       my $list = SPVM::List->new_with_array([(object) $v1, $v2]);
-      my $extracted = $list->splice(1, 1, undef);
+      my $extracted = $list->splice(1, 1, $replace);
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
       }
-      unless (check_fields($list, 2, -2, 1)) {
+      unless (check_fields($list, 2, -2, 2)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1]))) {
+      unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v1, $vi1]))) {
         return 0;
       }
     }
