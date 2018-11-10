@@ -300,6 +300,8 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =head1 CORE DEVELOPER
 
+moti<lt>motohiko.ave@gmail.com<gt>
+
 =head1 CONTRIBUTERS
 
 akinomyoga, NAGAYASU Shinya, Reini Urban, chromatic, Kazutake Hiramatsu
