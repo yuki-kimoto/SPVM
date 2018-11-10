@@ -517,4 +517,44 @@ package TestCase::List {
     }
     return 1;
   }
+
+  sub test_splice_offset_is_valid_when_removed : int () {
+    my $list = SPVM::List->new_with_capacity(2);
+    my $v1 = SPVM::Int->new(1);
+    my $v2 = SPVM::Int->new(2);
+    $list->unshift($v1);
+    $list->push($v2);
+    my $extracted = $list->splice(0, 1, undef);
+    unless (equals_array($extracted, [(object) $v1])) {
+      return 0;
+    }
+    unless (check_fields($list, 2, -1, 1)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $v2]))) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_splice_offset_is_valid_when_appended : int () {
+    my $list = SPVM::List->new_with_capacity(3);
+    my $v1 = SPVM::Int->new(1);
+    my $v2 = SPVM::Int->new(2);
+    my $vi1 = SPVM::Int->new(3);
+    my $vi2 = SPVM::Int->new(3);
+    $list->unshift($v1);
+    $list->push($v2);
+    my $extracted = $list->splice(0, 1, [(object) $vi1, $vi2]);
+    unless (equals_array($extracted, [(object) $v1])) {
+      return 0;
+    }
+    unless (check_fields($list, 3, -1, 3)) {
+      return 0;
+    }
+    unless (equals_list_deeply($list, SPVM::List->new_with_array([(object) $vi1, $vi2, $v2]))) {
+      return 0;
+    }
+    return 1;
+  }
 }
