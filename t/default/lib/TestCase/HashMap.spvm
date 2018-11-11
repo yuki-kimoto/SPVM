@@ -2,13 +2,23 @@ package TestCase::HashMap {
   use SPVM::Int;
   use SPVM::HashMap;
 
-  sub test__hasher : int () {
-    my $h1 = SPVM::HashMap->_hasher("abc");
-    my $h2 = SPVM::HashMap->_hasher("abd");
-    unless ($h1 == SPVM::HashMap->_hasher("abc")) {
+  sub test_hasher : int () {
+    my $hash_map = SPVM::HashMap->new;
+    my $s1 = "abc";
+    my $s2 = "abd";
+    my $seed1 = 12345;
+    my $seed2 = 99999;
+    my $h1 = $hash_map->_hasher($s1, $seed1);
+    my $h2 = $hash_map->_hasher($s2, $seed1);
+    print ("H(\"$s1\") : " . $h1 . "\n");
+    print ("H(\"$s2\") : " . $h2 . "\n");
+    unless ($h1 == $hash_map->_hasher($s1, $seed1)) {
       return 0;
     }
     unless ($h1 != $h2) {
+      return 0;
+    }
+    unless ($h1 != $hash_map->_hasher($s1, $seed2)) {
       return 0;
     }
     return 1;

@@ -13,7 +13,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::HashMap
 {
-  ok(TestCase::HashMap->basic);
+  ok(TestCase::HashMap->test_hasher);
 }
 
 # All object is freed

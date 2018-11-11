@@ -3,7 +3,49 @@ package SPVM::HashMap : private {
   has bucket_count : private int;
   has count : private int;
 
-  sub _hasher : int ($self : self, $key : string) {
+  # Murmur hash for 32-bit
+  # See: https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
+  sub _hasher : int ($self : self, $key : string, $seed : int) {
+    my $m: int = 1540483477;
+    my $len = scalar @$key;
+    my $hash = $seed ^ $len;
+    for (my $i = 0; $i < $len / 4; ++$i) {
+      my $k = (int)$key->[$i]
+          + ((int)$key->[$i * 4 + 1] << 8)
+          + ((int)$key->[$i * 4 + 2] << 16)
+          + ((int)$key->[$i * 4 + 3] << 24);
+      $k *= $m;
+      $k ^= $k >> 24;
+      $k *= $m;
+      $hash *= $m;
+      $hash ^= $k;
+      $len -= 4;
+    }
+
+    switch ($len) {
+      case 3:
+        $hash ^= (byte)$key->[@$key - 3] << 16;
+      case 2:
+        $hash ^= (byte)$key->[@$key - 2] << 8;
+      case 1:
+        $hash ^= (byte)$key->[@$key - 1];
+        $hash *= $m;
+    }
+
+    # Do a few final mixes of the hash.
+    $hash ^= $hash >> 13;
+    $hash *= $m;
+    $hash ^= $hash >> 15;
+    return $hash;
+  }
+
+  sub _index_by_key : int ($self : self, $key : string) {
+    my $default_seed = 123456789;
+    return $self->_hasher($key, $default_seed) % $self->{bucket_count};
+  }
+
+  sub new : SPVM::HashMap () {
+    return new SPVM::HashMap;
   }
 
   sub count : int ($self : self) {
