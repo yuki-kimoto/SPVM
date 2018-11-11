@@ -2,7 +2,15 @@ package TestCase::HashMap {
   use SPVM::Int;
   use SPVM::HashMap;
 
-  sub basic : int () {
-    return 0;
+  sub test__hasher : int () {
+    my $h1 = SPVM::HashMap->_hasher("abc");
+    my $h2 = SPVM::HashMap->_hasher("abd");
+    unless ($h1 == SPVM::HashMap->_hasher("abc")) {
+      return 0;
+    }
+    unless ($h1 != $h2) {
+      return 0;
+    }
+    return 1;
   }
 }
