@@ -3794,6 +3794,29 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
         int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
         SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
       }
+      
+      // Object field type length
+      package->object_field_indexes_constant_pool_id = package->constant_pool->length;
+      int32_t object_field_length = 0;
+      for (int32_t field_id = 0; field_id < package->fields->length; field_id++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_id);
+        SPVM_TYPE* field_type = field->type;
+        if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+          object_field_length++;
+        }
+      }
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, object_field_length);
+      
+      // Object field index
+      if (object_field_length > 0) {
+        for (int32_t field_id = 0; field_id < package->fields->length; field_id++) {
+          SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_id);
+          SPVM_TYPE* field_type = field->type;
+          if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+            SPVM_CONSTANT_POOL_push_int(package->constant_pool, field->index);
+          }
+        }
+      }
 
       if (package->constant_pool->length > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_COMPILER_error(compiler, "Too many constant pool values at %s line %d\n", package->op_package->file, package->op_package->line);
@@ -4448,12 +4471,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       if (is_value_t) {
         SPVM_COMPILER_error(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
         return;
-      }
-      else {
-        // Add object field indexes
-        if (SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-          SPVM_LIST_push(package->object_field_indexes, (void*)(intptr_t)field->index);
-        }
       }
       
       // Set runtime type
