@@ -131,46 +131,46 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     
-    SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_var = &portable->package_vars[package_var_id + 1];
+    SPVM_RUNTIME_PACKAGE_VAR* portable_package_var = &portable->package_vars[package_var_id + 1];
 
-    new_portable_package_var->id = package_var->id;
-    new_portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
+    portable_package_var->id = package_var->id;
+    portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
     
-    new_portable_package_var->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
+    portable_package_var->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
     if (package_var->type->basic_type) {
-      new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
+      portable_package_var->basic_type_id = package_var->type->basic_type->id;
     }
     else {
-      new_portable_package_var->basic_type_id = 0;
+      portable_package_var->basic_type_id = 0;
     }
-    new_portable_package_var->type_dimension = package_var->type->dimension;
-    new_portable_package_var->type_flag = package_var->type->flag;
+    portable_package_var->type_dimension = package_var->type->dimension;
+    portable_package_var->type_flag = package_var->type->flag;
     assert(package_var->package);
-    new_portable_package_var->package_id = package_var->package->id;
+    portable_package_var->package_id = package_var->package->id;
   }
 
   // Portable fields(32bit)(0 index is for not existance)
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* new_portable_field = &portable->fields[field_id + 1];
+    SPVM_RUNTIME_FIELD* portable_field = &portable->fields[field_id + 1];
 
-    new_portable_field->id = field->id;
-    new_portable_field->index = field->index;
-    new_portable_field->flag = field->flag;
-    new_portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
-    new_portable_field->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
+    portable_field->id = field->id;
+    portable_field->index = field->index;
+    portable_field->flag = field->flag;
+    portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
+    portable_field->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
     if (field->type->basic_type) {
-      new_portable_field->basic_type_id = field->type->basic_type->id;
+      portable_field->basic_type_id = field->type->basic_type->id;
     }
     else {
-      new_portable_field->basic_type_id = 0;
+      portable_field->basic_type_id = 0;
     }
-    new_portable_field->type_dimension = field->type->dimension;
+    portable_field->type_dimension = field->type->dimension;
     if (field->package) {
-      new_portable_field->package_id = field->package->id;
+      portable_field->package_id = field->package->id;
     }
-    new_portable_field->runtime_type = field->runtime_type;
+    portable_field->runtime_type = field->runtime_type;
   }
   
   // Portable args(32bit)
@@ -182,14 +182,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
-    SPVM_RUNTIME_SUB* new_portable_sub = &portable->subs[portable->subs_length];
+    SPVM_RUNTIME_SUB* portable_sub = &portable->subs[portable->subs_length];
 
-    new_portable_sub->id = sub->id;
-    new_portable_sub->flag = sub->flag;
-    new_portable_sub->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->name, strlen(sub->name) + 1);
-    new_portable_sub->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1);;
+    portable_sub->id = sub->id;
+    portable_sub->flag = sub->flag;
+    portable_sub->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->name, strlen(sub->name) + 1);
+    portable_sub->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1);;
     if (sub->package) {
-      new_portable_sub->package_id = sub->package->id;
+      portable_sub->package_id = sub->package->id;
     }
     
     // Get file base name
@@ -212,39 +212,39 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       }
     }
 
-    new_portable_sub->file_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1);
-    assert(new_portable_sub->file_id);
-    new_portable_sub->line = sub->line;
-    new_portable_sub->args_alloc_length = sub->args_alloc_length;
-    new_portable_sub->return_basic_type_id = sub->return_type->basic_type->id;
-    new_portable_sub->return_type_dimension = sub->return_type->dimension;
-    new_portable_sub->return_type_flag = sub->return_type->flag;
-    new_portable_sub->opcodes_base = sub->opcodes_base;
-    new_portable_sub->mortal_stack_length = sub->mortal_stack_length;
-    new_portable_sub->arg_ids_base = portable->args_length;
-    new_portable_sub->arg_ids_length = sub->args->length;
-    new_portable_sub->opcodes_length = sub->opcodes_length;
-    new_portable_sub->call_type_id = sub->call_type_id;
-    new_portable_sub->byte_vars_alloc_length = sub->byte_vars_alloc_length;
-    new_portable_sub->short_vars_alloc_length = sub->short_vars_alloc_length;
-    new_portable_sub->int_vars_alloc_length = sub->int_vars_alloc_length;
-    new_portable_sub->long_vars_alloc_length = sub->long_vars_alloc_length;
-    new_portable_sub->float_vars_alloc_length = sub->float_vars_alloc_length;
-    new_portable_sub->double_vars_alloc_length = sub->double_vars_alloc_length;
-    new_portable_sub->object_vars_alloc_length = sub->object_vars_alloc_length;
-    new_portable_sub->ref_vars_alloc_length = sub->ref_vars_alloc_length;
-    new_portable_sub->return_runtime_type = sub->return_runtime_type;
+    portable_sub->file_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1);
+    assert(portable_sub->file_id);
+    portable_sub->line = sub->line;
+    portable_sub->args_alloc_length = sub->args_alloc_length;
+    portable_sub->return_basic_type_id = sub->return_type->basic_type->id;
+    portable_sub->return_type_dimension = sub->return_type->dimension;
+    portable_sub->return_type_flag = sub->return_type->flag;
+    portable_sub->opcodes_base = sub->opcodes_base;
+    portable_sub->mortal_stack_length = sub->mortal_stack_length;
+    portable_sub->arg_ids_base = portable->args_length;
+    portable_sub->arg_ids_length = sub->args->length;
+    portable_sub->opcodes_length = sub->opcodes_length;
+    portable_sub->call_type_id = sub->call_type_id;
+    portable_sub->byte_vars_alloc_length = sub->byte_vars_alloc_length;
+    portable_sub->short_vars_alloc_length = sub->short_vars_alloc_length;
+    portable_sub->int_vars_alloc_length = sub->int_vars_alloc_length;
+    portable_sub->long_vars_alloc_length = sub->long_vars_alloc_length;
+    portable_sub->float_vars_alloc_length = sub->float_vars_alloc_length;
+    portable_sub->double_vars_alloc_length = sub->double_vars_alloc_length;
+    portable_sub->object_vars_alloc_length = sub->object_vars_alloc_length;
+    portable_sub->ref_vars_alloc_length = sub->ref_vars_alloc_length;
+    portable_sub->return_runtime_type = sub->return_runtime_type;
     
     for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_id);
       
-      SPVM_RUNTIME_ARG* new_portable_arg = &portable->args[portable->args_length];
-      new_portable_arg->basic_type_id = arg->type->basic_type->id;
-      new_portable_arg->type_dimension = arg->type->dimension;
-      new_portable_arg->type_flag = arg->type->flag;
-      new_portable_arg->var_id = arg->var_id;
-      new_portable_arg->runtime_type = arg->runtime_type;
-      new_portable_arg->type_width = arg->type_width;
+      SPVM_RUNTIME_ARG* portable_arg = &portable->args[portable->args_length];
+      portable_arg->basic_type_id = arg->type->basic_type->id;
+      portable_arg->type_dimension = arg->type->dimension;
+      portable_arg->type_flag = arg->type->flag;
+      portable_arg->var_id = arg->var_id;
+      portable_arg->runtime_type = arg->runtime_type;
+      portable_arg->type_width = arg->type_width;
 
       portable->args_length++;
     }
@@ -257,24 +257,24 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
 
-    SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[package_id + 1];
+    SPVM_RUNTIME_PACKAGE* portable_package = &portable->packages[package_id + 1];
     
-    new_portable_package->id = package->id;
-    new_portable_package->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->name, strlen(package->name) + 1);
+    portable_package->id = package->id;
+    portable_package->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->name, strlen(package->name) + 1);
     if (package->sub_destructor) {
-      new_portable_package->destructor_sub_id = package->sub_destructor->id;
+      portable_package->destructor_sub_id = package->sub_destructor->id;
     }
     else {
-      new_portable_package->destructor_sub_id = 0;
+      portable_package->destructor_sub_id = 0;
     }
-    new_portable_package->category = package->category;
-    new_portable_package->flag = package->flag;
+    portable_package->category = package->category;
+    portable_package->flag = package->flag;
 
-    new_portable_package->constant_pool_base = package->constant_pool_base;
-    new_portable_package->no_dup_field_access_field_ids_constant_pool_id = package->no_dup_field_access_field_ids_constant_pool_id;
-    new_portable_package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->no_dup_package_var_access_package_var_ids_constant_pool_id;
-    new_portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
-    new_portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
+    portable_package->constant_pool_base = package->constant_pool_base;
+    portable_package->no_dup_field_access_field_ids_constant_pool_id = package->no_dup_field_access_field_ids_constant_pool_id;
+    portable_package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->no_dup_package_var_access_package_var_ids_constant_pool_id;
+    portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
+    portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
   }
 
   // String pool(8bit)
