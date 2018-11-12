@@ -304,7 +304,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
 
     if (package->fields->length > 0) {
-      SPVM_SUB* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
       portable_package->fields_base = first_field->id;
     }
     else {
