@@ -854,7 +854,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -869,7 +869,7 @@ call_sub(...)
               int8_t value = (int8_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].bval = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -889,7 +889,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -904,7 +904,7 @@ call_sub(...)
               int16_t value = (int16_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].sval = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -923,7 +923,7 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -938,7 +938,7 @@ call_sub(...)
               int32_t value = (int32_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].ival = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -957,7 +957,7 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -972,7 +972,7 @@ call_sub(...)
               int64_t value = (int64_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].lval = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -991,7 +991,7 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1006,7 +1006,7 @@ call_sub(...)
               float value = (float)SvNV(sv_field_value);
               stack[arg_var_id + field_index].fval = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -1025,7 +1025,7 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(arg_first_field);
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1040,7 +1040,7 @@ call_sub(...)
               double value = (double)SvNV(sv_field_value);
               stack[arg_var_id + field_index].dval = value;
             }
-            arg_var_id += arg_package->fields->length;
+            arg_var_id += arg_package->fields_length;
           }
           else {
             croak("%dth argument must be hash reference", arg_index + 1);
@@ -1155,7 +1155,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1172,7 +1172,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1195,7 +1195,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1212,7 +1212,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1235,7 +1235,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1252,7 +1252,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1275,7 +1275,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1292,7 +1292,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1315,7 +1315,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1332,7 +1332,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1355,7 +1355,7 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
             assert(first_field);
             
-            for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+            for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
               const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -1372,7 +1372,7 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields->length;
+            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1412,7 +1412,7 @@ call_sub(...)
       assert(sub_return_first_field);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      for (int32_t field_index = 0; field_index < sub_return_package->fields->length; field_index++) {
+      for (int32_t field_index = 0; field_index < sub_return_package->fields_length; field_index++) {
         SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
         const char* field_name = &runtime->string_pool[field->name_id];
         
@@ -1579,7 +1579,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_byte*)&ref_stack[ref_stack_id])[field_index]));
@@ -1594,7 +1594,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_short*)&ref_stack[ref_stack_id])[field_index]));
@@ -1609,7 +1609,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_int*)&ref_stack[ref_stack_id])[field_index]));
@@ -1624,7 +1624,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_long*)&ref_stack[ref_stack_id])[field_index]));
@@ -1639,7 +1639,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_float*)&ref_stack[ref_stack_id])[field_index]));
@@ -1654,7 +1654,7 @@ call_sub(...)
           assert(arg_package);
           SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
           assert(arg_first_field);
-          for (int32_t field_index = 0; field_index < arg_package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(arg_package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
             SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_double*)&ref_stack[ref_stack_id])[field_index]));
@@ -1752,7 +1752,7 @@ set_array_elements(...)
           
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t field_length = package->fields_length;
-          for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+          for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -2160,7 +2160,7 @@ set_array_element(...)
         
         HV* hv_value = (HV*)SvRV(sv_value);
         int32_t field_length = package->fields_length;
-        for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
           const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -2361,7 +2361,7 @@ get_array_element(...)
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       int32_t field_length = package->fields_length;
-      for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+      for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
         SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
         const char* field_name = &runtime->string_pool[field->name_id];
 
@@ -2531,7 +2531,7 @@ get_array_elements(...)
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = package->fields_length;
-        for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
           const char* field_name = &runtime->string_pool[field->name_id];
 
