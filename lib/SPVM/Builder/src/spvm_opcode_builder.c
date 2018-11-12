@@ -134,6 +134,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_LIST* switch_info_stack = SPVM_LIST_new(0);
           
+          // next stack
+          SPVM_LIST* op_next_stack = SPVM_LIST_new(0);
+          SPVM_LIST* op_next_block_base_stack = SPVM_LIST_new(0);
+          
+          // last stack
+          SPVM_LIST* op_last_stack = SPVM_LIST_new(0);
+          SPVM_LIST* op_last_block_base_stack = SPVM_LIST_new(0);
+          
           // Block stack
           SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
           
@@ -4545,6 +4553,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(op_block_stack);
           SPVM_LIST_free(mortal_stack);
           SPVM_LIST_free(mortal_top_stack);
+
+          SPVM_LIST_free(op_next_stack);
+          SPVM_LIST_free(op_next_block_base_stack);
+          SPVM_LIST_free(op_last_stack);
+          SPVM_LIST_free(op_last_block_base_stack);
         }
       }
     }
