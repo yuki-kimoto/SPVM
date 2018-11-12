@@ -15,10 +15,8 @@ struct SPVM_runtime_package {
   int32_t destructor_sub_id;
   int32_t category;
   int32_t flag;
-  int32_t info_switch_infos_base;
   int32_t constant_pool_base;
   int32_t subs_base;
-  uint16_t info_switch_infos_length;
   uint16_t no_dup_field_access_field_ids_constant_pool_id;
   uint16_t no_dup_package_var_access_package_var_ids_constant_pool_id;
   uint16_t no_dup_call_sub_sub_ids_constant_pool_id;
