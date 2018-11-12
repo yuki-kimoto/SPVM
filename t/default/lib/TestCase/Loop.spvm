@@ -5,8 +5,15 @@ package TestCase::Loop {
     my $ret = 0;
     for (my $i=0; 1;$i++) {
       if ($i == 2) {
+        if (0) {
+          last;
+        }
         $ret = 1;
         last;
+        
+        if (0) {
+          last;
+        }
       }
       for (my $j=0; 1;$j++) {
         if ($j == 2) {

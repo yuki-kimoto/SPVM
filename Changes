@@ -1,3 +1,6 @@
+0.0389 2018-11-12
+  - fix nested loop last bugs
+  - fix nested loop nest bugs
 0.0388 2018-11-10
   - add table switch
   - improve constant pool implementation
