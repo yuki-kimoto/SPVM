@@ -48,20 +48,51 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
 
-  // OPCode(64bit)
+  // Opcode Length
   int32_t opcode_length = compiler->opcode_array->length;
   portable->opcodes_length = opcode_length;
-  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
-  memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
-    
-  // Global constant pool(32bit)
+  
+  // Constant pool length
   int32_t constant_pool_length = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     constant_pool_length += package->constant_pool->length;
   }
-  portable->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (constant_pool_length + 1));
   portable->constant_pool_length = constant_pool_length;
+  
+  // Basic type length
+  int32_t basic_type_length = compiler->basic_types->length;
+  portable->basic_types_length = compiler->basic_types->length;
+  
+  // Package vars length
+  int32_t package_vars_length = compiler->package_vars->length;
+  
+  // Fields length
+  int32_t fields_length = compiler->fields->length;
+
+  // Arg total length
+  int32_t args_total_length = 0;
+  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
+    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
+    args_total_length += sub->args->length;
+  }
+  
+  // Subs length
+  int32_t subs_length = compiler->subs->length;
+  
+  // Packages length
+  int32_t packages_length = compiler->packages->length;
+  
+  // String pool length
+  int32_t string_pool_length = compiler->string_pool->length;
+  portable->string_pool_length = string_pool_length;
+
+  // OPCode(64bit)
+  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
+  memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
+  
+  // Global constant pool(32bit)
+  portable->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * (constant_pool_length + 1));
   int32_t constant_pool_index = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
@@ -81,7 +112,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       runtime_basic_type->package_id = basic_type->package->id;
     }
   }
-  portable->basic_types_length = compiler->basic_types->length;
   
   // Portable package_vars(32bit)(0 index is for not existance)
   portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->package_vars->length + 1));
@@ -100,11 +130,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable args(32bit)
-  int32_t args_total_length = 0;
-  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
-    args_total_length += sub->args->length;
-  }
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * (args_total_length + 1));
 
   // Portable subs(32bit)(0 index is for not existance)
@@ -125,7 +150,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // String pool(8bit)
   portable->string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(compiler->string_pool->length + 1);
-  portable->string_pool_length = compiler->string_pool->length;
   memcpy(portable->string_pool, compiler->string_pool->buffer, compiler->string_pool->length);
   
   return portable;
