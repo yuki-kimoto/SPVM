@@ -46,7 +46,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
 
     // Call native subrotuine
-    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_native_addresses[sub->id];
+    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
     int32_t exception_flag = (*native_address)(env, stack);
     
     // Leave scope
@@ -62,7 +62,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   }
   // Call precompiled sub
   else if (sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED) {
-    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_precompile_addresses[sub->id];
+    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
     return (*precompile_address)(env, stack);
   }
   // Call sub virtual machine

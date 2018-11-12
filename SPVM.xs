@@ -345,7 +345,7 @@ bind_sub_native(...)
   // Set native address to subroutine
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  runtime->sub_native_addresses[sub->id] = native_address;
+  runtime->sub_cfunc_addresses[sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -421,7 +421,7 @@ bind_sub_precompile(...)
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
-  runtime->sub_precompile_addresses[sub->id] = sub_precompile_address;
+  runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }

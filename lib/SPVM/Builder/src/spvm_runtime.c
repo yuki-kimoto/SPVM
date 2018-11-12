@@ -154,11 +154,8 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
   runtime->subs_length = portable->subs_length;
 
-  // Native sub addresses
-  runtime->sub_native_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
-  
-  // Precompile sub addresses
-  runtime->sub_precompile_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
+  // C function addresses(native or precompile)
+  runtime->sub_cfunc_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
   
   // build packages
   runtime->packages_length = portable->packages_length;
@@ -241,10 +238,8 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
       sub->float_vars_alloc_length +
       sub->double_vars_alloc_length +
       sub->object_vars_alloc_length +
-      sub->ref_vars_alloc_length;
-    if (vars_alloc_length > runtime->vars_alloc_length_max) {
-      runtime->vars_alloc_length_max = vars_alloc_length;
-    }
+      sub->ref_vars_alloc_length
+    ;
   }
 
   // build runtime basic type symtable
@@ -275,8 +270,7 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);
   
-  free(runtime->sub_native_addresses);
-  free(runtime->sub_precompile_addresses);
+  free(runtime->sub_cfunc_addresses);
   
   if (runtime->exception != NULL) {
     free(runtime->exception);

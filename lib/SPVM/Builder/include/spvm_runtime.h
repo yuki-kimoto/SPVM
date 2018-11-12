@@ -44,16 +44,12 @@ do {\
 
 
 struct SPVM_runtime {
-  
-  char* string_pool;
-  int32_t string_pool_length;
+  SPVM_PORTABLE* portable;
   
   int32_t* constant_pool;
   int32_t constant_pool_length;
   
   SPVM_OPCODE* opcodes;
-  
-  SPVM_RUNTIME_ARG* args;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
   int32_t basic_types_length;
@@ -64,20 +60,25 @@ struct SPVM_runtime {
   SPVM_RUNTIME_PACKAGE_VAR* package_vars;
   int32_t package_vars_length;
 
+  SPVM_RUNTIME_ARG* args;
+  
   SPVM_RUNTIME_SUB* subs;
   int32_t subs_length;
 
   SPVM_RUNTIME_PACKAGE* packages;
   int32_t packages_length;
 
+  char* string_pool;
+  int32_t string_pool_length;
+  
   SPVM_HASH* basic_type_symtable;
   SPVM_HASH* package_symtable;
   
-  void** sub_native_addresses;
-  void** sub_precompile_addresses;
-  
   // Exception
   SPVM_OBJECT* exception;
+
+  // C function addresses(native or precompile)
+  void** sub_cfunc_addresses;
   
   // Package variables
   SPVM_VALUE* package_vars_heap;
@@ -89,11 +90,6 @@ struct SPVM_runtime {
   
   // Memory blocks count
   int32_t memory_blocks_count;
-  
-  // Variable allocation max length
-  int32_t vars_alloc_length_max;
-  
-  SPVM_PORTABLE* portable;
 };
 
 SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime);
