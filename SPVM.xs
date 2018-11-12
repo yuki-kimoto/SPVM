@@ -1745,7 +1745,7 @@ set_array_elements(...)
           SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
           assert(package);
           
-          SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+          SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
           assert(first_field);
 
           void* elements = (void*)env->get_int_array_elements(env, array);
@@ -1947,7 +1947,7 @@ set_array_elements_bin(...)
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
       assert(first_field);
 
 
@@ -2153,7 +2153,7 @@ set_array_element(...)
         SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
         assert(package);
         
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
         assert(first_field);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
@@ -2354,7 +2354,7 @@ get_array_element(...)
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
       assert(first_field);
 
       void* elements = (void*)env->get_int_array_elements(env, array);
@@ -2524,7 +2524,7 @@ get_array_elements(...)
         SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
         assert(package);
         
-        SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+        SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
         assert(first_field);
 
         void* elements = (void*)env->get_int_array_elements(env, array);
@@ -2722,7 +2722,7 @@ get_array_elements_bin(...)
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
+      SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
       assert(first_field);
 
       int32_t field_length = package->fields_length;
