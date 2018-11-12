@@ -50,7 +50,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Opcode Length
   int32_t portable_opcode_length = compiler->opcode_array->length;
-  portable->opcodes_length =portable_opcode_length;
+  portable->opcodes_length = portable_opcode_length;
   
   // Constant pool length
   int32_t portable_constant_pool_length = 0;
@@ -117,14 +117,25 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   memory_pool_base += sizeof(int32_t) * portable_constant_pool_length;
   
   portable->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)&memory_pool[memory_pool_base];
-  memory_pool_base += sizeof(int32_t) * portable_basic_types_length;
+  memory_pool_base += sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length;
   
-  portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length);
-  portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length);
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * portable_args_length);
-  portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * portable_subs_length);
-  portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable_packages_length);
-  portable->string_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(portable_string_pool_length);
+  portable->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(SPVM_RUNTIME_PACKAGE_VAR) * portable_package_vars_length;
+
+  portable->fields = (SPVM_RUNTIME_FIELD*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length;
+
+  portable->args = (SPVM_RUNTIME_ARG*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(SPVM_RUNTIME_ARG) * portable_args_length;
+
+  portable->subs = (SPVM_RUNTIME_SUB*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(SPVM_RUNTIME_SUB) * portable_subs_length;
+
+  portable->packages = (SPVM_RUNTIME_PACKAGE*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(SPVM_RUNTIME_PACKAGE) * portable_packages_length;
+
+  portable->string_pool = &memory_pool[memory_pool_base];
+  memory_pool_base += portable_string_pool_length;
   
   // OPCode(64bit)
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * portable_opcode_length);
@@ -301,15 +312,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
   
   if (!portable->is_static) {
-
-    free(portable->fields);
-    portable->fields = NULL;
-
-    free(portable->subs);
-    portable->subs = NULL;
-
-    free(portable->opcodes);
-    portable->opcodes = NULL;
     
     free(portable);
   }
