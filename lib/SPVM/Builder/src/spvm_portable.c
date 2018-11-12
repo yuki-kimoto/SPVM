@@ -53,7 +53,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->opcodes_length =portable_opcode_length;
   
   // Constant pool length
-  int32_t portable_constant_pool_length = 1;
+  int32_t portable_constant_pool_length = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     portable_constant_pool_length += package->constant_pool->length;
@@ -94,7 +94,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Total byte size(at least 1 byte)
   int32_t total_byte_size =
-    sizeof(int64_t) * portable_opcode_length +
+    sizeof(SPVM_OPCODE) * portable_opcode_length +
     sizeof(int32_t) * portable_constant_pool_length +
     sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length +
     sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length +
@@ -107,10 +107,18 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   ;
   
   char* memory_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(total_byte_size);
-
-  portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * portable_opcode_length);
-  portable->constant_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int32_t) * portable_constant_pool_length);
-  portable->basic_types = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length);
+  
+  int32_t memory_pool_base = 0;
+  
+  portable->opcodes = (SPVM_OPCODE*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(int64_t) * portable_opcode_length;
+  
+  portable->constant_pool = (int32_t*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(int32_t) * portable_constant_pool_length;
+  
+  portable->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)&memory_pool[memory_pool_base];
+  memory_pool_base += sizeof(int32_t) * portable_basic_types_length;
+  
   portable->package_vars = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length);
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length);
   portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * portable_args_length);
@@ -293,8 +301,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
   
   if (!portable->is_static) {
-    free(portable->basic_types);
-    portable->basic_types = NULL;
 
     free(portable->fields);
     portable->fields = NULL;
