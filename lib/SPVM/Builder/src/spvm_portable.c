@@ -70,6 +70,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Fields length
   int32_t fields_length = compiler->fields->length;
+  portable->fields_length = fields_length;
 
   // Arg total length
   int32_t args_total_length = 0;
@@ -93,8 +94,8 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     sizeof(int64_t) * (opcode_length + 1) +
     sizeof(int32_t) * (constant_pool_length + 1) +
     sizeof(SPVM_RUNTIME_BASIC_TYPE) * (basic_types_length + 1) +
-    sizeof(SPVM_RUNTIME_PACKAGE) * (package_vars_length + 1)
-  ;
+    sizeof(SPVM_RUNTIME_PACKAGE) * (package_vars_length + 1) +
+    sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1);
 
   // OPCode(64bit)
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
@@ -148,10 +149,26 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable fields(32bit)(0 index is for not existance)
   portable->fields = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1));
-  portable->fields_length++;
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_PORTABLE_push_field(compiler, portable, field);
+    SPVM_RUNTIME_FIELD* new_portable_field = &portable->fields[field_id + 1];
+
+    new_portable_field->id = field->id;
+    new_portable_field->index = field->index;
+    new_portable_field->flag = field->flag;
+    new_portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
+    new_portable_field->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
+    if (field->type->basic_type) {
+      new_portable_field->basic_type_id = field->type->basic_type->id;
+    }
+    else {
+      new_portable_field->basic_type_id = 0;
+    }
+    new_portable_field->type_dimension = field->type->dimension;
+    if (field->package) {
+      new_portable_field->package_id = field->package->id;
+    }
+    new_portable_field->runtime_type = field->runtime_type;
   }
   
   // Portable args(32bit)
@@ -278,30 +295,6 @@ void SPVM_PORTABLE_push_arg(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SP
   new_portable_arg->type_width = arg->type_width;
 
   portable->args_length++;
-}
-
-void SPVM_PORTABLE_push_field(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_FIELD* field) {
-  
-  SPVM_RUNTIME_FIELD* new_portable_field = &portable->fields[portable->fields_length];
-
-  new_portable_field->id = field->id;
-  new_portable_field->index = field->index;
-  new_portable_field->flag = field->flag;
-  new_portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
-  new_portable_field->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
-  if (field->type->basic_type) {
-    new_portable_field->basic_type_id = field->type->basic_type->id;
-  }
-  else {
-    new_portable_field->basic_type_id = 0;
-  }
-  new_portable_field->type_dimension = field->type->dimension;
-  if (field->package) {
-    new_portable_field->package_id = field->package->id;
-  }
-  new_portable_field->runtime_type = field->runtime_type;
-  
-  portable->fields_length++;
 }
 
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
