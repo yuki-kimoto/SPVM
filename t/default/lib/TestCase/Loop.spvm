@@ -1,6 +1,23 @@
 package TestCase::Loop {
   use TestCase::Minimal;
-  
+
+  sub for_nested_last : int () {
+    my $ret = 0;
+    for (my $i=0; 1;$i++) {
+      if ($i == 2) {
+        $ret = 1;
+        last;
+      }
+      for (my $j=0; 1;$j++) {
+        if ($j == 2) {
+          last;
+        }
+      }
+    }
+    
+    return $ret;
+  }
+    
   # For
   sub for_basic : int () {
   
