@@ -1751,7 +1751,7 @@ set_array_elements(...)
           void* elements = (void*)env->get_int_array_elements(env, array);
           
           HV* hv_value = (HV*)SvRV(sv_value);
-          int32_t field_length = package->fields->length;
+          int32_t field_length = package->fields_length;
           for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
             SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
             const char* field_name = &runtime->string_pool[field->name_id];
@@ -1951,7 +1951,7 @@ set_array_elements_bin(...)
       assert(first_field);
 
 
-      int32_t field_length = package->fields->length;
+      int32_t field_length = package->fields_length;
       
       switch (first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -2159,7 +2159,7 @@ set_array_element(...)
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)SvRV(sv_value);
-        int32_t field_length = package->fields->length;
+        int32_t field_length = package->fields_length;
         for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
           const char* field_name = &runtime->string_pool[field->name_id];
@@ -2360,7 +2360,7 @@ get_array_element(...)
       void* elements = (void*)env->get_int_array_elements(env, array);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      int32_t field_length = package->fields->length;
+      int32_t field_length = package->fields_length;
       for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
         SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
         const char* field_name = &runtime->string_pool[field->name_id];
@@ -2530,7 +2530,7 @@ get_array_elements(...)
         void* elements = (void*)env->get_int_array_elements(env, array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-        int32_t field_length = package->fields->length;
+        int32_t field_length = package->fields_length;
         for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
           const char* field_name = &runtime->string_pool[field->name_id];
@@ -2725,7 +2725,7 @@ get_array_elements_bin(...)
       SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
       assert(first_field);
 
-      int32_t field_length = package->fields->length;
+      int32_t field_length = package->fields_length;
 
       switch (first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
