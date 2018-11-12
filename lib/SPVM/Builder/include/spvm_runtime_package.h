@@ -6,7 +6,6 @@
 // Field information
 struct SPVM_runtime_package {
   SPVM_HASH* package_var_symtable;
-  SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_LIST* object_field_indexes;
   SPVM_HASH* sub_symtable;

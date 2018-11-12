@@ -1413,7 +1413,7 @@ call_sub(...)
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       for (int32_t field_index = 0; field_index < sub_return_package->fields_length; field_index++) {
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[sub_return_package->fields_base + field_index];
         const char* field_name = &runtime->string_pool[field->name_id];
         
         SV* sv_field_value = NULL;
