@@ -95,8 +95,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     sizeof(int32_t) * (constant_pool_length + 1) +
     sizeof(SPVM_RUNTIME_BASIC_TYPE) * (basic_types_length + 1) +
     sizeof(SPVM_RUNTIME_PACKAGE) * (package_vars_length + 1) +
-    sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1);
-
+    sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1) +
+    sizeof(SPVM_RUNTIME_ARG) * (args_total_length + 1);
+  
   // OPCode(64bit)
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
   memcpy(portable->opcodes, compiler->opcode_array->values, sizeof(int64_t) * opcode_length);
