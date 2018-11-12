@@ -1,5 +1,31 @@
 package TestCase::Loop {
   use TestCase::Minimal;
+  
+  sub nested_last_with_switch : int () {
+    my $num1 = 0;
+    for (my $i = 0; 1;$i++) {
+      
+      if ($i == 2) {
+        $num1++;
+        last;
+      }
+      
+      switch ($i) {
+        case 1:
+          last;
+        default:
+          $num1++;
+      }
+      $num1++;
+    }
+    
+    unless ($num1 == 4) {
+      return 0;
+    }
+    
+    return 1;
+    
+  }
 
   sub nested_next : int () {
     
@@ -35,9 +61,9 @@ package TestCase::Loop {
     return 1;
   }
 
-  sub for_nested_last : int () {
+  sub nested_last : int () {
     my $ret = 0;
-    for (my $i=0; 1;$i++) {
+    for (my $i = 0; 1;$i++) {
       if ($i == 2) {
         if (0) {
           last;
@@ -60,7 +86,7 @@ package TestCase::Loop {
   }
   
   # For
-  sub for_basic : int () {
+  sub basic : int () {
   
     my $success_basic = 0;
     {

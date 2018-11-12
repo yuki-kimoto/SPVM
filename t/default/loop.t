@@ -13,10 +13,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # for
 {
-  ok(TestCase::Loop->for_basic());
+  ok(TestCase::Loop->basic());
   ok(TestCase::Loop->next_statement());
-  ok(TestCase::Loop->for_nested_last);
+  ok(TestCase::Loop->nested_last);
   ok(TestCase::Loop->nested_next);
+  ok(TestCase::Loop->nested_last_with_switch);
 }
 
 
