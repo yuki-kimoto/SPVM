@@ -302,6 +302,16 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->no_dup_package_var_access_package_var_ids_constant_pool_id;
     portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
     portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
+    
+    if (package->subs->length > 0) {
+      SPVM_SUB* first_sub = SPVM_LIST_fetch(package->subs, 0);
+      portable_package->subs_base = first_sub->id;
+    }
+    else {
+      portable_package->subs_base = -1;
+    }
+    
+    portable_package->subs_length = package->subs->length;
   }
 
   // String pool(8bit)
