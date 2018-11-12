@@ -1,6 +1,40 @@
 package TestCase::Loop {
   use TestCase::Minimal;
 
+  sub nested_next : int () {
+    
+    my $total1 = 0;
+    my $total2 = 0;
+    for (my $i = 0; $i < 3; $i++) {
+      if ($i == 2) {
+        if (0) {
+          next;
+        }
+        next;
+        if (0) {
+          next;
+        }
+      }
+      for (my $j = 0; $j < 3;$j++) {
+        if ($j == 2) {
+          next;
+        }
+        $total2++;
+      }
+      $total1++;
+    }
+    
+    unless ($total1 == 2) {
+      return 0;
+    }
+    
+    unless ($total2 == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub for_nested_last : int () {
     my $ret = 0;
     for (my $i=0; 1;$i++) {
@@ -24,7 +58,7 @@ package TestCase::Loop {
     
     return $ret;
   }
-    
+  
   # For
   sub for_basic : int () {
   
