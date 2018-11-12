@@ -84,6 +84,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Packages length
   int32_t packages_length = compiler->packages->length;
+  portable->packages_length = compiler->packages->length + 1;
   
   // String pool length
   int32_t string_pool_length = compiler->string_pool->length;
@@ -253,11 +254,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Portable packages(32bit)(0 index is for not existance)
   portable->packages = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (compiler->packages->length + 1));
-  portable->packages_length++;
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
 
-    SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[portable->packages_length];
+    SPVM_RUNTIME_PACKAGE* new_portable_package = &portable->packages[package_id + 1];
     
     new_portable_package->id = package->id;
     new_portable_package->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->name, strlen(package->name) + 1);
@@ -275,8 +275,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     new_portable_package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->no_dup_package_var_access_package_var_ids_constant_pool_id;
     new_portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
     new_portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
-
-    portable->packages_length++;
   }
 
   // String pool(8bit)
