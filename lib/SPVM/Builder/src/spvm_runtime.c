@@ -173,7 +173,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     package->fields = SPVM_LIST_new(0);
     package->field_symtable = SPVM_HASH_new(0);
     package->object_field_indexes = SPVM_LIST_new(0);
-    package->package_vars = SPVM_LIST_new(0);
     package->package_var_symtable = SPVM_HASH_new(0);
     package->subs = SPVM_LIST_new(0);
     package->sub_symtable = SPVM_HASH_new(0);
@@ -212,7 +211,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     
-    SPVM_LIST_push(package->package_vars, package_var);
     const char* package_var_name = &runtime->string_pool[package_var->name_id];
     SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
   }
@@ -275,7 +273,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
     SPVM_HASH_free(package->sub_symtable);
     SPVM_LIST_free(package->fields);
     SPVM_HASH_free(package->field_symtable);
-    SPVM_LIST_free(package->package_vars);
     SPVM_HASH_free(package->package_var_symtable);
     SPVM_LIST_free(package->object_field_indexes);
   }
