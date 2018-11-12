@@ -61,7 +61,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->constant_pool_length = constant_pool_length;
   
   // Basic type length
-  int32_t basic_type_length = compiler->basic_types->length;
+  int32_t basic_types_length = compiler->basic_types->length;
   portable->basic_types_length = compiler->basic_types->length;
   
   // Package vars length
@@ -86,6 +86,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // String pool length
   int32_t string_pool_length = compiler->string_pool->length;
   portable->string_pool_length = string_pool_length;
+  
+  // Total byte size
+  int32_t total_byte_size =
+    sizeof(int64_t) * (opcode_length + 1) +
+    sizeof(int32_t) * (constant_pool_length + 1) +
+    sizeof(SPVM_RUNTIME_BASIC_TYPE) * (basic_types_length + 1) +
+    sizeof(SPVM_RUNTIME_PACKAGE) * (package_vars_length + 1)
+  ;
 
   // OPCode(64bit)
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
