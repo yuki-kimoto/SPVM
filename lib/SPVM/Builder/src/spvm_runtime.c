@@ -228,18 +228,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_LIST_push(package->subs, sub);
     const char* sub_name = &runtime->string_pool[sub->name_id];
     SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
-
-    // Variable allocation max length
-    int32_t vars_alloc_length = 
-      sub->byte_vars_alloc_length +
-      sub->short_vars_alloc_length +
-      sub->int_vars_alloc_length +
-      sub->long_vars_alloc_length +
-      sub->float_vars_alloc_length +
-      sub->double_vars_alloc_length +
-      sub->object_vars_alloc_length +
-      sub->ref_vars_alloc_length
-    ;
   }
 
   // build runtime basic type symtable
