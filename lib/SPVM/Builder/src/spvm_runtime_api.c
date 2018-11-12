@@ -4791,8 +4791,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       
       {
         int32_t index;
-        for (index = 0; index < package->object_field_indexes->length; index++) {
-          int32_t object_field_index = (intptr_t)SPVM_LIST_fetch(package->object_field_indexes, index);
+        int32_t object_field_indexes_length = runtime->constant_pool[package->constant_pool_base + package->object_field_indexes_constant_pool_id];
+        for (index = 0; index < object_field_indexes_length; index++) {
+          int32_t object_field_index = runtime->constant_pool[package->constant_pool_base + package->object_field_indexes_constant_pool_id + 1 + index];
           SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);
           
           SPVM_OBJECT** object_field_address = (SPVM_OBJECT**)&fields[object_field_index];
