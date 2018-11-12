@@ -73,14 +73,15 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->fields_length = fields_length;
 
   // Arg total length
-  int32_t args_total_length = 0;
+  int32_t portable_args_length = 0;
   for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
-    args_total_length += sub->args->length;
+    portable_args_length += sub->args->length;
   }
   
   // Subs length
-  int32_t subs_length = compiler->subs->length;
+  int32_t subs_length = compiler->subs->length + 1;
+  portable->subs_length = subs_length;
   
   // Packages length
   int32_t packages_length = compiler->packages->length;
@@ -96,8 +97,8 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     sizeof(int32_t) * (constant_pool_length + 1) +
     sizeof(SPVM_RUNTIME_BASIC_TYPE) * (basic_types_length + 1) +
     sizeof(SPVM_RUNTIME_PACKAGE) * (package_vars_length + 1) +
-    sizeof(SPVM_RUNTIME_FIELD) * (compiler->fields->length + 1) +
-    sizeof(SPVM_RUNTIME_ARG) * (args_total_length + 1);
+    sizeof(SPVM_RUNTIME_FIELD) * (fields_length + 1) +
+    sizeof(SPVM_RUNTIME_ARG) * (portable_args_length + 1);
   
   // OPCode(64bit)
   portable->opcodes = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(int64_t) * (opcode_length + 1));
@@ -174,15 +175,14 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   
   // Portable args(32bit)
-  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * (args_total_length + 1));
+  portable->args = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_ARG) * (portable_args_length + 1));
 
   // Portable subs(32bit)(0 index is for not existance)
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
-  portable->subs_length++;
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
-    SPVM_RUNTIME_SUB* portable_sub = &portable->subs[portable->subs_length];
+    SPVM_RUNTIME_SUB* portable_sub = &portable->subs[sub_id + 1];
 
     portable_sub->id = sub->id;
     portable_sub->flag = sub->flag;
@@ -248,8 +248,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
       portable->args_length++;
     }
-
-    portable->subs_length++;
   }
   
   // Portable packages(32bit)(0 index is for not existance)
