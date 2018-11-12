@@ -66,6 +66,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Package vars length
   int32_t package_vars_length = compiler->package_vars->length;
+  portable->package_vars_length = package_vars_length;
   
   // Fields length
   int32_t fields_length = compiler->fields->length;
@@ -126,7 +127,23 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   portable->package_vars_length++;
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
-    SPVM_PORTABLE_push_package_var(compiler, portable, package_var);
+    
+    SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_var = &portable->package_vars[package_var_id + 1];
+
+    new_portable_package_var->id = package_var->id;
+    new_portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
+    
+    new_portable_package_var->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
+    if (package_var->type->basic_type) {
+      new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
+    }
+    else {
+      new_portable_package_var->basic_type_id = 0;
+    }
+    new_portable_package_var->type_dimension = package_var->type->dimension;
+    new_portable_package_var->type_flag = package_var->type->flag;
+    assert(package_var->package);
+    new_portable_package_var->package_id = package_var->package->id;
   }
 
   // Portable fields(32bit)(0 index is for not existance)
@@ -285,28 +302,6 @@ void SPVM_PORTABLE_push_field(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, 
   new_portable_field->runtime_type = field->runtime_type;
   
   portable->fields_length++;
-}
-
-void SPVM_PORTABLE_push_package_var(SPVM_COMPILER* compiler, SPVM_PORTABLE* portable, SPVM_PACKAGE_VAR* package_var) {
-  
-  SPVM_RUNTIME_PACKAGE_VAR* new_portable_package_var = &portable->package_vars[portable->package_vars_length];
-
-  new_portable_package_var->id = package_var->id;
-  new_portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
-  
-  new_portable_package_var->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->signature, strlen(package_var->signature) + 1);
-  if (package_var->type->basic_type) {
-    new_portable_package_var->basic_type_id = package_var->type->basic_type->id;
-  }
-  else {
-    new_portable_package_var->basic_type_id = 0;
-  }
-  new_portable_package_var->type_dimension = package_var->type->dimension;
-  new_portable_package_var->type_flag = package_var->type->flag;
-  assert(package_var->package);
-  new_portable_package_var->package_id = package_var->package->id;
-
-  portable->package_vars_length++;
 }
 
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
