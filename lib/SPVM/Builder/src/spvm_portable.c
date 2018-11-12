@@ -302,6 +302,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->no_dup_package_var_access_package_var_ids_constant_pool_id;
     portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
     portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
+    portable_package->object_field_indexes_constant_pool_id = package->object_field_indexes_constant_pool_id;
 
     if (package->fields->length > 0) {
       SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
@@ -322,6 +323,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     }
     
     portable_package->subs_length = package->subs->length;
+    
   }
 
   // String pool(8bit)
