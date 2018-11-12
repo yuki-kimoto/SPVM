@@ -4,32 +4,33 @@
 #include "spvm_base.h"
 
 struct SPVM_portable {
-  char* string_pool;
-  int32_t string_pool_length;
+  SPVM_OPCODE* opcodes;
+  int32_t opcodes_length;
+
+  SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  int32_t basic_types_length;
+
+  SPVM_RUNTIME_PACKAGE* packages;
+  int32_t packages_length;
+
+  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
+  int32_t package_vars_length;
+
+  SPVM_RUNTIME_FIELD* fields;
+  int32_t fields_length;
+
+  SPVM_RUNTIME_SUB* subs;
+  int32_t subs_length;
+
+  SPVM_RUNTIME_ARG* args;
+  int32_t args_length;
 
   int32_t* constant_pool;
   int32_t constant_pool_length;
 
-  int32_t basic_types_length;
-  SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  char* string_pool;
+  int32_t string_pool_length;
 
-  int32_t packages_length;
-  SPVM_RUNTIME_PACKAGE* packages;
-
-  int32_t fields_length;
-  SPVM_RUNTIME_FIELD* fields;
-
-  int32_t package_vars_length;
-  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
-
-  int32_t subs_length;
-  SPVM_RUNTIME_SUB* subs;
-
-  int32_t args_length;
-  SPVM_RUNTIME_ARG* args;
-
-  int32_t opcodes_length;
-  SPVM_OPCODE* opcodes;
   int8_t is_static;
 };
 
