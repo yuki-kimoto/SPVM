@@ -68,9 +68,9 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   int32_t portable_package_vars_length = compiler->package_vars->length + 1;
   portable->package_vars_length = portable_package_vars_length;
   
-  // Fields length
-  int32_t fields_length = compiler->fields->length;
-  portable->fields_length = fields_length;
+  // Fields length(0 is index for not existance)
+  int32_t portable_fields_length = compiler->fields->length + 1;
+  portable->fields_length = portable_fields_length;
 
   // Arg total length
   int32_t args_length = 0;
@@ -94,11 +94,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Total byte size(at least 1 byte)
   int32_t total_byte_size =
-    sizeof(int64_t) * (portable_opcode_length) +
-    sizeof(int32_t) * (portable_constant_pool_length) +
-    sizeof(SPVM_RUNTIME_BASIC_TYPE) * (portable_basic_types_length) +
-    sizeof(SPVM_RUNTIME_PACKAGE) * (portable_package_vars_length) +
-    sizeof(SPVM_RUNTIME_FIELD) * (fields_length + 1) +
+    sizeof(int64_t) * portable_opcode_length +
+    sizeof(int32_t) * portable_constant_pool_length +
+    sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length +
+    sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length +
+    sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length +
     sizeof(SPVM_RUNTIME_ARG) * (args_length + 1) +
     sizeof(SPVM_RUNTIME_SUB) * (subs_length + 1) +
     sizeof(SPVM_RUNTIME_PACKAGE) * (packages_length + 1) +
