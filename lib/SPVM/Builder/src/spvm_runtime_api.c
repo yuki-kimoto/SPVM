@@ -4548,7 +4548,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  int32_t fields_length = package->fields->length;
+  int32_t fields_length = package->fields_length;
   object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
   
   object->basic_type_id = basic_type->id;
