@@ -851,7 +851,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -886,7 +886,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -921,7 +921,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -955,7 +955,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -989,7 +989,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1023,7 +1023,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
 
-            SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1152,7 +1152,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1192,7 +1192,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1232,7 +1232,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1272,7 +1272,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1312,7 +1312,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1352,7 +1352,7 @@ call_sub(...)
             SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
             assert(arg_package);
         
-            SPVM_RUNTIME_FIELD* first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+            SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1408,7 +1408,7 @@ call_sub(...)
       SPVM_RUNTIME_PACKAGE* sub_return_package = &runtime->packages[sub_return_basic_type->package_id];
       assert(sub_return_package);
       
-      SPVM_RUNTIME_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
+      SPVM_RUNTIME_FIELD* sub_return_first_field = &runtime->fields[sub_return_package->fields_base];
       assert(sub_return_first_field);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
@@ -1577,7 +1577,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1592,7 +1592,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1607,7 +1607,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1622,7 +1622,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1637,7 +1637,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1652,7 +1652,7 @@ call_sub(...)
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
           assert(arg_package);
-          SPVM_RUNTIME_FIELD* arg_first_field = SPVM_LIST_fetch(arg_package->fields, 0);
+          SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
           assert(arg_first_field);
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1753,7 +1753,7 @@ set_array_elements(...)
           HV* hv_value = (HV*)SvRV(sv_value);
           int32_t field_length = package->fields_length;
           for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
-            SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
 
             SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -2161,7 +2161,7 @@ set_array_element(...)
         HV* hv_value = (HV*)SvRV(sv_value);
         int32_t field_length = package->fields_length;
         for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
           const char* field_name = &runtime->string_pool[field->name_id];
 
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
@@ -2362,7 +2362,7 @@ get_array_element(...)
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
       int32_t field_length = package->fields_length;
       for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
-        SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
         const char* field_name = &runtime->string_pool[field->name_id];
 
         SV* sv_field_value;
@@ -2532,7 +2532,7 @@ get_array_elements(...)
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = package->fields_length;
         for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+          SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
           const char* field_name = &runtime->string_pool[field->name_id];
 
           SV* sv_field_value;
