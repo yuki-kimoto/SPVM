@@ -78,6 +78,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
     portable_args_length += sub->args->length;
   }
+  portable->args_length = portable_args_length;
   
   // Subs length
   int32_t subs_length = compiler->subs->length + 1;
@@ -179,6 +180,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
   // Portable subs(32bit)(0 index is for not existance)
   portable->subs = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_SUB) * (compiler->subs->length + 1));
+  int32_t args_base = 0;
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
@@ -221,7 +223,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_sub->return_type_flag = sub->return_type->flag;
     portable_sub->opcodes_base = sub->opcodes_base;
     portable_sub->mortal_stack_length = sub->mortal_stack_length;
-    portable_sub->arg_ids_base = portable->args_length;
+    portable_sub->arg_ids_base = args_base;
     portable_sub->arg_ids_length = sub->args->length;
     portable_sub->opcodes_length = sub->opcodes_length;
     portable_sub->call_type_id = sub->call_type_id;
@@ -238,16 +240,15 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     for (int32_t arg_id = 0; arg_id < sub->args->length; arg_id++) {
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_id);
       
-      SPVM_RUNTIME_ARG* portable_arg = &portable->args[portable->args_length];
+      SPVM_RUNTIME_ARG* portable_arg = &portable->args[args_base + arg_id];
       portable_arg->basic_type_id = arg->type->basic_type->id;
       portable_arg->type_dimension = arg->type->dimension;
       portable_arg->type_flag = arg->type->flag;
       portable_arg->var_id = arg->var_id;
       portable_arg->runtime_type = arg->runtime_type;
       portable_arg->type_width = arg->type_width;
-
-      portable->args_length++;
     }
+    args_base += sub->args->length;
   }
   
   // Portable packages(32bit)(0 index is for not existance)
