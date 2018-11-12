@@ -2798,7 +2798,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (exception_flag) {
           exception_flag = 0;
           
-          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
@@ -2817,7 +2817,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
         if (exception_flag) {
-          SPVM_RUNTIME_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
+          SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
           int32_t sub_id = sub->id;
           int32_t rel_line = opcode->operand2;
           int32_t line = sub->line + rel_line;
@@ -3832,16 +3832,16 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
   assert(object_package);
   assert(interface_package);
   
-  assert(interface_package->subs->length == 1);
+  assert(interface_package->subs_length == 1);
   
-  SPVM_RUNTIME_SUB* sub_interface = SPVM_LIST_fetch(interface_package->subs, 0);
+  SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
   
   const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
   const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
   
   SPVM_RUNTIME_SUB* found_sub;
   if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
-    found_sub = SPVM_LIST_fetch(object_package->subs, 0);
+    found_sub = &runtime->subs[object_package->subs_base];
   }
   else {
     found_sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
@@ -4954,7 +4954,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   SPVM_RUNTIME_SUB* sub;
   if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
     // Subroutine name
-    sub = SPVM_LIST_fetch(package->subs, 0);
+    sub = &runtime->subs[package->subs_base];
      
     // Signature
     if (strcmp(signature, &runtime->string_pool[sub->signature_id]) != 0) {
