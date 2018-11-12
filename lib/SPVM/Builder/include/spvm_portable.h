@@ -4,6 +4,8 @@
 #include "spvm_base.h"
 
 struct SPVM_portable {
+  char* memory_pool;
+  
   SPVM_OPCODE* opcodes;
   int32_t opcodes_length;
 

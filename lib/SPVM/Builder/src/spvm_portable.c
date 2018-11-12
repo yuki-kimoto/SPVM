@@ -107,6 +107,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   ;
   
   char* memory_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(total_byte_size);
+  portable->memory_pool = memory_pool;
   
   int32_t memory_pool_base = 0;
   
@@ -312,7 +313,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 void SPVM_PORTABLE_free(SPVM_PORTABLE* portable) {
   
   if (!portable->is_static) {
-    
+    free(portable->memory_pool);
     free(portable);
   }
 }
