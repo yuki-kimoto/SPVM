@@ -169,20 +169,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     const char* package_name = &runtime->string_pool[package->name_id];
     SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
-    
-    package->package_var_symtable = SPVM_HASH_new(0);
-  }
-
-  // Register package_var to package
-  for (int32_t package_var_id = 1; package_var_id < runtime->package_vars_length; package_var_id++) {
-    SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
-    
-    int32_t package_id = package_var->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    const char* package_var_name = &runtime->string_pool[package_var->name_id];
-    SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
   }
 
   // build runtime basic type symtable
@@ -222,12 +208,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   free(runtime->mortal_stack);
   
   SPVM_HASH_free(runtime->basic_type_symtable);
-  
-  for (int32_t package_id = 1; package_id < runtime->packages_length; package_id++) {
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    SPVM_HASH_free(package->package_var_symtable);
-  }
   SPVM_HASH_free(runtime->package_symtable);
 
   // Free package variables heap
