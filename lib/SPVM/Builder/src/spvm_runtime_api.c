@@ -4917,6 +4917,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   }
   else {
     int32_t subs_length = package->subs_length;
+    int32_t subs_base = package->subs_base;
     
     if (subs_length == 0) {
       sub_id = 0;
@@ -4924,17 +4925,30 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
     else {
       /*
 
-      int l = 0;
-      int r = array.Length - 1;
-      while (l < r)
-      {
-        int m = (l + r) / 2;
-        if (array[m] < elem) l = m + 1;
-        else if (array[m] > elem) r = m - 1;
-        else return m;
+      int low = subs_base;
+      int high = subs_base + subs_length - 1;
+      SPVM_RUNTIME_SUB* sub = NULL;
+      while (low < high) {
+        int32_t middle = (low + high) / 2;
+        SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
+        const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
+        
+        if (strcmp(middle_sub_name, sub_name) < 0) {
+          low = middle + 1;
+        }
+        else if (strcmp(middle_sub_name, sub_name) > 0) {
+          high = middle - 1;
+        }
+        else {
+          sub = middle_sub;
+        }
       }
-      if (array[l] == elem) return l;
-      return array.Length;
+      SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
+      const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
+      if (strcmp(low_sub_name == sub_name) == 0) {
+        sub = low_sub;
+      }
+      
       */
       
       // Subroutine name
