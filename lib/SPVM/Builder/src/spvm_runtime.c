@@ -147,6 +147,19 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
   // Create basic type rank
   runtime->basic_types_rank = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(int32_t) * runtime->basic_types_length);
+  for (int32_t first_index = 0; first_index < runtime->basic_types_length; first_index++) {
+    SPVM_RUNTIME_BASIC_TYPE* basic_type_first = &runtime->basic_types[first_index];
+    const char* basic_type_name_first = &runtime->string_pool[basic_type_first->name_id];
+    for (int32_t second_index = 0; second_index < runtime->basic_types_length; second_index++) {
+      SPVM_RUNTIME_BASIC_TYPE* basic_type_second = &runtime->basic_types[second_index];
+      const char* basic_type_name_second = &runtime->string_pool[basic_type_second->name_id];
+      if (first_index != second_index) {
+        if (strcmp(basic_type_name_first, basic_type_name_second) > 0) {
+          runtime->basic_types_rank[first_index]++;
+        }
+      }
+    }
+  }
 
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
   runtime->fields_length = portable->fields_length;
