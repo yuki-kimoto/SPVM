@@ -172,7 +172,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     
     package->field_symtable = SPVM_HASH_new(0);
     package->package_var_symtable = SPVM_HASH_new(0);
-    package->sub_symtable = SPVM_HASH_new(0);
   }
 
   // Register field to package
@@ -197,18 +196,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     
     const char* package_var_name = &runtime->string_pool[package_var->name_id];
     SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
-  }
-
-  // Register sub to package
-  for (int32_t sub_id = 1; sub_id < runtime->subs_length; sub_id++) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
-    
-    int32_t package_id = sub->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    const char* sub_name = &runtime->string_pool[sub->name_id];
-    SPVM_HASH_insert(package->sub_symtable, sub_name, strlen(sub_name), sub);
   }
 
   // build runtime basic type symtable
@@ -252,7 +239,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   for (int32_t package_id = 1; package_id < runtime->packages_length; package_id++) {
     
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    SPVM_HASH_free(package->sub_symtable);
     SPVM_HASH_free(package->field_symtable);
     SPVM_HASH_free(package->package_var_symtable);
   }

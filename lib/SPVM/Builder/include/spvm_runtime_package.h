@@ -7,7 +7,6 @@
 struct SPVM_runtime_package {
   SPVM_HASH* package_var_symtable;
   SPVM_HASH* field_symtable;
-  SPVM_HASH* sub_symtable;
   int32_t id;
   int32_t name_id;
   int32_t destructor_sub_id;
