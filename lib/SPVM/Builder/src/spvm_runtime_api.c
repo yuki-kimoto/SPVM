@@ -4923,36 +4923,35 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
       sub_id = 0;
     }
     else {
-      /*
-
-      int low = subs_base;
-      int high = subs_base + subs_length - 1;
+      // Find subroutine by binary search
       SPVM_RUNTIME_SUB* sub = NULL;
-      while (low < high) {
-        int32_t middle = (low + high) / 2;
-        SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
-        const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
-        
-        if (strcmp(middle_sub_name, sub_name) < 0) {
-          low = middle + 1;
+      {
+        int low = subs_base;
+        int high = subs_base + subs_length - 1;
+        while (low < high) {
+          int32_t middle = (low + high) / 2;
+          SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
+          const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
+          
+          if (strcmp(sub_name, middle_sub_name) > 0) {
+            low = middle + 1;
+          }
+          else if (strcmp(sub_name, middle_sub_name) < 0) {
+            high = middle - 1;
+          }
+          else {
+            sub = middle_sub;
+            break;
+          }
         }
-        else if (strcmp(middle_sub_name, sub_name) > 0) {
-          high = middle - 1;
-        }
-        else {
-          sub = middle_sub;
+        if (sub == NULL) {
+          SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
+          const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
+          if (strcmp(sub_name, low_sub_name) == 0) {
+            sub = low_sub;
+          }
         }
       }
-      SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
-      const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
-      if (strcmp(low_sub_name == sub_name) == 0) {
-        sub = low_sub;
-      }
-      
-      */
-      
-      // Subroutine name
-      SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
       if (sub == NULL) {
         sub_id = 0;
       }
