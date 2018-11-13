@@ -4965,10 +4965,16 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
   // Package name
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  if (!package) {
+  SPVM_RUNTIME_PACKAGE* package;
+  if (basic_type->package_id == 0) {
     return 0;
+  }
+  else {
+    package = &runtime->packages[basic_type->package_id];
   }
 
   // Package variable name
@@ -5033,8 +5039,18 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   // Sub id
   int32_t sub_id;
   
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
   // Package name
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_PACKAGE* package;
+  if (basic_type->package_id == 0) {
+    package = NULL;
+  }
+  else {
+    package = &runtime->packages[basic_type->package_id];
+  }
+  
   if (package == NULL) {
     sub_id = 0;
   }
