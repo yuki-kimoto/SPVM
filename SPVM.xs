@@ -343,7 +343,7 @@ bind_sub_native(...)
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -376,7 +376,7 @@ build_package_csource_precompile(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -429,7 +429,7 @@ bind_sub_precompile(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -626,7 +626,7 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -666,7 +666,7 @@ new_multi_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -703,7 +703,7 @@ new_value_t_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
     const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
@@ -779,7 +779,7 @@ call_sub(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];

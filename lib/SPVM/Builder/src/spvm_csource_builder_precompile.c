@@ -1033,7 +1033,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -1213,7 +1213,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_S
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -1250,7 +1250,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];

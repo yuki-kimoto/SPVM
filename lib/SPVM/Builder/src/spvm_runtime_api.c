@@ -4892,7 +4892,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   if (!basic_type) {
     return 0;
   }
@@ -4966,7 +4966,7 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package;
@@ -5040,7 +5040,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   int32_t sub_id;
   
   // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package;
