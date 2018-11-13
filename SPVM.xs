@@ -344,7 +344,7 @@ bind_sub_native(...)
   
   // Set native address to subroutine
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
   runtime->sub_cfunc_addresses[sub->id] = native_address;
   
   XSRETURN(0);
@@ -419,7 +419,7 @@ bind_sub_precompile(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
   
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
   sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
@@ -767,7 +767,7 @@ call_sub(...)
   if (package == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
   if (sub == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
