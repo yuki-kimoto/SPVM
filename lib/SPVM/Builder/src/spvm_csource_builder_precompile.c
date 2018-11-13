@@ -1032,7 +1032,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* package_name) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
   
   // Head part - include and define
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(env, string_buffer);
@@ -1208,7 +1212,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
 
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
@@ -1240,7 +1249,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
 
   assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
