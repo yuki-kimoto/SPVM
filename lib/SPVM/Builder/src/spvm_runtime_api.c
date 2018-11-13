@@ -5162,16 +5162,16 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_get_basic_type(SPVM_ENV* env,  const c
   return basic_type;
 }
 
-int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
+int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   (void)env;
   
-  if (name == NULL) {
+  if (basic_type_name == NULL) {
     return 0;
   }
   
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, name, strlen(name));
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
   if (basic_type) {
     int32_t basic_type_id = basic_type->id;
     return basic_type_id;
