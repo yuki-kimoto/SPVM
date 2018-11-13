@@ -145,18 +145,23 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->basic_types = portable->basic_types;
   runtime->basic_types_length = portable->basic_types_length;
   
-  // Create basic type rank
-  runtime->basic_types_rank = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(int32_t) * runtime->basic_types_length);
-  for (int32_t first_index = 0; first_index < runtime->basic_types_length; first_index++) {
-    SPVM_RUNTIME_BASIC_TYPE* basic_type_first = &runtime->basic_types[first_index];
-    const char* basic_type_name_first = &runtime->string_pool[basic_type_first->name_id];
-    for (int32_t second_index = 0; second_index < runtime->basic_types_length; second_index++) {
-      SPVM_RUNTIME_BASIC_TYPE* basic_type_second = &runtime->basic_types[second_index];
-      const char* basic_type_name_second = &runtime->string_pool[basic_type_second->name_id];
-      if (first_index != second_index) {
-        if (strcmp(basic_type_name_first, basic_type_name_second) > 0) {
-          runtime->basic_types_rank[first_index]++;
-        }
+  // Create basic type rank(string_pool_id and rank)
+  runtime->sorted_basic_types = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_BASIC_TYPE) * runtime->basic_types_length);
+  memcpy(runtime->sorted_basic_types, runtime->basic_types, sizeof(SPVM_BASIC_TYPE) * runtime->basic_types_length);
+  
+  // Sort basic type id
+  for (int32_t i = 0; i < runtime->basic_types_length - 1; i++) {
+    for (int32_t j = (runtime->basic_types_length - 1); j > i; j--) {
+      SPVM_RUNTIME_BASIC_TYPE* basic_type1 = &runtime->sorted_basic_types[j - 1];
+      SPVM_RUNTIME_BASIC_TYPE* basic_type2 = &runtime->sorted_basic_types[j];
+      
+      const char* basic_type1_name = &runtime->string_pool[basic_type1->name_id];
+      const char* basic_type2_name = &runtime->string_pool[basic_type2->name_id];
+      
+      if (strcmp(basic_type1_name, basic_type2_name) > 0) {
+        SPVM_RUNTIME_BASIC_TYPE temp = *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j - 1];
+        *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j - 1] = *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j];
+        *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j] = temp;
       }
     }
   }

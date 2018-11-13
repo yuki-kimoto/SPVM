@@ -52,6 +52,7 @@ struct SPVM_runtime {
   SPVM_OPCODE* opcodes;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
+  SPVM_RUNTIME_BASIC_TYPE* sorted_basic_types;
   int32_t basic_types_length;
 
   int32_t* basic_types_rank;
