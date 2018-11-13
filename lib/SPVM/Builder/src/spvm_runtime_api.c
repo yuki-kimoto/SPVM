@@ -3838,14 +3838,10 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
     }
   }
   else {
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
-    if (sub) {
-      if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
-        has_interface = 1;
-      }
-      else {
-        has_interface = 0;
-      }
+    const char* object_package_name = &runtime->string_pool[object_package->name_id];
+    int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_interface_name, sub_interface_signature);
+    if (sub_id > 0) {
+      has_interface = 1;
     }
     else {
       has_interface = 0;
