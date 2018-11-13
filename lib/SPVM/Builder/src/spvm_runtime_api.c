@@ -4888,11 +4888,19 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  // Package
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  if (!package) {
+  
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  if (!basic_type) {
     return 0;
   }
+  
+  if (basic_type->package_id == 0) {
+    return 0;
+  }
+  
+  // Package
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
   
   // Field
   SPVM_RUNTIME_FIELD* field = SPVM_RUNTIME_API_get_field(env, package, field_name);
@@ -5064,8 +5072,14 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   
   // Package name
   SPVM_RUNTIME_BASIC_TYPE* object_basic_type = &runtime->basic_types[object->basic_type_id];
-  const char* object_basic_type_name = &runtime->string_pool[object_basic_type->name_id];
-  SPVM_RUNTIME_PACKAGE* object_package = SPVM_HASH_fetch(runtime->package_symtable, object_basic_type_name, strlen(object_basic_type_name));  
+  SPVM_RUNTIME_PACKAGE* object_package;
+  if (object_basic_type->package_id > 0) {
+    object_package = &runtime->packages[object_basic_type->package_id];
+  }
+  else {
+    object_package = NULL;
+  }
+  
   if (object_package == NULL) {
     return 0;
   }
@@ -5086,7 +5100,8 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   }
   // Normal sub
   else {
-    sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_basic_type_name, sub_name, signature);
+    const char* object_package_name = &runtime->string_pool[object_package->name_id];
+    sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_name, signature);
   }
   
   return sub_id;
