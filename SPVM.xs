@@ -342,8 +342,13 @@ bind_sub_native(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+  
   // Set native address to subroutine
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
   runtime->sub_cfunc_addresses[sub->id] = native_address;
   
@@ -370,7 +375,12 @@ build_package_csource_precompile(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+
   int32_t package_id = package->id;
   
   // String buffer for csource
@@ -418,7 +428,12 @@ bind_sub_precompile(...)
   // Subroutine name
   const char* sub_name = SvPV_nolen(sv_sub_name);
   
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
   sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
@@ -763,7 +778,12 @@ call_sub(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+
   if (package == NULL) {
     croak("Subroutine not found %s %s", package_name, sub_name);
   }
