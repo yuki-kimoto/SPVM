@@ -131,10 +131,10 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
 SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
+
+  SPVM_ENV* env = SPVM_RUNTIME_create_env(runtime);
   
   runtime->portable = portable;
-  
-  SPVM_ENV* env = SPVM_RUNTIME_create_env(runtime);
   
   runtime->string_pool = portable->string_pool;
   runtime->string_pool_length = portable->string_pool_length;
