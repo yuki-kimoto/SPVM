@@ -3827,23 +3827,32 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_
   const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
   const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
   
-  SPVM_RUNTIME_SUB* found_sub;
+  int32_t has_interface;
   if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
-    found_sub = &runtime->subs[object_package->subs_base];
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
+    if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
+      has_interface = 1;
+    }
+    else {
+      has_interface = 0;
+    }
   }
   else {
-    found_sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
-  } 
-  if (!found_sub) {
-    return 0;
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(object_package->sub_symtable, sub_interface_name, strlen(sub_interface_name));
+    if (sub) {
+      if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
+        has_interface = 1;
+      }
+      else {
+        has_interface = 0;
+      }
+    }
+    else {
+      has_interface = 0;
+    }
   }
   
-  if (strcmp(sub_interface_signature, &runtime->string_pool[found_sub->signature_id]) == 0) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
+  return has_interface;
 }
 
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
