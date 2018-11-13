@@ -144,6 +144,9 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
   runtime->basic_types = portable->basic_types;
   runtime->basic_types_length = portable->basic_types_length;
+  
+  // Create basic type rank
+  runtime->basic_types_rank = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(int32_t) * runtime->basic_types_length);
 
   runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
   runtime->fields_length = portable->fields_length;
