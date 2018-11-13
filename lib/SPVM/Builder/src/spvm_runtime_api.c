@@ -4845,6 +4845,43 @@ int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id) {
   return field->index;
 }
 
+SPVM_RUNTIME_FIELD* SPVM_RUNTIME_API_get_field(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* field_name) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Find fieldroutine by binary search
+  int32_t fields_length = package->fields_length;
+  int32_t fields_base = package->fields_base;
+  SPVM_RUNTIME_FIELD* field = NULL;
+  int low = fields_base;
+  int high = fields_base + fields_length - 1;
+  while (low < high) {
+    int32_t middle = (low + high) / 2;
+    SPVM_RUNTIME_FIELD* middle_field = &runtime->fields[middle];
+    const char* middle_field_name = &runtime->string_pool[middle_field->name_id];
+    
+    if (strcmp(field_name, middle_field_name) > 0) {
+      low = middle + 1;
+    }
+    else if (strcmp(field_name, middle_field_name) < 0) {
+      high = middle - 1;
+    }
+    else {
+      field = middle_field;
+      break;
+    }
+  }
+  if (field == NULL) {
+    SPVM_RUNTIME_FIELD* low_field = &runtime->fields[low];
+    const char* low_field_name = &runtime->string_pool[low_field->name_id];
+    if (strcmp(field_name, low_field_name) == 0) {
+      field = low_field;
+    }
+  }
+  
+  return field;
+}
+
 int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature) {
   (void)env;
   
@@ -4858,7 +4895,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   }
   
   // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
+  SPVM_RUNTIME_FIELD* field = SPVM_RUNTIME_API_get_field(env, package, field_name);
   if (!field) {
     return 0;
   }
