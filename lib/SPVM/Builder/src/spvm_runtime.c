@@ -153,14 +153,11 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   runtime->opcodes = (SPVM_OPCODE*)portable->opcodes;
   runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
   runtime->subs_length = portable->subs_length;
+  runtime->packages_length = portable->packages_length;
+  runtime->packages = (SPVM_RUNTIME_PACKAGE*)portable->packages;
 
   // C function addresses(native or precompile)
   runtime->sub_cfunc_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
-  
-  // build packages
-  runtime->packages_length = portable->packages_length;
-  runtime->packages = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME_PACKAGE) * (runtime->packages_length + 1));
-  memcpy(runtime->packages, portable->packages, sizeof(SPVM_RUNTIME_PACKAGE) * runtime->packages_length);
 
   // build package symtable
   runtime->package_symtable = SPVM_HASH_new(0);
@@ -181,9 +178,9 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
-
+  
+  // Mortal stack
   runtime->mortal_stack_capacity = 1;
-
   runtime->mortal_stack = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_OBJECT*) * runtime->mortal_stack_capacity);
   
   return env;
