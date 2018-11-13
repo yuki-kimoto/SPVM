@@ -4891,7 +4891,7 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   if (!package) {
     return 0;
   }
-  
+
   // Package variable name
   SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
   if (!package_var) {
@@ -4952,31 +4952,38 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   }
   
   // Package which have only anon sub
-  SPVM_RUNTIME_SUB* sub;
+  int32_t sub_id;
   if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
     // Subroutine name
-    sub = &runtime->subs[package->subs_base];
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base];
      
     // Signature
-    if (strcmp(signature, &runtime->string_pool[sub->signature_id]) != 0) {
-      return 0;
+    if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
+      sub_id = sub->id;
+    }
+    else {
+      sub_id = 0;
     }
   }
   // Normal sub
   else {
     // Subroutine name
-    sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
     if (sub == NULL) {
-      return 0;
+      sub_id = 0;
     }
-    
-    // Signature
-    if (strcmp(signature, &runtime->string_pool[sub->signature_id]) != 0) {
-      return 0;
+    else {
+      // Signature
+      if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
+        sub_id = sub->id;
+      }
+      else {
+        sub_id = 0;
+      }
     }
   }
   
-  return sub->id;
+  return sub_id;
 }
 
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
@@ -4987,7 +4994,7 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
   }
   
   SPVM_RUNTIME* runtime = env->runtime;
-  
+
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_HASH_fetch(runtime->basic_type_symtable, name, strlen(name));
   if (basic_type) {
     int32_t basic_type_id = basic_type->id;
