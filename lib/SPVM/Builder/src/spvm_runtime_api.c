@@ -4936,18 +4936,18 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Package name
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
-  const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, basic_type_name, strlen(basic_type_name));  
-  if (package == NULL) {
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = &runtime->basic_types[object->basic_type_id];
+  const char* object_basic_type_name = &runtime->string_pool[object_basic_type->name_id];
+  SPVM_RUNTIME_PACKAGE* object_package = SPVM_HASH_fetch(runtime->package_symtable, object_basic_type_name, strlen(object_basic_type_name));  
+  if (object_package == NULL) {
     return 0;
   }
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
     // Subroutine name
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base];
+    SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
      
     // Signature
     if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
@@ -4959,7 +4959,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   }
   // Normal sub
   else {
-    sub_id = SPVM_RUNTIME_API_get_sub_id(env, basic_type_name, sub_name, signature);
+    sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_basic_type_name, sub_name, signature);
   }
   
   return sub_id;
