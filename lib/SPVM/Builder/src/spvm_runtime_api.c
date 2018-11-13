@@ -4967,20 +4967,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   }
   // Normal sub
   else {
-    // Subroutine name
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    if (sub == NULL) {
-      sub_id = 0;
-    }
-    else {
-      // Signature
-      if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
-        sub_id = sub->id;
-      }
-      else {
-        sub_id = 0;
-      }
-    }
+    sub_id = SPVM_RUNTIME_API_get_sub_id(env, basic_type_name, sub_name, signature);
   }
   
   return sub_id;
