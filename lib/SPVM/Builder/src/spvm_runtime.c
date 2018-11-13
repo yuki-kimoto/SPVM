@@ -159,15 +159,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   // C function addresses(native or precompile)
   runtime->sub_cfunc_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
 
-  // build package symtable
-  runtime->package_symtable = SPVM_HASH_new(0);
-  for (int32_t package_id = 1; package_id < runtime->packages_length; package_id++) {
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    const char* package_name = &runtime->string_pool[package->name_id];
-    SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
-  }
-
   // build runtime basic type symtable
   runtime->basic_type_symtable = SPVM_HASH_new(0);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
@@ -205,7 +196,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   free(runtime->mortal_stack);
   
   SPVM_HASH_free(runtime->basic_type_symtable);
-  SPVM_HASH_free(runtime->package_symtable);
 
   // Free package variables heap
   free(runtime->package_vars_heap);

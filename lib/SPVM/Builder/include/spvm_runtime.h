@@ -72,7 +72,6 @@ struct SPVM_runtime {
   int32_t string_pool_length;
   
   SPVM_HASH* basic_type_symtable;
-  SPVM_HASH* package_symtable;
   
   // Exception
   SPVM_OBJECT* exception;
