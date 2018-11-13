@@ -4901,6 +4901,43 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   return package_var_id;
 }
 
+SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_get_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* sub_name) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Find subroutine by binary search
+  int32_t subs_length = package->subs_length;
+  int32_t subs_base = package->subs_base;
+  SPVM_RUNTIME_SUB* sub = NULL;
+  int low = subs_base;
+  int high = subs_base + subs_length - 1;
+  while (low < high) {
+    int32_t middle = (low + high) / 2;
+    SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
+    const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
+    
+    if (strcmp(sub_name, middle_sub_name) > 0) {
+      low = middle + 1;
+    }
+    else if (strcmp(sub_name, middle_sub_name) < 0) {
+      high = middle - 1;
+    }
+    else {
+      sub = middle_sub;
+      break;
+    }
+  }
+  if (sub == NULL) {
+    SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
+    const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
+    if (strcmp(sub_name, low_sub_name) == 0) {
+      sub = low_sub;
+    }
+  }
+  
+  return sub;
+}
+
 int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature) {
   (void)env;
   
@@ -4923,35 +4960,8 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
       sub_id = 0;
     }
     else {
-      // Find subroutine by binary search
-      SPVM_RUNTIME_SUB* sub = NULL;
-      {
-        int low = subs_base;
-        int high = subs_base + subs_length - 1;
-        while (low < high) {
-          int32_t middle = (low + high) / 2;
-          SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
-          const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
-          
-          if (strcmp(sub_name, middle_sub_name) > 0) {
-            low = middle + 1;
-          }
-          else if (strcmp(sub_name, middle_sub_name) < 0) {
-            high = middle - 1;
-          }
-          else {
-            sub = middle_sub;
-            break;
-          }
-        }
-        if (sub == NULL) {
-          SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
-          const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
-          if (strcmp(sub_name, low_sub_name) == 0) {
-            sub = low_sub;
-          }
-        }
-      }
+      // Sub
+      SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
       if (sub == NULL) {
         sub_id = 0;
       }
