@@ -4916,18 +4916,40 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
     sub_id = 0;
   }
   else {
-    // Subroutine name
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    if (sub == NULL) {
+    int32_t subs_length = package->subs_length;
+    
+    if (subs_length == 0) {
       sub_id = 0;
     }
     else {
-      // Signature
-      if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
-        sub_id = sub->id;
+      /*
+
+      int l = 0;
+      int r = array.Length - 1;
+      while (l < r)
+      {
+        int m = (l + r) / 2;
+        if (array[m] < elem) l = m + 1;
+        else if (array[m] > elem) r = m - 1;
+        else return m;
+      }
+      if (array[l] == elem) return l;
+      return array.Length;
+      */
+      
+      // Subroutine name
+      SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+      if (sub == NULL) {
+        sub_id = 0;
       }
       else {
-        sub_id = 0;
+        // Signature
+        if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
+          sub_id = sub->id;
+        }
+        else {
+          sub_id = 0;
+        }
       }
     }
   }
