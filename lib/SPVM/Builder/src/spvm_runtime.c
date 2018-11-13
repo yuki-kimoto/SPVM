@@ -170,22 +170,9 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
     const char* package_name = &runtime->string_pool[package->name_id];
     SPVM_HASH_insert(runtime->package_symtable, package_name, strlen(package_name), package);
     
-    package->field_symtable = SPVM_HASH_new(0);
     package->package_var_symtable = SPVM_HASH_new(0);
   }
 
-  // Register field to package
-  for (int32_t field_id = 1; field_id < runtime->fields_length; field_id++) {
-    SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-    
-    int32_t package_id = field->package_id;
-    
-    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    
-    const char* field_name = &runtime->string_pool[field->name_id];
-    SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
-  }
-  
   // Register package_var to package
   for (int32_t package_var_id = 1; package_var_id < runtime->package_vars_length; package_var_id++) {
     SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
@@ -239,7 +226,6 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   for (int32_t package_id = 1; package_id < runtime->packages_length; package_id++) {
     
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
-    SPVM_HASH_free(package->field_symtable);
     SPVM_HASH_free(package->package_var_symtable);
   }
   SPVM_HASH_free(runtime->package_symtable);
