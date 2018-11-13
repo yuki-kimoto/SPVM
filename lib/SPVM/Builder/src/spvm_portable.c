@@ -311,7 +311,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     else {
       portable_package->fields_base = -1;
     }
-    
     portable_package->fields_length = package->fields->length;
     
     if (package->subs->length > 0) {
@@ -321,8 +320,16 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     else {
       portable_package->subs_base = -1;
     }
-    
     portable_package->subs_length = package->subs->length;
+
+    if (package->package_vars->length > 0) {
+      SPVM_PACKAGE_VAR* first_package_var = SPVM_LIST_fetch(package->package_vars, 0);
+      portable_package->package_vars_base = first_package_var->id;
+    }
+    else {
+      portable_package->package_vars_base = -1;
+    }
+    portable_package->package_vars_length = package->package_vars->length;
     
   }
 

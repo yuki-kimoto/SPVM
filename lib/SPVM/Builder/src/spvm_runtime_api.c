@@ -4910,6 +4910,45 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   return field_id;
 }
 
+SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_get_package_var(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* package_var_name) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Find package_varroutine by binary search
+  int32_t package_vars_length = package->package_vars_length;
+  int32_t package_vars_base = package->package_vars_base;
+  SPVM_RUNTIME_PACKAGE_VAR* package_var = NULL;
+  int low = package_vars_base;
+  int high = package_vars_base + package_vars_length - 1;
+  while (low < high) {
+    int32_t middle = (low + high) / 2;
+    
+    SPVM_RUNTIME_PACKAGE_VAR* middle_package_var = &runtime->package_vars[middle];
+    const char* middle_package_var_name = &runtime->string_pool[middle_package_var->name_id];
+
+    
+    if (strcmp(package_var_name, middle_package_var_name) > 0) {
+      low = middle + 1;
+    }
+    else if (strcmp(package_var_name, middle_package_var_name) < 0) {
+      high = middle - 1;
+    }
+    else {
+      package_var = middle_package_var;
+      break;
+    }
+  }
+  if (package_var == NULL) {
+    SPVM_RUNTIME_PACKAGE_VAR* low_package_var = &runtime->package_vars[low];
+    const char* low_package_var_name = &runtime->string_pool[low_package_var->name_id];
+    if (strcmp(package_var_name, low_package_var_name) == 0) {
+      package_var = low_package_var;
+    }
+  }
+  
+  return package_var;
+}
+
 int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
   (void)env;
   
@@ -4923,7 +4962,7 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   }
 
   // Package variable name
-  SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
+  SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_RUNTIME_API_get_package_var(env, package, package_var_name);
   if (!package_var) {
     return 0;
   }
