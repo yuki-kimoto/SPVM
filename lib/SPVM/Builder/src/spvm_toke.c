@@ -630,6 +630,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               ch = *compiler->bufptr;
+              compiler->bufptr++;
             }
           }
           else {

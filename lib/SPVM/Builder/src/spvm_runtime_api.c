@@ -3764,23 +3764,11 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Package
-  int32_t sub_id = 0;
-  SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-  if (package) {
+  int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(byte[][])");
   
-    const char* sub_name = "main";
-    
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    if (sub) {
-      sub_id = sub->id;
-    }
-    else {
-      fprintf(stderr, "Can't find entry point subroutine %s", sub_name);
-      exit(EXIT_FAILURE);
-    }
-  }
-  else {
+  if (sub_id == 0) {
     fprintf(stderr, "Can't find entry point package %s\n", package_name);
+    exit(EXIT_FAILURE);
   }
   
   // Enter scope
@@ -4925,7 +4913,6 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   if (sub == NULL) {
     return 0;
   }
-  
   
   // Signature
   if (strcmp(signature, &runtime->string_pool[sub->signature_id]) != 0) {

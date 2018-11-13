@@ -1,6 +1,7 @@
-0.0389 2018-11-12
+0.0389 2018-11-13
   - fix nested loop last bugs
-  - fix nested loop nest bugs
+  - fix nested loop next bugs
+  - fix single quote escape sequence bug
 0.0388 2018-11-10
   - add table switch
   - improve constant pool implementation
