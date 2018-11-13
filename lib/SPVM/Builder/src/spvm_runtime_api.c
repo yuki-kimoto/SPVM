@@ -4907,24 +4907,30 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
+  // Sub id
+  int32_t sub_id;
+  
   // Package name
   SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
   if (package == NULL) {
-    return 0;
+    sub_id = 0;
   }
-  
-  // Subroutine name
-  SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  if (sub == NULL) {
-    return 0;
+  else {
+    // Subroutine name
+    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    if (sub == NULL) {
+      sub_id = 0;
+    }
+    else {
+      // Signature
+      if (strcmp(signature, &runtime->string_pool[sub->signature_id]) == 0) {
+        sub_id = sub->id;
+      }
+      else {
+        sub_id = 0;
+      }
+    }
   }
-  
-  // Signature
-  if (strcmp(signature, &runtime->string_pool[sub->signature_id]) != 0) {
-    return 0;
-  }
-  
-  int32_t sub_id = sub->id;
   
   return sub_id;
 }
