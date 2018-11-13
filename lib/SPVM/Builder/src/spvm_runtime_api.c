@@ -5125,6 +5125,43 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   return sub_id;
 }
 
+SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_get_basic_type(SPVM_ENV* env,  const char* basic_type_name) {
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  // Find basic_typeroutine by binary search
+  int32_t basic_types_length = runtime->basic_types_length;
+  int32_t basic_types_base = 0;
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = NULL;
+  int low = basic_types_base;
+  int high = basic_types_base + basic_types_length - 1;
+  while (low < high) {
+    int32_t middle = (low + high) / 2;
+    SPVM_RUNTIME_BASIC_TYPE* middle_basic_type = &runtime->sorted_basic_types[middle];
+    const char* middle_basic_type_name = &runtime->string_pool[middle_basic_type->name_id];
+    
+    if (strcmp(basic_type_name, middle_basic_type_name) > 0) {
+      low = middle + 1;
+    }
+    else if (strcmp(basic_type_name, middle_basic_type_name) < 0) {
+      high = middle - 1;
+    }
+    else {
+      basic_type = middle_basic_type;
+      break;
+    }
+  }
+  if (basic_type == NULL) {
+    SPVM_RUNTIME_BASIC_TYPE* low_basic_type = &runtime->sorted_basic_types[low];
+    const char* low_basic_type_name = &runtime->string_pool[low_basic_type->name_id];
+    if (strcmp(basic_type_name, low_basic_type_name) == 0) {
+      basic_type = low_basic_type;
+    }
+  }
+  
+  return basic_type;
+}
+
 int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name) {
   (void)env;
   
