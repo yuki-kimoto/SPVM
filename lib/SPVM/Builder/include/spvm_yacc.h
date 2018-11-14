@@ -64,43 +64,44 @@
      NAME = 280,
      VAR_NAME = 281,
      CONSTANT = 282,
-     RETURN = 283,
-     WEAKEN = 284,
-     CROAK = 285,
-     NEW = 286,
-     UNDEF = 287,
-     VOID = 288,
-     BYTE = 289,
-     SHORT = 290,
-     INT = 291,
-     LONG = 292,
-     FLOAT = 293,
-     DOUBLE = 294,
-     STRING = 295,
-     OBJECT = 296,
-     AMPERSAND = 297,
-     DOT3 = 298,
-     SPECIAL_ASSIGN = 299,
-     ASSIGN = 300,
-     OR = 301,
-     AND = 302,
-     BIT_XOR = 303,
-     BIT_OR = 304,
-     BIT_AND = 305,
-     REL = 306,
-     SHIFT = 307,
-     REMAINDER = 308,
-     DIVIDE = 309,
-     MULTIPLY = 310,
-     ISA = 311,
-     DEREF = 312,
-     REF = 313,
-     UMINUS = 314,
-     SCALAR = 315,
-     NOT = 316,
-     DEC = 317,
-     INC = 318,
-     ARROW = 319
+     PACKAGE_VAR_NAME = 283,
+     RETURN = 284,
+     WEAKEN = 285,
+     CROAK = 286,
+     NEW = 287,
+     UNDEF = 288,
+     VOID = 289,
+     BYTE = 290,
+     SHORT = 291,
+     INT = 292,
+     LONG = 293,
+     FLOAT = 294,
+     DOUBLE = 295,
+     STRING = 296,
+     OBJECT = 297,
+     AMPERSAND = 298,
+     DOT3 = 299,
+     SPECIAL_ASSIGN = 300,
+     ASSIGN = 301,
+     OR = 302,
+     AND = 303,
+     BIT_XOR = 304,
+     BIT_OR = 305,
+     BIT_AND = 306,
+     REL = 307,
+     SHIFT = 308,
+     REMAINDER = 309,
+     DIVIDE = 310,
+     MULTIPLY = 311,
+     ISA = 312,
+     DEREF = 313,
+     REF = 314,
+     UMINUS = 315,
+     SCALAR = 316,
+     NOT = 317,
+     DEC = 318,
+     INC = 319,
+     ARROW = 320
    };
 #endif
 /* Tokens.  */
@@ -129,43 +130,44 @@
 #define NAME 280
 #define VAR_NAME 281
 #define CONSTANT 282
-#define RETURN 283
-#define WEAKEN 284
-#define CROAK 285
-#define NEW 286
-#define UNDEF 287
-#define VOID 288
-#define BYTE 289
-#define SHORT 290
-#define INT 291
-#define LONG 292
-#define FLOAT 293
-#define DOUBLE 294
-#define STRING 295
-#define OBJECT 296
-#define AMPERSAND 297
-#define DOT3 298
-#define SPECIAL_ASSIGN 299
-#define ASSIGN 300
-#define OR 301
-#define AND 302
-#define BIT_XOR 303
-#define BIT_OR 304
-#define BIT_AND 305
-#define REL 306
-#define SHIFT 307
-#define REMAINDER 308
-#define DIVIDE 309
-#define MULTIPLY 310
-#define ISA 311
-#define DEREF 312
-#define REF 313
-#define UMINUS 314
-#define SCALAR 315
-#define NOT 316
-#define DEC 317
-#define INC 318
-#define ARROW 319
+#define PACKAGE_VAR_NAME 283
+#define RETURN 284
+#define WEAKEN 285
+#define CROAK 286
+#define NEW 287
+#define UNDEF 288
+#define VOID 289
+#define BYTE 290
+#define SHORT 291
+#define INT 292
+#define LONG 293
+#define FLOAT 294
+#define DOUBLE 295
+#define STRING 296
+#define OBJECT 297
+#define AMPERSAND 298
+#define DOT3 299
+#define SPECIAL_ASSIGN 300
+#define ASSIGN 301
+#define OR 302
+#define AND 303
+#define BIT_XOR 304
+#define BIT_OR 305
+#define BIT_AND 306
+#define REL 307
+#define SHIFT 308
+#define REMAINDER 309
+#define DIVIDE 310
+#define MULTIPLY 311
+#define ISA 312
+#define DEREF 313
+#define REF 314
+#define UMINUS 315
+#define SCALAR 316
+#define NOT 317
+#define DEC 318
+#define INC 319
+#define ARROW 320
 
 
 

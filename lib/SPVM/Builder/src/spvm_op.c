@@ -298,6 +298,14 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   return op_var_ret;
 }
 
+SPVM_OP* SPVM_OP_build_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
+      
+  // Package var op
+  SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_package_var_name);
+  
+  return op_package_var_access;
+}
+
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
   SPVM_OP* op_descriptor = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DESCRIPTOR, file, line);
   
@@ -321,16 +329,6 @@ SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t
   op_block->uv.block = block;
   
   return op_block;
-}
-
-SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
-  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, op_name->file, op_name->line);
-
-  SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_PACKAGE_VAR_ACCESS_new(compiler);
-  package_var_access->op_name = op_name;
-  op_package_var_access->uv.package_var_access = package_var_access;
-  
-  return op_package_var_access;
 }
 
 SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
@@ -358,6 +356,17 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   op_var->uv.var = var;
   
   return op_var;
+}
+
+SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
+  
+  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, op_package_var_name->file, op_package_var_name->line);
+
+  SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_PACKAGE_VAR_ACCESS_new(compiler);
+  package_var_access->op_name = op_package_var_name;
+  op_package_var_access->uv.package_var_access = package_var_access;
+  
+  return op_package_var_access;
 }
 
 SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_var, const char* file, int32_t line) {
@@ -1657,7 +1666,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t i;
     for (i = 0; i < package->package_vars->length; i++) {
       SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-      const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
+      const char* package_var_name = package_var->name;
 
       // Add package var name to string pool
       int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var_name, strlen(package_var_name) + 1);
@@ -1852,14 +1861,13 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_type) {
   
-  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_var->file, op_var->line);
+  SPVM_OP* op_package_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR, op_name->file, op_name->line);
   SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
   
-  const char* name = op_var->uv.var->op_name->uv.name;;
-  
-  package_var->name = op_var->uv.var->op_name->uv.name;
+  const char* name = op_name->uv.name;;
+  package_var->name = op_name->uv.name;
   
   int32_t invalid_name = 0;
   if (strchr(name, ':')) {
@@ -1867,10 +1875,10 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   }
   
   if (invalid_name) {
-    SPVM_COMPILER_error(compiler, "Invalid package variable name %s at %s line %d\n", name, op_var->file, op_var->line);
+    SPVM_COMPILER_error(compiler, "Invalid package variable name %s at %s line %d\n", name, op_name->file, op_name->line);
   }
   
-  package_var->op_var = op_var;
+  package_var->op_name = op_name;
   package_var->type = op_type->uv.type;
   package_var->op_package_var = op_package_var;
 

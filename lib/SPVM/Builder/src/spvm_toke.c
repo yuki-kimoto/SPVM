@@ -827,7 +827,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT;
             }
             
-            return VAR_NAME;
+            // Package variable
+            if (isupper(var_name[1]) || strstr(var_name, "::")) {
+              return PACKAGE_VAR_NAME;
+            }
+            // Lexical variable
+            else {
+              return VAR_NAME;
+            }
           }
         }
         /* Number literal */
