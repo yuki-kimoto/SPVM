@@ -1499,11 +1499,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
   
-  // Clear current sub names
-  if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON)) {
-    compiler->current_sub_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  }
-
   SPVM_HASH* package_symtable = compiler->package_symtable;
 
   // Redeclaration package error
@@ -1725,6 +1720,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (sub->flag & SPVM_SUB_C_FLAG_IS_ANON_SUB) {
         package->flag |= SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB;
         assert(package->subs->length == 1);
+        assert(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON);
       }
 
       sub->rel_id = i;
@@ -1799,6 +1795,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
       }
     }
+  }
+  
+  // Clear current sub names
+  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) {
+    compiler->current_sub_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   }
   
   // Interface must have only one method
