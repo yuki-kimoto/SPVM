@@ -2495,6 +2495,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
+              SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
+              SPVM_PACKAGE_VAR* package_var = package_var_access->package_var;
+              SPVM_PACKAGE* package_var_access_package = package_var->package;
+              
               // Field accesss constant pool id
               char package_var_id_string[sizeof(int32_t)];
               memcpy(package_var_id_string, &op_cur->uv.package_var_access->package_var->id, sizeof(int32_t));
@@ -2513,6 +2517,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (found_package_var == NULL) {
                 SPVM_LIST_push(package->info_package_var_ids, (void*)(intptr_t)op_cur->uv.package_var_access->package_var->id);
                 SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), op_cur->uv.package_var_access->package_var);
+              }
+
+              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE) {
+                if (strcmp(package_var_access_package->name, sub->package->op_name->uv.name) != 0) {
+                  SPVM_COMPILER_error(compiler, "Can't access to private package variable %s at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
               }
               
               break;
@@ -2633,9 +2644,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
                 if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
-                  char* type_name = tmp_buffer;
-                  SPVM_TYPE_sprint_type_name(compiler, type_name, type->basic_type->id, type->dimension, type->flag);
-                  SPVM_COMPILER_error(compiler, "Can't access to private field %s::%s at %s line %d\n", type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't access to private field  %s at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
