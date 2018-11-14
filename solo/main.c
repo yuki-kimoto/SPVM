@@ -12,6 +12,7 @@
 #include "spvm_sub.h"
 #include "spvm_util_allocator.h"
 #include "spvm_runtime_sub.h"
+#include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_sub.h"
 #include "spvm_runtime_api.h"
@@ -134,505 +135,505 @@ int32_t main(int32_t argc, const char *argv[]) {
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cadd";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cadd;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "csub";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__csub;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cmul";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cmul;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cdiv";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cdiv;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "caddf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__caddf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "csubf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__csubf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cmulf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cmulf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cdivf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cdivf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "new_fcomplex";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__new_fcomplex;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "new_dcomplex";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__new_dcomplex;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "print";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__print;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "warn";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__warn;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "time";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__time;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INFINITYF";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INFINITYF;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "NANF";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__NANF;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isinff";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isinff;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isfinitef";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isfinitef;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isnanf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isnanf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INFINITY";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INFINITY;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "NAN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__NAN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isinf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isinf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isfinite";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isfinite;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "isnan";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__isnan;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "PI";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__PI;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "E";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__E;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "acos";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__acos;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "asin";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__asin;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "atan";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atan;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "atan2";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atan2;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cos";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cos;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "sin";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sin;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "tan";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tan;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "acosh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__acosh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "asinh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__asinh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "atanh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__atanh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cosh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cosh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "sinh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sinh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "tanh";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tanh;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "exp";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__exp;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "exp2";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__exp2;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "expm1";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__expm1;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "log";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "log10";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log10;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "log1p";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__log1p;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "abs";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__abs;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "labs";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__labs;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "cbrt";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__cbrt;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "fabs";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__fabs;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "hypot";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__hypot;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "pow";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__pow;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "sqrt";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__sqrt;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "erf";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__erf;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "erfc";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__erfc;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "lgamma";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__lgamma;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "tgamma";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__tgamma;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "ceil";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__ceil;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "floor";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__floor;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "nearbyint";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__nearbyint;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "round";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__round;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "remainder";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__remainder;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT8_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT8_MIN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT8_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT8_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT16_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT16_MIN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT16_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT16_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT32_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT32_MIN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT32_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT32_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT64_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT64_MIN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "INT64_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__INT64_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "FLT_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__FLT_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "FLT_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__FLT_MIN;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "DBL_MAX";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__DBL_MAX;
   }
   {
     const char* package_name = "SPVM::CORE";
     const char* sub_name = "DBL_MIN";
-    SPVM_RUNTIME_PACKAGE* package = SPVM_HASH_fetch(runtime->package_symtable, package_name, strlen(package_name));
-    SPVM_RUNTIME_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
   }
 #endif
