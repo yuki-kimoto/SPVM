@@ -1662,7 +1662,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t i;
     for (i = 0; i < package->package_vars->length; i++) {
       SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-      package_var->rel_id = i;
       const char* package_var_name = package_var->op_var->uv.var->op_name->uv.name;
       const char* package_var_abs_name = SPVM_OP_create_abs_name(compiler, package_name, package_var_name);
       package_var->abs_name = package_var_abs_name;

@@ -16,7 +16,6 @@ struct SPVM_package_var {
   const char* signature;
   const char* name;
   int32_t id;
-  int32_t rel_id;
   int32_t flag;
 };
 
