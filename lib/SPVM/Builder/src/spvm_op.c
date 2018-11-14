@@ -1687,8 +1687,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_name);
         package_var->id = compiler->package_vars->length + 1;
         SPVM_LIST_push(compiler->package_vars, package_var);
-        SPVM_HASH_insert(compiler->package_var_symtable, package_var_access_abs_name, strlen(package_var_access_abs_name), package_var);
-
         SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
         
         // Add op package
