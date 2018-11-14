@@ -4246,25 +4246,42 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   }
 }
 
-void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_package) {
+void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_current_package) {
   
   assert(op_package_var_access->uv.package_var_access);
   
   SPVM_OP* op_name = op_package_var_access->uv.package_var_access->op_name;
   
+  char* package_name;
+  char* base_name;
+  
   const char* name = op_name->uv.name;
-  const char* abs_name;
-  if (strchr(name, ':')) {
-    abs_name = name;
+  
+  char* colon_ptr = strrchr(name, ':');
+  if (colon_ptr) {
+    // Package name
+    // (end - start + 1) - $ - colon * 2
+    int32_t package_name_length = (colon_ptr - name + 1) - 1 - 2;
+    package_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, package_name_length + 1);
+    memcpy(package_name, name + 1, package_name_length);
+    
+    // Base name($foo)
+    int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
+    base_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, base_name_length + 1);
+    base_name[0] = '$';
+    memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, op_package->uv.package->op_name->uv.name, name);
+    package_name = (char*)op_current_package->uv.package->name;
+    base_name = (char*)name;
   }
   
-  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(compiler->package_var_symtable, abs_name, strlen(abs_name));
-  
-  if (package_var) {
-    op_package_var_access->uv.package_var_access->package_var = package_var;
+  SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  if (found_package) {
+    SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(found_package->package_var_symtable, base_name, strlen(base_name));
+    if (found_package_var) {
+      op_package_var_access->uv.package_var_access->package_var = found_package_var;
+    }
   }
 }
 
