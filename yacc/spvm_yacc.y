@@ -234,7 +234,7 @@ enumeration_value
 our
   : OUR PACKAGE_VAR_NAME ':' type
     {
-      $$ = SPVM_OP_build_our(compiler, $2, $4);
+      $$ = SPVM_OP_build_our(compiler, $1, $2, $4);
     }
 
 has
