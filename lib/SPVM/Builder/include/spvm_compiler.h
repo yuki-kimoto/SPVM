@@ -100,9 +100,6 @@ struct SPVM_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // Field absolute name symbol table
-  SPVM_HASH* field_symtable;
-
   // Method signature
   SPVM_LIST* signatures;
 

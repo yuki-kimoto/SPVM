@@ -1617,8 +1617,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
     field->index = i;
     const char* field_name = field->op_name->uv.name;
-    const char* field_abs_name = SPVM_OP_create_abs_name(compiler, package_name, field_name);
-    field->abs_name = field_abs_name;
 
     SPVM_FIELD* found_field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
     
@@ -1631,7 +1629,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     else {
       field->id = compiler->fields->length + 1;
       SPVM_LIST_push(compiler->fields, field);
-      SPVM_HASH_insert(compiler->field_symtable, field_abs_name, strlen(field_abs_name), field);
       SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
       
       // Add op package

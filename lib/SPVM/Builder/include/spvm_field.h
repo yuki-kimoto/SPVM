@@ -12,7 +12,6 @@ struct SPVM_field {
   SPVM_OP* op_name;
   SPVM_PACKAGE* package;
   SPVM_TYPE* type;
-  const char* abs_name;
   const char* signature;
   const char* name;
   int32_t id;
