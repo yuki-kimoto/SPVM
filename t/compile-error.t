@@ -170,6 +170,13 @@ use lib "$FindBin::Bin/default/lib";
 
 {
   my $build = SPVM::Builder->new;
+  $build->use('TestCase::CompileError::PackageVar::Private');
+  my $success = $build->compile_spvm();
+  ok($success == 0);
+}
+
+{
+  my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::Field::Private');
   my $success = $build->compile_spvm();
   ok($success == 0);

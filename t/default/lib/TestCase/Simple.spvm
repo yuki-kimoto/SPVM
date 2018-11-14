@@ -13,6 +13,7 @@ package TestCase::Simple {
   has object_value : TestCase::Minimal;
   
   our $FOO : int;
+  our $VAR_PRIVATE : private int;
 
   sub get_x : int ($self : self) {
     return $self->{x};

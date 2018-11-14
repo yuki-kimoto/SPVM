@@ -2521,7 +2521,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE) {
                 if (strcmp(package_var_access_package->name, sub->package->op_name->uv.name) != 0) {
-                  SPVM_COMPILER_error(compiler, "Can't access to private package variable %s at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't access to private package variable \"%s\" at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2644,7 +2644,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
                 if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
-                  SPVM_COMPILER_error(compiler, "Can't access to private field  %s at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't access to private field \"%s\" at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
