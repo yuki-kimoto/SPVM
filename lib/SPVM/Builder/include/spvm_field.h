@@ -7,7 +7,6 @@ enum {
   SPVM_FIELD_C_FLAG_PRIVATE = 1,
 };
 
-// Field information
 struct SPVM_field {
   SPVM_OP* op_field;
   SPVM_OP* op_name;
@@ -25,6 +24,5 @@ struct SPVM_field {
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
-int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field);
 
 #endif
