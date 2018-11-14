@@ -93,3 +93,17 @@ void* SPVM_LIST_pop(SPVM_LIST* array) {
     return *(void**)&array->values[array->length];
   }
 }
+
+void* SPVM_LIST_shift(SPVM_LIST* array) {
+  
+  assert(array->length >= 0);
+  
+  void* return_value = *(void**)&array->values[0];
+  for (int32_t i = 0; i < array->length - 1; i++) {
+    *(void**)&array->values[i] = *(void**)&array->values[i + 1];
+  }
+
+  array->length--;
+  
+  return return_value;
+}
