@@ -1088,7 +1088,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_HASH_insert(compiler->name_symtable, keyword, str_len, keyword);
           }
           
-          if (!expect_sub_name) {
+          if (expect_sub_name) {
+            SPVM_LIST_push(compiler->current_sub_names, keyword);
+          }
+          else {
             switch (keyword[0]) {
               // Keyword
               case 'b' :

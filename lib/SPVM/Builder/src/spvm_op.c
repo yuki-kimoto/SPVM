@@ -1498,6 +1498,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) && islower(package_name[0])) {
     SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
+  
+  // Clear current sub names
+  if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON)) {
+    compiler->current_sub_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  }
 
   SPVM_HASH* package_symtable = compiler->package_symtable;
 
