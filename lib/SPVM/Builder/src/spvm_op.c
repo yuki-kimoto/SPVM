@@ -1630,8 +1630,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     else {
       field->id = compiler->fields->length + 1;
-      field->rel_id = i;
-      
       SPVM_LIST_push(compiler->fields, field);
       SPVM_HASH_insert(compiler->field_symtable, field_abs_name, strlen(field_abs_name), field);
       SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
