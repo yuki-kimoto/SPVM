@@ -2257,8 +2257,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                 }
+                // Variable is package var
                 else {
-                  // Variable is package var
                   int32_t is_package_var;
                   SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(compiler->package_var_symtable, var->op_name->uv.name, strlen(var->op_name->uv.name));
                   if (!found_package_var) {

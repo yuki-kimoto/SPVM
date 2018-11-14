@@ -8,12 +8,12 @@ enum {
 };
 
 struct SPVM_field {
+  const char* name;
+  const char* signature;
+  SPVM_TYPE* type;
+  SPVM_PACKAGE* package;
   SPVM_OP* op_field;
   SPVM_OP* op_name;
-  SPVM_PACKAGE* package;
-  SPVM_TYPE* type;
-  const char* signature;
-  const char* name;
   int32_t id;
   int32_t index;
   int32_t flag;
