@@ -2,6 +2,7 @@
   - package variable must start upper case or contain ::
   - add SPVM::List module
   - add private private package variable
+  - fix constant pool cache bug
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs

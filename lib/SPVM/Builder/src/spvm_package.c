@@ -48,6 +48,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->constant_pool = SPVM_COMPILER_ALLOCATOR_alloc_constant_pool(compiler, 0);
   
   package->constant_pool_32bit_value_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->constant_pool_32bit2_value_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->constant_pool_64bit_value_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   return package;

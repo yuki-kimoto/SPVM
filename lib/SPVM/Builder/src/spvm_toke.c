@@ -80,7 +80,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return 0;
           }
           else if (op_use_stack->length > 0) {
-            SPVM_OP* op_use = SPVM_LIST_pop(op_use_stack);
+            SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
             
             const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
             

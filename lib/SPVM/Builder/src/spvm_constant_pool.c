@@ -45,7 +45,7 @@ void SPVM_CONSTANT_POOL_extend(SPVM_CONSTANT_POOL* constant_pool, int32_t extend
 }
 
 int32_t SPVM_CONSTANT_POOL_push_int(SPVM_CONSTANT_POOL* constant_pool, int32_t value) {
-
+  
   int32_t id = constant_pool->length;
 
   // Add int value
