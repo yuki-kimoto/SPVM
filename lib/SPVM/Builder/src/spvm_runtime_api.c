@@ -776,38 +776,46 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_SHORT:
         short_vars[opcode->operand0] = (int16_t)byte_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
-      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
-      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
-      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
-      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-      {
-        switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
-            sprintf(string_convert_buffer, "%" PRId8, byte_vars[opcode->operand1]);
-            break;
-          case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
-            sprintf(string_convert_buffer, "%" PRId16, short_vars[opcode->operand1]);
-            break;
-          case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
-            sprintf(string_convert_buffer, "%" PRId32, int_vars[opcode->operand1]);
-            break;
-          case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING:
-            sprintf(string_convert_buffer, "%" PRId64, long_vars[opcode->operand1]);
-            break;
-          case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING:
-            sprintf(string_convert_buffer, "%g", float_vars[opcode->operand1]);
-            break;
-          case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING:
-            sprintf(string_convert_buffer, "%g", double_vars[opcode->operand1]);
-            break;
-        }
-        
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING: {
+        sprintf(string_convert_buffer, "%" PRId8, byte_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
         void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
-
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING: {
+        sprintf(string_convert_buffer, "%" PRId16, short_vars[opcode->operand1]);
+        int32_t string_length = strlen(string_convert_buffer);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING: {
+        sprintf(string_convert_buffer, "%" PRId32, int_vars[opcode->operand1]);
+        int32_t string_length = strlen(string_convert_buffer);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING: {
+        sprintf(string_convert_buffer, "%" PRId64, long_vars[opcode->operand1]);
+        int32_t string_length = strlen(string_convert_buffer);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING: {
+        sprintf(string_convert_buffer, "%g", float_vars[opcode->operand1]);
+        int32_t string_length = strlen(string_convert_buffer);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING: {
+        sprintf(string_convert_buffer, "%g", double_vars[opcode->operand1]);
+        int32_t string_length = strlen(string_convert_buffer);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
+        SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_UNDEF:
