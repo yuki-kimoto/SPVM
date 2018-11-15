@@ -781,9 +781,17 @@ array_access
     }
 
 call_sub
-  : sub_name '(' opt_normal_terms  ')'
+  : NAME '(' opt_normal_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
+    }
+  | MAYBE_SUB_NAME '(' opt_normal_terms')'
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
+    }
+  | MAYBE_SUB_NAME opt_normal_terms
+    {
+      $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $2);
     }
   | basic_type ARROW sub_name '(' opt_normal_terms  ')'
     {
@@ -808,7 +816,6 @@ call_sub
       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, op_sub_name, $4);
     }
-
 field_access
   : normal_term ARROW '{' field_name '}'
     {

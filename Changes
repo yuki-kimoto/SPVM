@@ -3,6 +3,9 @@
   - add SPVM::List module
   - add private private package variable
   - fix constant pool cache bug
+  - support no parenthes sub
+      INT8_MAX
+      sin 0.5
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs

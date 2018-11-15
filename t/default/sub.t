@@ -22,6 +22,12 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# No parenthes sub
+{
+  ok(TestCase::Sub->no_parenthes_already_exists_sub);
+  ok(TestCase::Sub->no_parenthes_core_sub);
+}
+
 # Retrun value automatical numeric convertion
 {
   ok(TestCase::Sub->return_value_automatical_numeric_convertion);
