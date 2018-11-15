@@ -2162,6 +2162,9 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_sub->uv.sub->flag |= SPVM_SUB_C_FLAG_IS_ENUM;
   op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
   
+  // Add current sub names
+  SPVM_LIST_push(compiler->current_sub_names, (void*)op_name->uv.name);
+  
   return op_sub;
 }
 

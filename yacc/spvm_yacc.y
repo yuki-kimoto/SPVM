@@ -222,11 +222,11 @@ enumeration_values
   | enumeration_value
   
 enumeration_value
-  : NAME
+  : sub_name
     {
       $$ = SPVM_OP_build_enumeration_value(compiler, $1, NULL);
     }
-  | NAME ASSIGN CONSTANT
+  | sub_name ASSIGN CONSTANT
     {
       $$ = SPVM_OP_build_enumeration_value(compiler, $1, $3);
     }

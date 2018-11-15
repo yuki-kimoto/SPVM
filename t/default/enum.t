@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'TestCase::Enum';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Enumeration
 {
-  ok(TestCase->enum_int());
+  ok(TestCase::Enum->enum_int());
 }
 
 # All object is freed
