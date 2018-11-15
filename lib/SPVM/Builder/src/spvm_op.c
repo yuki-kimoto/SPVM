@@ -153,12 +153,6 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "ARRAY_FIELD_ACCESS",
   "REF",
   "DEREF",
-  "BYTE_REF",
-  "SHORT_REF",
-  "INT_REF",
-  "LONG_REF",
-  "FLOAT_REF",
-  "DOUBLE_REF",
   "DOT3",
 };
 
