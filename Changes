@@ -12,7 +12,7 @@
     }
   - concat operator can receive byte array
     $bytes1 . $bytes2
-
+  - string type become real string type, instead of alias of const byte[]
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs
