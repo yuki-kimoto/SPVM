@@ -20,7 +20,7 @@
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
 %token <opval> DESCRIPTOR CONST
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
-%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME
+%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND DOT3
@@ -1022,7 +1022,12 @@ type_or_void
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
     }
 
-field_name : NAME
-sub_name : NAME
+field_name
+  : NAME
+  | MAYBE_SUB_NAME
+
+sub_name
+  : NAME
+  | MAYBE_SUB_NAME
 
 %%
