@@ -10,7 +10,9 @@
     if ($bytes1 eq $bytes2) {
       
     }
-  
+  - concat operator can receive byte array
+    $bytes1 . $bytes2
+
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs

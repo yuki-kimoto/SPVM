@@ -2091,8 +2091,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               // Left type is not string type
-              else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "\".\" operator left value must be string at %s line %d\n", op_cur->file, op_cur->line);
+              else if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "\".\" operator left value must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2104,8 +2104,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               // Right value is not string type
-              else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "\".\" operator right value must be string at %s line %d\n", op_cur->file, op_cur->line);
+              else if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "\".\" operator right value must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2114,7 +2114,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_CROAK: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "croak argument must be string at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "croak argument must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               break;
