@@ -37,6 +37,15 @@
 #include "spvm_array_field_access.h"
 #include "spvm_string_buffer.h"
 
+
+
+
+
+
+
+
+
+
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "UNLESS",
@@ -147,8 +156,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "STRING_LE",
   "ISA",
   "SEQUENCE",
-  "COSNT",
-  "COMPILE",
+  "PRECOMPILE",
   "SCALAR",
   "ARRAY_FIELD_ACCESS",
   "REF",

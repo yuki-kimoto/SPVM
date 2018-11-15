@@ -1,9 +1,9 @@
 package TestCase::String {
   sub basic : int () {
 
-    # const
+    # string type
     {
-      my $str1_const : const byte[] = new byte[3];
+      my $str1_const : string = new byte[3];
     }
     
     # Concat string

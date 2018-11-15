@@ -1111,10 +1111,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CROAK);
                   return CROAK;
                 }
-                else if (strcmp(keyword, "const") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CONST);
-                  return CONST;
-                }
                 break;
               case 'd' :
                 if (strcmp(keyword, "default") == 0) {

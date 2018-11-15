@@ -35,6 +35,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 /* Operation id */
 enum {
   SPVM_OP_C_ID_IF,
@@ -146,8 +156,7 @@ enum {
   SPVM_OP_C_ID_STRING_LE,
   SPVM_OP_C_ID_ISA,
   SPVM_OP_C_ID_SEQUENCE,
-  SPVM_OP_C_ID_CONST,
-  SPVM_OP_C_ID_COMPILE,
+  SPVM_OP_C_ID_PRECOMPILE,
   SPVM_OP_C_ID_SCALAR,
   SPVM_OP_C_ID_ARRAY_FIELD_ACCESS,
   SPVM_OP_C_ID_REF,

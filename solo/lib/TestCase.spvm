@@ -338,11 +338,6 @@ SPVM::Test - SPVM test module
       my $total = sum0(sum0(1, 2), sum0(3, 4));
     }
     
-    # const
-    {
-      my $str1_const : const byte[] = new byte[3];
-    }
-    
     # Multi array init
     {
       my $nums1 = [

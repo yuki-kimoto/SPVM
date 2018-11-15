@@ -18,7 +18,7 @@
 %}
 
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
-%token <opval> DESCRIPTOR CONST
+%token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
 %token <opval> RETURN WEAKEN CROAK NEW
@@ -43,7 +43,7 @@
 %type <opval> my_var var package_var_access
 %type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
 %type <opval> field_name sub_name
-%type <opval> type basic_type array_type array_type_with_length const_array_type ref_type  type_or_void
+%type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> OR
@@ -933,7 +933,6 @@ package_var_access
 type
   : basic_type
   | array_type
-  | const_array_type
   | ref_type
 
 basic_type
@@ -1004,12 +1003,6 @@ array_type
   | array_type '[' ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
-    }
-
-const_array_type
-  : CONST array_type
-    {
-      $$ = SPVM_OP_build_const_array_type(compiler, $2);
     }
 
 array_type_with_length
