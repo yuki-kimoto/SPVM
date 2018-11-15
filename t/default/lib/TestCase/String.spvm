@@ -28,6 +28,20 @@ package TestCase::String {
         return 0;
       }
     }
+
+    # Convert string to byte array
+    {
+      my $string = "abc";
+      my $bytes = (byte[])$string;;
+      
+      unless ($bytes eq "abc") {
+        return 0;
+      }
+      
+      unless ($string != $bytes) {
+        return 0;
+      }
+    }
     
     # Concat string
     {

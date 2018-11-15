@@ -1183,12 +1183,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "eq left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "eq left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "eq right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "eq right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1209,12 +1209,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ne left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "ne left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ne right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "ne right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1235,12 +1235,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "gt left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "gt left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "gt right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "gt right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1261,12 +1261,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ge left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "ge left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ge right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "ge right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1287,12 +1287,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "lt left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "lt left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "lt right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "lt right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1313,12 +1313,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "le left type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "le left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "le right type must be string at %s line %d\n", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "le right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
