@@ -2029,7 +2029,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_STRING_TO_BYTE_ARRAY:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");

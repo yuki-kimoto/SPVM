@@ -1,9 +1,32 @@
 package TestCase::String {
   sub basic : int () {
-
-    # string type
+    
+    # Assign byte array to string
     {
-      my $str1_const : string = (string)new byte[3];
+      my $bytes = [(byte)'a', 'b', 'c'];
+      my $string : string = $bytes;
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+      
+      unless ($string == $bytes) {
+        return 0;
+      }
+    }
+
+    # Cast byte array to string
+    {
+      my $bytes = [(byte)'a', 'b', 'c'];
+      my $string = (string)$bytes;
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+      
+      unless ($string == $bytes) {
+        return 0;
+      }
     }
     
     # Concat string
@@ -13,7 +36,5 @@ package TestCase::String {
     }
 
     return 1;
-
-    return 0;
   }
 }

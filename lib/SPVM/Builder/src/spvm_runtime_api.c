@@ -783,7 +783,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
-      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_STRING_TO_BYTE_ARRAY:
       {
         void* src_string = object_vars[opcode->operand1];
