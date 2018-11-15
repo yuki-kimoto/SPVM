@@ -2029,7 +2029,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_convert(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
-
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
+      case SPVM_OPCODE_C_ID_CONVERT_STRING_TO_BYTE_ARRAY:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* src_string = object_vars[");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_string_length = env->get_array_length(env, src_string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->get_byte_array_elements(env, src_string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, src_string_data, src_string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING:
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING:
