@@ -150,9 +150,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
                       type_element->basic_type = type_term_element->basic_type;
                       type_element->dimension = type_term_element->dimension;
-                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                        type_element->flag |= SPVM_TYPE_C_FLAG_CONST;
-                      }
                       op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
                     }
                     
@@ -190,9 +187,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
                       type_new->basic_type = type_term_element->basic_type;
                       type_new->dimension = type_term_element->dimension + 1;
-                      if (type_term_element->flag & SPVM_TYPE_C_FLAG_CONST) {
-                        type_new->flag |= SPVM_TYPE_C_FLAG_CONST;
-                      }
                       op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
                     }
 
@@ -291,7 +285,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               int32_t add_constant = 0;
               
               // long or double
-              if (type->dimension == 0) {
+              // String
+              if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                add_constant = 1;
+                
+                char* string_value = op_cur->uv.constant->value.oval;
+                int32_t string_length = op_cur->uv.constant->string_length;
+                int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
+                if (found_constant_pool_id > 0) {
+                  op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
+                }
+                else {
+                  int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
+                  int32_t string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
+                  assert(string_pool_id > 0);
+                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
+                  op_cur->uv.constant->constant_pool_id = constant_pool_id;
+                  SPVM_HASH_insert(package->string_symtable, string_value, string_length, (void*)(intptr_t)constant_pool_id);
+                }
+              }
+              else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 switch (type->basic_type->id) {
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
                     add_constant = 1;
@@ -325,25 +338,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                     }
                   }
-                }
-              }
-              // String
-              else if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                add_constant = 1;
-                
-                char* string_value = op_cur->uv.constant->value.oval;
-                int32_t string_length = op_cur->uv.constant->string_length;
-                int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
-                if (found_constant_pool_id > 0) {
-                  op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                }
-                else {
-                  int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
-                  int32_t string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
-                  assert(string_pool_id > 0);
-                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
-                  op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                  SPVM_HASH_insert(package->string_symtable, string_value, string_length, (void*)(intptr_t)constant_pool_id);
                 }
               }
               
@@ -4122,13 +4116,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       return NULL;
     }
   }
-
-  // Const check
-  if (!(dist_type->flag & SPVM_TYPE_C_FLAG_CONST) && (src_type->flag & SPVM_TYPE_C_FLAG_CONST)) {
-    SPVM_COMPILER_error(compiler, "Can't convert const type to not const type at %s line %d\n", op_src->file, op_src->line);
-    return NULL;
-  }
-
+  
   if (need_convertion) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
     

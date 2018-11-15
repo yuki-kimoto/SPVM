@@ -3781,7 +3781,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Package
-  int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(byte[][])");
+  int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(string[])");
   
   if (sub_id == 0) {
     fprintf(stderr, "Can't find entry point package %s\n", package_name);

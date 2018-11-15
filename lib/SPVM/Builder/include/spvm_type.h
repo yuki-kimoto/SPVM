@@ -6,8 +6,7 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_TYPE_C_FLAG_CONST = 1,
-  SPVM_TYPE_C_FLAG_REF = 2,
+  SPVM_TYPE_C_FLAG_REF = 1,
 };
 
 enum {
