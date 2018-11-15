@@ -1479,6 +1479,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           stack_index += type_width;
           break;
         }
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -5093,6 +5094,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
   switch (sub->return_runtime_type) {
+    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
     case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
     case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
     case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:

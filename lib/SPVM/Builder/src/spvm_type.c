@@ -90,7 +90,7 @@ int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_i
   }
   else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
     if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+      runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
       runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT;
