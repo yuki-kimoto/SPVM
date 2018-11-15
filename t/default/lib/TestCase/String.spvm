@@ -3,7 +3,7 @@ package TestCase::String {
 
     # string type
     {
-      my $str1_const : string = new byte[3];
+      my $str1_const : string = (string)new byte[3];
     }
     
     # Concat string
