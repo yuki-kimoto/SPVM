@@ -918,34 +918,65 @@ new_double_array_from_binary(...)
 }
 
 SV*
-new_object_array_len(...)
+new_object_array(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_basic_type_name = ST(1);
-  SV* sv_length = ST(2);
+  SV* sv_elements = ST(2);
+  
+  if (!sv_derived_from(sv_elements, "ARRAY")) {
+    croak("Argument must be array reference");
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_elements = (AV*)SvRV(sv_elements);
+  
+  int32_t length = av_len(av_elements) + 1;
   
   // Environment
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-
-  int32_t length = (int32_t)SvIV(sv_length);
-
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
-  void* array = env->new_object_array_raw(env, basic_type->id, length);
+  SPVM_OBJECT* array = env->new_object_array_raw(env, basic_type->id, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);
+
+  int32_t array_basic_type_id  = array->basic_type_id;
+  int32_t array_type_dimension = array->type_dimension;
+  int32_t element_type_dimension = array_type_dimension - 1;
+
+  for (int32_t index = 0; index < length; index++) {
+    SV** sv_element_ptr = av_fetch(av_elements, index, 0);
+    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    
+    if (!SvOK(sv_element)) {
+      env->set_object_array_element(env, array, index, NULL);
+    }
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::Data")) {
+      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+      
+      if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
+        env->set_object_array_element(env, array, index, object);
+      }
+      else {
+        croak("Element is invalid object type");
+      }
+    }
+    else {
+      croak("Element must be SPVM::Data object");
+    }
+  }
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
