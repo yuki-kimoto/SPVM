@@ -538,11 +538,6 @@ is_deeply(
     my $values = TestCase->string_empty();
     is(SPVM::get_array_elements_bin($values), "");
   }
-  
-  {
-    my $values = TestCase->string_utf8();
-    is(SPVM::get_array_elements_string($values), "あいうえお");
-  }
 }
 
 # Complex

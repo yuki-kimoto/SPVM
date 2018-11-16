@@ -50,15 +50,4 @@ sub new_object {
   return $object;
 }
 
-sub get_array_elements_string {
-  my ($env, $array) = @_;
-  
-  my $bin = SPVM::get_array_elements_bin($array);
-  
-  my $string = decode('UTF-8', $bin);
-  
-  return $string;
-}
-
-
 1;
