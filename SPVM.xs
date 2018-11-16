@@ -566,33 +566,6 @@ new_short_array(...)
 }
 
 SV*
-new_short_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array =  env->new_short_array_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_short_array);
-  XSRETURN(1);
-}
-
-SV*
 new_short_array_from_binary(...)
   PPCODE:
 {
