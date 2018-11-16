@@ -1026,7 +1026,7 @@ new_multi_array_len(...)
 }
 
 SV*
-new_value_t_array_len(...)
+new_value_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1054,7 +1054,7 @@ new_value_t_array_len(...)
   }
   
   // New array
-  void* array = env->new_value_t_array_raw(env, basic_type->id, length);
+  void* array = env->new_value_array_raw(env, basic_type->id, length);
   
   // Increment reference count
   env->inc_ref_count(env, array);

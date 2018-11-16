@@ -6,7 +6,7 @@ use warnings;
 use Carp 'croak', 'confess';
 use Encode 'decode';
 
-sub new_value_t_array {
+sub new_value_array {
   my ($env, $package_name, $elements) = @_;
   
   return undef unless defined $elements;
@@ -17,7 +17,7 @@ sub new_value_t_array {
   
   my $length = @$elements;
   
-  my $array = SPVM::PerlAPI::new_value_t_array_len($env, $package_name, $length);
+  my $array = SPVM::PerlAPI::new_value_array_len($env, $package_name, $length);
 
   SPVM::set_array_elements($array, $elements);
   

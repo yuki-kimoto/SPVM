@@ -2157,7 +2157,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length = int_vars[opcode->operand2];
         
         if (length >= 0) {
-          void* object = env->new_value_t_array_raw(env, basic_type_id, length);
+          void* object = env->new_value_array_raw(env, basic_type_id, length);
           
           // Set object
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
@@ -4256,10 +4256,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_value_t_array_raw(env, basic_type_id, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_value_array_raw(env, basic_type_id, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
@@ -4485,7 +4485,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_value_t_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;

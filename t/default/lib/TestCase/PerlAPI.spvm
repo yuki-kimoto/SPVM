@@ -440,7 +440,7 @@ package TestCase::PerlAPI {
     return 0;
   }
 
-  sub spvm_new_value_t_array_int : int ($points : TestCase::Point_i3[]) {
+  sub spvm_new_value_array_int : int ($points : TestCase::Point_i3[]) {
     
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -467,7 +467,7 @@ package TestCase::PerlAPI {
     return 0;
   }
 
-  sub spvm_new_value_t_array_binary_int : int ($points : TestCase::Point_i3[]) {
+  sub spvm_new_value_array_binary_int : int ($points : TestCase::Point_i3[]) {
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
