@@ -64,6 +64,7 @@ CHECK {
 
 sub new_object_array { SPVM::PerlAPI::new_object_array($SPVM_ENV, @_) }
 sub new_value_array { SPVM::PerlAPI::new_value_array($SPVM_ENV, @_) }
+sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SPVM_ENV, @_) }
 sub new_object { SPVM::PerlAPI::new_object($SPVM_ENV, @_) }
 
 sub new_byte_array_len { SPVM::PerlAPI::new_byte_array_len($SPVM_ENV, @_) }
