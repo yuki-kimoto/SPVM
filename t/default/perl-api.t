@@ -190,15 +190,13 @@ is_deeply(
     $object1->set_x_int(1);
     my $object2 = TestCase->new();
     $object2->set_x_int(2);
-    my $object_array = SPVM::new_object_array("TestCase", [$object1, $object2]);
+    my $sp_object_array = SPVM::new_object_array("TestCase", [$object1, $object2]);
     
-    ok(TestCase::PerlAPI->spvm_new_object_array_len_element_object_array($object_array));
+    ok(TestCase::PerlAPI->spvm_new_object_array_len_element_object_array($sp_object_array));
     
-    my $object1_get = SPVM::get_array_element($object_array, 0);
-    my $object2_get = SPVM::get_array_element($object_array, 1);
-    
-    is_deeply($object1_get->get_x_int, 1);
-    is_deeply($object2_get->get_x_int, 2);
+    my $object_array_out = SPVM::get_array_elements($sp_object_array);
+    is($object_array_out->[0]->get_x_int, 1);
+    is($object_array_out->[1]->get_x_int, 2);
   }
 
   # element byte array
@@ -209,7 +207,6 @@ is_deeply(
     SPVM::set_array_element($object_array, 0, $object1);
     my $object2 = SPVM::new_byte_array([4, 5, 6]);
     SPVM::set_array_element($object_array, 1, $object2);
-    
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_byte_array($object_array));
     
     my $object1_get = SPVM::get_array_element($object_array, 0);
