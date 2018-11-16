@@ -1109,11 +1109,20 @@ new_value_array(...)
       void* elements = (void*)env->get_int_array_elements(env, array);
       
       HV* hv_value = (HV*)SvRV(sv_element);
-      int32_t field_length = package->fields_length;
+      int32_t fields_length = package->fields_length;
+      // Field exists check
+      int32_t hash_keys_length = 0;
+      while (hv_iternext(hv_value)) {
+        hash_keys_length++;
+      }
+      if (hash_keys_length != fields_length) {
+        croak("Value element hash key is lacked");
+      }
+
       for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
         SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
         const char* field_name = &runtime->string_pool[field->name_id];
-
+        
         SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
         SV* sv_field_value;
         if (sv_field_value_ptr) {
@@ -1125,27 +1134,27 @@ new_value_array(...)
 
         switch (first_field->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
+            ((SPVM_VALUE_byte*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            ((SPVM_VALUE_short*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_short)SvIV(sv_field_value);
+            ((SPVM_VALUE_short*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_short)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_INT: {
-            ((SPVM_VALUE_int*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_int)SvIV(sv_field_value);
+            ((SPVM_VALUE_int*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_int)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_LONG: {
-            ((SPVM_VALUE_long*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_long)SvIV(sv_field_value);
+            ((SPVM_VALUE_long*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_long)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            ((SPVM_VALUE_float*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_float)SvNV(sv_field_value);
+            ((SPVM_VALUE_float*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_float)SvNV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            ((SPVM_VALUE_double*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_double)SvNV(sv_field_value);
+            ((SPVM_VALUE_double*)elements)[(fields_length * index) + field_index] = (SPVM_VALUE_double)SvNV(sv_field_value);
             break;
           }
           default:
@@ -1491,6 +1500,16 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1526,6 +1545,16 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
             
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1560,6 +1589,17 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
+            
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1594,6 +1634,17 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
+            
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1628,6 +1679,17 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
+            
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1662,6 +1724,17 @@ call_sub(...)
 
             SPVM_RUNTIME_FIELD* arg_first_field = &runtime->fields[arg_package->fields_base];
             assert(arg_first_field);
+            
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1793,6 +1866,16 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1810,7 +1893,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1833,6 +1915,16 @@ call_sub(...)
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
             
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
+            
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
               const char* field_name = &runtime->string_pool[field->name_id];
@@ -1850,7 +1942,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1872,6 +1963,16 @@ call_sub(...)
         
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
+
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1890,7 +1991,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1912,6 +2012,16 @@ call_sub(...)
         
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
+
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1930,7 +2040,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1952,6 +2061,16 @@ call_sub(...)
         
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
+
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -1970,7 +2089,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
@@ -1992,6 +2110,16 @@ call_sub(...)
         
             SPVM_RUNTIME_FIELD* first_field = &runtime->fields[arg_package->fields_base];
             assert(first_field);
+
+            int32_t fields_length = arg_package->fields_length;
+            // Field exists check
+            int32_t hash_keys_length = 0;
+            while (hv_iternext(hv_value)) {
+              hash_keys_length++;
+            }
+            if (hash_keys_length != fields_length) {
+              croak("Value element hash key is lacked");
+            }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
               SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
@@ -2010,7 +2138,6 @@ call_sub(...)
             }
             stack[arg_var_id].oval = &ref_stack[ref_stack_top];
             ref_stack_ids[arg_index] = ref_stack_top;
-            int32_t fields_length = arg_package->fields_length;
             ref_stack_top += fields_length;
             arg_var_id++;
           }
