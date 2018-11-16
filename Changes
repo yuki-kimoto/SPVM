@@ -13,6 +13,8 @@
   - concat operator can receive byte array
     $bytes1 . $bytes2
   - string type become real string type, instead of alias of const byte[]
+  - rename SPVM::new_byte_array_string to SPVM::new_byte_array_from_binary.
+    and recieve binary data instead of Perl internal string
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs

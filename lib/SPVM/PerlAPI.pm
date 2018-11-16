@@ -1,5 +1,8 @@
 package SPVM::PerlAPI;
 
+use strict;
+use warnings;
+
 use Carp 'croak', 'confess';
 use Encode 'decode';
 
@@ -65,16 +68,13 @@ sub new_byte_array {
   return $array;
 }
 
-sub new_byte_array_string {
-  my ($env, $string) = @_;
+sub new_byte_array_from_binary {
+  my ($env, $binary) = @_;
   
-  # Encode internal string to UTF-8 string
-  my $bin = Encode::encode('UTF-8', $string);
-  
-  my $length = length $bin;
+  my $length = length $binary;
   
   my $array = SPVM::PerlAPI::new_byte_array_len($env, $length);
-  SPVM::set_array_elements_bin($array, $bin);
+  SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
 }

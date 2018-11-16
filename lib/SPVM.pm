@@ -80,7 +80,7 @@ sub get_memory_blocks_count { SPVM::PerlAPI::get_memory_blocks_count($SPVM_ENV, 
 sub call_sub { SPVM::PerlAPI::call_sub($SPVM_ENV, @_) }
 
 sub new_byte_array { SPVM::PerlAPI::new_byte_array($SPVM_ENV, @_) }
-sub new_byte_array_string { SPVM::PerlAPI::new_byte_array_string($SPVM_ENV, @_) }
+sub new_byte_array_from_binary { SPVM::PerlAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
 sub new_short_array { SPVM::PerlAPI::new_short_array($SPVM_ENV, @_) }
 sub new_int_array { SPVM::PerlAPI::new_int_array($SPVM_ENV, @_) }
 sub new_long_array { SPVM::PerlAPI::new_long_array($SPVM_ENV, @_) }

@@ -14,6 +14,7 @@ use Test::More 'no_plan';
 my $file = basename $0;
 
 use FindBin;
+use Encode 'decode', 'encode';
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
@@ -127,7 +128,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     my $sp_values = SPVM::new_byte_array_len(3);
     SPVM::set_array_elements_bin($sp_values, "abc");
-    $object->set_x_string($sp_values);
+    $object->set_x_byte_array($sp_values);
     ok(TestCase::PerlAPI->spvm_object_set_object($object));
   }
   # Create object
@@ -140,7 +141,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     $object->set_x_float($FLOAT_PRECICE);
     $object->set_x_double($DOUBLE_PRECICE);
     $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
-    $object->set_x_string(SPVM::new_byte_array_string("Hello"));
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(3);
     $object->set_minimal($minimal);
@@ -491,8 +491,8 @@ is_deeply(
   # new_xxx_array_string
   {
     {
-      my $sp_values = SPVM::new_byte_array_string("あ");
-      ok(TestCase::PerlAPI->spvm_new_byte_array_string($sp_values));
+      my $sp_values = SPVM::new_byte_array_from_binary(encode('UTF-8', "あ"));
+      ok(TestCase::PerlAPI->spvm_new_byte_array_from_binary($sp_values));
     }
   }
   

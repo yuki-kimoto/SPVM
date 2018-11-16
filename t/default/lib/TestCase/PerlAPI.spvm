@@ -86,7 +86,7 @@ package TestCase::PerlAPI {
   
   sub spvm_object_set_object : int ($obj : TestCase) {
     my $nums = $obj->{x_int_array};
-    my $values = ($obj->{x_string});
+    my $values = ($obj->{x_byte_array});
     
     
     # [INT32_MAX, INT32_MAX]
@@ -131,7 +131,7 @@ package TestCase::PerlAPI {
   }
   
   # SPVM Functions
-  sub spvm_new_byte_array_string : int ($values : byte[]) {
+  sub spvm_new_byte_array_from_binary : int ($values : byte[]) {
     
     if ((int)$values->[0] == (int)(byte)0xE3) {
       if ((int)$values->[1] == (int)(byte)0x81) {

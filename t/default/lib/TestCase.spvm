@@ -32,7 +32,7 @@ package TestCase {
   has x_float : float;
   has x_double : double;
   has x_int_array : int[];
-  has x_string : byte[];
+  has x_byte_array : byte[];
   has x_test_case : TestCase;
   has minimal : TestCase::Minimal;
   has private_field : private int;
@@ -56,8 +56,8 @@ package TestCase {
     $self->{x_int_array} = $x_int_array;
   }
 
-  sub set_x_string : void ($self : self, $x_string : byte[]) {
-    $self->{x_string} = $x_string;
+  sub set_x_byte_array : void ($self : self, $x_string : byte[]) {
+    $self->{x_byte_array} = $x_string;
   }
 
   sub set_x_byte : void ($self : self, $x_byte : byte) {

@@ -33,7 +33,7 @@ package TestCase::Object {
     my $obj = new TestCase;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
-        if ($obj->{x_string} == undef) {
+        if ($obj->{x_byte_array} == undef) {
           return 1;
         }
       }
