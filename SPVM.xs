@@ -1120,7 +1120,7 @@ new_value_array(...)
           sv_field_value = *sv_field_value_ptr;
         }
         else {
-          sv_field_value = sv_2mortal(newSViv(0));
+          croak("Value element must be defined");
         }
 
         switch (first_field->basic_type_id) {
@@ -1501,7 +1501,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int8_t value = (int8_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].bval = value;
@@ -1536,7 +1536,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int16_t value = (int16_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].sval = value;
@@ -1570,7 +1570,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int32_t value = (int32_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].ival = value;
@@ -1604,7 +1604,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int64_t value = (int64_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].lval = value;
@@ -1638,7 +1638,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               float value = (float)SvNV(sv_field_value);
               stack[arg_var_id + field_index].fval = value;
@@ -1672,7 +1672,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               double value = (double)SvNV(sv_field_value);
               stack[arg_var_id + field_index].dval = value;
@@ -1803,7 +1803,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int8_t value = (int8_t)SvIV(sv_field_value);
               ((SPVM_VALUE_byte*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -1883,7 +1883,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               int32_t value = (int32_t)SvIV(sv_field_value);
               ((SPVM_VALUE_int*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -1963,7 +1963,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               float value = (float)SvNV(sv_field_value);
               ((SPVM_VALUE_float*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -2003,7 +2003,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                sv_field_value = sv_2mortal(newSViv(0));
+                croak("Value element must be defined");
               }
               double value = (double)SvNV(sv_field_value);
               ((SPVM_VALUE_double*)&ref_stack[ref_stack_top])[field_index] = value;
