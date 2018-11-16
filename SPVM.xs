@@ -1729,7 +1729,7 @@ set_array_elements(...)
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object)");
+    croak("Array must be SPVM::Data::Array object");
   }
 
   // Get object
@@ -1737,7 +1737,7 @@ set_array_elements(...)
   
   // Values must be array reference
   if (!(SvROK(sv_values) && sv_derived_from(sv_values, "ARRAY"))) {
-    croak("Values must be array refenrece)");
+    croak("Values must be array refenrece");
   }
   
   AV* av_values = (AV*)SvRV(sv_values);
@@ -1746,7 +1746,7 @@ set_array_elements(...)
 
   // Check length
   if (av_len(av_values) + 1 != length) {
-    croak("Elements length must be same as array length)");
+    croak("Elements length must be same as array length");
   }
   
   int32_t array_basic_type_id  = array->basic_type_id;
@@ -1950,7 +1950,7 @@ set_array_elements_bin(...)
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object)");
+    croak("Array must be SPVM::Data::Array object");
   }
   
   // Get object
@@ -1979,7 +1979,7 @@ set_array_elements_bin(...)
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           // Check range
           if ((int32_t)sv_len(sv_bin) != field_length * length) {
-            croak("Data total byte size must be same as %d * array length)", field_length);
+            croak("Data total byte size must be same as %d * array length", field_length);
           }
 
           int8_t* elements = env->get_byte_array_elements(env, array);
@@ -1990,7 +1990,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
           if ((int32_t)sv_len(sv_bin) != field_length * length * 2) {
-            croak("Data total byte size must be same as %d * array length * 2)", field_length);
+            croak("Data total byte size must be same as %d * array length * 2", field_length);
           }
           int16_t* elements = env->get_short_array_elements(env, array);
           if (length > 0) {
@@ -2000,7 +2000,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
           if ((int32_t)sv_len(sv_bin) != field_length * length * 4) {
-            croak("Data total byte size must be same as %d * array length * 4)", field_length);
+            croak("Data total byte size must be same as %d * array length * 4", field_length);
           }
           int32_t* elements = env->get_int_array_elements(env, array);
           if (length > 0) {
@@ -2010,7 +2010,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
           if ((int32_t)sv_len(sv_bin) != field_length * length * 8) {
-            croak("Data total byte size must be same as %d * array length * 8)", field_length);
+            croak("Data total byte size must be same as %d * array length * 8", field_length);
           }
           int64_t* elements = env->get_long_array_elements(env, array);
           if (length > 0) {
@@ -2020,7 +2020,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
           if ((int32_t)sv_len(sv_bin) != field_length * length * 4) {
-            croak("Data total byte size must be same as %d * array length * 4)", field_length);
+            croak("Data total byte size must be same as %d * array length * 4", field_length);
           }
           float* elements = env->get_float_array_elements(env, array);
           if (length > 0) {
@@ -2030,7 +2030,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
           if ((int32_t)sv_len(sv_bin) != field_length * length * 8) {
-            croak("Data total byte size must be same as %d * array length * 8)", field_length);
+            croak("Data total byte size must be same as %d * array length * 8", field_length);
           }
           double* elements = env->get_double_array_elements(env, array);
           if (length > 0) {
@@ -2050,7 +2050,7 @@ set_array_elements_bin(...)
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           // Check range
           if ((int32_t)sv_len(sv_bin) != length) {
-            croak("Data total byte size must be same as array length)");
+            croak("Data total byte size must be same as array length");
           }
 
           int8_t* elements = env->get_byte_array_elements(env, array);
@@ -2061,7 +2061,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
           if ((int32_t)sv_len(sv_bin) != length * 2) {
-            croak("Data total byte size must be same as array length * 2)");
+            croak("Data total byte size must be same as array length * 2");
           }
           int16_t* elements = env->get_short_array_elements(env, array);
           if (length > 0) {
@@ -2071,7 +2071,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
           if ((int32_t)sv_len(sv_bin) != length * 4) {
-            croak("Data total byte size must be same as array length * 4)");
+            croak("Data total byte size must be same as array length * 4");
           }
           int32_t* elements = env->get_int_array_elements(env, array);
           if (length > 0) {
@@ -2081,7 +2081,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
           if ((int32_t)sv_len(sv_bin) != length * 8) {
-            croak("Data total byte size must be same as array length * 8)");
+            croak("Data total byte size must be same as array length * 8");
           }
           int64_t* elements = env->get_long_array_elements(env, array);
           if (length > 0) {
@@ -2091,7 +2091,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
           if ((int32_t)sv_len(sv_bin) != length * 4) {
-            croak("Data total byte size must be same as array length * 4)");
+            croak("Data total byte size must be same as array length * 4");
           }
           float* elements = env->get_float_array_elements(env, array);
           if (length > 0) {
@@ -2101,7 +2101,7 @@ set_array_elements_bin(...)
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
           if ((int32_t)sv_len(sv_bin) != length * 8) {
-            croak("Data total byte size must be same as array length * 8)");
+            croak("Data total byte size must be same as array length * 8");
           }
           double* elements = env->get_double_array_elements(env, array);
           if (length > 0) {
@@ -2159,7 +2159,7 @@ set_array_element(...)
    
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range)");
+    croak("Out of range");
   }
 
   int32_t basic_type_id = array->basic_type_id;
@@ -2358,7 +2358,7 @@ get_array_element(...)
   
   // Check range
   if (index < 0 || index > length - 1) {
-    croak("Out of range)");
+    croak("Out of range");
   }
 
   int32_t basic_type_id = array->basic_type_id;
@@ -2521,7 +2521,7 @@ get_array_elements(...)
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object)");
+    croak("Array must be SPVM::Data::Array object");
   }
   
   // Get object
@@ -2723,7 +2723,7 @@ get_array_elements_bin(...)
 
   // Array must be SPVM::Data::Array object
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object)");
+    croak("Array must be SPVM::Data::Array object");
   }
   
   // Get object

@@ -100,9 +100,10 @@ sub new_short_array {
 sub new_short_array_from_binary {
   my ($env, $binary) = @_;
   
-  my $length = length $binary;
+  my $binary_length = length $binary;
+  my $array_length = $binary_length / 2;
   
-  my $array = SPVM::PerlAPI::new_short_array_len($env, $length);
+  my $array = SPVM::PerlAPI::new_short_array_len($env, $array_length);
   SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
@@ -129,9 +130,10 @@ sub new_int_array {
 sub new_int_array_from_binary {
   my ($env, $binary) = @_;
   
-  my $length = length $binary;
+  my $binary_length = length $binary;
+  my $array_length = $binary_length / 4;
   
-  my $array = SPVM::PerlAPI::new_int_array_len($env, $length);
+  my $array = SPVM::PerlAPI::new_int_array_len($env, $array_length);
   SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
@@ -158,9 +160,10 @@ sub new_long_array {
 sub new_long_array_from_binary {
   my ($env, $binary) = @_;
   
-  my $length = length $binary;
+  my $binary_length = length $binary;
+  my $array_length = $binary_length / 8;
   
-  my $array = SPVM::PerlAPI::new_long_array_len($env, $length);
+  my $array = SPVM::PerlAPI::new_long_array_len($env, $array_length);
   SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
@@ -187,9 +190,10 @@ sub new_float_array {
 sub new_float_array_from_binary {
   my ($env, $binary) = @_;
   
-  my $length = length $binary;
+  my $binary_length = length $binary;
+  my $array_length = $binary_length / 4;
   
-  my $array = SPVM::PerlAPI::new_float_array_len($env, $length);
+  my $array = SPVM::PerlAPI::new_float_array_len($env, $array_length);
   SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
@@ -216,9 +220,10 @@ sub new_double_array {
 sub new_double_array_from_binary {
   my ($env, $binary) = @_;
   
-  my $length = length $binary;
+  my $binary_length = length $binary;
+  my $array_length = $binary_length / 8;
   
-  my $array = SPVM::PerlAPI::new_double_array_len($env, $length);
+  my $array = SPVM::PerlAPI::new_double_array_len($env, $array_length);
   SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
