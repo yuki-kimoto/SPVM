@@ -67,15 +67,7 @@ sub new_value_array { SPVM::PerlAPI::new_value_array($SPVM_ENV, @_) }
 sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SPVM_ENV, @_) }
 sub new_object { SPVM::PerlAPI::new_object($SPVM_ENV, @_) }
 
-sub new_byte_array_len { SPVM::PerlAPI::new_byte_array_len($SPVM_ENV, @_) }
-sub new_short_array_len { SPVM::PerlAPI::new_short_array_len($SPVM_ENV, @_) }
-sub new_int_array_len { SPVM::PerlAPI::new_int_array_len($SPVM_ENV, @_) }
-sub new_long_array_len { SPVM::PerlAPI::new_long_array_len($SPVM_ENV, @_) }
-sub new_float_array_len { SPVM::PerlAPI::new_float_array_len($SPVM_ENV, @_) }
-sub new_double_array_len { SPVM::PerlAPI::new_double_array_len($SPVM_ENV, @_) }
-sub new_object_array_len { SPVM::PerlAPI::new_object_array_len($SPVM_ENV, @_) }
 sub new_multi_array_len { SPVM::PerlAPI::new_multi_array_len($SPVM_ENV, @_) }
-sub new_value_array_len { SPVM::PerlAPI::new_value_array_len($SPVM_ENV, @_) }
 sub set_exception_undef { SPVM::PerlAPI::set_exception_undef($SPVM_ENV, @_) }
 sub get_memory_blocks_count { SPVM::PerlAPI::get_memory_blocks_count($SPVM_ENV, @_) }
 sub call_sub { SPVM::PerlAPI::call_sub($SPVM_ENV, @_) }
