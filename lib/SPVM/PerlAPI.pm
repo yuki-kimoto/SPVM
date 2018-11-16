@@ -50,17 +50,6 @@ sub new_object {
   return $object;
 }
 
-sub new_byte_array_from_binary {
-  my ($env, $binary) = @_;
-  
-  my $length = length $binary;
-  
-  my $array = SPVM::PerlAPI::new_byte_array_len($env, $length);
-  SPVM::set_array_elements_bin($array, $binary);
-  
-  return $array;
-}
-
 sub new_short_array {
   my ($env, $elements) = @_;
 

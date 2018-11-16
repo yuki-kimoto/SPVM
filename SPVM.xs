@@ -487,6 +487,42 @@ new_byte_array(...)
 }
 
 SV*
+new_byte_array_from_binary(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  if (!SvOK(sv_binary)) {
+    croak("Argument must be defined");
+  }
+  
+  int32_t binary_length = sv_len(sv_binary);
+  int32_t array_length = binary_length;
+  int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array = env->new_byte_array_raw(env, array_length);
+
+  // Increment reference count
+  env->inc_ref_count(env, array);
+
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  memcpy(elements, binary, array_length);
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
+SV*
 new_byte_array_len(...)
   PPCODE:
 {
