@@ -602,24 +602,76 @@ new_short_array_from_binary(...)
 }
 
 SV*
-new_int_array_len(...)
+new_int_array(...)
   PPCODE:
 {
   (void)RETVAL;
   
   SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
+  SV* sv_elements = ST(1);
   
-  int32_t length = (int32_t)SvIV(sv_length);
+  if (!sv_derived_from(sv_elements, "ARRAY")) {
+    croak("Argument must be array reference");
+  }
+  
+  AV* av_elements = (AV*)SvRV(sv_elements);
+  
+  int32_t length = av_len(av_elements) + 1;
   
   // Environment
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // New array
-  void* array =  env->new_int_array_raw(env, length);
-  
+  void* array = env->new_int_array_raw(env, length);
+
   // Increment reference count
   env->inc_ref_count(env, array);
+
+  int32_t* elements = env->get_int_array_elements(env, array);
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elements, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int32_t)SvIV(sv_value);
+    }
+  }
+  
+  // New sv array
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_int_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_from_binary(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  if (!SvOK(sv_binary)) {
+    croak("Argument must be defined");
+  }
+  
+  int32_t binary_length = sv_len(sv_binary);
+  int32_t array_length = binary_length / sizeof(int32_t);
+  int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array = env->new_int_array_raw(env, array_length);
+
+  // Increment reference count
+  env->inc_ref_count(env, array);
+
+  int32_t* elements = env->get_int_array_elements(env, array);
+  memcpy(elements, binary, array_length * sizeof(int32_t));
   
   // New sv array
   SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");

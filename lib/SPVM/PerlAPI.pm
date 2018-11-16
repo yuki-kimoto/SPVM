@@ -50,36 +50,6 @@ sub new_object {
   return $object;
 }
 
-sub new_int_array {
-  my ($env, $elements) = @_;
-
-  return undef unless defined $elements;
-
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::PerlAPI::new_int_array_len($env, $length);
-  
-  SPVM::set_array_elements($array, $elements);
-  
-  return $array;
-}
-
-sub new_int_array_from_binary {
-  my ($env, $binary) = @_;
-  
-  my $binary_length = length $binary;
-  my $array_length = $binary_length / 4;
-  
-  my $array = SPVM::PerlAPI::new_int_array_len($env, $array_length);
-  SPVM::set_array_elements_bin($array, $binary);
-  
-  return $array;
-}
-
 sub new_long_array {
   my ($env, $elements) = @_;
 
