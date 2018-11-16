@@ -97,6 +97,17 @@ sub new_short_array {
   return $array;
 }
 
+sub new_short_array_from_binary {
+  my ($env, $binary) = @_;
+  
+  my $length = length $binary;
+  
+  my $array = SPVM::PerlAPI::new_short_array_len($env, $length);
+  SPVM::set_array_elements_bin($array, $binary);
+  
+  return $array;
+}
+
 sub new_int_array {
   my ($env, $elements) = @_;
 
@@ -111,6 +122,17 @@ sub new_int_array {
   my $array = SPVM::PerlAPI::new_int_array_len($env, $length);
   
   SPVM::set_array_elements($array, $elements);
+  
+  return $array;
+}
+
+sub new_int_array_from_binary {
+  my ($env, $binary) = @_;
+  
+  my $length = length $binary;
+  
+  my $array = SPVM::PerlAPI::new_int_array_len($env, $length);
+  SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
 }
@@ -133,6 +155,17 @@ sub new_long_array {
   return $array;
 }
 
+sub new_long_array_from_binary {
+  my ($env, $binary) = @_;
+  
+  my $length = length $binary;
+  
+  my $array = SPVM::PerlAPI::new_long_array_len($env, $length);
+  SPVM::set_array_elements_bin($array, $binary);
+  
+  return $array;
+}
+
 sub new_float_array {
   my ($env, $elements) = @_;
 
@@ -151,6 +184,17 @@ sub new_float_array {
   return $array;
 }
 
+sub new_float_array_from_binary {
+  my ($env, $binary) = @_;
+  
+  my $length = length $binary;
+  
+  my $array = SPVM::PerlAPI::new_float_array_len($env, $length);
+  SPVM::set_array_elements_bin($array, $binary);
+  
+  return $array;
+}
+
 sub new_double_array {
   my ($env, $elements) = @_;
   
@@ -165,6 +209,17 @@ sub new_double_array {
   my $array = SPVM::PerlAPI::new_double_array_len($env, $length);
   
   SPVM::set_array_elements($array, $elements);
+  
+  return $array;
+}
+
+sub new_double_array_from_binary {
+  my ($env, $binary) = @_;
+  
+  my $length = length $binary;
+  
+  my $array = SPVM::PerlAPI::new_double_array_len($env, $length);
+  SPVM::set_array_elements_bin($array, $binary);
   
   return $array;
 }

@@ -133,17 +133,11 @@ package TestCase::PerlAPI {
   # SPVM Functions
   sub spvm_new_byte_array_from_binary : int ($values : byte[]) {
     
-    if ((int)$values->[0] == (int)(byte)0xE3) {
-      if ((int)$values->[1] == (int)(byte)0x81) {
-        if ((int)$values->[2] == (int)(byte)0x82) {
-          if (@$values == 3) {
-            return 1;
-          }
-        }
-      }
+    unless ($values eq "あ") {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 
   sub spvm_new_byte_array_bin : int ($values : byte[]) {
