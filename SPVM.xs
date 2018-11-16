@@ -1026,6 +1026,116 @@ new_multi_array_len(...)
 }
 
 SV*
+new_value_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elements = ST(2);
+  
+  if (!sv_derived_from(sv_elements, "ARRAY")) {
+    croak("Argument must be array reference");
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_elements = (AV*)SvRV(sv_elements);
+  
+  int32_t length = av_len(av_elements) + 1;
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
+  
+  if (basic_type == NULL) {
+    const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+    croak("Can't load %s", basic_type_name);
+  }
+  
+  // New array
+  void* array = env->new_value_array_raw(env, basic_type->id, length);
+  
+  // Increment reference count
+  env->inc_ref_count(env, array);
+
+  for (int32_t index = 0; index < length; index++) {
+    SV** sv_element_ptr = av_fetch(av_elements, index, 0);
+    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+
+    if (sv_derived_from(sv_element, "HASH")) {
+      
+      SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
+      assert(package);
+      
+      SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
+      assert(first_field);
+
+      void* elements = (void*)env->get_int_array_elements(env, array);
+      
+      HV* hv_value = (HV*)SvRV(sv_element);
+      int32_t field_length = package->fields_length;
+      for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[package->fields_base + field_index];
+        const char* field_name = &runtime->string_pool[field->name_id];
+
+        SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
+        SV* sv_field_value;
+        if (sv_field_value_ptr) {
+          sv_field_value = *sv_field_value_ptr;
+        }
+        else {
+          sv_field_value = sv_2mortal(newSViv(0));
+        }
+
+        switch (first_field->basic_type_id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            ((SPVM_VALUE_byte*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            ((SPVM_VALUE_short*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_short)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            ((SPVM_VALUE_int*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_int)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            ((SPVM_VALUE_long*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_long)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            ((SPVM_VALUE_float*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_float)SvNV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            ((SPVM_VALUE_double*)elements)[(field_length * index) + field_index] = (SPVM_VALUE_double)SvNV(sv_field_value);
+            break;
+          }
+          default:
+            assert(0);
+        }
+      }
+    }
+    else {
+      croak("Element must be hash reference");
+    }
+  }
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 new_value_array_len(...)
   PPCODE:
 {
