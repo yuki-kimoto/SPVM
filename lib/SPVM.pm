@@ -87,9 +87,6 @@ sub new_multi_array { SPVM::PerlAPI::new_multi_array($SPVM_ENV, @_) }
 sub new_value_array { SPVM::PerlAPI::new_value_array($SPVM_ENV, @_) }
 sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SPVM_ENV, @_) }
 
-sub to_elements { SPVM::PerlAPI::to_elements($SPVM_ENV, @_) }
-sub to_binary { SPVM::PerlAPI::to_binary($SPVM_ENV, @_) }
-
 1;
 
 =encoding UTF-8
