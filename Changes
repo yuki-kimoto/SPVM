@@ -1,4 +1,4 @@
-0.0390 2018-11-14
+0.0390 2018-11-16
   - package variable must start upper case or contain ::
   - add SPVM::List module
   - add private private package variable
