@@ -16,6 +16,9 @@
   - rename SPVM::new_byte_array_string to SPVM::new_byte_array_from_binary.
     and recieve binary data instead of Perl internal string
   - rename new_value_t_array to new_value_array
+  - add SPVM::new_value_array_from_binary
+  - remove SPVM::set_array_elements
+  - remove SPVM::set_array_elements_bin
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs
