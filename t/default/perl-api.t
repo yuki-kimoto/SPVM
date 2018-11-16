@@ -207,9 +207,6 @@ is_deeply(
 
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_byte_array($object_array));
     
-    my $object1_get = SPVM::get_array_element($object_array, 0);
-    my $object2_get = SPVM::get_array_element($object_array, 1);
-    
     my $object_array_out = SPVM::get_array_elements($object_array);
     is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
     is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
