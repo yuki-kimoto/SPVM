@@ -194,7 +194,7 @@ is_deeply(
     
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_object_array($sp_object_array));
     
-    my $object_array_out = SPVM::get_array_elements($sp_object_array);
+    my $object_array_out = SPVM::to_elements($sp_object_array);
     is($object_array_out->[0]->get_x_int, 1);
     is($object_array_out->[1]->get_x_int, 2);
   }
@@ -207,9 +207,9 @@ is_deeply(
 
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_byte_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    my $object_array_out = SPVM::to_elements($object_array);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 
   # element short array
@@ -220,10 +220,10 @@ is_deeply(
 
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_short_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
+    my $object_array_out = SPVM::to_elements($object_array);
 
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 
   # element int array
@@ -234,10 +234,10 @@ is_deeply(
 
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_int_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
+    my $object_array_out = SPVM::to_elements($object_array);
 
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 
   # element long array
@@ -247,10 +247,10 @@ is_deeply(
     my $object_array = SPVM::new_multi_array("long", 1, [$object1, $object2]);
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_long_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
+    my $object_array_out = SPVM::to_elements($object_array);
 
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 
   # element float array
@@ -261,10 +261,10 @@ is_deeply(
 
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_float_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
+    my $object_array_out = SPVM::to_elements($object_array);
 
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 
   # element double array
@@ -275,10 +275,10 @@ is_deeply(
     
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_double_array($object_array));
     
-    my $object_array_out = SPVM::get_array_elements($object_array);
+    my $object_array_out = SPVM::to_elements($object_array);
 
-    is_deeply(SPVM::get_array_elements($object_array_out->[0]), [1, 2, 3]);
-    is_deeply(SPVM::get_array_elements($object_array_out->[1]), [4, 5, 6]);
+    is_deeply(SPVM::to_elements($object_array_out->[0]), [1, 2, 3]);
+    is_deeply(SPVM::to_elements($object_array_out->[1]), [4, 5, 6]);
   }
 }
 
@@ -292,7 +292,7 @@ is_deeply(
     ];
     my $sp_values = SPVM::new_value_array("TestCase::Point_i3", $values);
     ok(TestCase::PerlAPI->spvm_new_value_array_int($sp_values));
-    my $out_values = SPVM::get_array_elements($sp_values);
+    my $out_values = SPVM::to_elements($sp_values);
     is_deeply($out_values, $values);
   }
 
@@ -300,111 +300,111 @@ is_deeply(
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
     my $sp_values = SPVM::new_value_array_from_binary("TestCase::Point_i3", $binary);
     ok(TestCase::PerlAPI->spvm_new_value_array_binary_int($sp_values));
-    my $out_bin = SPVM::get_array_elements_bin($sp_values);
+    my $out_bin = SPVM::to_binary($sp_values);
     is_deeply($out_bin, $binary);
   }
 }
 
 # SPVM Functions
 {
-  # SPVM::get_array_elements(
+  # SPVM::to_elements(
   {
     {
       my $sp_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-      my $values = SPVM::get_array_elements($sp_values);
+      my $values = SPVM::to_elements($sp_values);
       is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
     }
     {
       my $sp_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-      my $values = SPVM::get_array_elements($sp_values);
+      my $values = SPVM::to_elements($sp_values);
       is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
     }
     {
       my $sp_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-      my $values = SPVM::get_array_elements($sp_values);
+      my $values = SPVM::to_elements($sp_values);
       is_deeply($values, [1, $INT_MAX, $INT_MIN]);
     }
     {
       my $sp_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-      my $values = SPVM::get_array_elements($sp_values);
+      my $values = SPVM::to_elements($sp_values);
       is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
     }
   }
 
-  # SPVM::get_array_elements_bin( 0 length
+  # SPVM::to_binary( 0 length
   {
     {
       my $sp_values = SPVM::new_byte_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_short_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_int_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_long_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_float_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_double_array([]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       is($binary, "");
     }
   }
     
-  # SPVM::get_array_elements_bin(
+  # SPVM::to_binary(
   {
     {
       my $sp_values = SPVM::new_byte_array([1, 2, $BYTE_MAX]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('c3', $binary);
       is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
     {
       my $sp_values = SPVM::new_short_array([1, 2, $SHORT_MAX]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('s3', $binary);
       is_deeply(\@values, [1, 2, $SHORT_MAX]);
     }
     {
       my $sp_values = SPVM::new_int_array([1, 2, $INT_MAX]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('l3', $binary);
       is_deeply(\@values, [1, 2, $INT_MAX]);
     }
     {
       my $sp_values = SPVM::new_long_array([1, 2, $LONG_MAX]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('q3', $binary);
       is_deeply(\@values, [1, 2, $LONG_MAX]);
     }
     {
       my $sp_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('f3', $binary);
       is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
     }
     {
       my $sp_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE]);
-      my $binary = SPVM::get_array_elements_bin($sp_values);
+      my $binary = SPVM::to_binary($sp_values);
       
       my @values = unpack('d3', $binary);
       is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
@@ -507,7 +507,7 @@ is_deeply(
 {
   {
     my $values = TestCase->string_empty();
-    is(SPVM::get_array_elements_bin($values), "");
+    is(SPVM::to_binary($values), "");
   }
 }
 

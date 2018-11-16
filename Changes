@@ -19,7 +19,9 @@
   - add SPVM::new_value_array_from_binary
   - remove SPVM::set_array_elements
   - remove SPVM::set_array_elements_bin
-  - add new_multi_array(
+  - add new_multi_array
+  - rename SPVM::get_elements to SPVM::to_elements
+  - rename SPVM::get_elements_bin to SPVM::to_binary
 0.0389 2018-11-13
   - fix nested loop last bugs
   - fix nested loop next bugs

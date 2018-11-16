@@ -2456,7 +2456,7 @@ call_sub(...)
 }
 
 SV*
-get_array_elements(...)
+to_elements(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2658,7 +2658,7 @@ get_array_elements(...)
 }
 
 SV*
-get_array_elements_bin(...)
+to_binary(...)
   PPCODE:
 {
   (void)RETVAL;

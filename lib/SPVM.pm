@@ -87,8 +87,8 @@ sub new_multi_array { SPVM::PerlAPI::new_multi_array($SPVM_ENV, @_) }
 sub new_value_array { SPVM::PerlAPI::new_value_array($SPVM_ENV, @_) }
 sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SPVM_ENV, @_) }
 
-sub get_array_elements { SPVM::PerlAPI::get_array_elements($SPVM_ENV, @_) }
-sub get_array_elements_bin { SPVM::PerlAPI::get_array_elements_bin($SPVM_ENV, @_) }
+sub to_elements { SPVM::PerlAPI::to_elements($SPVM_ENV, @_) }
+sub to_binary { SPVM::PerlAPI::to_binary($SPVM_ENV, @_) }
 
 1;
 
