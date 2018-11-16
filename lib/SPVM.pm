@@ -298,8 +298,6 @@ moti<lt>motohiko.ave@gmail.com<gt>
 
 akinomyoga, NAGAYASU Shinya, Reini Urban, chromatic, Kazutake Hiramatsu
 
-=back
-
 =head1 COPYRIGHT & LICENSE
 
 MIT License
