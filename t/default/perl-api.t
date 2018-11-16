@@ -201,12 +201,10 @@ is_deeply(
 
   # element byte array
   {
-    my $object_array = SPVM::new_multi_array_len("byte", 1, 3);
-    
     my $object1 = SPVM::new_byte_array([1, 2, 3]);
-    SPVM::set_array_element($object_array, 0, $object1);
     my $object2 = SPVM::new_byte_array([4, 5, 6]);
-    SPVM::set_array_element($object_array, 1, $object2);
+    my $object_array = SPVM::new_multi_array("byte", 1, [$object1, $object2]);
+
     ok(TestCase::PerlAPI->spvm_new_object_array_len_element_byte_array($object_array));
     
     my $object1_get = SPVM::get_array_element($object_array, 0);

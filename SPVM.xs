@@ -994,7 +994,7 @@ new_multi_array(...)
   SV* sv_env = ST(0);
   SV* sv_basic_type_name = ST(1);
   SV* sv_element_type_dimension = ST(2);
-  SV* sv_elements = ST(2);
+  SV* sv_elements = ST(3);
 
   if (!sv_derived_from(sv_elements, "ARRAY")) {
     croak("Argument must be array reference");

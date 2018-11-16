@@ -68,6 +68,7 @@ sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SP
 sub new_object { SPVM::PerlAPI::new_object($SPVM_ENV, @_) }
 
 sub new_multi_array_len { SPVM::PerlAPI::new_multi_array_len($SPVM_ENV, @_) }
+sub new_multi_array { SPVM::PerlAPI::new_multi_array($SPVM_ENV, @_) }
 sub set_exception_undef { SPVM::PerlAPI::set_exception_undef($SPVM_ENV, @_) }
 sub get_memory_blocks_count { SPVM::PerlAPI::get_memory_blocks_count($SPVM_ENV, @_) }
 sub call_sub { SPVM::PerlAPI::call_sub($SPVM_ENV, @_) }
