@@ -126,8 +126,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $object = TestCase->new();
     $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
-    my $sp_values = SPVM::new_byte_array_len(3);
-    SPVM::set_array_elements_bin($sp_values, "abc");
+    my $sp_values = SPVM::new_byte_array_from_binary("abc");
     $object->set_x_byte_array($sp_values);
     ok(TestCase::PerlAPI->spvm_object_set_object($object));
   }
