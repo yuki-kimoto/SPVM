@@ -50,24 +50,6 @@ sub new_object {
   return $object;
 }
 
-sub new_byte_array {
-  my ($env, $elements) = @_;
-  
-  return undef unless defined $elements;
-  
-  if (ref $elements ne 'ARRAY') {
-    confess "Argument must be array reference";
-  }
-  
-  my $length = @$elements;
-  
-  my $array = SPVM::PerlAPI::new_byte_array_len($env, $length);
-  
-  SPVM::set_array_elements($array, $elements);
-  
-  return $array;
-}
-
 sub new_byte_array_from_binary {
   my ($env, $binary) = @_;
   

@@ -444,6 +444,49 @@ bind_sub_precompile(...)
 MODULE = SPVM::PerlAPI		PACKAGE = SPVM::PerlAPI
 
 SV*
+new_byte_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elements = ST(1);
+  
+  if (!sv_derived_from(sv_elements, "ARRAY")) {
+    croak("Argument must be array reference");
+  }
+  
+  AV* av_elements = (AV*)SvRV(sv_elements);
+  
+  int32_t length = av_len(av_elements) + 1;
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New array
+  void* array = env->new_byte_array_raw(env, length);
+
+  // Increment reference count
+  env->inc_ref_count(env, array);
+
+  int8_t* elements = env->get_byte_array_elements(env, array);
+  {
+    int32_t i;
+    for (i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elements, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elements[i] = (int8_t)SvIV(sv_value);
+    }
+  }
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
+SV*
 new_byte_array_len(...)
   PPCODE:
 {

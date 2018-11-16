@@ -540,13 +540,6 @@ is_deeply(
   }
 }
 
-
-# SPVM::Object::Array
-{
-  my $sp_values = SPVM::new_int_array_len(3);
-  SPVM::set_array_elements($sp_values, [1, 2, 3]);
-}
-
 # byte
 {
   my $total = TestCase->sum_byte(8, 3);
