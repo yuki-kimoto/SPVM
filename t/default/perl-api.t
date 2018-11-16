@@ -301,52 +301,6 @@ is_deeply(
   }
 }
 
-# get and set
-{
-  {
-    my $sp_values = SPVM::new_byte_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $BYTE_MAX);
-    ok(TestCase::PerlAPI->spvm_set_and_get_byte($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $BYTE_MAX);
-  }
-  {
-    my $sp_values = SPVM::new_short_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $SHORT_MAX);
-    ok(TestCase::PerlAPI->spvm_set_and_get_short($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $SHORT_MAX);
-  }
-  {
-    my $sp_values = SPVM::new_int_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $INT_MAX);
-    ok(TestCase::PerlAPI->spvm_set_and_get_int($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $INT_MAX);
-  }
-  {
-    my $sp_values = SPVM::new_long_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $LONG_MAX);
-    ok(TestCase::PerlAPI->spvm_set_and_get_long($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $LONG_MAX);
-  }
-  {
-    my $sp_values = SPVM::new_float_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $FLOAT_PRECICE);
-    ok(TestCase::PerlAPI->spvm_set_and_get_float($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $FLOAT_PRECICE);
-  }
-  {
-    my $sp_values = SPVM::new_double_array([0, 0]);
-    SPVM::set_array_element($sp_values, 1, $DOUBLE_PRECICE);
-    ok(TestCase::PerlAPI->spvm_set_and_get_double($sp_values));
-    my $value = SPVM::get_array_element($sp_values, 1);
-    is($value, $DOUBLE_PRECICE);
-  }
-}
-
 # value_t array
 {
   {
@@ -378,7 +332,6 @@ is_deeply(
     my $out_bin = SPVM::get_array_elements_bin($sp_values);
     is_deeply($out_bin, $binary);
   }
-
 }
 
 # SPVM Functions
