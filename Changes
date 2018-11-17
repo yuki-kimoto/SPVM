@@ -1,5 +1,7 @@
 0.0391 2018-11-17
   - field name become not conflict reserved words and core func names
+  - rename Native Interface to Native API
+  - rename SPVM::PerlAPI to SPVM::ExchangeAPI
 0.0390 2018-11-16
   - package variable must start upper case or contain ::
   - add SPVM::List module

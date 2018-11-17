@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-SPVM::Document::PerlAPI - SPVM Perl API
+SPVM::Document::ExchangeAPI - SPVM Perl API
 
 =head1 What is SPVM Perl API
 

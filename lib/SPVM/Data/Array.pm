@@ -2,14 +2,14 @@ package SPVM::Data::Array;
 
 use base 'SPVM::Data';
 
-use SPVM::PerlAPI;
+use SPVM::ExchangeAPI;
 
 sub to_elements {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::PerlAPI::to_elements($env, $self);
+  SPVM::ExchangeAPI::to_elements($env, $self);
 }
 
 sub to_binary {
@@ -17,7 +17,7 @@ sub to_binary {
 
   my $env = $self->{env};
   
-  SPVM::PerlAPI::to_binary($env, $self);
+  SPVM::ExchangeAPI::to_binary($env, $self);
 }
 
 1;

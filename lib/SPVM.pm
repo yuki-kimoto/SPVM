@@ -11,7 +11,7 @@ use SPVM::Data;
 use SPVM::Data::Array;
 
 use SPVM::Builder;
-use SPVM::PerlAPI;
+use SPVM::ExchangeAPI;
 
 use Encode 'encode', 'decode';
 
@@ -63,29 +63,29 @@ CHECK {
 }
 
 
-sub set_exception_undef { SPVM::PerlAPI::set_exception_undef($SPVM_ENV, @_) }
-sub get_memory_blocks_count { SPVM::PerlAPI::get_memory_blocks_count($SPVM_ENV, @_) }
-sub call_sub { SPVM::PerlAPI::call_sub($SPVM_ENV, @_) }
+sub set_exception_undef { SPVM::ExchangeAPI::set_exception_undef($SPVM_ENV, @_) }
+sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_ENV, @_) }
+sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
-sub new_byte_array { SPVM::PerlAPI::new_byte_array($SPVM_ENV, @_) }
-sub new_short_array { SPVM::PerlAPI::new_short_array($SPVM_ENV, @_) }
-sub new_int_array { SPVM::PerlAPI::new_int_array($SPVM_ENV, @_) }
-sub new_long_array { SPVM::PerlAPI::new_long_array($SPVM_ENV, @_) }
-sub new_float_array { SPVM::PerlAPI::new_float_array($SPVM_ENV, @_) }
-sub new_double_array { SPVM::PerlAPI::new_double_array($SPVM_ENV, @_) }
+sub new_byte_array { SPVM::ExchangeAPI::new_byte_array($SPVM_ENV, @_) }
+sub new_short_array { SPVM::ExchangeAPI::new_short_array($SPVM_ENV, @_) }
+sub new_int_array { SPVM::ExchangeAPI::new_int_array($SPVM_ENV, @_) }
+sub new_long_array { SPVM::ExchangeAPI::new_long_array($SPVM_ENV, @_) }
+sub new_float_array { SPVM::ExchangeAPI::new_float_array($SPVM_ENV, @_) }
+sub new_double_array { SPVM::ExchangeAPI::new_double_array($SPVM_ENV, @_) }
 
-sub new_byte_array_from_binary { SPVM::PerlAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
-sub new_short_array_from_binary { SPVM::PerlAPI::new_short_array_from_binary($SPVM_ENV, @_) }
-sub new_int_array_from_binary { SPVM::PerlAPI::new_int_array_from_binary($SPVM_ENV, @_) }
-sub new_long_array_from_binary { SPVM::PerlAPI::new_long_array_from_binary($SPVM_ENV, @_) }
-sub new_float_array_from_binary { SPVM::PerlAPI::new_float_array_from_binary($SPVM_ENV, @_) }
-sub new_double_array_from_binary { SPVM::PerlAPI::new_double_array_from_binary($SPVM_ENV, @_) }
+sub new_byte_array_from_binary { SPVM::ExchangeAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
+sub new_short_array_from_binary { SPVM::ExchangeAPI::new_short_array_from_binary($SPVM_ENV, @_) }
+sub new_int_array_from_binary { SPVM::ExchangeAPI::new_int_array_from_binary($SPVM_ENV, @_) }
+sub new_long_array_from_binary { SPVM::ExchangeAPI::new_long_array_from_binary($SPVM_ENV, @_) }
+sub new_float_array_from_binary { SPVM::ExchangeAPI::new_float_array_from_binary($SPVM_ENV, @_) }
+sub new_double_array_from_binary { SPVM::ExchangeAPI::new_double_array_from_binary($SPVM_ENV, @_) }
 
-sub new_object { SPVM::PerlAPI::new_object($SPVM_ENV, @_) }
-sub new_object_array { SPVM::PerlAPI::new_object_array($SPVM_ENV, @_) }
-sub new_multi_array { SPVM::PerlAPI::new_multi_array($SPVM_ENV, @_) }
-sub new_value_array { SPVM::PerlAPI::new_value_array($SPVM_ENV, @_) }
-sub new_value_array_from_binary { SPVM::PerlAPI::new_value_array_from_binary($SPVM_ENV, @_) }
+sub new_object { SPVM::ExchangeAPI::new_object($SPVM_ENV, @_) }
+sub new_object_array { SPVM::ExchangeAPI::new_object_array($SPVM_ENV, @_) }
+sub new_multi_array { SPVM::ExchangeAPI::new_multi_array($SPVM_ENV, @_) }
+sub new_value_array { SPVM::ExchangeAPI::new_value_array($SPVM_ENV, @_) }
+sub new_value_array_from_binary { SPVM::ExchangeAPI::new_value_array_from_binary($SPVM_ENV, @_) }
 
 1;
 
@@ -191,7 +191,7 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-See also L<SPVM::Document::PerlAPI>.
+See also L<SPVM::Document::ExchangeAPI>.
 
 =head2 C Extension using SPVM
 
@@ -266,7 +266,7 @@ L<SPVM::CORE>, L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPV
 
 =head1 SPVM Perl API
 
-L<SPVM::Document::PerlAPI>
+L<SPVM::Document::ExchangeAPI>
 
 =head1 Native Interface
 

@@ -441,7 +441,7 @@ bind_sub_precompile(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::PerlAPI		PACKAGE = SPVM::PerlAPI
+MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
 new_byte_array(...)

@@ -1,4 +1,4 @@
-package SPVM::PerlAPI;
+package SPVM::ExchangeAPI;
 
 use strict;
 use warnings;

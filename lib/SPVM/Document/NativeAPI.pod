@@ -1,28 +1,14 @@
 =head1 NAME
 
-SPVM::Document::Nativeinterface - SPVM Native Interface
+SPVM::Document::NativeAPI - SPVM Native API
 
-=head1 What is Native interface
+=head1 What is Native API
 
-Native interface is C level functions to manipulate SPVM data.
+Native API is C level functions to manipulate data of SPVM in L<Extension|SPVM::Document::Extension>.
 
-If you need more performance or bind C/C++ functions, you can use  Native interface.
+If you need more performance or bind C/C++ functions, you can use L<Extension|SPVM::Document::Extension> and Native API.
 
-=head1 Functions
-
-=head2 new_byte_array_raw
-
-  void* new_byte_array_raw(SPVM_ENV* env, int32_t length);
-
-Create byte[] object with length. Reference count is 0. Not mortal. Each element is initialized by 0.
-
-Internally, alloc length + 1 and byte[length] is initialized by 0.
-
-If length is less than 0, return NULL. 
-
-If system can not alloc memory, return NULL.
-
-=head1 All of Native functions.
+=head1 NATIVE APIs
 
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements)(SPVM_ENV*, void*);
@@ -33,7 +19,8 @@ If system can not alloc memory, return NULL.
   double* (*get_double_array_elements)(SPVM_ENV*, void*);
   void* (*get_object_array_element)(SPVM_ENV*, void*, int32_t index);
   void (*set_object_array_element)(SPVM_ENV*, void*, int32_t index, void* value);
-  int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*);
+  int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*, const char*);
+  int32_t (*get_field_index)(SPVM_ENV*, int32_t);
   int8_t (*get_byte_field)(SPVM_ENV*, void*, int32_t);
   int16_t (*get_short_field)(SPVM_ENV*, void*, int32_t);
   int32_t (*get_int_field)(SPVM_ENV*, void*, int32_t);
@@ -49,8 +36,8 @@ If system can not alloc memory, return NULL.
   void (*set_float_field)(SPVM_ENV*, void*, int32_t, float);
   void (*set_double_field)(SPVM_ENV*, void*, int32_t, double);
   void (*set_object_field)(SPVM_ENV*, void*, int32_t, void*);
-  int32_t (*get_sub_id)(SPVM_ENV*, const char*, const char*);
-  int32_t (*get_sub_id_method_call)(SPVM_ENV*, void* object, const char*);
+  int32_t (*get_sub_id)(SPVM_ENV*, const char*, const char*, const char*);
+  int32_t (*get_sub_id_method_call)(SPVM_ENV*, void* object, const char*, const char*);
   int32_t (*get_basic_type_id)(SPVM_ENV*, const char*);
   void* (*new_object_raw)(SPVM_ENV*, int32_t);
   void* (*new_byte_array_raw)(SPVM_ENV*, int32_t);
@@ -61,8 +48,8 @@ If system can not alloc memory, return NULL.
   void* (*new_double_array_raw)(SPVM_ENV*, int32_t);
   void* (*new_object_array_raw)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array_raw)(SPVM_ENV*, int32_t, int32_t, int32_t);
-  void* (*new_value_t_array_raw)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_string_raw)(SPVM_ENV* env, char* bytes, int32_t length);
+  void* (*new_value_array_raw)(SPVM_ENV*, int32_t, int32_t);
+  void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
   void* (*get_exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);
@@ -71,19 +58,16 @@ If system can not alloc memory, return NULL.
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
   void (*inc_dec_ref_count)(SPVM_ENV* env, void* object);
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
-  void* (*get_runtime)(SPVM_ENV* env);
   void (*dec_ref_count_only)(SPVM_ENV* env, void* object);
   void (*weaken)(SPVM_ENV* env, void** object_address);
-  int32_t (*isweak)(SPVM_ENV* env, void* object);
+  int32_t (*isweak)(SPVM_ENV* env, void** object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
-  int32_t (*weaken_object_field)(SPVM_ENV* env, void* object, int32_t field_rel_id);
   void* (*create_exception_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
-  int32_t (*check_cast)(SPVM_ENV* env, int32_t cast_basic_type_id, int32_t cast_type_dimension, void* object);
   void* object_header_byte_size;
   void* object_ref_count_byte_offset;
   void* object_basic_type_id_byte_offset;
-  void* object_dimension_byte_offset;
+  void* object_type_dimension_byte_offset;
   void* object_elements_length_byte_offset;
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   int32_t (*enter_scope)(SPVM_ENV* env);
@@ -98,8 +82,16 @@ If system can not alloc memory, return NULL.
   void* (*new_double_array)(SPVM_ENV*, int32_t);
   void* (*new_object_array)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_multi_array)(SPVM_ENV*, int32_t, int32_t, int32_t);
-  void* (*new_value_t_array)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_string)(SPVM_ENV* env, char* bytes, int32_t length);
+  void* (*new_value_array)(SPVM_ENV*, int32_t, int32_t);
+  void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
-  int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* signature);
-  void* runtime_package_vars_byte_offset;
+  int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+  void* runtime_package_vars_heap_byte_offset;
+  void* runtime;
+  int32_t (*has_interface)(SPVM_ENV*, int32_t package_basic_type_id, int32_t package_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
+  void* basic_type_id_byte_object;
+  void* basic_type_id_short_object;
+  void* basic_type_id_int_object;
+  void* basic_type_id_long_object;
+  void* basic_type_id_float_object;
+  void* basic_type_id_double_object;
