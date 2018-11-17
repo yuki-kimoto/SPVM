@@ -47,6 +47,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t expect_sub_name = compiler->expect_sub_name;
   compiler->expect_sub_name = 0;
   
+  // Before token is arrow
+  int32_t before_token_is_arrow = compiler->before_token_is_arrow;
+  compiler->before_token_is_arrow = 0;
+
+  // Expect field name
+  int32_t expect_field_name = compiler->expect_field_name;
+  compiler->expect_field_name = 0;
+  
   // Expect variable expansion state
   int32_t state_var_expansion = compiler->state_var_expansion;
   compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
@@ -274,6 +282,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->bufptr++;
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           compiler->expect_sub_name = 1;
+          compiler->before_token_is_arrow = 1;
           
           return ARROW;
         }
@@ -1093,6 +1102,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (expect_sub_name) {
             SPVM_LIST_push(compiler->current_sub_names, keyword);
           }
+          else if (expect_field_name) {
+            // None
+          }
           else {
             switch (keyword[0]) {
               // Keyword
@@ -1167,6 +1179,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               case 'h' :
                 if (strcmp(keyword, "has") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FIELD);
+                  compiler->expect_field_name = 1;
                   return HAS;
                 }
                 break;
@@ -1369,21 +1382,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
           yylvalp->opval = op_name;
-
+          
           // Name is subroutine if core function or already define sub
           int32_t is_sub_name = 0;
-          SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
-          if (core_package) {
-            SPVM_SUB* found_core_sub = SPVM_HASH_fetch(core_package->sub_symtable, keyword, strlen(keyword));
-            if (found_core_sub) {
-              is_sub_name = 1;
-            }
-            else {
-              for (int32_t sub_index = 0; sub_index < compiler->current_sub_names->length; sub_index++) {
-                const char* current_sub = (const char*)SPVM_LIST_fetch(compiler->current_sub_names, sub_index);
-                if (strcmp(keyword, current_sub) == 0) {
-                  is_sub_name = 1;
-                  break;
+          if (!expect_field_name) {
+            SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
+            if (core_package) {
+              SPVM_SUB* found_core_sub = SPVM_HASH_fetch(core_package->sub_symtable, keyword, strlen(keyword));
+              if (found_core_sub) {
+                is_sub_name = 1;
+              }
+              else {
+                for (int32_t sub_index = 0; sub_index < compiler->current_sub_names->length; sub_index++) {
+                  const char* current_sub = (const char*)SPVM_LIST_fetch(compiler->current_sub_names, sub_index);
+                  if (strcmp(keyword, current_sub) == 0) {
+                    is_sub_name = 1;
+                    break;
+                  }
                 }
               }
             }
@@ -1400,6 +1415,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         /* Return character */
         compiler->bufptr++;
         yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
+        
+        // Expect field name
+        if (before_token_is_arrow && ch == '{') {
+          compiler->expect_field_name = 1;
+        }
         
         return (int) (uint8_t) ch;
     }

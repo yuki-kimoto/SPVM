@@ -35,6 +35,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Field
 {
+  ok(TestCase::Object->core_func_name_field_name());
+  ok(TestCase::Object->reserved_word_field_name());
   ok(TestCase::Object->object_field_set_and_get());
 }
 

@@ -37,6 +37,12 @@ struct SPVM_compiler {
   // Expect subroutine name
   int8_t expect_sub_name;
 
+  // Expect field name
+  int8_t expect_field_name;
+  
+  // Before token is arrow
+  int8_t before_token_is_arrow;
+
   // Expect variable expansion start
   int8_t state_var_expansion;
   

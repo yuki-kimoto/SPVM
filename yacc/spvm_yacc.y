@@ -1024,7 +1024,6 @@ type_or_void
 
 field_name
   : NAME
-  | MAYBE_SUB_NAME
 
 sub_name
   : NAME
