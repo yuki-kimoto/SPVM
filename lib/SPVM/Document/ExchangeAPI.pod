@@ -15,6 +15,9 @@ Exchange API is perl functions to exchange Perl data to SPVM data, and reverse.
   
   # Convert SPVM int array to Perl array reference
   my $nums = $spvm_nums->to_elements;
+  
+  # Create SPVM object(SomeModule need to define new method)
+  my $spvm_object = SomeModule->new;
 
 =head1 Functions
 
@@ -64,19 +67,6 @@ Return value is L<SPVM::Data::Array> object.
 
 Return value is L<SPVM::Data::Array> object.
 
-=head2 new_object
-
-  my $object = SPVM::new_object("Point");
-
-Create SPVM object with package name.
-
-Return value is L<SPVM::Data> object.
-
-Method is called from this object if method defined.
-
-  $object->x(3);
-  $object->clear;
-
 =head2 new_object_array
 
   my $array = SPVM::new_object_array("TestCase", [$object1, $object2]);
@@ -88,6 +78,6 @@ Return value is L<SPVM::Data::Array> object.
 An example:
   
   use SPVM 'Point';
-  my $spvm_point1 = SPVM::new_object("Point");
-  my $spvm_point2 = SPVM::new_object("Point");
+  my $spvm_point1 = Point->new(0, 1);
+  my $spvm_point2 = Point->new(3, 4);
   my $spvm_points = SPVM::new_object_array("Point", [$spvm_point1, $spvm_point2]);
