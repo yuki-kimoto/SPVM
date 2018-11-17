@@ -181,7 +181,7 @@ is_deeply(
 );
 =cut
 
-# SPVM new_object_array_len
+# SPVM new_object_array
 {
 
   # element object array

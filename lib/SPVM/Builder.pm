@@ -247,6 +247,10 @@ sub bind_to_perl {
     my $sub_names = $self->get_sub_names($package_name);
     
     for my $sub_name (@$sub_names) {
+      if ($sub_name eq 'DESTROY') {
+        next;
+      }
+      
       my $sub_abs_name = "${package_name}::$sub_name";
       
       # Define SPVM subroutine
@@ -255,7 +259,7 @@ sub bind_to_perl {
       my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
       unless ($package_name_h->{$package_name}) {
         
-        my $code = "package $package_name; our \@ISA = ('SPVM::Data');";
+        my $code = "package $package_name; our \@ISA = ('SPVM::Data::Package');";
         eval $code;
         
         if (my $error = $@) {

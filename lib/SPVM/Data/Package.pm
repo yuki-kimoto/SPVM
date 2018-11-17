@@ -1,4 +1,4 @@
-package SPVM::Data::Object;
+package SPVM::Data::Package;
 
 use base 'SPVM::Data';
 
@@ -6,11 +6,11 @@ use base 'SPVM::Data';
 
 =head1 NAME
 
-SPVM::Data::Object - SPVM object
+SPVM::Data::Package - SPVM object
 
 =head1 DESCRIPTION
 
-SPVM::Data::Object is wrapper of SPVM object.
+SPVM::Data::Package is wrapper of SPVM object.
 
 You can call all methods of SPVM object.
 

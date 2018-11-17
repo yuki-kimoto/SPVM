@@ -102,7 +102,6 @@ DESTROY(...)
   HV* hv_object = (HV*)SvRV(sv_object);
 
   assert(SvOK(sv_object));
-
   
   // Get object
   void* object = SPVM_XS_UTIL_get_object(sv_object);
@@ -963,7 +962,7 @@ new_object_array(...)
     if (!SvOK(sv_element)) {
       env->set_object_array_element(env, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::Data")) {
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::Data::Package")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
@@ -1041,7 +1040,7 @@ new_multi_array(...)
       }
     }
     else {
-      croak("Element must be SPVM::Data object");
+      croak("Element must be inherit SPVM::Data object");
     }
   }
   
@@ -1739,7 +1738,7 @@ call_sub(...)
               stack[arg_var_id].oval = object;
             }
             else {
-              croak("%dth argument must be SPVM::Data object", arg_index);
+              croak("%dth argument must be inherit SPVM::Data", arg_index);
             }
           }
           arg_var_id++;
