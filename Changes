@@ -3,6 +3,8 @@
   - rename Native Interface to Native API
   - rename SPVM::PerlAPI to SPVM::ExchangeAPI
   - add SPVM::Data::Package
+  - add to_string to SPVM::Data::Array
+  - add SPVM::Data::String for SPVM string type
 0.0390 2018-11-16
   - package variable must start upper case or contain ::
   - add SPVM::List module

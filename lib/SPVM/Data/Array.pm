@@ -20,13 +20,21 @@ sub to_binary {
   SPVM::ExchangeAPI::to_binary($env, $self);
 }
 
+sub to_string {
+  my $self = shift;
+  
+  my $env = $self->{env};
+  
+  SPVM::ExchangeAPI::to_string($env, $self);
+}
+
 1;
 
 =head1 NAME
 
 SPVM::Data::Array - SPVM Array
 
-=head1 SPVM::Data::Array
+=head1 METHODS
 
 =head2 to_elements
 
@@ -46,4 +54,10 @@ An exmaple when array is int array:
 
   my @nums = unpack 'l*', $binary;
 
-=back
+=head2 to_string
+
+  my $string = $spvm_nums->to_string;
+
+Convert SPVM array to perl text string(decoded string).
+
+This method have mean only when SPVM array is byte array.
