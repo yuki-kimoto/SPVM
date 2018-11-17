@@ -1,35 +1,51 @@
 package SPVM::HashMap : private {
-  has states : private object [];
+  use SPVM::HashMapEntry;
+
   has bucket_count : private int;
   has count : private int;
+  has states : private SPVM::HashMapEntry [];
+  has max_load_factor : private double;
+
+  sub _bucket_count : int ($self : self) {
+    return $self->{bucket_count};
+  }
+
+  sub _count : int ($self : self) {
+    return $self->{count};
+  }
+
+  sub _states : SPVM::HashMapEntry [] ($self : self) {
+    return $self->{states};
+  }
 
   # Murmur hash for 32-bit
   # See: https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
-  sub _hasher : int ($self : self, $key : string, $seed : int) {
+  sub _hasher : int ($key : string, $seed : int) {
     my $m: int = 1540483477;
-    my $len = scalar @$key;
+    my $byte_keys = (byte [])$key;
+    my $len = @$byte_keys;
     my $hash = $seed ^ $len;
     for (my $i = 0; $i < $len / 4; ++$i) {
-      my $k = (int)$key->[$i]
-          + ((int)$key->[$i * 4 + 1] << 8)
-          + ((int)$key->[$i * 4 + 2] << 16)
-          + ((int)$key->[$i * 4 + 3] << 24);
+      my $k = (int)$byte_keys->[$i]
+          + ((int)$byte_keys->[$i * 4 + 1] << 8)
+          + ((int)$byte_keys->[$i * 4 + 2] << 16)
+          + ((int)$byte_keys->[$i * 4 + 3] << 24);
       $k *= $m;
       $k ^= $k >> 24;
       $k *= $m;
       $hash *= $m;
       $hash ^= $k;
-      $len -= 4;
     }
 
     switch ($len) {
       case 3:
-        $hash ^= (byte)$key->[@$key - 3] << 16;
+        $hash ^= (int)$byte_keys->[$len - 3] << 16;
       case 2:
-        $hash ^= (byte)$key->[@$key - 2] << 8;
+        $hash ^= (int)$byte_keys->[$len - 2] << 8;
       case 1:
-        $hash ^= (byte)$key->[@$key - 1];
+        $hash ^= (int)$byte_keys->[$len - 1];
         $hash *= $m;
+      default: # FIXME: to avoid from segmentation fault (subroutine _hasher called twice if 'default' doesn't exist)
     }
 
     # Do a few final mixes of the hash.
@@ -39,27 +55,119 @@ package SPVM::HashMap : private {
     return $hash;
   }
 
-  sub _index_by_key : int ($self : self, $key : string) {
+  sub _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
-    return $self->_hasher($key, $default_seed) % $self->{bucket_count};
+    return _hasher($key, $default_seed) % $bucket_count;
   }
 
   sub new : SPVM::HashMap () {
-    return new SPVM::HashMap;
+    my $self = new SPVM::HashMap;
+    my $default_capacity = 32;
+    $self->{bucket_count} = $default_capacity;
+    $self->{states} = new SPVM::HashMapEntry[$default_capacity];
+    $self->{count} = 0;
+    $self->{max_load_factor} = 1.0;
+    return $self;
+  }
+
+  sub new_with_capacity : SPVM::HashMap ($capacity : int) {
+    my $self = new SPVM::HashMap;
+    $self->{bucket_count} = $capacity;
+    $self->{states} = new SPVM::HashMapEntry[$capacity];
+    $self->{count} = 0;
+    $self->{max_load_factor} = 1.0;
+    return $self;
   }
 
   sub count : int ($self : self) {
+    return $self->{count};
   }
 
-  sub set : void ($self : self, $val : object) {
+  sub _set_to_container : void ($states : SPVM::HashMapEntry[], $bucket_count : int, $count_ref : int&,
+                                $key : string, $val : object) {
+    my $index = _index_by_key($key, $bucket_count);
+    my $ref = $states->[$index];
+    unless ($ref) {
+      $states->[$index] = SPVM::HashMapEntry->new($key, $val, undef);
+      ++$$count_ref;
+      return;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        $ref->set_val($val);
+        return;
+      }
+      unless ($ref->next_entry) {
+        $ref->set_next_entry(SPVM::HashMapEntry->new($key, $val, undef));
+        ++$$count_ref;
+        return;
+      }
+      $ref = $ref->next_entry;
+    }
   }
 
-  sub get : object ($self : self) {
+  sub set : void ($self : self, $key : string, $val : object) {
+    unless ($key) {
+      croak "key must not be undef";
+    }
+    unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
+      $self->_rehash;
+    }
+    my $count = $self->{count}; # To solve 'Refernece target must be numeric type or value type at ...'
+    _set_to_container($self->{states}, $self->{bucket_count}, \$count, $key, $val);
+    $self->{count} = $count;
   }
 
-  sub load_factor : double () {
+  sub get : object ($self : self, $key : string) {
+    my $index = _index_by_key($key, $self->{bucket_count});
+    my $ref = $self->{states}->[$index];
+    unless ($ref) {
+      return undef;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        return $ref->val;
+      }
+      unless ($ref->next_entry) {
+        return undef;
+      }
+      $ref = $ref->next_entry;
+    }
   }
 
-  sub rehash : void () {
+  sub max_load_factor : double ($self : self) {
+    return $self->{max_load_factor};
+  }
+
+  sub set_max_load_factor : void ($self : self, $max_load_factor : double) {
+    $self->{max_load_factor} = $max_load_factor;
+  }
+
+  sub load_factor : double ($self : self) {
+    return (double) $self->{count} / $self->{bucket_count};
+  }
+
+  sub _rehash : void ($self : self) {
+    my $new_bucket_count : int;
+    if ($self->{bucket_count} > INT32_MAX() / 2) {
+      if ($self->{bucket_count} == INT32_MAX()) {
+        return;
+      }
+      $new_bucket_count = INT32_MAX();
+    }
+    else {
+      $new_bucket_count = $self->{bucket_count} * 2;
+    }
+    my $new_states = new SPVM::HashMapEntry [$new_bucket_count];
+    my $new_count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{states}->[$i];
+      while ($ref) {
+        _set_to_container($new_states, $new_bucket_count, \$new_count, $ref->key, $ref->val);
+        $ref = $ref->next_entry;
+      }
+    }
+    $self->{bucket_count} = $new_bucket_count;
+    $self->{states} = $new_states;
   }
 }

@@ -1,0 +1,13 @@
+package SPVM::String : private {
+  has val : string;
+
+  sub new : SPVM::String ($string : string) {
+    my $self = new SPVM::String;
+    $self->{val} = $string;
+    return $self;
+  }
+
+  sub val : string ($self : self) {
+    return $self->val;
+  }
+}
