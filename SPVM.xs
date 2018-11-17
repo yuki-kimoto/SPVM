@@ -1309,47 +1309,6 @@ new_value_array_from_binary(...)
 }
 
 SV*
-new_value_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_length = ST(2);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-
-  int32_t length = (int32_t)SvIV(sv_length);
-
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, basic_type_name);
-  
-  if (basic_type == NULL) {
-    const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-    croak("Can't load %s", basic_type_name);
-  }
-  
-  // New array
-  void* array = env->new_value_array_raw(env, basic_type->id, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
 set_exception_undef(...)
   PPCODE:
 {
