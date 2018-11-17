@@ -1,21 +1,10 @@
 package SPVM::ExchangeAPI;
 
-use strict;
-use warnings;
-
-use Carp 'croak', 'confess';
-use Encode 'decode';
-
-sub new_object {
-  my ($env, $package_name) = @_;
-  
-  my $object = SPVM::Data::Package->new($package_name);
-  
-  return $object;
-}
+# All functions is implemented in SPVM.xs
 
 1;
 
 =head1 NAME
 
-SPVM::ExchangeAPI - Base class of Exchange API.
+SPVM::ExchangeAPI - Base class of Exchange API
+

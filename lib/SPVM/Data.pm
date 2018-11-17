@@ -4,4 +4,4 @@ package SPVM::Data;
 
 =head1 NAME
 
-SPVM::Perl::Data - SPVM data structure
+SPVM::Perl::Data - Base class of SPVM data

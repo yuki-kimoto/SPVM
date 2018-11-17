@@ -114,6 +114,7 @@ lib/SPVM/CORE.native/CORE.c
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
 lib/SPVM/Data/Array.pm
+lib/SPVM/Data/Object.pm
 lib/SPVM/Document/ExchangeAPI.pod
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/Functions.pod
