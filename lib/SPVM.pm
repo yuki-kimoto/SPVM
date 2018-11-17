@@ -82,7 +82,10 @@ sub new_long_array_from_binary { SPVM::ExchangeAPI::new_long_array_from_binary($
 sub new_float_array_from_binary { SPVM::ExchangeAPI::new_float_array_from_binary($SPVM_ENV, @_) }
 sub new_double_array_from_binary { SPVM::ExchangeAPI::new_double_array_from_binary($SPVM_ENV, @_) }
 
-sub new_object { SPVM::ExchangeAPI::new_object($SPVM_ENV, @_) }
+sub new_byte_array_from_binary { SPVM::ExchangeAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
+sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
+sub new_string_from_binary { SPVM::ExchangeAPI::new_string_from_binary($SPVM_ENV, @_) }
+
 sub new_object_array { SPVM::ExchangeAPI::new_object_array($SPVM_ENV, @_) }
 sub new_multi_array { SPVM::ExchangeAPI::new_multi_array($SPVM_ENV, @_) }
 sub new_value_array { SPVM::ExchangeAPI::new_value_array($SPVM_ENV, @_) }
