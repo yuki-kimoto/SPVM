@@ -22,7 +22,7 @@ sub new_string {
   my ($env, $string) = @_;
   
   my $binary = encode('UTF-8', $string);
-  
+
   return SPVM::ExchangeAPI::new_string_from_binary($env, $binary);
 }
 

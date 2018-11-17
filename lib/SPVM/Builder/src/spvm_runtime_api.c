@@ -4628,6 +4628,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes, i
   }
 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
+  object->type_dimension = 0;
   object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
   
   if (length > 0) {

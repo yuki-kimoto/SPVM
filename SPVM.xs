@@ -547,9 +547,6 @@ new_string_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, string);
 
-  int8_t* elements = env->get_byte_array_elements(env, string);
-  memcpy(elements, binary, array_length);
-  
   // New sv array
   SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::String");
   
@@ -2225,7 +2222,7 @@ call_sub(...)
           env->inc_ref_count(env, return_value);
           
           if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_STRING) {
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::String");
           }
           else if (sub->return_type_dimension > 0) {
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");

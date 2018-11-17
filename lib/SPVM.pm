@@ -10,6 +10,7 @@ use File::Basename 'basename', 'dirname';
 use SPVM::Data;
 use SPVM::Data::Array;
 use SPVM::Data::Package;
+use SPVM::Data::String;
 
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
@@ -69,20 +70,24 @@ sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_E
 sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
 sub new_byte_array { SPVM::ExchangeAPI::new_byte_array($SPVM_ENV, @_) }
-sub new_short_array { SPVM::ExchangeAPI::new_short_array($SPVM_ENV, @_) }
-sub new_int_array { SPVM::ExchangeAPI::new_int_array($SPVM_ENV, @_) }
-sub new_long_array { SPVM::ExchangeAPI::new_long_array($SPVM_ENV, @_) }
-sub new_float_array { SPVM::ExchangeAPI::new_float_array($SPVM_ENV, @_) }
-sub new_double_array { SPVM::ExchangeAPI::new_double_array($SPVM_ENV, @_) }
-
 sub new_byte_array_from_binary { SPVM::ExchangeAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
+sub new_byte_array_from_string { SPVM::ExchangeAPI::new_byte_array_from_string($SPVM_ENV, @_) }
+
+sub new_short_array { SPVM::ExchangeAPI::new_short_array($SPVM_ENV, @_) }
 sub new_short_array_from_binary { SPVM::ExchangeAPI::new_short_array_from_binary($SPVM_ENV, @_) }
+
+sub new_int_array { SPVM::ExchangeAPI::new_int_array($SPVM_ENV, @_) }
 sub new_int_array_from_binary { SPVM::ExchangeAPI::new_int_array_from_binary($SPVM_ENV, @_) }
+
+sub new_long_array { SPVM::ExchangeAPI::new_long_array($SPVM_ENV, @_) }
 sub new_long_array_from_binary { SPVM::ExchangeAPI::new_long_array_from_binary($SPVM_ENV, @_) }
+
+sub new_float_array { SPVM::ExchangeAPI::new_float_array($SPVM_ENV, @_) }
 sub new_float_array_from_binary { SPVM::ExchangeAPI::new_float_array_from_binary($SPVM_ENV, @_) }
+
+sub new_double_array { SPVM::ExchangeAPI::new_double_array($SPVM_ENV, @_) }
 sub new_double_array_from_binary { SPVM::ExchangeAPI::new_double_array_from_binary($SPVM_ENV, @_) }
 
-sub new_byte_array_from_binary { SPVM::ExchangeAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
 sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
 sub new_string_from_binary { SPVM::ExchangeAPI::new_string_from_binary($SPVM_ENV, @_) }
 

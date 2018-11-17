@@ -37,6 +37,18 @@ my $DBL_MIN = POSIX::DBL_MIN();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# String arguments and return value
+{
+  # new_string and return value
+  {
+    my $string1 = SPVM::new_string("あいう");
+    my $string2 = SPVM::new_string("えお");
+    my $string3 = TestCase::PerlAPI->string_argments_and_return_value($string1, $string2);
+    isa_ok($string3, 'SPVM::Data::String');
+    is($string3->to_string, "あいうえお");
+  }
+}
+
 # Argument is value reference and numeric reference mixed
 {
   {
