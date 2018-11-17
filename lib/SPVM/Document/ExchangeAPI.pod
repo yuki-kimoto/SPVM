@@ -2,132 +2,92 @@
 
 =head1 NAME
 
-SPVM::Document::ExchangeAPI - SPVM Perl API
+SPVM::Document::ExchangeAPI - Exchange API
 
-=head1 What is SPVM Perl API
+=head1 What is Exchange API
 
-SPVM Perl API is the API to convert Perl data to SPVM data, and SPVM data to Perl data.
-
-This api is Perl function called from Perl script.
-
-  use SPVM;
+Exchange API is perl functions to exchange Perl data to SPVM data, and reverse.
   
-  # Create SVPM int array
+  use SPVM 'SomeModule';
+  
+  # Convert Perl array reference to SPVM int array
   my $spvm_nums = SPVM::new_int_array([1, 2, 3]);
   
-  # Convert to perl array reference
+  # Convert SPVM int array to Perl array reference
   my $nums = $spvm_nums->to_elements;
 
 =head1 Functions
 
 =head2 new_byte_array
 
-Create byte array.
+  my $spvm_array = SPVM::new_byte_array([1, 2, 3]);
 
-  my $array = SPVM::new_byte_array([1, 2, 3]);
+Convert Perl array reference to SPVM byte array.
 
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
-
-=head2 new_byte_array_string
-
-Create byte array from B<decoded> Perl string.
-
-  my $array = SPVM::new_byte_array_string("‚ ‚¢‚¤‚¦‚¨");
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_short_array
 
-Create short array
+  my $spvm_array = SPVM::new_short_array([1, 2, 3]);
 
-  my $array = SPVM::new_short_array([1, 2, 3]);
+Convert Perl array reference to SPVM short array.
 
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_int_array
 
-Create int array
+  my $spvm_array = SPVM::new_int_array([1, 2, 3]);
 
-  my $array = SPVM::new_int_array([1, 2, 3]);
+Convert Perl array reference to SPVM int array.
 
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_long_array
 
-Create long array
+  my $spvm_array = SPVM::new_long_array([1, 2, 3]);
 
-  my $array = SPVM::new_long_array([1, 2, 3]);
+Convert Perl array reference to SPVM long array.
 
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_float_array
 
-Create float array
+  my $spvm_array = SPVM::new_float_array([0.5, 0.1, 0.3]);
 
-  my $array = SPVM::new_float_array([1, 2, 3]);
+Convert Perl array reference to SPVM float array.
 
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_double_array
 
-Create double array
+  my $spvm_array = SPVM::new_double_array([0.5, 0.1, 0.3]);
 
-  my $array = SPVM::new_double_array([1, 2, 3]);
-
-If you get perl values, you can use C<get_elements> methods.
-
-  my $values = $array->get_elements;
-  
-=head2 new_object_array_len
-
-Create object array with type name and length.
-
-  my $array = SPVM::new_object_array_len("int[]", 3);
-
-You can set and get elements by C<set> and C<get> method.
-
-  $array->set(1, SPVM::new_int_array([1, 2, 3]));
-  my $element = $array->get(1);
+Return value is L<SPVM::Data::Array> object.
 
 =head2 new_object
 
-Create object.
-
   my $object = SPVM::new_object("Point");
 
-You can set and get value by C<set> and C<get> method.
+Create SPVM object with package name.
 
-  $object->set(x => 1);
-  my $x = $object->get('x');
+Return value is L<SPVM::Data> object.
 
-=head2 SPVM::Data::Array
+Method is called from this object if method defined.
 
-=over 2
+  $object->x(3);
+  $object->clear;
 
-=item * new_len
+=head2 new_object_array
 
-=item * set_elements
+  my $array = SPVM::new_object_array("TestCase", [$object1, $object2]);
 
-=item * set_bin
+Convert Perl array reference which contains SPVM object to SPVM object array.
 
-=item * set_string
+Return value is L<SPVM::Data::Array> object.
 
-=item * set_element
-
-=item * get_element
-
-=item * to_elements
-
-=item * to_bin
-
-=item * to_string
-
-=back
+An example:
+  
+  use SPVM 'Point';
+  my $spvm_point1 = SPVM::new_object("Point");
+  my $spvm_point2 = SPVM::new_object("Point");
+  my $spvm_points = SPVM::new_object_array("Point", [$spvm_point1, $spvm_point2]);
