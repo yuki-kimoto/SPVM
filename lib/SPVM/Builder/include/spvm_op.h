@@ -162,6 +162,7 @@ enum {
   SPVM_OP_C_ID_REF,
   SPVM_OP_C_ID_DEREF,
   SPVM_OP_C_ID_DOT3,
+  SPVM_OP_C_ID_STRING_LENGTH,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
@@ -243,6 +244,8 @@ struct SPVM_op {
   int8_t is_passed_to_sub;
   int8_t no_need_check;
 };
+
+SPVM_OP* SPVM_OP_build_string_length(SPVM_COMPILER* compiler, SPVM_OP* op_string_length, SPVM_OP* op_term);
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
 

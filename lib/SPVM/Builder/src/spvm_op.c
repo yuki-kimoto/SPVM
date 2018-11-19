@@ -162,6 +162,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "REF",
   "DEREF",
   "DOT3",
+  "STRING_LENGTH",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -1068,6 +1069,13 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
   return op_array_length;
 }
 
+SPVM_OP* SPVM_OP_build_string_length(SPVM_COMPILER* compiler, SPVM_OP* op_string_length, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_string_length, op_string_length->last, op_term);
+  
+  return op_string_length;
+}
+
 SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_list_elements) {
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
@@ -1166,6 +1174,11 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH: {
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
+      type = op_type->uv.type;
+      break;
+    }
+    case SPVM_OP_C_ID_STRING_LENGTH: {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
       break;

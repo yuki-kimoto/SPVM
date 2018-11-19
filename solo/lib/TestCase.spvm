@@ -61,6 +61,10 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      my $string_length = length "abc";
+      print "$string_length\n";
+    }
 
     {
       vaarg(10, 20, 30);

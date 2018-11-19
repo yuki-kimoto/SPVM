@@ -111,6 +111,7 @@ lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_d2.spvm
 lib/SPVM/Complex_f2.spvm
 lib/SPVM/CORE.native/CORE.c
+lib/SPVM/Core.pm
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
 lib/SPVM/Data/Array.pm
@@ -118,7 +119,6 @@ lib/SPVM/Data/Package.pm
 lib/SPVM/Data/String.pm
 lib/SPVM/Document/ExchangeAPI.pod
 lib/SPVM/Document/Extension.pod
-lib/SPVM/Document/Functions.pod
 lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
@@ -181,14 +181,13 @@ t/default/complex.t
 t/default/concat.t
 t/default/constant.t
 t/default/convert.t
-t/default/core-func.t
 t/default/enum.t
 t/default/exception.t
 t/default/extension.t
 t/default/increment.t
 t/default/interface.t
 t/default/isa.t
-t/default/lib-CORE-math.t
+t/default/lib-CORE.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Array.spvm
 t/default/lib/TestCase/Assign.spvm
@@ -232,6 +231,7 @@ t/default/lib/TestCase/Complex.spvm
 t/default/lib/TestCase/Concat.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
+t/default/lib/TestCase/CoreFunc/Basic.spvm
 t/default/lib/TestCase/CoreFunc/Math.spvm
 t/default/lib/TestCase/Data/Weaken.spvm
 t/default/lib/TestCase/Destructor.spvm

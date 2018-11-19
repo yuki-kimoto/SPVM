@@ -13,7 +13,8 @@ use SPVM 'TestCase::String';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::String->basic());
+  ok(TestCase::String->string_length);
+  ok(TestCase::String->basic);
 }
 
 # All object is freed

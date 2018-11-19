@@ -1,4 +1,16 @@
 package TestCase::String {
+  sub string_length : int () {
+    # String length
+    {
+      my $string_length = length "abc";
+      
+      unless ($string_length == 3) {
+        return 0;
+      }
+      
+      return 1;
+    }
+  }
   sub basic : int () {
     
     # Assign byte array to string

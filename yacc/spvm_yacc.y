@@ -23,13 +23,13 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND DOT3
+%token <opval> AMPERSAND DOT3 LENGTH
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use our
+%type <opval> sub anon_sub opt_args args arg invocant has use our string_length
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -37,7 +37,7 @@
 %type <opval> expression
 %type <opval> unop binop
 %type <opval> call_sub opt_vaarg
-%type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length 
+%type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length
 %type <opval> deref ref assign incdec
 %type <opval> new array_init isa
 %type <opval> my_var var package_var_access
@@ -589,6 +589,7 @@ normal_term
   | new
   | array_init
   | array_length
+  | string_length
   | my_var
   | binop
   | unop
@@ -864,6 +865,11 @@ array_length
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
     }
 
+string_length
+  : LENGTH normal_term
+    {
+      $$ = SPVM_OP_build_string_length(compiler, $1, $2);
+    }
 deref
   : DEREF var
     {
