@@ -26,12 +26,45 @@ my $NaN = 9**9**9 / 9**9**9;
 
 my $nan_re = qr/(nan|ind)/i;
 
+use SPVM 'TestCase::CoreFunc::Basic';
 use SPVM 'TestCase::CoreFunc::Math';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 ok(TestCase::CoreFunc::Math->test_join());
+
+# Copy
+{
+  ok(TestCase::CoreFunc::Basic->test_copy_string());
+  ok(TestCase::CoreFunc::Basic->test_copy_byte_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_short_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_int_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_long_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_float_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_float_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_object_array());
+}
+
+# Constant integral functions
+{
+  is(SPVM::CORE->INT8_MAX, 127);
+  is(SPVM::CORE->INT8_MIN, -128);
+  is(SPVM::CORE->INT16_MAX, 32767);
+  is(SPVM::CORE->INT16_MIN, -32768);
+  is(SPVM::CORE->INT32_MAX, 2147483647);
+  is(SPVM::CORE->INT32_MIN, -2147483648);
+  is(SPVM::CORE->INT64_MAX, 9223372036854775807);
+  is(SPVM::CORE->INT64_MIN, -9223372036854775808);
+}
+
+# Constant floating point number functions
+{
+  is(SPVM::CORE->FLT_MAX, POSIX::FLT_MAX());
+  is(SPVM::CORE->FLT_MIN, POSIX::FLT_MIN());
+  is(SPVM::CORE->DBL_MAX, POSIX::DBL_MAX());
+  is(SPVM::CORE->DBL_MIN, POSIX::DBL_MIN());
+}
 
 # Call subroutine
 {

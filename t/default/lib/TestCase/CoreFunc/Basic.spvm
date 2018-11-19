@@ -1,0 +1,189 @@
+package TestCase::CoreFunc::Basic {
+  sub test_copy_string : int () {
+    my $string = "abc";
+    my $string_out = copy_string $string;
+    
+    unless ($string_out eq "abc") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_byte_array : int () {
+    my $nums = [(byte)1, 2, INT8_MIN];
+    my $nums_out = copy_byte_array $nums;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 2) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == INT8_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_short_array : int () {
+    my $nums = [(short)1, 2, INT16_MIN];
+    my $nums_out = copy_short_array $nums;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 2) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == INT16_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_int_array : int () {
+    my $nums = [(int)1, 2, INT32_MIN];
+    my $nums_out = copy_int_array $nums;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 2) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == INT32_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_long_array : int () {
+    my $nums = [(long)1, 2, INT64_MIN];
+    my $nums_out = copy_long_array $nums;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 2) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == INT64_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_float_array : int () {
+    my $nums = [(float)0.5f, 0.25f, FLT_MIN];
+    my $nums_out = copy_float_array $nums;
+    
+    unless ($nums->[0] == 0.5) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 0.25) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == FLT_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_double_array : int () {
+    my $nums = [(double)0.5, 0.25, DBL_MIN];
+    my $nums_out = copy_double_array $nums;
+    
+    unless ($nums->[0] == 0.5) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 0.25) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == DBL_MIN) {
+      return 0;
+    }
+    
+    unless (@$nums == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_object_array : int () {
+    my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN)];
+    my $objects_out = copy_object_array $objects;
+
+    unless ($objects->[0] == $objects_out->[0]) {
+      return 0;
+    }
+    
+    unless ($objects->[1] == $objects_out->[1]) {
+      return 0;
+    }
+    
+    unless ($objects->[2] == $objects_out->[2]) {
+      return 0;
+    }
+    
+    unless ((int)$objects->[0] == 1) {
+      return 0;
+    }
+    
+    unless ((int)$objects->[1] == 2) {
+      return 0;
+    }
+    
+    unless ((int)$objects->[2] == INT32_MIN) {
+      return 0;
+    }
+    
+    unless (@$objects == 3) {
+      return 0;
+    }
+    
+    unless ($objects != $objects_out) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

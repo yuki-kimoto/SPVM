@@ -10,6 +10,96 @@ package SPVM::CORE {
   native sub csubf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
   native sub cmulf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
   native sub cdivf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+  
+  sub copy_string : string ($string : string) {
+    my $bytes = (byte[])$string;
+    
+    return (string)$bytes;
+  }
+  
+  sub copy_byte_array : byte[] ($nums : byte[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new byte[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  sub copy_short_array : short[] ($nums : short[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new short[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+  
+  sub copy_int_array : int[] ($nums : int[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new int[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  sub copy_long_array : long[] ($nums : long[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new long[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  sub copy_float_array : float[] ($nums : float[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new float[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  sub copy_double_array : double[] ($nums : double[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new double[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  sub copy_object_array : object[] ($objects : object[]) {
+    my $length = @$objects;
+    
+    my $new_objects = new object[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_objects->[$i] = $objects->[$i];
+    }
+    
+    return $new_objects;
+  }
 
   sub new_fcomplex_array : SPVM::Complex_f2[] ($re_values : float[], $im_values : float[]) {
     if (@$re_values != @$im_values) {

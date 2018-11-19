@@ -1,3 +1,13 @@
+0.0391 2018-11-19
+  - copy_string;
+  - copy_byte_array;
+  - copy_short_array;
+  - copy_int_array;
+  - copy_long_array;
+  - copy_float_array;
+  - copy_double_array;
+  - copy_object_array;
+
 0.0391 2018-11-17
   - field name become not conflict reserved words and core func names
   - rename Native Interface to Native API
