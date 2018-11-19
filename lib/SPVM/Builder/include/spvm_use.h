@@ -5,6 +5,7 @@
 
 struct SPVM_use {
   SPVM_OP* op_type;
+  SPVM_LIST* sub_names;
 };
 
 SPVM_USE* SPVM_USE_new(SPVM_COMPILER* compiler);

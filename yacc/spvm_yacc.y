@@ -30,7 +30,7 @@
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub anon_sub opt_args args arg invocant has use our string_length
-%type <opval> opt_descriptors descriptors
+%type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block
@@ -166,7 +166,11 @@ declaration
 use
   : USE basic_type ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2);
+      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL);
+    }
+  | USE basic_type '(' opt_sub_names ')' ';'
+    {
+      $$ = SPVM_OP_build_use(compiler, $1, $2, $4);
     }
 
 enumeration
@@ -1035,5 +1039,39 @@ field_name
 sub_name
   : NAME
   | MAYBE_SUB_NAME
+
+opt_sub_names
+  :	/* Empty */
+    {
+      $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+    }
+  |	sub_names
+    {
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        $$ = $1;
+      }
+      else {
+        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+        $$ = op_list;
+      }
+    }
+
+sub_names
+  : sub_names ',' sub_name
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | sub_name
 
 %%
