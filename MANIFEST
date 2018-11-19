@@ -196,6 +196,7 @@ t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
+t/default/lib/TestCase/CompileError/ArrayInit/ArrayLength.spvm
 t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm
 t/default/lib/TestCase/CompileError/Assign/DifferentObject.spvm
@@ -207,6 +208,7 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
 t/default/lib/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Bool/NotNumericObject.spvm
+t/default/lib/TestCase/CompileError/CallSub/ArrayLength.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/GeNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/GtNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/LeNotNumeric.spvm
@@ -223,6 +225,7 @@ t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/PackageVar/Private.spvm
+t/default/lib/TestCase/CompileError/Term/SingleParenthesArrayLength.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/CompileError/Weaken/ArrayNotObject.spvm
