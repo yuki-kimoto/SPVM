@@ -155,7 +155,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           assert(sub->id > -1);
           assert(sub->op_name);
           assert(sub->return_type);
-          assert(sub->abs_name);
           assert(sub->file);
           
           if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
@@ -468,9 +467,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       else if (op_assign_src->id == SPVM_OP_C_ID_CALL_SUB) {
                         
                         SPVM_CALL_SUB* call_sub = op_assign_src->uv.call_sub;
-                        const char* call_sub_abs_name = call_sub->sub->abs_name;
+                        const char* call_sub_sub_name = call_sub->sub->name;
+                        SPVM_PACKAGE* call_sub_sub_package = call_sub->sub->package;
                         
-                        SPVM_SUB* sub_call_sub = SPVM_HASH_fetch(compiler->sub_symtable, call_sub_abs_name, strlen(call_sub_abs_name));
+                        SPVM_SUB* sub_call_sub = SPVM_HASH_fetch(call_sub_sub_package->sub_symtable, call_sub_sub_name, strlen(call_sub_sub_name));
                         
                         int32_t first_arg_var_id = -1;
                         SPVM_OP* op_term_args = op_assign_src->last;
@@ -4303,9 +4303,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_CALL_SUB: {
                     
                     SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-                    const char* call_sub_abs_name = call_sub->sub->abs_name;
+                    const char* call_sub_sub_name = call_sub->sub->name;
+                    SPVM_PACKAGE* call_sub_sub_package = call_sub->sub->package;
                     
-                    SPVM_SUB* sub_call_sub = SPVM_HASH_fetch(compiler->sub_symtable, call_sub_abs_name, strlen(call_sub_abs_name));
+                    SPVM_SUB* sub_call_sub = SPVM_HASH_fetch(call_sub_sub_package->sub_symtable, call_sub_sub_name, strlen(call_sub_sub_name));
                     
                     if (SPVM_TYPE_is_void_type(compiler, sub_call_sub->return_type->basic_type->id, sub_call_sub->return_type->dimension, sub_call_sub->return_type->flag)) {
                       int32_t first_arg_var_id = -1;
