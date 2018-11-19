@@ -1290,8 +1290,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_CALL_SUB: {
       SPVM_CALL_SUB* call_sub = op->uv.call_sub;
-      const char* abs_name = call_sub->sub->abs_name;
-      SPVM_SUB* sub = SPVM_HASH_fetch(compiler->sub_symtable, abs_name, strlen(abs_name));
+      const char* call_sub_sub_name = call_sub->sub->name;
+      SPVM_PACKAGE* call_sub_sub_package = call_sub->sub->package;
+      SPVM_SUB* sub = SPVM_HASH_fetch(call_sub_sub_package->sub_symtable, call_sub_sub_name, strlen(call_sub_sub_name));
       type = sub->return_type;
       break;
     }

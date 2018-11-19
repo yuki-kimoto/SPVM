@@ -331,7 +331,6 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   if (sub) {
     
-    printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      return_type => ");
     SPVM_TYPE_fprint_type_name(compiler, stdout, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
@@ -381,7 +380,6 @@ void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   
   if (sub) {
     
-    printf("      abs_name => \"%s\"\n", sub->abs_name);
     printf("      name => \"%s\"\n", sub->op_name->uv.name);
     printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
     printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
