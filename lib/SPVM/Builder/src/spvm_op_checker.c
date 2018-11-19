@@ -2298,7 +2298,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              const char* sub_abs_name = call_sub->sub->abs_name;
               const char* sub_name = call_sub->sub->op_name->uv.name;
               
               int32_t sub_args_count = call_sub->sub->args->length;
@@ -2444,7 +2443,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
 
                     if (call_sub_args_count > sub_args_count) {
-                      SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                      SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
                       return;
                     }
                     
@@ -2461,7 +2460,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (call_sub_args_count < sub_args_count) {
-                  SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
                   return;
                 }
                 
