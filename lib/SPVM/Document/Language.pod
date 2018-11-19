@@ -474,10 +474,6 @@ Set field:
 
 Field value is private. You can only use Field Access from self package.
 
-If you want to get and set field value from other package, you must define Accessor.
-
-see L</"Accessor Definition">.
-
 =head2 Condition branch
 
   if (1) {
@@ -547,26 +543,6 @@ Catch Exception:
 =head3 Exception Message
 
   $@;
-
-=head3 Exception Detail
-
-B<Call subroutine>
-
-1. If exception don't occur in the subroutine and subroutine return back, undef is assigned to $@.
-
-2. If exception occur in the subroutine and subroutine return back, error message which has String type is assigned to $@.
-
-B<In called subroutnie>
-
-1. At start of subroutine, $@ is initialized to undef.
-
-2. At start of eval block, $@ is initialized to undef.
-
-2. If croak is used, Error message is assigned to $@.
-
-3. If croak is surrounded by eval block, the process jump to the end of eval block.
-
-4. If croak is not surrounded by eval block, the process return from the subroutine. Return value is each type of default value(0 or undef).
 
 =head2 Constructor
 
