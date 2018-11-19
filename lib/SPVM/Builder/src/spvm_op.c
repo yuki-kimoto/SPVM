@@ -1484,6 +1484,13 @@ const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, 
   return abs_name;
 }
 
+SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
+    SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
+  }
+  return op_term;
+}
+
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
 
   // Package
@@ -1516,7 +1523,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Redeclaration package error
   SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, package_name, strlen(package_name));
   if (found_package) {
-    SPVM_COMPILER_error(compiler, "redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+    SPVM_COMPILER_error(compiler, "Redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+  }
+  else {
+    // Add package
+    SPVM_LIST_push(compiler->packages, package);
+    SPVM_HASH_insert(compiler->package_symtable, package_name, strlen(package_name), package);
   }
   
   SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
@@ -1825,10 +1837,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   op_package->uv.package = package;
   
   package->op_package = op_package;
-  
-  // Add package
-  SPVM_LIST_push(compiler->packages, package);
-  SPVM_HASH_insert(compiler->package_symtable, package_name, strlen(package_name), package);
 
   return op_package;
 }

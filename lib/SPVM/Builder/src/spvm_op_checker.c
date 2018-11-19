@@ -2439,7 +2439,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                     call_sub_args_count++;
                     if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
-                      SPVM_COMPILER_error(compiler, "Can't use @ in subroutine arguments at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
+                      SPVM_COMPILER_error(compiler, "Can't use @ in subroutine arguments at %s line %d\n", op_cur->file, op_cur->line);
                       return;
                     }
 

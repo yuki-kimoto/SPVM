@@ -1,0 +1,6 @@
+package TestCase::CompileError::Term::SingleParenthesArrayLength {
+  sub main : int () {
+    my $nums = new int[3];
+    (@$nums);
+  }
+}

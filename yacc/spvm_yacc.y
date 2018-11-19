@@ -39,7 +39,7 @@
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length
 %type <opval> deref ref assign incdec
-%type <opval> new array_init isa
+%type <opval> new array_init
 %type <opval> my_var var package_var_access
 %type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
 %type <opval> field_name sub_name
@@ -568,11 +568,6 @@ term
   : normal_term
   | relative_term
   | logical_term
-  | isa
-  | '(' term ')'
-    {
-      $$ = $2;
-    }
 
 normal_term
   : var
@@ -597,6 +592,10 @@ normal_term
   | deref
   | assign
   | incdec
+  | '(' normal_term ')'
+    {
+      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
+    }
 
 normal_terms
   : normal_terms ',' normal_term
@@ -702,10 +701,6 @@ binop
   | normal_term SHIFT normal_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | '(' normal_term ')'
-    {
-      $$ = $2;
     }
 
 assign
@@ -893,11 +888,13 @@ relative_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-
-isa
-  : term ISA type
+  | term ISA type
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+  | '(' relative_term ')'
+    {
+      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
 
 logical_term
@@ -912,6 +909,10 @@ logical_term
   | NOT term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
+    }
+  | '(' logical_term ')'
+    {
+      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
 
 my_var
