@@ -1,3 +1,6 @@
+0.0392 2018-11-20
+  - add subroutine import syntax
+    use Foo (bar, baz);
 0.0391 2018-11-19
   - add copy_string;
   - add copy_byte_array;

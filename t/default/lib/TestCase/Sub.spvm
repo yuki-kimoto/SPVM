@@ -14,7 +14,7 @@ package TestCase::Sub {
       return 0;
     }
     
-    unless (import_sub2() == 2) {
+    unless (import_sub2 == 2) {
       return 0;
     }
     

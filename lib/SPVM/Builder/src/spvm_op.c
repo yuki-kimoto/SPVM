@@ -1853,6 +1853,9 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
     while ((op_sub_name = SPVM_OP_sibling(compiler, op_sub_name))) {
       const char* sub_name = op_sub_name->uv.name;
       SPVM_LIST_push(sub_names, (void*)sub_name);
+    
+      // Add current sub names
+      SPVM_LIST_push(compiler->current_sub_names, (void*)sub_name);
     }
     use->sub_names = sub_names;
   }
