@@ -4210,49 +4210,58 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
   SPVM_SUB* found_sub;
   
   const char* sub_name = call_sub->op_name->uv.name;
-  // $obj->sub_name
+  // Method call
   if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
     const char* basic_type_name = type->basic_type->name;
-    const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, basic_type_name, sub_name);
     
-    found_sub= SPVM_HASH_fetch(
-      compiler->sub_symtable,
-      sub_abs_name,
-      strlen(sub_abs_name)
-    );
-  }
-  else {
-    // Package->sub_name
-    if (call_sub->op_invocant) {
-      const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
-      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-      found_sub= SPVM_HASH_fetch(
-        compiler->sub_symtable,
-        sub_abs_name,
-        strlen(sub_abs_name)
+    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+    
+    if (package) {
+      found_sub = SPVM_HASH_fetch(
+        package->sub_symtable,
+        sub_name,
+        strlen(sub_name)
       );
     }
-    // sub_name
+    else {
+      found_sub = NULL;
+    }
+  }
+  // Class method call
+  else {
+    if (call_sub->op_invocant) {
+      const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+      SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+      
+      if (package) {
+        found_sub = SPVM_HASH_fetch(
+          package->sub_symtable,
+          sub_name,
+          strlen(sub_name)
+        );
+      }
+      else {
+        found_sub = NULL;
+      }
+    }
+    // Subroutine call
     else {
       // Search current pacakge
       SPVM_PACKAGE* package = op_package_current->uv.package;
-      const char* package_name = package->op_name->uv.name;
-      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
-      found_sub= SPVM_HASH_fetch(
-        compiler->sub_symtable,
-        sub_abs_name,
-        strlen(sub_abs_name)
+      found_sub = SPVM_HASH_fetch(
+        package->sub_symtable,
+        sub_name,
+        strlen(sub_name)
       );
       
       // Search SPVM::CORE
       if (!found_sub) {
-        sub_abs_name = SPVM_OP_create_abs_name(compiler, "SPVM::CORE", sub_name);
-        
+        SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
         found_sub= SPVM_HASH_fetch(
-          compiler->sub_symtable,
-          sub_abs_name,
-          strlen(sub_abs_name)
+          core_package->sub_symtable,
+          sub_name,
+          strlen(sub_name)
         );
       }
     }
