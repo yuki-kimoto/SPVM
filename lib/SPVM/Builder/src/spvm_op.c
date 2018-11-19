@@ -1465,26 +1465,6 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   return op_grammar;
 }
 
-const char* SPVM_OP_create_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
-  int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
-  
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
-  
-  sprintf(abs_name, "%s::%s", package_name, name);
-  
-  return abs_name;
-}
-
-const char* SPVM_OP_create_package_var_access_abs_name(SPVM_COMPILER* compiler, const char* package_name, const char* name) {
-  int32_t length = (int32_t)(strlen(package_name) + 2 + strlen(name));
-  
-  char* abs_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
-  
-  sprintf(abs_name, "$%s::%s", package_name, &name[1]);
-  
-  return abs_name;
-}
-
 SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
     SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
@@ -1728,7 +1708,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_COMPILER_error(compiler, "Too many package variable declarations at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
       }
       else {
-        const char* package_var_access_abs_name = SPVM_OP_create_package_var_access_abs_name(compiler, package_name, package_var_name);
         package_var->id = compiler->package_vars->length + 1;
         SPVM_LIST_push(compiler->package_vars, package_var);
         SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
@@ -1771,7 +1750,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       
       SPVM_OP* op_name_sub = sub->op_name;
       const char* sub_name = op_name_sub->uv.name;
-      const char* sub_abs_name = SPVM_OP_create_abs_name(compiler, package_name, sub_name);
 
       // Add sub name to string pool
       int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_name, strlen(sub_name) + 1);
@@ -1809,7 +1787,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_COMPILER_error(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
       }
       
-      SPVM_SUB* found_sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
+      SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
       
       if (found_sub) {
         SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
@@ -1825,8 +1803,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
         else {
           // Bind standard functions
-          sub->abs_name = sub_abs_name;
-          
           sub->package = package;
           
           if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
@@ -1838,8 +1814,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           sub->id = compiler->subs->length + 1;
           
           SPVM_LIST_push(compiler->subs, sub);
-          SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
-          
           SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
         }
       }

@@ -45,7 +45,6 @@ struct SPVM_sub {
   const char* file;
   int32_t line;
   const char* name;
-  const char* abs_name;
   const char* signature;
   SPVM_PACKAGE* package;
   int32_t flag;
