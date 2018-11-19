@@ -35,6 +35,7 @@
 #include "spvm_check_ast_info.h"
 #include "spvm_string_buffer.h"
 #include "spvm_constant_pool.h"
+#include "spvm_use.h"
 
 void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
 
@@ -4255,7 +4256,33 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
         strlen(sub_name)
       );
       
-      // Search SPVM::CORE
+      // Search imported subs
+      SPVM_LIST* op_uses = package->op_uses;
+      if (op_uses) {
+        for (int32_t use_index = 0; use_index < op_uses->length; use_index++) {
+          SPVM_OP* op_use = SPVM_LIST_fetch(op_uses, use_index);
+          SPVM_TYPE* type = op_use->uv.use->op_type->uv.type;
+          const char* basic_type_name = type->basic_type->name;
+          SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+          assert(package);
+          
+          SPVM_LIST* import_sub_names = op_use->uv.use->sub_names;
+          if (import_sub_names) {
+            for (int32_t import_sub_name_index = 0; import_sub_name_index < import_sub_names->length; import_sub_name_index++) {
+              const char* import_sub_name = SPVM_LIST_fetch(import_sub_names, import_sub_name_index);
+              if (strcmp(sub_name, import_sub_name) == 0) {
+                found_sub = SPVM_HASH_fetch(
+                  package->sub_symtable,
+                  sub_name,
+                  strlen(sub_name)
+                );
+              }
+            }
+          }
+        }
+      }
+      
+      // Search core functions
       if (!found_sub) {
         SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
         found_sub= SPVM_HASH_fetch(

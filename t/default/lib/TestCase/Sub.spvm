@@ -7,6 +7,19 @@ package TestCase::Sub {
   use TestCase::Point_f3;
   use TestCase::Point_d3;
   use SPVM::Comparator;
+  use TestCase::Simple (import_sub1, import_sub2);
+  
+  sub test_import_sub : int () {
+    unless (import_sub1() == 1) {
+      return 0;
+    }
+    
+    unless (import_sub2() == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub already_exists_sub_no_arg : int () {
     return 3;

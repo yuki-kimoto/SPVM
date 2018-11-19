@@ -22,6 +22,11 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Import sub
+{
+  ok(TestCase::Sub->test_import_sub);
+}
+
 # No parenthes sub
 {
   ok(TestCase::Sub->no_parenthes_already_exists_sub);
