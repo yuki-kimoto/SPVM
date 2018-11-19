@@ -134,6 +134,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_term_element = op_list_elements->first;
                 int32_t index = 0;
                 while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+                  if (op_term_element->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
+                    SPVM_COMPILER_error(compiler, "Can't use @ in array initialization at %s line %d\n", file, line);
+                    return;
+                  }
+                  
                   if (index == 0) {
                     
                     if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
@@ -2371,6 +2376,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   SPVM_OP* op_term_element = op_list_args->first;
                   while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+
                     op_term_element->no_need_check = 1;
 
                     if (arg_index < sub_args_count - 1) {
@@ -2432,6 +2438,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_term = op_list_args->first;
                   while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                     call_sub_args_count++;
+                    if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
+                      SPVM_COMPILER_error(compiler, "Can't use @ in subroutine arguments at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
+                      return;
+                    }
+
                     if (call_sub_args_count > sub_args_count) {
                       SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_abs_name, op_cur->file, op_cur->line);
                       return;
