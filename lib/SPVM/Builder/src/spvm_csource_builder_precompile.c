@@ -3700,7 +3700,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_IF_CROAK_CATCH: {
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
         SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;
@@ -3733,7 +3733,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_IF_CROAK_RETURN: {
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand2;

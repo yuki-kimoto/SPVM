@@ -65,7 +65,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
   if (push_eval_opcode_rel_index_stack->length > 0) {
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_CROAK_CATCH);
+    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH);
     opcode.operand1 = sub->rel_id;
     int32_t rel_line = line - op_sub->line;
     opcode.operand2 = rel_line;
@@ -79,7 +79,7 @@ void SPVM_OPCODE_BUILDER_push_if_croak(
   else {
     SPVM_OPCODE opcode;
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
-    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_CROAK_RETURN);
+    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN);
     opcode.operand1 = sub->rel_id;
     int32_t rel_line = line - op_sub->line;
     opcode.operand2 = rel_line;
@@ -122,10 +122,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // opcode index stack for eval start
           SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(0);
           
-          // IF_CROAK_CATCH opcode index stack
+          // IF_EXCEPTION_CATCH opcode index stack
           SPVM_LIST* if_croak_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
 
-          // IF_CROAK_RETURN opcode index stack
+          // IF_EXCEPTION_RETURN opcode index stack
           SPVM_LIST* if_croak_return_goto_opcode_rel_index_stack = SPVM_LIST_new(0);
 
           // RETURN goto opcode index stack
@@ -3753,7 +3753,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
-                      // Set IF_CROAK_CATCH opcode index
+                      // Set IF_EXCEPTION_CATCH opcode index
                       while (if_croak_catch_goto_opcode_rel_index_stack->length > 0) {
                         int32_t if_croak_catch_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_croak_catch_goto_opcode_rel_index_stack);
                         
@@ -3774,7 +3774,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         return_goto->operand1 = return_goto_jump_opcode_rel_index;
                       }
 
-                      // Set IF_CROAK_RETURN opcode index
+                      // Set IF_EXCEPTION_RETURN opcode index
                       while (if_croak_return_goto_opcode_rel_index_stack->length > 0) {
                         int32_t if_croak_return_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_croak_return_goto_opcode_rel_index_stack);
                         
