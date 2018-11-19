@@ -1615,7 +1615,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
       SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
     }
+    // Use declarations
     else if (op_decl->id == SPVM_OP_C_ID_USE) {
+      
     }
     else {
       assert(0);
@@ -1846,7 +1848,18 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->op_type = op_type;
-  
+
+  // Check sub_names
+  if (op_sub_names) {
+    SPVM_LIST* sub_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+    SPVM_OP* op_sub_name = op_sub_names->first;
+    while ((op_sub_name = SPVM_OP_sibling(compiler, op_sub_name))) {
+      const char* sub_name = op_sub_name->uv.name;
+      SPVM_LIST_push(sub_names, (void*)sub_name);
+    }
+    use->sub_names = sub_names;
+  }
+
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   
   return op_use;
