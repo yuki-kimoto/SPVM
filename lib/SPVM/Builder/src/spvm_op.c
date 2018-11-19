@@ -1617,7 +1617,24 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     // Use declarations
     else if (op_decl->id == SPVM_OP_C_ID_USE) {
+      SPVM_LIST_push(package->op_uses, op_decl);
       
+      SPVM_LIST* sub_names = op_decl->uv.use->sub_names;
+      
+      if (sub_names) {
+        for (int32_t i = 0; i < sub_names->length; i++) {
+          const char* sub_name = SPVM_LIST_fetch(sub_names, i);
+          
+          const char* found_sub_name = SPVM_HASH_fetch(package->sub_name_symtable, sub_name, strlen(sub_name));
+          if (found_sub_name) {
+            SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, op_decl->file, op_decl->line);
+          }
+          // Unknown sub
+          else {
+            SPVM_HASH_insert(package->sub_name_symtable, sub_name, strlen(sub_name), (void*)sub_name);
+          }
+        }
+      }
     }
     else {
       assert(0);
@@ -1791,34 +1808,39 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_COMPILER_error(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
       }
       
-      
       SPVM_SUB* found_sub = SPVM_HASH_fetch(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name));
       
       if (found_sub) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_abs_name, sub->op_sub->file, sub->op_sub->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
       }
       else if (package->subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
         SPVM_COMPILER_error(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
       }
       // Unknown sub
       else {
-        // Bind standard functions
-        sub->abs_name = sub_abs_name;
-        
-        sub->package = package;
-        
-        if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
-          package->sub_destructor = sub;
+        const char* found_sub_name = SPVM_HASH_fetch(package->sub_name_symtable, sub_name, strlen(sub_name));
+        if (found_sub_name) {
+          SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
         }
-        
-        assert(sub->op_sub->file);
-        
-        sub->id = compiler->subs->length + 1;
-        
-        SPVM_LIST_push(compiler->subs, sub);
-        SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
-        
-        SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
+        else {
+          // Bind standard functions
+          sub->abs_name = sub_abs_name;
+          
+          sub->package = package;
+          
+          if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
+            package->sub_destructor = sub;
+          }
+          
+          assert(sub->op_sub->file);
+          
+          sub->id = compiler->subs->length + 1;
+          
+          SPVM_LIST_push(compiler->subs, sub);
+          SPVM_HASH_insert(compiler->sub_symtable, sub_abs_name, strlen(sub_abs_name), sub);
+          
+          SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);
+        }
       }
     }
   }

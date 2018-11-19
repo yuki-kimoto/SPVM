@@ -25,6 +25,7 @@ struct SPVM_package {
   SPVM_HASH* package_var_symtable;
   SPVM_LIST* subs;
   SPVM_HASH* sub_symtable;
+  SPVM_HASH* sub_name_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_LIST* object_field_indexes;
@@ -51,6 +52,7 @@ struct SPVM_package {
   int32_t object_field_indexes_constant_pool_id;
   const char* load_path;
   SPVM_OP* op_type;
+  SPVM_LIST* op_uses;
   int32_t id;
   int32_t flag;
   int32_t category;

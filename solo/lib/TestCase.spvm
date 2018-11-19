@@ -63,7 +63,7 @@ SPVM::Test - SPVM test module
   sub main : int ($args : string[]) {
     {
       my $string_length = length "abc";
-      print "$string_length\n";
+      print("$string_length\n");
     }
 
     {
