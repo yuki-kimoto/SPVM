@@ -1782,6 +1782,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (compiler->error_count > 0) {
                 return;
               }
+
+              // If dist is string access and const, it is invalid
+              if (op_term_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_term_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST) {
+                SPVM_COMPILER_error(compiler, "Can't change each character of string at %s line %d\n", op_term_dist->file, op_term_dist->line);
+              }
               
               break;
             }
@@ -2548,10 +2553,18 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must be array
-              if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Array access invocant must be array at %s line %d\n", op_cur->file, op_cur->line);
+              // Left value must be array or string
+              if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) &&
+                !SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
+              )
+              {
+                SPVM_COMPILER_error(compiler, "Array access invocant must be array or string at %s line %d\n", op_cur->file, op_cur->line);
                 return;
+              }
+              
+              // String access is const
+              if (SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST;
               }
               
               // Right value must be integer

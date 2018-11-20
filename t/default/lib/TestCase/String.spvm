@@ -1,4 +1,22 @@
 package TestCase::String {
+  sub string_access : int () {
+    my $string = "abc";
+    
+    unless ($string->[0] == 'a') {
+      return 0;
+    }
+    
+    unless ($string->[1] == 'b') {
+      return 0;
+    }
+    
+    unless ($string->[2] == 'c') {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub string_length : int () {
     # String length
     {

@@ -14,6 +14,15 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
+# String
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::String::CharacterAssign');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
 # Term
 {
   {

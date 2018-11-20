@@ -1187,9 +1187,16 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op->first);
       type = SPVM_TYPE_new(compiler);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
-      type->basic_type = basic_type;
-      assert(first_type->dimension > 0);
-      type->dimension = first_type->dimension - 1;
+      if (basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0) {
+        type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "byte", strlen("byte"));
+        type->dimension = 0;
+      }
+      else {
+        type->basic_type = basic_type;
+        assert(first_type->dimension > 0);
+        type->dimension = first_type->dimension - 1;
+      }
+      
       break;
     }
     case SPVM_OP_C_ID_ADD:
