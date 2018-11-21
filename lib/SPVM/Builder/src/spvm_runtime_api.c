@@ -135,40 +135,29 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   char* call_stack = NULL;
   {
     // Numeric area byte size
-    int32_t numeric_area_byte_size = 0;
-    numeric_area_byte_size += sub->long_vars_alloc_length * 8;
-    numeric_area_byte_size += sub->double_vars_alloc_length * 8;
-    numeric_area_byte_size += sub->int_vars_alloc_length * 4;
-    numeric_area_byte_size += sub->float_vars_alloc_length * 4;
-    numeric_area_byte_size += sub->short_vars_alloc_length * 2;
-    numeric_area_byte_size += sub->mortal_stack_length * 2;
-    numeric_area_byte_size += sub->byte_vars_alloc_length * 1;
+    int32_t numeric_vars_byte_size = 0;
+    numeric_vars_byte_size += sub->long_vars_alloc_length * 8;
+    numeric_vars_byte_size += sub->double_vars_alloc_length * 8;
+    numeric_vars_byte_size += sub->int_vars_alloc_length * 4;
+    numeric_vars_byte_size += sub->float_vars_alloc_length * 4;
+    numeric_vars_byte_size += sub->short_vars_alloc_length * 2;
+    numeric_vars_byte_size += sub->mortal_stack_length * 2;
+    numeric_vars_byte_size += sub->byte_vars_alloc_length * 1;
     
-    if (numeric_area_byte_size % 8 != 0) {
-      numeric_area_byte_size += (8 - (numeric_area_byte_size % 8));
+    if (numeric_vars_byte_size % 8 != 0) {
+      numeric_vars_byte_size += (8 - (numeric_vars_byte_size % 8));
     }
     
     // Address area byte size
-    int32_t address_area_byte_size = 0;
-    address_area_byte_size += sub->object_vars_alloc_length * sizeof(void*);
-    address_area_byte_size += sub->ref_vars_alloc_length * sizeof(void*);
+    int32_t address_vars_byte_size = 0;
+    address_vars_byte_size += sub->object_vars_alloc_length * sizeof(void*);
+    address_vars_byte_size += sub->ref_vars_alloc_length * sizeof(void*);
     
     // Total area byte size
-    int32_t total_area_byte_size = numeric_area_byte_size + address_area_byte_size;
+    int32_t total_vars_byte_size = numeric_vars_byte_size + address_vars_byte_size;
     
-    int32_t total_call_stack_length =
-      sub->object_vars_alloc_length +
-      sub->ref_vars_alloc_length +
-      sub->double_vars_alloc_length +
-      sub->long_vars_alloc_length +
-      sub->float_vars_alloc_length +
-      sub->int_vars_alloc_length +
-      sub->short_vars_alloc_length +
-      sub->byte_vars_alloc_length +
-      sub->mortal_stack_length;
-    
-    if (total_call_stack_length > 0) {
-      call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_VALUE) * total_call_stack_length);
+    if (total_vars_byte_size > 0) {
+      call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, total_vars_byte_size);
 
       int32_t call_stack_byte_offset = 0;
       
@@ -200,7 +189,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       byte_vars = (SPVM_VALUE_byte*)&call_stack[call_stack_byte_offset];
       call_stack_byte_offset += sub->byte_vars_alloc_length * 1;
       
-      call_stack_byte_offset = numeric_area_byte_size;
+      call_stack_byte_offset = numeric_vars_byte_size;
 
       // Object variables
       object_vars = (void**)&call_stack[call_stack_byte_offset];
