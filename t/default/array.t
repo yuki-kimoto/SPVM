@@ -11,6 +11,11 @@ use SPVM 'TestCase::Array';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Fat camma
+{
+  ok(TestCase::Array->array_init_fatcamma);
+}
+
 # Array
 {
   ok(TestCase::Array->array());
