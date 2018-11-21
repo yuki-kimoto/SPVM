@@ -133,6 +133,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   char* call_stack = NULL;
+  char call_stack_small[256];
+  int8_t need_free_call_stack = 0;
   {
     // Numeric area byte size
     int32_t numeric_vars_byte_size = 0;
@@ -157,7 +159,14 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     int32_t total_vars_byte_size = numeric_vars_byte_size + address_vars_byte_size;
     
     if (total_vars_byte_size > 0) {
-      call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, total_vars_byte_size);
+      if (total_vars_byte_size <= 256) {
+        call_stack = call_stack_small;
+        memset(call_stack, 0, total_vars_byte_size);
+      }
+      else {
+        call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, total_vars_byte_size);
+        need_free_call_stack = 1;
+      }
 
       int32_t call_stack_byte_offset = 0;
       
@@ -3762,7 +3771,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     }
   }
   
-  SPVM_RUNTIME_API_free_memory_block(runtime, call_stack);
+  if (need_free_call_stack) {
+    SPVM_RUNTIME_API_free_memory_block(runtime, call_stack);
+  }
   
   return exception_flag;
 }
