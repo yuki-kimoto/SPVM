@@ -134,6 +134,15 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
 
   SPVM_ENV* env = SPVM_RUNTIME_create_env(runtime);
   
+  // Adjust alignment SPVM_VALUE
+  int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
+  if (object_header_byte_size % sizeof(SPVM_VALUE) != 0) {
+    object_header_byte_size += (sizeof(SPVM_VALUE) - object_header_byte_size % sizeof(SPVM_VALUE));
+  }
+  assert(object_header_byte_size % sizeof(SPVM_VALUE) == 0);
+  
+  env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
+  
   runtime->portable = portable;
   
   runtime->string_pool = portable->string_pool;

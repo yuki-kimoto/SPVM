@@ -12,11 +12,11 @@ struct SPVM_object {
   int32_t weaken_back_refs_capacity;
   int32_t ref_count;
   int32_t basic_type_id;
-  int32_t elements_length;
   uint8_t type_dimension;
   uint8_t has_destructor;
   uint8_t in_destroy;
   uint8_t runtime_type;
+  int32_t elements_length;
 };
 
 #endif

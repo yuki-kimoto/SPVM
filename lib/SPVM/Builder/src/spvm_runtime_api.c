@@ -334,7 +334,9 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
     }
   }
-  
+
+  int32_t object_header_byte_size = (intptr_t)env->object_header_byte_size;
+
   // Execute operation codes
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[sub_opcodes_base + opcode_rel_index]);
