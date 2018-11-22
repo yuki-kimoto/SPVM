@@ -132,6 +132,11 @@ struct SPVM_env {
   void* basic_type_id_long_object;
   void* basic_type_id_float_object;
   void* basic_type_id_double_object;
+  int32_t* (*get_byte_array_elements_new)(SPVM_ENV*, void*);
+  int32_t* (*get_short_array_elements_new)(SPVM_ENV*, void*);
   int32_t* (*get_int_array_elements_new)(SPVM_ENV*, void*);
+  int32_t* (*get_long_array_elements_new)(SPVM_ENV*, void*);
+  int32_t* (*get_float_array_elements_new)(SPVM_ENV*, void*);
+  int32_t* (*get_double_array_elements_new)(SPVM_ENV*, void*);
 };
 #endif

@@ -4646,10 +4646,22 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->elements_length;
 }
 
+int8_t* SPVM_RUNTIME_API_get_byte_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return (SPVM_VALUE_byte*)((intptr_t)object + env->object_header_byte_size);
+}
+
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
   return *(SPVM_VALUE_byte**)&object->body;
+}
+
+int16_t* SPVM_RUNTIME_API_get_short_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return (SPVM_VALUE_short*)((intptr_t)object + env->object_header_byte_size);
 }
 
 int16_t* SPVM_RUNTIME_API_get_short_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* object) {
@@ -4670,16 +4682,34 @@ int32_t* SPVM_RUNTIME_API_get_int_array_elements_old(SPVM_ENV* env, SPVM_OBJECT*
   return *(SPVM_VALUE_int**)&object->body;
 }
 
+int64_t* SPVM_RUNTIME_API_get_long_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return (SPVM_VALUE_long*)((intptr_t)object + env->object_header_byte_size);
+}
+
 int64_t* SPVM_RUNTIME_API_get_long_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return *(SPVM_VALUE_long**)&object->body;
 }
 
+float* SPVM_RUNTIME_API_get_float_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return (SPVM_VALUE_float*)((intptr_t)object + env->object_header_byte_size);
+}
+
 float* SPVM_RUNTIME_API_get_float_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return *(SPVM_VALUE_float**)&object->body;
+}
+
+double* SPVM_RUNTIME_API_get_double_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return (SPVM_VALUE_double*)((intptr_t)object + env->object_header_byte_size);
 }
 
 double* SPVM_RUNTIME_API_get_double_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* object) {
