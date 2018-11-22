@@ -37,7 +37,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_array_length,
     SPVM_RUNTIME_API_get_byte_array_elements,
     SPVM_RUNTIME_API_get_short_array_elements,
-    SPVM_RUNTIME_API_get_int_array_elements,
+    SPVM_RUNTIME_API_get_int_array_elements_old,
     SPVM_RUNTIME_API_get_long_array_elements,
     SPVM_RUNTIME_API_get_float_array_elements,
     SPVM_RUNTIME_API_get_double_array_elements,

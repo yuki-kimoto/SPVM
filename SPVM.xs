@@ -659,7 +659,7 @@ new_int_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int32_t* elements = env->get_int_array_elements(env, array);
+  int32_t* elements = env->get_int_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -702,7 +702,7 @@ new_int_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int32_t* elements = env->get_int_array_elements(env, array);
+  int32_t* elements = env->get_int_array_elements_old(env, array);
   memcpy(elements, binary, array_length * sizeof(int32_t));
   
   // New sv array
@@ -1138,7 +1138,7 @@ new_value_array(...)
       SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
       assert(first_field);
 
-      void* elements = (void*)env->get_int_array_elements(env, array);
+      void* elements = (void*)env->get_int_array_elements_old(env, array);
       
       HV* hv_value = (HV*)SvRV(sv_element);
       int32_t fields_length = package->fields_length;
@@ -1299,7 +1299,7 @@ new_value_array_from_binary(...)
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_INT: {
-      int32_t* elements = env->get_int_array_elements(env, array);
+      int32_t* elements = env->get_int_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length * 4);
       }
@@ -2504,7 +2504,7 @@ to_elements(...)
         SPVM_RUNTIME_FIELD* first_field = &runtime->fields[package->fields_base];
         assert(first_field);
 
-        void* elements = (void*)env->get_int_array_elements(env, array);
+        void* elements = (void*)env->get_int_array_elements_old(env, array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         int32_t field_length = package->fields_length;
@@ -2603,7 +2603,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          int32_t* elements = env->get_int_array_elements(env, array);
+          int32_t* elements = env->get_int_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2723,7 +2723,7 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          int32_t* elements = env->get_int_array_elements(env, array);
+          int32_t* elements = env->get_int_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length * 4));
           break;
@@ -2768,7 +2768,7 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
-          int32_t* elements = env->get_int_array_elements(env, array);
+          int32_t* elements = env->get_int_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
           break;
