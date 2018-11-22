@@ -15,12 +15,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_get_basic_type(SPVM_ENV* env,  const c
 // Get
 int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* array);
-int8_t* SPVM_RUNTIME_API_get_byte_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
-int16_t* SPVM_RUNTIME_API_get_short_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
-int32_t* SPVM_RUNTIME_API_get_int_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
-int64_t* SPVM_RUNTIME_API_get_long_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
-float* SPVM_RUNTIME_API_get_float_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
-double* SPVM_RUNTIME_API_get_double_array_elements_old(SPVM_ENV* env, SPVM_OBJECT* array);
 
 int8_t* SPVM_RUNTIME_API_get_byte_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* array);
 int16_t* SPVM_RUNTIME_API_get_short_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* array);

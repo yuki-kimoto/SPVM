@@ -48,12 +48,12 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
     SPVM_RUNTIME_API_get_array_length,
-    SPVM_RUNTIME_API_get_byte_array_elements_old,
-    SPVM_RUNTIME_API_get_short_array_elements_old,
-    SPVM_RUNTIME_API_get_int_array_elements_old,
-    SPVM_RUNTIME_API_get_long_array_elements_old,
-    SPVM_RUNTIME_API_get_float_array_elements_old,
-    SPVM_RUNTIME_API_get_double_array_elements_old,
+    SPVM_RUNTIME_API_get_byte_array_elements_new,
+    SPVM_RUNTIME_API_get_short_array_elements_new,
+    SPVM_RUNTIME_API_get_int_array_elements_new,
+    SPVM_RUNTIME_API_get_long_array_elements_new,
+    SPVM_RUNTIME_API_get_float_array_elements_new,
+    SPVM_RUNTIME_API_get_double_array_elements_new,
     SPVM_RUNTIME_API_get_object_array_element,
     SPVM_RUNTIME_API_set_object_array_element,
     SPVM_RUNTIME_API_get_field_id,
@@ -132,12 +132,6 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
-    SPVM_RUNTIME_API_get_byte_array_elements_new,
-    SPVM_RUNTIME_API_get_short_array_elements_new,
-    SPVM_RUNTIME_API_get_int_array_elements_new,
-    SPVM_RUNTIME_API_get_long_array_elements_new,
-    SPVM_RUNTIME_API_get_float_array_elements_new,
-    SPVM_RUNTIME_API_get_double_array_elements_new,
   };
   
   int32_t env_length = 255;
