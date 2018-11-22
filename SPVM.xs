@@ -817,7 +817,7 @@ new_float_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  float* elements = env->get_float_array_elements_old(env, array);
+  float* elements = env->get_float_array_elements_new(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -860,7 +860,7 @@ new_float_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  float* elements = env->get_float_array_elements_old(env, array);
+  float* elements = env->get_float_array_elements_new(env, array);
   memcpy(elements, binary, array_length * sizeof(float));
   
   // New sv array
@@ -896,7 +896,7 @@ new_double_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  double* elements = env->get_double_array_elements_old(env, array);
+  double* elements = env->get_double_array_elements_new(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -939,7 +939,7 @@ new_double_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  double* elements = env->get_double_array_elements_old(env, array);
+  double* elements = env->get_double_array_elements_new(env, array);
   memcpy(elements, binary, array_length * sizeof(double));
   
   // New sv array
@@ -2625,7 +2625,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          float* elements = env->get_float_array_elements_old(env, array);
+          float* elements = env->get_float_array_elements_new(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2636,7 +2636,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          double* elements = env->get_double_array_elements_old(env, array);
+          double* elements = env->get_double_array_elements_new(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2780,13 +2780,13 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          float* elements = env->get_float_array_elements_old(env, array);
+          float* elements = env->get_float_array_elements_new(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          double* elements = env->get_double_array_elements_old(env, array);
+          double* elements = env->get_double_array_elements_new(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
           break;

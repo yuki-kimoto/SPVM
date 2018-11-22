@@ -958,7 +958,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            float_vars[opcode->operand0] = (*(SPVM_VALUE_float**)&(*(void**)array))[index];
+            float_vars[opcode->operand0] = ((SPVM_VALUE_float*)((intptr_t)array + object_header_byte_size))[index];
           }
         }
         break;
@@ -978,7 +978,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            double_vars[opcode->operand0] = (*(SPVM_VALUE_double**)&(*(void**)array))[index];
+            double_vars[opcode->operand0] = ((SPVM_VALUE_double*)((intptr_t)array + object_header_byte_size))[index];
           }
         }
         break;
@@ -1100,7 +1100,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            (*(SPVM_VALUE_float**)&(*(void**)array))[index] = float_vars[opcode->operand2];
+            ((SPVM_VALUE_float*)((intptr_t)array + object_header_byte_size))[index] = float_vars[opcode->operand2];
           }
         }
         break;
@@ -1120,7 +1120,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            (*(SPVM_VALUE_double**)&(*(void**)array))[index] = double_vars[opcode->operand2];
+            ((SPVM_VALUE_double*)((intptr_t)array + object_header_byte_size))[index] = double_vars[opcode->operand2];
           }
         }
         break;
@@ -4395,11 +4395,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
 
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_float) * (length + 1);
+  
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
-
-  // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_float));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
@@ -4416,11 +4415,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
   
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_double) * (length + 1);
+  
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
-
-  // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_double));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
