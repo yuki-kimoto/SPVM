@@ -5434,10 +5434,7 @@ void SPVM_RUNTIME_API_free_memory_block(SPVM_ENV* env, void* block) {
 
 void* SPVM_RUNTIME_API_safe_malloc_zero(size_t byte_size) {
   
-  if (byte_size < 1) {
-    fprintf(stderr, "Failed to allocate memory. Size must be more than 0(SPVM_RUNTIME_API_safe_malloc_zero())\n");
-    abort();
-  }
+  assert(byte_size > 0);
   
   if ((size_t)byte_size > SIZE_MAX) {
     fprintf(stderr, "Failed to allocate memory. Size is too big(SPVM_RUNTIME_API_safe_malloc_zero())\n");

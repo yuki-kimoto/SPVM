@@ -202,7 +202,8 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
 void SPVM_RUNTIME_free(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
+  // Free mortal stack
   SPVM_RUNTIME_API_free_memory_block(env, runtime->mortal_stack);
   
   // Free exception
@@ -211,13 +212,9 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);
   
+  // Free C function addresses
   free(runtime->sub_cfunc_addresses);
   
-  if (runtime->exception != NULL) {
-    free(runtime->exception);
-  }
-  
-
   // Free package variables heap
   free(runtime->package_vars_heap);
   
