@@ -490,8 +490,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_elements_length_byte_offset);
         int32_t length2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_elements_length_byte_offset);
         
-        SPVM_VALUE_byte* bytes1 = *(SPVM_VALUE_byte**)&(*(void**)object1);
-        SPVM_VALUE_byte* bytes2 = *(SPVM_VALUE_byte**)&(*(void**)object2);
+        SPVM_VALUE_byte* bytes1 = env->get_byte_array_elements_new(env, object1);
+        SPVM_VALUE_byte* bytes2 = env->get_byte_array_elements_new(env, object2);
         
         int32_t short_string_length = length1 < length2 ? length1 : length2;
         int32_t retval = memcmp(bytes1, bytes2, short_string_length);
@@ -788,7 +788,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       {
         void* src_string = object_vars[opcode->operand1];
         int32_t src_string_length = env->get_array_length(env, src_string);
-        int8_t* src_string_data = env->get_byte_array_elements_old(env, src_string);
+        int8_t* src_string_data = env->get_byte_array_elements_new(env, src_string);
         void* string = env->new_string_raw(env, (const char*)src_string_data, src_string_length);
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
@@ -878,7 +878,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            byte_vars[opcode->operand0] = (*(SPVM_VALUE_byte**)&(*(void**)array))[index];
+            byte_vars[opcode->operand0] = ((SPVM_VALUE_byte*)((intptr_t)array + object_header_byte_size))[index];
           }
         }
         break;
@@ -1020,7 +1020,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            (*(SPVM_VALUE_byte**)&(*(void**)array))[index] = byte_vars[opcode->operand2];
+            ((SPVM_VALUE_byte*)((intptr_t)array + object_header_byte_size))[index] = byte_vars[opcode->operand2];
           }
         }
         break;
@@ -2176,6 +2176,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         const char* string_value = &runtime->string_pool[string_pool_id];
         
         void* string = env->new_string_raw(env, string_value, string_length);
+  
         
         // Set string
         SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , string);
@@ -3937,7 +3938,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   const char* at_part = " at ";
 
   // Exception
-  int8_t* exception_bytes = env->get_byte_array_elements_old(env, exception);
+  int8_t* exception_bytes = env->get_byte_array_elements_new(env, exception);
   int32_t exception_length = env->get_array_length(env, exception);
   
   // Total string length
@@ -3959,7 +3960,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   
   // Create exception message
   void* new_exception = env->new_string_raw(env, NULL, total_length);
-  int8_t* new_exception_bytes = env->get_byte_array_elements_old(env, new_exception);
+  int8_t* new_exception_bytes = env->get_byte_array_elements_new(env, new_exception);
   
   memcpy(
     (void*)(new_exception_bytes),
@@ -3986,7 +3987,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
   
-  int8_t* bytes = env->get_byte_array_elements_old(env, string);
+  int8_t* bytes = env->get_byte_array_elements_new(env, string);
   int32_t string_length = env->get_array_length(env, string);
   
   {
@@ -4006,9 +4007,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_string_raw(env, NULL, string3_length);
   
-  int8_t* string1_bytes = SPVM_RUNTIME_API_get_byte_array_elements_old(env, string1);
-  int8_t* string2_bytes = SPVM_RUNTIME_API_get_byte_array_elements_old(env, string2);
-  int8_t* string3_bytes = SPVM_RUNTIME_API_get_byte_array_elements_old(env, string3);
+  int8_t* string1_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string1);
+  int8_t* string2_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string2);
+  int8_t* string3_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string3);
   
   memcpy(string3_bytes, string1_bytes, string1_length);
   memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
@@ -4309,16 +4310,12 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   
   // Create object
   SPVM_RUNTIME* runtime = env->runtime;
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
-  // Body byte size. Alloc length + 1
-  int64_t body_byte_size = (length + 1) * sizeof(SPVM_VALUE_byte);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE_byte) * (length + 1);
   
-  // Alloc body by 0
-  void* body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, body_byte_size);
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
 
-  // Set object fields
-  object->body = body;
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->elements_length = length;
@@ -4614,22 +4611,23 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
-
+  
   if (length == 0) {
     length = strlen((char*)bytes);
   }
 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
+  
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
   object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
   
   if (length > 0) {
     if (bytes == NULL) {
-      memset(object->body, 0, length);
+      memset((void*)((intptr_t)object + env->object_header_byte_size), 0, length);
     }
     else {
-      memcpy(object->body, (char*)bytes, length);
+      memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
     }
   }
 
