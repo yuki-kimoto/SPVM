@@ -31,6 +31,19 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
@@ -119,6 +132,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
+    SPVM_RUNTIME_API_get_int_array_elements,
   };
   
   int32_t env_length = 85;
