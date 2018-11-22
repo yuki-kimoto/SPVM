@@ -3891,9 +3891,10 @@ void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
     // Extend mortal stack
     if (runtime->mortal_stack_top >= runtime->mortal_stack_capacity) {
       int32_t new_mortal_stack_capacity = runtime->mortal_stack_capacity * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * new_mortal_stack_capacity);
+      SPVM_OBJECT** new_mortal_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * new_mortal_stack_capacity);
       memcpy(new_mortal_stack, runtime->mortal_stack, sizeof(void*) * runtime->mortal_stack_capacity);
       runtime->mortal_stack_capacity = new_mortal_stack_capacity;
+      SPVM_RUNTIME_API_free_memory_block(env, runtime->mortal_stack);
       runtime->mortal_stack = new_mortal_stack;
     }
     
