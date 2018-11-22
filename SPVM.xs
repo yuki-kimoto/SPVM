@@ -738,7 +738,7 @@ new_long_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int64_t* elements = env->get_long_array_elements_old(env, array);
+  int64_t* elements = env->get_long_array_elements_new(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -781,7 +781,7 @@ new_long_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int64_t* elements = env->get_long_array_elements_old(env, array);
+  int64_t* elements = env->get_long_array_elements_new(env, array);
   memcpy(elements, binary, array_length * sizeof(int64_t));
   
   // New sv array
@@ -2614,7 +2614,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          int64_t* elements = env->get_long_array_elements_old(env, array);
+          int64_t* elements = env->get_long_array_elements_new(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2774,7 +2774,7 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          int64_t* elements = env->get_long_array_elements_old(env, array);
+          int64_t* elements = env->get_long_array_elements_new(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
           break;
