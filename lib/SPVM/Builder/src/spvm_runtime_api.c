@@ -4658,7 +4658,7 @@ int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_ENV* env, SPVM_OBJECT* o
   return *(SPVM_VALUE_short**)&object->body;
 }
 
-int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t* SPVM_RUNTIME_API_get_int_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_int*)((intptr_t)object + env->object_header_byte_size);
