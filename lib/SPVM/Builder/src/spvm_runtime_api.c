@@ -4312,17 +4312,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Body byte size. Alloc length + 1
-  size_t body_byte_size = (length + 1) * sizeof(SPVM_VALUE_byte);
-  if (body_byte_size > SIZE_MAX) {
-    return NULL;
-  }
+  int64_t body_byte_size = (length + 1) * sizeof(SPVM_VALUE_byte);
   
   // Alloc body by 0
   void* body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, body_byte_size);
-  if (body == NULL) {
-    return NULL;
-  }
-  
+
   // Set object fields
   object->body = body;
   object->type_dimension = 1;
@@ -5404,7 +5398,7 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, value);
 }
 
-void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
+void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -5432,19 +5426,19 @@ void SPVM_RUNTIME_API_free_memory_block(SPVM_ENV* env, void* block) {
   }
 }
 
-void* SPVM_RUNTIME_API_safe_malloc_zero(size_t byte_size) {
+void* SPVM_RUNTIME_API_safe_malloc_zero(int64_t byte_size) {
   
   assert(byte_size > 0);
   
-  if ((size_t)byte_size > SIZE_MAX) {
-    fprintf(stderr, "Failed to allocate memory. Size is too big(SPVM_RUNTIME_API_safe_malloc_zero())\n");
+  if ((uint64_t)byte_size > SIZE_MAX) {
+    fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
     abort();
   }
   
   void* block = calloc(1, (size_t)byte_size);
   
   if (block == NULL) {
-    fprintf(stderr, "Failed to allocate memory. malloc function return NULL(SPVM_RUNTIME_API_safe_malloc_zero())\n");
+    fprintf(stderr, "Failed to allocate memory. calloc function return NULL\n");
     abort();
   }
   
