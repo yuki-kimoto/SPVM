@@ -545,9 +545,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_fetch(SPVM_ENV* env, SPVM
       SPVM_STRING_BUFFER_add(string_buffer, "        ");
       SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_value(env, string_buffer, element_ctype_id, out_index, field_index);
       SPVM_STRING_BUFFER_add(string_buffer, " = ");
-      SPVM_STRING_BUFFER_add(string_buffer, "(*(");
+      SPVM_STRING_BUFFER_add(string_buffer, "((");
       SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, element_ctype_id));
-      SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)array))[");
+      SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
       SPVM_STRING_BUFFER_add_int(string_buffer, field_length);
       SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
       SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
@@ -580,9 +580,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_field_fetch(SPVM_ENV* env
   SPVM_STRING_BUFFER_add(string_buffer, "        ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, element_ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " =");
-  SPVM_STRING_BUFFER_add(string_buffer, "(*(");
+  SPVM_STRING_BUFFER_add(string_buffer, "((");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)array))[");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_length);
   SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
@@ -614,9 +614,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_store(SPVM_ENV* env, SPVM
   {
     int32_t field_index;
     for (field_index = 0; field_index < field_length; field_index++) {
-      SPVM_STRING_BUFFER_add(string_buffer, "      (*(");
+      SPVM_STRING_BUFFER_add(string_buffer, "      ((");
       SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, element_ctype_id));
-      SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)array))[");
+      SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
       SPVM_STRING_BUFFER_add_int(string_buffer, field_length);
       SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
       SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
@@ -630,6 +630,39 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_store(SPVM_ENV* env, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
+}
+
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_field_store(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index, int32_t field_length, int32_t field_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_raw(env, \"Array must not be undef\", 0)); \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_raw(env, \"Index is out of range\", 0)); \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
+  SPVM_STRING_BUFFER_add(string_buffer, "        ((");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, element_ctype_id));
+  SPVM_STRING_BUFFER_add(string_buffer, "*)((intptr_t)array + object_header_byte_size))[");
+  SPVM_STRING_BUFFER_add_int(string_buffer, field_length);
+  SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
+  SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "]");
+  SPVM_STRING_BUFFER_add(string_buffer, " = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, element_ctype_id, in_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_deref(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t field_length) {
@@ -848,39 +881,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_deref_set_field(SPVM_ENV* env, 
   SPVM_STRING_BUFFER_add(string_buffer, "[");
   SPVM_STRING_BUFFER_add_int(string_buffer, in_var_id);
   SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-}
-
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_t_array_field_store(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t array_index, int32_t index_index, int32_t in_index, int32_t field_length, int32_t field_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, array_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t index = ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, index_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(array == NULL, 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_raw(env, \"Array must not be undef\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_elements_length_byte_offset), 0)) { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, env->new_string_raw(env, \"Index is out of range\", 0)); \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-  SPVM_STRING_BUFFER_add(string_buffer, "        (*(");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "**)&(*(void**)array))[");
-  SPVM_STRING_BUFFER_add_int(string_buffer, field_length);
-  SPVM_STRING_BUFFER_add(string_buffer, " * index + ");
-  SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
-  SPVM_STRING_BUFFER_add(string_buffer, "]");
-  SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, element_ctype_id, in_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
