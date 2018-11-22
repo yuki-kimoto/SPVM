@@ -956,7 +956,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, field_ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = *(");
@@ -1016,7 +1016,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_set_field(SPVM_ENV* env, SPVM_STRING_BU
   SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, field_ctype_id));
   SPVM_STRING_BUFFER_add(string_buffer, "*)&fields[");
@@ -3023,7 +3023,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void** object_field_address = (void**)&fields[\n");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "      ];\n");
@@ -4282,7 +4282,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object_field = *(SPVM_VALUE_object*)&fields[");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "];\n");
@@ -4391,7 +4391,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object_field_address = (SPVM_VALUE_object*)&fields[");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "];\n");
@@ -4454,7 +4454,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      void* object_field_address = (SPVM_VALUE_object*)&fields[");
         SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "];\n");
@@ -4830,7 +4830,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_byte_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_byte*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4846,7 +4846,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_short_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_short*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4862,7 +4862,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_int_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_int*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4878,7 +4878,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_long_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_long*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4894,7 +4894,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_float_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_float*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4910,7 +4910,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t basic_type_id = (intptr_t)(void*)env->basic_type_id_double_object;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    *(SPVM_VALUE_double*)&fields[0] = value;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4933,7 +4933,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_byte_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_byte*)&fields[0];\n");
@@ -4961,7 +4961,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_short_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_short*)&fields[0];\n");
@@ -4989,7 +4989,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_int_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_int*)&fields[0];\n");
@@ -5017,7 +5017,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_long_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_long*)&fields[0];\n");
@@ -5045,7 +5045,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_float_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_float*)&fields[0];\n");
@@ -5073,7 +5073,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension_id = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (object_basic_type_id == (intptr_t)(void*)env->basic_type_id_double_object && object_type_dimension_id == 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = *(SPVM_VALUE**)&(*(void**)object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        \n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(SPVM_VALUE_double*)&fields[0];\n");
