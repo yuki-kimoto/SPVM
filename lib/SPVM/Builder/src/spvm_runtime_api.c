@@ -4590,15 +4590,17 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
     return NULL;
   }
 
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*);
+  
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
-
-  object->body = pointer;
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
+  
+  *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size) = pointer;
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
 
-  object->elements_length = 1;
+  object->elements_length = 0;
 
   // Object type id
   object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
@@ -4697,7 +4699,7 @@ void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* array
 void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return object->body;
+  return *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
 }
 
 void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
@@ -4811,11 +4813,6 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     }
     if (object->weaken_back_refs != NULL) {
       SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_back_refs, object->weaken_back_refs_length);
-    }
-    
-    // Free object body
-    if (object->body != NULL && !is_pointer) {
-      SPVM_RUNTIME_API_free_memory_block(env, object->body);
     }
     
     // Free object
