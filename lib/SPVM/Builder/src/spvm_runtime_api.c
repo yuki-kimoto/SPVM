@@ -164,7 +164,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         memset(call_stack, 0, total_vars_byte_size);
       }
       else {
-        call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, total_vars_byte_size);
+        call_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(env, total_vars_byte_size);
         need_free_call_stack = 1;
       }
 
@@ -3774,7 +3774,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   }
   
   if (need_free_call_stack) {
-    SPVM_RUNTIME_API_free_memory_block(runtime, call_stack);
+    SPVM_RUNTIME_API_free_memory_block(env, call_stack);
   }
   
   return exception_flag;
@@ -3783,7 +3783,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
   // Package
   int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(string[])");
   
@@ -4035,7 +4035,7 @@ void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_ENV* env, void** weaken_back_re
     }
   }
   
-  SPVM_RUNTIME_API_free_memory_block(runtime, weaken_back_refs);
+  SPVM_RUNTIME_API_free_memory_block(env, weaken_back_refs);
 }
 
 int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
@@ -4080,7 +4080,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   // Create array of weaken_back_refs if need
   if (object->weaken_back_refs == NULL) {
     object->weaken_back_refs_capacity = 1;
-    object->weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(void*) * object->weaken_back_refs_capacity);
+    object->weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * object->weaken_back_refs_capacity);
   }
   
   int32_t capacity = object->weaken_back_refs_capacity;
@@ -4090,7 +4090,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   assert(capacity >= length);
   if (length == capacity) {
     int32_t new_capacity = capacity * 2;
-    void** new_weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(void*) * new_capacity);
+    void** new_weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * new_capacity);
     
     void** weaken_back_refs = object->weaken_back_refs;
     memcpy(new_weaken_back_refs, weaken_back_refs, length * sizeof(void*));
@@ -4099,7 +4099,7 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     memset(weaken_back_refs, 0, length * sizeof(void*));
     
     // Free old weaken back references
-    SPVM_RUNTIME_API_free_memory_block(runtime, object->weaken_back_refs);
+    SPVM_RUNTIME_API_free_memory_block(env, object->weaken_back_refs);
     
     object->weaken_back_refs = new_weaken_back_refs;
     object->weaken_back_refs_capacity = new_capacity;
@@ -4308,7 +4308,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   
   // Create object
   SPVM_RUNTIME* runtime = env->runtime;
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Body byte size. Alloc length + 1
   size_t body_byte_size = (length + 1) * sizeof(SPVM_VALUE_byte);
@@ -4317,7 +4317,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) 
   }
   
   // Alloc body by 0
-  void* body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, body_byte_size);
+  void* body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, body_byte_size);
   if (body == NULL) {
     return NULL;
   }
@@ -4337,10 +4337,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length)
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_short));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_short));
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT;
@@ -4358,10 +4358,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_int));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_int));
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT;
@@ -4383,10 +4383,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length) 
   }
   
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
   
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_long));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_long));
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG;
@@ -4404,10 +4404,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length)
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_float));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_float));
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
@@ -4425,10 +4425,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_double));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_double));
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
@@ -4447,10 +4447,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_object));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_object));
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
 
@@ -4471,10 +4471,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_t
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * sizeof(SPVM_VALUE_object));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * sizeof(SPVM_VALUE_object));
   
   object->basic_type_id = basic_type_id;
   object->type_dimension = element_dimension + 1;
@@ -4526,10 +4526,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array_raw(SPVM_ENV* env, int32_t basic_t
   }
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (length + 1) * unit_size * fields_length);
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (length + 1) * unit_size * fields_length);
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
@@ -4561,11 +4561,11 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   }
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   // Alloc body length + 1
   int32_t fields_length = package->fields_length;
-  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, (fields_length + 1) * sizeof(SPVM_VALUE));
+  object->body = SPVM_RUNTIME_API_alloc_memory_block_zero(env, (fields_length + 1) * sizeof(SPVM_VALUE));
   
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
@@ -4602,7 +4602,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   }
 
   // Create object
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(runtime, sizeof(SPVM_OBJECT));
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT));
 
   object->body = pointer;
 
@@ -4835,11 +4835,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     // Free object body
     if (object->body != NULL && !is_pointer) {
-      SPVM_RUNTIME_API_free_memory_block(runtime, object->body);
+      SPVM_RUNTIME_API_free_memory_block(env, object->body);
     }
     
     // Free object
-    SPVM_RUNTIME_API_free_memory_block(runtime, object);
+    SPVM_RUNTIME_API_free_memory_block(env, object);
   }
 }
 
@@ -5403,8 +5403,9 @@ void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32
   SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, value);
 }
 
-void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_RUNTIME* runtime, size_t byte_size) {
-  (void)runtime;
+void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
   
   void* block = SPVM_RUNTIME_API_safe_malloc_zero(byte_size);
   runtime->memory_blocks_count++;
@@ -5416,8 +5417,9 @@ void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_RUNTIME* runtime, size_t byt
   return block;
 }
 
-void SPVM_RUNTIME_API_free_memory_block(SPVM_RUNTIME* runtime, void* block) {
-  (void)runtime;
+void SPVM_RUNTIME_API_free_memory_block(SPVM_ENV* env, void* block) {
+
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (block) {
     free(block);
