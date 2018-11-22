@@ -468,7 +468,7 @@ new_byte_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int8_t* elements = env->get_byte_array_elements(env, array);
+  int8_t* elements = env->get_byte_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -511,7 +511,7 @@ new_byte_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int8_t* elements = env->get_byte_array_elements(env, array);
+  int8_t* elements = env->get_byte_array_elements_old(env, array);
   memcpy(elements, binary, array_length);
   
   // New sv array
@@ -580,7 +580,7 @@ new_short_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int16_t* elements = env->get_short_array_elements(env, array);
+  int16_t* elements = env->get_short_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -623,7 +623,7 @@ new_short_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int16_t* elements = env->get_short_array_elements(env, array);
+  int16_t* elements = env->get_short_array_elements_old(env, array);
   memcpy(elements, binary, array_length * sizeof(int16_t));
   
   // New sv array
@@ -738,7 +738,7 @@ new_long_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int64_t* elements = env->get_long_array_elements(env, array);
+  int64_t* elements = env->get_long_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -781,7 +781,7 @@ new_long_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  int64_t* elements = env->get_long_array_elements(env, array);
+  int64_t* elements = env->get_long_array_elements_old(env, array);
   memcpy(elements, binary, array_length * sizeof(int64_t));
   
   // New sv array
@@ -817,7 +817,7 @@ new_float_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  float* elements = env->get_float_array_elements(env, array);
+  float* elements = env->get_float_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -860,7 +860,7 @@ new_float_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  float* elements = env->get_float_array_elements(env, array);
+  float* elements = env->get_float_array_elements_old(env, array);
   memcpy(elements, binary, array_length * sizeof(float));
   
   // New sv array
@@ -896,7 +896,7 @@ new_double_array(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  double* elements = env->get_double_array_elements(env, array);
+  double* elements = env->get_double_array_elements_old(env, array);
   {
     int32_t i;
     for (i = 0; i < length; i++) {
@@ -939,7 +939,7 @@ new_double_array_from_binary(...)
   // Increment reference count
   env->inc_ref_count(env, array);
 
-  double* elements = env->get_double_array_elements(env, array);
+  double* elements = env->get_double_array_elements_old(env, array);
   memcpy(elements, binary, array_length * sizeof(double));
   
   // New sv array
@@ -1285,14 +1285,14 @@ new_value_array_from_binary(...)
   
   switch (first_field->basic_type_id) {
     case SPVM_BASIC_TYPE_C_ID_BYTE: {
-      int8_t* elements = env->get_byte_array_elements(env, array);
+      int8_t* elements = env->get_byte_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_SHORT: {
-      int16_t* elements = env->get_short_array_elements(env, array);
+      int16_t* elements = env->get_short_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length * 2);
       }
@@ -1306,21 +1306,21 @@ new_value_array_from_binary(...)
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_LONG: {
-      int64_t* elements = env->get_long_array_elements(env, array);
+      int64_t* elements = env->get_long_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length * 8);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-      float* elements = env->get_float_array_elements(env, array);
+      float* elements = env->get_float_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length * 4);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-      double* elements = env->get_double_array_elements(env, array);
+      double* elements = env->get_double_array_elements_old(env, array);
       if (array_length > 0) {
         memcpy(elements, binary, field_length * array_length * 8);
       }
@@ -2430,7 +2430,7 @@ call_sub(...)
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
     int32_t length = env->get_array_length(env, exception);
-    const char* exception_bytes = (char*)env->get_byte_array_elements(env, exception);
+    const char* exception_bytes = (char*)env->get_byte_array_elements_old(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s\n ", SvPV_nolen(sv_exception));
   }
@@ -2480,7 +2480,7 @@ to_elements(...)
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_STRING) {
-    int8_t* elements = env->get_byte_array_elements(env, array);
+    int8_t* elements = env->get_byte_array_elements_old(env, array);
     {
       int32_t i;
       for (i = 0; i < length; i++) {
@@ -2581,7 +2581,7 @@ to_elements(...)
     else {
       switch (basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          int8_t* elements = env->get_byte_array_elements(env, array);
+          int8_t* elements = env->get_byte_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2592,7 +2592,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          int16_t* elements = env->get_short_array_elements(env, array);
+          int16_t* elements = env->get_short_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2614,7 +2614,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          int64_t* elements = env->get_long_array_elements(env, array);
+          int64_t* elements = env->get_long_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2625,7 +2625,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          float* elements = env->get_float_array_elements(env, array);
+          float* elements = env->get_float_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2636,7 +2636,7 @@ to_elements(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          double* elements = env->get_double_array_elements(env, array);
+          double* elements = env->get_double_array_elements_old(env, array);
           {
             int32_t i;
             for (i = 0; i < length; i++) {
@@ -2692,7 +2692,7 @@ to_binary(...)
   
   SV* sv_bin;
   if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_STRING) {
-    int8_t* elements = env->get_byte_array_elements(env, array);
+    int8_t* elements = env->get_byte_array_elements_old(env, array);
     
     sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
   }
@@ -2711,13 +2711,13 @@ to_binary(...)
 
       switch (first_field->basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          int8_t* elements = env->get_byte_array_elements(env, array);
+          int8_t* elements = env->get_byte_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          int16_t* elements = env->get_short_array_elements(env, array);
+          int16_t* elements = env->get_short_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length * 2));
           break;
@@ -2729,19 +2729,19 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          int64_t* elements = env->get_long_array_elements(env, array);
+          int64_t* elements = env->get_long_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length * 8));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          float* elements = env->get_float_array_elements(env, array);
+          float* elements = env->get_float_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length * 4));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          double* elements = env->get_double_array_elements(env, array);
+          double* elements = env->get_double_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, field_length * length * 8));
           break;
@@ -2756,13 +2756,13 @@ to_binary(...)
     else {
       switch (basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          int8_t* elements = env->get_byte_array_elements(env, array);
+          int8_t* elements = env->get_byte_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          int16_t* elements = env->get_short_array_elements(env, array);
+          int16_t* elements = env->get_short_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 2));
           break;
@@ -2774,19 +2774,19 @@ to_binary(...)
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
-          int64_t* elements = env->get_long_array_elements(env, array);
+          int64_t* elements = env->get_long_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          float* elements = env->get_float_array_elements(env, array);
+          float* elements = env->get_float_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 4));
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          double* elements = env->get_double_array_elements(env, array);
+          double* elements = env->get_double_array_elements_old(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elements, length * 8));
           break;

@@ -48,12 +48,12 @@ typedef void* SPVM_VALUE_object;
 
 struct SPVM_env {
   int32_t (*get_array_length)(SPVM_ENV*, void*);
-  int8_t* (*get_byte_array_elements)(SPVM_ENV*, void*);
-  int16_t* (*get_short_array_elements)(SPVM_ENV*, void*);
+  int8_t* (*get_byte_array_elements_old)(SPVM_ENV*, void*);
+  int16_t* (*get_short_array_elements_old)(SPVM_ENV*, void*);
   int32_t* (*get_int_array_elements_old)(SPVM_ENV*, void*);
-  int64_t* (*get_long_array_elements)(SPVM_ENV*, void*);
-  float* (*get_float_array_elements)(SPVM_ENV*, void*);
-  double* (*get_double_array_elements)(SPVM_ENV*, void*);
+  int64_t* (*get_long_array_elements_old)(SPVM_ENV*, void*);
+  float* (*get_float_array_elements_old)(SPVM_ENV*, void*);
+  double* (*get_double_array_elements_old)(SPVM_ENV*, void*);
   void* (*get_object_array_element)(SPVM_ENV*, void*, int32_t index);
   void (*set_object_array_element)(SPVM_ENV*, void*, int32_t index, void* value);
   int32_t (*get_field_id)(SPVM_ENV*, const char*, const char*, const char*);

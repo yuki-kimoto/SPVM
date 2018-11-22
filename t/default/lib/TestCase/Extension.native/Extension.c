@@ -315,7 +315,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_V
   
   void* string = stack[0].oval;
   
-  int8_t* bytes = env->get_byte_array_elements(env, string);
+  int8_t* bytes = env->get_byte_array_elements_old(env, string);
   
   int32_t length = (int32_t)strlen((char*)bytes);
   
