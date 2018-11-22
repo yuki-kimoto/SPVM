@@ -135,7 +135,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_int_array_elements,
   };
   
-  int32_t env_length = 85;
+  int32_t env_length = 255;
   SPVM_ENV* env = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
   

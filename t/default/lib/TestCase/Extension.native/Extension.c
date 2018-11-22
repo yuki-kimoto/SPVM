@@ -470,11 +470,11 @@ int32_t SPVM_NATIVE_TestCase__Extension__add_int_array(SPVM_ENV* env, SPVM_VALUE
   
   int32_t length = env->get_array_length(env, obj_nums1);
   
-  int32_t* nums1 = env->get_int_array_elements_old(env, obj_nums1);
-  int32_t* nums2 = env->get_int_array_elements_old(env, obj_nums2);
+  int32_t* nums1 = env->get_int_array_elements(env, obj_nums1);
+  int32_t* nums2 = env->get_int_array_elements(env, obj_nums2);
   
   void* obj_nums3 = env->new_int_array_raw(env, length);
-  int32_t* nums3 = env->get_int_array_elements_old(env, obj_nums3);
+  int32_t* nums3 = env->get_int_array_elements(env, obj_nums3);
   
   {
     int32_t i;
@@ -681,9 +681,9 @@ int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, 
   int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count(env);
   
   stack[0].ival = 0;
-  if ((before_enter_memory_blocks_count - start_memory_blocks_count) == (2 * 2)) {
+  if ((before_enter_memory_blocks_count - start_memory_blocks_count) == 2) {
     if (before_enter_memory_blocks_count == after_leave_memory_blocks_counts) {
-      if ((before_leave_memory_blocks_count - before_enter_memory_blocks_count) == (3 * 2)) {
+      if ((before_leave_memory_blocks_count - before_enter_memory_blocks_count) == 3) {
         stack[0].ival = 1;
       }
     }
