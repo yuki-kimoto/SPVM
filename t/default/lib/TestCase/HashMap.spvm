@@ -1,6 +1,5 @@
 package TestCase::HashMap {
   use SPVM::Int;
-  use SPVM::String;
   use SPVM::HashMap;
 
   sub test_hasher : int () {
@@ -42,7 +41,7 @@ package TestCase::HashMap {
 
   sub test_value_string : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
-    my $vals = [SPVM::String->new("ALICE"), SPVM::String->new("B0B"), SPVM::String->new("caro!"), SPVM::String->new("\][=-0987654")];
+    my $vals = [(object) "ALICE", "B0B", "caro!", "\][=-0987654"];
     my $hash_map = SPVM::HashMap->new;
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash_map->set($keys->[$i], $vals->[$i]);
@@ -51,7 +50,7 @@ package TestCase::HashMap {
       return 0;
     }
     for (my $i = 0; $i < @$keys; ++$i) {
-      unless ($hash_map->get($keys->[$i]) == $vals->[$i]) {
+      unless ((string)($hash_map->get($keys->[$i])) eq (string)($vals->[$i])) {
         return 0;
       }
     }
