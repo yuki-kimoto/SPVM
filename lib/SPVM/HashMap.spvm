@@ -110,11 +110,12 @@ package SPVM::HashMap : private {
     unless ($key) {
       croak "key must not be undef";
     }
+    my $copied_key = copy_string $key;
     unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
       $self->_rehash;
     }
     my $count = $self->{count}; # To solve 'Refernece target must be numeric type or value type at ...'
-    _set_to_container($self->{states}, $self->{bucket_count}, \$count, $key, $val);
+    _set_to_container($self->{states}, $self->{bucket_count}, \$count, $copied_key, $val);
     $self->{count} = $count;
   }
 
