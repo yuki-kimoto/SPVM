@@ -10,10 +10,6 @@ package SPVM::HashMap : private {
     return $self->{bucket_count};
   }
 
-  sub _count : int ($self : self) {
-    return $self->{count};
-  }
-
   sub _states : SPVM::HashMapEntry [] ($self : self) {
     return $self->{states};
   }
