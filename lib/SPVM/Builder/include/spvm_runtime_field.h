@@ -12,6 +12,7 @@ struct SPVM_runtime_field {
   int32_t package_id;
   uint16_t index;
   uint16_t flag;
+  uint16_t byte_offset;
   uint8_t type_dimension;
   uint8_t runtime_type;
 };

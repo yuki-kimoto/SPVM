@@ -190,6 +190,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
 
     portable_field->id = field->id;
     portable_field->index = field->index;
+    portable_field->byte_offset = field->byte_offset;
     portable_field->flag = field->flag;
     portable_field->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->name, strlen(field->name) + 1);
     portable_field->signature_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, field->signature, strlen(field->signature) + 1);
@@ -303,6 +304,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_package->no_dup_call_sub_sub_ids_constant_pool_id = package->no_dup_call_sub_sub_ids_constant_pool_id;
     portable_package->no_dup_basic_type_ids_constant_pool_id = package->no_dup_basic_type_ids_constant_pool_id;
     portable_package->object_field_indexes_constant_pool_id = package->object_field_indexes_constant_pool_id;
+    
+    portable_package->fields_byte_size = package->fields_byte_size;
+    portable_package->object_fields_byte_offset = package->object_fields_byte_offset;
+    portable_package->object_fields_length = package->object_fields_length;
 
     if (package->fields->length > 0) {
       SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
