@@ -22,14 +22,13 @@ package SPVM::HashMap : private {
   # See: https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
   sub _hasher : int ($key : string, $seed : int) {
     my $m: int = 1540483477;
-    my $bytes_key = (byte [])$key;
-    my $bytes_len = @$bytes_key;
-    my $hash = $seed ^ $bytes_len;
-    for (my $i = 0; $i < $bytes_len / 4; ++$i) {
-      my $k = (int)$bytes_key->[$i]
-          + ((int)$bytes_key->[$i * 4 + 1] << 8)
-          + ((int)$bytes_key->[$i * 4 + 2] << 16)
-          + ((int)$bytes_key->[$i * 4 + 3] << 24);
+    my $len = length $key;
+    my $hash = $seed ^ $len;
+    for (my $i = 0; $i < $len / 4; ++$i) {
+      my $k = (int)$key->[$i]
+          + ((int)$key->[$i * 4 + 1] << 8)
+          + ((int)$key->[$i * 4 + 2] << 16)
+          + ((int)$key->[$i * 4 + 3] << 24);
       $k *= $m;
       $k ^= $k >> 24;
       $k *= $m;
@@ -37,13 +36,13 @@ package SPVM::HashMap : private {
       $hash ^= $k;
     }
 
-    switch ($bytes_len) {
+    switch ($len) {
       case 3:
-        $hash ^= (int)$bytes_key->[$bytes_len - 3] << 16;
+        $hash ^= (int)$key->[$len - 3] << 16;
       case 2:
-        $hash ^= (int)$bytes_key->[$bytes_len - 2] << 8;
+        $hash ^= (int)$key->[$len - 2] << 8;
       case 1:
-        $hash ^= (int)$bytes_key->[$bytes_len - 1];
+        $hash ^= (int)$key->[$len - 1];
         $hash *= $m;
       default: # FIXME: to avoid from segmentation fault (subroutine _hasher called twice if 'default' doesn't exist)
     }
