@@ -169,6 +169,29 @@ package TestCase::HashMap {
     return 1;
   }
 
+  sub test_values : int () {
+    my $hashmap = SPVM::HashMap->new;
+    my $keys = ["a", "bb", "12345"];
+    my $vals = [SPVM::Int->new(1), SPVM::Int->new(1), SPVM::Int->new(9)];
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $hashmap->set($keys->[$i], $vals->[$i]);
+    }
+    my $got_vals = $hashmap->values;
+    unless (@$got_vals == @$vals) {
+      return 0;
+    }
+    my $count_1 = 0;
+    my $count_9 = 0;
+    for (my $i = 0; $i < @$got_vals; ++$i) {
+      if (((SPVM::Int)$got_vals->[$i])->val == 1) { $count_1++; }
+      if (((SPVM::Int)$got_vals->[$i])->val == 9) { $count_9++; }
+    }
+    unless ($count_1 == 2 && $count_9 == 1) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_many_hash_collisions : int () {
     my $capacity = 16;
     my $hash_map = SPVM::HashMap->new_with_capacity($capacity);

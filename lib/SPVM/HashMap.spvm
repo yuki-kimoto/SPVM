@@ -181,4 +181,18 @@ package SPVM::HashMap : private {
     }
     return $retval;
   }
+
+  sub values : object[] ($self : self) {
+    my $retval = new object[$self->{count}];
+    # iterate states (TODO: Extract as visitor pattern function)
+    my $count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{states}->[$i];
+      while ($ref) {
+        $retval->[$count++] = $self->{states}->[$i]->val;
+        $ref = $ref->next_entry;
+      }
+    }
+    return $retval;
+  }
 }
