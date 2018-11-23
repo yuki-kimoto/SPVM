@@ -160,6 +160,7 @@ package SPVM::HashMap : private {
     }
     my $new_states = new SPVM::HashMapEntry [$new_bucket_count];
     my $new_count = 0;
+    # iterate states (TODO: Extract as visitor pattern function)
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{states}->[$i];
       while ($ref) {
@@ -169,5 +170,19 @@ package SPVM::HashMap : private {
     }
     $self->{bucket_count} = $new_bucket_count;
     $self->{states} = $new_states;
+  }
+
+  sub keys : string[] ($self : self) {
+    my $retval = new string[$self->{count}];
+    # iterate states (TODO: Extract as visitor pattern function)
+    my $count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{states}->[$i];
+      while ($ref) {
+        $retval->[$count++] = copy_string $self->{states}->[$i]->key;
+        $ref = $ref->next_entry;
+      }
+    }
+    return $retval;
   }
 }

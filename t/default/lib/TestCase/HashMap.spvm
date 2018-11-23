@@ -142,4 +142,30 @@ package TestCase::HashMap {
     }
     return 1;
   }
+
+  sub test_keys : int () {
+    my $hashmap = SPVM::HashMap->new;
+    my $keys = ["a", "bb", "12345"];
+    my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $hashmap->set($keys->[$i], $vals->[$i]);
+    }
+    my $got_keys = $hashmap->keys;
+    unless (@$got_keys == @$keys) {
+      return 0;
+    }
+    # cmp_deeply( $got_keys, bag(@$keys) );
+    for (my $i = 0; $i < @$got_keys; ++$i) {
+      my $found = 0;
+      for (my $j = 0; $j < @$keys; ++$j) {
+        if ($got_keys->[$i] eq $keys->[$j]) {
+          $found = 1;
+        }
+      }
+      unless ($found) {
+        return 0;
+      }
+    }
+    return 1;
+  }
 }
