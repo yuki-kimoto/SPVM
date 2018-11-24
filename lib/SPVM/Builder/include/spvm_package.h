@@ -28,7 +28,6 @@ struct SPVM_package {
   SPVM_HASH* sub_name_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
-  SPVM_LIST* object_field_indexes;
   SPVM_SUB* sub_destructor;
   SPVM_LIST* info_package_var_ids;
   SPVM_HASH* info_package_var_id_symtable;

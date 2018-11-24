@@ -32,7 +32,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  package->object_field_indexes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   package->info_package_var_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_package_var_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
