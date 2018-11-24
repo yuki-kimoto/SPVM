@@ -105,7 +105,7 @@ struct SPVM_env {
   void* object_ref_count_byte_offset;
   void* object_basic_type_id_byte_offset;
   void* object_type_dimension_byte_offset;
-  void* object_elements_length_byte_offset;
+  void* object_array_length_byte_offset;
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   int32_t (*enter_scope)(SPVM_ENV* env);
   void (*push_mortal)(SPVM_ENV* env, void* object);

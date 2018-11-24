@@ -105,7 +105,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, elements_length), // object_elements_length_byte_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, array_length), // object_array_length_byte_offset
     SPVM_RUNTIME_API_call_sub,
     SPVM_RUNTIME_API_enter_scope,
     SPVM_RUNTIME_API_push_mortal,

@@ -16,7 +16,7 @@ struct SPVM_object {
   uint8_t has_destructor;
   uint8_t in_destroy;
   uint8_t runtime_type;
-  int32_t elements_length;
+  int32_t array_length;
 };
 
 #endif
