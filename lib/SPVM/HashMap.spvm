@@ -3,15 +3,15 @@ package SPVM::HashMap : private {
 
   has bucket_count : private int;
   has count : private int;
-  has states : private SPVM::HashMapEntry [];
+  has entries : private SPVM::HashMapEntry [];
   has max_load_factor : private double;
 
   sub _bucket_count : int ($self : self) {
     return $self->{bucket_count};
   }
 
-  sub _states : SPVM::HashMapEntry [] ($self : self) {
-    return $self->{states};
+  sub _entries : SPVM::HashMapEntry [] ($self : self) {
+    return $self->{entries};
   }
 
   # Murmur hash for 32-bit
@@ -59,7 +59,7 @@ package SPVM::HashMap : private {
     my $self = new SPVM::HashMap;
     my $default_capacity = 32;
     $self->{bucket_count} = $default_capacity;
-    $self->{states} = new SPVM::HashMapEntry[$default_capacity];
+    $self->{entries} = new SPVM::HashMapEntry[$default_capacity];
     $self->{count} = 0;
     $self->{max_load_factor} = 1.0;
     return $self;
@@ -68,7 +68,7 @@ package SPVM::HashMap : private {
   sub new_with_capacity : SPVM::HashMap ($capacity : int) {
     my $self = new SPVM::HashMap;
     $self->{bucket_count} = $capacity;
-    $self->{states} = new SPVM::HashMapEntry[$capacity];
+    $self->{entries} = new SPVM::HashMapEntry[$capacity];
     $self->{count} = 0;
     $self->{max_load_factor} = 1.0;
     return $self;
@@ -78,12 +78,12 @@ package SPVM::HashMap : private {
     return $self->{count};
   }
 
-  sub _set_to_container : void ($states : SPVM::HashMapEntry[], $bucket_count : int, $count_ref : int&,
+  sub _set_to_container : void ($entries : SPVM::HashMapEntry[], $bucket_count : int, $count_ref : int&,
                                 $key : string, $val : object) {
     my $index = _index_by_key($key, $bucket_count);
-    my $ref = $states->[$index];
+    my $ref = $entries->[$index];
     unless ($ref) {
-      $states->[$index] = SPVM::HashMapEntry->new($key, $val, undef);
+      $entries->[$index] = SPVM::HashMapEntry->new($key, $val, undef);
       ++$$count_ref;
       return;
     }
@@ -110,13 +110,13 @@ package SPVM::HashMap : private {
       $self->_rehash;
     }
     my $count = $self->{count}; # To solve 'Refernece target must be numeric type or value type at ...'
-    _set_to_container($self->{states}, $self->{bucket_count}, \$count, $copied_key, $val);
+    _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $copied_key, $val);
     $self->{count} = $count;
   }
 
   sub get : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
-    my $ref = $self->{states}->[$index];
+    my $ref = $self->{entries}->[$index];
     unless ($ref) {
       return undef;
     }
@@ -154,28 +154,28 @@ package SPVM::HashMap : private {
     else {
       $new_bucket_count = $self->{bucket_count} * 2;
     }
-    my $new_states = new SPVM::HashMapEntry [$new_bucket_count];
+    my $new_entries = new SPVM::HashMapEntry [$new_bucket_count];
     my $new_count = 0;
-    # iterate states
+    # iterate entries
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
-      my $ref = $self->{states}->[$i];
+      my $ref = $self->{entries}->[$i];
       while ($ref) {
-        _set_to_container($new_states, $new_bucket_count, \$new_count, $ref->key, $ref->val);
+        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->key, $ref->val);
         $ref = $ref->next_entry;
       }
     }
     $self->{bucket_count} = $new_bucket_count;
-    $self->{states} = $new_states;
+    $self->{entries} = $new_entries;
   }
 
   sub keys : string[] ($self : self) {
     my $retval = new string[$self->{count}];
-    # iterate states
+    # iterate entries
     my $count = 0;
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
-      my $ref = $self->{states}->[$i];
+      my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = copy_string $self->{states}->[$i]->key;
+        $retval->[$count++] = copy_string $self->{entries}->[$i]->key;
         $ref = $ref->next_entry;
       }
     }
@@ -184,12 +184,12 @@ package SPVM::HashMap : private {
 
   sub values : object[] ($self : self) {
     my $retval = new object[$self->{count}];
-    # iterate states
+    # iterate entries
     my $count = 0;
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
-      my $ref = $self->{states}->[$i];
+      my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = $self->{states}->[$i]->val;
+        $retval->[$count++] = $self->{entries}->[$i]->val;
         $ref = $ref->next_entry;
       }
     }
