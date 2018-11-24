@@ -86,6 +86,18 @@ int32_t SPVM_STRING_BUFFER_add_field_index_name(SPVM_STRING_BUFFER* string_buffe
   return id;
 }
 
+int32_t SPVM_STRING_BUFFER_add_field_byte_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+  
+  int32_t id = string_buffer->length;
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_GLOBAL_FIELD_BYTE_OFFSET_");
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, field_name);
+  
+  return id;
+}
+
 int32_t SPVM_STRING_BUFFER_add_sub_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   
   int32_t id = string_buffer->length;

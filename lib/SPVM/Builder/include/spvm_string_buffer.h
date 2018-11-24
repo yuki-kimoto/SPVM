@@ -16,6 +16,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
 int32_t SPVM_STRING_BUFFER_add_package_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name);
 int32_t SPVM_STRING_BUFFER_add_field_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name);
 int32_t SPVM_STRING_BUFFER_add_field_index_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name);
+int32_t SPVM_STRING_BUFFER_add_field_byte_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name);
 int32_t SPVM_STRING_BUFFER_add_sub_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name);
 int32_t SPVM_STRING_BUFFER_add_basic_type_id_name(SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
 int32_t SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name);
