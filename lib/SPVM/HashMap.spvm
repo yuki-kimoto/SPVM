@@ -26,7 +26,7 @@ package SPVM::HashMap : private {
           + ((int)$key->[$i * 4 + 2] << 16)
           + ((int)$key->[$i * 4 + 3] << 24);
       $k *= $m;
-      $k ^= $k >> 24;
+      $k ^= $k >>> 24;
       $k *= $m;
       $hash *= $m;
       $hash ^= $k;
@@ -44,9 +44,9 @@ package SPVM::HashMap : private {
     }
 
     # Do a few final mixes of the hash.
-    $hash ^= $hash >> 13;
+    $hash ^= $hash >>> 13;
     $hash *= $m;
-    $hash ^= $hash >> 15;
+    $hash ^= $hash >>> 15;
     return $hash;
   }
 
@@ -175,7 +175,7 @@ package SPVM::HashMap : private {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = copy_string $self->{entries}->[$i]->key;
+        $retval->[$count++] = $self->{entries}->[$i]->key;
         $ref = $ref->next_entry;
       }
     }
