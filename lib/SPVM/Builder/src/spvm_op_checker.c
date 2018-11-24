@@ -4438,7 +4438,7 @@ void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PAC
   for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
     SPVM_TYPE* field_type = field->type;
-    if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       field->byte_offset = byte_offset;
       byte_offset += 1;
     }

@@ -2193,24 +2193,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int_vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)*(void**)&object_vars[opcode->operand1] + (intptr_t)env->object_elements_length_byte_offset);
         }
         break;
-      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-        int32_t field_index = field->index;
-        void* object = *(void**)&object_vars[opcode->operand0];
-        if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + env->object_header_byte_size);
-          void** object_field_address = (void**)&fields[field_index];
-          env->weaken(env, object_field_address);
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_WEAKEN_ARRAY_ELEMENT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
@@ -3202,7 +3184,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          warn("AAAAAAAAAAAA %d %d", field_byte_offset, byte_vars[opcode->operand2]);
           *(SPVM_VALUE_byte*)((intptr_t)object + object_header_byte_size + field_byte_offset) = byte_vars[opcode->operand2];
         }
         break;
@@ -3325,6 +3306,23 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         else {
           void* object_field_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_byte_offset);
           SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(object_field_address, NULL);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
+        int32_t constant_pool_id = opcode->operand1;
+        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+        int32_t field_byte_offset = field->byte_offset;
+        void* object = *(void**)&object_vars[opcode->operand0];
+        if (object == NULL) {
+          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          void** object_field_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_byte_offset);
+          env->weaken(env, object_field_address);
         }
         break;
       }
