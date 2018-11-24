@@ -1077,6 +1077,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
       SPVM_STRING_BUFFER_add_field_index_name(string_buffer, field_package_name, field_name);
       SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
+      SPVM_STRING_BUFFER_add_field_byte_offset_name(string_buffer, field_package_name, field_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ";\n");
     }
   }
 

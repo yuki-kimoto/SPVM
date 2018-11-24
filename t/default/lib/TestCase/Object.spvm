@@ -79,6 +79,10 @@ package TestCase::Object {
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
+    
+    warn($test_case->{x_byte});
+    warn($test_case->{x_short});
+    
     if ((int)$test_case->{x_byte} == (int)INT8_MAX()) {
       if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
         if ($test_case->{x_int} == INT32_MAX()) {
