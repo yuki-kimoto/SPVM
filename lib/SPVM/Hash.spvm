@@ -1,16 +1,16 @@
-package SPVM::HashMap : private {
-  use SPVM::HashMapEntry;
+package SPVM::Hash : private {
+  use SPVM::HashEntry;
 
   has bucket_count : private int;
   has count : private int;
-  has entries : private SPVM::HashMapEntry [];
+  has entries : private SPVM::HashEntry [];
   has max_load_factor : private double;
 
   sub _bucket_count : int ($self : self) {
     return $self->{bucket_count};
   }
 
-  sub _entries : SPVM::HashMapEntry [] ($self : self) {
+  sub _entries : SPVM::HashEntry [] ($self : self) {
     return $self->{entries};
   }
 
@@ -55,20 +55,20 @@ package SPVM::HashMap : private {
     return _hasher($key, $default_seed) % $bucket_count;
   }
 
-  sub new : SPVM::HashMap () {
-    my $self = new SPVM::HashMap;
+  sub new : SPVM::Hash () {
+    my $self = new SPVM::Hash;
     my $default_capacity = 32;
     $self->{bucket_count} = $default_capacity;
-    $self->{entries} = new SPVM::HashMapEntry[$default_capacity];
+    $self->{entries} = new SPVM::HashEntry[$default_capacity];
     $self->{count} = 0;
     $self->{max_load_factor} = 1.0;
     return $self;
   }
 
-  sub new_with_capacity : SPVM::HashMap ($capacity : int) {
-    my $self = new SPVM::HashMap;
+  sub new_with_capacity : SPVM::Hash ($capacity : int) {
+    my $self = new SPVM::Hash;
     $self->{bucket_count} = $capacity;
-    $self->{entries} = new SPVM::HashMapEntry[$capacity];
+    $self->{entries} = new SPVM::HashEntry[$capacity];
     $self->{count} = 0;
     $self->{max_load_factor} = 1.0;
     return $self;
@@ -78,12 +78,12 @@ package SPVM::HashMap : private {
     return $self->{count};
   }
 
-  sub _set_to_container : void ($entries : SPVM::HashMapEntry[], $bucket_count : int, $count_ref : int&,
+  sub _set_to_container : void ($entries : SPVM::HashEntry[], $bucket_count : int, $count_ref : int&,
                                 $key : string, $val : object) {
     my $index = _index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
     unless ($ref) {
-      $entries->[$index] = SPVM::HashMapEntry->new($key, $val, undef);
+      $entries->[$index] = SPVM::HashEntry->new($key, $val, undef);
       ++$$count_ref;
       return;
     }
@@ -93,7 +93,7 @@ package SPVM::HashMap : private {
         return;
       }
       unless ($ref->next_entry) {
-        $ref->set_next_entry(SPVM::HashMapEntry->new($key, $val, undef));
+        $ref->set_next_entry(SPVM::HashEntry->new($key, $val, undef));
         ++$$count_ref;
         return;
       }
@@ -154,7 +154,7 @@ package SPVM::HashMap : private {
     else {
       $new_bucket_count = $self->{bucket_count} * 2;
     }
-    my $new_entries = new SPVM::HashMapEntry [$new_bucket_count];
+    my $new_entries = new SPVM::HashEntry [$new_bucket_count];
     my $new_count = 0;
     # iterate entries
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {

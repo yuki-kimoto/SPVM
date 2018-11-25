@@ -1,10 +1,10 @@
-package SPVM::HashMapEntry : private {
+package SPVM::HashEntry : private {
   has key : private string;
   has val : private object;
-  has next_entry : private SPVM::HashMapEntry;
+  has next_entry : private SPVM::HashEntry;
     
-  sub new : SPVM::HashMapEntry ($key : string, $val : object, $next_entry : SPVM::HashMapEntry) {
-    my $self = new SPVM::HashMapEntry;
+  sub new : SPVM::HashEntry ($key : string, $val : object, $next_entry : SPVM::HashEntry) {
+    my $self = new SPVM::HashEntry;
     $self->{key} = $key;
     $self->{val} = $val;
     $self->{next_entry} = $next_entry;
@@ -19,7 +19,7 @@ package SPVM::HashMapEntry : private {
     return $self->{val};
   }
 
-  sub next_entry : SPVM::HashMapEntry ($self : self) {
+  sub next_entry : SPVM::HashEntry ($self : self) {
     return $self->{next_entry};
   }
 
@@ -27,7 +27,7 @@ package SPVM::HashMapEntry : private {
     $self->{val} = $value;
   }
 
-  sub set_next_entry : void ($self : self, $next_entry : SPVM::HashMapEntry) {
+  sub set_next_entry : void ($self : self, $next_entry : SPVM::HashEntry) {
     $self->{next_entry} = $next_entry;
   }
 }
