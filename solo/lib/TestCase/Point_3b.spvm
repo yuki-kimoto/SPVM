@@ -1,4 +1,4 @@
-package TestCase::Point_b3 : value_t {
+package TestCase::Point_3b : value_t {
   has x : byte;
   has y : byte;
   has z : byte;

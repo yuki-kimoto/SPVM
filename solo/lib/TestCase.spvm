@@ -120,12 +120,12 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $values_point_byte = new TestCase::Point_b3[1];
-      my $values_point_short = new TestCase::Point_s3[1];
-      my $values_point_int = new TestCase::Point_i3[1];
-      my $values_point_long = new TestCase::Point_l3[1];
-      my $values_point_float = new TestCase::Point_f3[1];
-      my $values_point_double = new TestCase::Point_d3[1];
+      my $values_point_byte = new TestCase::Point_3b[1];
+      my $values_point_short = new TestCase::Point_3s[1];
+      my $values_point_int = new TestCase::Point_3i[1];
+      my $values_point_long = new TestCase::Point_3l[1];
+      my $values_point_float = new TestCase::Point_3f[1];
+      my $values_point_double = new TestCase::Point_3d[1];
       
       $values_point_byte->[0]{x} = (byte)INT8_MIN();
       $values_point_short->[0]{x} = (short)INT16_MIN();
@@ -198,7 +198,7 @@ SPVM::Test - SPVM test module
     print($args->[2] . "\n");
     
     {
-      my $point1 : TestCase::Point_d3;
+      my $point1 : TestCase::Point_3d;
       
       $point1->{x} = DBL_MIN();
       $point1->{y} = 0.5;
@@ -214,7 +214,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : SPVM::Complex_d2;
+      my $z : SPVM::Complex_2d;
       
       $z->{re} = 0.25;
       $z->{im} = 0.5;
@@ -226,7 +226,7 @@ SPVM::Test - SPVM test module
       
       print($z_re . " " . $z_im . "\n");
       
-      my $out : SPVM::Complex_d2;
+      my $out : SPVM::Complex_2d;
       
       ref_sum_complex($z, $z, \$out);
       
@@ -234,7 +234,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : SPVM::Complex_d2;
+      my $z1 : SPVM::Complex_2d;
       $z1->{re} = 0.25;
       $z1->{im} = 0.5;
       
@@ -281,7 +281,7 @@ SPVM::Test - SPVM test module
       
     }
     {
-      my $nums1 = new SPVM::Complex_d2[10];
+      my $nums1 = new SPVM::Complex_2d[10];
       $nums1->[9]{re} = 5;
       $nums1->[9]{im} = 9;
       
@@ -301,11 +301,11 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : SPVM::Complex_d2;
+      my $z1 : SPVM::Complex_2d;
       $z1->{re} = 0.5;
       $z1->{im} = 0.25;
       
-      my $z2 : SPVM::Complex_d2;
+      my $z2 : SPVM::Complex_2d;
       $z2->{re} = 1.0;
       $z2->{im} = 0.5;
       
@@ -319,7 +319,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : SPVM::Complex_d2;
+      my $z : SPVM::Complex_2d;
       $z->{re} = 0.5;
       $z->{im} = 0.25;
       
@@ -1689,7 +1689,7 @@ SPVM::Test - SPVM test module
     $$x_out = $x_in1 + $x_in2;
   }
   
-  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_d2, $x_in2 : SPVM::Complex_d2, $x_out : SPVM::Complex_d2&) {
+  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_2d, $x_in2 : SPVM::Complex_2d, $x_out : SPVM::Complex_2d&) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }

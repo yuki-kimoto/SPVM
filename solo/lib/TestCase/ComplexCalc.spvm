@@ -1,8 +1,8 @@
 package TestCase::ComplexCalc {
-  use SPVM::Complex_d2;
+  use SPVM::Complex_2d;
   
-  sub add : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2) {
-    my $z3 : SPVM::Complex_d2;
+  sub add : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z3 : SPVM::Complex_2d;
     
     $z3->{re} = $z1->{re} + $z2->{re};
     $z3->{im} = $z1->{im} + $z2->{im};
