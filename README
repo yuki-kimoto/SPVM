@@ -102,7 +102,6 @@ DEVELOPERS NOTE
   
     - don't use realloc.
     - don't use global variables
-    - don't use static keyword
     - don't use inline keyword
     - use -std=c99
     - fix all warnings before CPAN release
