@@ -64,12 +64,12 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   int32_t portable_basic_types_length = compiler->basic_types->length;
   portable->basic_types_length = portable_basic_types_length;
   
-  // Package vars length(0 is index for not existance)
-  int32_t portable_package_vars_length = compiler->package_vars->length + 1;
+  // Package vars length
+  int32_t portable_package_vars_length = compiler->package_vars->length;
   portable->package_vars_length = portable_package_vars_length;
   
-  // Fields length(0 is index for not existance)
-  int32_t portable_fields_length = compiler->fields->length + 1;
+  // Fields length
+  int32_t portable_fields_length = compiler->fields->length;
   portable->fields_length = portable_fields_length;
 
   // Arg total length
@@ -80,12 +80,12 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   }
   portable->args_length = portable_args_length;
   
-  // Subs length(0 is index for not existance)
-  int32_t portable_subs_length = compiler->subs->length + 1;
+  // Subs length
+  int32_t portable_subs_length = compiler->subs->length;
   portable->subs_length = portable_subs_length;
   
-  // Packages length(0 is index for not existance)
-  int32_t portable_packages_length = compiler->packages->length + 1;
+  // Packages length
+  int32_t portable_packages_length = compiler->packages->length;
   portable->packages_length = portable_packages_length;
   
   // String pool length
@@ -161,11 +161,11 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Portable package_vars(32bit)(0 index is for not existance)
+  // Portable package_vars(32bit)
   for (int32_t package_var_id = 0; package_var_id < compiler->package_vars->length; package_var_id++) {
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(compiler->package_vars, package_var_id);
     
-    SPVM_RUNTIME_PACKAGE_VAR* portable_package_var = &portable->package_vars[package_var_id + 1];
+    SPVM_RUNTIME_PACKAGE_VAR* portable_package_var = &portable->package_vars[package_var_id];
 
     portable_package_var->id = package_var->id;
     portable_package_var->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var->name, strlen(package_var->name) + 1);
@@ -175,7 +175,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_package_var->basic_type_id = package_var->type->basic_type->id;
     }
     else {
-      portable_package_var->basic_type_id = 0;
+      portable_package_var->basic_type_id = -1;
     }
     portable_package_var->type_dimension = package_var->type->dimension;
     portable_package_var->type_flag = package_var->type->flag;
@@ -183,10 +183,10 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     portable_package_var->package_id = package_var->package->id;
   }
 
-  // Portable fields(32bit)(0 index is for not existance)
+  // Portable fields(32bit)
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* portable_field = &portable->fields[field_id + 1];
+    SPVM_RUNTIME_FIELD* portable_field = &portable->fields[field_id];
 
     portable_field->id = field->id;
     portable_field->index = field->index;
@@ -198,7 +198,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_field->basic_type_id = field->type->basic_type->id;
     }
     else {
-      portable_field->basic_type_id = 0;
+      portable_field->basic_type_id = -1;
     }
     portable_field->type_dimension = field->type->dimension;
     if (field->package) {
@@ -209,12 +209,12 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   
   // Portable args(32bit)
 
-  // Portable subs(32bit)(0 index is for not existance)
+  // Portable subs(32bit)
   int32_t args_base = 0;
   for (int32_t sub_id = 0; sub_id < compiler->subs->length; sub_id++) {
     SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_id);
 
-    SPVM_RUNTIME_SUB* portable_sub = &portable->subs[sub_id + 1];
+    SPVM_RUNTIME_SUB* portable_sub = &portable->subs[sub_id];
 
     portable_sub->id = sub->id;
     portable_sub->flag = sub->flag;
@@ -285,7 +285,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
 
-    SPVM_RUNTIME_PACKAGE* portable_package = &portable->packages[package_id + 1];
+    SPVM_RUNTIME_PACKAGE* portable_package = &portable->packages[package_id];
     
     portable_package->id = package->id;
     portable_package->name_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->name, strlen(package->name) + 1);
@@ -293,7 +293,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_package->destructor_sub_id = package->sub_destructor->id;
     }
     else {
-      portable_package->destructor_sub_id = 0;
+      portable_package->destructor_sub_id = -1;
     }
     portable_package->category = package->category;
     portable_package->flag = package->flag;

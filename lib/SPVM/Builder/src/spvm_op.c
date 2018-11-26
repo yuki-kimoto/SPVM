@@ -1667,7 +1667,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_COMPILER_error(compiler, "Too many field declarations at %s line %d\n", field->op_field->file, field->op_field->line);
     }
     else {
-      field->id = compiler->fields->length + 1;
+      field->id = compiler->fields->length;
       SPVM_LIST_push(compiler->fields, field);
       SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
       
@@ -1715,7 +1715,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_COMPILER_error(compiler, "Too many package variable declarations at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
       }
       else {
-        package_var->id = compiler->package_vars->length + 1;
+        package_var->id = compiler->package_vars->length;
         SPVM_LIST_push(compiler->package_vars, package_var);
         SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
         
@@ -1818,7 +1818,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           assert(sub->op_sub->file);
           
-          sub->id = compiler->subs->length + 1;
+          sub->id = compiler->subs->length;
           
           SPVM_LIST_push(compiler->subs, sub);
           SPVM_HASH_insert(package->sub_symtable, sub->op_name->uv.name, strlen(sub->op_name->uv.name), sub);

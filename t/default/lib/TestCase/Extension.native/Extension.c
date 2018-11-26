@@ -125,7 +125,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_object_field(SPVM_ENV* env, 
   }
   
   int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
-  if (basic_type_id == 0) {
+  if (basic_type_id < 0) {
     return SPVM_EXCEPTION;
   }
   void* object_minimal = env->new_object(env, basic_type_id);
@@ -613,7 +613,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   // 8
   {
     int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
-    if (basic_type_id == 0) {
+    if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
     void* sp_object = env->new_object(env, basic_type_id);
@@ -622,7 +622,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   // 9
   {
     int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
-    if (basic_type_id == 0) {
+    if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
     void* sp_objects = env->new_object_array(env, basic_type_id, 3);
@@ -631,7 +631,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   // 10
   {
     int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Minimal");
-    if (basic_type_id == 0) {
+    if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
     void* sp_objects = env->new_object_array(env, basic_type_id, 3);
@@ -640,7 +640,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   // 11
   {
     int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Pointer");
-    if (basic_type_id == 0) {
+    if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
     void* sp_objects = env->new_pointer(env, basic_type_id, NULL);

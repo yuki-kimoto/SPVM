@@ -3764,7 +3764,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   // Package
   int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(string[])");
   
-  if (sub_id == 0) {
+  if (sub_id < 0) {
     fprintf(stderr, "Can't find entry point package %s\n", package_name);
     exit(EXIT_FAILURE);
   }
@@ -4514,7 +4514,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
   
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id == 0) {
+  if (basic_type->package_id < 0) {
     package = NULL;
   }
   else {
@@ -4541,7 +4541,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
-  if (package->destructor_sub_id > 0) {
+  if (package->destructor_sub_id >= 0) {
     object->has_destructor = 1;
   }
   
@@ -4556,7 +4556,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
 
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id == 0) {
+  if (basic_type->package_id < 0) {
     package = NULL;
   }
   else {
@@ -4582,7 +4582,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
-  if (package->destructor_sub_id > 0) {
+  if (package->destructor_sub_id >= 0) {
     object->has_destructor = 1;
   }
   
@@ -4715,7 +4715,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
     SPVM_RUNTIME_PACKAGE* package;
-    if (basic_type->package_id == 0) {
+    if (basic_type->package_id < 0) {
       package = NULL;
     }
     else {
@@ -4879,11 +4879,11 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   // Basic type
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_get_basic_type(env, package_name);
   if (!basic_type) {
-    return 0;
+    return -1;
   }
   
-  if (basic_type->package_id == 0) {
-    return 0;
+  if (basic_type->package_id < 0) {
+    return -1;
   }
   
   // Package
@@ -4892,12 +4892,12 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   // Field
   SPVM_RUNTIME_FIELD* field = SPVM_RUNTIME_API_get_field(env, package, field_name);
   if (!field) {
-    return 0;
+    return -1;
   }
 
   // Signature
   if (strcmp(signature, &runtime->string_pool[field->signature_id]) != 0) {
-    return 0;
+    return -1;
   }
   
   int32_t field_id = field->id;
@@ -4955,8 +4955,8 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id == 0) {
-    return 0;
+  if (basic_type->package_id < 0) {
+    return -1;
   }
   else {
     package = &runtime->packages[basic_type->package_id];
@@ -4965,12 +4965,12 @@ int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_n
   // Package variable name
   SPVM_RUNTIME_PACKAGE_VAR* package_var = SPVM_RUNTIME_API_get_package_var(env, package, package_var_name);
   if (!package_var) {
-    return 0;
+    return -1;
   }
   
   // Signature
   if (strcmp(signature, &runtime->string_pool[package_var->signature_id]) != 0) {
-    return 0;
+    return -1;
   }
   
   int32_t package_var_id = package_var->id;
@@ -5029,7 +5029,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id == 0) {
+  if (basic_type->package_id < 0) {
     package = NULL;
   }
   else {
@@ -5037,20 +5037,20 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
   }
   
   if (package == NULL) {
-    sub_id = 0;
+    sub_id = -1;
   }
   else {
     int32_t subs_length = package->subs_length;
     int32_t subs_base = package->subs_base;
     
     if (subs_length == 0) {
-      sub_id = 0;
+      sub_id = -1;
     }
     else {
       // Sub
       SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
       if (sub == NULL) {
-        sub_id = 0;
+        sub_id = -1;
       }
       else {
         // Signature
@@ -5058,7 +5058,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
           sub_id = sub->id;
         }
         else {
-          sub_id = 0;
+          sub_id = -1;
         }
       }
     }
@@ -5151,7 +5151,7 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type
   (void)env;
   
   if (basic_type_name == NULL) {
-    return 0;
+    return -1;
   }
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5162,7 +5162,7 @@ int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type
     return basic_type_id;
   }
   else {
-    return 0;
+    return -1;
   }
 }
 

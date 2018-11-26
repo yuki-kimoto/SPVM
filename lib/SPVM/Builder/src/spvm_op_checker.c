@@ -4460,7 +4460,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
   // Set package id
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
-    package->id = package_index + 1;
+    package->id = package_index;
   }
   
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
