@@ -3,6 +3,7 @@
   - valut_t type name rule is changed.
     for example
     Change SPVM::Point_d3 to SPVM::Point_3d
+  - fix int literal out of range seg fault bug.
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.
