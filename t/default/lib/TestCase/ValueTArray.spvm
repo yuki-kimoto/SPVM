@@ -1,18 +1,18 @@
 package TestCase::ValueTArray {
-  use TestCase::Point_b3;
-  use TestCase::Point_s3;
-  use TestCase::Point_i3;
-  use TestCase::Point_l3;
-  use TestCase::Point_f3;
-  use TestCase::Point_d3;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
 
   sub array_byte : int () {
-    my $nums1 = new TestCase::Point_b3[10];
+    my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
     
-    my $nums2 = new TestCase::Point_b3[10];
+    my $nums2 = new TestCase::Point_3b[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -28,12 +28,12 @@ package TestCase::ValueTArray {
 
   sub array_short : int () {
     
-    my $nums1 = new TestCase::Point_s3[10];
+    my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
     $nums1->[9]{y} = (short)(INT16_MIN() + 1);
     $nums1->[9]{z} = (short)(INT16_MIN() + 2);
     
-    my $nums2 = new TestCase::Point_s3[10];
+    my $nums2 = new TestCase::Point_3s[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -48,12 +48,12 @@ package TestCase::ValueTArray {
   }
 
   sub array_int : int () {
-    my $nums1 = new TestCase::Point_i3[10];
+    my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
     $nums1->[9]{z} = INT32_MIN() + 2;
     
-    my $nums2 = new TestCase::Point_i3[10];
+    my $nums2 = new TestCase::Point_3i[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -68,12 +68,12 @@ package TestCase::ValueTArray {
   }
 
   sub array_long : int () {
-    my $nums1 = new TestCase::Point_l3[10];
+    my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
     $nums1->[9]{z} = INT64_MIN() + 2;
     
-    my $nums2 = new TestCase::Point_l3[10];
+    my $nums2 = new TestCase::Point_3l[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -88,12 +88,12 @@ package TestCase::ValueTArray {
   }
 
   sub array_float : int () {
-    my $nums1 = new TestCase::Point_f3[10];
+    my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
     $nums1->[9]{z} = FLT_MIN() + 0.5f;
     
-    my $nums2 = new TestCase::Point_f3[10];
+    my $nums2 = new TestCase::Point_3f[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -108,12 +108,12 @@ package TestCase::ValueTArray {
   }
   
   sub array_double : int () {
-    my $nums1 = new TestCase::Point_d3[10];
+    my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;
     $nums1->[9]{z} = DBL_MIN() + 0.5;
     
-    my $nums2 = new TestCase::Point_d3[10];
+    my $nums2 = new TestCase::Point_3d[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -128,7 +128,7 @@ package TestCase::ValueTArray {
   }
   
   sub array_field_byte : int () {
-    my $nums = new TestCase::Point_b3[10];
+    my $nums = new TestCase::Point_3b[10];
     $nums->[9]{x} = (byte)INT8_MIN();
     $nums->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums->[9]{z} = (byte)(INT8_MIN() + 2);
@@ -146,7 +146,7 @@ package TestCase::ValueTArray {
 
   sub array_field_short : int () {
     
-    my $nums = new TestCase::Point_s3[10];
+    my $nums = new TestCase::Point_3s[10];
     $nums->[9]{x} = (short)INT16_MIN();
     $nums->[9]{y} = (short)(INT16_MIN() + 1);
     $nums->[9]{z} = (short)(INT16_MIN() + 2);
@@ -163,7 +163,7 @@ package TestCase::ValueTArray {
   }
   
   sub array_field_int : int () {
-    my $nums = new TestCase::Point_i3[10];
+    my $nums = new TestCase::Point_3i[10];
     $nums->[9]{x} = INT32_MIN();
     $nums->[9]{y} = INT32_MIN() + 1;
     $nums->[9]{z} = INT32_MIN() + 2;
@@ -180,7 +180,7 @@ package TestCase::ValueTArray {
   }
 
   sub array_field_long : int () {
-    my $nums = new TestCase::Point_l3[10];
+    my $nums = new TestCase::Point_3l[10];
     $nums->[9]{x} = INT64_MIN();
     $nums->[9]{y} = INT64_MIN() + 1;
     $nums->[9]{z} = INT64_MIN() + 2;
@@ -197,7 +197,7 @@ package TestCase::ValueTArray {
   }
 
   sub array_field_float : int () {
-    my $nums = new TestCase::Point_f3[10];
+    my $nums = new TestCase::Point_3f[10];
     $nums->[9]{x} = FLT_MIN();
     $nums->[9]{y} = FLT_MIN() + 0.25f;
     $nums->[9]{z} = FLT_MIN() + 0.5f;
@@ -214,7 +214,7 @@ package TestCase::ValueTArray {
   }
   
   sub array_field_double : int () {
-    my $nums = new TestCase::Point_d3[10];
+    my $nums = new TestCase::Point_3d[10];
     $nums->[9]{x} = DBL_MIN();
     $nums->[9]{y} = DBL_MIN() + 0.25;
     $nums->[9]{z} = DBL_MIN() + 0.5;
@@ -231,7 +231,7 @@ package TestCase::ValueTArray {
   }
 
   sub move_byte : int () {
-    my $nums1 = new TestCase::Point_b3[10];
+    my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
@@ -251,7 +251,7 @@ package TestCase::ValueTArray {
 
   sub move_short : int () {
     
-    my $nums1 = new TestCase::Point_s3[10];
+    my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
     $nums1->[9]{y} = (short)(INT16_MIN() + 1);
     $nums1->[9]{z} = (short)(INT16_MIN() + 2);
@@ -270,7 +270,7 @@ package TestCase::ValueTArray {
   }
 
   sub move_int : int () {
-    my $nums1 = new TestCase::Point_i3[10];
+    my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
     $nums1->[9]{z} = INT32_MIN() + 2;
@@ -289,7 +289,7 @@ package TestCase::ValueTArray {
   }
 
   sub move_long : int () {
-    my $nums1 = new TestCase::Point_l3[10];
+    my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
     $nums1->[9]{z} = INT64_MIN() + 2;
@@ -308,7 +308,7 @@ package TestCase::ValueTArray {
   }
 
   sub move_float : int () {
-    my $nums1 = new TestCase::Point_f3[10];
+    my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
     $nums1->[9]{z} = FLT_MIN() + 0.5f;
@@ -327,7 +327,7 @@ package TestCase::ValueTArray {
   }
   
   sub move_double : int () {
-    my $nums1 = new TestCase::Point_d3[10];
+    my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;
     $nums1->[9]{z} = DBL_MIN() + 0.5;

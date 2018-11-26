@@ -1,4 +1,5 @@
 Changes
+doc/index.html
 lib/SPVM.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Bool.spvm
@@ -108,8 +109,8 @@ lib/SPVM/Builder/Util.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
 lib/SPVM/Comparator.spvm
-lib/SPVM/Complex_d2.spvm
-lib/SPVM/Complex_f2.spvm
+lib/SPVM/Complex_2d.spvm
+lib/SPVM/Complex_2f.spvm
 lib/SPVM/CORE.native/CORE.c
 lib/SPVM/Core.pm
 lib/SPVM/CORE.spvm
@@ -225,6 +226,7 @@ t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/PackageVar/Private.spvm
+t/default/lib/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/TestCase/CompileError/Term/SingleParenthesArrayLength.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
@@ -267,12 +269,12 @@ t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/PerlAPI.spvm
-t/default/lib/TestCase/Point_b3.spvm
-t/default/lib/TestCase/Point_d3.spvm
-t/default/lib/TestCase/Point_f3.spvm
-t/default/lib/TestCase/Point_i3.spvm
-t/default/lib/TestCase/Point_l3.spvm
-t/default/lib/TestCase/Point_s3.spvm
+t/default/lib/TestCase/Point_3b.spvm
+t/default/lib/TestCase/Point_3d.spvm
+t/default/lib/TestCase/Point_3f.spvm
+t/default/lib/TestCase/Point_3i.spvm
+t/default/lib/TestCase/Point_3l.spvm
+t/default/lib/TestCase/Point_3s.spvm
 t/default/lib/TestCase/Pointer.native/Pointer.c
 t/default/lib/TestCase/Pointer.spvm
 t/default/lib/TestCase/Private.spvm

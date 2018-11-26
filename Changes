@@ -1,3 +1,8 @@
+0.0395 2018-11-26
+  - sub id, field id, package var id, basic type id, package id become start 0
+  - valut_t type name rule is changed.
+    for example
+    Change SPVM::Point_d3 to SPVM::Point_3d
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.

@@ -1,12 +1,12 @@
 package TestCase::SpecialAssign {
   use TestCase::Minimal;
   use TestCase::Simple;
-  use TestCase::Point_b3;
-  use TestCase::Point_s3;
-  use TestCase::Point_i3;
-  use TestCase::Point_l3;
-  use TestCase::Point_f3;
-  use TestCase::Point_d3;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
@@ -394,8 +394,8 @@ package TestCase::SpecialAssign {
   }
 
   sub special_assign_add_array_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new TestCase::Point_i3[][2];
-    $nums_of_nums->[0] = new TestCase::Point_i3[1];
+    my $nums_of_nums = new TestCase::Point_3i[][2];
+    $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
     my $ret1 = $nums_of_nums->[0][0]{x} += 1;
     
@@ -409,12 +409,12 @@ package TestCase::SpecialAssign {
   }
 
   sub special_assign_add_array_field_access_constant_index : int () {
-    my $values_point_byte = new TestCase::Point_b3[1];
-    my $values_point_short = new TestCase::Point_s3[1];
-    my $values_point_int = new TestCase::Point_i3[1];
-    my $values_point_long = new TestCase::Point_l3[1];
-    my $values_point_float = new TestCase::Point_f3[1];
-    my $values_point_double = new TestCase::Point_d3[1];
+    my $values_point_byte = new TestCase::Point_3b[1];
+    my $values_point_short = new TestCase::Point_3s[1];
+    my $values_point_int = new TestCase::Point_3i[1];
+    my $values_point_long = new TestCase::Point_3l[1];
+    my $values_point_float = new TestCase::Point_3f[1];
+    my $values_point_double = new TestCase::Point_3d[1];
     
     $values_point_byte->[0]{x} = (byte)INT8_MIN();
     $values_point_short->[0]{x} = (short)INT16_MIN();

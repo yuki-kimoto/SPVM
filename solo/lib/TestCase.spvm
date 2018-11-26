@@ -13,15 +13,15 @@ package TestCase {
   use TestCase::Comparator;
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
-  use SPVM::Complex_d2;
+  use SPVM::Complex_2d;
   use SPVM::Comparator;
 
-  use TestCase::Point_b3;
-  use TestCase::Point_s3;
-  use TestCase::Point_i3;
-  use TestCase::Point_l3;
-  use TestCase::Point_f3;
-  use TestCase::Point_d3;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
 
 =pod
 

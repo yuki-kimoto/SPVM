@@ -4514,22 +4514,22 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
           char* tail_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 255);
           switch (first_field_type->basic_type->id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE:
-              sprintf(tail_name, "_b%d", fields->length);
+              sprintf(tail_name, "_%db", fields->length);
               break;
             case SPVM_BASIC_TYPE_C_ID_SHORT:
-              sprintf(tail_name, "_s%d", fields->length);
+              sprintf(tail_name, "_%ds", fields->length);
               break;
             case SPVM_BASIC_TYPE_C_ID_INT:
-              sprintf(tail_name, "_i%d", fields->length);
+              sprintf(tail_name, "_%di", fields->length);
               break;
             case SPVM_BASIC_TYPE_C_ID_LONG:
-              sprintf(tail_name, "_l%d", fields->length);
+              sprintf(tail_name, "_%dl", fields->length);
               break;
             case SPVM_BASIC_TYPE_C_ID_FLOAT:
-              sprintf(tail_name, "_f%d", fields->length);
+              sprintf(tail_name, "_%df", fields->length);
               break;
             case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-              sprintf(tail_name, "_d%d", fields->length);
+              sprintf(tail_name, "_%dd", fields->length);
               break;
             default:
               assert(0);

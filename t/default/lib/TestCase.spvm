@@ -4,7 +4,7 @@ package TestCase {
   use TestCase::Destructor;
   use TestCase::Empty;
   use TestCase::Private;
-  use TestCase::Point_i3;
+  use TestCase::Point_3i;
   use TestCase::Data::Weaken;
   use TestCase::Switch;
 

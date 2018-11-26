@@ -20,7 +20,7 @@ use Encode 'decode', 'encode';
 use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
 use SPVM 'TestCase::PerlAPI';
-use SPVM 'TestCase::Point_i3';
+use SPVM 'TestCase::Point_3i';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -316,7 +316,7 @@ is_deeply(
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $sp_values = SPVM::new_value_array("TestCase::Point_i3", $values);
+    my $sp_values = SPVM::new_value_array("TestCase::Point_3i", $values);
     ok(TestCase::PerlAPI->spvm_new_value_array_int($sp_values));
     my $out_values = $sp_values->to_elements;
     is_deeply($out_values, $values);
@@ -324,7 +324,7 @@ is_deeply(
 
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $sp_values = SPVM::new_value_array_from_binary("TestCase::Point_i3", $binary);
+    my $sp_values = SPVM::new_value_array_from_binary("TestCase::Point_3i", $binary);
     ok(TestCase::PerlAPI->spvm_new_value_array_binary_int($sp_values));
     my $out_bin = $sp_values->to_binary;
     is_deeply($out_bin, $binary);

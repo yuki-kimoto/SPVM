@@ -1,10 +1,10 @@
 package TestCase::Ref {
-  use TestCase::Point_b3;
-  use TestCase::Point_s3;
-  use TestCase::Point_i3;
-  use TestCase::Point_l3;
-  use TestCase::Point_f3;
-  use TestCase::Point_d3;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
 
   sub numeric_ref_deref_byte : int () {
     my $num1 = (byte)INT8_MIN();
@@ -103,7 +103,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_byte : int () {
-    my $point1 : TestCase::Point_b3;
+    my $point1 : TestCase::Point_3b;
     
     $point1->{x} = INT8_MIN();
     $point1->{y} = 1;
@@ -120,7 +120,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_byte : int () {
-    my $point : TestCase::Point_b3;
+    my $point : TestCase::Point_3b;
     
     $point->{x} = INT8_MIN();
     $point->{y} = 1;
@@ -139,7 +139,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_byte : int () {
-    my $point : TestCase::Point_b3;
+    my $point : TestCase::Point_3b;
 
     my $point_ref = \$point;
     
@@ -154,14 +154,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_byte : int () {
-    my $point_out : TestCase::Point_b3;
+    my $point_out : TestCase::Point_3b;
     
-    my $point1 : TestCase::Point_b3;
+    my $point1 : TestCase::Point_3b;
     $point1->{x} = INT8_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : TestCase::Point_b3;
+    my $point2 : TestCase::Point_3b;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -174,14 +174,14 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_byte : void ($x_in1 : TestCase::Point_b3, $x_in2 : TestCase::Point_b3, $x_out : TestCase::Point_b3&) {
+  sub pass_value_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b&) {
     $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_short : int () {
-    my $point1 : TestCase::Point_s3;
+    my $point1 : TestCase::Point_3s;
     
     $point1->{x} = INT16_MIN();
     $point1->{y} = 1;
@@ -198,7 +198,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_short : int () {
-    my $point : TestCase::Point_s3;
+    my $point : TestCase::Point_3s;
     
     $point->{x} = INT16_MIN();
     $point->{y} = 1;
@@ -217,7 +217,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_short : int () {
-    my $point : TestCase::Point_s3;
+    my $point : TestCase::Point_3s;
 
     my $point_ref = \$point;
     
@@ -232,14 +232,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_short : int () {
-    my $point_out : TestCase::Point_s3;
+    my $point_out : TestCase::Point_3s;
     
-    my $point1 : TestCase::Point_s3;
+    my $point1 : TestCase::Point_3s;
     $point1->{x} = INT16_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : TestCase::Point_s3;
+    my $point2 : TestCase::Point_3s;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -252,14 +252,14 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_short : void ($x_in1 : TestCase::Point_s3, $x_in2 : TestCase::Point_s3, $x_out : TestCase::Point_s3&) {
+  sub pass_value_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s&) {
     $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_double : int () {
-    my $point1 : TestCase::Point_d3;
+    my $point1 : TestCase::Point_3d;
     
     $point1->{x} = DBL_MIN();
     $point1->{y} = 0.5;
@@ -276,7 +276,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_int : int () {
-    my $point1 : TestCase::Point_i3;
+    my $point1 : TestCase::Point_3i;
     
     $point1->{x} = INT32_MIN();
     $point1->{y} = 1;
@@ -293,7 +293,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_int : int () {
-    my $point : TestCase::Point_i3;
+    my $point : TestCase::Point_3i;
     
     $point->{x} = INT32_MIN();
     $point->{y} = 1;
@@ -312,7 +312,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_int : int () {
-    my $point : TestCase::Point_i3;
+    my $point : TestCase::Point_3i;
 
     my $point_ref = \$point;
     
@@ -327,14 +327,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_int : int () {
-    my $point_out : TestCase::Point_i3;
+    my $point_out : TestCase::Point_3i;
     
-    my $point1 : TestCase::Point_i3;
+    my $point1 : TestCase::Point_3i;
     $point1->{x} = INT32_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : TestCase::Point_i3;
+    my $point2 : TestCase::Point_3i;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -347,14 +347,14 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_int : void ($x_in1 : TestCase::Point_i3, $x_in2 : TestCase::Point_i3, $x_out : TestCase::Point_i3&) {
+  sub pass_value_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i&) {
     $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_long : int () {
-    my $point1 : TestCase::Point_l3;
+    my $point1 : TestCase::Point_3l;
     
     $point1->{x} = INT64_MIN();
     $point1->{y} = 1;
@@ -371,7 +371,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_long : int () {
-    my $point : TestCase::Point_l3;
+    my $point : TestCase::Point_3l;
     
     $point->{x} = INT64_MIN();
     $point->{y} = 1;
@@ -390,7 +390,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_long : int () {
-    my $point : TestCase::Point_l3;
+    my $point : TestCase::Point_3l;
 
     my $point_ref = \$point;
     
@@ -405,14 +405,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_long : int () {
-    my $point_out : TestCase::Point_l3;
+    my $point_out : TestCase::Point_3l;
     
-    my $point1 : TestCase::Point_l3;
+    my $point1 : TestCase::Point_3l;
     $point1->{x} = INT64_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : TestCase::Point_l3;
+    my $point2 : TestCase::Point_3l;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -425,14 +425,14 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_long : void ($x_in1 : TestCase::Point_l3, $x_in2 : TestCase::Point_l3, $x_out : TestCase::Point_l3&) {
+  sub pass_value_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l&) {
     $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_float : int () {
-    my $point1 : TestCase::Point_f3;
+    my $point1 : TestCase::Point_3f;
     
     $point1->{x} = FLT_MIN();
     $point1->{y} = 0.5f;
@@ -449,7 +449,7 @@ package TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_float : int () {
-    my $point : TestCase::Point_f3;
+    my $point : TestCase::Point_3f;
     
     $point->{x} = FLT_MIN();
     $point->{y} = 0.5f;
@@ -468,7 +468,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_float : int () {
-    my $point : TestCase::Point_f3;
+    my $point : TestCase::Point_3f;
 
     my $point_ref = \$point;
     
@@ -483,14 +483,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_float : int () {
-    my $point_out : TestCase::Point_f3;
+    my $point_out : TestCase::Point_3f;
     
-    my $point1 : TestCase::Point_f3;
+    my $point1 : TestCase::Point_3f;
     $point1->{x} = 0.25f;
     $point1->{y} = 0.5f;
     $point1->{z} = 0.125f;
 
-    my $point2 : TestCase::Point_f3;
+    my $point2 : TestCase::Point_3f;
     $point2->{x} = 0.25f;
     $point2->{y} = 0.5f;
     $point2->{z} = 0.125f;
@@ -503,14 +503,14 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_f3, $x_in2 : TestCase::Point_f3, $x_out : TestCase::Point_f3&) {
+  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
   }
 
   sub value_ref_deref_get_field_double : int () {
-    my $point : TestCase::Point_d3;
+    my $point : TestCase::Point_3d;
     
     $point->{x} = DBL_MIN();
     $point->{y} = 0.5;
@@ -529,7 +529,7 @@ package TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_double : int () {
-    my $point : TestCase::Point_d3;
+    my $point : TestCase::Point_3d;
 
     my $point_ref = \$point;
     
@@ -544,14 +544,14 @@ package TestCase::Ref {
   }
   
   sub test_pass_value_ref_double : int () {
-    my $point_out : TestCase::Point_d3;
+    my $point_out : TestCase::Point_3d;
     
-    my $point1 : TestCase::Point_d3;
+    my $point1 : TestCase::Point_3d;
     $point1->{x} = 0.25;
     $point1->{y} = 0.5;
     $point1->{z} = 0.125;
 
-    my $point2 : TestCase::Point_d3;
+    my $point2 : TestCase::Point_3d;
     $point2->{x} = 0.25;
     $point2->{y} = 0.5;
     $point2->{z} = 0.125;
@@ -564,7 +564,7 @@ package TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_double : void ($x_in1 : TestCase::Point_d3, $x_in2 : TestCase::Point_d3, $x_out : TestCase::Point_d3&) {
+  sub pass_value_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};

@@ -1,15 +1,15 @@
 package SPVM::CORE {
-  use SPVM::Complex_f2;
-  use SPVM::Complex_d2;
+  use SPVM::Complex_2f;
+  use SPVM::Complex_2d;
   
-  native sub cadd : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
-  native sub csub : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
-  native sub cmul : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
-  native sub cdiv : SPVM::Complex_d2 ($z1 : SPVM::Complex_d2, $z2 : SPVM::Complex_d2);
-  native sub caddf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
-  native sub csubf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
-  native sub cmulf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
-  native sub cdivf : SPVM::Complex_f2 ($z1 : SPVM::Complex_f2, $z2 : SPVM::Complex_f2);
+  native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
+  native sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
+  native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
+  native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   
   sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;
@@ -101,12 +101,12 @@ package SPVM::CORE {
     return $new_objects;
   }
 
-  sub new_fcomplex_array : SPVM::Complex_f2[] ($re_values : float[], $im_values : float[]) {
+  sub new_fcomplex_array : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
     if (@$re_values != @$im_values) {
       croak "Real values length is different from imaginary values";
     }
     
-    my $z_array = new SPVM::Complex_f2[@$re_values];
+    my $z_array = new SPVM::Complex_2f[@$re_values];
     for (my $i = 0; $i < @$re_values; $i++) {
       $z_array->[$i]{re} = $re_values->[$i];
       $z_array->[$i]{im} = $im_values->[$i];
@@ -115,12 +115,12 @@ package SPVM::CORE {
     return $z_array;
   }
   
-  sub new_dcomplex_array : SPVM::Complex_d2[] ($re_values : double[], $im_values : double[]) {
+  sub new_dcomplex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
     if (@$re_values != @$im_values) {
       croak "Real values length is different from imaginary values";
     }
     
-    my $z_array = new SPVM::Complex_d2[@$re_values];
+    my $z_array = new SPVM::Complex_2d[@$re_values];
     for (my $i = 0; $i < @$re_values; $i++) {
       $z_array->[$i]{re} = $re_values->[$i];
       $z_array->[$i]{im} = $im_values->[$i];
@@ -129,8 +129,8 @@ package SPVM::CORE {
     return $z_array;
   }
 
-  native sub new_fcomplex : SPVM::Complex_f2 ($re : float, $im : float);
-  native sub new_dcomplex : SPVM::Complex_d2 ($re : double, $im : double);
+  native sub new_fcomplex : SPVM::Complex_2f ($re : float, $im : float);
+  native sub new_dcomplex : SPVM::Complex_2d ($re : double, $im : double);
   sub join : string ($sep : string, $strings : string[]) {
     my $join = "";
     
