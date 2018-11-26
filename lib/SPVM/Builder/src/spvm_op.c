@@ -337,13 +337,6 @@ SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t
   return op_block;
 }
 
-SPVM_OP* SPVM_OP_clone_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
-  
-  SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, op_type->uv.type, op_type->file, op_type->line);
-  
-  return op_type_new;
-}
-
 SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const char* file, int32_t line) {
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -1621,8 +1614,41 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       // Getter
       if (field->has_getter) {
         // sub foo : int ($self : self) {
-        //   return $self->{foo} = $foo;
+        //   return $self->{foo};
         // }
+        
+        SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, op_decl->file, op_decl->line);
+        SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+        SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
+        return_type->basic_type = field->type->basic_type;
+        return_type->dimension = field->type->dimension;
+        return_type->flag = field->type->flag;
+        SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+        SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_var_name = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
+        SPVM_OP* op_var_self = SPVM_OP_new_op_var(compiler, op_var_name);
+        SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
+        self_type->is_self = 1;
+        SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_decl->file, op_decl->line);
+        SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_var_self, op_self_type);
+        SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_self);
+        
+        SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BLOCK, op_decl->file, op_decl->line);
+        SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
+
+        SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
+        SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
+        SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+        SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_var_self_invocant, op_name_field_access);
+        
+        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_field_access);
+        SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+        SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+        
+        SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
+        
+        SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
 
       // Setter
