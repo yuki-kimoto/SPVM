@@ -11,7 +11,9 @@ const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "public",
   "private",
   "pointer",
-  "value_t"
+  "rw",
+  "ro",
+  "wo",
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler) {

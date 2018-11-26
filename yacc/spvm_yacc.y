@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA
+%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block

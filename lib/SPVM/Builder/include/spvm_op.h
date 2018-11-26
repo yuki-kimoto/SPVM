@@ -163,6 +163,9 @@ enum {
   SPVM_OP_C_ID_DEREF,
   SPVM_OP_C_ID_DOT3,
   SPVM_OP_C_ID_STRING_LENGTH,
+  SPVM_OP_C_ID_RW,
+  SPVM_OP_C_ID_RO,
+  SPVM_OP_C_ID_WO,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
