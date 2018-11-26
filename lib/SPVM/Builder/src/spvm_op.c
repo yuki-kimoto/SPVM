@@ -1968,6 +1968,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   // Check descriptors
   if (op_descriptors) {
     SPVM_OP* op_descriptor = op_descriptors->first;
+    int32_t accessor_descriptor_count = 0;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
@@ -1977,8 +1978,25 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
           break;
+        case SPVM_DESCRIPTOR_C_ID_RW:
+          field->has_setter = 1;
+          field->has_getter = 1;
+          accessor_descriptor_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_RO:
+          field->has_getter = 1;
+          accessor_descriptor_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_WO:
+          field->has_setter = 1;
+          accessor_descriptor_count++;
+          break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid field descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+      }
+      
+      if (accessor_descriptor_count > 1) {
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one", op_field->file, op_field->line);
       }
     }
   }

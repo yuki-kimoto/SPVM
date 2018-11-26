@@ -20,6 +20,8 @@ struct SPVM_field {
   int32_t runtime_type;
   int32_t is_captured;
   int32_t byte_offset;
+  int32_t has_setter;
+  int32_t has_getter;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
