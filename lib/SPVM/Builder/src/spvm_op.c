@@ -1588,17 +1588,49 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     // Package var declarations
     else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
+      SPVM_PACKAGE_VAR* package_var = op_decl->uv.package_var;
+
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_COMPILER_error(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
       }
       SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
+
+      // Getter
+      if (package_var->has_getter) {
+        // sub FOO : int ($self : self) {
+        //   return $FOO;
+        // }
+      }
+
+      // Setter
+      if (package_var->has_setter) {
+        // sub SET_FOO : void ($self : self, $foo : int) {
+        //   $FOO = $foo;
+        // }
+      }
     }
     // Field declarations
     else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
+      SPVM_FIELD* field = op_decl->uv.field;
+      
       if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
         SPVM_COMPILER_error(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
       }
-      SPVM_LIST_push(package->fields, op_decl->uv.field);
+      SPVM_LIST_push(package->fields, field);
+      
+      // Getter
+      if (field->has_getter) {
+        // sub foo : int ($self : self) {
+        //   return $self->{foo} = $foo;
+        // }
+      }
+
+      // Setter
+      if (field->has_setter) {
+        // sub set_foo : void ($self : self, $foo : int) {
+        //   $self->{foo} = $foo;
+        // }
+      }
     }
     // Enum declarations
     else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
