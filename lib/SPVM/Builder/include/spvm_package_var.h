@@ -16,6 +16,8 @@ struct SPVM_package_var {
   SPVM_OP* op_name;
   int32_t id;
   int32_t flag;
+  int32_t has_setter;
+  int32_t has_getter;
 };
 
 SPVM_PACKAGE_VAR* SPVM_PACKAGE_VAR_new(SPVM_COMPILER* compiler);

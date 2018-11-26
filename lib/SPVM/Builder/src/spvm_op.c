@@ -1930,6 +1930,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
 
   // Check descriptors
   if (op_descriptors) {
+    int32_t accessor_descriptor_count = 0;
     SPVM_OP* op_descriptor = op_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
@@ -1940,8 +1941,24 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
           break;
+        case SPVM_DESCRIPTOR_C_ID_RW:
+          package_var->has_setter = 1;
+          package_var->has_getter = 1;
+          accessor_descriptor_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_RO:
+          package_var->has_getter = 1;
+          accessor_descriptor_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_WO:
+          package_var->has_setter = 1;
+          accessor_descriptor_count++;
+          break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid package variable descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+      }
+      if (accessor_descriptor_count > 1) {
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one at %s line %d", op_package_var->file, op_package_var->line);
       }
     }
   }
@@ -1996,7 +2013,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
       }
       
       if (accessor_descriptor_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one at %s line %d", op_field->file, op_field->line);
       }
     }
   }
