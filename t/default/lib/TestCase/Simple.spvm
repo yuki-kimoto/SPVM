@@ -12,7 +12,7 @@ package TestCase::Simple {
   has double_value : double;
   has object_value : TestCase::Minimal;
   
-  our $FOO : int;
+  our $FOO : public int;
   our $VAR_PRIVATE : private int;
 
   sub get_x : int ($self : self) {

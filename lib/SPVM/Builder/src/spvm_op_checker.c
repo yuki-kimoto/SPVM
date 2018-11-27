@@ -2681,7 +2681,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), op_cur->uv.package_var_access->package_var);
               }
 
-              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE && !op_cur->uv.package_var_access->inline_expansion) {
+              int32_t is_private;
+              // Private flag
+              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE) {
+                is_private = 1;
+              }
+              // Public flag
+              else if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PUBLIC) {
+                is_private = 0;
+              }
+              // Default is private
+              else {
+                is_private = 1;
+              }
+
+              if (is_private && !op_cur->uv.package_var_access->inline_expansion) {
                 if (strcmp(package_var_access_package->name, sub->package->op_name->uv.name) != 0) {
                   SPVM_COMPILER_error(compiler, "Can't access to private package variable \"%s\" at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;

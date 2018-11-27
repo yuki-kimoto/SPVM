@@ -10,6 +10,7 @@
     our $FOO : rw int;
   - setter and getter is inlined.
   - package become private by default except for anon sub
+  - package variable become private by default
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.

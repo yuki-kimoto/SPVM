@@ -5,7 +5,7 @@
 
 enum {
   SPVM_FIELD_C_FLAG_PRIVATE = 1,
-  SPVM_FIELD_C_FLAG_PUBLIC = 1,
+  SPVM_FIELD_C_FLAG_PUBLIC = 2,
 };
 
 struct SPVM_field {
