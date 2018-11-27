@@ -49,6 +49,8 @@ SPVM::Test - SPVM test module
   has x_double : double;
   has private_field : int;
   
+  has x_rw : rw int;
+  
   sub BYTE_MAX : byte () { return (byte)127; }
   sub BYTE_MIN : byte () { return (byte)-128; }
   sub SHORT_MAX : short () { return (short)32767; }
@@ -61,6 +63,13 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      my $test_case = new TestCase;
+      $test_case->{x_rw} = 5;
+      my $test_case_x_rw = $test_case->x_rw;
+      print("$test_case_x_rw\n");
+    }
+    
     {
       my $string_length = length "abc";
       print("$string_length\n");
