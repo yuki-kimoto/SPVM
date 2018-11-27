@@ -5,6 +5,7 @@
 
 enum {
   SPVM_PACKAGE_VAR_C_FLAG_PRIVATE = 1,
+  SPVM_PACKAGE_VAR_C_FLAG_PUBLIC = 2,
 };
 
 struct SPVM_package_var {
