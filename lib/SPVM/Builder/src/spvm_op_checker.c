@@ -2309,7 +2309,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               int32_t sub_args_count = call_sub->sub->args->length;
               int32_t sub_is_vaarg = call_sub->sub->have_vaarg;
 
-              // Enum is replace to constant value
+              // Enum is replaced to constant value
               if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
                 // Replace sub to constant
                 op_cur->id = SPVM_OP_C_ID_CONSTANT;
@@ -2317,6 +2317,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 op_cur->first = NULL;
                 op_cur->last = NULL;
+              }
+              // Field getter is replaced to field access
+              else if (call_sub->sub->is_field_getter) {
+                // [Before]
+                // $object->foo
+                // [After]
+                // $object->{foo}
+
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                const char* field_name = call_sub->sub->accessor_original_name;
+                SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
+                const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
+                SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
+                SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
+                SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_field_access);
+                
+                op_cur = op_field_access;
+
+                SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
               }
               // Normal subroutine
               else {
