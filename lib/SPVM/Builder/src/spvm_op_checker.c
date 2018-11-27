@@ -2340,6 +2340,30 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
               }
+              else if (call_sub->sub->is_package_var_getter) {
+                // [Before]
+                // Class->FOO
+                // [After]
+                // $Class::FOO
+
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+                const char* package_var_base_name = call_sub->sub->accessor_original_name;
+                char* package_var_name = package_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
+                memcpy(package_var_name, "$", 1);
+                memcpy(package_var_name, package_name, strlen(package_name));
+                memcpy(package_var_name, "::", 2);
+                memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
+                SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
+                SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+                
+                op_cur = op_package_var_access;
+
+                SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
+              }
               // Normal subroutine
               else {
                 
