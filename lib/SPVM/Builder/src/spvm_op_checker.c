@@ -2531,12 +2531,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
+                  SPVM_OP_cut_op(compiler, call_sub->op_invocant);
+                  
                   const char* field_name = call_sub->sub->accessor_original_name;
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
-                  SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_sub->op_invocant, op_name_field_access);
                   op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_field_access);
@@ -2560,13 +2559,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_cut_op(compiler, op_term_value);
 
                   op_term_value->no_need_check = 1;
+
+                  SPVM_OP_cut_op(compiler, call_sub->op_invocant);
                   
                   const char* field_name = call_sub->sub->accessor_original_name;
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
-                  SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_sub->op_invocant, op_name_field_access);
                   op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
