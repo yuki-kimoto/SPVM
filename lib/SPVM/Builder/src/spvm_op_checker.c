@@ -2514,6 +2514,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
                   SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_field_access);
                   
@@ -2543,6 +2544,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
                   SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                   SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_term_value);
@@ -2571,6 +2573,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
                   SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                  op_package_var_access->uv.package_var_access->inline_expansion = 1;
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
                   
@@ -2603,6 +2606,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
                   SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
                   SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                  op_package_var_access->uv.package_var_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                   SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_term_value);
@@ -2654,7 +2658,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_HASH_insert(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t), op_cur->uv.package_var_access->package_var);
               }
 
-              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE) {
+              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE && !op_cur->uv.package_var_access->inline_expansion) {
                 if (strcmp(package_var_access_package->name, sub->package->op_name->uv.name) != 0) {
                   SPVM_COMPILER_error(compiler, "Can't access to private package variable \"%s\" at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
@@ -2785,7 +2789,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
+              if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE && !op_cur->uv.field_access->inline_expansion) {
                 if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
                   SPVM_COMPILER_error(compiler, "Can't access to private field \"%s\" at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
                   return;
