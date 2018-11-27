@@ -64,6 +64,7 @@ struct SPVM_sub {
   int32_t is_package_var_getter;
   int32_t is_field_setter;
   int32_t is_field_getter;
+  const char* accessor_original_name;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

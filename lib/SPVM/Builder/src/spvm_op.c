@@ -1617,6 +1617,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
 
         op_sub->uv.sub->is_package_var_getter = 1;
+        op_sub->uv.sub->accessor_original_name = package_var->name;
         
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
@@ -1664,6 +1665,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
         
         op_sub->uv.sub->is_package_var_setter = 1;
+        op_sub->uv.sub->accessor_original_name = package_var->name;
         
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
@@ -1715,6 +1717,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
         
         op_sub->uv.sub->is_field_getter = 1;
+        op_sub->uv.sub->accessor_original_name = field->name;
         
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
@@ -1771,6 +1774,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
         
         op_sub->uv.sub->is_field_setter = 1;
+        op_sub->uv.sub->accessor_original_name = field->name;
         
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
