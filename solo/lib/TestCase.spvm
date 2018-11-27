@@ -74,7 +74,7 @@ SPVM::Test - SPVM test module
 
     {
       my $test_case = new TestCase;
-      $test_case->{x_rw} = 5;
+      $test_case->set_x_rw(5);
       my $test_case_x_rw = $test_case->x_rw;
       print("$test_case_x_rw\n");
     }
