@@ -2350,7 +2350,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
                 const char* package_var_base_name = call_sub->sub->accessor_original_name;
-                char* package_var_name = package_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
+                char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
                 memcpy(package_var_name, "$", 1);
                 memcpy(package_var_name, package_name, strlen(package_name));
                 memcpy(package_var_name, "::", 2);
