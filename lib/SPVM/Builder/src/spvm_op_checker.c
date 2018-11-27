@@ -2309,309 +2309,309 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               int32_t sub_args_count = call_sub->sub->args->length;
               int32_t sub_is_vaarg = call_sub->sub->have_vaarg;
 
-              // Enum is replaced to constant value
-              if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
-                // Replace sub to constant
-                op_cur->id = SPVM_OP_C_ID_CONSTANT;
-                op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;
-                
-                op_cur->first = NULL;
-                op_cur->last = NULL;
-              }
-              // Field getter is replaced to field access
-              else if (call_sub->sub->is_field_getter) {
-                // [Before]
-                // $object->foo
-                // [After]
-                // $object->{foo}
-
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                const char* field_name = call_sub->sub->accessor_original_name;
-                SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
-                SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
-                SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
-                SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_field_access);
-                
-                op_cur = op_field_access;
-
-                SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
-              }
-              // Field setter is replaced to field access
-              else if (call_sub->sub->is_field_setter) {
-                // [Before]
-                // $object->set_foo($value)
-                // [After]
-                // $object->{foo} = $value
-
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                SPVM_OP* op_args = op_cur->last;
-                SPVM_OP* op_term_value = op_args->last;
-                
-                SPVM_OP_cut_op(compiler, op_term_value);
-
-                op_term_value->no_need_check = 1;
-                
-                const char* field_name = call_sub->sub->accessor_original_name;
-                SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
-                SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
-                SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
-                SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
-                
-                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_term_value);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_assign);
-                
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                
-                op_cur = op_assign;
-              }
-              // Package var getter is replaced to package var access
-              else if (call_sub->sub->is_package_var_getter) {
-                // [Before]
-                // Class->FOO
-                // [After]
-                // $Class::FOO
-
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
-                const char* package_var_base_name = call_sub->sub->accessor_original_name;
-                char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
-                memcpy(package_var_name, "$", 1);
-                memcpy(package_var_name, package_name, strlen(package_name));
-                memcpy(package_var_name, "::", 2);
-                memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
-                SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
-                SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
-                
-                op_cur = op_package_var_access;
-
-                SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
-              }
-              // Package var setter is replaced to package var access
-              else if (call_sub->sub->is_package_var_setter) {
-                // [Before]
-                // Class->SET_FOO($value)
-                // [After]
-                // $Class::FOO = $value
-
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                SPVM_OP* op_args = op_cur->last;
-                SPVM_OP* op_term_value = op_args->last;
-                
-                SPVM_OP_cut_op(compiler, op_term_value);
-
-                op_term_value->no_need_check = 1;
-                
-                const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
-                const char* package_var_base_name = call_sub->sub->accessor_original_name;
-                char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
-                memcpy(package_var_name, "$", 1);
-                memcpy(package_var_name, package_name, strlen(package_name));
-                memcpy(package_var_name, "::", 2);
-                memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
-                SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
-                SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
-                
-                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_term_value);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_assign);
-                
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                
-                op_cur = op_assign;
-              }
-              // Normal subroutine
-              else {
-                
-                // Variable length argument. Last argument is not array.
-                int32_t vaarg_last_arg_is_not_array = 0;
-                if (sub_is_vaarg) {
-                  int32_t arg_index = 0;
-                  SPVM_OP* op_term = op_list_args->first;
-                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                    if (arg_index == sub_args_count - 1) {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
-                      if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        vaarg_last_arg_is_not_array = 1;
-                      }
+              // Variable length argument. Last argument is not array.
+              int32_t vaarg_last_arg_is_not_array = 0;
+              if (sub_is_vaarg) {
+                int32_t arg_index = 0;
+                SPVM_OP* op_term = op_list_args->first;
+                while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+                  if (arg_index == sub_args_count - 1) {
+                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
+                    if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                      vaarg_last_arg_is_not_array = 1;
                     }
-                    
-                    arg_index++;
                   }
+                  
+                  arg_index++;
                 }
+              }
 
-                // Variable length arguments
-                if (vaarg_last_arg_is_not_array) {
-                  
-                  SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_sub->file, op_call_sub->line);
-                  
-                  const char* file = op_cur->file;
-                  int32_t line = op_cur->line;
-                  
-                  // New
-                  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
-                  
-                  SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub->sub->args->length - 1);
-                  SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
+              // Variable length arguments
+              if (vaarg_last_arg_is_not_array) {
+                
+                SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_sub->file, op_call_sub->line);
+                
+                const char* file = op_cur->file;
+                int32_t line = op_cur->line;
+                
+                // New
+                SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
+                
+                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub->sub->args->length - 1);
+                SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
-                  // Create new type
-                  SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                  type_new->basic_type = vaarg_last_arg_type->basic_type;
-                  type_new->dimension = vaarg_last_arg_type->dimension;
-                  type_new->flag = vaarg_last_arg_type->flag;
-                  SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, type_new, op_cur->file, op_cur->line);
-                  
-                  // Create element type
-                  SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                  type_element->basic_type = vaarg_last_arg_type->basic_type;
-                  type_element->dimension = vaarg_last_arg_type->dimension - 1;
-                  type_element->flag = vaarg_last_arg_type->flag;
-                  SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
-                  
-                  // Sequence
-                  SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
-                  SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                  SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, NULL, file, line);
-                  
-                  SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
+                // Create new type
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                type_new->basic_type = vaarg_last_arg_type->basic_type;
+                type_new->dimension = vaarg_last_arg_type->dimension;
+                type_new->flag = vaarg_last_arg_type->flag;
+                SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, type_new, op_cur->file, op_cur->line);
+                
+                // Create element type
+                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+                type_element->basic_type = vaarg_last_arg_type->basic_type;
+                type_element->dimension = vaarg_last_arg_type->dimension - 1;
+                type_element->flag = vaarg_last_arg_type->flag;
+                SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
+                
+                // Sequence
+                SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
+                SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+                SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, NULL, file, line);
+                
+                SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
-                  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
-                  
-                  int32_t length;
-                  int32_t arg_index = 0;
-                  int32_t vaarg_index = 0;
-                  
-                  SPVM_OP* op_term_element = op_list_args->first;
-                  while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+                SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
+                
+                int32_t length;
+                int32_t arg_index = 0;
+                int32_t vaarg_index = 0;
+                
+                SPVM_OP* op_term_element = op_list_args->first;
+                while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
 
-                    op_term_element->no_need_check = 1;
+                  op_term_element->no_need_check = 1;
 
-                    if (arg_index < sub_args_count - 1) {
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
-                      SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_term_element);
-                      op_term_element = op_stab;
-                    }
-                    else {
-                      op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
-
-                      SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
-                      
-                      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
-
-                      SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
-                      SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
-
-                      SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, vaarg_index, file, line);
-                      SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
-                      
-                      SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
-                      
-                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
-                      
-                      vaarg_index++;
-                      op_term_element = op_stab;
-                    }
-                    arg_index++;
+                  if (arg_index < sub_args_count - 1) {
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+                    SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_term_element);
+                    op_term_element = op_stab;
                   }
-                  length = vaarg_index;
-                  
-                  SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
-                  SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
+                  else {
+                    op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
 
-                  SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-                  SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
-                  
-                  SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
-                  
-                  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
+                    SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+                    
+                    SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
-                  SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
+                    SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                    SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
 
-                  SPVM_OP* op_stab_args_new = SPVM_OP_cut_op(compiler, op_call_sub->last);
-                  
-                  SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
+                    SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, vaarg_index, file, line);
+                    SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
+                    
+                    SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_term_element);
+                    
+                    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
+                    
+                    vaarg_index++;
+                    op_term_element = op_stab;
+                  }
+                  arg_index++;
+                }
+                length = vaarg_index;
+                
+                SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
+                SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
 
-                  SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
-                  if (compiler->error_count > 0) {
+                SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
+                SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
+                
+                SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                
+                SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
+
+                SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
+
+                SPVM_OP* op_stab_args_new = SPVM_OP_cut_op(compiler, op_call_sub->last);
+                
+                SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
+
+                SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
+                op_list_args = op_list_args_new;
+              }
+              
+              int32_t call_sub_args_count = 0;
+              {
+                SPVM_OP* op_term = op_list_args->first;
+                while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+                  call_sub_args_count++;
+                  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
+                    SPVM_COMPILER_error(compiler, "Can't use @ in subroutine arguments at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+
+                  if (call_sub_args_count > sub_args_count) {
+                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
-                  op_list_args = op_list_args_new;
-                }
-                
-                int32_t call_sub_args_count = 0;
-                {
-                  SPVM_OP* op_term = op_list_args->first;
-                  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                    call_sub_args_count++;
-                    if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
-                      SPVM_COMPILER_error(compiler, "Can't use @ in subroutine arguments at %s line %d\n", op_cur->file, op_cur->line);
-                      return;
-                    }
-
-                    if (call_sub_args_count > sub_args_count) {
-                      SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
-                      return;
-                    }
-                    
-                    SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
-                    SPVM_TYPE* sub_arg_my_type = SPVM_OP_get_type(compiler, sub_arg_my->op_my);
-                    
-                    // Check if source can be assigned to dist
-                    // If needed, numeric convertion op is added
-                    op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my_type, op_term);
-                    if (compiler->error_count > 0) {
-                      return;
-                    }
+                  SPVM_MY* sub_arg_my = SPVM_LIST_fetch(call_sub->sub->args, call_sub_args_count - 1);
+                  SPVM_TYPE* sub_arg_my_type = SPVM_OP_get_type(compiler, sub_arg_my->op_my);
+                  
+                  // Check if source can be assigned to dist
+                  // If needed, numeric convertion op is added
+                  op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my_type, op_term);
+                  if (compiler->error_count > 0) {
+                    return;
                   }
                 }
-                
-                if (call_sub_args_count < sub_args_count) {
-                  SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
-                  return;
-                }
-                
-                // Update operand stack max
-                if (call_sub_args_count > sub->call_sub_arg_stack_max) {
-                  sub->call_sub_arg_stack_max = call_sub_args_count;
-                }
+              }
+              
+              if (call_sub_args_count < sub_args_count) {
+                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Update operand stack max
+              if (call_sub_args_count > sub->call_sub_arg_stack_max) {
+                sub->call_sub_arg_stack_max = call_sub_args_count;
+              }
 
-                // Call sub constant pool id
-                char sub_id_string[sizeof(int32_t)];
-                memcpy(sub_id_string, &op_cur->uv.call_sub->sub->id, sizeof(int32_t));
-                int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t));
-                if (found_constant_pool_id > 0) {
-                  op_cur->uv.call_sub->constant_pool_id = found_constant_pool_id;
-                }
-                else {
-                  int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.call_sub->sub->id);
-                  op_cur->uv.call_sub->constant_pool_id = constant_pool_id;
-                  SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
-                }
+              // Call sub constant pool id
+              char sub_id_string[sizeof(int32_t)];
+              memcpy(sub_id_string, &op_cur->uv.call_sub->sub->id, sizeof(int32_t));
+              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t));
+              if (found_constant_pool_id > 0) {
+                op_cur->uv.call_sub->constant_pool_id = found_constant_pool_id;
+              }
+              else {
+                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.call_sub->sub->id);
+                op_cur->uv.call_sub->constant_pool_id = constant_pool_id;
+                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
+              }
 
-                // No duplicate sub access sub id
-                SPVM_SUB* found_sub = SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));
-                if (found_sub == NULL) {
-                  SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
-                  SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), op_cur->uv.call_sub->sub);
+              // No duplicate sub access sub id
+              SPVM_SUB* found_sub = SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));
+              if (found_sub == NULL) {
+                SPVM_LIST_push(package->info_sub_ids, (void*)(intptr_t)op_cur->uv.call_sub->sub->id);
+                SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), op_cur->uv.call_sub->sub);
+              }
+              
+              if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
+                SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Inline expansion
+              {
+                // Enum is replaced to constant value
+                if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
+                  // Replace sub to constant
+                  op_cur->id = SPVM_OP_C_ID_CONSTANT;
+                  op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;
+                  
+                  op_cur->first = NULL;
+                  op_cur->last = NULL;
                 }
-                
-                if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
-                  SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
+                // Field getter is replaced to field access
+                else if (call_sub->sub->is_field_getter) {
+                  // [Before]
+                  // $object->foo
+                  // [After]
+                  // $object->{foo}
+
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  const char* field_name = call_sub->sub->accessor_original_name;
+                  SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
+                  const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
+                  SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_field_access);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
+
+                  op_cur = op_field_access;
+                }
+                // Field setter is replaced to field access
+                else if (call_sub->sub->is_field_setter) {
+                  // [Before]
+                  // $object->set_foo($value)
+                  // [After]
+                  // $object->{foo} = $value
+
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_args = op_cur->last;
+                  SPVM_OP* op_term_value = op_args->last;
+                  
+                  SPVM_OP_cut_op(compiler, op_term_value);
+
+                  op_term_value->no_need_check = 1;
+                  
+                  const char* field_name = call_sub->sub->accessor_original_name;
+                  SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
+                  const char* invocant_var_name = call_sub->op_invocant->uv.var->op_name->uv.name;
+                  SPVM_OP* op_invocant_var_name = SPVM_OP_new_op_name(compiler, invocant_var_name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_invocant_var = SPVM_OP_new_op_var(compiler, op_invocant_var_name);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_invocant_var, op_name_field_access);
+                  
+                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                  SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_term_value);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                  
+                  op_cur = op_assign;
+                }
+                // Package var getter is replaced to package var access
+                else if (call_sub->sub->is_package_var_getter) {
+                  // [Before]
+                  // Class->FOO
+                  // [After]
+                  // $Class::FOO
+
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+                  const char* package_var_base_name = call_sub->sub->accessor_original_name;
+                  char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
+                  memcpy(package_var_name, "$", 1);
+                  memcpy(package_var_name, package_name, strlen(package_name));
+                  memcpy(package_var_name, "::", 2);
+                  memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
+                  SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
+
+                  op_cur = op_package_var_access;
+                }
+                // Package var setter is replaced to package var access
+                else if (call_sub->sub->is_package_var_setter) {
+                  // [Before]
+                  // Class->SET_FOO($value)
+                  // [After]
+                  // $Class::FOO = $value
+
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_args = op_cur->last;
+                  SPVM_OP* op_term_value = op_args->last;
+                  
+                  SPVM_OP_cut_op(compiler, op_term_value);
+
+                  op_term_value->no_need_check = 1;
+                  
+                  const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+                  const char* package_var_base_name = call_sub->sub->accessor_original_name;
+                  char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
+                  memcpy(package_var_name, "$", 1);
+                  memcpy(package_var_name, package_name, strlen(package_name));
+                  memcpy(package_var_name, "::", 2);
+                  memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
+                  SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                  
+                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                  SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_term_value);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                  
+                  op_cur = op_assign;
                 }
               }
               
