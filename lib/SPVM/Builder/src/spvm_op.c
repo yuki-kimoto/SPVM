@@ -1590,14 +1590,40 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
       // Getter
       if (package_var->has_getter) {
-        // sub FOO : int ($self : self) {
+        // sub FOO : int () {
         //   return $FOO;
         // }
+
+        SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, op_decl->file, op_decl->line);
+        SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, package_var->name + 1, op_decl->file, op_decl->line);
+        SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
+        return_type->basic_type =  package_var->type->basic_type;
+        return_type->dimension =  package_var->type->dimension;
+        return_type->flag =  package_var->type->flag;
+        SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+        SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+        
+        SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
+
+        SPVM_OP* op_name_package_var_access = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+        SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var_access);
+        
+        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_package_var_access);
+        SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+        SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+        
+        SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
+
+        op_sub->uv.sub->is_package_var_getter = 1;
+        
+        SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
 
       // Setter
       if (package_var->has_setter) {
-        // sub SET_FOO : void ($self : self, $foo : int) {
+        // sub SET_FOO : void ($foo : int) {
         //   $FOO = $foo;
         // }
       }
@@ -1647,6 +1673,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
         
         SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
+        
+        op_sub->uv.sub->is_field_getter = 1;
         
         SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }

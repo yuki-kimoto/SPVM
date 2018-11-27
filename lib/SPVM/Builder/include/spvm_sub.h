@@ -60,8 +60,10 @@ struct SPVM_sub {
   int32_t ref_vars_alloc_length;
   int32_t return_runtime_type;
   int32_t have_vaarg;
-  int32_t is_setter;
-  int32_t is_getter;
+  int32_t is_package_var_setter;
+  int32_t is_package_var_getter;
+  int32_t is_field_setter;
+  int32_t is_field_getter;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

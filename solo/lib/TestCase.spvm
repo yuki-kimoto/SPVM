@@ -39,6 +39,8 @@ SPVM::Test - SPVM test module
   our $PACKAGE_VAR_INT : int;
   our $PACKAGE_VAR_TEST_CASE : TestCase;
   
+  our $PACKAGE_VAR_RW : rw int;
+  
   has next_test : TestCase;
   has minimal : TestCase::Minimal;
   has x_byte : byte;
@@ -63,6 +65,13 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      $PACKAGE_VAR_RW = 6;
+      
+      my $package_var_rw = TestCase->PACKAGE_VAR_RW;
+      print("$package_var_rw\n");
+    }
+
     {
       my $test_case = new TestCase;
       $test_case->{x_rw} = 5;
