@@ -1,9 +1,13 @@
-0.0395 2018-11-26
+0.0395 2018-11-27
   - sub id, field id, package var id, basic type id, package id become start 0
   - valut_t type name rule is changed.
     for example
     Change SPVM::Point_d3 to SPVM::Point_3d
   - fix int literal out of range seg fault bug.
+  - add rw, ro, rw descriptor to create field accessor
+    has x : rw int;
+  - add rw, ro, rw descriptor to create package variable accessor
+    our $FOO : rw int;
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.
