@@ -1623,9 +1623,49 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
 
       // Setter
       if (package_var->has_setter) {
+        
         // sub SET_FOO : void ($foo : int) {
         //   $FOO = $foo;
         // }
+        SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, op_decl->file, op_decl->line);
+        char* sub_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(package_var->name) - 1 + 1);
+        memcpy(sub_name, "SET_", 4);
+        memcpy(sub_name + 4, package_var->name + 1, strlen(package_var->name) - 1);
+        SPVM_OP* op_name_sub = SPVM_OP_new_op_name(compiler, sub_name, op_decl->file, op_decl->line);
+        SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+        SPVM_TYPE* arg_value_type = SPVM_TYPE_new(compiler);
+        arg_value_type->basic_type = package_var->type->basic_type;
+        arg_value_type->dimension = package_var->type->dimension;
+        arg_value_type->flag = package_var->type->flag;
+        SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_value_type, op_decl->file, op_decl->line);
+        SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+        SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
+        SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value);
+
+        SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
+        
+        SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+        SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+        SPVM_OP* op_name_package_var_access = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+        SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var_access);
+
+        SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+        SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
+        
+        SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
+        SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_var_assign_value);
+        
+        SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
+        SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+        
+        SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL);
+        
+        op_sub->uv.sub->is_package_var_setter = 1;
+        
+        SPVM_LIST_push(package->subs, op_sub->uv.sub);
       }
     }
     // Field declarations
