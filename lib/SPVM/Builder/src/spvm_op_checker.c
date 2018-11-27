@@ -1014,7 +1014,30 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create object of struct package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PRIVATE) {
+                  
+                  int32_t is_private;
+                  // Private flag
+                  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PRIVATE) {
+                    is_private = 1;
+                  }
+                  // Public flag
+                  else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PUBLIC) {
+                    is_private = 0;
+                  }
+                  // Default
+                  else {
+                    // If anon sub, package is public
+                    if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                      is_private = 0;
+                    }
+                    // Default is private
+                    else {
+                      assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T);
+                      is_private = 1;
+                    }
+                  }
+                  
+                  if (is_private) {
                     if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
                       SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
                       return;

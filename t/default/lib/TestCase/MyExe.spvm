@@ -7,7 +7,7 @@ package TestCase::MyExe {
     
     # use TestCase::Minimal
     {
-      my $minimal = new TestCase::Minimal;
+      my $minimal = TestCase::Minimal->new;
       $minimal->{x} = 10;
 
       my $ok = 0;

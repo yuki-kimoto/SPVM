@@ -1,4 +1,4 @@
-0.0395 2018-11-27
+0.0395 2018-11-28
   - sub id, field id, package var id, basic type id, package id become start 0
   - valut_t type name rule is changed.
     for example
@@ -9,6 +9,7 @@
   - add rw, ro, rw descriptor to create package variable accessor
     our $FOO : rw int;
   - setter and getter is inlined.
+  - package become private by default except for anon sub
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.

@@ -172,7 +172,7 @@ package TestCase::Assign {
     my $v1 : TestCase::Minimal;
     my $v2 : TestCase::Minimal;
     
-    $v2 = $v1 = new TestCase::Minimal;;
+    $v2 = $v1 = TestCase::Minimal->new;;
     
     if ($v2 isa TestCase::Minimal) {
       return 1;
@@ -230,7 +230,7 @@ package TestCase::Assign {
   sub assign_return_value_field_access : int () {
     my $v2 : int;
     
-    my $minimal = new TestCase::Minimal;
+    my $minimal = TestCase::Minimal->new;
     $v2 = $minimal->{x} = 1;
     
     if ($v2 == 1) {
@@ -292,7 +292,7 @@ package TestCase::Assign {
     # Assign same name variable
     my $success_assign_same_name_variable = 0;
     {
-      my $obj = new TestCase::Minimal;
+      my $obj = TestCase::Minimal->new;
       $obj = $obj;
       $success_assign_same_name_variable = 1;
     }

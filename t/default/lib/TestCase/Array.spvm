@@ -26,7 +26,7 @@ package TestCase::Array {
   
   sub array_store_undef : int () {
     my $minimals = new TestCase::Minimal[3];
-    $minimals->[0] = new TestCase::Minimal;
+    $minimals->[0] = TestCase::Minimal->new;
     $minimals->[0] = undef;
     
     if ($minimals->[0] == undef) {
@@ -305,7 +305,7 @@ package TestCase::Array {
   }
 
   sub array_init_object : int () {
-    my $objects = new object[] {new TestCase::Minimal, new TestCase::Minimal};
+    my $objects = new object[] {TestCase::Minimal->new, TestCase::Minimal->new};
     
     if ($objects isa object[]) {
       return 1;
@@ -316,5 +316,4 @@ package TestCase::Array {
     
     return 0;
   }
-
 }

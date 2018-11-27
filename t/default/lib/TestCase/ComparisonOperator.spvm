@@ -163,7 +163,7 @@ package TestCase::ComparisonOperator {
   }
 
   sub if_true_object : int () {
-    if (new TestCase) {
+    if (TestCase->new) {
       return 1;
     }
     
@@ -423,7 +423,7 @@ package TestCase::ComparisonOperator {
   
   sub if_eq_object_same  : int () {
     
-    my $obj1 = new TestCase;
+    my $obj1 = TestCase->new;
     
     if ($obj1 == $obj1) {
       return 1;
@@ -434,8 +434,8 @@ package TestCase::ComparisonOperator {
   }
 
   sub if_eq_object_different  : int () {
-    my $obj1 = new TestCase;
-    my $obj2 = new TestCase;
+    my $obj1 = TestCase->new;
+    my $obj2 = TestCase->new;
     
     if ($obj1 == $obj2) {
       return 0;
@@ -447,7 +447,7 @@ package TestCase::ComparisonOperator {
 
   # If a != b
   sub if_ne_undef  : int () {
-    my $test_case : TestCase = new TestCase;
+    my $test_case : TestCase = TestCase->new;
     
     if (undef != undef) {
     
@@ -584,7 +584,7 @@ package TestCase::ComparisonOperator {
   
   sub if_ne_object_same  : int () {
     
-    my $obj1 = new TestCase;
+    my $obj1 = TestCase->new;
     
     if ($obj1 != $obj1) {
       return 0;
@@ -595,8 +595,8 @@ package TestCase::ComparisonOperator {
   }
 
   sub if_ne_object_different  : int () {
-    my $obj1 = new TestCase;
-    my $obj2 = new TestCase;
+    my $obj1 = TestCase->new;
+    my $obj2 = TestCase->new;
     
     if ($obj1 != $obj2) {
       return 1;

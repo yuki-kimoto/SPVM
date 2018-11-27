@@ -416,7 +416,7 @@ SPVM::Test - SPVM test module
         $nums->[0] = undef;
       }
       {
-        my $minimal = new TestCase::Minimal;
+        my $minimal = TestCase::Minimal->new;
         $minimal = undef;
       }
       {
@@ -433,12 +433,12 @@ SPVM::Test - SPVM test module
     
     # Create object in loop
     for (my $i = 0; $i < 3; $i++) {
-      my $minimal = new TestCase::Minimal;
+      my $minimal = TestCase::Minimal->new;
     }
 
     # Assign same variable
     {
-      my $var1 = new TestCase::Minimal;
+      my $var1 = TestCase::Minimal->new;
       $var1 = $var1;
     }
     
@@ -465,11 +465,11 @@ SPVM::Test - SPVM test module
       };
       
       my $minimals = new TestCase::Minimal[3];
-      $minimals->[0] = new TestCase::Minimal;
+      $minimals->[0] = TestCase::Minimal->new;
       $minimals->[0]{x} = 3;
-      $minimals->[1] = new TestCase::Minimal;
+      $minimals->[1] = TestCase::Minimal->new;
       $minimals->[1]{x} = 1;
-      $minimals->[2] = new TestCase::Minimal;
+      $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
       my $objects = new object[scalar @$minimals];
@@ -485,7 +485,7 @@ SPVM::Test - SPVM test module
     
     # isa
     {
-      my $minimal = new TestCase::Minimal;
+      my $minimal = TestCase::Minimal->new;
       if ($minimal isa TestCase::Minimal) {
         print("isa OK\n");
       }
@@ -527,9 +527,9 @@ SPVM::Test - SPVM test module
     print($double_string . "\n");
     
     {
-      my $object : object = new TestCase::Minimal;
-      my $implement_interface1 : TestCase::Interface1 = new TestCase::ImplementInterface1;
-      my $implement_interface2 : TestCase::Interface1 = new TestCase::ImplementInterface2;
+      my $object : object = TestCase::Minimal->new;
+      my $implement_interface1 : TestCase::Interface1 = TestCase::ImplementInterface1->new;
+      my $implement_interface2 : TestCase::Interface1 = TestCase::ImplementInterface2->new;
       
       print($implement_interface1->foo(0, 0) . "\n");
       print($implement_interface2->foo(0, 0) . "\n");

@@ -42,11 +42,11 @@ package TestCase::Interface {
       };
       
       my $minimals = new TestCase::Minimal[3];
-      $minimals->[0] = new TestCase::Minimal;
+      $minimals->[0] = TestCase::Minimal->new;
       $minimals->[0]{x} = 3;
-      $minimals->[1] = new TestCase::Minimal;
+      $minimals->[1] = TestCase::Minimal->new;
       $minimals->[1]{x} = 1;
-      $minimals->[2] = new TestCase::Minimal;
+      $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
       my $objects = new object[scalar @$minimals];
@@ -62,9 +62,9 @@ package TestCase::Interface {
   }
 
   sub basic : int () {
-    my $object : object = new TestCase::Minimal;
-    my $implement_interface1 : TestCase::Interface::Interface = new TestCase::Interface::ImplementInterface1;
-    my $implement_interface2 : TestCase::Interface::Interface = new TestCase::Interface::ImplementInterface2;
+    my $object : object = TestCase::Minimal->new;
+    my $implement_interface1 : TestCase::Interface::Interface = TestCase::Interface::ImplementInterface1->new;
+    my $implement_interface2 : TestCase::Interface::Interface = TestCase::Interface::ImplementInterface2->new;
     
     my $num1 = $implement_interface1->foo(0, 0);
     my $num2 = $implement_interface2->foo(0, 0);

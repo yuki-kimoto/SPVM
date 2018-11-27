@@ -11,13 +11,13 @@ package TestCase::LogicalOperator {
   
   sub logical_and_push_mortal_leave_scope : int () {
     my $minimals = new TestCase::Minimal[4];
-    $minimals->[0] = new TestCase::Minimal;
+    $minimals->[0] = TestCase::Minimal->new;
     $minimals->[0]{x} = 1;
-    $minimals->[1] = new TestCase::Minimal;
+    $minimals->[1] = TestCase::Minimal->new;
     $minimals->[1]{x} = 2;
-    $minimals->[2] = new TestCase::Minimal;
+    $minimals->[2] = TestCase::Minimal->new;
     $minimals->[2]{x} = 3;
-    $minimals->[3] = new TestCase::Minimal;
+    $minimals->[3] = TestCase::Minimal->new;
     $minimals->[3]{x} = 4;
     
     

@@ -4,7 +4,7 @@ package TestCase::Isa {
   use SPVM::Comparator;
   
   sub isa_match_class : int () {
-    my $minimal = new TestCase::Minimal;
+    my $minimal = TestCase::Minimal->new;
     if ($minimal isa TestCase::Minimal) {
       my $object : object = $minimal;
       if ($object isa TestCase::Minimal) {
@@ -29,7 +29,7 @@ package TestCase::Isa {
   }
 
   sub isa_not_match_class : int () {
-    my $minimal = new TestCase::Minimal;
+    my $minimal = TestCase::Minimal->new;
     if (!($minimal isa TestCase::Simple)) {
       return 1;
     }
@@ -73,7 +73,7 @@ package TestCase::Isa {
   }
 
   sub isa_not_match_interface : int () {
-    my $minimal : TestCase::Minimal = new TestCase::Minimal;
+    my $minimal : TestCase::Minimal = TestCase::Minimal->new;
     if (!($minimal isa SPVM::Comparator)) {
       return 1;
     }

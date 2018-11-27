@@ -23,8 +23,8 @@ package TestCase::Simple {
     $self->{x} = $x;
   }
   
-  sub new : TestCase::Minimal () {
-    return new TestCase::Minimal;
+  sub new : TestCase::Simple () {
+    return new TestCase::Simple;
   }
   
   sub import_sub1 : int () {

@@ -28,7 +28,7 @@ package TestCase::Object {
   sub DOUBLE_PRECICE : double () { return 65536.5; }
 
   sub isa_basic : int () {
-    my $minimal = new TestCase::Minimal;
+    my $minimal = TestCase::Minimal->new;
     if ($minimal isa TestCase::Minimal) {
       if (!($minimal isa TestCase)) {
         return 1;
@@ -55,7 +55,7 @@ package TestCase::Object {
   
   # object field is initialized zero
   sub object_field_initialized_zero : int () {
-    my $obj = new TestCase;
+    my $obj =TestCase->new;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
         if ($obj->{x_byte_array} == undef) {
@@ -68,7 +68,7 @@ package TestCase::Object {
 
   # object field set and get
   sub object_field_set_and_get : int () {
-    my $test_case = new TestCase;
+    my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();
     $test_case->{x_short} = INT16_MAX();
@@ -100,7 +100,7 @@ package TestCase::Object {
 
   # object field set and get
   sub object_field_set_and_get_again : int () {
-    my $test_case = new TestCase;
+    my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();
     $test_case->{x_short} = INT16_MAX();

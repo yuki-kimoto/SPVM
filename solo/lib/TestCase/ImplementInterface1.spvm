@@ -1,7 +1,11 @@
 
 package TestCase::ImplementInterface1 {
   use TestCase::Minimal;
-  
+
+  sub new : TestCase::ImplementInterface1 () {
+    return new TestCase::ImplementInterface1;
+  }
+
   sub foo : int ($self : self, $var1 : int, $var2 : long) {
     return 1;
   }

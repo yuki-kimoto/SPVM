@@ -365,7 +365,7 @@ package TestCase::SpecialAssign {
 
   sub special_assign_add_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
-    $nums_of_nums->[0] = new TestCase::Minimal;
+    $nums_of_nums->[0] = TestCase::Minimal->new;
     
     my $ret1 = $nums_of_nums->[0]{x} += 1;
     
@@ -549,7 +549,7 @@ package TestCase::SpecialAssign {
   }
 
   sub special_assign_add_field_access : int () {
-    my $simple = new TestCase::Simple;
+    my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
     $simple->{short_value} = (short)INT16_MIN();
