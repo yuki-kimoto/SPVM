@@ -8,6 +8,7 @@
     has x : rw int;
   - add rw, ro, rw descriptor to create package variable accessor
     our $FOO : rw int;
+  - setter and getter is inlined.
 0.0394 2018-11-24
   - reduce malloc count when object is created.
   - reduce object fields memory size.
