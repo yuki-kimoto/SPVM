@@ -2343,7 +2343,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Field setter is replaced to field access
               else if (call_sub->sub->is_field_setter) {
                 // [Before]
-                // $object->foo($value)
+                // $object->set_foo($value)
                 // [After]
                 // $object->{foo} = $value
 
@@ -2396,6 +2396,41 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_cur = op_package_var_access;
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
+              }
+              // Package var setter is replaced to package var access
+              else if (call_sub->sub->is_package_var_setter) {
+                // [Before]
+                // Class->SET_FOO($value)
+                // [After]
+                // $Class::FOO = $value
+
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP* op_args = op_cur->last;
+                SPVM_OP* op_term_value = op_args->last;
+                
+                SPVM_OP_cut_op(compiler, op_term_value);
+
+                op_term_value->no_need_check = 1;
+                
+                const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
+                const char* package_var_base_name = call_sub->sub->accessor_original_name;
+                char* package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(package_name) + 2 + strlen(package_var_base_name));
+                memcpy(package_var_name, "$", 1);
+                memcpy(package_var_name, package_name, strlen(package_name));
+                memcpy(package_var_name, "::", 2);
+                memcpy(package_var_name, package_var_base_name, strlen(package_var_base_name));
+                SPVM_OP* op_package_var_name = SPVM_OP_new_op_name(compiler, package_var_name, op_cur->file, op_cur->line);
+                SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_package_var_name);
+                
+                SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_term_value);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                
+                SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                
+                op_cur = op_assign;
               }
               // Normal subroutine
               else {
