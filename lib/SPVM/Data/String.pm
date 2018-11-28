@@ -56,4 +56,4 @@ Convert SPVM string to Perl byte string(encoded string).
 
 Convert SPVM string to Perl text string(decoded string).
 
-=back
+=cut

@@ -194,7 +194,7 @@ L<SPVM::Document::Extension> - Extension is the way to C/C++ Binding to SPVM
 
 L<SPVM::Document::Language> - SPVM Language Specification
 
-=heaa1 EXAMPLES
+=head1 EXAMPLES
 
 =head2 How to use SPVM from Perl
 
