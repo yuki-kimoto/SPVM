@@ -17,6 +17,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Inline->constant_sub_return_double == 0.25);
 }
 
+# Inline new
+{
+  ok(TestCase::Inline->new_inline);
+  ok(TestCase::Inline->new);
+  is(ref TestCase::Inline->new, "TestCase::Inline");
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

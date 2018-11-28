@@ -212,6 +212,11 @@ enum {
   SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST = 2,
 };
 
+enum {
+  // NEW flag
+  SPVM_OP_C_FLAG_NEW_INLINE = 1,
+};
+
 /* Binary operation */
 struct SPVM_op {
   SPVM_OP* first;

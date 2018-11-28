@@ -1,5 +1,8 @@
 package TestCase::Inline {
   
+  has check_value : ro int;
+  
+  # Inline expansion
   sub constant_sub_return_double : double () {
     return 0.25;
   }
@@ -12,4 +15,21 @@ package TestCase::Inline {
     
     return 1;
   }
+  
+  # Inline expansion
+  sub new : TestCase::Inline () {
+    return new TestCase::Inline;
+  }
+  
+  # Array store undef
+  sub new_inline : int () {
+    my $self = TestCase::Inline->new;
+    
+    unless ($self isa TestCase::Inline) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }

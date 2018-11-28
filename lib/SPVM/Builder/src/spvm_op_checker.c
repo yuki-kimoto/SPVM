@@ -1037,7 +1037,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   
-                  if (is_private) {
+                  if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
                     if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
                       SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
                       return;
@@ -2530,6 +2530,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   op_cur->first = NULL;
                   op_cur->last = NULL;
+                }
+                // Simple constructor is inlined
+                else if (call_sub->sub->is_simple_constructor) {
+                  // Replace sub to constant
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_type_original = call_sub->sub->op_inline;
+                  assert(op_type_original->id == SPVM_OP_C_ID_TYPE);
+                  SPVM_TYPE* type_original = op_type_original->uv.type;
+                  
+                  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
+                  op_new->flag |= SPVM_OP_C_FLAG_NEW_INLINE;
+                  
+                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+                  type->basic_type = type_original->basic_type;
+                  type->dimension = type_original->dimension;
+                  type->flag = type_original->flag;
+                  
+                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_cur->file, op_cur->line);
+                  op_new = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_new, check_ast_info);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_new);
+                  
+                  op_cur = op_new;
                 }
                 // Field getter is replaced to field access
                 else if (call_sub->sub->is_field_getter) {
@@ -4883,7 +4909,10 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
               assert(op_type->id == SPVM_OP_C_ID_TYPE);
               SPVM_TYPE* type = op_type->uv.type;
               if (SPVM_TYPE_is_package_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                sub->is_simple_constructor = 1;
+                if (sub->args->length == 0) {
+                  sub->is_simple_constructor = 1;
+                  sub->op_inline = op_type;
+                }
               }
             }
           }
