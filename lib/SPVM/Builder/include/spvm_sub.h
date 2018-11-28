@@ -59,11 +59,13 @@ struct SPVM_sub {
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
   int32_t return_runtime_type;
-  int32_t have_vaarg;
-  int32_t is_package_var_setter;
-  int32_t is_package_var_getter;
-  int32_t is_field_setter;
-  int32_t is_field_getter;
+  int8_t have_vaarg;
+  int8_t is_package_var_setter;
+  int8_t is_package_var_getter;
+  int8_t is_field_setter;
+  int8_t is_field_getter;
+  int8_t is_simple_constructor;
+  int8_t is_constant;
   const char* accessor_original_name;
 };
 
