@@ -166,6 +166,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "RW",
   "RO",
   "WO",
+  "BEGIN",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -1812,6 +1813,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         op_field->uv.field->is_captured = 1;
       }
     }
+    else if (op_decl->id == SPVM_OP_C_ID_BEGIN) {
+      package->op_begin_block = op_decl->first;
+    }
     else {
       assert(0);
     }
@@ -2220,6 +2224,13 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   field->op_field = op_field;
   
   return op_field;
+}
+
+SPVM_OP* SPVM_OP_build_begin_block(SPVM_COMPILER* compiler, SPVM_OP* op_begin, SPVM_OP* op_block) {
+  
+  SPVM_OP_insert_child(compiler, op_begin, op_begin->last, op_block);
+  
+  return op_begin;
 }
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3) {

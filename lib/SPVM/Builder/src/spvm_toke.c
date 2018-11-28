@@ -1121,6 +1121,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return BYTE;
                 }
                 break;
+              case 'B' :
+                if (strcmp(keyword, "BEGIN") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BEGIN);
+                  return BEGIN;
+                }
+                break;
               case 'c' :
                 if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);

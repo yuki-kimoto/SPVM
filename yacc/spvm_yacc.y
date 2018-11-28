@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO
+%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO BEGIN
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -33,7 +33,7 @@
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> block eval_block
+%type <opval> block eval_block begin_block
 %type <opval> expression
 %type <opval> unop binop
 %type <opval> call_sub opt_vaarg
@@ -162,7 +162,14 @@ declaration
   | enumeration
   | our ';'
   | use
+  | begin_block
 
+begin_block
+  : BEGIN '{' opt_statements '}'
+    {
+      $$ = SPVM_OP_build_begin_block(compiler, $1, $3);
+    }
+  
 use
   : USE basic_type ';'
     {

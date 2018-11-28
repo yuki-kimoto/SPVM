@@ -41,6 +41,10 @@ SPVM::Test - SPVM test module
   
   our $PACKAGE_VAR_RW : public rw int;
   
+  BEGIN {
+    
+  }
+  
   has next_test : public TestCase;
   has minimal : public TestCase::Minimal;
   has x_byte : public byte;

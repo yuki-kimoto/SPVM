@@ -60,6 +60,9 @@ struct SPVM_package {
   int32_t flag;
   int32_t category;
   const char* name;
+  SPVM_OP* op_begin_block;
+  int32_t begin_opcodes_base;
+  int32_t begin_opcodes_length;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
