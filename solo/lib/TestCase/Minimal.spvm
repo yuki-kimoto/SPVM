@@ -1,7 +1,7 @@
 package TestCase::Minimal {
-  has x : int;
-  has y : int;
-  has tests : TestCase[];
+  has x : public int;
+  has y : public int;
+  has tests : public TestCase[];
   
   sub new : TestCase::Minimal () {
     

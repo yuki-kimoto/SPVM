@@ -1,16 +1,16 @@
 package TestCase::Simple {
   use TestCase::EnumA;
 
-  has x : int;
-  has y : int;
-  has values1 : int[];
-  has values2 : long[];
-  has message : byte[];
+  has x : public int;
+  has y : public int;
+  has values1 : public int[];
+  has values2 : public long[];
+  has message : public byte[];
   # has c : TestCase::Simple;
   # has d : TestCase::Simple[];
   has private_field : int;
   
-  has title : int;
+  has title : public int;
   
   sub new : TestCase::Simple () {
     return new TestCase::Simple;
