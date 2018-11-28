@@ -1,0 +1,15 @@
+package TestCase::Inline {
+  
+  sub constant_sub_return_double : double () {
+    return 0.25;
+  }
+  
+  # Array store undef
+  sub constant_sub : int () {
+    unless (constant_sub_return_double == 0.25) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

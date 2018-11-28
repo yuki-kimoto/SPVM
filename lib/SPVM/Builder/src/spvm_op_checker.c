@@ -2522,6 +2522,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur->first = NULL;
                   op_cur->last = NULL;
                 }
+                // Constant sub is replaced to constant value
+                else if (call_sub->sub->is_constant) {
+                  // Replace sub to constant
+                  op_cur->id = SPVM_OP_C_ID_CONSTANT;
+                  op_cur->uv.constant = call_sub->sub->op_inline->uv.constant;
+                  
+                  op_cur->first = NULL;
+                  op_cur->last = NULL;
+                }
                 // Field getter is replaced to field access
                 else if (call_sub->sub->is_field_getter) {
                   // [Before]
@@ -4851,6 +4860,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
             SPVM_OP* op_constant = op_return->first;
             if (op_constant && op_constant->id == SPVM_OP_C_ID_CONSTANT) {
               sub->is_constant = 1;
+              sub->op_inline = op_constant;
             }
           }
         }
