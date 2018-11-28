@@ -4840,24 +4840,45 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       // Is constant sub
       {
         SPVM_OP* op_block = sub->op_block;
-        SPVM_OP* op_statements = op_block->last;
-        
-        /*
-        // warn("AAAAAAAAAA %s %s %s", SPVM_OP_C_ID_NAMES[op_statements->first->id], SPVM_OP_C_ID_NAMES[op_statements->last->id], SPVM_OP_C_ID_NAMES[SPVM_OP_sibling(compiler, op_statements->first)->id]);
-        if (SPVM_OP_sibling(compiler, op_statements->first) == op_statements->last) {
-        
-          SPVM_OP* op_return = op_statements->last;
-          assert(op_return->id == SPVM_OP_C_ID_RETURN);
+        if (op_block) {
+          SPVM_OP* op_statements = op_block->last;
           
-          SPVM_OP* op_constant = op_return->first;
-          if (op_constant->id == SPVM_OP_C_ID_CONSTANT) {
-            sub->is_constant = 1;
+          int32_t statements_count = SPVM_OP_get_list_elements_count(compiler, op_statements);
+          if (statements_count == 1) {
+            SPVM_OP* op_return = op_statements->last;
+            assert(op_return->id == SPVM_OP_C_ID_RETURN);
+            
+            SPVM_OP* op_constant = op_return->first;
+            if (op_constant && op_constant->id == SPVM_OP_C_ID_CONSTANT) {
+              sub->is_constant = 1;
+            }
           }
         }
-        */
       }
       
       // Is simple constructor sub
+      {
+        SPVM_OP* op_block = sub->op_block;
+        if (op_block) {
+          SPVM_OP* op_statements = op_block->last;
+          
+          int32_t statements_count = SPVM_OP_get_list_elements_count(compiler, op_statements);
+          if (statements_count == 1) {
+            SPVM_OP* op_return = op_statements->last;
+            assert(op_return->id == SPVM_OP_C_ID_RETURN);
+            
+            SPVM_OP* op_new = op_return->first;
+            if (op_new && op_new->id == SPVM_OP_C_ID_NEW) {
+              SPVM_OP* op_type = op_new->first;
+              assert(op_type->id == SPVM_OP_C_ID_TYPE);
+              SPVM_TYPE* type = op_type->uv.type;
+              if (SPVM_TYPE_is_package_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                sub->is_simple_constructor = 1;
+              }
+            }
+          }
+        }
+      }
       
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {

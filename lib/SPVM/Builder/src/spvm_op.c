@@ -2879,3 +2879,14 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   return op->moresib ? op->sibparent : NULL;
 }
+
+int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_list) {
+  
+  int32_t count = 0;
+  SPVM_OP* op_term = op_list->first;
+  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+    count++;
+  }
+  
+  return count;
+}
