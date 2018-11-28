@@ -1,11 +1,11 @@
 package TestCase::Data::Weaken : public {
   use TestCase::Weaken;
 
-  has data_weaken : TestCase::Data::Weaken;
-  has x : int;
-  has test_case : TestCase::Weaken;
-  has weaken2 : TestCase::Data::Weaken;
-  has test_cases : TestCase::Weaken[];
+  has data_weaken : public TestCase::Data::Weaken;
+  has x : public int;
+  has test_case : public TestCase::Weaken;
+  has weaken2 : public TestCase::Data::Weaken;
+  has test_cases : public TestCase::Weaken[];
   
   sub new : TestCase::Data::Weaken () {
     return new TestCase::Data::Weaken;

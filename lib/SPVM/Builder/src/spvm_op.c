@@ -2144,13 +2144,13 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid package variable descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid package variable descriptor in package variable declaration %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       if (accessor_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one at %s line %d", op_package_var->file, op_package_var->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in package variable  declaration at %s line %d\n", op_package_var->file, op_package_var->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "private, public can be specifed only one at %s line %d", op_package_var->file, op_package_var->line);
+        SPVM_COMPILER_error(compiler, "private, public can be specifed only one in package variable declaration at %s line %d\n", op_package_var->file, op_package_var->line);
       }
     }
   }
@@ -2185,11 +2185,11 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
           field->flag |= SPVM_FIELD_C_FLAG_PRIVATE;
-          accessor_descriptors_count++;
+          access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
           field->flag |= SPVM_FIELD_C_FLAG_PUBLIC;
-          accessor_descriptors_count++;
+          access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_RW:
           field->has_setter = 1;
@@ -2205,14 +2205,14 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       
       if (accessor_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d\n", op_field->file, op_field->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "public, private can be specifed only one at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in field declaration at %s line %d\n", op_field->file, op_field->line);
       }
     }
   }

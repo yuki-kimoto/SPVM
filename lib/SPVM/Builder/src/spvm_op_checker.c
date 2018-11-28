@@ -2823,8 +2823,33 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Unknown field %s::%s at %s line %d\n", type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
+
+              int32_t is_private;
+              // Private flag
+              if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
+                is_private = 1;
+              }
+              // Public flag
+              else if (field->flag & SPVM_FIELD_C_FLAG_PUBLIC) {
+                is_private = 0;
+              }
+              // Default
+              else {
+                // If anon sub, field is public
+                if (field->package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                  is_private = 0;
+                }
+                // If value type, field is public
+                else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                  is_private = 0;
+                }
+                // Default is private
+                else {
+                  is_private = 1;
+                }
+              }
               
-              if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE && !op_cur->uv.field_access->inline_expansion) {
+              if (is_private && !op_cur->uv.field_access->inline_expansion) {
                 if (strcmp(type->basic_type->name, sub->package->op_name->uv.name) != 0) {
                   SPVM_COMPILER_error(compiler, "Can't access to private field \"%s\" at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
                   return;

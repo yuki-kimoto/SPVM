@@ -25,16 +25,16 @@ package TestCase {
   our $PACKAGE_VAR_LONG2 : long;
   our $PACKAGE_VAR_MINIMAL2 : TestCase::Minimal;
 
-  has x_byte : byte;
-  has x_short : short;
-  has x_int : int;
-  has x_long : long;
-  has x_float : float;
-  has x_double : double;
-  has x_int_array : int[];
-  has x_byte_array : byte[];
-  has x_test_case : TestCase;
-  has minimal : TestCase::Minimal;
+  has x_byte : rw public byte;
+  has x_short : rw public short;
+  has x_int : rw public int;
+  has x_long : rw public long;
+  has x_float : rw public float;
+  has x_double : rw public double;
+  has x_int_array : rw public int[];
+  has x_byte_array : rw public byte[];
+  has x_test_case : rw public TestCase;
+  has minimal : rw public TestCase::Minimal;
   has private_field : private int;
   
   sub INT : int () { return 127; }
@@ -52,38 +52,6 @@ package TestCase {
     return $self->{private_field};
   }
   
-  sub set_x_int_array : void ($self : self, $x_int_array : int[]) {
-    $self->{x_int_array} = $x_int_array;
-  }
-
-  sub set_x_byte_array : void ($self : self, $x_string : byte[]) {
-    $self->{x_byte_array} = $x_string;
-  }
-
-  sub set_x_byte : void ($self : self, $x_byte : byte) {
-    $self->{x_byte} = $x_byte;
-  }
-
-  sub set_x_short : void ($self : self, $x_short : short) {
-    $self->{x_short} = $x_short;
-  }
-
-  sub set_x_int : void ($self : self, $x_int : int) {
-    $self->{x_int} = $x_int;
-  }
-
-  sub set_x_long : void ($self : self, $x_long : long) {
-    $self->{x_long} = $x_long;
-  }
-
-  sub set_x_float : void ($self : self, $x_float : float) {
-    $self->{x_float} = $x_float;
-  }
-
-  sub set_x_double : void ($self : self, $x_double : double) {
-    $self->{x_double} = $x_double;
-  }
-
   sub get_x_byte : byte ($self : self) {
     return $self->{x_byte};
   }
@@ -141,9 +109,9 @@ package TestCase {
         if ($TestCase::PACKAGE_VAR_LONG == INT64_MAX()) {
           $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal->new();
           
-          $TestCase::PACKAGE_VAR_MINIMAL->{x} = 4;
+          $TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
           
-          if ($TestCase::PACKAGE_VAR_MINIMAL->{x} == 4) {
+          if ($TestCase::PACKAGE_VAR_MINIMAL->set_x(4)) {
             $TestCase::PACKAGE_VAR_MINIMAL = undef;
             return 1;
           }
@@ -178,10 +146,6 @@ package TestCase {
   
   sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
-  }
-
-  sub set_minimal : void ($self : self, $value : TestCase::Minimal) {
-    $self->{minimal} = $value;
   }
 
   # Resorved word

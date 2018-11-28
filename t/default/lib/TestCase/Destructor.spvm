@@ -1,7 +1,7 @@
 package TestCase::Destructor {
   use TestCase::Minimal;
   
-  has minimal : TestCase::Minimal;
+  has minimal : public TestCase::Minimal;
   
   sub new : TestCase::Destructor () {
     return new TestCase::Destructor;
