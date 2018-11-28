@@ -4838,6 +4838,24 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
       
       // Is constant sub
+      {
+        SPVM_OP* op_block = sub->op_block;
+        SPVM_OP* op_statements = op_block->last;
+        
+        /*
+        // warn("AAAAAAAAAA %s %s %s", SPVM_OP_C_ID_NAMES[op_statements->first->id], SPVM_OP_C_ID_NAMES[op_statements->last->id], SPVM_OP_C_ID_NAMES[SPVM_OP_sibling(compiler, op_statements->first)->id]);
+        if (SPVM_OP_sibling(compiler, op_statements->first) == op_statements->last) {
+        
+          SPVM_OP* op_return = op_statements->last;
+          assert(op_return->id == SPVM_OP_C_ID_RETURN);
+          
+          SPVM_OP* op_constant = op_return->first;
+          if (op_constant->id == SPVM_OP_C_ID_CONSTANT) {
+            sub->is_constant = 1;
+          }
+        }
+        */
+      }
       
       // Is simple constructor sub
       

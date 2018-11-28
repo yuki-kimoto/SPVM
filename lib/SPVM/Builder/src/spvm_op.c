@@ -2464,7 +2464,6 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   
   // Build OP_SUB
   SPVM_OP* op_call_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_SUB, op_name_sub->file, op_name_sub->line);
-  SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_name_sub);
   SPVM_OP_insert_child(compiler, op_call_sub, op_call_sub->last, op_list_terms);
   
   SPVM_CALL_SUB* call_sub = SPVM_CALL_SUB_new(compiler);
