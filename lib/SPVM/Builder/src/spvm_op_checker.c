@@ -2517,7 +2517,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
                   // Replace sub to constant
                   op_cur->id = SPVM_OP_C_ID_CONSTANT;
-                  op_cur->uv.constant = call_sub->sub->op_constant->uv.constant;
+                  op_cur->uv.constant = call_sub->sub->op_inline->uv.constant;
                   
                   op_cur->first = NULL;
                   op_cur->last = NULL;

@@ -2437,7 +2437,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL);
   
   // Set constant
-  op_sub->uv.sub->op_constant = op_constant;
+  op_sub->uv.sub->op_inline = op_constant;
   
   // Subroutine is constant
   op_sub->uv.sub->flag |= SPVM_SUB_C_FLAG_IS_ENUM;

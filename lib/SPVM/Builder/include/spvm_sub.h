@@ -26,7 +26,7 @@ struct SPVM_sub {
   SPVM_OP* op_sub;
   SPVM_OP* op_name;
   SPVM_OP* op_block;
-  SPVM_OP* op_constant;
+  SPVM_OP* op_inline;
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
