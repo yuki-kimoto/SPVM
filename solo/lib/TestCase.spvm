@@ -41,8 +41,10 @@ SPVM::Test - SPVM test module
   
   our $PACKAGE_VAR_RW : public rw int;
   
+  our $BEGIN_INIT : int;
+  
   BEGIN {
-    
+    $BEGIN_INIT = 5;
   }
   
   has next_test : public TestCase;

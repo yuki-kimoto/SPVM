@@ -785,12 +785,21 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       default:
         // Variable
         if (ch == '$') {
+          // Derefernece
           if (*(compiler->bufptr + 1) == '$') {
             compiler->bufptr++;
             SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEREF);
             yylvalp->opval = op;
             return DEREF;
           }
+          // Exception variable
+          else if (*(compiler->bufptr + 1) == '@') {
+            compiler->bufptr += 2;
+            SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+            yylvalp->opval = op_exception_var;
+            return EXCEPTION_VAR;
+          }
+          // Lexical variable or Package variable
           else {
             compiler->bufptr++;
 
@@ -819,6 +828,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
             }
+          
 
             int32_t var_name_length_without_sigil = compiler->bufptr - cur_token_ptr;
             char* var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + var_name_length_without_sigil + 1);

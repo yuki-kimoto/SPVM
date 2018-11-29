@@ -404,6 +404,4 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
 SPVM_OP* SPVM_OP_build_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name);
 int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_list);
 
-SPVM_OP* SPVM_OP_build_begin_block(SPVM_COMPILER* compiler, SPVM_OP* op_begin, SPVM_OP* op_block);
-
 #endif

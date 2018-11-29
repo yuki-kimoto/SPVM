@@ -262,47 +262,11 @@ int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child) {
-  
-  assert(op_parent);
-  assert(op_parent->first);
-  
-  SPVM_OP* op_most_left_deep_child_of_parent = op_parent;
-  
-  while (1) {
-    if (op_most_left_deep_child_of_parent->first) {
-      op_most_left_deep_child_of_parent = op_most_left_deep_child_of_parent->first;
-      continue;
-    }
-    else {
-      break;
-    }
-  }
-  
-  SPVM_OP_insert_child(compiler, op_most_left_deep_child_of_parent, op_most_left_deep_child_of_parent->last, op_child);
-}
-
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
-      
-  const char* var_name = op_var_name->uv.name;
-  int32_t var_name_length = (int32_t)strlen(var_name);
   
-  SPVM_OP* op_var_ret;
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
   
-  // Exception variable
-  if (var_name_length == 2 && var_name[1] == '@') {
-    // Exception variable
-    SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, op_var_name->file, op_var_name->line);
-    op_var_ret = op_exception_var;
-  }
-  // Lexical variable
-  else {
-    // Var OP
-    SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
-    op_var_ret = op_var;
-  }
-  
-  return op_var_ret;
+  return op_var;
 }
 
 SPVM_OP* SPVM_OP_build_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
@@ -1469,13 +1433,6 @@ SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   return op_grammar;
 }
 
-SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
-  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
-    SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
-  }
-  return op_term;
-}
-
 SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
 
   // Package
@@ -2064,37 +2021,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
-  
-  SPVM_MY* my = SPVM_MY_new(compiler);
-  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_var->file, op_var->line);
-  
-  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
-  
-  return op_var;
-}
-
-SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type) {
-  
-  // Declaration
-  op_var->uv.var->is_declaration = 1;
-  
-  // Create my var information
-  SPVM_MY* my = op_my->uv.my;
-  if (op_type) {
-    my->type = op_type->uv.type;
-  }
-  
-  // Name OP
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->op_name->uv.name;
-  my->op_name = op_name;
-  
-  op_var->uv.var->my = my;
-
-  return op_var;
-}
-
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
   
   SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
@@ -2224,13 +2150,6 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   field->op_field = op_field;
   
   return op_field;
-}
-
-SPVM_OP* SPVM_OP_build_begin_block(SPVM_COMPILER* compiler, SPVM_OP* op_begin, SPVM_OP* op_block) {
-  
-  SPVM_OP_insert_child(compiler, op_begin, op_begin->last, op_block);
-  
-  return op_begin;
 }
 
 SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3) {
@@ -2471,6 +2390,37 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   return op_enumeration;
 }
 
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type) {
+  
+  SPVM_MY* my = SPVM_MY_new(compiler);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_var->file, op_var->line);
+  
+  op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+  
+  return op_var;
+}
+
+SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_var, SPVM_OP* op_type) {
+  
+  // Declaration
+  op_var->uv.var->is_declaration = 1;
+  
+  // Create my var information
+  SPVM_MY* my = op_my->uv.my;
+  if (op_type) {
+    my->type = op_type->uv.type;
+  }
+  
+  // Name OP
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
+  op_name->uv.name = op_var->uv.var->op_name->uv.name;
+  my->op_name = op_name;
+  
+  op_var->uv.var->my = my;
+
+  return op_var;
+}
+
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_sub, SPVM_OP* op_list_terms) {
   
   // Build OP_SUB
@@ -2549,13 +2499,20 @@ SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* 
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat_string, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_cancat_string, op_cancat_string->last, op_first);
-  SPVM_OP_insert_child(compiler, op_cancat_string, op_cancat_string->last, op_last);
+  SPVM_OP_insert_child(compiler, op_cancat, op_cancat->last, op_first);
+  SPVM_OP_insert_child(compiler, op_cancat, op_cancat->last, op_last);
   
-  return op_cancat_string;
+  return op_cancat;
+}
+
+SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
+    SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
+  }
+  return op_term;
 }
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
@@ -2717,7 +2674,6 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   
   return op_assign;
 }
-
 
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_term) {
   
@@ -2889,6 +2845,26 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   return op->moresib ? op->sibparent : NULL;
+}
+
+void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child) {
+  
+  assert(op_parent);
+  assert(op_parent->first);
+  
+  SPVM_OP* op_most_left_deep_child_of_parent = op_parent;
+  
+  while (1) {
+    if (op_most_left_deep_child_of_parent->first) {
+      op_most_left_deep_child_of_parent = op_most_left_deep_child_of_parent->first;
+      continue;
+    }
+    else {
+      break;
+    }
+  }
+  
+  SPVM_OP_insert_child(compiler, op_most_left_deep_child_of_parent, op_most_left_deep_child_of_parent->last, op_child);
 }
 
 int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_list) {

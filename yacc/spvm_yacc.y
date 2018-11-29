@@ -20,7 +20,7 @@
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
-%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME
+%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME EXCEPTION_VAR
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO BEGIN
@@ -165,11 +165,14 @@ declaration
   | begin_block
 
 begin_block
-  : BEGIN '{' opt_statements '}'
-    {
-      $$ = SPVM_OP_build_begin_block(compiler, $1, $3);
+  : BEGIN block
+    { 
+      SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "BEGIN", compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL);
     }
-  
+    
 use
   : USE basic_type ';'
     {
@@ -582,6 +585,7 @@ term
 
 normal_term
   : var
+  | EXCEPTION_VAR
   | package_var_access
   | CONSTANT
     {
