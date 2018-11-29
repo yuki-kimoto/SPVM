@@ -281,7 +281,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     args_base += sub->args->length;
   }
   
-  // Portable packages(32bit)(0 index is for not existance)
+  // Portable packages(32bit)
   for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
 

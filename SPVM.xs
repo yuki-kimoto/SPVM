@@ -290,6 +290,37 @@ compile_spvm(...)
 }
 
 SV*
+call_begin_blocks(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Call BEGIN blocks
+  int32_t packages_length = runtime->packages_length;
+  SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
+  for (int32_t package_id = 0; package_id < packages_length; package_id++) {
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
+    
+    int32_t begin_sub_id = package->begin_sub_id;
+    if (begin_sub_id >= 0) {
+      SPVM_RUNTIME_SUB* begin_sub = &runtime->subs[begin_sub_id];
+      env->call_sub(env, begin_sub->id, stack);
+    }
+  }
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {
