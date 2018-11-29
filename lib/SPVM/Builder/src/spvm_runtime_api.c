@@ -484,13 +484,12 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_ISA_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t constant_pool_id = opcode->operand1;
-        int32_t check_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t check_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t interface_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
-          condition_flag = env->has_interface(env, object_basic_type_id, object_type_dimension, check_basic_type_id, check_type_dimension);
+          condition_flag = env->has_interface(env, object, interface_basic_type_id);
         }
         else {
           condition_flag = 0;
@@ -2401,7 +2400,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_byte_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_byte_offset);
           
-          if (env->has_interface(env, object_basic_type_id, object_type_dimension, interface_basic_type_id, interface_type_dimension)) {
+          if (env->has_interface(env, object, interface_basic_type_id)) {
             SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
@@ -3825,45 +3824,53 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   return status_code;
 }
 
-int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension) {
+int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object_basic_type_id >= 0 ? &runtime->basic_types[object_basic_type_id] : NULL;
-  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = interface_basic_type_id >= 0 ? &runtime->basic_types[interface_basic_type_id] : NULL;
-
-  SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id ? &runtime->packages[object_basic_type->package_id] : NULL;
-  SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id ? &runtime->packages[interface_basic_type->package_id] : NULL;
   
-  assert(object_package);
-  assert(interface_package);
-  
-  assert(interface_package->subs_length == 1);
-  
-  SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
-  
-  const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
-  const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
+  int32_t object_basic_type_id = object->basic_type_id;
+  int32_t object_type_dimension = object->type_dimension;
   
   int32_t has_interface;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
-    if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
-      has_interface = 1;
-    }
-    else {
-      has_interface = 0;
-    }
+  if (object_type_dimension != 0) {
+    has_interface = 0;
   }
   else {
-    const char* object_package_name = &runtime->string_pool[object_package->name_id];
-    int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_interface_name, sub_interface_signature);
-    if (sub_id > 0) {
-      has_interface = 1;
+    SPVM_RUNTIME* runtime = env->runtime;
+
+    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object_basic_type_id >= 0 ? &runtime->basic_types[object_basic_type_id] : NULL;
+    SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = interface_basic_type_id >= 0 ? &runtime->basic_types[interface_basic_type_id] : NULL;
+
+    SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id ? &runtime->packages[object_basic_type->package_id] : NULL;
+    SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id ? &runtime->packages[interface_basic_type->package_id] : NULL;
+    
+    assert(object_package);
+    assert(interface_package);
+    
+    assert(interface_package->subs_length == 1);
+    
+    SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
+    
+    const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
+    const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
+    
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+      SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
+      if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
+        has_interface = 1;
+      }
+      else {
+        has_interface = 0;
+      }
     }
     else {
-      has_interface = 0;
+      const char* object_package_name = &runtime->string_pool[object_package->name_id];
+      int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_interface_name, sub_interface_signature);
+      if (sub_id > 0) {
+        has_interface = 1;
+      }
+      else {
+        has_interface = 0;
+      }
     }
   }
   
