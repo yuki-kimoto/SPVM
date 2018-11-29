@@ -326,6 +326,13 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     }
     portable_package->subs_length = package->subs->length;
 
+    if (package->op_begin_sub) {
+      portable_package->begin_sub_id = package->op_begin_sub->uv.sub->id;
+    }
+    else {
+      portable_package->begin_sub_id = -1;
+    }
+
     if (package->package_vars->length > 0) {
       SPVM_PACKAGE_VAR* first_package_var = SPVM_LIST_fetch(package->package_vars, 0);
       portable_package->package_vars_base = first_package_var->id;

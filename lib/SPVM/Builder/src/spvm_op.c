@@ -1770,8 +1770,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         op_field->uv.field->is_captured = 1;
       }
     }
+    // Begin block
     else if (op_decl->id == SPVM_OP_C_ID_BEGIN) {
-      package->op_begin_block = op_decl->first;
+      package->op_begin_sub = op_decl;
     }
     else {
       assert(0);

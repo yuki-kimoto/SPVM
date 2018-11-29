@@ -311,6 +311,9 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".subs_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->subs_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".begin_sub_id = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->begin_sub_id);
+    SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".package_vars_base = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->package_vars_base);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");

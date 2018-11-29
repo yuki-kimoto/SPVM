@@ -66,6 +66,7 @@ struct SPVM_sub {
   int8_t is_field_getter;
   int8_t is_simple_constructor;
   int8_t is_constant;
+  int8_t is_begin;
   const char* accessor_original_name;
 };
 
