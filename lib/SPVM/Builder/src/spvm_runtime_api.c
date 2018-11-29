@@ -3845,9 +3845,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
     
     SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
     
-    const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
     const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
-    
     if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
       if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
@@ -3859,8 +3857,9 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
     }
     else {
       const char* object_package_name = &runtime->string_pool[object_package->name_id];
+      const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
       int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_interface_name, sub_interface_signature);
-      if (sub_id > 0) {
+      if (sub_id >= 0) {
         has_interface = 1;
       }
       else {
@@ -5099,7 +5098,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   // Package name
   SPVM_RUNTIME_BASIC_TYPE* object_basic_type = &runtime->basic_types[object->basic_type_id];
   SPVM_RUNTIME_PACKAGE* object_package;
-  if (object_basic_type->package_id > 0) {
+  if (object_basic_type->package_id >= 0) {
     object_package = &runtime->packages[object_basic_type->package_id];
   }
   else {
