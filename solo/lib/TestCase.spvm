@@ -44,7 +44,7 @@ SPVM::Test - SPVM test module
   our $BEGIN_INIT : int;
   
   BEGIN {
-    $BEGIN_INIT = 5;
+    $BEGIN_INIT = 7;
   }
   
   has next_test : public TestCase;
@@ -71,6 +71,9 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    {
+      print($BEGIN_INIT . "\n");
+    }
     {
       TestCase->SET_PACKAGE_VAR_RW(6);
       

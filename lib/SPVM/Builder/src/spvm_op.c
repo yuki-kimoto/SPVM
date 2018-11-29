@@ -1769,10 +1769,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_LIST_push(package->fields, op_field->uv.field);
         op_field->uv.field->is_captured = 1;
       }
-    }
-    // Begin block
-    else if (op_decl->id == SPVM_OP_C_ID_BEGIN) {
-      package->op_begin_sub = op_decl;
+      
+      // Begin block
+      if (op_decl->uv.sub->is_begin) {
+        package->op_begin_sub = op_decl;
+      }
     }
     else {
       assert(0);
@@ -2183,6 +2184,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     sub->have_vaarg = 1;
   }
   
+  sub->is_begin = is_begin;
   if (!is_begin && strcmp(sub_name, "BEGIN") == 0) {
     SPVM_COMPILER_error(compiler, "\"BEGIN\" is reserved for BEGIN block at %s line %d\n", op_name_sub->file, op_name_sub->line);
   }

@@ -637,6 +637,9 @@ int32_t main(int32_t argc, const char *argv[]) {
     runtime->sub_cfunc_addresses[sub->id] = SPVM_NATIVE_SPVM__CORE__DBL_MIN;
   }
 #endif
+  
+  // Call begin blocks
+  SPVM_RUNTIME_API_call_begin_blocks(env);
 
   // Call entry point sub
   int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);
