@@ -4,6 +4,8 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
+void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env);
+
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, int32_t object_basic_type_id, int32_t object_type_dimension, int32_t interface_basic_type_id, int32_t interface_type_dimension);
 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);

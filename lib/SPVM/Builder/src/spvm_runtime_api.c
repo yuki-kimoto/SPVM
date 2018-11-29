@@ -30,6 +30,27 @@
 #include "spvm_basic_type.h"
 #include "spvm_type.h"
 #include "spvm_sub.h"
+#include "spvm_limit.h"
+
+void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Call BEGIN blocks
+  int32_t packages_length = runtime->packages_length;
+  SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
+  for (int32_t package_id = 0; package_id < packages_length; package_id++) {
+    SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
+    
+    int32_t begin_sub_id = package->begin_sub_id;
+    if (begin_sub_id >= 0) {
+      SPVM_RUNTIME_SUB* begin_sub = &runtime->subs[begin_sub_id];
+      env->call_sub(env, begin_sub->id, stack);
+    }
+  }
+}
 
 int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   (void)env;
