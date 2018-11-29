@@ -3843,11 +3843,6 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
     SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id ? &runtime->packages[object_basic_type->package_id] : NULL;
     SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id ? &runtime->packages[interface_basic_type->package_id] : NULL;
     
-    assert(object_package);
-    assert(interface_package);
-    
-    assert(interface_package->subs_length == 1);
-    
     SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
     
     const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
