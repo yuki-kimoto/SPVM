@@ -170,7 +170,7 @@ begin_block
       SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "BEGIN", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL);
+      $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL, 1);
     }
     
 use
@@ -260,17 +260,17 @@ has
 sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0);
      }
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0);
      }
 
 anon_sub
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0);
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
@@ -283,7 +283,7 @@ anon_sub
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, 0);
      }
 
 opt_args
