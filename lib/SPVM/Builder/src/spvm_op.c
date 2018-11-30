@@ -167,6 +167,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "RO",
   "WO",
   "BEGIN",
+  "REQUIRE",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -1998,11 +1999,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names, int32_t is_require) {
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->op_type = op_type;
+  use->is_require = is_require;
 
   // Check sub_names
   if (op_sub_names) {

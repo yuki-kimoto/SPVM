@@ -23,13 +23,13 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME EXCEPTION_VAR
 %token <opval> RETURN WEAKEN CROAK NEW
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO BEGIN
+%token <opval> AMPERSAND DOT3 LENGTH FATCAMMA RW RO WO BEGIN REQUIRE
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use our string_length
+%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -176,11 +176,17 @@ begin_block
 use
   : USE basic_type ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL);
+      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
     }
   | USE basic_type '(' opt_sub_names ')' ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
+    }
+
+require
+  : REQUIRE basic_type ';'
+    {
+      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 1);
     }
 
 enumeration
@@ -560,6 +566,7 @@ expression
     }
   | weaken_field
   | weaken_array_element
+  | require
 
 opt_normal_terms
   :	/* Empty */

@@ -1,5 +1,6 @@
-0.0396 2018-11-29
+0.0396 2018-11-30
   - add BEGIN block
+  - change native api has_interface arguments
 0.0395 2018-11-28
   - sub id, field id, package var id, basic type id, package id become start 0
   - valut_t type name rule is changed.
