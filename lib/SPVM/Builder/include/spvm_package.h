@@ -61,6 +61,7 @@ struct SPVM_package {
   int32_t category;
   const char* name;
   SPVM_OP* op_begin_sub;
+  int32_t fail_load;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

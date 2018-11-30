@@ -184,7 +184,7 @@ use
     }
 
 require
-  : REQUIRE basic_type ';'
+  : REQUIRE basic_type
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 1);
     }

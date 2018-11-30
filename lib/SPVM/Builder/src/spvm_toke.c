@@ -146,17 +146,30 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               if (!fh) {
-                fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
-                {
-                  int32_t i;
-                  for (i = 0; i < module_include_pathes_length; i++) {
-                    const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                    fprintf(stderr, " %s", include_path);
-                  }
+                if (op_use->uv.use->is_require) {
+                  op_use->uv.use->load_fail = 1;
+                  SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
+                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+                  type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
+                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                  
+                  SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
+                  
+                  continue;
                 }
-                fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
-                compiler->error_count++;
-                return 0;
+                else {
+                  fprintf(stderr, "Can't locate %s in @INC (@INC contains:", module_path_base);
+                  {
+                    int32_t i;
+                    for (i = 0; i < module_include_pathes_length; i++) {
+                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                      fprintf(stderr, " %s", include_path);
+                    }
+                  }
+                  fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
+                  compiler->error_count++;
+                  return 0;
+                }
               }
               
               compiler->cur_file = cur_file;
