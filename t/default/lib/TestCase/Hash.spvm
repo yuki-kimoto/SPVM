@@ -3,20 +3,13 @@ package TestCase::Hash {
   use SPVM::Hash;
 
   sub test_hasher : int () {
-    my $s1 = "abc";
-    my $s2 = "abd";
-    my $seed1 = 12345;
-    my $seed2 = 99999;
-    my $h1 = SPVM::Hash->_hasher($s1, $seed1);
-    my $h2 = SPVM::Hash->_hasher($s2, $seed1);
-    unless ($h1 == SPVM::Hash->_hasher($s1, $seed1)) {
-      return 0;
-    }
-    unless ($h1 != $h2) { # correct in most cases
-      return 0;
-    }
-    unless ($h1 != SPVM::Hash->_hasher($s1, $seed2)) {
-      return 0;
+    my $seed = 123456789;
+    my $strings = ["a", "<>", "ABC", "1234", "asdfg", "zxcvbn", "1qazxsw", "3edcvfr4", "1234567890-=\\][poiuytrewqasdfghjkl;'"];
+    my $hashes = [846967266L, 200612280L, 4178773334L, 1870759112L, 61159236L, 623182920L, 1738266155L, 123403562L, 4243681504L];
+    for (my $i = 0; $i < @$strings; ++$i) {
+      unless (SPVM::Hash->_hasher($strings->[$i], $seed) == $hashes->[$i]) {
+        return 0;
+      }
     }
     return 1;
   }
