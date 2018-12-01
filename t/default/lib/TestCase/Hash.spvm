@@ -83,6 +83,19 @@ package TestCase::Hash {
     return 1;
   }
 
+  sub test_new_with_array_do_not_refer_key_string : int () {
+    my $keys = [(object)"a","1"];
+    my $hash = SPVM::Hash->new_with_array($keys);
+    $keys->[0] = "b";
+    unless ($hash->exists("a")) {
+      return 0;
+    }
+    unless ($hash->exists("b") == 0) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_set_value_int : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];

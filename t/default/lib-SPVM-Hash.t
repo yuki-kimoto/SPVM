@@ -15,9 +15,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Hash->test_hasher);
   ok(TestCase::Hash->test_new_with_capacity);
+  ok(TestCase::Hash->test_new_with_array);
   ok(TestCase::Hash->test_new_with_array_allocated_capacity_should_power_of_2);
   ok(TestCase::Hash->test_new_with_array_croak_when_odd_number_array);
-  ok(TestCase::Hash->test_new_with_array);
+  ok(TestCase::Hash->test_new_with_array_do_not_refer_key_string);
   ok(TestCase::Hash->test_set_value_int);
   ok(TestCase::Hash->test_set_value_string);
   ok(TestCase::Hash->test_exists);
