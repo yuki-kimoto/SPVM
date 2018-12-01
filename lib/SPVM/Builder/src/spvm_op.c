@@ -168,6 +168,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "WO",
   "BEGIN",
   "REQUIRE",
+  "IF_REQUIRE",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -975,6 +976,14 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
   
   return op_loop;
+}
+
+SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block) {
+  
+  SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_use);
+  SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block);
+  
+  return op_if_require;
 }
 
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_term_condition, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {

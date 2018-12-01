@@ -72,7 +72,9 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     
-    # require PPP;
+    if (require PPP) {
+      print("PPP");
+    }
     
     {
       print($BEGIN_INIT . "\n");

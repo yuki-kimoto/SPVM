@@ -168,6 +168,7 @@ enum {
   SPVM_OP_C_ID_WO,
   SPVM_OP_C_ID_BEGIN,
   SPVM_OP_C_ID_REQUIRE,
+  SPVM_OP_C_ID_IF_REQUIRE,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
@@ -255,6 +256,8 @@ struct SPVM_op {
   int8_t is_passed_to_sub;
   int8_t no_need_check;
 };
+
+SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block);
 
 SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term);
 
