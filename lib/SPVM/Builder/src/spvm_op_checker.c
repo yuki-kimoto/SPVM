@@ -865,8 +865,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_NEW: {
               assert(op_cur->first);
               if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
-                SPVM_PACKAGE* new_package = op_cur->first->uv.type->basic_type->package;
+                SPVM_OP* op_type = op_cur->first;
+                SPVM_TYPE* type = op_type->uv.type;
                 
+                SPVM_PACKAGE* new_package = type->basic_type->package;
+                
+                // Anon sub
                 if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
                   SPVM_OP* op_type = op_cur->first;
                   
@@ -964,13 +968,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
                   }
                 }
-                
-                SPVM_OP* op_type = op_cur->first;
-                
-                SPVM_TYPE* type = op_type->uv.type;
-                
-                // Array
-                if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                // Array type
+                else if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   
                   SPVM_OP* op_index_term = op_type->last;
 
@@ -1056,9 +1055,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Add type info to constant pool
                 SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+                
+                // If require module but not loading, NEW is replaced to CROAK
               }
+              // Constant string
               else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
-                // Constant string
+                // None
               }
               else {
                 assert(0);
