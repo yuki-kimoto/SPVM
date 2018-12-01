@@ -72,15 +72,7 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     
-    eval {
-      require PPP;
-    }
-    print($@ . "\n");
-    
-    eval {
-      new PPP;
-    }
-    print($@ . "\n");
+    # require PPP;
     
     {
       print($BEGIN_INIT . "\n");
