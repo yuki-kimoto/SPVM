@@ -84,9 +84,9 @@ package TestCase::Hash {
   }
 
   sub test_new_with_array_do_not_refer_key_string : int () {
-    my $keys = [(object)"a","1"];
-    my $hash = SPVM::Hash->new_with_array($keys);
-    $keys->[0] = "b";
+    my $data = [(object)"a","1"];
+    my $hash = SPVM::Hash->new_with_array($data);
+    $data->[0] = "b";
     unless ($hash->exists("a")) {
       return 0;
     }
