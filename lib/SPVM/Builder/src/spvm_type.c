@@ -313,6 +313,36 @@ void SPVM_TYPE_sprint_type_name(SPVM_COMPILER* compiler, char* buffer, int32_t b
   cur++;
 }
 
+const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  assert(basic_type);
+  
+  int32_t type_name_length = SPVM_TYPE_get_type_name_length(compiler, basic_type_id, dimension, flag);
+  
+  char* type_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, type_name_length + 1);
+  char* cur = type_name;
+
+  sprintf(cur, "%s", basic_type->name);
+  cur += strlen(basic_type->name);
+  
+  int32_t dim_index;
+  for (dim_index = 0; dim_index < dimension; dim_index++) {
+    sprintf(cur, "[]");
+    cur += 2;
+  }
+
+  // Back slash
+  if (flag & SPVM_TYPE_C_FLAG_REF) {
+    sprintf(cur, "&");
+    cur += 1;
+  }
+  
+  *cur = '\0';
+  cur++;
+  
+  return type_name;
+}
+
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_TYPE* type = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_TYPE));
   
