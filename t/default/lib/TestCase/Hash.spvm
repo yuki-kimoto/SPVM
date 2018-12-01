@@ -137,6 +137,27 @@ package TestCase::Hash {
     return 1;
   }
 
+  sub test_delete : int () {
+    my $keys = ["alice", "bob"];
+    my $vals = [SPVM::Int->new(1), SPVM::Int->new(2)];
+    my $hash = SPVM::Hash->new;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $hash->set($keys->[$i], $vals->[$i]);
+    }
+    unless ($hash->delete("alice")) {
+      unless ($hash->exists("alice") == 0) {
+        return 0;
+      }
+      unless ($hash->delete("alice") == 0) {
+        return 0;
+      }
+    }
+    unless ($hash->exists("carol") == 0) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_load_factor : int () {
     my $capacity = 16;
     my $hash = SPVM::Hash->new_with_capacity($capacity);
