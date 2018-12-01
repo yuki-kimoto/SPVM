@@ -114,6 +114,20 @@ package TestCase::Hash {
     return 1;
   }
 
+  sub test_set_do_not_refer_key_string : int () {
+    my $hash = SPVM::Hash->new;
+    my $key = "a";
+    $hash->set($key, SPVM::Int->new(1));
+    $key = "b";
+    unless ($hash->exists("a")) {
+      return 0;
+    }
+    unless ($hash->exists("b") == 0) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_get : int () {
     my $hash = SPVM::Hash->new_with_array([(object) "a", SPVM::Int->new(1), "b", undef, "c", "str"]);
     unless (((SPVM::Int)($hash->get("a")))->val == 1) {
