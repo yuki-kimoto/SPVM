@@ -90,6 +90,32 @@ package SPVM::Hash : private {
     return $self;
   }
 
+  sub new_with_array : SPVM::Hash ($objects : object []) {
+    unless (@$objects % 2 == 0) {
+      croak "Odd number of elements provided";
+    }
+    my $self = new SPVM::Hash;
+    my $capacity = 2;
+    if (@$objects >= INT32_MAX / 2) {
+      $capacity = INT32_MAX;
+    }
+    else {
+      while ($capacity < @$objects / 2) {
+        $capacity *= 2;
+      }
+    }
+    $self->{bucket_count} = $capacity;
+    $self->{entries} = new SPVM::HashEntry[$capacity];
+    my $count = 0;
+    for (my $i = 0; $i < @$objects / 2; ++$i) {
+      _set_to_container($self->{entries}, $self->{bucket_count}, \$count,
+          (string)($objects->[2 * $i]), $objects->[2 * $i + 1]);
+    }
+    $self->{count} = $count;
+    $self->{max_load_factor} = 1.0;
+    return $self;
+  }
+
   sub count : int ($self : self) {
     return $self->{count};
   }

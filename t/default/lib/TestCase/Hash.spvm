@@ -18,6 +18,71 @@ package TestCase::Hash {
     return 1;
   }
 
+  sub test_new_with_capacity : int () {
+    my $hash = SPVM::Hash->new_with_capacity(10);
+    unless ($hash->_bucket_count == 10) {
+      return 0;
+    }
+    unless ($hash->count == 0) {
+      return 0;
+    }
+    unless (@{$hash->_entries} == 10) {
+      return 0;
+    }
+    unless ($hash->max_load_factor == 1.0) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_new_with_array : int () {
+    my $hash = SPVM::Hash->new_with_array([(object)"a","1","b",SPVM::Int->new(2)]);
+    unless ($hash->_bucket_count == 2) {
+      return 0;
+    }
+    unless ($hash->count == 2) {
+      return 0;
+    }
+    unless (@{$hash->_entries} == 2) {
+      return 0;
+    }
+    unless ($hash->max_load_factor == 1.0) {
+      return 0;
+    }
+    unless ((string)($hash->get("a")) eq "1") {
+      return 0;
+    }
+    unless (((SPVM::Int)($hash->get("b")))->val == 2) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_new_with_array_allocated_capacity_should_power_of_2 : int () {
+    my $hash = SPVM::Hash->new_with_array([(object)"a","1","b","2","c","3"]);
+    unless ($hash->_bucket_count == 4) {
+      return 0;
+    }
+    unless ($hash->count == 3) {
+      return 0;
+    }
+    unless (@{$hash->_entries} == 4) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_new_with_array_croak_when_odd_number_array : int () {
+    eval {
+      SPVM::Hash->new_with_array([(object)"a", "1", "b"]);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+
   sub test_set_value_int : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
