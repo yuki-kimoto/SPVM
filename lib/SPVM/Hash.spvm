@@ -173,6 +173,23 @@ package SPVM::Hash : private {
     }
   }
 
+  sub exists : int ($self : self, $key : string) {
+    my $index = _index_by_key($key, $self->{bucket_count});
+    my $ref = $self->{entries}->[$index];
+    unless ($ref) {
+      return 0;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        return 1;
+      }
+      unless ($ref->next_entry) {
+        return 0;
+      }
+      $ref = $ref->next_entry;
+    }
+  }
+
   sub max_load_factor : double ($self : self) {
     return $self->{max_load_factor};
   }
