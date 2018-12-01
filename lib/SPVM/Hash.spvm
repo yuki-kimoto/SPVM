@@ -151,7 +151,7 @@ package SPVM::Hash : private {
     unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
       $self->_rehash;
     }
-    my $count = $self->{count}; # To solve 'Refernece target must be numeric type or value type at ...'
+    my $count = $self->{count};
     _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $copied_key, $val);
     $self->{count} = $count;
   }
