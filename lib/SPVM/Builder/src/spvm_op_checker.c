@@ -1031,15 +1031,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   // Default
                   else {
-                    // If anon sub, package is public
-                    if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
-                      is_private = 0;
-                    }
-                    // Default is private
-                    else {
-                      assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T);
-                      is_private = 1;
-                    }
+                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB));
+                    assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T);
+                    is_private = 1;
                   }
                   
                   if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
@@ -1055,8 +1049,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Add type info to constant pool
                 SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
-                
-                // If require module but not loading, NEW is replaced to CROAK
               }
               // Constant string
               else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
