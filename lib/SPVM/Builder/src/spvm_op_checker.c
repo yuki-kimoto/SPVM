@@ -1042,6 +1042,22 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       return;
                     }
                   }
+                  
+                  // if require module but not exists, NEW is replaced to CROAK
+                  // [Before]
+                  // NEW
+                  //   TYPE
+                  // [After]
+                  // CROAK
+                  //   NEW
+                  //     CONSTANT
+                  /*
+                  if (SPVM_TYPE_is_package_type(type->basic_type->id, type->dimension, type->flag)) {
+                    SPVM_OP* op_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CROAK, op_type->cur_file, op_type->cur_line);
+                    SPVM_OP* op_new_for_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_type->cur_file, op_type->cur_line);
+                    SPVM_OP* op_constant_string = =SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_croak->file, op_croak->line);
+                  }
+                  */
                 }
                 else {
                   assert(0);
