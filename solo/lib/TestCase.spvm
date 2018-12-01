@@ -74,6 +74,11 @@ SPVM::Test - SPVM test module
     
     require PPP;
     
+    eval {
+      new PPP;
+    }
+    print($@ . "\n");
+    
     {
       print($BEGIN_INIT . "\n");
     }
@@ -83,6 +88,15 @@ SPVM::Test - SPVM test module
       my $package_var_rw = TestCase->PACKAGE_VAR_RW;
       print("$package_var_rw\n");
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     {
       my $test_case = new TestCase;

@@ -1034,13 +1034,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     is_private = 1;
                   }
                   
-                  if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
-                      SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
-                      return;
-                    }
-                  }
-                  
                   // if require module but not exists, NEW is replaced to CROAK
                   // [Before]
                   // NEW
@@ -1049,13 +1042,31 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // CROAK
                   //   NEW
                   //     CONSTANT
-                  /*
-                  if (SPVM_TYPE_is_package_type(type->basic_type->id, type->dimension, type->flag)) {
-                    SPVM_OP* op_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CROAK, op_type->cur_file, op_type->cur_line);
-                    SPVM_OP* op_new_for_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_type->cur_file, op_type->cur_line);
-                    SPVM_OP* op_constant_string = =SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_croak->file, op_croak->line);
+                  if (SPVM_TYPE_is_package_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                    if (type->basic_type->fail_load) {
+                      is_private = 0;
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                      
+                      SPVM_OP* op_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CROAK, op_cur->file, op_cur->line);
+                      const char* error_message = SPVM_COMPILER_ALLOCATOR_alloc_format_string(compiler, "Can't create object. Package \"%s\" is not loaded", type->basic_type->name);
+                      SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, error_message, strlen(error_message), op_cur->file, op_cur->line);
+                      SPVM_OP* op_new_for_croak = SPVM_OP_build_constant(compiler, op_constant_string);
+                      op_croak = SPVM_OP_build_croak(compiler, op_croak, op_new_for_croak);
+                      
+                      SPVM_OP_CHECKER_check_tree(compiler, op_croak, check_ast_info);
+                      
+                      SPVM_OP_replace_op(compiler, op_stab, op_croak);
+                      
+                      op_cur = op_croak;
+                    }
                   }
-                  */
+
+                  if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
+                    if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
+                      SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
+                      return;
+                    }
+                  }
                 }
                 else {
                   assert(0);

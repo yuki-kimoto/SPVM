@@ -152,6 +152,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
                   type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
                   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                  type->basic_type->fail_load = 1;
                   
                   SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
                   

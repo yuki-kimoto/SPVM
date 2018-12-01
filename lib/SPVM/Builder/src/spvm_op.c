@@ -718,11 +718,11 @@ SPVM_OP* SPVM_OP_new_op_constant_double(SPVM_COMPILER* compiler, double value, c
   return op_constant;
 }
 
-SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, char* string, int32_t length, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* string, int32_t length, const char* file, int32_t line) {
 
   SPVM_OP* op_constant = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONSTANT, file, line);
   SPVM_CONSTANT* constant = SPVM_CONSTANT_new(compiler);
-  constant->value.oval = string;
+  constant->value.oval = (void*)string;
   SPVM_OP* op_constant_type = SPVM_OP_new_op_string_type(compiler, file, line);
   constant->type = op_constant_type->uv.type;
   constant->string_length = length;
@@ -2701,7 +2701,7 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   
   if (!op_term) {
     // Default error message
-    op_term =SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_croak->file, op_croak->line);;
+    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_croak->file, op_croak->line);;
   }
   
   // Exception variable
