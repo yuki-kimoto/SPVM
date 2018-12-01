@@ -112,9 +112,6 @@ struct SPVM_compiler {
   
   // String symbol table
   SPVM_HASH* string_symtable;
-  
-  char buffer1[UINT16_MAX * 2];
-  char buffer2[UINT16_MAX * 2];
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
