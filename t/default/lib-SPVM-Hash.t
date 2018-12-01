@@ -20,6 +20,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Hash->test_new_with_array_croak_when_odd_number_array);
   ok(TestCase::Hash->test_new_with_array_do_not_refer_key_string);
   ok(TestCase::Hash->test_set);
+  ok(TestCase::Hash->test_get);
   ok(TestCase::Hash->test_exists);
   ok(TestCase::Hash->test_delete);
   ok(TestCase::Hash->test_load_factor);
