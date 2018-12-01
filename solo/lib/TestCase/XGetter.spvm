@@ -1,0 +1,3 @@
+package TestCase::XGetter : interface {
+  sub x : int ($self : self);
+}

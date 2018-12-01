@@ -113,6 +113,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
           SPVM_LIST_push(check_ast_info->op_switch_stack, op_cur);
           break;
         }
+        case SPVM_OP_C_ID_IF_REQUIRE: {
+          SPVM_USE* use = op_cur->first->uv.use;
+          // Skip block
+          if (use->op_type->uv.type->basic_type->fail_load) {
+            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+            op_cur = op_stab;
+          }
+          break;
+        }
       }
     }
     // [END]Preorder traversal position
@@ -930,7 +939,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       }
                       if (!found_my) {
                         SPVM_COMPILER_error(compiler, "Capture variable \"%s\" is not declared at %s line %d\n", capture_name, op_cur->file, op_cur->line);
-                        break;
+                        return;
                       }
                       
                       // Create field assignment
@@ -2245,6 +2254,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
                 }
               }
               

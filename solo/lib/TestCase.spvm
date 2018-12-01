@@ -22,6 +22,7 @@ package TestCase {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use TestCase::XGetter;
 
 =pod
 
@@ -72,8 +73,25 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     
+    {
+      my $x_getter : TestCase::XGetter;
+      if (require TestCase::Minimal) {
+        my $minimal = TestCase::Minimal->new;
+        $minimal->set_x(78);
+        $x_getter = $minimal;
+      }
+      
+      my $minimal_def = TestCase::Minimal->new;
+      $minimal_def->set_x(99);
+      unless ($x_getter) {
+        $x_getter = $minimal_def;
+      }
+      
+      print($x_getter->x . "\n");
+    }
+    
     if (require PPP) {
-      print("PPP");
+      PPP->x(1);
     }
     
     {
