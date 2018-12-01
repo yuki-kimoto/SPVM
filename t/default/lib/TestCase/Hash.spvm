@@ -96,7 +96,7 @@ package TestCase::Hash {
     return 1;
   }
 
-  sub test_set_value_int : int () {
+  sub test_set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
     my $hash = SPVM::Hash->new;
@@ -108,24 +108,6 @@ package TestCase::Hash {
     }
     for (my $i = 0; $i < @$keys; ++$i) {
       unless ($hash->get($keys->[$i]) == $vals->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  sub test_set_value_string : int () {
-    my $keys = ["alice", "bob", "carol", "1234567890-="];
-    my $vals = [(object) "ALICE", "B0B", "caro!", "\][=-0987654"];
-    my $hash = SPVM::Hash->new;
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $hash->set($keys->[$i], $vals->[$i]);
-    }
-    unless ($hash->count == @$keys) {
-      return 0;
-    }
-    for (my $i = 0; $i < @$keys; ++$i) {
-      unless ((string)($hash->get($keys->[$i])) eq (string)($vals->[$i])) {
         return 0;
       }
     }
