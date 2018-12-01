@@ -147,12 +147,11 @@ package SPVM::Hash : private {
     unless ($key) {
       croak "key must not be undef";
     }
-    my $copied_key = copy_string $key;
     unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
       $self->_rehash;
     }
     my $count = $self->{count};
-    _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $copied_key, $val);
+    _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
     $self->{count} = $count;
   }
 
