@@ -83,7 +83,7 @@ package TestCase::Hash {
     return 1;
   }
 
-  sub test_new_with_array_do_not_refer_key_string : int () {
+  sub test_new_with_array_do_not_refer_caller_key : int () {
     my $data = [(object)"a","1"];
     my $hash = SPVM::Hash->new_with_array($data);
     $data->[0] = "b";
@@ -114,7 +114,7 @@ package TestCase::Hash {
     return 1;
   }
 
-  sub test_set_do_not_refer_key_string : int () {
+  sub test_set_do_not_refer_caller_key : int () {
     my $hash = SPVM::Hash->new;
     my $key = "a";
     $hash->set($key, SPVM::Int->new(1));
