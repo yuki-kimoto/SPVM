@@ -1085,6 +1085,43 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_USE: {
+              SPVM_USE* use = op_cur->uv.use;
+              if (use->is_require) {
+                SPVM_BASIC_TYPE* basic_type = use->op_type->uv.type->basic_type;
+                if (basic_type->fail_load) {
+                  // if require module but not exists, USE is replaced to CROAK
+                  // [Before]
+                  // USE
+                  // [After]
+                  // CROAK
+                  //   NEW
+                  //     CONSTANT
+                  SPVM_TYPE* type = op_cur->uv.use->op_type->uv.type;
+                  
+                  if (SPVM_TYPE_is_package_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                    if (type->basic_type->fail_load) {
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                      
+                      SPVM_OP* op_croak = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CROAK, op_cur->file, op_cur->line);
+                      const char* error_message = SPVM_COMPILER_ALLOCATOR_alloc_format_string(compiler, "Can't require Package \"%s\"", type->basic_type->name);
+                      SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, error_message, strlen(error_message), op_cur->file, op_cur->line);
+                      SPVM_OP* op_new_for_croak = SPVM_OP_build_constant(compiler, op_constant_string);
+                      op_croak = SPVM_OP_build_croak(compiler, op_croak, op_new_for_croak);
+                      
+                      SPVM_OP_CHECKER_check_tree(compiler, op_croak, check_ast_info);
+                      
+                      SPVM_OP_replace_op(compiler, op_stab, op_croak);
+                      
+                      op_cur = op_croak;
+                    }
+                  }
+                  
+                }
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_BIT_XOR: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);

@@ -2024,6 +2024,8 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   
+  warn("AAAAAAA");
+  
   return op_use;
 }
 
