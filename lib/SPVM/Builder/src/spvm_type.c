@@ -269,25 +269,6 @@ int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_ty
   return length;
 }
 
-void SPVM_TYPE_fprint_type_name(SPVM_COMPILER* compiler, FILE* fh, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-  assert(basic_type);
-
-  // Basic type
-  fprintf(fh, "%s", basic_type->name);
-  
-  // []
-  int32_t dim_index;
-  for (dim_index = 0; dim_index < dimension; dim_index++) {
-    fprintf(fh, "[]");
-  }
-
-  // Back slash
-  if (flag & SPVM_TYPE_C_FLAG_REF) {
-    fprintf(fh, "&");
-  }
-}
-
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   assert(basic_type);
