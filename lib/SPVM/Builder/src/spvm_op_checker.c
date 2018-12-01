@@ -839,7 +839,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
                   SPVM_OP* op_type = op_cur->first;
-                
+                  
                   SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
                   if (anon_sub->captures->length) {
                     // [Before]
@@ -1047,32 +1047,31 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else {
                   assert(0);
                 }
-                if (!SPVM_TYPE_is_numeric_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                  {
                 
-                    SPVM_OP* op_type_tmp = op_type;
-                    // No duplicate basic type id
-                    SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
-                    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
-                    if (found_basic_type == NULL) {
-                      SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
-                      SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
-                    }
-                    // type constant pool id
-                    char type_id_string[sizeof(int32_t) * 2];
-                    memcpy(type_id_string, &type_tmp->basic_type->id, sizeof(int32_t));
-                    memcpy((char*)(type_id_string + sizeof(int32_t)), &type_tmp->dimension, sizeof(int32_t));
-                    
-                    int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit2_value_symtable, type_id_string, sizeof(int32_t) * 2);
-                    if (found_constant_pool_id > 0) {
-                      type_tmp->constant_pool_id = found_constant_pool_id;
-                    }
-                    else {
-                      int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, type_tmp->basic_type->id);
-                      SPVM_CONSTANT_POOL_push_int(package->constant_pool, type_tmp->dimension);
-                      type_tmp->constant_pool_id = constant_pool_id;
-                      SPVM_HASH_insert(package->constant_pool_32bit2_value_symtable, type_id_string, sizeof(int32_t) * 2, (void*)(intptr_t)constant_pool_id);
-                    }
+                // Add type info to constant pool
+                {
+                  SPVM_OP* op_type_tmp = op_type;
+                  // No duplicate basic type id
+                  SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
+                  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
+                  if (found_basic_type == NULL) {
+                    SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
+                    SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
+                  }
+                  // type constant pool id
+                  char type_id_string[sizeof(int32_t) * 2];
+                  memcpy(type_id_string, &type_tmp->basic_type->id, sizeof(int32_t));
+                  memcpy((char*)(type_id_string + sizeof(int32_t)), &type_tmp->dimension, sizeof(int32_t));
+                  
+                  int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit2_value_symtable, type_id_string, sizeof(int32_t) * 2);
+                  if (found_constant_pool_id > 0) {
+                    type_tmp->constant_pool_id = found_constant_pool_id;
+                  }
+                  else {
+                    int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, type_tmp->basic_type->id);
+                    SPVM_CONSTANT_POOL_push_int(package->constant_pool, type_tmp->dimension);
+                    type_tmp->constant_pool_id = constant_pool_id;
+                    SPVM_HASH_insert(package->constant_pool_32bit2_value_symtable, type_id_string, sizeof(int32_t) * 2, (void*)(intptr_t)constant_pool_id);
                   }
                 }
               }
