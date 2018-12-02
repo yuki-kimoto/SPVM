@@ -189,20 +189,29 @@ package SPVM::Hash : private {
     }
   }
 
-  sub delete : int ($self : self, $key : string) {
+  sub delete : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
+    my $prev: object = undef;
     unless ($ref) {
       return 0;
     }
     while (1) {
       if ($ref->key eq $key) {
-        $ref = $ref->next_entry;
-        return 1;
+        my $ret = $ref->val;
+        if ($prev) {
+          $prev->set_next_entry($ref->next_entry);
+        }
+        else {
+          $self->{entries}->[$index] = $ref->next_entry;
+        }
+        $self->{count}--;
+        return $ret;
       }
       unless ($ref->next_entry) {
-        return 0;
+        return undef;
       }
+      $prev = $ref;
       $ref = $ref->next_entry;
     }
   }

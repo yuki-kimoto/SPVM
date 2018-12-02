@@ -170,15 +170,27 @@ package TestCase::Hash {
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
-    unless ($hash->delete("alice")) {
-      unless ($hash->exists("alice") == 0) {
-        return 0;
-      }
-      unless ($hash->delete("alice") == 0) {
-        return 0;
-      }
+    my $val_alice = $hash->delete("alice");
+    unless (((SPVM::Int)$val_alice)->val == 1) {
+      croak "val_alice: " . ((SPVM::Int)$val_alice)->val;
+      return 0;
     }
-    unless ($hash->exists("carol") == 0) {
+    unless ($hash->exists("alice") == 0) {
+      return 0;
+    }
+    unless ($hash->count == 2) {
+      return 0;
+    }
+    unless ($hash->delete("alice") == undef) {
+      return 0;
+    }
+    unless ($hash->delete("carol") == undef) {
+      return 0;
+    }
+    unless ($hahs->count == 2) {
+      return 0;
+    }
+    unless ($hash->exists("bob") == 1) {
       return 0;
     }
     return 1;
