@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_runtime_weaken_backref.h
+struct SPVM_runtime_weaken_backref;
+typedef struct SPVM_runtime_weaken_backref SPVM_RUNTIME_WEAKEN_BACKREF;
+
 // spvm_constant_pool.h
 struct SPVM_constant_pool;
 typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
