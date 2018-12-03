@@ -19,7 +19,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0396';
+our $VERSION = '0.0397';
 
 my $SPVM_ENV;
 my $BUILDER;
