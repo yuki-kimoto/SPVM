@@ -48,9 +48,9 @@ typedef void* SPVM_VALUE_object;
 
 struct SPVM_env {
   void* exception;
-  void* mortal_stack;
-  void* mortal_stack_top;
-  void* mortal_stack_capacity;
+  void* native_mortal_stack;
+  void* native_mortal_stack_top;
+  void* native_mortal_stack_capacity;
   void* runtime;
   void* runtime_package_vars_heap_byte_offset;
   void* object_header_byte_size;

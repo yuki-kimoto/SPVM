@@ -48,9 +48,9 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
     NULL, // exception
-    NULL, // mortal_stack
-    NULL, // mortal_stack_top
-    NULL, // mortal_stack_capacity
+    NULL, // native_mortal_stack
+    NULL, // native_mortal_stack_top
+    NULL, // native_mortal_stack_capacity
     runtime,
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
@@ -146,8 +146,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
 
   // Mortal stack
-  env->mortal_stack_capacity = (void*)(intptr_t)1;
-  env->mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->mortal_stack_capacity);
+  env->native_mortal_stack_capacity = (void*)(intptr_t)1;
+  env->native_mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->native_mortal_stack_capacity);
 
   // Adjust alignment SPVM_VALUE
   int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
@@ -168,7 +168,7 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
 
 void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
   // Free mortal stack
-  SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
+  SPVM_RUNTIME_API_free_memory_block(env, env->native_mortal_stack);
   
   // Free exception
   SPVM_RUNTIME_API_set_exception(env, NULL);
@@ -4089,7 +4089,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
   (void)env;
   
-  int32_t mortal_stack_top = (intptr_t)env->mortal_stack_top;
+  int32_t mortal_stack_top = (intptr_t)env->native_mortal_stack_top;
   
   return mortal_stack_top;
 }
@@ -4101,17 +4101,17 @@ void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   if (object != NULL) {
     // Extend mortal stack
-    if (env->mortal_stack_top >= env->mortal_stack_capacity) {
-      int32_t new_mortal_stack_capacity = (intptr_t)env->mortal_stack_capacity * 2;
+    if (env->native_mortal_stack_top >= env->native_mortal_stack_capacity) {
+      int32_t new_mortal_stack_capacity = (intptr_t)env->native_mortal_stack_capacity * 2;
       SPVM_OBJECT** new_mortal_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * new_mortal_stack_capacity);
-      memcpy(new_mortal_stack, env->mortal_stack, sizeof(void*) * (intptr_t)env->mortal_stack_capacity);
-      env->mortal_stack_capacity = (void*)(intptr_t)new_mortal_stack_capacity;
-      SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
-      env->mortal_stack = new_mortal_stack;
+      memcpy(new_mortal_stack, env->native_mortal_stack, sizeof(void*) * (intptr_t)env->native_mortal_stack_capacity);
+      env->native_mortal_stack_capacity = (void*)(intptr_t)new_mortal_stack_capacity;
+      SPVM_RUNTIME_API_free_memory_block(env, env->native_mortal_stack);
+      env->native_mortal_stack = new_mortal_stack;
     }
     
-    ((SPVM_OBJECT**)(env->mortal_stack))[(intptr_t)env->mortal_stack_top] = object;
-    env->mortal_stack_top = (void*)((intptr_t)env->mortal_stack_top + 1);
+    ((SPVM_OBJECT**)(env->native_mortal_stack))[(intptr_t)env->native_mortal_stack_top] = object;
+    env->native_mortal_stack_top = (void*)((intptr_t)env->native_mortal_stack_top + 1);
     
     object->ref_count++;
   }
@@ -4123,8 +4123,8 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
   SPVM_RUNTIME* runtime = env->runtime;
 
   int32_t mortal_stack_index;
-  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < (intptr_t)env->mortal_stack_top; mortal_stack_index++) {
-    SPVM_OBJECT* object = ((SPVM_OBJECT**)(env->mortal_stack))[mortal_stack_index];
+  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < (intptr_t)env->native_mortal_stack_top; mortal_stack_index++) {
+    SPVM_OBJECT* object = ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index];
     
     if (object != NULL) {
       if (object->ref_count > 1) {
@@ -4135,10 +4135,10 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
       }
     }
     
-    ((SPVM_OBJECT**)(env->mortal_stack))[mortal_stack_index] = NULL;
+    ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index] = NULL;
   }
   
-  env->mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
+  env->native_mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
