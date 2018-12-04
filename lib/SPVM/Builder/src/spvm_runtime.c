@@ -146,6 +146,16 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
   // Mortal stack
   env->mortal_stack_capacity = (void*)(intptr_t)1;
   env->mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->mortal_stack_capacity);
+
+  // Adjust alignment SPVM_VALUE
+  int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
+  if (object_header_byte_size % sizeof(SPVM_VALUE) != 0) {
+    object_header_byte_size += (sizeof(SPVM_VALUE) - object_header_byte_size % sizeof(SPVM_VALUE));
+  }
+  assert(object_header_byte_size % sizeof(SPVM_VALUE) == 0);
+  
+  // Object header byte size
+  env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
 }
@@ -161,15 +171,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
   SPVM_ENV* env = SPVM_RUNTIME_create_env(runtime);
-  
-  // Adjust alignment SPVM_VALUE
-  int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
-  if (object_header_byte_size % sizeof(SPVM_VALUE) != 0) {
-    object_header_byte_size += (sizeof(SPVM_VALUE) - object_header_byte_size % sizeof(SPVM_VALUE));
-  }
-  assert(object_header_byte_size % sizeof(SPVM_VALUE) == 0);
-  
-  env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   runtime->portable = portable;
   
