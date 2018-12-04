@@ -224,7 +224,7 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   return env;
 }
 
-void SPVM_RUNTIME_free(SPVM_ENV* env) {
+void SPVM_RUNTIME_free_runtime(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   

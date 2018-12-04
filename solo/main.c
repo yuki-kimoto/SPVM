@@ -644,7 +644,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Call entry point sub
   int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);
   
-  SPVM_RUNTIME_free(env);
+  SPVM_RUNTIME_free_runtime(env);
   
   return status_code;
 }
