@@ -133,5 +133,6 @@ struct SPVM_env {
   void* basic_type_id_float_object;
   void* basic_type_id_double_object;
   int32_t (*get_field_byte_offset)(SPVM_ENV*, int32_t);
+  void* exception;
 };
 #endif

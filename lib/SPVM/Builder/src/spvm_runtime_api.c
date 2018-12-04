@@ -75,7 +75,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     SPVM_RUNTIME_API_leave_scope(env, original_mortal_stack_top);
 
     // Set default exception message
-    if (exception_flag && runtime->exception == NULL) {
+    if (exception_flag && env->exception == NULL) {
       void* exception = env->new_string_raw(env, "Error", 0);
       env->set_exception(env, exception);
     }
@@ -3811,7 +3811,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   
   int32_t status_code;
   if (exception_flag) {
-    SPVM_RUNTIME_API_print(env, runtime->exception);
+    SPVM_RUNTIME_API_print(env, env->exception);
     printf("\n");
     status_code = 255;
   }
@@ -4135,23 +4135,21 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  if (runtime->exception != NULL) {
-    SPVM_RUNTIME_API_dec_ref_count(env, (SPVM_OBJECT*)runtime->exception);
+  if (env->exception != NULL) {
+    SPVM_RUNTIME_API_dec_ref_count(env, (SPVM_OBJECT*)env->exception);
   }
   
-  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&runtime->exception, exception);
+  SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(&env->exception, exception);
   
-  if (runtime->exception != NULL) {
-    runtime->exception->ref_count++;
+  if (env->exception != NULL) {
+    ((SPVM_OBJECT*)env->exception)->ref_count++;
   }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  return runtime->exception;
+  return env->exception;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {

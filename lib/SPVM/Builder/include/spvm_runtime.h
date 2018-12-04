@@ -78,9 +78,6 @@ struct SPVM_runtime {
   // C function addresses(native or precompile)
   void** sub_cfunc_addresses;
   
-  // Exception
-  SPVM_OBJECT* exception;
-  
   // Mortal stack
   SPVM_OBJECT** mortal_stack;
   int32_t mortal_stack_top;

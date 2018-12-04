@@ -133,6 +133,7 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
     SPVM_RUNTIME_API_get_field_byte_offset,
+    NULL, // exception
   };
   
   int32_t env_length = 255;
@@ -217,11 +218,13 @@ void SPVM_RUNTIME_free(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
+  /*
   // Free mortal stack
   SPVM_RUNTIME_API_free_memory_block(env, runtime->mortal_stack);
   
   // Free exception
   SPVM_RUNTIME_API_set_exception(env, NULL);
+  */
   
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);
