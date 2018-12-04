@@ -123,7 +123,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
   
   // Create run-time
-  SPVM_ENV* env = SPVM_RUNTIME_build_runtime_env(portable);
+  SPVM_ENV* env = SPVM_RUNTIME_API_build_runtime_env(portable);
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Free compiler
@@ -644,7 +644,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Call entry point sub
   int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);
   
-  SPVM_RUNTIME_free_runtime(env);
+  SPVM_RUNTIME_API_free_runtime(env);
   
   return status_code;
 }

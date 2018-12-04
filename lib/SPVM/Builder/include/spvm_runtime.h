@@ -82,8 +82,4 @@ struct SPVM_runtime {
   int32_t memory_blocks_count;
 };
 
-SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime);
-SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable);
-void SPVM_RUNTIME_free_runtime(SPVM_ENV* env);
-
 #endif

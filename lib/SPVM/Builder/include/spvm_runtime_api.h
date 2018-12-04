@@ -4,6 +4,10 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
+SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime);
+SPVM_ENV* SPVM_RUNTIME_API_build_runtime_env(SPVM_PORTABLE* portable);
+void SPVM_RUNTIME_API_free_runtime(SPVM_ENV* env);
+
 void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env);
 
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id);
