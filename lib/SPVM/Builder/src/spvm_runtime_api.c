@@ -43,20 +43,6 @@
 
 
 
-SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
-  return SPVM_RUNTIME_API_create_env(env->runtime);
-}
-
-void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
-  // Free mortal stack
-  SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
-  
-  // Free exception
-  SPVM_RUNTIME_API_set_exception(env, NULL);
-  
-  free(env);
-}
-
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
@@ -150,6 +136,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     NULL, // mortal_stack
     NULL, // mortal_stack_top
     NULL, // mortal_stack_capacity
+    SPVM_RUNTIME_API_new_env,
+    SPVM_RUNTIME_API_free_env,
   };
   
   int32_t env_length = 255;
@@ -171,6 +159,20 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
+  return SPVM_RUNTIME_API_create_env(env->runtime);
+}
+
+void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
+  // Free mortal stack
+  SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
+  
+  // Free exception
+  SPVM_RUNTIME_API_set_exception(env, NULL);
+  
+  free(env);
 }
 
 SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable) {

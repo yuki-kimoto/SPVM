@@ -137,5 +137,7 @@ struct SPVM_env {
   void* mortal_stack;
   void* mortal_stack_top;
   void* mortal_stack_capacity;
+  void* (*new_env)(SPVM_ENV*);
+  void (*free_env)(SPVM_ENV*);
 };
 #endif
