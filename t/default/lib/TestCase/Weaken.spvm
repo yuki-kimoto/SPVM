@@ -21,15 +21,7 @@ package TestCase::Weaken {
     $weaken2->{data_weaken} = $weaken1;
     
     # Weaken both
-    weaken $weaken1->{data_weaken};
     weaken $weaken2->{data_weaken};
-
-    # Exists object
-    if ($weaken1->{x} == 1) {
-      if ($weaken2->{x} == 2) {
-        return 1;
-      }
-    }
     
     return 0;
   }

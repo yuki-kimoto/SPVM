@@ -24,6 +24,7 @@
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_arg.h"
 #include "spvm_runtime_field.h"
+#include "spvm_runtime_weaken_backref.h"
 
 // Only use constant
 #include "spvm_package.h"
@@ -4023,19 +4024,18 @@ int32_t SPVM_RUNTIME_API_get_memory_blocks_count(SPVM_ENV* env) {
   return runtime->memory_blocks_count;
 }
 
-void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_ENV* env, void** weaken_back_refs, int32_t weaken_back_refs_length) {
+void SPVM_RUNTIME_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_RUNTIME_WEAKEN_BACKREF* weaken_backref_head) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  {
-    int32_t i;
-    for (i = 0; i < weaken_back_refs_length; i++) {
-      *(void**)weaken_back_refs[i] = NULL;
-    }
+  SPVM_RUNTIME_WEAKEN_BACKREF* temp = weaken_backref_head;
+  SPVM_RUNTIME_WEAKEN_BACKREF* swap = NULL;
+
+  while(temp != NULL){
+    swap = temp->next;
+    *(temp->object_address) = NULL;
+    SPVM_RUNTIME_API_free_memory_block(env, temp);
+    temp = swap;
   }
-  
-  SPVM_RUNTIME_API_free_memory_block(env, weaken_back_refs);
 }
 
 int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
@@ -4073,40 +4073,29 @@ void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   else {
     object->ref_count--;
   }
+
+  // Create weaken_backref_head
+  if (object->weaken_backref_head == NULL) {
+    SPVM_RUNTIME_WEAKEN_BACKREF* new_weaken_backref = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_RUNTIME_WEAKEN_BACKREF));
+    new_weaken_backref->object_address = object_address;
+    object->weaken_backref_head = new_weaken_backref;
+  }
+  // Add weaken_back_ref
+  else {
+    SPVM_RUNTIME_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+
+    SPVM_RUNTIME_WEAKEN_BACKREF* new_weaken_backref = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_RUNTIME_WEAKEN_BACKREF));
+    new_weaken_backref->object_address = object_address;
+    
+    while (weaken_backref_next->next != NULL){
+      weaken_backref_next = weaken_backref_next->next;
+    }
+    weaken_backref_next->next = new_weaken_backref;
+  }
   
-  // Weaken is implemented tag pointer. If pointer first bit is 1, object is weaken.
+  // Weaken is implemented by tag pointer.
+  // If pointer most right bit is 1, object is weaken.
   *object_address = (SPVM_OBJECT*)((intptr_t)*object_address | 1);
-  
-  // Create array of weaken_back_refs if need
-  if (object->weaken_back_refs == NULL) {
-    object->weaken_back_refs_capacity = 1;
-    object->weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * object->weaken_back_refs_capacity);
-  }
-  
-  int32_t capacity = object->weaken_back_refs_capacity;
-  int32_t length = object->weaken_back_refs_length;
-  
-  // Extend capacity
-  assert(capacity >= length);
-  if (length == capacity) {
-    int32_t new_capacity = capacity * 2;
-    void** new_weaken_back_refs = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * new_capacity);
-    
-    void** weaken_back_refs = object->weaken_back_refs;
-    memcpy(new_weaken_back_refs, weaken_back_refs, length * sizeof(void*));
-    
-    // Old object become NULL
-    memset(weaken_back_refs, 0, length * sizeof(void*));
-    
-    // Free old weaken back references
-    SPVM_RUNTIME_API_free_memory_block(env, object->weaken_back_refs);
-    
-    object->weaken_back_refs = new_weaken_back_refs;
-    object->weaken_back_refs_capacity = new_capacity;
-  }
-  
-  object->weaken_back_refs[length] = object_address;
-  object->weaken_back_refs_length++;
 }
 
 void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
@@ -4129,31 +4118,18 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   
   // Increment reference count
   object->ref_count++;
-
-  int32_t length = object->weaken_back_refs_length;
   
-  void** weaken_back_refs = object->weaken_back_refs;
-  
-  {
-    int32_t i;
-    int32_t found_index = -1;
-    for (i = 0; i < length; i++) {
-      if (weaken_back_refs[i] == object_address) {
-        found_index = i;
-        break;
-      }
+  // Remove weaken back ref
+  SPVM_RUNTIME_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
+  assert(*weaken_backref_next_address);
+  while ((*weaken_backref_next_address)->next != NULL){
+    if ((*weaken_backref_next_address)->next->object_address == object_address) {
+      SPVM_RUNTIME_API_free_memory_block(env, (*weaken_backref_next_address)->next);
+      *weaken_backref_next_address = (*weaken_backref_next_address)->next->next;
+      break;
     }
-    
-    if (found_index == -1) {
-      fprintf(stderr, "Not weakened address is specified(SPVM_RUNTIME_API_unweaken())");
-      abort();
-    }
-    if (found_index < length - 1) {
-      int32_t move_length = length - found_index - 1;
-      memmove(&weaken_back_refs[found_index], &weaken_back_refs[found_index + 1], move_length * sizeof(void*));
-    }
+    *weaken_backref_next_address = (*weaken_backref_next_address)->next;
   }
-  object->weaken_back_refs_length--;
 }
 
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
@@ -4805,8 +4781,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
-    if (object->weaken_back_refs != NULL) {
-      SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_back_refs, object->weaken_back_refs_length);
+    if (object->weaken_backref_head != NULL) {
+      SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_backref_head);
+      object->weaken_backref_head = NULL;
     }
     
     // Free object
