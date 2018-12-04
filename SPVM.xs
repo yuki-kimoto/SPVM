@@ -322,8 +322,10 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    SPVM_RUNTIME_API_free_runtime(env->runtime);
-    free(env);
+    SPVM_RUNTIME* runtime = env->runtime;
+    
+    SPVM_RUNTIME_API_free_env(env);
+    SPVM_RUNTIME_API_free_runtime(runtime);
   }
 }
 

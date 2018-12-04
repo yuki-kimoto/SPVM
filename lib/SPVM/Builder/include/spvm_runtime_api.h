@@ -45,6 +45,7 @@ do {\
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env);
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime);
 SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable);
+void SPVM_RUNTIME_API_free_env(SPVM_ENV* env);
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime);
 
 void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env);

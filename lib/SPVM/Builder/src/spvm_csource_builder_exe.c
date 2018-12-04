@@ -560,6 +560,7 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t status_code = SPVM_RUNTIME_API_call_entry_point_sub(env, package_name, argc, argv);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_API_free_env(env);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_API_free_runtime(runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return status_code;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "}\n");

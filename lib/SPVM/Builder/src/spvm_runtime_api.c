@@ -47,14 +47,14 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
 }
 
-SPVM_ENV* SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
+void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
   // Free mortal stack
   SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
   
   // Free exception
   SPVM_RUNTIME_API_set_exception(env, NULL);
   
-  return SPVM_RUNTIME_API_create_env(env->runtime);
+  free(env);
 }
 
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
