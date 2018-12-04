@@ -3875,9 +3875,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t mortal_stack_top = runtime->mortal_stack_top;
+  int32_t mortal_stack_top = (intptr_t)env->mortal_stack_top;
   
   return mortal_stack_top;
 }
@@ -3889,17 +3887,17 @@ void SPVM_RUNTIME_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   if (object != NULL) {
     // Extend mortal stack
-    if (runtime->mortal_stack_top >= runtime->mortal_stack_capacity) {
-      int32_t new_mortal_stack_capacity = runtime->mortal_stack_capacity * 2;
+    if (env->mortal_stack_top >= env->mortal_stack_capacity) {
+      int32_t new_mortal_stack_capacity = (intptr_t)env->mortal_stack_capacity * 2;
       SPVM_OBJECT** new_mortal_stack = SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(void*) * new_mortal_stack_capacity);
-      memcpy(new_mortal_stack, runtime->mortal_stack, sizeof(void*) * runtime->mortal_stack_capacity);
-      runtime->mortal_stack_capacity = new_mortal_stack_capacity;
-      SPVM_RUNTIME_API_free_memory_block(env, runtime->mortal_stack);
-      runtime->mortal_stack = new_mortal_stack;
+      memcpy(new_mortal_stack, env->mortal_stack, sizeof(void*) * (intptr_t)env->mortal_stack_capacity);
+      env->mortal_stack_capacity = (void*)(intptr_t)new_mortal_stack_capacity;
+      SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
+      env->mortal_stack = new_mortal_stack;
     }
     
-    runtime->mortal_stack[runtime->mortal_stack_top] = object;
-    runtime->mortal_stack_top++;
+    ((SPVM_OBJECT**)(env->mortal_stack))[(intptr_t)env->mortal_stack_top] = object;
+    env->mortal_stack_top = (void*)((intptr_t)env->mortal_stack_top + 1);
     
     object->ref_count++;
   }
@@ -3911,8 +3909,8 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
   SPVM_RUNTIME* runtime = env->runtime;
 
   int32_t mortal_stack_index;
-  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < runtime->mortal_stack_top; mortal_stack_index++) {
-    SPVM_OBJECT* object = runtime->mortal_stack[mortal_stack_index];
+  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < (intptr_t)env->mortal_stack_top; mortal_stack_index++) {
+    SPVM_OBJECT* object = ((SPVM_OBJECT**)(env->mortal_stack))[mortal_stack_index];
     
     if (object != NULL) {
       if (object->ref_count > 1) {
@@ -3923,10 +3921,10 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
       }
     }
     
-    runtime->mortal_stack[mortal_stack_index] = NULL;
+    ((SPVM_OBJECT**)(env->mortal_stack))[mortal_stack_index] = NULL;
   }
   
-  runtime->mortal_stack_top = original_mortal_stack_top;
+  env->mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {

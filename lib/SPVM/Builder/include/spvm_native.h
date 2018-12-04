@@ -134,5 +134,8 @@ struct SPVM_env {
   void* basic_type_id_double_object;
   int32_t (*get_field_byte_offset)(SPVM_ENV*, int32_t);
   void* exception;
+  void* mortal_stack;
+  void* mortal_stack_top;
+  void* mortal_stack_capacity;
 };
 #endif
