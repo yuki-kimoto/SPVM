@@ -142,6 +142,10 @@ SPVM_ENV* SPVM_RUNTIME_create_env(SPVM_RUNTIME* runtime) {
   int32_t env_length = 255;
   SPVM_ENV* env = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
+
+  // Mortal stack
+  env->mortal_stack_capacity = (void*)(intptr_t)1;
+  env->mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->mortal_stack_capacity);
   
   return env;
 }
@@ -215,10 +219,6 @@ SPVM_ENV* SPVM_RUNTIME_build_runtime_env(SPVM_PORTABLE* portable) {
   
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
-  
-  // Mortal stack
-  env->mortal_stack_capacity = (void*)(intptr_t)1;
-  env->mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->mortal_stack_capacity);
   
   return env;
 }
