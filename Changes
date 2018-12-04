@@ -1,3 +1,22 @@
+0.0399 2018-12-05
+  - SPVM_value field is changed to 
+  
+		union SPVM_value {
+		  int8_t bval;
+		  int16_t sval;
+		  int32_t ival;
+		  int64_t lval;
+		  float fval;
+		  double dval;
+		  void* oval;
+		  int8_t* bref;
+		  int16_t* sref;
+		  int32_t* iref;
+		  int64_t* lref;
+		  float* fref;
+		  double* dref;
+		};
+    
 0.0398 2018-12-04
   - reduce object size by reducing weaken information
   - env become thread safe
