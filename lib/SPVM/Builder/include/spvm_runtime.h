@@ -4,45 +4,6 @@
 #include "spvm_base.h"
 #include "spvm_native.h"
 
-/*
-  "& ~(intptr_t)1" means dropping weaken flag
-*/
-
-#define SPVM_RUNTIME_C_INLINE_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))++)
-#define SPVM_RUNTIME_C_INLINE_INC_REF_COUNT(object)\
-do {\
-  if (object != NULL) {\
-    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(object);\
-  }\
-} while (0)\
-
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))--)
-#define SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT(object)\
-do {\
-  if (object != NULL) {\
-    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(object) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(object); }\
-    else { env->dec_ref_count(env, object); }\
-  }\
-} while (0)\
-
-#define SPVM_RUNTIME_C_INLINE_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
-#define SPVM_RUNTIME_C_INLINE_OBJECT_ASSIGN(dist_address, src_object) \
-do {\
-  void* tmp_object = src_object;\
-  if (tmp_object != NULL) {\
-    SPVM_RUNTIME_C_INLINE_INC_REF_COUNT_ONLY(tmp_object);\
-  }\
-  if (*(void**)(dist_address) != NULL) {\
-    if (SPVM_RUNTIME_C_INLINE_ISWEAK(dist_address)) { env->unweaken(env, (void**)dist_address); }\
-    if (SPVM_RUNTIME_C_INLINE_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_RUNTIME_C_INLINE_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\
-    else { env->dec_ref_count(env, *(void**)(dist_address)); }\
-  }\
-  *(void**)(dist_address) = tmp_object;\
-} while (0)\
-
-
 struct SPVM_runtime {
   SPVM_PORTABLE* portable;
   

@@ -53,6 +53,7 @@ lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_package.h
 lib/SPVM/Builder/include/spvm_runtime_package_var.h
 lib/SPVM/Builder/include/spvm_runtime_sub.h
+lib/SPVM/Builder/include/spvm_runtime_weaken_backref.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
@@ -93,7 +94,6 @@ lib/SPVM/Builder/src/spvm_package.c
 lib/SPVM/Builder/src/spvm_package_var.c
 lib/SPVM/Builder/src/spvm_package_var_access.c
 lib/SPVM/Builder/src/spvm_portable.c
-lib/SPVM/Builder/src/spvm_runtime.c
 lib/SPVM/Builder/src/spvm_runtime_api.c
 lib/SPVM/Builder/src/spvm_string_buffer.c
 lib/SPVM/Builder/src/spvm_sub.c
@@ -169,6 +169,7 @@ solo/lib/TestCase/Pointer.spvm
 solo/lib/TestCase/Simple.spvm
 solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
+solo/lib/TestCase/XGetter.spvm
 solo/solo_Makefile.PL
 SPVM.xs
 spvm_build/.gitkeep
@@ -176,6 +177,7 @@ t/compile-error.t
 t/copy_default_to_precompile.pl
 t/default/array.t
 t/default/assign.t
+t/default/begin.t
 t/default/bit-operator.t
 t/default/comparison-operator.t
 t/default/complex.t
@@ -186,12 +188,14 @@ t/default/enum.t
 t/default/exception.t
 t/default/extension.t
 t/default/increment.t
+t/default/inline.t
 t/default/interface.t
 t/default/isa.t
 t/default/lib-CORE.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Array.spvm
 t/default/lib/TestCase/Assign.spvm
+t/default/lib/TestCase/Begin.spvm
 t/default/lib/TestCase/BitOperator.spvm
 t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
@@ -224,9 +228,11 @@ t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
+t/default/lib/TestCase/CompileError/Literal/IntOutOfRange.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/PackageVar/Private.spvm
 t/default/lib/TestCase/CompileError/String/CharacterAssign.spvm
+t/default/lib/TestCase/CompileError/Sub/Begin.spvm
 t/default/lib/TestCase/CompileError/Term/SingleParenthesArrayLength.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
@@ -253,6 +259,7 @@ t/default/lib/TestCase/Extension2.native/Extension2.config
 t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/Float.spvm
 t/default/lib/TestCase/Increment.spvm
+t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Int.spvm
 t/default/lib/TestCase/Interface.spvm
 t/default/lib/TestCase/Interface/ImplementInterface1.spvm
