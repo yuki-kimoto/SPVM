@@ -43,9 +43,27 @@
 
 
 
+
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
+    NULL, // exception
+    NULL, // mortal_stack
+    NULL, // mortal_stack_top
+    NULL, // mortal_stack_capacity
+    runtime,
+    (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
+    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_byte_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, array_length), // object_array_length_byte_offset
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_INT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
     SPVM_RUNTIME_API_get_array_length,
     SPVM_RUNTIME_API_get_byte_array_elements_new,
     SPVM_RUNTIME_API_get_short_array_elements_new,
@@ -100,11 +118,6 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_unweaken,
     SPVM_RUNTIME_API_concat,
     SPVM_RUNTIME_API_create_exception_stack_trace,
-    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_byte_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, array_length), // object_array_length_byte_offset
     SPVM_RUNTIME_API_call_sub,
     SPVM_RUNTIME_API_enter_scope,
     SPVM_RUNTIME_API_push_mortal,
@@ -122,20 +135,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_new_string,
     SPVM_RUNTIME_API_new_pointer,
     SPVM_RUNTIME_API_get_package_var_id,
-    (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_byte_offset
-    runtime,
     SPVM_RUNTIME_API_has_interface,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_INT_OBJECT,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
-    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
     SPVM_RUNTIME_API_get_field_byte_offset,
-    NULL, // exception
-    NULL, // mortal_stack
-    NULL, // mortal_stack_top
-    NULL, // mortal_stack_capacity
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
   };

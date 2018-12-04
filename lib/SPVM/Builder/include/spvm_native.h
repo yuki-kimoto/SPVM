@@ -47,6 +47,23 @@ typedef void* SPVM_VALUE_object;
 
 
 struct SPVM_env {
+  void* exception;
+  void* mortal_stack;
+  void* mortal_stack_top;
+  void* mortal_stack_capacity;
+  void* runtime;
+  void* runtime_package_vars_heap_byte_offset;
+  void* object_header_byte_size;
+  void* object_ref_count_byte_offset;
+  void* object_basic_type_id_byte_offset;
+  void* object_type_dimension_byte_offset;
+  void* object_array_length_byte_offset;
+  void* basic_type_id_byte_object;
+  void* basic_type_id_short_object;
+  void* basic_type_id_int_object;
+  void* basic_type_id_long_object;
+  void* basic_type_id_float_object;
+  void* basic_type_id_double_object;
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements_new)(SPVM_ENV*, void*);
   int16_t* (*get_short_array_elements_new)(SPVM_ENV*, void*);
@@ -101,11 +118,6 @@ struct SPVM_env {
   void (*unweaken)(SPVM_ENV* env, void** object_address);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
   void* (*create_exception_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
-  void* object_header_byte_size;
-  void* object_ref_count_byte_offset;
-  void* object_basic_type_id_byte_offset;
-  void* object_type_dimension_byte_offset;
-  void* object_array_length_byte_offset;
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   int32_t (*enter_scope)(SPVM_ENV* env);
   void (*push_mortal)(SPVM_ENV* env, void* object);
@@ -123,20 +135,8 @@ struct SPVM_env {
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
-  void* runtime_package_vars_heap_byte_offset;
-  void* runtime;
   int32_t (*has_interface)(SPVM_ENV*, void* object, int32_t interface_basic_type_id);
-  void* basic_type_id_byte_object;
-  void* basic_type_id_short_object;
-  void* basic_type_id_int_object;
-  void* basic_type_id_long_object;
-  void* basic_type_id_float_object;
-  void* basic_type_id_double_object;
   int32_t (*get_field_byte_offset)(SPVM_ENV*, int32_t);
-  void* exception;
-  void* mortal_stack;
-  void* mortal_stack_top;
-  void* mortal_stack_capacity;
   void* (*new_env)(SPVM_ENV*);
   void (*free_env)(SPVM_ENV*);
 };
