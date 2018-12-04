@@ -43,7 +43,19 @@
 
 
 
+SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
+  return SPVM_RUNTIME_API_create_env(env->runtime);
+}
 
+SPVM_ENV* SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
+  // Free mortal stack
+  SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
+  
+  // Free exception
+  SPVM_RUNTIME_API_set_exception(env, NULL);
+  
+  return SPVM_RUNTIME_API_create_env(env->runtime);
+}
 
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 
@@ -161,18 +173,10 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   return env;
 }
 
-  // Mortal stack
-  SPVM_OBJECT** mortal_stack;
-  int32_t mortal_stack_top;
-  int32_t mortal_stack_capacity;
-  
-
-SPVM_ENV* SPVM_RUNTIME_API_build_runtime_env(SPVM_PORTABLE* portable) {
+SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
-  SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
-  
   runtime->portable = portable;
   
   runtime->string_pool = portable->string_pool;
@@ -222,20 +226,10 @@ SPVM_ENV* SPVM_RUNTIME_API_build_runtime_env(SPVM_PORTABLE* portable) {
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars_length + 1));
   
-  return env;
+  return runtime;
 }
 
-void SPVM_RUNTIME_API_free_runtime(SPVM_ENV* env) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  /*
-  // Free mortal stack
-  SPVM_RUNTIME_API_free_memory_block(env, env->mortal_stack);
-  
-  // Free exception
-  SPVM_RUNTIME_API_set_exception(env, NULL);
-  */
+void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
   
   // Free portable
   SPVM_PORTABLE_free(runtime->portable);

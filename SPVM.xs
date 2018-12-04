@@ -271,8 +271,11 @@ compile_spvm(...)
     // Build portable info
     SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
     
-    // Create run-time env
-    SPVM_ENV* env = SPVM_RUNTIME_API_build_runtime_env(portable);
+    // Build runtime
+    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(portable);
+    
+    // Create env
+    SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
     
     // Set ENV
     size_t iv_env = PTR2IV(env);
@@ -319,7 +322,7 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    SPVM_RUNTIME_API_free_runtime(env);
+    SPVM_RUNTIME_API_free_runtime(env->runtime);
     free(env);
   }
 }
