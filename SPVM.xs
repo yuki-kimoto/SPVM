@@ -256,11 +256,11 @@ compile_spvm(...)
         HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
         
         // Subroutine have_native_desc
-        int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC;
+        int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_NATIVE;
         SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
 
         // Subroutine have_precompile_desc
-        int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC;
+        int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE;
         SV* sv_sub_have_precompile_desc = sv_2mortal(newSViv(sub_have_precompile_desc));
 
         (void)hv_store(hv_sub_info, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
@@ -456,7 +456,6 @@ bind_sub_precompile(...)
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
 
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
-  sub->flag |= SPVM_SUB_C_FLAG_IS_COMPILED;
   runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);

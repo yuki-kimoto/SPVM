@@ -1115,7 +1115,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
       SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + sub_index];
       const char* sub_name = &runtime->string_pool[sub->name_id];
       const char* sub_signature = &runtime->string_pool[sub->signature_id];
-      if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+      if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
         SPVM_STRING_BUFFER_add(string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -1132,7 +1132,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     int32_t sub_index;
     for (sub_index = 0; sub_index < package->subs_length; sub_index++) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + sub_index];
-      if (sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+      if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
         const char* sub_name = &runtime->string_pool[sub->name_id];
         SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(env, string_buffer, package_name, sub_name);
       }
@@ -1208,7 +1208,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_S
 
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
 
-  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
+  assert(sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE);
   
   // Return type
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
@@ -1245,7 +1245,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_get_sub(env, package, sub_name);
 
-  assert(sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC);
+  assert(sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE);
   
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(env, string_buffer, package_name, sub_name);
 
@@ -3515,7 +3515,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         }
         
         // Subroutine inline expantion in same package
-        if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_HAVE_PRECOMPILE_DESC) {
+        if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");

@@ -880,7 +880,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_PACKAGE* new_package = type->basic_type->package;
                 
                 // Anon sub
-                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
+                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
                   SPVM_OP* op_type = op_cur->first;
                   
                   SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
@@ -1022,23 +1022,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
+                  else if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
                     SPVM_COMPILER_error(compiler, "Can't create object of struct package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   
                   int32_t is_private;
                   // Private flag
-                  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PRIVATE) {
+                  if (package->flag & SPVM_PACKAGE_C_FLAG_PRIVATE) {
                     is_private = 1;
                   }
                   // Public flag
-                  else if (package->flag & SPVM_PACKAGE_C_FLAG_IS_PUBLIC) {
+                  else if (package->flag & SPVM_PACKAGE_C_FLAG_PUBLIC) {
                     is_private = 0;
                   }
                   // Default
                   else {
-                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE));
+                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE));
                     assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE);
                     is_private = 1;
                   }
@@ -2463,7 +2463,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_HASH_insert(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t), op_cur->uv.call_sub->sub);
               }
               
-              if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
+              if (call_sub->sub->flag & SPVM_SUB_C_FLAG_DESTRUCTOR) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2471,7 +2471,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Inline expansion
               {
                 // Enum is replaced to constant value
-                if (call_sub->sub->flag & SPVM_SUB_C_FLAG_IS_ENUM) {
+                if (call_sub->sub->flag & SPVM_SUB_C_FLAG_ENUM) {
                   // Replace sub to constant
                   op_cur->id = SPVM_OP_C_ID_CONSTANT;
                   op_cur->uv.constant = call_sub->sub->op_inline->uv.constant;
@@ -2827,7 +2827,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Default
               else {
                 // If anon sub, field is public
-                if (field->package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
+                if (field->package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
                   is_private = 0;
                 }
                 // If value type, field is public
@@ -3309,7 +3309,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_TYPE* package_type = package->op_type->uv.type;
           
           // Destructor must receive own package object
-          if (sub->flag & SPVM_SUB_C_FLAG_IS_DESTRUCTOR) {
+          if (sub->flag & SPVM_SUB_C_FLAG_DESTRUCTOR) {
             // DESTROY argument must be 0
             int32_t error = 0;
             if (sub->args->length != 1) {
@@ -3341,13 +3341,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             SPVM_COMPILER_error(compiler, "Interface sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
             return;
           }
           
           // Check subroutine - First tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
             SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
             
@@ -3384,7 +3384,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
 
           // set assign_to_var flag - Second tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             // Run OPs
             SPVM_OP* op_root = sub->op_block;
             SPVM_OP* op_cur = op_root;
@@ -3431,7 +3431,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           
           // Create temporary variables for not assigned values - Third tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             // Run OPs
             SPVM_OP* op_root = sub->op_block;
             SPVM_OP* op_cur = op_root;
@@ -3852,7 +3852,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
 
           // Add more information for opcode building - Fourth tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
+          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             // Block stack
             SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
             

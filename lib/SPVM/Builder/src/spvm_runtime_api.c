@@ -276,7 +276,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
   // Call native sub
-  if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
+  if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
     // Enter scope
     int32_t original_mortal_stack_top = SPVM_RUNTIME_API_enter_scope(env);
 
@@ -296,7 +296,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     return exception_flag;
   }
   // Call precompiled sub
-  else if (sub->flag & SPVM_SUB_C_FLAG_IS_COMPILED) {
+  else if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
     int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
     return (*precompile_address)(env, stack);
   }
@@ -4060,7 +4060,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
     SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
     
     const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
       if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
         has_interface = 1;
@@ -4930,7 +4930,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     }
     int32_t is_pointer = 0;
     if (package) {
-      if (package->flag & SPVM_PACKAGE_C_FLAG_IS_POINTER) {
+      if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
         is_pointer = 1;
       }
     }
@@ -5285,7 +5285,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
     // Subroutine name
     SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
      

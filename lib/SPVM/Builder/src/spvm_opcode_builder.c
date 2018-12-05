@@ -157,7 +157,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           assert(sub->return_type);
           assert(sub->file);
           
-          if (sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC) {
+          if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
             continue;
           }
           
