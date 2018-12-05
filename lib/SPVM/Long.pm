@@ -6,13 +6,22 @@ package SPVM::Long;
 
 SPVM::Long - Long object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $long_object = SPVM::Long->new(5L);
+  my $long_value = $long_object->val;
+
+=head1 DESCRIPTION
+
+Long object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Long ($value : long)
+  sub new : SPVM::Long ($value : long)
 
-Construct Long object with specified value.
+Create L<SPVM::Long> object with specified C<long> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Long object with specified value.
 
   sub val : long ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : long)
-
-Set value.
+Get C<long> value.

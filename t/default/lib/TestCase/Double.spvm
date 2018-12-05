@@ -1,17 +1,12 @@
 package TestCase::Double {
-  use SPVM::Double;
-
   sub basic : int () {
-    my $oval = SPVM::Double->new(0.25);
+    my $oval = SPVM::Double->new(DBL_MIN());
     my $value1 = $oval->val;
     
-    $oval->set_val(0.5);
-    my $value2 = $oval->val;
-    
-    if ($value1 == 0.25 && $value2 == 0.5) {
-      return 1;
+    unless ($value1 == DBL_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 }

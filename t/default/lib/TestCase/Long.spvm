@@ -1,17 +1,12 @@
 package TestCase::Long {
-  use SPVM::Long;
-
   sub basic : int () {
-    my $oval = SPVM::Long->new(3);
+    my $oval = SPVM::Long->new(INT64_MIN());
     my $value1 = $oval->val;
     
-    $oval->set_val(5);
-    my $value2 = $oval->val;
-    
-    if ($value1 == 3 && $value2 == 5) {
-      return 1;
+    unless ($value1 == INT64_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 }

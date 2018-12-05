@@ -6,13 +6,22 @@ package SPVM::Short;
 
 SPVM::Short - Short object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $short_object = SPVM::Short->new(5);
+  my $short_value = $short_object->val;
+
+=head1 DESCRIPTION
+
+Short object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Short ($value : short)
+  sub new : SPVM::Short ($value : short)
 
-Construct Short object with specified value.
+Create L<SPVM::Short> object with specified C<short> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Short object with specified value.
 
   sub val : short ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : short)
-
-Set value.
+Get C<short> value.

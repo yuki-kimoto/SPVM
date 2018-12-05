@@ -6,13 +6,22 @@ package SPVM::Float;
 
 SPVM::Float - Float object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $float_object = SPVM::Float->new(0.25);
+  my $float_value = $float_object->val;
+
+=head1 DESCRIPTION
+
+Float object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Float ($value : float)
+  sub new : SPVM::Float ($value : float)
 
-Construct Float object with specified value.
+Create L<SPVM::Float> object with specified C<float> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Float object with specified value.
 
   sub val : float ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : float)
-
-Set value.
+Get C<float> value.

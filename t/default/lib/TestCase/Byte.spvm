@@ -1,17 +1,12 @@
 package TestCase::Byte {
-  use SPVM::Byte;
-
   sub basic : int () {
-    my $oval = SPVM::Byte->new(3);
+    my $oval = SPVM::Byte->new(INT8_MIN());
     my $value1 = $oval->val;
     
-    $oval->set_val(5);
-    my $value2 = $oval->val;
-    
-    if ($value1 == 3 && $value2 == 5) {
-      return 1;
+    unless ($value1 == INT8_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 }

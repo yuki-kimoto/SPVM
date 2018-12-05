@@ -1,11 +1,11 @@
 package SPVM::Bool {
-  has value : private int;
+  has val : ro int;
   
   sub new_true : SPVM::Bool () {
     
     my $self = new SPVM::Bool;
     
-    $self->{value} = 1;
+    $self->{val} = 1;
     
     return $self;
   }
@@ -14,25 +14,8 @@ package SPVM::Bool {
 
     my $self = new SPVM::Bool;
     
-    $self->{value} = 0;
+    $self->{val} = 0;
     
     return $self;
-  }
-  
-  sub is_true : int ($self : self) {
-    if ($self->{value}) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub set_true : void ($self : self) {
-    $self->{value} = 1;
-  }
-  
-  sub set_false : void ($self : self) {
-    $self->{value} = 0;
   }
 }

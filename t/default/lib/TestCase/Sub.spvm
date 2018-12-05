@@ -14,7 +14,7 @@ package TestCase::Sub {
       return 0;
     }
     
-    unless (import_sub2 == 2) {
+    unless (import_sub2() == 2) {
       return 0;
     }
     
@@ -29,51 +29,6 @@ package TestCase::Sub {
     return $num1 + $num2;
   }
 
-  sub no_parenthes_already_exists_sub : int () {
-    {
-      my $num = already_exists_sub_no_arg;
-      unless ($num == 3) {
-        return 0;
-      }
-    }
-    
-    {
-      my $num = already_exists_sub 3, 5;
-      unless ($num == 8) {
-        return 0;
-      }
-    }
-    
-    {
-      my $num = already_exists_sub already_exists_sub(3, 5), 2;
-      unless ($num == 10) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
-  sub no_parenthes_core_sub : int () {
-    
-    {
-      my $num = INT8_MAX;
-      
-      unless ($num == 127) {
-        return 0;
-      }
-    }
-    
-    {
-      my $num = sin 0.5;
-      unless ($num) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
   sub test_return_value_automatical_numeric_convertion_widening : double () {
     
     return 2;

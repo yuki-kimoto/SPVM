@@ -20,7 +20,7 @@
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
-%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME MAYBE_SUB_NAME EXCEPTION_VAR
+%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND DOT3 FATCAMMA RW RO WO BEGIN REQUIRE
 %token <opval> RETURN WEAKEN CROAK NEW
@@ -812,14 +812,6 @@ call_sub
     {
       $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
     }
-  | MAYBE_SUB_NAME '(' opt_normal_terms')'
-    {
-      $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
-    }
-  | MAYBE_SUB_NAME opt_normal_terms
-    {
-      $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $2);
-    }
   | basic_type ARROW sub_name '(' opt_normal_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
@@ -1065,7 +1057,6 @@ field_name
 
 sub_name
   : NAME
-  | MAYBE_SUB_NAME
 
 opt_sub_names
   :	/* Empty */

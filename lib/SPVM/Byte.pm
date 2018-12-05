@@ -6,13 +6,22 @@ package SPVM::Byte;
 
 SPVM::Byte - Byte object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $byte_object = SPVM::Byte->new(5);
+  my $byte_value = $byte_object->val;
+
+=head1 DESCRIPTION
+
+Byte object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Byte ($value : byte)
+  sub new : SPVM::Byte ($value : byte)
 
-Construct Byte object with specified value.
+Create L<SPVM::Byte> object with specified C<byte> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Byte object with specified value.
 
   sub val : byte ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : byte)
-
-Set value.
+Get C<byte> value.

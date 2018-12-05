@@ -6,36 +6,32 @@ package SPVM::Bool;
 
 SPVM::Bool - Bool Utility
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $bool_object_true = SPVM::Bool->new_true;
+  my $bool_object_false = SPVM::Bool->new_false;
+  
+  my $bool_value = $bool_object_true->val;
+
+=head1 CONSTRUCTOR
 
 =head2 new_true
 
-  sub new_true : Bool ()
+  sub new_true : SPVM::Bool ()
 
-Construct Byte object with true.
+Create L<SPVM::Bool> object with true value.
 
 =head2 new_false
 
-  sub new_false : Bool ()
+  sub new_false : SPVM::Bool ()
 
-Construct Byte object with false.
+Create L<SPVM::Bool> object with false value.
 
 =head1 METHODS
 
-=head2 is_true
+=head2 val
 
-  sub is_true : int ($self : self)
+  sub val : int ($self : self)
 
-Check if the value is true.
+If Bool object has true value, return 1, else return 0.
 
-=head2 set_true
-
-  sub set_true : void ($self : self)
-
-Set true.
-
-=head2 set_false
-
-  sub set_false : void ($self : self)
-
-Set false.
