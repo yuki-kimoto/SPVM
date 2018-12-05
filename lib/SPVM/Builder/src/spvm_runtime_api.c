@@ -65,12 +65,12 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT, // float_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT, // double_object_basic_type_id
     SPVM_RUNTIME_API_get_array_length,
-    SPVM_RUNTIME_API_get_byte_array_elements_new,
-    SPVM_RUNTIME_API_get_short_array_elements_new,
-    SPVM_RUNTIME_API_get_int_array_elements_new,
-    SPVM_RUNTIME_API_get_long_array_elements_new,
-    SPVM_RUNTIME_API_get_float_array_elements_new,
-    SPVM_RUNTIME_API_get_double_array_elements_new,
+    SPVM_RUNTIME_API_get_byte_array_elements,
+    SPVM_RUNTIME_API_get_short_array_elements,
+    SPVM_RUNTIME_API_get_int_array_elements,
+    SPVM_RUNTIME_API_get_long_array_elements,
+    SPVM_RUNTIME_API_get_float_array_elements,
+    SPVM_RUNTIME_API_get_double_array_elements,
     SPVM_RUNTIME_API_get_object_array_element,
     SPVM_RUNTIME_API_set_object_array_element,
     SPVM_RUNTIME_API_get_field_id,
@@ -725,8 +725,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_array_length_byte_offset);
         int32_t length2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_array_length_byte_offset);
         
-        SPVM_VALUE_byte* bytes1 = env->get_byte_array_elements_new(env, object1);
-        SPVM_VALUE_byte* bytes2 = env->get_byte_array_elements_new(env, object2);
+        SPVM_VALUE_byte* bytes1 = env->get_byte_array_elements(env, object1);
+        SPVM_VALUE_byte* bytes2 = env->get_byte_array_elements(env, object2);
         
         int32_t short_string_length = length1 < length2 ? length1 : length2;
         int32_t retval = memcmp(bytes1, bytes2, short_string_length);
@@ -1023,7 +1023,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       {
         void* src_string = object_vars[opcode->operand1];
         int32_t src_string_length = env->get_array_length(env, src_string);
-        int8_t* src_string_data = env->get_byte_array_elements_new(env, src_string);
+        int8_t* src_string_data = env->get_byte_array_elements(env, src_string);
         void* string = env->new_string_raw(env, (const char*)src_string_data, src_string_length);
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
@@ -4149,7 +4149,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   const char* at_part = " at ";
 
   // Exception
-  int8_t* exception_bytes = env->get_byte_array_elements_new(env, exception);
+  int8_t* exception_bytes = env->get_byte_array_elements(env, exception);
   int32_t exception_length = env->get_array_length(env, exception);
   
   // Total string length
@@ -4171,7 +4171,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
   
   // Create exception message
   void* new_exception = env->new_string_raw(env, NULL, total_length);
-  int8_t* new_exception_bytes = env->get_byte_array_elements_new(env, new_exception);
+  int8_t* new_exception_bytes = env->get_byte_array_elements(env, new_exception);
   
   memcpy(
     (void*)(new_exception_bytes),
@@ -4198,7 +4198,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_O
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
   
-  int8_t* bytes = env->get_byte_array_elements_new(env, string);
+  int8_t* bytes = env->get_byte_array_elements(env, string);
   int32_t string_length = env->get_array_length(env, string);
   
   {
@@ -4218,9 +4218,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_string_raw(env, NULL, string3_length);
   
-  int8_t* string1_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string1);
-  int8_t* string2_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string2);
-  int8_t* string3_bytes = SPVM_RUNTIME_API_get_byte_array_elements_new(env, string3);
+  int8_t* string1_bytes = SPVM_RUNTIME_API_get_byte_array_elements(env, string1);
+  int8_t* string2_bytes = SPVM_RUNTIME_API_get_byte_array_elements(env, string2);
+  int8_t* string3_bytes = SPVM_RUNTIME_API_get_byte_array_elements(env, string3);
   
   memcpy(string3_bytes, string1_bytes, string1_length);
   memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
@@ -4828,37 +4828,37 @@ int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->array_length;
 }
 
-int8_t* SPVM_RUNTIME_API_get_byte_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
   return (SPVM_VALUE_byte*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int16_t* SPVM_RUNTIME_API_get_short_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_short*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int32_t* SPVM_RUNTIME_API_get_int_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_int*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int64_t* SPVM_RUNTIME_API_get_long_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_long*)((intptr_t)object + env->object_header_byte_size);
 }
 
-float* SPVM_RUNTIME_API_get_float_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_float*)((intptr_t)object + env->object_header_byte_size);
 }
 
-double* SPVM_RUNTIME_API_get_double_array_elements_new(SPVM_ENV* env, SPVM_OBJECT* object) {
+double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_double*)((intptr_t)object + env->object_header_byte_size);

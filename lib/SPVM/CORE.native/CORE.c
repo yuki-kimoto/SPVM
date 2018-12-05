@@ -130,7 +130,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* object = stack[0].oval;
   
-  int8_t* bytes = env->get_byte_array_elements_new(env, object);
+  int8_t* bytes = env->get_byte_array_elements(env, object);
   int32_t string_length = env->get_array_length(env, object);
   
   {
@@ -148,7 +148,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* object = stack[0].oval;
   
-  int8_t* bytes = env->get_byte_array_elements_new(env, object);
+  int8_t* bytes = env->get_byte_array_elements(env, object);
   int32_t string_length = env->get_array_length(env, object);
   
   {
