@@ -1500,13 +1500,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
           category_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_POINTER:
+        case SPVM_DESCRIPTOR_C_ID_POINTER_T:
           package->category = SPVM_PACKAGE_C_CATEGORY_CLASS;
           package->flag |= SPVM_PACKAGE_C_FLAG_IS_POINTER;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_VALUE_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_VALUE_T;
+          package->category = SPVM_PACKAGE_C_CATEGORY_VALUE;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
@@ -1792,7 +1792,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     
     // Sort fields(except value package)
-    if (package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+    if (package->category != SPVM_PACKAGE_C_CATEGORY_VALUE) {
       for (int32_t i = 0; i < (package->fields->length - 1); i++) {
         for (int32_t j = (package->fields->length - 1); j > i; j--) {
           SPVM_FIELD* field1 = SPVM_LIST_fetch(package->fields, j-1);

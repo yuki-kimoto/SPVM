@@ -1328,8 +1328,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return DESCRIPTOR;
                 }
-                else if (strcmp(keyword, "pointer") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_POINTER, compiler->cur_file, compiler->cur_line);
+                else if (strcmp(keyword, "pointer_t") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   
                   return DESCRIPTOR;

@@ -4,13 +4,13 @@
 #include "spvm_compiler.h"
 
 const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
+  "interface",
+  "value_t",
+  "pointer_t",
   "native",
   "precompile",
-  "const",
-  "interface",
   "public",
   "private",
-  "pointer",
   "rw",
   "ro",
   "wo",

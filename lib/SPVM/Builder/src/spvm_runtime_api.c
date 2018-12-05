@@ -74,7 +74,6 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_object_array_element,
     SPVM_RUNTIME_API_set_object_array_element,
     SPVM_RUNTIME_API_get_field_id,
-    SPVM_RUNTIME_API_get_field_index,
     SPVM_RUNTIME_API_get_byte_field,
     SPVM_RUNTIME_API_get_short_field,
     SPVM_RUNTIME_API_get_int_field,
@@ -5015,18 +5014,6 @@ int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return object->ref_count;
-}
-
-int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Field
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
-  
-  return field->index;
 }
 
 int32_t SPVM_RUNTIME_API_get_field_byte_offset(SPVM_ENV* env, int32_t field_id) {

@@ -1018,7 +1018,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                  else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
                     SPVM_COMPILER_error(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -1039,7 +1039,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Default
                   else {
                     assert(!(package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB));
-                    assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE_T);
+                    assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE);
                     is_private = 1;
                   }
                   
@@ -2831,7 +2831,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_private = 0;
                 }
                 // If value type, field is public
-                else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+                else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
                   is_private = 0;
                 }
                 // Default is private
@@ -4616,7 +4616,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     const char* package_name = package->op_name->uv.name;
     
     // value_t package limitation
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE_T) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
       // Can't have subroutines
       if (package->subs->length > 0) {
         SPVM_COMPILER_error(compiler, "value_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
