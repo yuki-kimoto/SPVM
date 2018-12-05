@@ -2,12 +2,12 @@ package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
   
-  native sub native_ref_sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
-  sub ref : int () {
+  native sub ref_double_sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
+  sub ref_double : int () {
     my $out : double;
     my $out_ref = \$out;
     
-    native_ref_sum(0.25, 0.5, $out_ref);
+    ref_double_sum(0.25, 0.5, $out_ref);
     
     if ($$out_ref == 0.75) {
       return 1;

@@ -5,7 +5,7 @@
 #include <spvm_native.h>
 
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_ref_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM_NATIVE_TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

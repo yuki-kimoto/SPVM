@@ -52,7 +52,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Ref
 {
-  ok(TestCase::Extension->ref());
+  ok(TestCase::Extension->ref_double());
 }
 
 # Native Exception
