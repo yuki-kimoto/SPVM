@@ -3378,7 +3378,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
       case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
       case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
-      case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
+      case SPVM_OPCODE_C_ID_CALL_SUB_INT:
       case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
       case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
       case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
@@ -3392,7 +3392,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
       case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
       case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
-      case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP:
+      case SPVM_OPCODE_C_ID_CALL_METHOD_INT:
       case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
       case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
       case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
@@ -3409,7 +3409,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
           case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
           case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
-          case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
+          case SPVM_OPCODE_C_ID_CALL_SUB_INT:
           case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
           case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
           case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
@@ -3425,7 +3425,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
           case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
           case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
           case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
-          case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_INT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
           case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
           case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
@@ -3561,8 +3561,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
             SPVM_STRING_BUFFER_add(string_buffer, ";\n");
             break;
           }
-          case SPVM_OPCODE_C_ID_CALL_SUB_INT_TMP:
-          case SPVM_OPCODE_C_ID_CALL_METHOD_INT_TMP: {
+          case SPVM_OPCODE_C_ID_CALL_SUB_INT:
+          case SPVM_OPCODE_C_ID_CALL_METHOD_INT: {
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, var_id);
             SPVM_STRING_BUFFER_add(string_buffer, " = ");
