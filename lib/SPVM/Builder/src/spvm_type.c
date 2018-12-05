@@ -207,7 +207,7 @@ int32_t SPVM_TYPE_has_interface(
   SPVM_PACKAGE* interface = interface_basic_type->package;
   
   // Package which have only anon sub
-  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+  if (package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
     assert(package->subs->length == 1);
     assert(interface->subs->length == 1);
     SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);

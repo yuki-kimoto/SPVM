@@ -880,7 +880,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_PACKAGE* new_package = type->basic_type->package;
                 
                 // Anon sub
-                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
                   SPVM_OP* op_type = op_cur->first;
                   
                   SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
@@ -1038,7 +1038,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   // Default
                   else {
-                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB));
+                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE));
                     assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE);
                     is_private = 1;
                   }
@@ -2827,7 +2827,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Default
               else {
                 // If anon sub, field is public
-                if (field->package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+                if (field->package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
                   is_private = 0;
                 }
                 // If value type, field is public

@@ -16,7 +16,7 @@
 		  float* fref;
 		  double* dref;
 		};
-    
+  - pointer descriptor is renamed to pointer_t
 0.0398 2018-12-04
   - reduce object size by reducing weaken information
   - env become thread safe

@@ -4060,7 +4060,7 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
     SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
     
     const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
       if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
         has_interface = 1;
@@ -5285,7 +5285,7 @@ int32_t SPVM_RUNTIME_API_get_sub_id_method_call(SPVM_ENV* env, SPVM_OBJECT* obje
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE) {
     // Subroutine name
     SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
      

@@ -1450,9 +1450,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   package->load_path = compiler->cur_file;
   
-  if (!op_type) {
+  int32_t is_anon;
+  if (op_type) {
+    is_anon = 0;
+  }
+  // Anon
+  else  {
     // Package is anon
-    package->flag |= SPVM_PACKAGE_C_FLAG_IS_ANON;
+    is_anon = 1;
     
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
@@ -1466,7 +1471,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   const char* package_name = op_type->uv.type->basic_type->name;
   
-  if (!(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) && islower(package_name[0])) {
+  if (!is_anon && islower(package_name[0])) {
     SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
   
@@ -1910,9 +1915,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         
         if (sub->flag & SPVM_SUB_C_FLAG_IS_ANON_SUB) {
-          package->flag |= SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB;
+          package->flag |= SPVM_PACKAGE_C_FLAG_IS_ANON_SUB_PACKAGE;
           assert(package->subs->length == 1);
-          assert(package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON);
+          assert(is_anon);
         }
 
         sub->rel_id = i;
@@ -1990,7 +1995,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     
     // Clear current sub names
-    if (package->flag & SPVM_PACKAGE_C_FLAG_IS_ANON) {
+    if (is_anon) {
       compiler->current_sub_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
     }
     
