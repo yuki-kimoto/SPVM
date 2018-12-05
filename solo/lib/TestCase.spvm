@@ -657,12 +657,6 @@ SPVM::Test - SPVM test module
       $test_case->{private_field};
     }
     
-    {
-      my $time = time();
-      
-      print($time . "\n");
-    }
-
     warn("warn");
     warn(1);
     warn(1L);
