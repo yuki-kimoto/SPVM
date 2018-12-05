@@ -1,19 +1,11 @@
 package SPVM::Double {
-  has value : private double;
+  has val : ro double;
   
   sub new : SPVM::Double ($value : double) {
     my $self = new SPVM::Double;
     
-    $self->{value} = $value;
+    $self->{val} = $value;
     
     return $self;
-  }
-  
-  sub val : double ($self : self) {
-    return $self->{value};
-  }
-
-  sub set_val : void ($self : self, $value : double) {
-    $self->{value} = $value;
   }
 }

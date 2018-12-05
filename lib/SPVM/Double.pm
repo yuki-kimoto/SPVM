@@ -6,13 +6,22 @@ package SPVM::Double;
 
 SPVM::Double - Double object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $double_object = SPVM::Double->new(5);
+  my $double_value = $double_object->val;
+
+=head1 DESCRIPTION
+
+Double object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Double ($value : double)
+  sub new : SPVM::Double ($value : double)
 
-Construct Double object with specified value.
+Create L<SPVM::Double> object with specified C<double> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Double object with specified value.
 
   sub val : double ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : double)
-
-Set value.
+Get C<double> value.

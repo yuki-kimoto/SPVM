@@ -6,13 +6,22 @@ package SPVM::Int;
 
 SPVM::Int - Int object
 
-=head1 CLASS METHODS
+=head1 SYNOPSYS
+
+  my $int_object = SPVM::Int->new(5);
+  my $int_value = $int_object->val;
+
+=head1 DESCRIPTION
+
+Int object.
+
+=head1 CONSTRUCTOR
 
 =head2 new
 
-  sub new : Int ($value : int)
+  sub new : SPVM::Int ($value : int)
 
-Construct Int object with specified value.
+Create L<SPVM::Int> object with specified C<int> value.
 
 =head1 METHODS
 
@@ -20,10 +29,4 @@ Construct Int object with specified value.
 
   sub val : int ($self : self)
 
-Get value.
-
-=head2 set_val
-
-  sub set_val : void ($self : self, $value : int)
-
-Set value.
+Get C<int> value.

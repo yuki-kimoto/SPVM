@@ -1,19 +1,11 @@
 package SPVM::Byte {
-  has value : private byte;
+  has val : ro byte;
   
   sub new : SPVM::Byte ($value : byte) {
     my $self = new SPVM::Byte;
     
-    $self->{value} = $value;
+    $self->{val} = $value;
     
     return $self;
-  }
-  
-  sub val : byte ($self : self) {
-    return $self->{value};
-  }
-  
-  sub set_val : void ($self : self, $value : byte) {
-    $self->{value} = $value;
   }
 }

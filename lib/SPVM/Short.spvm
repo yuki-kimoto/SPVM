@@ -1,19 +1,11 @@
 package SPVM::Short {
-  has value : private short;
+  has val : ro short;
   
   sub new : SPVM::Short ($value : short) {
     my $self = new SPVM::Short;
     
-    $self->{value} = $value;
+    $self->{val} = $value;
     
     return $self;
-  }
-  
-  sub val : short ($self : self) {
-    return $self->{value};
-  }
-  
-  sub set_val : void ($self : self, $value : short) {
-    $self->{value} = $value;
   }
 }

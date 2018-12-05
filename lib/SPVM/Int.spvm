@@ -1,19 +1,11 @@
 package SPVM::Int {
-  has value : private int;
+  has val : ro int;
   
   sub new : SPVM::Int ($value : int) {
     my $self = new SPVM::Int;
     
-    $self->{value} = $value;
+    $self->{val} = $value;
     
     return $self;
-  }
-  
-  sub val : int ($self : self) {
-    return $self->{value};
-  }
-
-  sub set_val : void ($self : self, $value : int) {
-    $self->{value} = $value;
   }
 }
