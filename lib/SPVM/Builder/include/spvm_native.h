@@ -57,12 +57,12 @@ struct SPVM_env {
   void* object_basic_type_id_byte_offset;
   void* object_type_dimension_byte_offset;
   void* object_array_length_byte_offset;
-  void* basic_type_id_byte_object;
-  void* basic_type_id_short_object;
-  void* basic_type_id_int_object;
-  void* basic_type_id_long_object;
-  void* basic_type_id_float_object;
-  void* basic_type_id_double_object;
+  void* byte_object_basic_type_id;
+  void* short_object_basic_type_id;
+  void* int_object_basic_type_id;
+  void* long_object_basic_type_id;
+  void* float_object_basic_type_id;
+  void* double_object_basic_type_id;
   int32_t (*get_array_length)(SPVM_ENV*, void*);
   int8_t* (*get_byte_array_elements_new)(SPVM_ENV*, void*);
   int16_t* (*get_short_array_elements_new)(SPVM_ENV*, void*);
