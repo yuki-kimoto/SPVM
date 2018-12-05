@@ -126,8 +126,6 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_ref_count,
     SPVM_RUNTIME_API_inc_ref_count,
     SPVM_RUNTIME_API_dec_ref_count,
-    SPVM_RUNTIME_API_inc_dec_ref_count,
-    SPVM_RUNTIME_API_dec_ref_count_only,
     SPVM_RUNTIME_API_weaken,
     SPVM_RUNTIME_API_isweak,
     SPVM_RUNTIME_API_unweaken,
@@ -4883,21 +4881,6 @@ void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
-}
-
-void SPVM_RUNTIME_API_inc_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
-  SPVM_RUNTIME_API_inc_ref_count(env, object);
-  SPVM_RUNTIME_API_dec_ref_count(env, object);
-}
-
-void SPVM_RUNTIME_API_dec_ref_count_only(SPVM_ENV* env, SPVM_OBJECT* object) {
-  (void)env;
-  
-  if (object != NULL) {
-    assert(object->ref_count > 0);
-    // Increment reference count
-    object->ref_count--;
-  }
 }
 
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {

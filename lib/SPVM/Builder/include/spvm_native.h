@@ -125,8 +125,6 @@ struct SPVM_env {
   int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
-  void (*inc_dec_ref_count)(SPVM_ENV* env, void* object);
-  void (*dec_ref_count_only)(SPVM_ENV* env, void* object);
   void (*weaken)(SPVM_ENV* env, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, void** object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
