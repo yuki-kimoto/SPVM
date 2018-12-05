@@ -7,7 +7,7 @@ package TestCase::Inline {
   
   # Array store undef
   sub constant_sub : int () {
-    unless (constant_sub_return_double == 0.25) {
+    unless (constant_sub_return_double() == 0.25) {
       return 0;
     }
     

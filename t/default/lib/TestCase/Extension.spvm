@@ -7,7 +7,7 @@ package TestCase::Extension {
     my $out : byte;
     my $out_ref = \$out;
     
-    ref_byte_sum(1, INT8_MIN, $out_ref);
+    ref_byte_sum(1, INT8_MIN(), $out_ref);
     
     if ($$out_ref == INT8_MIN() + 1) {
       return 1;
@@ -21,7 +21,7 @@ package TestCase::Extension {
     my $out : short;
     my $out_ref = \$out;
     
-    ref_short_sum(1, INT16_MIN, $out_ref);
+    ref_short_sum(1, INT16_MIN(), $out_ref);
     
     if ($$out_ref == INT16_MIN() + 1) {
       return 1;
@@ -35,7 +35,7 @@ package TestCase::Extension {
     my $out : int;
     my $out_ref = \$out;
     
-    ref_int_sum(1, INT32_MIN, $out_ref);
+    ref_int_sum(1, INT32_MIN(), $out_ref);
     
     if ($$out_ref == INT32_MIN() + 1) {
       return 1;
@@ -49,7 +49,7 @@ package TestCase::Extension {
     my $out : long;
     my $out_ref = \$out;
     
-    ref_long_sum(1, INT64_MIN, $out_ref);
+    ref_long_sum(1, INT64_MIN(), $out_ref);
     
     if ($$out_ref == INT64_MIN() + 1) {
       return 1;
@@ -63,7 +63,7 @@ package TestCase::Extension {
     my $out : float;
     my $out_ref = \$out;
     
-    ref_float_sum(0.25f, FLT_MIN, $out_ref);
+    ref_float_sum(0.25f, FLT_MIN(), $out_ref);
     
     if ($$out_ref == FLT_MIN() + 0.25f) {
       return 1;
@@ -77,7 +77,7 @@ package TestCase::Extension {
     my $out : double;
     my $out_ref = \$out;
     
-    ref_double_sum(0.25, DBL_MIN, $out_ref);
+    ref_double_sum(0.25, DBL_MIN(), $out_ref);
     
     if ($$out_ref == DBL_MIN() + 0.25) {
       return 1;
