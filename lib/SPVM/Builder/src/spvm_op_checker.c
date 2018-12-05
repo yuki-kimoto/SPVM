@@ -2275,7 +2275,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
 
               if (!call_sub->sub) {
-                SPVM_COMPILER_error(compiler, "unknown sub \"%s\" at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -4417,11 +4417,16 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       // Search core functions
       if (!found_sub) {
         SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
-        found_sub= SPVM_HASH_fetch(
-          core_package->sub_symtable,
-          sub_name,
-          strlen(sub_name)
-        );
+        if (core_package) {
+          found_sub = SPVM_HASH_fetch(
+            core_package->sub_symtable,
+            sub_name,
+            strlen(sub_name)
+          );
+        }
+        else {
+          found_sub = NULL;
+        }
       }
     }
   }
