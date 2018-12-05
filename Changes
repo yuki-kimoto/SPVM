@@ -19,7 +19,7 @@
   - pointer descriptor is renamed to pointer_t
   - revert function parenthes omit because not using core lib tests is fail
   - SPVM::Bool is loaded by default
-  - SPVM::Bool, SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double become immutable.
+  - SPVM::Bool, SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double become immutable
 0.0398 2018-12-04
   - reduce object size by reducing weaken information
   - env become thread safe
