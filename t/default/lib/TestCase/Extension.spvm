@@ -1,15 +1,85 @@
 package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
+
+  native sub ref_byte_sum : byte ($x_in : byte, $x_in2 : byte, $x_out : byte&);
+  sub ref_byte : int () {
+    my $out : byte;
+    my $out_ref = \$out;
+    
+    ref_byte_sum(1, INT8_MIN, $out_ref);
+    
+    if ($$out_ref == INT8_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_short_sum : short ($x_in : short, $x_in2 : short, $x_out : short&);
+  sub ref_short : int () {
+    my $out : short;
+    my $out_ref = \$out;
+    
+    ref_short_sum(1, INT16_MIN, $out_ref);
+    
+    if ($$out_ref == INT16_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_int_sum : int ($x_in : int, $x_in2 : int, $x_out : int&);
+  sub ref_int : int () {
+    my $out : int;
+    my $out_ref = \$out;
+    
+    ref_int_sum(1, INT32_MIN, $out_ref);
+    
+    if ($$out_ref == INT32_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_long_sum : long ($x_in : long, $x_in2 : long, $x_out : long&);
+  sub ref_long : int () {
+    my $out : long;
+    my $out_ref = \$out;
+    
+    ref_long_sum(1, INT64_MIN, $out_ref);
+    
+    if ($$out_ref == INT64_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
   
+  native sub ref_float_sum : float ($x_in : float, $x_in2 : float, $x_out : float&);
+  sub ref_float : int () {
+    my $out : float;
+    my $out_ref = \$out;
+    
+    ref_float_sum(0.25f, FLT_MIN, $out_ref);
+    
+    if ($$out_ref == FLT_MIN() + 0.25f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
   native sub ref_double_sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
   sub ref_double : int () {
     my $out : double;
     my $out_ref = \$out;
     
-    ref_double_sum(0.25, 0.5, $out_ref);
+    ref_double_sum(0.25, DBL_MIN, $out_ref);
     
-    if ($$out_ref == 0.75) {
+    if ($$out_ref == DBL_MIN() + 0.25) {
       return 1;
     }
     

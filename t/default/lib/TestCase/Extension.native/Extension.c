@@ -4,6 +4,65 @@
 
 #include <spvm_native.h>
 
+int32_t SPVM_NATIVE_TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_VALUE_byte x_in1 = stack[0].bval;
+  SPVM_VALUE_byte x_in2 = stack[1].bval;
+  
+  *(stack[2].bref) = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_VALUE_short x_in1 = stack[0].sval;
+  SPVM_VALUE_short x_in2 = stack[1].sval;
+  
+  *(stack[2].sref) = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_VALUE_int x_in1 = stack[0].ival;
+  SPVM_VALUE_int x_in2 = stack[1].ival;
+  
+  *(stack[2].iref) = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_VALUE_long x_in1 = stack[0].lval;
+  SPVM_VALUE_long x_in2 = stack[1].lval;
+  
+  *(stack[2].lref) = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_VALUE_float x_in1 = stack[0].fval;
+  SPVM_VALUE_float x_in2 = stack[1].fval;
+  
+  *(stack[2].fref) = x_in1 + x_in2;
+  
+  return SPVM_SUCCESS;
+}
 
 int32_t SPVM_NATIVE_TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

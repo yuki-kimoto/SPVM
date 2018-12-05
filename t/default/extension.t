@@ -52,6 +52,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Ref
 {
+  ok(TestCase::Extension->ref_byte());
+  ok(TestCase::Extension->ref_short());
+  ok(TestCase::Extension->ref_int());
+  ok(TestCase::Extension->ref_long());
+  ok(TestCase::Extension->ref_float());
   ok(TestCase::Extension->ref_double());
 }
 
