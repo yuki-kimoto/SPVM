@@ -82,26 +82,26 @@
      OBJECT = 298,
      AMPERSAND = 299,
      DOT3 = 300,
-     LENGTH = 301,
-     FATCAMMA = 302,
-     RW = 303,
-     RO = 304,
-     WO = 305,
-     BEGIN = 306,
-     REQUIRE = 307,
-     SPECIAL_ASSIGN = 308,
-     ASSIGN = 309,
-     OR = 310,
-     AND = 311,
-     BIT_XOR = 312,
-     BIT_OR = 313,
-     BIT_AND = 314,
-     REL = 315,
-     SHIFT = 316,
-     REMAINDER = 317,
-     DIVIDE = 318,
-     MULTIPLY = 319,
-     ISA = 320,
+     FATCAMMA = 301,
+     RW = 302,
+     RO = 303,
+     WO = 304,
+     BEGIN = 305,
+     REQUIRE = 306,
+     SPECIAL_ASSIGN = 307,
+     ASSIGN = 308,
+     OR = 309,
+     AND = 310,
+     BIT_XOR = 311,
+     BIT_OR = 312,
+     BIT_AND = 313,
+     REL = 314,
+     SHIFT = 315,
+     REMAINDER = 316,
+     DIVIDE = 317,
+     MULTIPLY = 318,
+     ISA = 319,
+     LENGTH = 320,
      DEREF = 321,
      REF = 322,
      UMINUS = 323,
@@ -156,26 +156,26 @@
 #define OBJECT 298
 #define AMPERSAND 299
 #define DOT3 300
-#define LENGTH 301
-#define FATCAMMA 302
-#define RW 303
-#define RO 304
-#define WO 305
-#define BEGIN 306
-#define REQUIRE 307
-#define SPECIAL_ASSIGN 308
-#define ASSIGN 309
-#define OR 310
-#define AND 311
-#define BIT_XOR 312
-#define BIT_OR 313
-#define BIT_AND 314
-#define REL 315
-#define SHIFT 316
-#define REMAINDER 317
-#define DIVIDE 318
-#define MULTIPLY 319
-#define ISA 320
+#define FATCAMMA 301
+#define RW 302
+#define RO 303
+#define WO 304
+#define BEGIN 305
+#define REQUIRE 306
+#define SPECIAL_ASSIGN 307
+#define ASSIGN 308
+#define OR 309
+#define AND 310
+#define BIT_XOR 311
+#define BIT_OR 312
+#define BIT_AND 313
+#define REL 314
+#define SHIFT 315
+#define REMAINDER 316
+#define DIVIDE 317
+#define MULTIPLY 318
+#define ISA 319
+#define LENGTH 320
 #define DEREF 321
 #define REF 322
 #define UMINUS 323
