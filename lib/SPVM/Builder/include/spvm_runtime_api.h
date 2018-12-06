@@ -145,7 +145,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes, i
 
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
-SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env);
+SPVM_OBJECT* SPVM_RUNTIME_API_exception(SPVM_ENV* env);
 SPVM_OBJECT* SPVM_RUNTIME_API_create_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
 
 // Reference count

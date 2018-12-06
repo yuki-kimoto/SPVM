@@ -2449,7 +2449,7 @@ call_sub(...)
 
   // Exception
   if (excetpion_flag) {
-    void* exception = env->get_exception(env);
+    void* exception = env->exception(env);
     int32_t length = env->len(env, exception);
     const char* exception_bytes = (char*)env->belems(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));

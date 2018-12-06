@@ -520,6 +520,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+
 int32_t SPVM_NATIVE_TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -532,17 +533,14 @@ int32_t SPVM_NATIVE_TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* s
   int32_t* nums1 = env->ielems(env, obj_nums1);
   int32_t* nums2 = env->ielems(env, obj_nums2);
   
-  void* obj_nums3 = env->new_iarray_raw(env, length);
-  int32_t* nums3 = env->ielems(env, obj_nums3);
+  void* onums3 = env->new_iarray(env, length);
+  int32_t* nums3 = env->ielems(env, onums3);
   
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      nums3[i] = nums1[i] + nums2[i];
-    }
+  for (int32_t i = 0; i < length; i++) {
+    nums3[i] = nums1[i] + nums2[i];
   }
   
-  stack[0].oval = obj_nums3;
+  stack[0].oval = onums3;
   
   return SPVM_SUCCESS;
 }

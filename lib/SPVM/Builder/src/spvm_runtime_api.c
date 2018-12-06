@@ -121,7 +121,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_new_varray,
     SPVM_RUNTIME_API_new_string,
     SPVM_RUNTIME_API_new_pointer,
-    SPVM_RUNTIME_API_get_exception,
+    SPVM_RUNTIME_API_exception,
     SPVM_RUNTIME_API_set_exception,
     SPVM_RUNTIME_API_ref_count,
     SPVM_RUNTIME_API_inc_ref_count,
@@ -3042,7 +3042,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
           
           // Exception stack trace
-          env->set_exception(env, env->create_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->create_stack_trace(env, env->exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -3061,7 +3061,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
 
           // Exception stack trace
-          env->set_exception(env, env->create_stack_trace(env, env->get_exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->create_stack_trace(env, env->exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -3745,7 +3745,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], env->get_exception(env));
+        SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], env->exception(env));
         
         break;
       }
@@ -4355,7 +4355,7 @@ void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env) {
+SPVM_OBJECT* SPVM_RUNTIME_API_exception(SPVM_ENV* env) {
   (void)env;
   
   return env->exception_object;

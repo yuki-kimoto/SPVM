@@ -120,7 +120,7 @@ struct SPVM_env {
   void* (*new_varray)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
-  void* (*get_exception)(SPVM_ENV* env);
+  void* (*exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);
   int32_t (*ref_count)(SPVM_ENV* env, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
