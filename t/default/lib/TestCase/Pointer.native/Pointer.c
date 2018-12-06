@@ -18,7 +18,7 @@ int32_t SPVM_NATIVE_TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) {
   
   pointer->x = x;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Pointer");
+  int32_t basic_type_id = env->basic_type_id(env, "TestCase::Pointer");
   
   void* struct_object = env->new_pointer_raw(env, basic_type_id, pointer);
   
@@ -34,7 +34,7 @@ int32_t SPVM_NATIVE_TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* args) {
   void* self = args[0].oval;
   
   
-  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, self);
+  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->pointer(env, self);
   
   args[0].ival = pointer->x;
   
@@ -47,7 +47,7 @@ int32_t SPVM_NATIVE_TestCase__Pointer__DESTROY(SPVM_ENV* env, SPVM_VALUE* args) 
   
   void* self = args[0].oval;
   
-  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, self);
+  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->pointer(env, self);
   
   free(pointer);
   

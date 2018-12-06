@@ -74,7 +74,7 @@ int32_t SPVM_STRING_BUFFER_add_field_id_name(SPVM_STRING_BUFFER* string_buffer, 
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_field_byte_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+int32_t SPVM_STRING_BUFFER_add_field_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
   
   int32_t id = string_buffer->length;
   

@@ -192,8 +192,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".index = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->index);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".byte_offset = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->byte_offset);
+    SPVM_STRING_BUFFER_add(string_buffer, ".offset = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->offset);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".flag = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->flag);
@@ -326,7 +326,7 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".fields_byte_size = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->package_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".object_fields_byte_offset = ");
+    SPVM_STRING_BUFFER_add(string_buffer, ".object_fields_offset = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_package->package_vars_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".object_fields_length = ");

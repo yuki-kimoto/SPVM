@@ -9,8 +9,8 @@
 */
 
 #define SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_RUNTIME_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset)))
-#define SPVM_RUNTIME_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))++)
+#define SPVM_RUNTIME_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
+#define SPVM_RUNTIME_API_INC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
 #define SPVM_RUNTIME_API_INC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -18,7 +18,7 @@ do {\
   }\
 } while (0)\
 
-#define SPVM_RUNTIME_API_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_byte_offset))--)
+#define SPVM_RUNTIME_API_DEC_REF_COUNT_ONLY(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
 #define SPVM_RUNTIME_API_DEC_REF_COUNT(object)\
 do {\
   if (object != NULL) {\
@@ -54,41 +54,41 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);
 
-SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_get_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* sub_name);
+SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* sub_name);
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_get_basic_type(SPVM_ENV* env,  const char* basic_type_name);
+SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char* basic_type_name);
 
 // Get
-int32_t SPVM_RUNTIME_API_get_object_header_byte_size(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_get_array_length(SPVM_ENV* env, SPVM_OBJECT* array);
+int32_t SPVM_RUNTIME_API_object_header_byte_size(SPVM_ENV* env);
+int32_t SPVM_RUNTIME_API_len(SPVM_ENV* env, SPVM_OBJECT* array);
 
-int8_t* SPVM_RUNTIME_API_get_byte_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
-int16_t* SPVM_RUNTIME_API_get_short_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
-int32_t* SPVM_RUNTIME_API_get_int_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
-int64_t* SPVM_RUNTIME_API_get_long_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
-float* SPVM_RUNTIME_API_get_float_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
-double* SPVM_RUNTIME_API_get_double_array_elements(SPVM_ENV* env, SPVM_OBJECT* array);
+int8_t* SPVM_RUNTIME_API_belems(SPVM_ENV* env, SPVM_OBJECT* array);
+int16_t* SPVM_RUNTIME_API_selems(SPVM_ENV* env, SPVM_OBJECT* array);
+int32_t* SPVM_RUNTIME_API_ielems(SPVM_ENV* env, SPVM_OBJECT* array);
+int64_t* SPVM_RUNTIME_API_lelems(SPVM_ENV* env, SPVM_OBJECT* array);
+float* SPVM_RUNTIME_API_felems(SPVM_ENV* env, SPVM_OBJECT* array);
+double* SPVM_RUNTIME_API_delems(SPVM_ENV* env, SPVM_OBJECT* array);
 
 
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_array_element(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);
-void* SPVM_RUNTIME_API_get_pointer(SPVM_ENV* env, SPVM_OBJECT* object);
-int8_t SPVM_RUNTIME_API_get_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-int16_t SPVM_RUNTIME_API_get_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-int32_t SPVM_RUNTIME_API_get_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-int64_t SPVM_RUNTIME_API_get_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-float SPVM_RUNTIME_API_get_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-double SPVM_RUNTIME_API_get_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
-SPVM_OBJECT* SPVM_RUNTIME_API_get_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+SPVM_OBJECT* SPVM_RUNTIME_API_oelems(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);
+void* SPVM_RUNTIME_API_pointer(SPVM_ENV* env, SPVM_OBJECT* object);
+int8_t SPVM_RUNTIME_API_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+int16_t SPVM_RUNTIME_API_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+int32_t SPVM_RUNTIME_API_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+int64_t SPVM_RUNTIME_API_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+float SPVM_RUNTIME_API_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+double SPVM_RUNTIME_API_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
+SPVM_OBJECT* SPVM_RUNTIME_API_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 
 // Set
-void SPVM_RUNTIME_API_set_byte_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value);
-void SPVM_RUNTIME_API_set_short_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int16_t value);
-void SPVM_RUNTIME_API_set_int_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int32_t value);
-void SPVM_RUNTIME_API_set_long_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int64_t value);
-void SPVM_RUNTIME_API_set_float_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, float value);
-void SPVM_RUNTIME_API_set_double_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, double value);
-void SPVM_RUNTIME_API_set_object_field(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value);
-void SPVM_RUNTIME_API_set_object_array_element(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
+void SPVM_RUNTIME_API_set_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int8_t value);
+void SPVM_RUNTIME_API_set_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int16_t value);
+void SPVM_RUNTIME_API_set_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int32_t value);
+void SPVM_RUNTIME_API_set_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, int64_t value);
+void SPVM_RUNTIME_API_set_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, float value);
+void SPVM_RUNTIME_API_set_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, double value);
+void SPVM_RUNTIME_API_set_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value);
+void SPVM_RUNTIME_API_set_oelems(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
 
 // Call Subroutine
 void SPVM_RUNTIME_API_call_void_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
@@ -101,57 +101,57 @@ double SPVM_RUNTIME_API_call_double_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALU
 SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 
 // String
-int32_t SPVM_RUNTIME_API_get_string_length(SPVM_ENV* env, SPVM_OBJECT* object);
-int8_t* SPVM_RUNTIME_API_get_string_bytes(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_string_length(SPVM_ENV* env, SPVM_OBJECT* object);
+int8_t* SPVM_RUNTIME_API_string_bytes(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string);
 SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
 // ID
-int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
-int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
-int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
-int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
-int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_RUNTIME_API_get_field_byte_offset(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_RUNTIME_API_basic_type_id(SPVM_ENV* env, const char* name);
+int32_t SPVM_RUNTIME_API_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
+int32_t SPVM_RUNTIME_API_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+int32_t SPVM_RUNTIME_API_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+int32_t SPVM_RUNTIME_API_field_index(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_RUNTIME_API_field_offset(SPVM_ENV* env, int32_t field_id);
 
 // New raw
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t package_id);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_barray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_sarray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_iarray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_larray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_farray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_darray(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_marray(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_varray(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length);
 
 // New
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t package_id);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_multi_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
-SPVM_OBJECT* SPVM_RUNTIME_API_new_value_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_barray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_sarray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_iarray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_larray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_farray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_darray_raw(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_marray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_varray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length);
 
 // Exception
 void SPVM_RUNTIME_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_RUNTIME_API_get_exception(SPVM_ENV* env);
-SPVM_OBJECT* SPVM_RUNTIME_API_create_exception_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_RUNTIME_API_create_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
 
 // Reference count
 void SPVM_RUNTIME_API_inc_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
-int32_t SPVM_RUNTIME_API_get_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
 
 // Weak refernece
 void SPVM_RUNTIME_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address);
@@ -159,8 +159,8 @@ void SPVM_RUNTIME_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address);
 int32_t SPVM_RUNTIME_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address);
 
 // Global information
-SPVM_ENV* SPVM_RUNTIME_API_get_env_runtime();
-int32_t SPVM_RUNTIME_API_get_memory_blocks_count(SPVM_ENV* env);
+SPVM_ENV* SPVM_RUNTIME_API_env_runtime();
+int32_t SPVM_RUNTIME_API_memory_blocks_count(SPVM_ENV* env);
 
 // Scope
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env);

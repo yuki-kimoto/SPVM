@@ -417,7 +417,7 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
     printf("      type => ");
     printf("%s", SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag));
     printf("\n");
-    printf("      byte_offset => \"%" PRId32 "\"\n", field->byte_offset);
+    printf("      offset => \"%" PRId32 "\"\n", field->offset);
   }
   else {
     printf("        None\n");

@@ -23,7 +23,7 @@ struct SPVM_runtime_package {
   uint16_t subs_length;
   uint16_t package_vars_length;
   uint16_t fields_byte_size;
-  uint16_t object_fields_byte_offset;
+  uint16_t object_fields_offset;
   uint16_t object_fields_length;
 };
 

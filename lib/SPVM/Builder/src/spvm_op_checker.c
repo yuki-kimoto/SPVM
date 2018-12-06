@@ -4520,20 +4520,20 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PACKAGE* package) {
+void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_PACKAGE* package) {
   if (package->category != SPVM_PACKAGE_C_CATEGORY_CLASS) {
     return;
   }
   
-  int32_t byte_offset = 0;
+  int32_t offset = 0;
   // 8 byte data
   for (int32_t field_index = 0; field_index < package->fields->length; field_index++) {
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
     SPVM_TYPE* field_type = field->type;
     if (SPVM_TYPE_is_double_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
       || SPVM_TYPE_is_long_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->byte_offset = byte_offset;
-      byte_offset += 8;
+      field->offset = offset;
+      offset += 8;
     }
   }
   
@@ -4543,8 +4543,8 @@ void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PAC
     SPVM_TYPE* field_type = field->type;
     if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
       || SPVM_TYPE_is_int_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->byte_offset = byte_offset;
-      byte_offset += 4;
+      field->offset = offset;
+      offset += 4;
     }
   }
   
@@ -4553,8 +4553,8 @@ void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PAC
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
     SPVM_TYPE* field_type = field->type;
     if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->byte_offset = byte_offset;
-      byte_offset += 2;
+      field->offset = offset;
+      offset += 2;
     }
   }
   
@@ -4563,18 +4563,18 @@ void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PAC
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
     SPVM_TYPE* field_type = field->type;
     if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->byte_offset = byte_offset;
-      byte_offset += 1;
+      field->offset = offset;
+      offset += 1;
     }
   }
   
   // Fix allignment
-  if (byte_offset % 8 != 0) {
-    byte_offset += (8 - byte_offset % 8);
+  if (offset % 8 != 0) {
+    offset += (8 - offset % 8);
   }
-  assert(byte_offset % 8 == 0);
+  assert(offset % 8 == 0);
 
-  package->object_fields_byte_offset = byte_offset;
+  package->object_fields_offset = offset;
   
   // address data
   int32_t object_fields_length = 0;
@@ -4582,13 +4582,13 @@ void SPVM_OP_CHECKER_resolve_field_byte_offset(SPVM_COMPILER* compiler, SPVM_PAC
     SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
     SPVM_TYPE* field_type = field->type;
     if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
-      field->byte_offset = byte_offset;
-      byte_offset += sizeof(void*);
+      field->offset = offset;
+      offset += sizeof(void*);
       object_fields_length++;
     }
   }
   package->object_fields_length = object_fields_length;
-  package->fields_byte_size = byte_offset;
+  package->fields_byte_size = offset;
 }
 
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
@@ -4773,7 +4773,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_OP_CHECKER_resolve_field_byte_offset(compiler, package);
+    SPVM_OP_CHECKER_resolve_field_offset(compiler, package);
     
     // Check subs
     for (int32_t i = 0; i < package->subs->length; i++) {
