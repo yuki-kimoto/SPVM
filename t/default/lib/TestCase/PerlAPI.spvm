@@ -135,7 +135,7 @@ package TestCase::PerlAPI {
   }
   
   # SPVM Functions
-  sub spvm_new_barray_from_binary : int ($values : byte[]) {
+  sub spvm_new_barray_from_bin : int ($values : byte[]) {
     
     unless ($values eq "あ") {
       return 0;

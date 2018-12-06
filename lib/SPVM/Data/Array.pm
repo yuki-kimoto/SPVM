@@ -12,12 +12,12 @@ sub to_elems {
   SPVM::ExchangeAPI::to_elems($env, $self);
 }
 
-sub to_binary {
+sub to_bin {
   my $self = shift;
 
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_binary($env, $self);
+  SPVM::ExchangeAPI::to_bin($env, $self);
 }
 
 sub to_string {
@@ -42,9 +42,9 @@ SPVM::Data::Array - SPVM Array
 
 Convert SPVM array to Perl array reference.
 
-=head2 to_binary
+=head2 to_bin
 
-  my $binary = $spvm_nums->to_binary;
+  my $binary = $spvm_nums->to_bin;
 
 Convert SPVM array to binary data.
 

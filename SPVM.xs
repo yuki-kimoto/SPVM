@@ -507,7 +507,7 @@ new_barray(...)
 }
 
 SV*
-new_barray_from_binary(...)
+new_barray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -543,7 +543,7 @@ new_barray_from_binary(...)
 }
 
 SV*
-new_string_from_binary(...)
+new_string_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -619,7 +619,7 @@ new_sarray(...)
 }
 
 SV*
-new_sarray_from_binary(...)
+new_sarray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -698,7 +698,7 @@ new_iarray(...)
 }
 
 SV*
-new_iarray_from_binary(...)
+new_iarray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -777,7 +777,7 @@ new_larray(...)
 }
 
 SV*
-new_larray_from_binary(...)
+new_larray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -856,7 +856,7 @@ new_farray(...)
 }
 
 SV*
-new_farray_from_binary(...)
+new_farray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -935,7 +935,7 @@ new_darray(...)
 }
 
 SV*
-new_darray_from_binary(...)
+new_darray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1228,7 +1228,7 @@ new_varray(...)
 }
 
 SV*
-new_varray_from_binary(...)
+new_varray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2683,7 +2683,7 @@ to_elems(...)
 }
 
 SV*
-to_binary(...)
+to_bin(...)
   PPCODE:
 {
   (void)RETVAL;

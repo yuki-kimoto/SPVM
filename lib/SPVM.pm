@@ -73,31 +73,31 @@ sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_E
 sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
 sub new_barray { SPVM::ExchangeAPI::new_barray($SPVM_ENV, @_) }
-sub new_barray_from_binary { SPVM::ExchangeAPI::new_barray_from_binary($SPVM_ENV, @_) }
+sub new_barray_from_bin { SPVM::ExchangeAPI::new_barray_from_bin($SPVM_ENV, @_) }
 sub new_barray_from_string { SPVM::ExchangeAPI::new_barray_from_string($SPVM_ENV, @_) }
 
 sub new_sarray { SPVM::ExchangeAPI::new_sarray($SPVM_ENV, @_) }
-sub new_sarray_from_binary { SPVM::ExchangeAPI::new_sarray_from_binary($SPVM_ENV, @_) }
+sub new_sarray_from_bin { SPVM::ExchangeAPI::new_sarray_from_bin($SPVM_ENV, @_) }
 
 sub new_iarray { SPVM::ExchangeAPI::new_iarray($SPVM_ENV, @_) }
-sub new_iarray_from_binary { SPVM::ExchangeAPI::new_iarray_from_binary($SPVM_ENV, @_) }
+sub new_iarray_from_bin { SPVM::ExchangeAPI::new_iarray_from_bin($SPVM_ENV, @_) }
 
 sub new_larray { SPVM::ExchangeAPI::new_larray($SPVM_ENV, @_) }
-sub new_larray_from_binary { SPVM::ExchangeAPI::new_larray_from_binary($SPVM_ENV, @_) }
+sub new_larray_from_bin { SPVM::ExchangeAPI::new_larray_from_bin($SPVM_ENV, @_) }
 
 sub new_farray { SPVM::ExchangeAPI::new_farray($SPVM_ENV, @_) }
-sub new_farray_from_binary { SPVM::ExchangeAPI::new_farray_from_binary($SPVM_ENV, @_) }
+sub new_farray_from_bin { SPVM::ExchangeAPI::new_farray_from_bin($SPVM_ENV, @_) }
 
 sub new_darray { SPVM::ExchangeAPI::new_darray($SPVM_ENV, @_) }
-sub new_darray_from_binary { SPVM::ExchangeAPI::new_darray_from_binary($SPVM_ENV, @_) }
+sub new_darray_from_bin { SPVM::ExchangeAPI::new_darray_from_bin($SPVM_ENV, @_) }
 
 sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
-sub new_string_from_binary { SPVM::ExchangeAPI::new_string_from_binary($SPVM_ENV, @_) }
+sub new_string_from_bin { SPVM::ExchangeAPI::new_string_from_bin($SPVM_ENV, @_) }
 
 sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
 sub new_marray { SPVM::ExchangeAPI::new_marray($SPVM_ENV, @_) }
 sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }
-sub new_varray_from_binary { SPVM::ExchangeAPI::new_varray_from_binary($SPVM_ENV, @_) }
+sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) }
 
 1;
 

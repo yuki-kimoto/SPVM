@@ -40,24 +40,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # String arguments and return value
 {
-  # String - UTF-8 string, new_string, new_string_from_binary, to_string, to_binary
+  # String - UTF-8 string, new_string, new_string_from_bin, to_string, to_bin
   {
     my $string1 = SPVM::new_string("あいう");
-    my $string2 = SPVM::new_string_from_binary(encode('UTF-8', "えお"));
+    my $string2 = SPVM::new_string_from_bin(encode('UTF-8', "えお"));
     my $string3 = TestCase::PerlAPI->string_argments_and_return_value($string1, $string2);
     isa_ok($string3, 'SPVM::Data::String');
     is($string3->to_string, "あいうえお");
-    is($string3->to_binary, encode('UTF-8', "あいうえお"));
+    is($string3->to_bin, encode('UTF-8', "あいうえお"));
   }
 
-  # String - ascii string, new_string, new_string_from_binary, to_string, to_binary, to_element
+  # String - ascii string, new_string, new_string_from_bin, to_string, to_bin, to_element
   {
-    my $string1 = SPVM::new_string_from_binary("abc");
+    my $string1 = SPVM::new_string_from_bin("abc");
     my $string2 = SPVM::new_string("de");
     my $string3 = TestCase::PerlAPI->string_argments_and_return_value($string1, $string2);
     isa_ok($string3, 'SPVM::Data::String');
     is($string3->to_string, "abcde");
-    is($string3->to_binary, "abcde");
+    is($string3->to_bin, "abcde");
     is_deeply($string3->to_elems, [ord('a'), ord('b'), ord('c'), ord('d'), ord('e')]);
   }
 
@@ -152,7 +152,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $object = TestCase->new();
     $object->set_x_iarray(SPVM::new_iarray([$INT_MAX, $INT_MAX]));
-    my $sp_values = SPVM::new_barray_from_binary("abc");
+    my $sp_values = SPVM::new_barray_from_bin("abc");
     $object->set_x_barray($sp_values);
     ok(TestCase::PerlAPI->spvm_object_set_object($object));
   }
@@ -324,9 +324,9 @@ is_deeply(
 
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $sp_values = SPVM::new_varray_from_binary("TestCase::Point_3i", $binary);
+    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i", $binary);
     ok(TestCase::PerlAPI->spvm_new_varray_binary_int($sp_values));
-    my $out_bin = $sp_values->to_binary;
+    my $out_bin = $sp_values->to_bin;
     is_deeply($out_bin, $binary);
   }
 }
@@ -357,80 +357,80 @@ is_deeply(
     }
   }
 
-  # to_binary 0 length
+  # to_bin 0 length
   {
     {
       my $sp_values = SPVM::new_barray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_sarray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_iarray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_larray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_farray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
     {
       my $sp_values = SPVM::new_darray([]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       is($binary, "");
     }
   }
     
-  # to_binary(
+  # to_bin(
   {
     {
       my $sp_values = SPVM::new_barray([1, 2, $BYTE_MAX]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('c3', $binary);
       is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
     {
       my $sp_values = SPVM::new_sarray([1, 2, $SHORT_MAX]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('s3', $binary);
       is_deeply(\@values, [1, 2, $SHORT_MAX]);
     }
     {
       my $sp_values = SPVM::new_iarray([1, 2, $INT_MAX]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('l3', $binary);
       is_deeply(\@values, [1, 2, $INT_MAX]);
     }
     {
       my $sp_values = SPVM::new_larray([1, 2, $LONG_MAX]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('q3', $binary);
       is_deeply(\@values, [1, 2, $LONG_MAX]);
     }
     {
       my $sp_values = SPVM::new_farray([1, 2, $FLOAT_PRECICE]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('f3', $binary);
       is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
     }
     {
       my $sp_values = SPVM::new_darray([1, 2, $DOUBLE_PRECICE]);
-      my $binary = $sp_values->to_binary;
+      my $binary = $sp_values->to_bin;
       
       my @values = unpack('d3', $binary);
       is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
@@ -440,50 +440,50 @@ is_deeply(
   # new_xxx_array_string
   {
     {
-      my $sp_values = SPVM::new_barray_from_binary(encode('UTF-8', "あ"));
-      ok(TestCase::PerlAPI->spvm_new_barray_from_binary($sp_values));
+      my $sp_values = SPVM::new_barray_from_bin(encode('UTF-8', "あ"));
+      ok(TestCase::PerlAPI->spvm_new_barray_from_bin($sp_values));
     }
   }
   
   # new_xxx_array_bin
   {
     {
-      my $sp_values = SPVM::new_barray_from_binary("abc");
+      my $sp_values = SPVM::new_barray_from_bin("abc");
       ok(TestCase::PerlAPI->spvm_new_barray_bin($sp_values));
     }
     {
       my $binary = pack('c3', 97, 98, $BYTE_MAX);
-      my $sp_values = SPVM::new_barray_from_binary($binary);
+      my $sp_values = SPVM::new_barray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_barray_binary_pack($sp_values));
     }
     {
       my $binary = pack('c3', 97, 98, $BYTE_MAX);
-      my $sp_values = SPVM::new_barray_from_binary($binary);
+      my $sp_values = SPVM::new_barray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_barray_binary_pack($sp_values));
     }
     {
       my $binary = pack('s3', 97, 98, $SHORT_MAX);
-      my $sp_values = SPVM::new_sarray_from_binary($binary);
+      my $sp_values = SPVM::new_sarray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_sarray_binary_pack($sp_values));
     }
     {
       my $binary = pack('l3', 97, 98, $INT_MAX);
-      my $sp_values = SPVM::new_iarray_from_binary($binary);
+      my $sp_values = SPVM::new_iarray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_iarray_binary_pack($sp_values));
     }
     {
       my $binary = pack('q3', 97, 98, $LONG_MAX);
-      my $sp_values = SPVM::new_larray_from_binary($binary);
+      my $sp_values = SPVM::new_larray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_larray_binary_pack($sp_values));
     }
     {
       my $binary = pack('f3', 97, 98, $FLOAT_PRECICE);
-      my $sp_values = SPVM::new_farray_from_binary($binary);
+      my $sp_values = SPVM::new_farray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_farray_binary_pack($sp_values));
     }
     {
       my $binary = pack('d3', 97, 98, $DOUBLE_PRECICE);
-      my $sp_values = SPVM::new_darray_from_binary($binary);
+      my $sp_values = SPVM::new_darray_from_bin($binary);
       ok(TestCase::PerlAPI->spvm_new_darray_binary_pack($sp_values));
     }
   }
@@ -533,7 +533,7 @@ is_deeply(
 {
   {
     my $values = TestCase->string_empty();
-    is($values->to_binary, "");
+    is($values->to_bin, "");
   }
 }
 
