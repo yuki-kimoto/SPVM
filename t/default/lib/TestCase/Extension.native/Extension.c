@@ -187,7 +187,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_ofield(SPVM_ENV* env, SPVM_V
   if (basic_type_id < 0) {
     return SPVM_EXCEPTION;
   }
-  void* object_minimal = env->new_object(env, basic_type_id);
+  void* object_minimal = env->new_obj(env, basic_type_id);
   
   int32_t field_id_minimal_x = env->field_id(env, "TestCase::Minimal", "x", "int");
   if (field_id_minimal_x < 0) {
@@ -673,7 +673,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
     if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
-    void* sp_object = env->new_object(env, basic_type_id);
+    void* sp_object = env->new_obj(env, basic_type_id);
     ref_count += env->ref_count(env, sp_object);
   }
   // 9

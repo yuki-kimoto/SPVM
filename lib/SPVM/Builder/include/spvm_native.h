@@ -96,7 +96,7 @@ struct SPVM_env {
   int32_t (*basic_type_id)(SPVM_ENV*, const char*);
   int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* pkgvar_name, const char* signature);
   int32_t (*field_offset)(SPVM_ENV*, int32_t);
-  void* (*new_object_raw)(SPVM_ENV*, int32_t);
+  void* (*new_obj_raw)(SPVM_ENV*, int32_t);
   void* (*new_barray_raw)(SPVM_ENV*, int32_t);
   void* (*new_sarray_raw)(SPVM_ENV*, int32_t);
   void* (*new_iarray_raw)(SPVM_ENV*, int32_t);
@@ -108,7 +108,7 @@ struct SPVM_env {
   void* (*new_varray_raw)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_str_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
-  void* (*new_object)(SPVM_ENV*, int32_t);
+  void* (*new_obj)(SPVM_ENV*, int32_t);
   void* (*new_barray)(SPVM_ENV*, int32_t);
   void* (*new_sarray)(SPVM_ENV*, int32_t);
   void* (*new_iarray)(SPVM_ENV*, int32_t);
