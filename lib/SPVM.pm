@@ -72,32 +72,32 @@ sub set_exception_undef { SPVM::ExchangeAPI::set_exception_undef($SPVM_ENV, @_) 
 sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_ENV, @_) }
 sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
-sub new_byte_array { SPVM::ExchangeAPI::new_byte_array($SPVM_ENV, @_) }
-sub new_byte_array_from_binary { SPVM::ExchangeAPI::new_byte_array_from_binary($SPVM_ENV, @_) }
-sub new_byte_array_from_string { SPVM::ExchangeAPI::new_byte_array_from_string($SPVM_ENV, @_) }
+sub new_barray { SPVM::ExchangeAPI::new_barray($SPVM_ENV, @_) }
+sub new_barray_from_binary { SPVM::ExchangeAPI::new_barray_from_binary($SPVM_ENV, @_) }
+sub new_barray_from_string { SPVM::ExchangeAPI::new_barray_from_string($SPVM_ENV, @_) }
 
-sub new_short_array { SPVM::ExchangeAPI::new_short_array($SPVM_ENV, @_) }
-sub new_short_array_from_binary { SPVM::ExchangeAPI::new_short_array_from_binary($SPVM_ENV, @_) }
+sub new_sarray { SPVM::ExchangeAPI::new_sarray($SPVM_ENV, @_) }
+sub new_sarray_from_binary { SPVM::ExchangeAPI::new_sarray_from_binary($SPVM_ENV, @_) }
 
-sub new_int_array { SPVM::ExchangeAPI::new_int_array($SPVM_ENV, @_) }
-sub new_int_array_from_binary { SPVM::ExchangeAPI::new_int_array_from_binary($SPVM_ENV, @_) }
+sub new_iarray { SPVM::ExchangeAPI::new_iarray($SPVM_ENV, @_) }
+sub new_iarray_from_binary { SPVM::ExchangeAPI::new_iarray_from_binary($SPVM_ENV, @_) }
 
-sub new_long_array { SPVM::ExchangeAPI::new_long_array($SPVM_ENV, @_) }
-sub new_long_array_from_binary { SPVM::ExchangeAPI::new_long_array_from_binary($SPVM_ENV, @_) }
+sub new_larray { SPVM::ExchangeAPI::new_larray($SPVM_ENV, @_) }
+sub new_larray_from_binary { SPVM::ExchangeAPI::new_larray_from_binary($SPVM_ENV, @_) }
 
-sub new_float_array { SPVM::ExchangeAPI::new_float_array($SPVM_ENV, @_) }
-sub new_float_array_from_binary { SPVM::ExchangeAPI::new_float_array_from_binary($SPVM_ENV, @_) }
+sub new_farray { SPVM::ExchangeAPI::new_farray($SPVM_ENV, @_) }
+sub new_farray_from_binary { SPVM::ExchangeAPI::new_farray_from_binary($SPVM_ENV, @_) }
 
-sub new_double_array { SPVM::ExchangeAPI::new_double_array($SPVM_ENV, @_) }
-sub new_double_array_from_binary { SPVM::ExchangeAPI::new_double_array_from_binary($SPVM_ENV, @_) }
+sub new_darray { SPVM::ExchangeAPI::new_darray($SPVM_ENV, @_) }
+sub new_darray_from_binary { SPVM::ExchangeAPI::new_darray_from_binary($SPVM_ENV, @_) }
 
 sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
 sub new_string_from_binary { SPVM::ExchangeAPI::new_string_from_binary($SPVM_ENV, @_) }
 
-sub new_object_array { SPVM::ExchangeAPI::new_object_array($SPVM_ENV, @_) }
-sub new_multi_array { SPVM::ExchangeAPI::new_multi_array($SPVM_ENV, @_) }
-sub new_value_array { SPVM::ExchangeAPI::new_value_array($SPVM_ENV, @_) }
-sub new_value_array_from_binary { SPVM::ExchangeAPI::new_value_array_from_binary($SPVM_ENV, @_) }
+sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
+sub new_marray { SPVM::ExchangeAPI::new_marray($SPVM_ENV, @_) }
+sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }
+sub new_varray_from_binary { SPVM::ExchangeAPI::new_varray_from_binary($SPVM_ENV, @_) }
 
 1;
 
@@ -132,7 +132,7 @@ Use SPVM Module from Perl
   use SPVM 'MyMath';
   
   # New int array
-  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
   
   # Call subroutine
   my $total = MyMath->sum($sp_nums);
@@ -224,7 +224,7 @@ Use SPVM Module from Perl
   use SPVM 'MyMath';
   
   # New int array
-  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
   
   # Call subroutine
   my $total = MyMath->sum($sp_nums);
@@ -582,7 +582,7 @@ You can create Multiple Dimension Array by C<new> keyword.
   my $values : int[][] = new int[][3];
 
 This mean that Multiple Dimension Array is created, the multiple dimension array have 3 C<int[]> type array.
-The elements is initialized by C<undef>.
+The elems is initialized by C<undef>.
 
 If you know Multiple Dimension Array Creating, see L</"New Multiple Dimention Array">.
 
@@ -867,10 +867,10 @@ C Source File;
     void* sp_nums = stack[0].oval;
     
     // Array length
-    int32_t length = env->get_array_length(env, sp_nums);
+    int32_t length = env->len(env, sp_nums);
     
     // Elements pointer
-    int32_t* nums = env->get_int_array_elements(env, sp_nums);
+    int32_t* nums = env->ielems(env, sp_nums);
     
     // Culcurate total
     int32_t total = 0;
@@ -897,7 +897,7 @@ Use Extension Module from Perl:
   use SPVM 'MyMathNative';
   
   # New SPVM int array
-  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
+  my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
   
   # Call SPVM subroutine
   my $total = MyMathNative->sum($sp_nums);

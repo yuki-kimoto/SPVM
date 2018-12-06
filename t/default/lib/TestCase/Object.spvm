@@ -58,7 +58,7 @@ package TestCase::Object {
     my $obj =TestCase->new;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
-        if ($obj->{x_byte_array} == undef) {
+        if ($obj->{x_barray} == undef) {
           return 1;
         }
       }

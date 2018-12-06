@@ -4,12 +4,12 @@ use base 'SPVM::Data';
 
 use SPVM::ExchangeAPI;
 
-sub to_elements {
+sub to_elems {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_elements($env, $self);
+  SPVM::ExchangeAPI::to_elems($env, $self);
 }
 
 sub to_binary {
@@ -36,9 +36,9 @@ SPVM::Data::String - SPVM String
 
 =head1 METHODS
 
-=head2 to_elements
+=head2 to_elems
 
-  my $byte_array = $spvm_string->to_elements;
+  my $byte_array = $spvm_string->to_elems;
 
 Convert SPVM string to Perl array reference.
 

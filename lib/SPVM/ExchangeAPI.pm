@@ -10,12 +10,12 @@ sub to_string {
   return $string;
 }
 
-sub new_byte_array_from_string {
+sub new_barray_from_string {
   my ($env, $string) = @_;
   
   my $binary = encode('UTF-8', $string);
   
-  return SPVM::ExchangeAPI::new_byte_array_from_binary($env, $binary);
+  return SPVM::ExchangeAPI::new_barray_from_binary($env, $binary);
 }
 
 sub new_string {
