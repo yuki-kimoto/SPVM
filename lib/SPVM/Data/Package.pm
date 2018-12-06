@@ -39,7 +39,7 @@ An example:
       $self->{x} = $value;
     }
     
-    sub get_x ($self : self) {
+    sub x ($self : self) {
       return $self->{x};
     }
   }
@@ -51,5 +51,5 @@ An example:
   
   my $point = Point->new;
   $point->set_x(4);
-  my $x = $point->get_x;
+  my $x = $point->x;
   $point->clear;

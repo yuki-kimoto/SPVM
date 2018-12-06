@@ -1378,7 +1378,7 @@ set_exception_undef(...)
 }
 
 SV*
-get_memory_blocks_count(...)
+memory_blocks_count(...)
   PPCODE:
 {
   (void)RETVAL;

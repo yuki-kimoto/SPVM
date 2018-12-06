@@ -69,7 +69,7 @@ CHECK {
 
 
 sub set_exception_undef { SPVM::ExchangeAPI::set_exception_undef($SPVM_ENV, @_) }
-sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_ENV, @_) }
+sub memory_blocks_count { SPVM::ExchangeAPI::memory_blocks_count($SPVM_ENV, @_) }
 sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
 sub new_barray { SPVM::ExchangeAPI::new_barray($SPVM_ENV, @_) }

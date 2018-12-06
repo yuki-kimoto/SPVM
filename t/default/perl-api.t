@@ -36,7 +36,7 @@ my $FLT_MIN = POSIX::FLT_MIN();
 my $DBL_MIN = POSIX::DBL_MIN();
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # String arguments and return value
 {
@@ -545,6 +545,6 @@ is_deeply(
 
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
