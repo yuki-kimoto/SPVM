@@ -324,7 +324,7 @@ sub link {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link(
     objects => $object_files,
-    package_name => $package_name,
+    module_name => $package_name,
     dl_func_list => $cfunc_names,
     extra_linker_flags => $build_config->get_extra_linker_flags,
   );

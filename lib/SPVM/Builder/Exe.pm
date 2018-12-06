@@ -325,6 +325,7 @@ sub link_executable {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
+    module_name => $package_name,
     exe_file => $exe_file,
     extra_linker_flags => $extra_linker_flag,
   );
