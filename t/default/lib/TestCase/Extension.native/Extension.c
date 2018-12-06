@@ -549,7 +549,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_void_sub_exception_native(SPVM_ENV
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -559,7 +559,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -569,7 +569,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_short_sub_exception_native(SPVM_EN
   (void)env;
   (void)stack;
 
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -579,7 +579,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_int_sub_exception_native(SPVM_ENV*
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -589,7 +589,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_long_sub_exception_native(SPVM_ENV
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -599,7 +599,7 @@ float SPVM_NATIVE_TestCase__Extension__call_float_sub_exception_native(SPVM_ENV*
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   return SPVM_EXCEPTION;
 }
@@ -608,7 +608,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_double_sub_exception_native(SPVM_E
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -618,7 +618,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__call_object_sub_exception_native(SPVM_E
   (void)env;
   (void)stack;
   
-  void* exception = env->new_string_raw(env, "Exception", 0);
+  void* exception = env->new_str_raw(env, "Exception", 0);
   env->set_exception(env, exception);
   
   return SPVM_EXCEPTION;
@@ -664,7 +664,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   }
   // 7
   {
-    void* sp_values = env->new_string(env, "foo", 0);
+    void* sp_values = env->new_str(env, "foo", 0);
     ref_count += env->ref_count(env, sp_values);
   }
   // 8

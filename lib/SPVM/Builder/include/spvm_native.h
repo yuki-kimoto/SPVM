@@ -106,7 +106,7 @@ struct SPVM_env {
   void* (*new_oarray_raw)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_marray_raw)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_varray_raw)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_str_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
   void* (*new_object)(SPVM_ENV*, int32_t);
   void* (*new_barray)(SPVM_ENV*, int32_t);
@@ -118,7 +118,7 @@ struct SPVM_env {
   void* (*new_oarray)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_marray)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_varray)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_str)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   void* (*exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);

@@ -2,7 +2,7 @@ package SPVM::ExchangeAPI;
 
 use Encode 'encode', 'decode';
 
-sub to_string {
+sub to_str {
   my $bin = SPVM::ExchangeAPI::to_bin(@_);
   
   my $string = decode('UTF-8', $bin);
@@ -10,7 +10,7 @@ sub to_string {
   return $string;
 }
 
-sub new_barray_from_string {
+sub new_barray_from_str {
   my ($env, $string) = @_;
   
   my $bin = encode('UTF-8', $string);
@@ -18,12 +18,12 @@ sub new_barray_from_string {
   return SPVM::ExchangeAPI::new_barray_from_bin($env, $bin);
 }
 
-sub new_string {
+sub new_str {
   my ($env, $string) = @_;
   
   my $bin = encode('UTF-8', $string);
 
-  return SPVM::ExchangeAPI::new_string_from_bin($env, $bin);
+  return SPVM::ExchangeAPI::new_str_from_bin($env, $bin);
 }
 
 # other functions is implemented in SPVM.xs

@@ -20,12 +20,12 @@ sub to_bin {
   SPVM::ExchangeAPI::to_bin($env, $self);
 }
 
-sub to_string {
+sub to_str {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_string($env, $self);
+  SPVM::ExchangeAPI::to_str($env, $self);
 }
 
 1;
@@ -50,9 +50,9 @@ Each element is corresponding byte of SPVM string.
 
 Convert SPVM string to Perl byte string(encoded string).
 
-=head2 to_string
+=head2 to_str
 
-  my $string = $spvm_string->to_string;
+  my $string = $spvm_string->to_str;
 
 Convert SPVM string to Perl text string(decoded string).
 
