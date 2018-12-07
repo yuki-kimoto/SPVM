@@ -5,6 +5,22 @@
 
 #include <spvm_native.h>
 
+int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  void* object = stack[0].oval;
+  
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$BYTE_VALUE", "byte");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_bpkgvar(env, pkgvar_id, INT8_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

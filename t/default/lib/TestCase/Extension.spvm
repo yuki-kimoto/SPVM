@@ -5,6 +5,31 @@ package TestCase::Extension {
   use TestCase::Interface::Interface;
   use TestCase::Interface::ImplementInterface1;
   use TestCase::Interface::ImplementInterface2;
+  
+  our $BYTE_VALUE : byte;
+  our $SHORT_VALUE : short;
+  our $INT_VALUE : int;
+  our $LONG_VALUE : long;
+  our $FLOAT_VALUE : float;
+  our $DOUBLE_VALUE : double;
+  our $OBJECT_VALUE : TestCase::Minimal;
+  
+  sub new : TestCase::Extension () {
+    return new TestCase::Extension;
+  }
+  
+  sub set_bpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_bpkgvar_test($extension);
+    
+    if ($BYTE_VALUE == INT8_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_bpkgvar_test : void ($extension : TestCase::Extension);
 
   native sub has_interface_test : int ($object : object);
   sub has_interface : int () {

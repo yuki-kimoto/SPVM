@@ -72,7 +72,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_sub_id,
     SPVM_RUNTIME_API_method_sub_id,
     SPVM_RUNTIME_API_basic_type_id,
-    SPVM_RUNTIME_API_package_var_id,
+    SPVM_RUNTIME_API_pkgvar_id,
     SPVM_RUNTIME_API_field_offset,
     SPVM_RUNTIME_API_call_sub,
     SPVM_RUNTIME_API_is_type,
@@ -137,6 +137,20 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_set_ffield,
     SPVM_RUNTIME_API_set_dfield,
     SPVM_RUNTIME_API_set_ofield,
+    SPVM_RUNTIME_API_bpkgvar,
+    SPVM_RUNTIME_API_spkgvar,
+    SPVM_RUNTIME_API_ipkgvar,
+    SPVM_RUNTIME_API_lpkgvar,
+    SPVM_RUNTIME_API_fpkgvar,
+    SPVM_RUNTIME_API_dpkgvar,
+    SPVM_RUNTIME_API_opkgvar,
+    SPVM_RUNTIME_API_set_bpkgvar,
+    SPVM_RUNTIME_API_set_spkgvar,
+    SPVM_RUNTIME_API_set_ipkgvar,
+    SPVM_RUNTIME_API_set_lpkgvar,
+    SPVM_RUNTIME_API_set_fpkgvar,
+    SPVM_RUNTIME_API_set_dpkgvar,
+    SPVM_RUNTIME_API_set_opkgvar,
     SPVM_RUNTIME_API_pointer,
     SPVM_RUNTIME_API_weaken,
     SPVM_RUNTIME_API_isweak,
@@ -5218,6 +5232,7 @@ SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_RUNTI
   // Find package_varroutine by binary search
   int32_t package_vars_length = package->package_vars_length;
   int32_t package_vars_base = package->package_vars_base;
+  
   SPVM_RUNTIME_PACKAGE_VAR* package_var = NULL;
   int low = package_vars_base;
   int high = package_vars_base + package_vars_length - 1;
@@ -5226,7 +5241,6 @@ SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_RUNTI
     
     SPVM_RUNTIME_PACKAGE_VAR* middle_package_var = &runtime->package_vars[middle];
     const char* middle_package_var_name = &runtime->string_pool[middle_package_var->name_id];
-
     
     if (strcmp(package_var_name, middle_package_var_name) > 0) {
       low = middle + 1;
@@ -5250,7 +5264,7 @@ SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_RUNTI
   return package_var;
 }
 
-int32_t SPVM_RUNTIME_API_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5279,9 +5293,7 @@ int32_t SPVM_RUNTIME_API_package_var_id(SPVM_ENV* env, const char* package_name,
     return -1;
   }
   
-  int32_t package_var_id = package_var->id;
-  
-  return package_var_id;
+  return package_var->id;
 }
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* sub_name) {
@@ -5703,7 +5715,7 @@ void* SPVM_RUNTIME_API_safe_malloc_zero(int64_t byte_size) {
   return block;
 }
 
-int8_t SPVM_RUNTIME_API_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+int8_t SPVM_RUNTIME_API_bpkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5714,7 +5726,7 @@ int8_t SPVM_RUNTIME_API_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgv
   return value;
 }
 
-int16_t SPVM_RUNTIME_API_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+int16_t SPVM_RUNTIME_API_spkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5725,7 +5737,7 @@ int16_t SPVM_RUNTIME_API_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkg
   return value;
 }
 
-int32_t SPVM_RUNTIME_API_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+int32_t SPVM_RUNTIME_API_ipkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5736,7 +5748,7 @@ int32_t SPVM_RUNTIME_API_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkg
   return value;
 }
 
-int64_t SPVM_RUNTIME_API_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+int64_t SPVM_RUNTIME_API_lpkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5747,7 +5759,7 @@ int64_t SPVM_RUNTIME_API_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkg
   return value;
 }
 
-float SPVM_RUNTIME_API_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+float SPVM_RUNTIME_API_fpkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5758,7 +5770,7 @@ float SPVM_RUNTIME_API_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgva
   return value;
 }
 
-double SPVM_RUNTIME_API_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+double SPVM_RUNTIME_API_dpkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5769,7 +5781,7 @@ double SPVM_RUNTIME_API_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgv
   return value;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+SPVM_OBJECT* SPVM_RUNTIME_API_opkgvar(SPVM_ENV* env, int32_t pkgvar_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5780,8 +5792,8 @@ SPVM_OBJECT* SPVM_RUNTIME_API_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_
   return value;
 }
 
-void SPVM_RUNTIME_API_set_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int8_t value) {
-
+void SPVM_RUNTIME_API_set_bpkgvar(SPVM_ENV* env, int32_t pkgvar_id, int8_t value) {
+  
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -5789,7 +5801,7 @@ void SPVM_RUNTIME_API_set_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].bval = value;
 }
 
-void SPVM_RUNTIME_API_set_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int16_t value) {
+void SPVM_RUNTIME_API_set_spkgvar(SPVM_ENV* env, int32_t pkgvar_id, int16_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5798,7 +5810,7 @@ void SPVM_RUNTIME_API_set_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].sval = value;
 }
 
-void SPVM_RUNTIME_API_set_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int32_t value) {
+void SPVM_RUNTIME_API_set_ipkgvar(SPVM_ENV* env, int32_t pkgvar_id, int32_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5807,7 +5819,7 @@ void SPVM_RUNTIME_API_set_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].ival = value;
 }
 
-void SPVM_RUNTIME_API_set_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int64_t value) {
+void SPVM_RUNTIME_API_set_lpkgvar(SPVM_ENV* env, int32_t pkgvar_id, int64_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5816,7 +5828,7 @@ void SPVM_RUNTIME_API_set_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].lval = value;
 }
 
-void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, float value) {
+void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, int32_t pkgvar_id, float value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5825,7 +5837,7 @@ void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].fval = value;
 }
 
-void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, double value) {
+void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, int32_t pkgvar_id, double value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5834,7 +5846,7 @@ void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pk
   runtime->package_vars_heap[pkgvar_id].dval = value;
 }
 
-void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, SPVM_OBJECT* value) {
+void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, int32_t pkgvar_id, SPVM_OBJECT* value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
