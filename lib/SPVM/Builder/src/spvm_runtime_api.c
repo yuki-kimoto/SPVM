@@ -4129,6 +4129,9 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
 
 int32_t SPVM_RUNTIME_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension) {
   
+  // Object must be not null
+  assert(object);
+  
   if (object->basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
     return 1;
   }
@@ -4139,6 +4142,9 @@ int32_t SPVM_RUNTIME_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t bas
 
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
+  
+  // Object must be not null
+  assert(object);
   
   int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;

@@ -2,7 +2,7 @@ package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
   use TestCase::Minimal;
-  
+
   native sub is_type_test_minimals : int ($object : object);
   sub is_type : int () {
     my $minimals = new TestCase::Minimal[3];
