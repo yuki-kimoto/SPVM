@@ -12,11 +12,102 @@ package TestCase::Extension {
   our $LONG_VALUE : long;
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
-  our $OBJECT_VALUE : TestCase::Minimal;
+  our $MINIMAL_VALUE : TestCase::Minimal;
   
   sub new : TestCase::Extension () {
     return new TestCase::Extension;
   }
+
+  sub bpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    $BYTE_VALUE = INT8_MIN();
+    
+    my $value = bpkgvar_test($extension);
+    
+    if ($value == INT8_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub bpkgvar_test : byte ($extension : TestCase::Extension);
+
+  sub spkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    $SHORT_VALUE = INT16_MIN();
+    
+    my $value = spkgvar_test($extension);
+    
+    if ($value == INT16_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub spkgvar_test : short ($extension : TestCase::Extension);
+
+  sub ipkgvar : int () {
+    my $extension = TestCase::Extension->new;
+
+    $INT_VALUE = INT32_MIN();
+    
+    my $value = ipkgvar_test($extension);
+    
+    if ($value == INT32_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub ipkgvar_test : int ($extension : TestCase::Extension);
+
+  sub lpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    $LONG_VALUE = INT64_MIN();
+    
+    my $value = lpkgvar_test($extension);
+    
+    if ($value == INT64_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub lpkgvar_test : long ($extension : TestCase::Extension);
+
+  sub fpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    $FLOAT_VALUE = FLT_MIN();
+    
+    my $value = fpkgvar_test($extension);
+    
+    if ($value == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub fpkgvar_test : float ($extension : TestCase::Extension);
+
+  sub dpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    $DOUBLE_VALUE = DBL_MIN();
+    
+    my $value = dpkgvar_test($extension);
+    
+    if ($value == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub dpkgvar_test : double ($extension : TestCase::Extension);
+
   
   sub set_bpkgvar : int () {
     my $extension = TestCase::Extension->new;
@@ -30,6 +121,85 @@ package TestCase::Extension {
     return 0;
   }
   native sub set_bpkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_spkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_spkgvar_test($extension);
+    
+    if ($SHORT_VALUE == INT16_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_spkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_ipkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_ipkgvar_test($extension);
+    
+    if ($INT_VALUE == INT32_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_ipkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_lpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_lpkgvar_test($extension);
+    
+    if ($LONG_VALUE == INT64_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_lpkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_fpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_fpkgvar_test($extension);
+    
+    if ($FLOAT_VALUE == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_fpkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_dpkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_dpkgvar_test($extension);
+    
+    if ($DOUBLE_VALUE == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_dpkgvar_test : void ($extension : TestCase::Extension);
+
+  sub set_opkgvar : int () {
+    my $extension = TestCase::Extension->new;
+    
+    set_opkgvar_test($extension);
+    
+    if ($MINIMAL_VALUE isa TestCase::Minimal) {
+      $MINIMAL_VALUE = undef;
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_opkgvar_test : void ($extension : TestCase::Extension);
 
   native sub has_interface_test : int ($object : object);
   sub has_interface : int () {

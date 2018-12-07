@@ -5,12 +5,112 @@
 
 #include <spvm_native.h>
 
+int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$BYTE_VALUE", "byte");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  int8_t value = env->bpkgvar(env, pkgvar_id);
+  
+  stack[0].bval = value;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$SHORT_VALUE", "short");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+
+  int16_t value = env->spkgvar(env, pkgvar_id);
+  
+  stack[0].sval = value;
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$INT_VALUE", "int");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  int32_t value = env->ipkgvar(env, pkgvar_id);
+  
+  stack[0].ival = value;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$LONG_VALUE", "long");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  int64_t value = env->lpkgvar(env, pkgvar_id);
+  
+  stack[0].lval = value;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$FLOAT_VALUE", "float");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  float value = env->fpkgvar(env, pkgvar_id);
+  
+  stack[0].fval = value;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$DOUBLE_VALUE", "double");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  double value = env->dpkgvar(env, pkgvar_id);
+  
+  stack[0].dval = value;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  void* object = stack[0].oval;
-  
   int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$BYTE_VALUE", "byte");
   
   if (pkgvar_id < 0) {
@@ -20,6 +120,99 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VA
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$SHORT_VALUE", "short");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_spkgvar(env, pkgvar_id, INT16_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$INT_VALUE", "int");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_ipkgvar(env, pkgvar_id, INT32_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$LONG_VALUE", "long");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_lpkgvar(env, pkgvar_id, INT64_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$FLOAT_VALUE", "float");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_fpkgvar(env, pkgvar_id, FLT_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$DOUBLE_VALUE", "double");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  env->set_dpkgvar(env, pkgvar_id, DBL_MIN);
+  
+  return SPVM_SUCCESS;
+}
+
+
+int32_t SPVM_NATIVE_TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  int32_t basic_type_id = env->basic_type_id(env, "TestCase::Minimal");
+  if (basic_type_id < 0) {
+    assert(0);
+  }
+  
+  void* minimal = env->new_obj(env, basic_type_id);
+  env->set_opkgvar(env, pkgvar_id, minimal);
+  
+  return SPVM_SUCCESS;
+}
+
 
 int32_t SPVM_NATIVE_TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

@@ -5852,5 +5852,6 @@ void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, int32_t pkgvar_id, SPVM_OBJECT*
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].oval = SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(value);
+  void* ofield_address = &runtime->package_vars_heap[pkgvar_id].oval;
+  SPVM_RUNTIME_API_OBJECT_ASSIGN(ofield_address, value);
 }
