@@ -13,6 +13,11 @@ use SPVM 'TestCase::Pointer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# has_interface
+{
+  ok(TestCase::Extension->has_interface);
+}
+
 # is_type
 {
   ok(TestCase::Extension->is_type);

@@ -5,6 +5,24 @@
 
 #include <spvm_native.h>
 
+int32_t SPVM_NATIVE_TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  void* object = stack[0].oval;
+  
+  int32_t basic_type_id = env->basic_type_id(env, "TestCase::Interface::Interface");
+  if (basic_type_id < 0) {
+    assert(0);
+  }
+  
+  int32_t match = env->has_interface(env, object, basic_type_id);
+  
+  stack[0].ival = match;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
