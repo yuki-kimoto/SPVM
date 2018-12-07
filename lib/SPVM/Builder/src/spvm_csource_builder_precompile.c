@@ -1646,7 +1646,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_le(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_ISA_OBJECT:
+      case SPVM_OPCODE_C_ID_IS_TYPE:
       {
         int32_t constant_pool_id = opcode->operand1;
         int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
@@ -1698,7 +1698,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_ISA_INTERFACE:
+      case SPVM_OPCODE_C_ID_HAS_INTERFACE:
       {
         int32_t constant_pool_id = opcode->operand1;
         int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];

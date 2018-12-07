@@ -767,7 +767,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_LE_DOUBLE:
         condition_flag = double_vars[opcode->operand0] <= double_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_ISA_OBJECT: {
+      case SPVM_OPCODE_C_ID_IS_TYPE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t constant_pool_id = opcode->operand1;
         int32_t check_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
@@ -784,7 +784,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_ISA_INTERFACE: {
+      case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t constant_pool_id = opcode->operand1;
         int32_t interface_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
