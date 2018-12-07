@@ -1,6 +1,28 @@
 package TestCase::Extension {
   use TestCase;
   use TestCase::Simple;
+  use TestCase::Minimal;
+  
+  native sub is_type_test_minimals : int ($object : object);
+  sub is_type : int () {
+    my $minimals = new TestCase::Minimal[3];
+    my $minimal = TestCase::Minimal->new;
+    my $simples = new TestCase::Simple[3];
+
+    unless (is_type_test_minimals($minimals)) {
+      return 0;
+    }
+    
+    unless (!is_type_test_minimals($minimal)) {
+      return 0;
+    }
+    
+    unless (!is_type_test_minimals($simples)) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   native sub ref_byte_sum : byte ($x_in : byte, $x_in2 : byte, $x_out : byte&);
   sub ref_byte : int () {

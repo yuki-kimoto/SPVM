@@ -13,6 +13,11 @@ use SPVM 'TestCase::Pointer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# is_type
+{
+  ok(TestCase::Extension->is_type);
+}
+
 # Native Exception
 {
   ok(TestCase::Extension->native_use_strlen_test);
