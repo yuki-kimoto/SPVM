@@ -107,6 +107,23 @@ int32_t SPVM_NATIVE_TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_TestCase__Extension__opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+
+  int32_t pkgvar_id = env->pkgvar_id(env, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal");
+  
+  if (pkgvar_id < 0) {
+    assert(0);
+  }
+  
+  void* value = env->opkgvar(env, pkgvar_id);
+  
+  stack[0].oval = value;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

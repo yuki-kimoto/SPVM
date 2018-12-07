@@ -28,6 +28,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Extension->lpkgvar);
   ok(TestCase::Extension->fpkgvar);
   ok(TestCase::Extension->dpkgvar);
+  ok(TestCase::Extension->opkgvar);
 }
 
 # has_interface
