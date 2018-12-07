@@ -135,5 +135,13 @@ struct SPVM_env {
   void (*push_mortal)(SPVM_ENV* env, void* object);
   void (*leave_scope)(SPVM_ENV* env, int32_t original_mortal_stack_top);
   int32_t (*has_interface)(SPVM_ENV*, void* object, int32_t interface_basic_type_id);
+  void* (*i_to_str_raw)(SPVM_ENV* env, int32_t value);
+  void* (*i_to_str)(SPVM_ENV* env, int32_t value);
+  void* (*l_to_str_raw)(SPVM_ENV* env, int64_t value);
+  void* (*l_to_str)(SPVM_ENV* env, int64_t value);
+  void* (*f_to_str_raw)(SPVM_ENV* env, float value);
+  void* (*f_to_str)(SPVM_ENV* env, float value);
+  void* (*d_to_str_raw)(SPVM_ENV* env, double value);
+  void* (*d_to_str)(SPVM_ENV* env, double value);
 };
 #endif

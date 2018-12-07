@@ -136,6 +136,14 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_push_mortal,
     SPVM_RUNTIME_API_leave_scope,
     SPVM_RUNTIME_API_has_interface,
+    SPVM_RUNTIME_API_i_to_str,
+    SPVM_RUNTIME_API_i_to_str,
+    SPVM_RUNTIME_API_l_to_str,
+    SPVM_RUNTIME_API_l_to_str,
+    SPVM_RUNTIME_API_f_to_str,
+    SPVM_RUNTIME_API_f_to_str,
+    SPVM_RUNTIME_API_d_to_str,
+    SPVM_RUNTIME_API_d_to_str,
   };
   
   int32_t env_length = 255;
@@ -157,6 +165,86 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str_raw(SPVM_ENV* env, int32_t value) {
+  char string_convert_buffer[21];
+
+  sprintf(string_convert_buffer, "%" PRId32, value);
+  int32_t string_length = strlen(string_convert_buffer);
+  void* string = env->new_str_raw(env, string_convert_buffer, string_length);
+  
+  return string;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str(SPVM_ENV* env, int32_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_i_to_str_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_l_to_str_raw(SPVM_ENV* env, int64_t value) {
+  char string_convert_buffer[21];
+
+  sprintf(string_convert_buffer, "%" PRId64, value);
+  int32_t string_length = strlen(string_convert_buffer);
+  void* string = env->new_str_raw(env, string_convert_buffer, string_length);
+  
+  return string;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_l_to_str(SPVM_ENV* env, int64_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_l_to_str_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str_raw(SPVM_ENV* env, float value) {
+  char string_convert_buffer[21];
+
+  sprintf(string_convert_buffer, "%f", value);
+  int32_t string_length = strlen(string_convert_buffer);
+  void* string = env->new_str_raw(env, string_convert_buffer, string_length);
+  
+  return string;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str(SPVM_ENV* env, float value) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_f_to_str_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str_raw(SPVM_ENV* env, double value) {
+  char string_convert_buffer[21];
+
+  sprintf(string_convert_buffer, "%f", value);
+  int32_t string_length = strlen(string_convert_buffer);
+  void* string = env->new_str_raw(env, string_convert_buffer, string_length);
+  
+  return string;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str(SPVM_ENV* env, double value) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_d_to_str_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
 }
 
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
