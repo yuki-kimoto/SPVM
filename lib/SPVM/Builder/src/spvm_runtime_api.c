@@ -129,6 +129,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_weaken,
     SPVM_RUNTIME_API_isweak,
     SPVM_RUNTIME_API_unweaken,
+    SPVM_RUNTIME_API_concat_raw,
     SPVM_RUNTIME_API_concat,
     SPVM_RUNTIME_API_create_stack_trace,
     SPVM_RUNTIME_API_call_sub,
@@ -2550,7 +2551,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void* string3 = env->concat(env, string1, string2);
+          void* string3 = env->concat_raw(env, string1, string2);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string3);
         }
         
@@ -4294,7 +4295,7 @@ void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   }
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
+SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   (void)env;
 
   int32_t string1_length = SPVM_RUNTIME_API_len(env, string1);
@@ -4311,6 +4312,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_O
   memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
   
   return string3;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_concat_raw(env, string1, string2);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
 }
 
 int32_t SPVM_RUNTIME_API_memory_blocks_count(SPVM_ENV* env) {

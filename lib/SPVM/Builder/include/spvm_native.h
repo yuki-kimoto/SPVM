@@ -128,6 +128,7 @@ struct SPVM_env {
   void (*weaken)(SPVM_ENV* env, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, void** object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
+  void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
   void* (*create_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);

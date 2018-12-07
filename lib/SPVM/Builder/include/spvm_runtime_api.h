@@ -104,6 +104,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_call_object_sub(SPVM_ENV* env, int32_t sub_id, SPV
 int32_t SPVM_RUNTIME_API_string_length(SPVM_ENV* env, SPVM_OBJECT* object);
 int8_t* SPVM_RUNTIME_API_string_bytes(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string);
+SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
 // ID
