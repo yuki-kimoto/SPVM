@@ -101,7 +101,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_f_to_str,
     SPVM_RUNTIME_API_d_to_str,
     SPVM_RUNTIME_API_d_to_str,
-    SPVM_RUNTIME_API_create_stack_trace,
+    SPVM_RUNTIME_API_new_stack_trace_raw,
+    SPVM_RUNTIME_API_new_stack_trace,
     SPVM_RUNTIME_API_len,
     SPVM_RUNTIME_API_belems,
     SPVM_RUNTIME_API_selems,
@@ -3131,7 +3132,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
           
           // Exception stack trace
-          env->set_exception(env, env->create_stack_trace(env, env->exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -3150,7 +3151,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
 
           // Exception stack trace
-          env->set_exception(env, env->create_stack_trace(env, env->exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -4227,7 +4228,7 @@ void SPVM_RUNTIME_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_t
   env->native_mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_create_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
   
   // stack trace symbols
   const char* from_part = "\n  from ";
@@ -4279,6 +4280,16 @@ SPVM_OBJECT* SPVM_RUNTIME_API_create_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exc
   );
   
   return new_exception;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_RUNTIME_API_new_stack_trace_raw(env, exception, package_name, sub_name, file, line);
+  
+  SPVM_RUNTIME_API_push_mortal(env, str);
+  
+  return str;
 }
 
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {

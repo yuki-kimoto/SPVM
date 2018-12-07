@@ -101,7 +101,8 @@ struct SPVM_env {
   void* (*f_to_str)(SPVM_ENV* env, float value);
   void* (*d_to_str_raw)(SPVM_ENV* env, double value);
   void* (*d_to_str)(SPVM_ENV* env, double value);
-  void* (*create_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   int32_t (*len)(SPVM_ENV*, void*);
   int8_t* (*belems)(SPVM_ENV*, void*);
   int16_t* (*selems)(SPVM_ENV*, void*);
