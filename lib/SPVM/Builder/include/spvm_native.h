@@ -75,6 +75,7 @@ struct SPVM_env {
   int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* pkgvar_name, const char* signature);
   int32_t (*field_offset)(SPVM_ENV*, int32_t);
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*is_type)(SPVM_ENV*, void* object, int32_t basic_type_id, int32_t type_dimension);
   int32_t (*has_interface)(SPVM_ENV*, void* object, int32_t interface_basic_type_id);
   void* (*new_obj_raw)(SPVM_ENV*, int32_t);
   void* (*new_obj)(SPVM_ENV*, int32_t);
@@ -146,5 +147,19 @@ struct SPVM_env {
   int32_t (*enter_scope)(SPVM_ENV* env);
   void (*push_mortal)(SPVM_ENV* env, void* object);
   void (*leave_scope)(SPVM_ENV* env, int32_t original_mortal_stack_top);
+  int8_t (*bpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  int16_t (*spkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  int32_t (*ipkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  int64_t (*lpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  float (*fpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  double (*dpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  void* (*opkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id);
+  void (*set_bpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, int8_t value);
+  void (*set_spkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, int16_t value);
+  void (*set_ipkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, int32_t value);
+  void (*set_lpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, int64_t value);
+  void (*set_fpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, float value);
+  void (*set_dpkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, double value);
+  void (*set_opkgvar)(SPVM_ENV* env, void* object, int32_t pkgvar_id, void* value);
 };
 #endif

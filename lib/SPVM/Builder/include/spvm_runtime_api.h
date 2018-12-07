@@ -50,6 +50,7 @@ void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime);
 
 void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env);
 
+int32_t SPVM_RUNTIME_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id);
 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);
@@ -185,5 +186,20 @@ SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str_raw(SPVM_ENV* env, float value);
 SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str(SPVM_ENV* env, float value);
 SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str_raw(SPVM_ENV* env, double value);
 SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str(SPVM_ENV* env, double value);
+
+int8_t SPVM_RUNTIME_API_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+int16_t SPVM_RUNTIME_API_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+int32_t SPVM_RUNTIME_API_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+int64_t SPVM_RUNTIME_API_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+float SPVM_RUNTIME_API_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+double SPVM_RUNTIME_API_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+SPVM_OBJECT* SPVM_RUNTIME_API_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id);
+void SPVM_RUNTIME_API_set_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int8_t value);
+void SPVM_RUNTIME_API_set_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int16_t value);
+void SPVM_RUNTIME_API_set_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int32_t value);
+void SPVM_RUNTIME_API_set_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int64_t value);
+void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, float value);
+void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, double value);
+void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, SPVM_OBJECT* value);
 
 #endif

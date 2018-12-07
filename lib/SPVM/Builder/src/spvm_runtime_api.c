@@ -75,6 +75,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_package_var_id,
     SPVM_RUNTIME_API_field_offset,
     SPVM_RUNTIME_API_call_sub,
+    SPVM_RUNTIME_API_is_type,
     SPVM_RUNTIME_API_has_interface,
     SPVM_RUNTIME_API_new_obj_raw,
     SPVM_RUNTIME_API_new_obj,
@@ -4126,6 +4127,16 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   return status_code;
 }
 
+int32_t SPVM_RUNTIME_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension) {
+  
+  if (object->basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
   (void)env;
   
@@ -5684,4 +5695,144 @@ void* SPVM_RUNTIME_API_safe_malloc_zero(int64_t byte_size) {
   }
   
   return block;
+}
+
+int8_t SPVM_RUNTIME_API_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  int8_t value = runtime->package_vars_heap[pkgvar_id].bval;
+
+  return value;
+}
+
+int16_t SPVM_RUNTIME_API_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  int16_t value = runtime->package_vars_heap[pkgvar_id].sval;
+
+  return value;
+}
+
+int32_t SPVM_RUNTIME_API_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  int32_t value = runtime->package_vars_heap[pkgvar_id].ival;
+
+  return value;
+}
+
+int64_t SPVM_RUNTIME_API_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  int64_t value = runtime->package_vars_heap[pkgvar_id].lval;
+
+  return value;
+}
+
+float SPVM_RUNTIME_API_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  float value = runtime->package_vars_heap[pkgvar_id].fval;
+
+  return value;
+}
+
+double SPVM_RUNTIME_API_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  double value = runtime->package_vars_heap[pkgvar_id].dval;
+
+  return value;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  void* value = SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(runtime->package_vars_heap[pkgvar_id].oval);
+  
+  return value;
+}
+
+void SPVM_RUNTIME_API_set_bpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int8_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].bval = value;
+}
+
+void SPVM_RUNTIME_API_set_spkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int16_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].sval = value;
+}
+
+void SPVM_RUNTIME_API_set_ipkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int32_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].ival = value;
+}
+
+void SPVM_RUNTIME_API_set_lpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, int64_t value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].lval = value;
+}
+
+void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, float value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].fval = value;
+}
+
+void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, double value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].dval = value;
+}
+
+void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, SPVM_OBJECT* object, int32_t pkgvar_id, SPVM_OBJECT* value) {
+
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Get field value
+  runtime->package_vars_heap[pkgvar_id].oval = SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(value);
 }
