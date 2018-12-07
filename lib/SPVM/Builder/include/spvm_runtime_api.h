@@ -30,7 +30,7 @@ do {\
 #define SPVM_RUNTIME_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
 #define SPVM_RUNTIME_API_OBJECT_ASSIGN(dist_address, src_object) \
 do {\
-  void* tmp_object = src_object;\
+  void* tmp_object = SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(src_object);\
   if (tmp_object != NULL) {\
     SPVM_RUNTIME_API_INC_REF_COUNT_ONLY(tmp_object);\
   }\
