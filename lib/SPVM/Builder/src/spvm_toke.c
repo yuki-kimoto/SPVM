@@ -892,17 +892,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             cur_token_ptr = compiler->bufptr;
           }
           
-          // Digit
           int32_t digit = 0;
           if (*(compiler->bufptr) == '0') {
-            if (*(compiler->bufptr + 1) == 'x') {
+            // Hex integer literal
+            if (*(compiler->bufptr + 1) == 'x' || *(compiler->bufptr + 1) == 'X') {
               cur_token_ptr = compiler->bufptr + 2;
               digit = 16;
             }
-            else if (*(compiler->bufptr + 1) == 'b') {
+            // Binary integer literal
+            else if (*(compiler->bufptr + 1) == 'b' || *(compiler->bufptr + 1) == 'B') {
               cur_token_ptr = compiler->bufptr + 2;
               digit = 2;
             }
+            // Octal integer literal
             else if (isdigit(*(compiler->bufptr + 1))) {
               cur_token_ptr = compiler->bufptr + 1;
               digit = 8;
