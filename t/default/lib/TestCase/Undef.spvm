@@ -1,0 +1,22 @@
+package TestCase::Undef {
+  use TestCase::Minimal;
+  
+  sub test_undef : int () {
+    my $minimal = TestCase::Minimal->new;
+    my $minimal_undef : TestCase::Minimal;
+    
+    if  ($minimal == undef) {
+      return 0;
+    }
+    
+    unless ($minimal_undef == undef) {
+      return 0;
+    }
+    
+    if (undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
