@@ -1,0 +1,583 @@
+<html>
+  <head>
+    <title>SPVM公式ドキュメント 1.0 ベータ</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/images/spvm-logo.png">
+    <script type="text/javascript" src="/js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+    <link  type="text/css" rel="stylesheet" href="/js/google-code-prettify/prettify.css"/>
+    <script>
+      $(function(){
+        // google code prettifyの有効化
+        $("pre").addClass("prettyprint");
+        function init(event){
+          prettyPrint();
+        }
+        if(window.addEventListener)window.addEventListener("load",init,false);
+        else if(window.attachEvent)window.attachEvent("onload",init);
+        
+        
+      });
+    </script>
+
+    <style>
+      * {
+        padding:0;
+        margin:0;
+      }
+      body {
+      }
+      .container {
+        width:100%;
+        max-width:800px;
+        margin:0px auto;
+      }
+      p {
+        line-height:155%;
+        padding:6px 10px 6px 10px;
+        color:#333;
+        font-size:16px;
+      }
+      h1 {
+        color:#333;
+        font-size:26px;
+      }
+      h1 img {
+        vertical-align:-19px;
+      }
+      
+      hr {
+        background:blue;
+      }
+      .header {
+        padding:10px 0;
+        border-bottom:1px solid #0e78d3;
+      }
+      a {
+        color:blue;
+      }
+      a:visited {
+        color:blue;
+      }
+      ul {
+        list-style:none;
+      }
+      
+      h2 {
+        background:#1d41c4;
+        color:white;
+        padding:5px 12px 2px 12px;
+        font-size:21px;
+        margin-top:5px;
+        margin-bottom:18px;
+      }
+      
+      h3 {
+        margin:12px 0 7px 0;
+        border-left:6px solid #ff7708;
+        padding:2px 3px 0px 7px;
+        font-size:19px;
+      }
+      h4 {
+        letter-spacing:2px;
+        margin:15px 0 5px 0;
+        font-size:18px;
+      }
+      .footer {
+        padding:22px 0;
+        border-top:1px solid #0e78d3;
+        text-align:center;
+      }
+      .footer a {
+        text-decoration:none;
+        letter-spacing:1px;
+      }
+      .footer :visited {
+        color:inherit;
+      }
+      pre {
+        border:1px solid #ffbd7c;
+        background:#fffdfc;
+        padding:15px 10px;
+        border-radius:5px;
+        margin:10px 10px 15px 10px;
+        line-height:120%;
+        color:#333;
+        font-size:15px;
+      }
+      .toc {
+        padding:0px 12px 10px 12px;
+      }
+      .toc li{
+        background:url(/images/list-arrow.png) no-repeat;
+        background-position:4px;
+        background-size:18px;
+        padding-left:30px;
+        line-height:180%;
+        letter-spacing:2px;
+        font-size:17px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <h1>
+          <img src="/images/spvm-logo.png">
+          SPVM公式ドキュメント 1.0 ベータ
+        </h1>
+      </div>
+    </div>
+    
+    <div class="container">
+      <p>
+        昨日の記事は<a href="http://d.hatena.ne.jp/charsbar/20181207/1544189920">charsbar</a>さんでした。
+      </p>
+      <p>
+        本日はyukikimotoが書きます。リレー形式でつなげていくのは、楽しいですね!
+      </p>
+      <p>
+        この記事はSPVMの日本語公式ドキュメントです。書き始めですが、数時間で、書けるところまで書きます。
+      </p>
+      <p>
+        <a href="https://qiita.com/advent-calendar/2018/perl">Perl Advent Calender 2018</a>をきっかけにに作成されました。
+      </p>
+      
+      <h2>目次</h2>
+      <ul class="toc">
+        <li><a href="#purpose">目的</a></li>
+        <li><a href="#user">ユーザー</a></li>
+        <li><a href="#install">SPVMのインストール</a></li>
+        <li><a href="#tutorial">チュートリアル</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#devoloper">開発者</a></li>
+      </ul>
+
+      <h2 id="purpose">目的</h2>
+
+      <h3>SPVMが開発された主な目的を教えてください。</h3>
+
+      <p>
+        SPVMは、<b>Perlの数値計算の遅さを改善</b>するために開発されました。<b>数値計算と配列の演算を高速化</b>することができます。
+      </p>
+
+      <h3>どれくらいの速度の改善を目指していますか</h3>
+
+      <p>
+        仕様が完成した後にベンチマークテストを始める予定ですが、数値計算と配列の演算に対して、Perlの30倍、C言語の1/2の速度を、最初の目標としています。
+      </p>
+
+      <h3>他の目的はありますか</h3>
+
+      <p>
+        二つ目の目的は、<b>C/C++のバインディングを簡単にする</b>ことです。XSやInline::Cは、C/C++のバインディングという点で、非常に難しいと感じています。
+      </p>
+      <p>
+        簡単なAPIを使って、メモリ安全に、C/C++のバインディングができる機能を提供しています。
+      </p>
+
+      <h3>さらに、他の目的はありますか</h3>
+
+      <p>
+        三つ目の目的は、<b>単体で実行可能な実行ファイルを生成する</b>ことです。
+      </p>
+      <p>
+        SPVMは、実行ファイルを生成する機能を持っているので、ランタイムなしに、プログラムの実行が可能で、配布することもできます。
+      </p>
+      <p>
+        共有ライブラリ(ダイナミックリンクライブラリ)の読み込みにも対応しています。
+      </p>
+
+      <h3>生成された実行ファイルのライセンスはどうなりますか</h3>
+      <p>
+        SPVMのソースコードには、MITライセンスが適用されるので、MITライセンスの元で、商用利用が可能です。
+      </p>
+
+      <h3>実行ファイルを生成して、何ができますか</h3>
+      <p>
+        たとえば、ボタンなどのGUI部品を備えた、配布可能なWindowsアプリケーションが作成できる予定です。
+      </p>
+
+      <h2 id="user">ユーザー</h2>
+      <p>
+        どのような人をSPVMのユーザーとして想定していますか。
+      </p>
+
+      <h3>遺伝子解析などのビオテクノロジーの研究者</h3>
+      <p>
+        Perlは、遺伝子解析などのビオテクノロジーの分野で利用されていますが、配列操作の遅さに不満を感じている研究者の方がいます。
+      </p>
+
+      <p>
+        配列操作を簡単に高速化でき、必要であればC/C++をバインディングし、openMPやSIMDなどの並列計算ができればと考えている研究者の方を想定しています。
+      </p>
+
+      <h3>IoTの開発者</h3>
+
+      <p>
+        IoTの開発者は、ハードウェアからWebまでの幅広い知識が必要になります。大量の分野の知識が必要となるため、これを簡単に実現するライブラリがあれば便利です。
+      </p>
+
+      <p>
+        C/C++、アセンブラを使って、センサーのデバイスドライバを作成。HTTPクライアントライブラリを使って、Webにアクセス。開発環境で、実行ファイルを作成して、それぞれの機器にそのままコピー。このような一連の機能をSPVMは提供する予定です。
+      </p>
+
+      <h3>グラフィックスエンジニア</h3>
+
+      <p>
+        画像処理には、大量の配列演算が必要です。Perlは、配列のデータ構造を言語仕様として持たないため、不満を感じている方がいます。
+      </p>
+
+      <p>
+        SPVMは、連続した領域を持つ配列のデータ構造を提供しているので、DirectXやOpenGM、OpenCVなどと組み合わせて、画像処理をしたいユーザーに向いています。
+      </p>
+
+      <h3>AI・機械学習エンジニア</h3>
+
+      <p>
+        AI・機械学習には、配列演算が必要です。Perlは、配列のデータ構造を言語仕様として持たないため、不満を感じている方がいます。
+      </p>
+
+      <p>
+        SPVMは、連続した領域を持つ配列のデータ構造を提供しているので、機械学習ライブラリとの相性が高いです。
+      </p>
+
+      <h3>マイクロサービスの提供者</h3>
+
+      <p>
+        SPVMは、JSONモジュール、非同期IOをサポートしたHTTPクライアント/サーバーをコアで提供する予定です。実行ファイルを生成可能なので、小さなLinuxサーバーを構築し、実行ファイルをコピーして、マイクロサービスを運用可能です。
+      </p>
+
+      <p>
+        SPVMは、リファレンスカウント方式のGCを採用しているので、FullGCが起こらず、非同期IOの性能に大きく関わるレイテンシを小さくできます。
+      </p>
+
+      <h2 id="install">SPVMのインストール</h2>
+
+      <p>
+        SPVMはCPANモジュールです。cpanまたはcpanmを使ってインストールできます。
+      </p>
+<pre>
+cpan SPVM
+cpanm SPVM
+</pre>
+
+      <h2 id="tutorial">SPVMのチュートリアル</h2>
+
+      <p>
+        SPVMのチュートリアルです。
+      </p>
+      
+      <ul class="toc">
+        <li>
+          <a href="#tutorial-sum-array">配列の和を求める</a>
+        </li>
+      </ul>
+      
+      <h3 id="tutorial-sum-array">
+        配列の和を求める
+      </h3>
+      
+      <p>
+        最初の簡単な例として配列の和を求めてみましょう。
+      </p>
+      <h4>SPVMモジュールの作成</h4>
+      <p>
+        「MyMath.spvm」というファイルファイルをlibディレクトリの中に作成してください。<b>SPVMのソースファイルの拡張子は「.spvm」</b>です。以下の内容を記述しましょう。
+      </p>
+<pre>
+# lib/MyMath.spvm
+package MyMath {
+  sub sum : int ($nums : int[]) {
+    
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total += $nums->[$i];
+    }
+    
+    return $total;
+  }
+}
+</pre>
+      
+      <p>
+        SPVMでは<b>パッケージ構文</b>を使用して、パッケージを作成します。Perlのパッケージブロック構文と同じ文法です。
+      </p>
+<pre>
+# パッケージ構文
+package MyMath {
+
+}
+</pre>
+      <p>
+        パッケージのブロックの中では<b>サブルーチン定義</b>を行うことができます。
+      </p>
+<pre>
+package MyMath {
+  sub sum : int ($nums : int[]) {
+    
+  }
+}
+</pre>
+      
+      <p>
+        SPVMは静的型言語ですので、<b>サブルーチンの宣言の中で、戻り値の型、引数名と引数の型を記述</b>します。
+      </p>
+      <p>
+        戻り値は「int型」。引数は「int型の配列」です。<b>int型は、32bit符号付整数</b>を表現します。
+      </p>
+      <p>
+        配列の和を計算している部分をみてみましょう。
+      </p>
+<pre>
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total += $nums->[$i];
+    }
+
+    return $total;
+</pre>
+      <p>
+        和の計算方法の見た目は、Perlでfor文を使って書いたものとまったく同じです。
+      </p>
+      <p>
+        このようにSPVMではM<b>Perlと同じ文法で記述</b>できるのがひとつの特徴です。Perlユーザーが、新しい文法を覚える負担ができるだけ小さくなるように設計されています。
+      </p>
+      <p>
+        変数の宣言では<b>型推論</b>を使って、型を省略することができます。
+      </p>
+<pre>
+    my $total = 0;
+</pre>
+      <p>
+        SPVMの型推論は、右辺の型が確定しているときに、左辺の型宣言を省略することができます。
+      </p>
+      <p>
+        数値リテラルの「0」は「int型」ですので、「$total」の型も「int型」になります。以下の記述と同じ意味になります。
+      </p>
+<pre>
+    my $total : int = 0;
+</pre>
+      <p>
+        <b>配列の長さ</b>は「@」を使うことで取得できます。
+      </p>
+<pre>
+@$nums
+</pre>
+      <p>
+        SPVMには、コンテキストはなく「@」は常に配列の長さを返します。
+      </p>
+      <p>
+        次にSPVMで書かれたサブルーチンをPerlの側から呼び出してみましょう。
+      <p>
+      <h4>SPVMモジュールの呼び出し</h4>
+      <p>
+        「sum.pl」というファイルを作成して、以下の内容を記述してください。
+      </p>
+      <p>
+        SPVMで書かれた「MyMath」パッケージの「sum」サブルーチンを呼び出して、配列の和を計算します。
+      </p>
+<pre>
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
+use SPVM 'MyMath';
+
+my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
+
+my $total = MyMath->sum($sp_nums);
+
+print $total . "\n";
+</pre>
+      <p>
+        まず最初に<b>libディレクトリをモジュールの検索パスに追加</b>します。
+      </p>
+<pre>
+# libディレクトリをモジュールの検索パスに追加
+use FindBin;
+use lib "$FindBin::Bin/lib";
+</pre>
+      <p>
+        次に<b>SPVMモジュールを読み込み</b>ます。
+      </p>
+<pre>
+# SPVMモジュールを読み込み
+use SPVM 'MyMath';
+</pre>
+      <p>
+        「use SPVM 'SPVMモジュール名'」という記述で、SPVMモジュールを読み込むことができます。
+      </p>
+      <p>
+        次に<b>SPVMの配列を作成</b>します。
+      </p>
+<pre>
+# int型配列の作成
+my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
+</pre>
+      <p>
+        <b>SPVM::new_iarray関数</b>を使うと、配列のリファレンスを渡して、SPVMのint型の配列を作成することができます。
+      </p>
+      <p>
+        <b>MyMathパッケージのsumサブルーチンを呼び出し</b>てみましょう。
+      </p>
+<pre>
+# MyMathパッケージのsumサブルーチンを呼び出し
+my $total = MyMath->sum($sp_nums);
+</pre>
+      <p>
+        <b>SPVMのサブルーチン呼び出しは、Perlのクラスメソッド呼び出しになることに注意してください。</b>「絶対名 MyMath::sub」で呼び出すことはできません。
+      </p>
+      
+      <p>
+        sum関数の戻り値は「int型」ですが、SPVMの整数型は、自動的にPerlのスカラ型に変換されます。
+      </p>
+      
+      <h2 id="faq">FAQ</h2>
+
+      <h3>対応しているOSを教えてください。</h3>
+
+      <p>
+      Unix、Linux、macOS、Windowsに対応しています。
+      </p>
+
+      <h3>Perlと異なる点を教えてください。</h3>
+
+      <p>
+        コンテキストは存在しません。関数呼び出しには括弧が必要です。三項演算子はありません。シングルクォートは、文字定数です。
+      </p>
+      <p>
+        標準関数や標準モジュールは、Perlとは完全に異なっています。
+      </p>
+      <p>
+        サブルーチンは、必ずメソッドか、クラスメソッドになります。サブルーチンの絶対名での呼び出しはできません。
+      </p>
+      <p>
+        モジュールの拡張子は「spvm」です。
+      </p>
+      <p>
+        型はすべて静的型です。サブルーチン呼び出しは、コンパイル時に解決されます。配列は静的です。動的配列とハッシュは、モジュールとして提供されます。
+      </p>
+
+      <h3>スレッドは利用できますか</h3>
+      <p>
+        スレッドは、コアではサポートされていませんが、エクステンションを使ったユーザーモジュールを作成することで、間接的に利用できます。
+      </p>
+      <p>
+        SPVMはシングルスレッドで動くように設計されています。シングルスレッドは、利用者にとって簡単で安全な設計です。
+      </p>
+      <p>
+        スレッドの機能はSPVMのコアにはありませんが、CやC++のスレッドライブラリを利用して、エクステンションから利用することはできます。
+      </p>
+      <p>
+        エクステンションでは、スレッド用のSPVMの実行環境を生成して、スレッド上で、利用できます。
+      </p>
+      <p>
+        SPVMのモジュールとして作成すれば、SPVMからサブルーチンを通して、間接的にスレッドを利用できます。
+      </p>
+
+      <h3>エクステンションとは何ですか</h3>
+      <p>
+        エクステンションとは、SPVMからC/C++の関数を呼び出すための仕組みのことです。
+      </p>
+
+      <h3>プリコンパイルとは何ですか</h3>
+      <p>
+        プリコンパイルとは、SPVMのサブルーチンを、コンパイル時に機械語に変換する仕組みのことです。機械語に変換されたサブルーチンは、高速に実行できます。</p>
+      <p>
+        precompileが指定されたサブルーチンを含むモジュールファイルは、コンパイル時に、Cのソースコードに変換されます。
+      </p>
+<pre>
+precompile sub sum : int ($num1 : int, $num2 : int) {
+  return $num1 + $num2;
+}
+</pre>
+      <p>
+        Cのソースコードは、ビルドディレクトリの中に作成されます。
+      </p>
+      <p>
+        生成されたCのソースコードは、Perlをコンパイルしたコンパイラ(通常はgccかclang)によって、機械語(.oの拡張子を持つオブジェクトファイル)にコンパイルされます。
+      </p>
+      <p>
+        機械語に変換された後、各OSで呼び出すことのできる共有ライブラリ(.soや.dll)にリンクされます。
+      </p>
+
+      <h3>ビルドディレクトリとは何ですか</h3>
+      <p>
+        プリコンパイルする場合に、必要となるディレクトリのことです。
+      </p>
+      <p>
+        ビルドディレクトリを利用することをSPVMに教えるにはSPVM::BuildDirモジュールを使用する必要があります。
+      </p>
+<pre>
+use SPVM::BuildDir;
+</pre>
+      <p>
+        スクリプトがあるディレクトリの「spvm_build」というディレクトリがデフォルトのビルドディレクトリ名になります。
+      </p>
+      <p>
+        ビルドディレクトリ名を自分で指定したい場合は、次のようにします。
+      </p>
+<pre>
+use FindBin;
+use SPVM::BuildDir "$FindBin::Bin/mydir;
+</pre>
+
+      <h3>SPVMの開発に参加することはできますか。</h3>
+
+      <p>
+        コア機能、標準関数、標準モジュールについては、作者が決定を行っています。その範囲の中であれば、開発への参加が可能です。
+      </p>
+
+      <p>
+        バグ報告、ベンチマーク、言語評価、ブログなどでの紹介は歓迎です。
+      </p>
+      <h2 id="developer">開発情報</h2>
+      <h3>SPVMの開発に参加</h3>
+      <p>
+        「README」の中に開発手順が記載されています。
+      </p>
+      <h3>著者</h3>
+      <p>
+        木本裕紀(kimoto.yuki@gmail.com)
+      </p>
+      <p>
+        <img src="https://www.gravatar.com/avatar/0475497bcea869ee3d091edc3d06ced7?s=130&d=identicon">
+      </p>
+      <h3>コアデベロッパー</h3>
+      <p>
+        moti(motohiko.ave@gmail.com)
+      </p>
+      <h3>リポジトリ</h3>
+      <p>
+        <a href="https://github.com/yuki-kimoto/SPVM">SPVM(GitHub)</a>
+      </p>
+      <h3>CPAN</h3>
+      <p>
+        <a href="https://metacpan.org/pod/distribution/SPVM/lib/SPVM.pm">SPVM(CPAN)</a>
+      </p>
+      </p>
+      <h3>バグ報告</h3>
+      <p>
+        バグ報告はGitHubのIssueで行うことができます。
+      </p>
+      <p>
+        <a href="https://github.com/yuki-kimoto/SPVM/issues">GitHub Issue</a>
+      </p>
+      <h3>ドキュメント最終更新日</h3>
+      <p>
+        2018年12月8日
+      </p>
+      <h2>明日は</h2>
+      
+      <p>
+        明日は<a href="https://qiita.com/yumlonne">aeroastro</a>さんです。
+      </p>
+      <p>
+        <a href="https://qiita.com/advent-calendar/2018/perl">Perl Advent Calendar 2018</a>
+      </p>
+    </div>
+    <div class="footer">
+      <a href="https://github.com/yuki-kimoto/SPVM">SPVMプロジェクト</a>
+    </div>
+  </body>
+</html>
