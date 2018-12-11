@@ -1,4 +1,4 @@
-package TestCase::Undef {
+package TestCase::Literal::Undef {
   use TestCase::Minimal;
   
   sub test_undef : int () {

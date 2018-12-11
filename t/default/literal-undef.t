@@ -7,13 +7,13 @@ use utf8;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Undef';
+use SPVM 'TestCase::Literal::Undef';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 {
-  ok(TestCase::Undef->test_undef);
+  ok(TestCase::Literal::Undef->test_undef);
 }
 
 # All object is freed
