@@ -3,6 +3,7 @@
     <title>SPVM公式ドキュメント 1.0 ベータ</title>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/images/spvm-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
     <script type="text/javascript" src="/js/jquery-1.9.0.min.js"></script>
     <script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
     <link  type="text/css" rel="stylesheet" href="/js/google-code-prettify/prettify.css"/>
@@ -20,104 +21,6 @@
       });
     </script>
 
-    <style>
-      * {
-        padding:0;
-        margin:0;
-      }
-      body {
-      }
-      .container {
-        width:100%;
-        max-width:800px;
-        margin:0px auto;
-      }
-      p {
-        line-height:155%;
-        padding:6px 10px 6px 10px;
-        color:#333;
-        font-size:16px;
-      }
-      h1 {
-        color:#333;
-        font-size:26px;
-      }
-      h1 img {
-        vertical-align:-19px;
-      }
-      
-      hr {
-        background:blue;
-      }
-      .header {
-        padding:10px 0;
-        border-bottom:1px solid #0e78d3;
-      }
-      a {
-        color:blue;
-      }
-      a:visited {
-        color:blue;
-      }
-      ul {
-        list-style:none;
-      }
-      
-      h2 {
-        background:#1d41c4;
-        color:white;
-        padding:5px 12px 2px 12px;
-        font-size:21px;
-        margin-top:5px;
-        margin-bottom:18px;
-      }
-      
-      h3 {
-        margin:12px 0 7px 0;
-        border-left:6px solid #ff7708;
-        padding:2px 3px 0px 7px;
-        font-size:19px;
-      }
-      h4 {
-        letter-spacing:2px;
-        margin:15px 0 5px 0;
-        font-size:18px;
-      }
-      .footer {
-        padding:22px 0;
-        border-top:1px solid #0e78d3;
-        text-align:center;
-      }
-      .footer a {
-        text-decoration:none;
-        letter-spacing:1px;
-      }
-      .footer :visited {
-        color:inherit;
-      }
-      pre {
-        border:1px solid #ffbd7c;
-        background:#fffdfc;
-        padding:15px 10px;
-        border-radius:5px;
-        margin:10px 10px 15px 10px;
-        line-height:120%;
-        color:#333;
-        font-size:15px;
-      }
-      .toc {
-        padding:0px 12px 10px 12px;
-      }
-      .toc li{
-        background:url(/images/list-arrow.png) no-repeat;
-        background-position:4px;
-        background-size:18px;
-        padding-left:30px;
-        line-height:180%;
-        letter-spacing:2px;
-        font-size:17px;
-      }
-    </style>
   </head>
   <body>
     <div class="header">
@@ -149,6 +52,7 @@
         <li><a href="#user">ユーザー</a></li>
         <li><a href="#install">SPVMのインストール</a></li>
         <li><a href="#tutorial">チュートリアル</a></li>
+        <li><a href="#language">言語仕様</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#devoloper">開発者</a></li>
       </ul>
@@ -210,6 +114,11 @@
 
       <p>
         配列操作を簡単に高速化でき、必要であればC/C++をバインディングし、openMPやSIMDなどの並列計算ができればと考えている研究者の方を想定しています。
+      </p>
+
+      <h3>Perlの数値計算を速くしたいが、XSやC言語は難しいと感じる方</h3>
+      <p>
+        SPVMを使うと、Perlの文法で、数値計算と配列演算を速くすることができます。
       </p>
 
       <h3>IoTの開発者</h3>
@@ -432,8 +341,93 @@ my $total = MyMath->sum($sp_nums);
         sum関数の戻り値は「int型」ですが、SPVMの整数型は、自動的にPerlのスカラ型に変換されます。
       </p>
       
-      <h2 id="faq">FAQ</h2>
+      <h2 id="language">言語仕様</h2>
+      <p>
+        SPVMの言語仕様の詳細です。
+      </p>
+      <ul class="toc">
+        <li><a href="#language-literal">リテラル</a></li>
+        <li><a href="#language-condition-part">条件部</a></li>
+      </ul>
+      <h3 id="language-literal">リテラル</h3>
+      <ul class="toc">
+        <li><a href="#language-literal-integer">整数リテラル</a></li>
+        <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
+        <li><a href="#language-literal-character">文字リテラル</a></li>
+        <li><a href="#language-literal-string">文字列リテラル</a></li>
+        <li><a href="#language-literal-undef">未定義値</a></li>
+      </ul>
 
+      <h4 id="language-literal-integer">整数リテラル</h3>
+
+      <h4 id="language-literal-floating-point">浮動小数点リテラル</h3>
+
+      <h4 id="language-literal-character">文字リテラル</h3>
+
+      <h4 id="language-literal-string">文字列リテラル</h3>
+      
+      <h4 id="language-literal-undef">未定義値</h3>
+      <p>
+        未定義は「undef」で表現されます。
+      </p>
+<pre>
+undef
+</pre>
+      <p>
+        未定義値は、オブジェクト型変数に代入することができます。
+      </p>
+      <p>
+        未定義値はオブジェクト型の値と「==」「!=」演算子を使用して、比較することができます。未定義値は、生成されたオブジェクトと等しくない事が保証されます。
+      </p>
+      <p>
+        未定義は条件部で使われた場合は、偽になります。
+      </p>
+      <p>
+        未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
+      </p>
+      <p>
+        Perlと異なる点は、SPVMにおいては「undef」は関数ではなくリテラルであるということです。
+      </p>
+      
+      <h3 id="language-condition-part">条件部</h3>
+      <p>
+        条件部とは、条件判定が行われる部分のことです。SPVMでは、以下の部分が条件部となります。
+      </p>
+      <p>
+        if文のかっこの中。
+      </p>
+<pre>
+if (条件部) {
+
+}
+</pre>
+      <p>
+        unless文のかっこの中。
+      </p>
+<pre>
+unless (条件部) {
+
+}
+</pre>
+      <p>
+        forのかっこの中の二つ目。
+      </p>
+<pre>
+for (初期化;条件部;次の値;) {
+
+}
+</pre>
+      <p>
+        whileのかっこの中。
+      </p>
+<pre>
+while (条件部) {
+
+}
+</pre>
+
+      <h2 id="faq">FAQ</h2>
+      
       <h3>対応しているOSを教えてください。</h3>
 
       <p>
@@ -521,6 +515,51 @@ use SPVM::BuildDir;
 use FindBin;
 use SPVM::BuildDir "$FindBin::Bin/mydir;
 </pre>
+
+      <h3>インターフェースとは何ですか</h3>
+      <p>
+        SPVMでは、インターフェスとは、実装を持たないメソッドが一つだけ定義されているパッケージのことをいいます。
+      </p>
+      <p>
+        インターフェースのひとつの例は、標準モジュールである「SPVM::Comparable」です。
+      </p>
+<pre>
+package SPVM::Comparable : interface {
+  sub compare : int ($self : self, $object1 : object, $object2 : object);
+}
+</pre>
+      <p>
+        機能としては、C言語の関数ポインタに似ています。
+      </p>
+
+      <h3>ジェネリクスはありますか</h3>
+      <p>
+        残念なことですが、SPVMにはジェネリクスはありません。SPVMは、コンパイル時の型決定性よりも、型の簡単さを設計として選択しました。
+      </p>
+      <p>
+        コンテナの要素は、汎用オブジェクト型で定義してください。汎用オブジェクトから実際のオブジェクトを取得するためには、型キャストが必要です。
+      </p>
+<pre>
+sub add : void ($self : self, $object : ojbect) { ... }
+sub get : object ($self : self, $index : int) { ... }
+</pre>
+
+<pre>
+my $list = SPVM::List->new;
+$list->add("hello!");
+my $str = (string)$list->get(0);
+</pre>
+
+      <h3>サブルーチンのオーバーロードはありますか。</h3>
+      <p>
+        サブルーチンのオーバーロードはありません。サブルーチンは、サブルーチン名で一意的に識別されます。
+      </p>
+      <p>
+        採用されていない最も大きな理由は、Perl自体が型を持たないために、PerlからSPVMのサブルーチンへ渡す値の型が決定できないためです。
+      </p>
+      <p>
+        このためSPVMでは、サブルーチン名によって、戻り値と引数の型がわかるように設計されています。
+      </p>
 
       <h3>SPVMの開発に参加することはできますか。</h3>
 
