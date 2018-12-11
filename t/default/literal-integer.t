@@ -23,11 +23,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Octal Literal
 {
-  ok(TestCase::Literal::Integer->octal_expression());
-  ok(TestCase::Literal::Integer->octal_all_number());
-  ok(TestCase::Literal::Integer->octal_int());
-  ok(TestCase::Literal::Integer->octal_int_max());
-  ok(TestCase::Literal::Integer->octal_long_max());
+  ok(TestCase::Literal::Integer->octal());
 }
 
 # Binary Literal

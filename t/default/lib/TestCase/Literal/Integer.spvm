@@ -94,36 +94,18 @@ package TestCase::Literal::Integer {
     return 1;
   }
 
-  sub octal_expression : int () {
-    my $value3 = 0377L;
-    my $value4 = (byte)0377;
-    my $value5 = (short)0177777;
-    my $value6 = (byte)0177;
-    my $value7 = (short)077777;
-    
-    if ($value3 == (long)255) {
-      if ($value4 == -1) {
-        if ($value5 == -1) {
-          if ($value6 == 127) {
-            if ($value7 == 32767) {
-              return 1;
-            }
-          }
-        }
-      }
+  sub octal : int () {
+    my $value_all_number1 = 0110642547;
+    unless ($value_all_number1 == 19088743) {
+      return 0;
     }
     
-    return 0;
-  }
-
-  sub octal_all_number : int () {
-    my $value1 = 0110642547;
-    
-    if ($value1 == 19088743) {
-      return 1;
+    my $value_combination = -0777777777777777777777L;
+    unless ($value_combination == -9223372036854775807L) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 
   sub binary_expression : int () {
@@ -212,36 +194,4 @@ package TestCase::Literal::Integer {
     }
   }
   
-  sub octal_int : int () {
-    my $value = 0377;
-    
-    if ($value == 255) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub octal_int_max : int () {
-    # 11111111 11111111 11111111 11111111
-    my $value = 037777777777;
-    
-    if ($value == -1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub octal_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 01777777777777777777777L;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
 }
