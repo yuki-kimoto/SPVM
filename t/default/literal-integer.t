@@ -11,6 +11,11 @@ use SPVM 'TestCase::Literal::Integer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Basic
+{
+  ok(TestCase::Literal::Integer->basic());
+}
+
 # Integer literal
 {
   ok(TestCase::Literal::Integer->underline());

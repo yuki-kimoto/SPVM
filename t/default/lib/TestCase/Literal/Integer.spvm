@@ -1,4 +1,52 @@
 package TestCase::Literal::Integer {
+  sub basic : int () {
+    my $value_all_numbers = 1234567890;
+    unless ($value_all_numbers == 1234567889 + 1) {
+      return 0;
+    }
+    
+    my $value_plus_max = +2147483647;
+    unless ($value_plus_max == 2147483647) {
+      return 0;
+    }
+    
+    my $value_minus_max = -2147483648;
+    unless ($value_minus_max == -2147483647 - 1) {
+      return 0;
+    }
+    
+    my $value_underline = 123_456__789;
+    unless ($value_underline == 123456789) {
+      return 0;
+    }
+    
+    my $value_long_minus_max = -9223372036854775808L;
+    unless ($value_long_minus_max == -9223372036854775807L - 1L) {
+      return 0;
+    }
+
+    my $value_long_lower_case = 4l;
+    unless ($value_long_lower_case == 4L) {
+      return 0;
+    }
+    
+    my $value_long_underline = 123_456L;
+    unless ($value_long_underline == 123456L) {
+      return 0;
+    }
+    
+    my $value_byte_norrowing_convertion : byte = -128;
+    unless ($value_byte_norrowing_convertion == -128) {
+      return 0;
+    }
+    
+    my $value_short_norrowing_convertion : short = -32768;
+    unless ($value_short_norrowing_convertion == -32768) {
+      return 0;
+    }
+    
+    return 1;
+  }
   sub specifier : int () {
     my $value1 = 255f;
     my $value2 = 255d;
