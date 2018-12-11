@@ -18,6 +18,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Hex Literal
 {
+  ok(TestCase::Literal::Integer->hex());
   ok(TestCase::Literal::Integer->hex_expression());
   ok(TestCase::Literal::Integer->hex_all_number());
   ok(TestCase::Literal::Integer->hex_int());

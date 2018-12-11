@@ -24,7 +24,7 @@ package TestCase::Literal::Integer {
     unless ($value_long_minus_max == -9223372036854775807L - 1L) {
       return 0;
     }
-
+    
     my $value_long_lower_case = 4l;
     unless ($value_long_lower_case == 4L) {
       return 0;
@@ -44,6 +44,29 @@ package TestCase::Literal::Integer {
     unless ($value_short_norrowing_convertion == -32768) {
       return 0;
     }
+    
+    return 1;
+  }
+  
+  sub hex : int () {
+    my $value_all_number1 = 0x01234567;
+    my $value_all_number2 = 0x00890000;
+    my $value_all_number3 = 0x00ABCDEF;
+    my $value_all_number4 = 0x00abcdef;
+    unless ($value_all_number1 == 19088743) {
+      return 0;
+    }
+    unless ($value_all_number2 == 8978432) {
+      return 0;
+    }
+    unless ($value_all_number3 == 11259375) {
+      return 0;
+    }
+    unless ($value_all_number4 == 11259375) {
+      return 0;
+    }
+    
+    
     
     return 1;
   }
