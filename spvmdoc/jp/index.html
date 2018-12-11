@@ -346,9 +346,99 @@ my $total = MyMath->sum($sp_nums);
         SPVMの言語仕様の詳細です。
       </p>
       <ul class="toc">
+        <li><a href="#language-type">型</a></li>
+        <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
       </ul>
+      <h3 id="language-type">型</h3>
+      <ul class="toc">
+        <li><a href="#language-type-integer">整数型</a></li>
+        <li><a href="#language-type-floating-point">浮動小数点型</a></li>
+        <li><a href="#language-type-object">オブジェクト型</a></li>
+      </ul>
+      <h4 id="language-type-integer">整数型</h3>
+      <p>
+        SPVMの整数型は以下の4つです。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            説明
+          </th>
+          <th>
+            範囲
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            8bit符号付整数
+          </td>
+          <td>
+            -128～127
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            16bit符号付整数
+          </td>
+          <td>
+            -32768～32767
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            32bit符号付整数
+          </td>
+          <td>
+            -2147483648～2147483647
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            64bit符号付整数
+          </td>
+          <td>
+            -9223372036854775808～9223372036854775807
+          </td>
+        </tr>
+      </table>
+      
+      <h3 id="language-type-convertion">型変換</h3>
+      <ul class="toc">
+        <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
+        <li><a href="#language-type-convertion-widning">拡大型変換</a></li>
+      </ul>
+      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
+      <p>
+        縮小型変換とは、数値型において広い型から狭い型への変換が行われる場合に適用される変換の規則のことです。
+      </p>
+      <p>
+        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
+      </p>
+      <h4 id="language-type-convertion-widening">拡大型変換</h4>
+      <p>
+        拡大型変換とは、数値型において狭い型から広い型への変換が行われる場合に適用される変換の規則のことです。
+      </p>
+      <p>
+        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
+      </p>
+      
       <h3 id="language-literal">リテラル</h3>
       <ul class="toc">
         <li><a href="#language-literal-integer">整数リテラル</a></li>
@@ -359,6 +449,45 @@ my $total = MyMath->sum($sp_nums);
       </ul>
 
       <h4 id="language-literal-integer">整数リテラル</h3>
+      <p>
+        整数リテラルは「0～9」の連続で表現されます。
+      </p>
+      <p>
+        先頭に「+」あるいは「-」の符号をつけることができます。
+      </p>
+      <p>
+        整数リテラルの型は、デフォルトでは「int型」になります。
+      </p>
+      <p>
+        整数リテラルがint型で表現できる数値の範囲を超えている場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        末尾に「L」あるいは「l」のサフィックスをつけることで「long型」の整数リテラルを表現できます。
+      </p>
+      <p>
+        long型の整数リテラルの場合は、long型で表現できる数値の範囲を超えている場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        区切り文字として「_」を使用することができます。区切り文字は意味を持ちません。
+      </p>
+      <p>
+        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイルエラーとなります。
+      </p>
+      <p>
+        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイルエラーとなります。
+      </p>
+
+      <p>整数リテラルのサンプルを挙げておきます。</p>
+
+<pre>
+123
++123
+-123
+123L
+123l
+123_456_789
+-123_456_789L
+</pre>
 
       <h4 id="language-literal-floating-point">浮動小数点リテラル</h3>
 
@@ -374,7 +503,7 @@ my $total = MyMath->sum($sp_nums);
 undef
 </pre>
       <p>
-        未定義値は、オブジェクト型変数に代入することができます。
+        未定義値は、任意のオブジェクト型の変数に代入することができます。
       </p>
       <p>
         未定義値はオブジェクト型の値と「==」「!=」演算子を使用して、比較することができます。未定義値は、生成されたオブジェクトと等しくない事が保証されます。
@@ -428,6 +557,10 @@ while (条件部) {
 
       <h2 id="faq">FAQ</h2>
       
+      <h3>符号なし整数型はありませんか</h3>
+      <p>
+        残念ながら、SPVMには、符号なし整数型はありません。
+      </p>
       <h3>対応しているOSを教えてください。</h3>
 
       <p>
