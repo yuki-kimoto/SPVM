@@ -81,45 +81,17 @@ package TestCase::Literal::Integer {
       return 0;
     }
     
-    my $value_combination = -0xFF_FFL;
-    unless ($value_combination == -65535) {
+    my $value_combination = -0x000000FF_FFFFFFFFL;
+    unless ($value_combination == -1099511627775L) {
+      return 0;
+    }
+    
+    my $value_long_all_f = 0xFFFFFFFF_FFFFFFFFL;
+    unless ($value_long_all_f == -1L) {
       return 0;
     }
     
     return 1;
-  }
-
-  sub underline_hex : int () {
-    my $value = 0xFF_FF;
-    
-    if ($value == 0xFFFF) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub hex_int : int () {
-    my $value = 0xFF;
-    
-    if ($value == 255) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub hex_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 0xFFFFFFFFFFFFFFFFL;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
   }
 
   sub octal_expression : int () {
