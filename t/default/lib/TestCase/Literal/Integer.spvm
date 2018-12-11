@@ -95,8 +95,8 @@ package TestCase::Literal::Integer {
   }
 
   sub octal : int () {
-    my $value_all_number1 = 0110642547;
-    unless ($value_all_number1 == 19088743) {
+    my $value_all_number1 = 012345670;
+    unless ($value_all_number1 == 2739128) {
       return 0;
     }
     
