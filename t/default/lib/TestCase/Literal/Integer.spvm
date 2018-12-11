@@ -100,7 +100,7 @@ package TestCase::Literal::Integer {
       return 0;
     }
     
-    my $value_combination = -0777777777777777777777L;
+    my $value_combination = -0777_777777777777777777L;
     unless ($value_combination == -9223372036854775807L) {
       return 0;
     }
@@ -108,90 +108,17 @@ package TestCase::Literal::Integer {
     return 1;
   }
 
-  sub binary_expression : int () {
-    my $value3 = 0b11111111L;
-    my $value4 = (byte)0b11111111;
-    my $value5 = (short)0b1111111111111111;
-    my $value6 = (byte)0b1111111;
-    my $value7 = (short)0b111111111111111;
-    
-    if ($value3 == (long)255) {
-      if ($value4 == -1) {
-        if ($value5 == -1) {
-          if ($value6 == 127) {
-            if ($value7 == 32767) {
-              return 1;
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-  sub binary_all_number : int () {
-    my $value1 = 0b1001000110100010101100111;
-    
-    if ($value1 == 19088743) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub underline_binary : int () {
-    my $value = 0b11111111_11111111;
-    
-    if ($value == 0b1111111111111111) {
-      return 1;
-    }
-    else {
+  sub binary : int () {
+    my $value_all_number1 = 0b10101010;
+    unless ($value_all_number1 == 170) {
       return 0;
     }
-  }
-  
-  sub binary_int : int () {
-    my $value = 0b11111111;
     
-    if ($value == 255) {
-      return 1;
-    }
-    else {
+    my $value_combination = -0b11111111_1111111111111111111111111111111111111111111111111111111L;
+    unless ($value_combination == -9223372036854775807L) {
       return 0;
     }
-  }
-  sub binary_int_max : int () {
-    # 11111111 11111111 11111111 11111111
-    my $value = 0b11111111111111111111111111111111;
     
-    if ($value == -1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
+    return 1;
   }
-  sub binary_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 0b1111111111111111111111111111111111111111111111111111111111111111L;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub underline_octal : int () {
-    my $value = 0177_777;
-    
-    if ($value == 0177777) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
 }

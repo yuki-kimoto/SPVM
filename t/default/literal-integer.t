@@ -28,11 +28,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Binary Literal
 {
-  ok(TestCase::Literal::Integer->binary_expression());
-  ok(TestCase::Literal::Integer->binary_all_number());
-  ok(TestCase::Literal::Integer->binary_int());
-  ok(TestCase::Literal::Integer->binary_int_max());
-  ok(TestCase::Literal::Integer->binary_long_max());
+  ok(TestCase::Literal::Integer->binary());
 }
 
 # All object is freed
