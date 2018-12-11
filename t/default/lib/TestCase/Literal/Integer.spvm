@@ -1,0 +1,272 @@
+package TestCase::Literal::Integer {
+  sub specifier : int () {
+    my $value1 = 255f;
+    my $value2 = 255d;
+    my $value3 = 255L;
+    my $value4 = (byte)-128;
+    my $value5 = (short)-32768;
+    my $value6 = (byte)127;
+    my $value7 = (short)-128;
+    
+    if ($value1 == (float)255) {
+      if ($value2 == (double)255) {
+        if ($value3 == (long)255) {
+          if ($value4 == -1) {
+            if ($value5 == -1) {
+              if ($value6 == 127) {
+                if ($value7 == 32767) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub underline : int () {
+    my $value = 123_123;
+    
+    if ($value == 123123) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub hex_specifier : int () {
+    my $value3 = 0xFFL;
+    my $value4 = (byte)0xFF;
+    my $value5 = (short)0xFFFF;
+    my $value6 = (byte)0x7F;
+    my $value7 = (short)0x7FFF;
+    
+    if ($value3 == (long)255) {
+      if ($value4 == -1) {
+        if ($value5 == -1) {
+          if ($value6 == 127) {
+            if ($value7 == 32767) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub hex_all_number : int () {
+    my $value1 = 0x01234567;
+    my $value2 = 0x00ABCDEF;
+    my $value3 = 0x00abcdef;
+    
+    if ($value1 == 19088743) {
+      if ($value2 == 11259375) {
+        if ($value3 == 11259375) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub underline_hex : int () {
+    my $value = 0xFF_FF;
+    
+    if ($value == 0xFFFF) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub hex_int : int () {
+    my $value = 0xFF;
+    
+    if ($value == 255) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub hex_int_max : int () {
+    # 11111111 11111111 11111111 11111111
+    my $value = 0xFFFFFFFF;
+    
+    if ($value == -1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub hex_long_max : int () {
+    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
+    my $value = 0xFFFFFFFFFFFFFFFFL;
+    
+    if ($value == -1L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  sub octal_specifier : int () {
+    my $value3 = 0377L;
+    my $value4 = (byte)0377;
+    my $value5 = (short)0177777;
+    my $value6 = (byte)0177;
+    my $value7 = (short)077777;
+    
+    if ($value3 == (long)255) {
+      if ($value4 == -1) {
+        if ($value5 == -1) {
+          if ($value6 == 127) {
+            if ($value7 == 32767) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub octal_all_number : int () {
+    my $value1 = 0110642547;
+    
+    if ($value1 == 19088743) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub binary_specifier : int () {
+    my $value3 = 0b11111111L;
+    my $value4 = (byte)0b11111111;
+    my $value5 = (short)0b1111111111111111;
+    my $value6 = (byte)0b1111111;
+    my $value7 = (short)0b111111111111111;
+    
+    if ($value3 == (long)255) {
+      if ($value4 == -1) {
+        if ($value5 == -1) {
+          if ($value6 == 127) {
+            if ($value7 == 32767) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub binary_all_number : int () {
+    my $value1 = 0b1001000110100010101100111;
+    
+    if ($value1 == 19088743) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub underline_binary : int () {
+    my $value = 0b11111111_11111111;
+    
+    if ($value == 0b1111111111111111) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub binary_int : int () {
+    my $value = 0b11111111;
+    
+    if ($value == 255) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub binary_int_max : int () {
+    # 11111111 11111111 11111111 11111111
+    my $value = 0b11111111111111111111111111111111;
+    
+    if ($value == -1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub binary_long_max : int () {
+    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
+    my $value = 0b1111111111111111111111111111111111111111111111111111111111111111L;
+    
+    if ($value == -1L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub underline_octal : int () {
+    my $value = 0177_777;
+    
+    if ($value == 0177777) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
+  sub octal_int : int () {
+    my $value = 0377;
+    
+    if ($value == 255) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub octal_int_max : int () {
+    # 11111111 11111111 11111111 11111111
+    my $value = 037777777777;
+    
+    if ($value == -1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  sub octal_long_max : int () {
+    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
+    my $value = 01777777777777777777777L;
+    
+    if ($value == -1L) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+}

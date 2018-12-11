@@ -11,33 +11,10 @@ use SPVM 'TestCase::Literal';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Number literal
-{
-  ok(TestCase::Literal->number_literal_underline_hex());
-  ok(TestCase::Literal->number_literal_underline());
-  ok(TestCase::Literal->number_literal_hex_specifier());
-  ok(TestCase::Literal->number_literal_hex_all_number());
-  ok(TestCase::Literal->number_literal_hex_int());
-  ok(TestCase::Literal->number_literal_hex_int_max());
-  ok(TestCase::Literal->number_literal_hex_long_max());
-
-  ok(TestCase::Literal->number_literal_octal_specifier());
-  ok(TestCase::Literal->number_literal_octal_all_number());
-  ok(TestCase::Literal->number_literal_octal_int());
-  ok(TestCase::Literal->number_literal_octal_int_max());
-  ok(TestCase::Literal->number_literal_octal_long_max());
-
-  ok(TestCase::Literal->number_literal_binary_specifier());
-  ok(TestCase::Literal->number_literal_binary_all_number());
-  ok(TestCase::Literal->number_literal_binary_int());
-  ok(TestCase::Literal->number_literal_binary_int_max());
-  ok(TestCase::Literal->number_literal_binary_long_max());
-}
-
 # Character literal
 {
   ok(TestCase::Literal->literal_character());
-  ok(TestCase::Literal->character_literal_escape());
+  ok(TestCase::Literal->literal_character_escape());
 }
 
 # All object is freed
