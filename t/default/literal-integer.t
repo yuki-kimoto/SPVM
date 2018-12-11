@@ -11,29 +11,24 @@ use SPVM 'TestCase::Literal::Integer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Basic
+# Decimal
 {
-  ok(TestCase::Literal::Integer->basic());
-}
-
-# Integer literal
-{
-  ok(TestCase::Literal::Integer->underline());
-  ok(TestCase::Literal::Integer->underline_hex());
+  ok(TestCase::Literal::Integer->decimal());
 }
 
 # Hex Literal
 {
-  ok(TestCase::Literal::Integer->hex_specifier());
+  ok(TestCase::Literal::Integer->hex_expression());
   ok(TestCase::Literal::Integer->hex_all_number());
   ok(TestCase::Literal::Integer->hex_int());
   ok(TestCase::Literal::Integer->hex_int_max());
   ok(TestCase::Literal::Integer->hex_long_max());
+  ok(TestCase::Literal::Integer->underline_hex());
 }
 
 # Octal Literal
 {
-  ok(TestCase::Literal::Integer->octal_specifier());
+  ok(TestCase::Literal::Integer->octal_expression());
   ok(TestCase::Literal::Integer->octal_all_number());
   ok(TestCase::Literal::Integer->octal_int());
   ok(TestCase::Literal::Integer->octal_int_max());
@@ -42,7 +37,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Binary Literal
 {
-  ok(TestCase::Literal::Integer->binary_specifier());
+  ok(TestCase::Literal::Integer->binary_expression());
   ok(TestCase::Literal::Integer->binary_all_number());
   ok(TestCase::Literal::Integer->binary_int());
   ok(TestCase::Literal::Integer->binary_int_max());

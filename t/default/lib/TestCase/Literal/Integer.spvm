@@ -1,5 +1,5 @@
 package TestCase::Literal::Integer {
-  sub basic : int () {
+  sub decimal : int () {
     my $value_all_numbers = 1234567890;
     unless ($value_all_numbers == 1234567889 + 1) {
       return 0;
@@ -47,46 +47,8 @@ package TestCase::Literal::Integer {
     
     return 1;
   }
-  sub specifier : int () {
-    my $value1 = 255f;
-    my $value2 = 255d;
-    my $value3 = 255L;
-    my $value4 = (byte)-128;
-    my $value5 = (short)-32768;
-    my $value6 = (byte)127;
-    my $value7 = (short)-128;
-    
-    if ($value1 == (float)255) {
-      if ($value2 == (double)255) {
-        if ($value3 == (long)255) {
-          if ($value4 == -1) {
-            if ($value5 == -1) {
-              if ($value6 == 127) {
-                if ($value7 == 32767) {
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
   
-  sub underline : int () {
-    my $value = 123_123;
-    
-    if ($value == 123123) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub hex_specifier : int () {
+  sub hex_expression : int () {
     my $value3 = 0xFFL;
     my $value4 = (byte)0xFF;
     my $value5 = (short)0xFFFF;
@@ -167,7 +129,7 @@ package TestCase::Literal::Integer {
     }
   }
 
-  sub octal_specifier : int () {
+  sub octal_expression : int () {
     my $value3 = 0377L;
     my $value4 = (byte)0377;
     my $value5 = (short)0177777;
@@ -199,7 +161,7 @@ package TestCase::Literal::Integer {
     return 0;
   }
 
-  sub binary_specifier : int () {
+  sub binary_expression : int () {
     my $value3 = 0b11111111L;
     my $value4 = (byte)0b11111111;
     my $value5 = (short)0b1111111111111111;
