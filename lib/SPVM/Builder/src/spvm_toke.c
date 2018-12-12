@@ -965,6 +965,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // First is space for + or -
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           
+          // Ignore under line
           char* num_str = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 2);
           {
             int32_t i;

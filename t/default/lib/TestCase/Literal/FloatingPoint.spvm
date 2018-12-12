@@ -1,41 +1,82 @@
 package TestCase::Literal::FloatingPoint {
-  sub specifier : int () {
-    my $value1 = 255f;
-    my $value2 = 255d;
-    my $value3 = 255L;
-    my $value4 = (byte)-128;
-    my $value5 = (short)-32768;
-    my $value6 = (byte)127;
-    my $value7 = (short)-128;
-    
-    if ($value1 == (float)255) {
-      if ($value2 == (double)255) {
-        if ($value3 == (long)255) {
-          if ($value4 == -1) {
-            if ($value5 == -1) {
-              if ($value6 == 127) {
-                if ($value7 == 32767) {
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
+
+=pod
+1.32
+-1.32
+1.32f
+1.32F
+1.32e3
+1.32e-3
+1.32E+3
+1.32E-3
+0x3d3d.edp0
+0x3d3d.edp3
+0x3d3d.edP3
+0x3d3d.edP-3f
+=cut
   
-  sub underline : int () {
-    my $value = 123_123;
-    
-    if ($value == 123123) {
-      return 1;
-    }
-    else {
+  sub decimal : int () {
+    my $value_all_numbers : double = 0.12345678912345;
+    unless ($value_all_numbers == 0.12345678912345) {
       return 0;
     }
+
+    my $value_minus = -0.25;
+    unless ($value_minus == -0.25) {
+      return 0;
+    }
+
+    my $value_plus = +0.25;
+    unless ($value_plus == +0.25) {
+      return 0;
+    }
+    
+    my $value_prefix_f : float = 0.25f;
+    unless ($value_prefix_f == 0.25f) {
+      return 0;
+    }
+
+    my $value_prefix_F : float = 0.25F;
+    unless ($value_prefix_F == 0.25F) {
+      return 0;
+    }
+
+    my $value_prefix_d : double = 0.12345678912345d;
+    unless ($value_prefix_d == 0.12345678912345d) {
+      return 0;
+    }
+    
+    my $value_prefix_D : double = 0.12345678912345D;
+    unless ($value_prefix_D == 0.12345678912345d) {
+      return 0;
+    }
+
+    my $value_under_line = 0.12_34;
+    unless ($value_under_line == 0.1234) {
+      return 0;
+    }
+    
+    my $value_exponant_e_plus = 0.12e+7;
+    unless ($value_exponant_e_plus == 0.12e+7) {
+      return 0;
+    }
+    
+    my $value_exponant_E_minus = 0.12E-7;
+    unless ($value_exponant_E_minus == 0.12E-7) {
+      return 0;
+    }
+    
+    my $value_exponant_e_nosign = 0.12e7;
+    unless ($value_exponant_e_nosign == 0.12e7) {
+      return 0;
+    }
+
+    my $value_exponant_no_point = 12e7;
+    unless ($value_exponant_no_point == 12e7) {
+      return 0;
+    }
+    
+    return 1;
   }
   
   sub hex_specifier : int () {
@@ -110,157 +151,6 @@ package TestCase::Literal::FloatingPoint {
   sub hex_long_max : int () {
     # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
     my $value = 0xFFFFFFFFFFFFFFFFL;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-
-  sub octal_specifier : int () {
-    my $value3 = 0377L;
-    my $value4 = (byte)0377;
-    my $value5 = (short)0177777;
-    my $value6 = (byte)0177;
-    my $value7 = (short)077777;
-    
-    if ($value3 == (long)255) {
-      if ($value4 == -1) {
-        if ($value5 == -1) {
-          if ($value6 == 127) {
-            if ($value7 == 32767) {
-              return 1;
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-
-  sub octal_all_number : int () {
-    my $value1 = 0110642547;
-    
-    if ($value1 == 19088743) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub binary_specifier : int () {
-    my $value3 = 0b11111111L;
-    my $value4 = (byte)0b11111111;
-    my $value5 = (short)0b1111111111111111;
-    my $value6 = (byte)0b1111111;
-    my $value7 = (short)0b111111111111111;
-    
-    if ($value3 == (long)255) {
-      if ($value4 == -1) {
-        if ($value5 == -1) {
-          if ($value6 == 127) {
-            if ($value7 == 32767) {
-              return 1;
-            }
-          }
-        }
-      }
-    }
-    
-    return 0;
-  }
-  sub binary_all_number : int () {
-    my $value1 = 0b1001000110100010101100111;
-    
-    if ($value1 == 19088743) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub underline_binary : int () {
-    my $value = 0b11111111_11111111;
-    
-    if ($value == 0b1111111111111111) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub binary_int : int () {
-    my $value = 0b11111111;
-    
-    if ($value == 255) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub binary_int_max : int () {
-    # 11111111 11111111 11111111 11111111
-    my $value = 0b11111111111111111111111111111111;
-    
-    if ($value == -1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub binary_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 0b1111111111111111111111111111111111111111111111111111111111111111L;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub underline_octal : int () {
-    my $value = 0177_777;
-    
-    if ($value == 0177777) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub octal_int : int () {
-    my $value = 0377;
-    
-    if ($value == 255) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub octal_int_max : int () {
-    # 11111111 11111111 11111111 11111111
-    my $value = 037777777777;
-    
-    if ($value == -1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub octal_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 01777777777777777777777L;
     
     if ($value == -1L) {
       return 1;
