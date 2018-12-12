@@ -13,6 +13,34 @@ use SPVM 'TestCase::Pointer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# package variable access
+{
+  ok(TestCase::Extension->set_bpkgvar);
+  ok(TestCase::Extension->set_spkgvar);
+  ok(TestCase::Extension->set_ipkgvar);
+  ok(TestCase::Extension->set_lpkgvar);
+  ok(TestCase::Extension->set_fpkgvar);
+  ok(TestCase::Extension->set_dpkgvar);
+  ok(TestCase::Extension->set_opkgvar);
+  ok(TestCase::Extension->bpkgvar);
+  ok(TestCase::Extension->spkgvar);
+  ok(TestCase::Extension->ipkgvar);
+  ok(TestCase::Extension->lpkgvar);
+  ok(TestCase::Extension->fpkgvar);
+  ok(TestCase::Extension->dpkgvar);
+  ok(TestCase::Extension->opkgvar);
+}
+
+# has_interface
+{
+  ok(TestCase::Extension->has_interface);
+}
+
+# is_type
+{
+  ok(TestCase::Extension->is_type);
+}
+
 # Native Exception
 {
   ok(TestCase::Extension->native_use_strlen_test);

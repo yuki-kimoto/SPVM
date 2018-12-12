@@ -1,3 +1,36 @@
+0.0402 2018-12-07
+  - add package variable access native api
+  
+	  int8_t (*bpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  int16_t (*spkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  int32_t (*ipkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  int64_t (*lpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  float (*fpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  double (*dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  void* (*opkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+	  void (*set_bpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, int8_t value);
+	  void (*set_spkgvar)(SPVM_ENV* env, int32_t pkgvar_id, int16_t value);
+	  void (*set_ipkgvar)(SPVM_ENV* env, int32_t pkgvar_id, int32_t value);
+	  void (*set_lpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, int64_t value);
+	  void (*set_fpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, float value);
+	  void (*set_dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, double value);
+	  void (*set_opkgvar)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
+
+  - add is_type native api
+
+	  int32_t (*is_type)(SPVM_ENV*, void* object, int32_t basic_type_id, int32_t type_dimension);
+  
+  - add number-to-string convertion native api
+
+	  void* (*i_to_str_raw)(SPVM_ENV* env, int32_t value);
+	  void* (*i_to_str)(SPVM_ENV* env, int32_t value);
+	  void* (*l_to_str_raw)(SPVM_ENV* env, int64_t value);
+	  void* (*l_to_str)(SPVM_ENV* env, int64_t value);
+	  void* (*f_to_str_raw)(SPVM_ENV* env, float value);
+	  void* (*f_to_str)(SPVM_ENV* env, float value);
+	  void* (*d_to_str_raw)(SPVM_ENV* env, double value);
+	  void* (*d_to_str)(SPVM_ENV* env, double value);
+
 0.0401 2018-12-06
   - fix windows dinamic link warnings
 0.04 2018-12-06
