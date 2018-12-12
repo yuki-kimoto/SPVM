@@ -346,11 +346,149 @@ my $total = MyMath->sum($sp_nums);
         SPVMの言語仕様の詳細です。
       </p>
       <ul class="toc">
+        <li><a href="#language-comment">コメント</a>
+        <li><a href="#language-package">パッケージ</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
       </ul>
+      <h3 id="language-comment">コメント</h3>
+      <p>
+        コメントは「#」で始まり改行で終わります。
+      </p>
+<pre>
+# コメント
+</pre>
+      <h3 id="language-package">パッケージ</h3>
+      <p>
+        パッケージを定義するには以下の構文を使用します。
+      </p>
+<pre>
+package パッケージ名 {
+
+}
+</pre>
+      <p>
+        パッケージ名は「大文字」で始まる必要があります。
+      </p>
+      <p>
+        「パッケージ名」の後に「:」をつなげてその後ろに「デスクリプタ」を指定することができます。
+      </p>
+<pre>
+package パッケージ名 : デスクリプタ {
+
+}
+</pre>
+      <p>
+        パッケージの定義のサンプルです。
+      </p>
+<pre>
+# パッケージ名のみ
+package Point {
+
+}
+</pre>
+
+<pre>
+# パッケージ名とデスクリプタ
+package Point : public {
+
+}
+</pre>
+      
+      <p>
+        <b>パッケージデスクリプタ</b>
+      </p>
+      <p>
+        パッケージで指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            このパッケージに対するnewキーワードが他のパッケージから利用できます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            このパッケージに対するnewキーワードが他のパッケージから利用できません。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>interface</b>
+          </td>
+          <td>
+            このパッケージは「インターフェイス」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>value_t</b>
+          </td>
+          <td>
+            このパッケージは「値型」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>pointer_t</b>
+          </td>
+          <td>
+            このパッケージは「ポインタ型」になります。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        「interface」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+      </p>
+      
+      <p>
+        <b>パッケージ内部で定義できるもの</b>
+      </p>
+      <p>
+        パッケージ内部では<b>「use」</b><b>「パッケージ変数」</b><b>「フィールド」</b><b>「列挙」</b><b>「サブルーチン」</b>が定義できます。
+      </p>
+<pre>
+package Foo {
+  # use
+  use Point;
+  
+  # パッケージ変数
+  our $VAR int;
+  
+  # フィールド
+  has var : int;
+  
+  # 列挙
+  enum {
+    CONST_VAL
+  }
+  
+  # サブルーチン
+  sub foo : int ($num : int) {
+  
+  }
+}
+</pre>
+
       <h3 id="language-type">型</h3>
       <ul class="toc">
         <li><a href="#language-type-integer">整数型</a></li>
@@ -507,6 +645,9 @@ my $total = MyMath->sum($sp_nums);
         その後ろに「0～9」「a～f」「A～F」のひとつ以上の連続した文字が続きます。
       </p>
       <p>
+        不正な16進数表現は、コンパイルエラーになります。
+      </p>
+      <p>
         整数リテラルを16進数で表現したサンプルです。
       </p>
 <pre>
@@ -529,6 +670,9 @@ my $total = MyMath->sum($sp_nums);
         その後ろに「0～7」のひとつ以上の連続した文字が続きます。
       </p>
       <p>
+        不正な8進数表現は、コンパイルエラーになります。
+      </p>
+      <p>
         整数リテラルを8進数で表現したサンプルです。
       </p>
 <pre>
@@ -548,6 +692,9 @@ my $total = MyMath->sum($sp_nums);
       </p>
       <p>
         その後ろに「0」か「1」のひとつ以上の連続した文字が続きます。
+      </p>
+      <p>
+        不正な2進数表現は、コンパイルエラーになります。
       </p>
       <p>
         整数リテラルを2進数で表現したサンプルです。
@@ -808,7 +955,7 @@ my $str = (string)$list->get(0);
       </p>
       <h3>ドキュメント最終更新日</h3>
       <p>
-        2018年12月8日
+        2018年12月12日
       </p>
       <h2>明日は</h2>
       
