@@ -896,17 +896,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (*(compiler->bufptr) == '0') {
             // Hex Literal
             if (*(compiler->bufptr + 1) == 'x' || *(compiler->bufptr + 1) == 'X') {
-              cur_token_ptr = compiler->bufptr + 2;
               digit = 16;
             }
             // Binary Literal
             else if (*(compiler->bufptr + 1) == 'b' || *(compiler->bufptr + 1) == 'B') {
-              cur_token_ptr = compiler->bufptr + 2;
               digit = 2;
             }
             // Octal Literal
             else if (isdigit(*(compiler->bufptr + 1))) {
-              cur_token_ptr = compiler->bufptr + 1;
               digit = 8;
             }
           }
@@ -1021,7 +1018,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // float
           if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
             double num = strtof(num_str, &end);
-            
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
@@ -1030,7 +1026,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // double
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
             double num = strtod(num_str, &end);
-            
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
@@ -1044,7 +1039,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
+              char* num_str_only_num;
+              if (digit == 16) {
+                num_str_only_num = num_str + 2;
+              }
+              else if (digit == 8) {
+                num_str_only_num = num_str + 1;
+              }
+              else if (digit == 2) {
+                num_str_only_num = num_str + 2;
+              }
+              uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }
@@ -1079,7 +1084,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t invalid = 0;
             
             if (digit == 16 || digit == 8 || digit == 2) {
-              uint64_t unum = (uint64_t)strtoull(num_str, &end, digit);
+              char* num_str_only_num;
+              if (digit == 16) {
+                num_str_only_num = num_str + 2;
+              }
+              else if (digit == 8) {
+                num_str_only_num = num_str + 1;
+              }
+              else if (digit == 2) {
+                num_str_only_num = num_str + 2;
+              }
+              uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
               }

@@ -1,20 +1,5 @@
 package TestCase::Literal::FloatingPoint {
 
-=pod
-1.32
--1.32
-1.32f
-1.32F
-1.32e3
-1.32e-3
-1.32E+3
-1.32E-3
-0x3d3d.edp0
-0x3d3d.edp3
-0x3d3d.edP3
-0x3d3d.edP-3f
-=cut
-  
   # decimal
   sub decimal_all_numbers : int () {
     my $all_numbers : double = 0.12345678912345;
@@ -98,6 +83,32 @@ package TestCase::Literal::FloatingPoint {
     unless ($exponant_no_point == 12e7) {
       return 0;
     }
+    return 1;
+  }
+
+=pod
+0x3d3d.edp0
+0x3d3d.edp3
+0x3d3d.edP3
+0x3d3d.edP-3f
+=cut
+  
+  sub hex_all_numbers : int () {
+    my $all_numbers1 = 0x0.123456789p0;
+    my $all_numbers2 = 0x0.abcdep0;
+    my $all_numbers3 = 0x0.ABCDEFp0;
+    
+    unless ($all_numbers1 == 0x0.123456789p0) {
+      return 0;
+    }
+    
+    unless ($all_numbers2 == 0x0.abcdep0) {
+      return 0;
+    }
+    unless ($all_numbers3 == 0x0.ABCDEFp0) {
+      return 0;
+    }
+    
     return 1;
   }
   
