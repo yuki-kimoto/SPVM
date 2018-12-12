@@ -50,9 +50,11 @@
       <ul class="toc">
         <li><a href="#purpose">目的</a></li>
         <li><a href="#user">ユーザー</a></li>
+        <li><a href="#features">機能</a></li>
         <li><a href="#install">SPVMのインストール</a></li>
         <li><a href="#tutorial">チュートリアル</a></li>
         <li><a href="#language">言語仕様</a></li>
+        <li><a href="#stdfunc">標準関数</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#devoloper">開発者</a></li>
       </ul>
@@ -170,6 +172,16 @@
 cpan SPVM
 cpanm SPVM
 </pre>
+
+      <h2 id="features">機能</h2>
+      <ul class="toc">
+        <li><a href="#features-c99-math">C99で追加された数学関数</a></li>
+      </ul>
+      
+      <h3 class="features-c99-math">C99で追加された数学関数</h3>
+      <p>
+        C99で追加された新しいC言語の数学関数がすべて利用できます。
+      </p>
 
       <h2 id="tutorial">SPVMのチュートリアル</h2>
 
@@ -708,6 +720,83 @@ package Foo {
 
 
       <h4 id="language-literal-floating-point">浮動小数点リテラル</h3>
+      <p>
+        浮動小数点リテラルは「符号部」「数値部」「指数部」「サフィックス」から構成されます。
+      <p>
+      <p>
+        浮動小数点リテラルには「10進数浮動小数点リテラル」と「16進数浮動小数点リテラル」があります。
+      </p>
+      <p>
+        「符号部」は「+」か「-」で表現されます。「符号部」の存在は、任意です。「符号部」が存在する場合は、先頭にある必要があります。
+      </p>
+      <p>
+        「10進数浮動小数点リテラル」は、数値部が「一桁以上の10進数字」で始まる必要があります。
+      </p>
+      <p>
+        「10進数字」とは「0～9」のことです。
+      </p>
+      <p>
+        「10進数浮動小数点リテラル」は、数値部に「小数点」が含まれているか、含まれていない場合は「指数部」あるいは「サフィックス」が必要です。
+      </p>
+      <p>
+        「小数点」とは「.」のことです。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、数値部が「0x」あるいは「0X」で始まり、その後ろに「一桁以上の16進数字」が続く必要があります。
+      </p>
+      <p>
+        16進数字とは「0～9」「a～f」「A～F」のことです。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、「数値部」に「小数点」を含むことができます。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、「指数部」が必要です。
+      </p>
+      <p>
+        「指数部」は「指数表現」と「符号付10進整数」で構成されます。
+      </p>
+      <p>
+        「指数表現」は「10進数浮動小数点リテラル」の場合は「e」あるいは「E」、「16進数浮動小数点リテラル」の場合は「p」あるいは「P」になります。
+      </p>
+      <p>
+        末尾に「f」あるいは「F」のサフィックスをつけると、浮動小数点リテラルの型は「float型」になります。
+      </p>
+      <p>
+        末尾に「d」あるいは「D」のサフィックスをつけると、浮動小数点リテラルの型は「double型」になります。
+      </p>
+      <p>
+        サフィックスが省略された場合は、浮動小数点リテラルの型は「double型」になります。
+      </p>
+      <p>
+        浮動小数点リテラルが「float型」の場合はC標準の「strtof関数」を使って、文字列からfloat型への変換が行われます。変換が失敗した場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        浮動小数点リテラルが「double型」の場合はC標準の「strtod関数」を使って、文字列からdouble型への変換が行われます。変換が失敗した場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        無限大を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-INFINITY">INFINITY関数</a>」「<a href="#stdfunc-INFINITYF">INFINITYF関数</a>」を使用してください。
+      </p>
+      <p>
+        非値を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-NAN">NAN関数</a>」「<a href="#stdfunc-NANF">NANF関数</a>」を使用してください。
+      </p>
+      <p>
+        浮動小数点リテラルのサンプルです
+      </p>
+<pre>
+1.32
+-1.32
+1.32f
+1.32F
+1.32e3
+1.32e-3
+1.32E+3
+1.32E-3
+0x3d3d.edp0
+0x3d3d.edp3
+0x3d3d.edP3
+0x3d3d.edP-3f
+</pre>
 
       <h4 id="language-literal-character">文字リテラル</h3>
 
@@ -772,6 +861,46 @@ while (条件部) {
 
 }
 </pre>
+
+      <h2 id="stdfunc">標準関数</h2>
+      <p>
+        SPVMの標準関数の一覧です。
+      </p>
+      <ul class="toc">
+        <li><a href="#stdfunc-INFINITY">INFINITY</a></li>
+        <li><a href="#stdfunc-INFINITYF">INFINITYF</a></li>
+        <li><a href="#stdfunc-NAN">NAN</a></li>
+        <li><a href="#stdfunc-NANF">NANF</a></li>
+      </ul>
+      <h3 id="stdfunc-INFINITY">INFINITY</h3>
+<pre>
+sub INFINITY : double ()
+</pre>
+      <p>
+        無限大を「double型」で返します。C標準の「INFINITYマクロ」の単純なラッパーです。
+      </p>
+      
+      <h3 id="stdfunc-INFINITYF">INFINITYF</h3>
+<pre>
+sub INFINITYF : float ()
+</pre>      
+      <p>
+        無限大を「float型」で返します。C標準の「INFINITYマクロ」の単純なラッパーです。
+      </p>
+      <h3 id="stdfunc-NAN">NAN</h3>
+<pre>
+sub NAN : double ()
+</pre>      
+      <p>
+        非値を「double型」で返します。C標準の「NANマクロ」の単純なラッパーです。
+      </p>
+      <h3 id="stdfunc-NANF">NANF</h3>
+<pre>
+sub NANF : float ()
+</pre>
+      <p>
+        非値を「float型」で返します。C標準の「NANマクロ」の単純なラッパーです。
+      </p>
 
       <h2 id="faq">FAQ</h2>
       
@@ -910,6 +1039,11 @@ my $str = (string)$list->get(0);
       </p>
       <p>
         このためSPVMでは、サブルーチン名によって、戻り値と引数の型がわかるように設計されています。
+      </p>
+      
+      <h3>浮動小数点の演算は処理系依存ですか</h3>
+      <p>
+        はい、浮動小数点の表現方法、および演算は、処理系に依存します。
       </p>
 
       <h3>SPVMの開発に参加することはできますか。</h3>
