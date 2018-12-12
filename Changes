@@ -30,7 +30,8 @@
 	  void* (*f_to_str)(SPVM_ENV* env, float value);
 	  void* (*d_to_str_raw)(SPVM_ENV* env, double value);
 	  void* (*d_to_str)(SPVM_ENV* env, double value);
-
+  
+  - add public document 1.0 beta
 0.0401 2018-12-06
   - fix windows dinamic link warnings
 0.04 2018-12-06
