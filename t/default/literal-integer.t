@@ -13,7 +13,15 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Decimal Literal
 {
-  ok(TestCase::Literal::Integer->decimal());
+  ok(TestCase::Literal::Integer->decimal_all_numbers());
+  ok(TestCase::Literal::Integer->decimal_plus_max());
+  ok(TestCase::Literal::Integer->decimal_minus_max());
+  ok(TestCase::Literal::Integer->decimal_underline());
+  ok(TestCase::Literal::Integer->decimal_long_minus_max());
+  ok(TestCase::Literal::Integer->decimal_long_lower_case());
+  ok(TestCase::Literal::Integer->decimal_long_underline());
+  ok(TestCase::Literal::Integer->decimal_byte_norrowing_convertion());
+  ok(TestCase::Literal::Integer->decimal_short_norrowing_convertion());
 }
 
 # Hex Literal
