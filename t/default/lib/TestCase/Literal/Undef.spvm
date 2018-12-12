@@ -1,11 +1,11 @@
 package TestCase::Literal::Undef {
   use TestCase::Minimal;
   
-  sub test_undef : int () {
+  sub undef_test : int () {
     my $minimal = TestCase::Minimal->new;
     my $minimal_undef : TestCase::Minimal;
     
-    if  ($minimal == undef) {
+    unless ($minimal != undef) {
       return 0;
     }
     
@@ -13,7 +13,7 @@ package TestCase::Literal::Undef {
       return 0;
     }
     
-    if (undef) {
+    unless (!undef) {
       return 0;
     }
     
