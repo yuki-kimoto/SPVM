@@ -26,17 +26,24 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Hex Literal
 {
-  ok(TestCase::Literal::Integer->hex());
+  ok(TestCase::Literal::Integer->hex_all_numbers());
+  ok(TestCase::Literal::Integer->hex_all_f());
+  ok(TestCase::Literal::Integer->hex_max_int());
+  ok(TestCase::Literal::Integer->hex_min_int());
+  ok(TestCase::Literal::Integer->hex_combination());
+  ok(TestCase::Literal::Integer->hex_long_all_f());
 }
 
 # Octal Literal
 {
-  ok(TestCase::Literal::Integer->octal());
+  ok(TestCase::Literal::Integer->octal_all_numbers());
+  ok(TestCase::Literal::Integer->octal_combination());
 }
 
 # Binary Literal
 {
-  ok(TestCase::Literal::Integer->binary());
+  ok(TestCase::Literal::Integer->binary_all_numbers());
+  ok(TestCase::Literal::Integer->binary_combination());
 }
 
 # All object is freed

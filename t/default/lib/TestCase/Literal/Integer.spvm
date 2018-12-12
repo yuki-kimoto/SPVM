@@ -1,4 +1,5 @@
 package TestCase::Literal::Integer {
+  # decimal literal
   sub decimal_all_numbers : int () {
     my $all_numbers = 1234567890;
     unless ($all_numbers == 1234567889 + 1) {
@@ -63,72 +64,87 @@ package TestCase::Literal::Integer {
     return 1;
   }
   
-  sub hex : int () {
-    my $all_number1 = 0x01234567;
-    my $all_number2 = 0x00890000;
-    my $all_number3 = 0x00ABCDEF;
-    my $all_number4 = 0x00abcdef;
-    unless ($all_number1 == 19088743) {
+  # hex
+  sub hex_all_numbers : int () {
+    my $all_numbers1 = 0x01234567;
+    my $all_numbers2 = 0x00890000;
+    my $all_numbers3 = 0x00ABCDEF;
+    my $all_numbers4 = 0x00abcdef;
+    unless ($all_numbers1 == 19088743) {
       return 0;
     }
-    unless ($all_number2 == 8978432) {
+    unless ($all_numbers2 == 8978432) {
       return 0;
     }
-    unless ($all_number3 == 11259375) {
+    unless ($all_numbers3 == 11259375) {
       return 0;
     }
-    unless ($all_number4 == 11259375) {
+    unless ($all_numbers4 == 11259375) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub hex_all_f : int () {
     my $all_f = 0xFFFFFFFF;
     unless ($all_f == -1) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub hex_max_int : int () {
     my $max_int = 0x7FFFFFFF;
     unless ($max_int == INT32_MAX()) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub hex_min_int : int () {
     my $min_int = 0x80000000;
     unless ($min_int == INT32_MIN()) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub hex_combination : int () {
     my $combination = -0x000000FF_FFFFFFFFL;
     unless ($combination == -1099511627775L) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub hex_long_all_f : int () {
     my $long_all_f = 0xFFFFFFFF_FFFFFFFFL;
     unless ($long_all_f == -1L) {
       return 0;
     }
-    
     return 1;
   }
-
-  sub octal : int () {
-    my $all_number1 = 012345670;
-    unless ($all_number1 == 2739128) {
+  
+  # octal
+  sub octal_all_numbers : int () {
+    my $all_numbers = 012345670;
+    unless ($all_numbers == 2739128) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub octal_combination : int () {
     my $combination = -0777_777777777777777777L;
     unless ($combination == -9223372036854775807L) {
       return 0;
     }
-    
     return 1;
   }
-
-  sub binary : int () {
-    my $all_number1 = 0b10101010;
-    unless ($all_number1 == 170) {
+  
+  # binary
+  sub binary_all_numbers : int () {
+    my $all_numbers = 0b10101010;
+    unless ($all_numbers == 170) {
       return 0;
     }
-    
+    return 1;
+  }
+  sub binary_combination : int () {
     my $combination = -0b11111111_1111111111111111111111111111111111111111111111111111111L;
     unless ($combination == -9223372036854775807L) {
       return 0;
