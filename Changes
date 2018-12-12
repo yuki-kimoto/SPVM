@@ -32,6 +32,7 @@
 	  void* (*d_to_str)(SPVM_ENV* env, double value);
   
   - add public document 1.0 beta
+  - support hex floating point leteral
 0.0401 2018-12-06
   - fix windows dinamic link warnings
 0.04 2018-12-06
