@@ -29,9 +29,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Hex Literal
 {
-  ok(TestCase::Literal::FloatingPoint->hex_all_numbers());
-  ok(TestCase::Literal::FloatingPoint->hex_suffix());
-  ok(TestCase::Literal::FloatingPoint->hex_equals_decimal());
+  ok(TestCase::Literal::FloatingPoint->hex_all_numbers);
+  ok(TestCase::Literal::FloatingPoint->hex_suffix);
+  ok(TestCase::Literal::FloatingPoint->hex_equals_decimal);
+  ok(TestCase::Literal::FloatingPoint->hex_exponent);
+  ok(TestCase::Literal::FloatingPoint->hex_underline);
 }
 
 # All object is freed

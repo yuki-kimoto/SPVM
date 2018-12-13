@@ -86,13 +86,6 @@ package TestCase::Literal::FloatingPoint {
     return 1;
   }
 
-=pod
-0x3d3d.edp0
-0x3d3d.edp3
-0x3d3d.edP3
-0x3d3d.edP-3f
-=cut
-  
   # hex
   sub hex_all_numbers : int () {
     my $all_numbers1 = 0x0.123456789p0;
@@ -133,85 +126,30 @@ package TestCase::Literal::FloatingPoint {
     
     return 1;
   }
-  
-  sub hex_specifier : int () {
-    my $value3 = 0xFFL;
-    my $value4 = (byte)0xFF;
-    my $value5 = (short)0xFFFF;
-    my $value6 = (byte)0x7F;
-    my $value7 = (short)0x7FFF;
-    
-    if ($value3 == (long)255) {
-      if ($value4 == -1) {
-        if ($value5 == -1) {
-          if ($value6 == 127) {
-            if ($value7 == 32767) {
-              return 1;
-            }
-          }
-        }
-      }
+  sub hex_exponent : int () {
+    my $hex_exponent_p = 0x0.Fp-4;
+    unless ($hex_exponent_p == 0.05859375) {
+      return 0;
     }
-    
-    return 0;
+    my $hex_exponent_P = 0x0.FP-4;
+    unless ($hex_exponent_P == 0.05859375) {
+      return 0;
+    }
+
+    my $hex_exponent_nosign = 0x0.Fp4;
+    unless ($hex_exponent_nosign == 0xFp0) {
+      return 0;
+    }
+
+    return 1;
   }
-  sub hex_all_number : int () {
-    my $value1 = 0x01234567;
-    my $value2 = 0x00ABCDEF;
-    my $value3 = 0x00abcdef;
-    
-    if ($value1 == 19088743) {
-      if ($value2 == 11259375) {
-        if ($value3 == 11259375) {
-          return 1;
-        }
-      }
+  sub hex_underline : int () {
+    my $hex_underline = 0x0.F_Fp0;
+    unless ($hex_underline == 0x0.FFp0) {
+      return 0;
     }
-    
-    return 0;
+
+    return 1;
   }
 
-  sub underline_hex : int () {
-    my $value = 0xFF_FF;
-    
-    if ($value == 0xFFFF) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  
-  sub hex_int : int () {
-    my $value = 0xFF;
-    
-    if ($value == 255) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub hex_int_max : int () {
-    # 11111111 11111111 11111111 11111111
-    my $value = 0xFFFFFFFF;
-    
-    if ($value == -1) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  sub hex_long_max : int () {
-    # 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111
-    my $value = 0xFFFFFFFFFFFFFFFFL;
-    
-    if ($value == -1L) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
 }
