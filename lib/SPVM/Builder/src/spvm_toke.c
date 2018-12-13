@@ -913,6 +913,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           int32_t is_floating_number = 0;
+          int32_t is_hex_floating_number = 0;
           
           compiler->bufptr++;
           // Scan Hex number
@@ -928,6 +929,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Floating point literal
               if (*compiler->bufptr == '.' || *compiler->bufptr == 'p' || *compiler->bufptr == 'P') {
                 is_floating_number = 1;
+              }
+              if (*compiler->bufptr == 'p' || *compiler->bufptr == 'P') {
+                is_hex_floating_number = 1;
               }
               compiler->bufptr++;
             }
@@ -964,9 +968,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Ignore under line
           char* num_str = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 2);
+          int32_t pos = 0;
           {
             int32_t i;
-            int32_t pos = 0;
             for (i = 0; i < str_len; i++) {
               if (*(cur_token_ptr + i) != '_') {
                 *(num_str + pos) = *(cur_token_ptr + i);
@@ -974,6 +978,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
             }
             num_str[pos] = '\0';
+          }
+          // Back suffix when hex floating number
+          if (is_hex_floating_number && !isdigit(*(compiler->bufptr - 1))) {
+            compiler->bufptr--;
+            num_str[pos - 1] = '\0';
           }
           
           // Constant
