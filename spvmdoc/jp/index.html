@@ -951,7 +951,123 @@ package Foo {
 </pre>
 
       <h4 id="language-literal-character">文字リテラル</h3>
+      <p>
+        文字リテラルは、シングルクォート「'」で囲まれます。
+      </p>
+      <p>
+        文字リテラルの内容は「ひとつのAsciiの印字可能文字」あるいは「ひとつのエスケープ文字」です。
+      </p>
+      <p>
+        不正な文字リテラルの場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        <b>エスケープ文字</b>
+      </p>
+      <table class="toc">
+        <tr>
+          <th>
+            エスケープ文字
+          </th>
+          <th>
+            説明
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>\b</b>
+          </td>
+          <td>
+            Asciiコードの8「BS」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\t</b>
+          </td>
+          <td>
+            Asciiコードの9「HT」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\n</b>
+          </td>
+          <td>
+            Asciiコードの10「LF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\f</b>
+          </td>
+          <td>
+            Asciiコードの12「FF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\r</b>
+          </td>
+          <td>
+            Asciiコードの13「CR」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\"</b>
+          </td>
+          <td>
+            Asciiコードの34「"」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\'</b>
+          </td>
+          <td>
+            Asciiコードの39「'」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\\</b>
+          </td>
+          <td>
+            Asciiコードの92「\」
+          </td>
+        </tr>
+      </table>
+      
+      <p>
+        上記以外のAsciiコードを直接表現したい場合は、<a href="#language-literal-integer">整数リテラル</a>を使用して、直接代入することができます。
+      </p>
+<pre>
+my $ch = (byte)0;
+my $ch = (byte)13;
+</pre>
+      
+      <p>
+        <b>文字リテラルのサンプル</b>
+      </p>
+      <p>
+        文字リテラルのサンプルです。
+      </p>
+<pre>
+# 文字
+'a'
+'x'
 
+# エスケープ文字
+'\b'
+'\t'
+'\n'
+'\f'
+'\r'
+'\"'
+'\''
+'\\'
+</pre>
+      
       <h4 id="language-literal-string">文字列リテラル</h3>
       
       <h4 id="language-literal-undef">未定義値</h3>
