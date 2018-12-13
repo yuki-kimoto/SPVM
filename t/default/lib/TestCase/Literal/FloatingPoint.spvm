@@ -125,6 +125,14 @@ package TestCase::Literal::FloatingPoint {
     
     return 1;
   }
+  sub hex_equals_decimal : int () {
+    my $hex_equals_decimal = 0x0.Fp0;
+    unless ($hex_equals_decimal == 0.9375) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub hex_specifier : int () {
     my $value3 = 0xFFL;
