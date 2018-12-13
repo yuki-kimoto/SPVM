@@ -213,6 +213,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case ' ':
       case '\t':
       case '\r':
+      case '\f':
         compiler->bufptr++;
         continue;
       case '\n':
