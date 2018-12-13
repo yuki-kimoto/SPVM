@@ -15,12 +15,6 @@ package TestCase::Constant {
       }
     }
     
-    {
-      my $ch = '\0';
-      unless ($ch == 0) {
-        return 0;
-      }
-    }
     return 1;
   }
 

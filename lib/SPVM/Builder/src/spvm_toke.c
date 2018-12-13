@@ -623,59 +623,59 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
         return '~';
       }
+      // Character Literal
       case '\'': {
         compiler->bufptr++;
-        
-        char ch;
-        // Null string
-        if (*compiler->bufptr == '\'') {
-          ch = '\0';
+        char ch = 0;
+
+        if (*compiler->bufptr == '\\') {
+          compiler->bufptr++;
+          if (*compiler->bufptr == 'b') {
+            ch = '\b';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 't') {
+            ch = '\t';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 'n') {
+            ch = '\n';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 'f') {
+            ch = '\f';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 'r') {
+            ch = '\r';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == '"') {
+            ch = '\"';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == '\'') {
+            ch = '\'';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == '\\') {
+            ch = '\\';
+            compiler->bufptr++;
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "Invalid escape character in charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+          }
+        }
+        else {
+          ch = *compiler->bufptr;
           compiler->bufptr++;
         }
-        // Escape sequence
-        else {
-          if (*compiler->bufptr == '\\') {
-            compiler->bufptr++;
-            if (*compiler->bufptr == 'r') {
-              ch = 0x0D;
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'n') {
-              ch = 0x0A;
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 't') {
-              ch = '\t';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'b') {
-              ch = '\b';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == 'f') {
-              ch = '\f';
-              compiler->bufptr++;
-            }
-            else if (*compiler->bufptr == '0') {
-              ch = '\0';
-              compiler->bufptr++;
-            }
-            else {
-              ch = *compiler->bufptr;
-              compiler->bufptr++;
-            }
-          }
-          else {
-            ch = *compiler->bufptr;
-            compiler->bufptr++;
-          }
           
-          if (*compiler->bufptr == '\'') {
-            compiler->bufptr++;
-          }
-          else {
-            SPVM_COMPILER_error(compiler, "Can't find constant char terminator \"'\" at %s line %d\n", compiler->cur_file, compiler->cur_line);
-          }
+        if (*compiler->bufptr == '\'') {
+          compiler->bufptr++;
+        }
+        else {
+          SPVM_COMPILER_error(compiler, "Can't find character literal terminiator at %s line %d\n", compiler->cur_file, compiler->cur_line);
         }
         
         // Constant 
@@ -766,6 +766,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (*char_ptr == '0') {
                   str[str_length] = '\0';
                 }
+                /* Unicode code point
+                else if (*compiler->bufptr == 'N') {
+                 \N{U+263a};
+                }
+                */
                 else {
                   str[str_length] = *char_ptr;
                 }

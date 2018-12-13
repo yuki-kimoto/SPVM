@@ -303,7 +303,7 @@ t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
 t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/List.spvm
-t/default/lib/TestCase/Literal.spvm
+t/default/lib/TestCase/Literal/Character.spvm
 t/default/lib/TestCase/Literal/FloatingPoint.spvm
 t/default/lib/TestCase/Literal/Integer.spvm
 t/default/lib/TestCase/Literal/Undef.spvm
@@ -335,10 +335,10 @@ t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
+t/default/literal-character.t
 t/default/literal-floating-point.t
 t/default/literal-integer.t
 t/default/literal-undef.t
-t/default/literal.t
 t/default/logical-operator.t
 t/default/loop.t
 t/default/numeric-operator.t

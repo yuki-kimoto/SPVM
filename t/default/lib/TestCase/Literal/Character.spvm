@@ -1,0 +1,59 @@
+package TestCase::Literal::Character {
+  sub character : int () {
+    my $ch = 'a';
+    my $bytes = new byte[1];
+    $bytes->[0] = $ch;
+    unless ($ch == 97) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub escape : int () {
+    
+    # Escape sequence
+    my $ch_b = '\b';
+    my $ch_t = '\t';
+    my $ch_n = '\n';
+    my $ch_f = '\f';
+    my $ch_r = '\r';
+    my $ch_dq = '\"';
+    my $ch_q = '\'';
+    my $ch_bsh = '\\';
+    
+    unless ($ch_b == 8) {
+      return 0;
+    }
+    
+    unless ($ch_t == 9) {
+      return 0;
+    }
+    
+    unless ($ch_n == 10) {
+      return 0;
+    }
+    
+    unless ($ch_f == 12) {
+      return 0;
+    }
+
+    unless ($ch_r == 13) {
+      return 0;
+    }
+    
+    unless ($ch_dq == 34) {
+      return 0;
+    }
+    
+    unless ($ch_q == 39) {
+      return 0;
+    }
+    
+    unless ($ch_bsh == 92) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
