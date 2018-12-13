@@ -212,9 +212,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       // Skip space character
       case ' ':
       case '\t':
-      case '\r':
       case '\f':
         compiler->bufptr++;
+        continue;
+      case '\r':
+        compiler->bufptr++;
+        if (*compiler->bufptr == '\n') {
+          compiler->bufptr++;
+          compiler->cur_line++;
+        }
+        else {
+          compiler->cur_line++;
+        }
         continue;
       case '\n':
         compiler->bufptr++;
@@ -1185,7 +1194,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           if (expect_sub_name) {
-            SPVM_LIST_push(compiler->current_sub_names, keyword);
+            // None
           }
           else if (expect_field_name) {
             // None
