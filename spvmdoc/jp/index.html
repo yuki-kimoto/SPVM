@@ -177,10 +177,18 @@ cpanm SPVM
       <ul class="toc">
         <li><a href="#features-c99-math">C99で追加された数学関数</a></li>
       </ul>
+      <ul class="toc">
+        <li><a href="#features-specification">仕様化された言語仕様</a></li>
+      </ul>
       
       <h3 class="features-c99-math">C99で追加された数学関数</h3>
       <p>
         C99で追加された新しいC言語の数学関数がすべて利用できます。
+      </p>
+      
+      <h3 class="features-specification">仕様化された言語仕様</h3>
+      <p>
+        SPVMの言語仕様は、メジャーバージョンごとに、仕様化されています。仕様を元に、独自にコンパイラを開発することが可能です。
       </p>
 
       <h2 id="tutorial">SPVMのチュートリアル</h2>
@@ -359,7 +367,9 @@ my $total = MyMath->sum($sp_nums);
       </p>
       <ul class="toc">
         <li><a href="#language-comment">コメント</a>
-        <li><a href="#language-package">パッケージ</a>
+        <li><a href="#language-pod">POD</a>
+        <li><a href="#language-package-definition">パッケージ定義</a>
+        <li><a href="#language-field-definition">フィールド定義</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-literal">リテラル</a></li>
@@ -372,7 +382,32 @@ my $total = MyMath->sum($sp_nums);
 <pre>
 # コメント
 </pre>
-      <h3 id="language-package">パッケージ</h3>
+      <h3 id="language-pod">POD</h3>
+      <p>
+        POD(プレーンオールドドキュメント)を記述することができます。PODは行頭が「=」で始まる任意の文字列の行から始まり、行頭から行末まで「=cut」で終わる行までです。
+      </p>
+      <p>
+        PODの内側に書かれた文字列はソースコードとして解釈されず、コメントとして扱われます。
+      </p>
+<pre>
+=pod
+
+複数行
+コメント
+
+=cut
+</pre>
+
+<pre>
+=head1
+
+複数行
+コメント
+
+=cut
+</pre>
+
+      <h3 id="language-package-definition">パッケージ</h3>
       <p>
         パッケージを定義するには以下の構文を使用します。
       </p>
@@ -500,7 +535,118 @@ package Foo {
   }
 }
 </pre>
+      <h3 id="language-field-definition">フィールド</h3>
+      <p>
+        「has」キーワードを使用してフィールドを定義することができます。
+      </p>
+<pre>
+has フィールド名 : 型名
+</pre>
+      <p>
+        フィールド定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+      </p>
+      <p>
+        フィールド定義には「<a href="#language-type">型名</a>」が必要です。
+      </p>
+      <p>
+        フィールド名は「a～z」「A～Z」「0～9」「_」で構成する必要があります。先頭は、数字から始めることはできません。連続した「_」を使用することはできません。
+      </p>
+      <p>
+        フィールド定義には、デスクリプタを合わせて指定することができます。
+      </p>
+<pre>
+has フィールド名 : デスクリプタ 型名
+</pre>
+      <p>
+        <b>フィールドデスクリプタ</b>
+      </p>
+      <p>
+        フィールドで指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            このフィールドは、外部のパッケージからアクセスできます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            このフィールドは、外部のパッケージからアクセスできません。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>ro</b>
+          </td>
+          <td>
+            このフィールドは、読み込み用のアクセッサを持ちます。アクセッサ名は、フィールド名と同じです。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>wo</b>
+          </td>
+          <td>
+            このフィールドは、書き込み用のアクセッサを持ちます。アクセッサ名は、「set_フィールド名」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>rw</b>
+          </td>
+          <td>
+            このフィールドは、読み込み用のアクセッサと書き込み用のアクセッサを持ちます。アクセッサ名は、それぞれ「フィールド名」「set_フィールド名」になります。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        書き込み用のアクセッサの戻り値は「void型」です。
+      </p>
+      <p>
+        SPVMのソースコードの中からアクセッサが呼び出された場合は、アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
+      </p>
+      <p>
+        <b>フィールド定義のサンプル</b>
+      </p>
+      <p>
+        フィールド定義のサンプルです。
+      </p>
+<pre>
+package Foo {
+  has num1 : byte;
+  has num2 : short;
+  has num3 : int;
+  has num4 : long;
+  has num5 : float;
+  has num6 : double;
 
+  has num_public : public int;
+  has num_ro : ro int;
+  has num_wo : wo int;
+  has num_rw : rw int;
+}
+</pre>
+      
       <h3 id="language-type">型</h3>
       <ul class="toc">
         <li><a href="#language-type-integer">整数型</a></li>
@@ -751,6 +897,9 @@ package Foo {
         「16進数浮動小数点リテラル」は、「数値部」に「小数点」を含むことができます。
       </p>
       <p>
+        「数値部」はアンダーライン「_」を含むことができます。これは単なる区切り文字で、無視されます。
+      </p>
+      <p>
         「16進数浮動小数点リテラル」は、「指数部」が必要です。
       </p>
       <p>
@@ -758,6 +907,9 @@ package Foo {
       </p>
       <p>
         「指数表現」は「10進数浮動小数点リテラル」の場合は「e」あるいは「E」、「16進数浮動小数点リテラル」の場合は「p」あるいは「P」になります。
+      </p>
+      <p>
+        「指数部」の意味は「10進数浮動小数点リテラル」の場合は、10進数による桁移動、「16進数浮動小数点リテラル」の場合は、2進数による桁移動になります。
       </p>
       <p>
         末尾に「f」あるいは「F」のサフィックスをつけると、浮動小数点リテラルの型は「float型」になります。
@@ -903,7 +1055,10 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
-      
+      <h3>サポートされるGCCのバージョンを教えてください</h3>
+      <p>
+        gcc 4.3で確認しており、保証される最低のバージョンはgcc 4.3です。C99がサポートされている必要があります。
+      </p>
       <h3>符号なし整数型はありませんか</h3>
       <p>
         残念ながら、SPVMには、符号なし整数型はありません。
@@ -1045,13 +1200,42 @@ my $str = (string)$list->get(0);
       <p>
         はい、浮動小数点の表現方法、および演算は、処理系に依存します。
       </p>
+      
+      <h3>パッケージ名、フィールド名、サブルーチン名などの識別子に連続したアンダーラインが使えないのはなぜですか</h3>
+      <p>
+        二つの連続したアンダーラインは、エクステンションにおいて、パッケージ名とサブルーチン名の区切りとして利用されるためです。
+      </p>
+      <p>
+        エクステンションはC言語で書かれます。
+      </p>
+<pre>
+# SPVMのサブルーチン
+package Foo::Bar {
+  sub baz : void () { }
+}
+</pre>
+
+<pre>
+// エクステンションにおける関数名
+SPVM_NATIVE_Foo__Bar__baz(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+}
+</pre>
+      <p>
+        SPVMの「Foo::Barパッケージのbazサブルーチン」はエクステンションの「SPVM_NATIVE_Foo__Bar__baz」に対応します。これは1対1に対応し、相互に名前の変換が可能です。
+      </p>
+      
+      <h3>SPVMからPerlのサブルーチンを呼び出すことはできますか</h3>
+      <p>
+        残念ながら、SPVMからPerlのサブルーチンを呼び出すことはできません。
+      </p>
 
       <h3>SPVMの開発に参加することはできますか。</h3>
 
       <p>
         コア機能、標準関数、標準モジュールについては、作者が決定を行っています。その範囲の中であれば、開発への参加が可能です。
       </p>
-
+      
       <p>
         バグ報告、ベンチマーク、言語評価、ブログなどでの紹介は歓迎です。
       </p>
