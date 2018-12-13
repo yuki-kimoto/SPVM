@@ -1058,6 +1058,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else if (digit == 2) {
                 num_str_only_num = num_str + 2;
               }
+              else {
+                assert(0);
+              }
               uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
                 invalid = 1;
@@ -1102,6 +1105,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else if (digit == 2) {
                 num_str_only_num = num_str + 2;
+              }
+              else {
+                assert(0);
               }
               uint64_t unum = (uint64_t)strtoull(num_str_only_num, &end, digit);
               if (*end != '\0') {
