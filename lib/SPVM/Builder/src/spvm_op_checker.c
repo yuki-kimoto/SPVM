@@ -4635,6 +4635,13 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     
     const char* package_name = package->op_name->uv.name;
     
+    // Add package load relative path to string pool
+    int32_t found_load_rel_path_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->load_rel_path, strlen(package->load_rel_path) + 1);
+    if (found_load_rel_path_string_pool_id == 0) {
+      int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package->load_rel_path, strlen(package->load_rel_path) + 1);
+      SPVM_HASH_insert(compiler->string_symtable, package->load_rel_path, strlen(package->load_rel_path) + 1, (void*)(intptr_t)string_pool_id);
+    }
+    
     // value_t package limitation
     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
       // Can't have subroutines
@@ -4895,33 +4902,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       if (found_signature_string_pool_id == 0) {
         int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub->signature, strlen(sub->signature) + 1);
         SPVM_HASH_insert(compiler->string_symtable, sub->signature, strlen(sub->signature) + 1, (void*)(intptr_t)string_pool_id);
-      }
-
-      // Get file base name
-      const char* sub_file_base = NULL;
-      {
-        const char* file = sub->file;
-
-        int32_t file_length = (int32_t)strlen(file);
-        int32_t found_sep = 0;
-        for (int32_t i = file_length - 1; i >= 0; i--) {
-          char ch = file[i];
-          if (ch == '/' || ch == '\\') {
-            sub_file_base = &file[i + 1];
-            found_sep = 1;
-            break;
-          }
-        }
-        if (!found_sep) {
-          sub_file_base = file;
-        }
-      }
-      
-      // Add file base name to string pool
-      int32_t found_sub_file_base_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1);
-      if (found_sub_file_base_string_pool_id == 0) {
-        int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub_file_base, strlen(sub_file_base) + 1);
-        SPVM_HASH_insert(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1, (void*)(intptr_t)string_pool_id);
       }
     }
   }
