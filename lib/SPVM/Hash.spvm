@@ -14,61 +14,9 @@ package SPVM::Hash : private {
     return $self->{entries};
   }
 
-  # Murmur hash for 32-bit
-  # See: https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
-  sub _hasher : long ($key : string, $seed : int) {
-    my $pow_2_32: long = 1L << 32;
-    my $m: long = 0x5bd1e995;
-    my $len = length $key;
-    my $hash: long = ((long)$seed ^ $len) % $pow_2_32;
-    my $base = 0;
-    while ($len >= 4) {
-      my $k: long = (long)$key->[$base]
-          + ((long)($key->[$base + 1]) << 8)
-          + ((long)($key->[$base + 2]) << 16)
-          + ((long)($key->[$base + 3]) << 24);
-      $k *= $m;
-      $k %= $pow_2_32;
-      $k ^= $k >>> 24;
-      $k %= $pow_2_32;
-      $k *= $m;
-      $k %= $pow_2_32;
-      $hash *= $m;
-      $hash %= $pow_2_32;
-      $hash ^= $k;
-      $hash %= $pow_2_32;
-      $base += 4;
-      $len -= 4;
-    }
-
-    switch ($len) {
-      case 3:
-        $hash ^= (long)($key->[$base + 2]) << 16;
-        $hash %= $pow_2_32;
-      case 2:
-        $hash ^= (long)($key->[$base + 1]) << 8;
-        $hash %= $pow_2_32;
-      case 1:
-        $hash ^= (long)$key->[$base];
-        $hash %= $pow_2_32;
-        $hash *= $m;
-        $hash %= $pow_2_32;
-      default: # FIXME: to avoid from segmentation fault (subroutine _hasher called twice if 'default' doesn't exist)
-    }
-
-    # Do a few final mixes of the hash.
-    $hash ^= $hash >>> 13;
-    $hash %= $pow_2_32;
-    $hash *= $m;
-    $hash %= $pow_2_32;
-    $hash ^= $hash >>> 15;
-    $hash %= $pow_2_32;
-    return $hash;
-  }
-
   sub _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
-    return (int)(_hasher($key, $default_seed) % $bucket_count);
+    return (int)(murmur_hash($key, $default_seed) % $bucket_count);
   }
 
   sub new : SPVM::Hash () {

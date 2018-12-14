@@ -9,6 +9,7 @@
 #include <math.h>
 #include <time.h>
 #include <complex.h>
+#include <memory.h>
 
 int32_t SPVM_NATIVE_SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
@@ -749,16 +750,16 @@ int32_t SPVM_NATIVE_SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   int32_t seed = stack[1].ival;
 
-  int8_t* buf = env->get_byte_array_elements_new(env, object);
-  int32_t string_length = env->get_array_length(env, object);
+  const char* buf = (const char*)env->belems(env, object);
+  int32_t len = env->len(env, object);
 
   uint32_t m = 0x5bd1e995;
   uint32_t hash = seed ^ len;
 
   // Mix 4 bytes at a time into the hash.
   while(len >= 4) {
-    uint32_t k = unaligned_load(buf);
-    memcpy(&result, p, sizeof(result));
+    uint32_t k;
+    memcpy(&k, buf, sizeof(k));
     k *= m;
     k ^= k >> 24;
     k *= m;

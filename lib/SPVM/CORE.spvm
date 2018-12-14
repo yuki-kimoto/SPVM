@@ -233,5 +233,5 @@ package SPVM::CORE {
   native sub DBL_MIN : double ();
 
   # hasher function
-  native sub murmur_hash : int ($value : string);
+  native sub murmur_hash : int ($string : string, $seed : int);
 }
