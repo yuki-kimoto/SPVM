@@ -366,15 +366,90 @@ my $total = MyMath->sum($sp_nums);
         SPVMの言語仕様の詳細です。
       </p>
       <ul class="toc">
+        <li><a href="#language-parser">構文解析</a>
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
         <li><a href="#language-package-definition">パッケージ定義</a>
         <li><a href="#language-field-definition">フィールド定義</a>
+        <li><a href="#language-package-variable-definition">パッケージ変数定義</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
       </ul>
+      <h3 id="language-parser">構文解析</h3>
+      <ul class="toc">
+        <li><a href="#language-parser-encoding">ソースコードの文字コード</a>
+        <li><a href="#language-parser-lalr">LALR法</a>
+        <li><a href="#language-parser-component">構成要素</a>
+        <li><a href="#language-parser-line-terminater">行終端</a>
+        <li><a href="#language-parser-space-character">空白文字</a>
+        <li><a href="#language-parser-identifier">識別子</a>
+        <li><a href="#language-parser-separator">区切り文字</a>
+        <li><a href="#language-parser-operator">演算子</a>
+      </ul>
+      <h4 id="language-parser-encoding">ソースコードの文字コード</h4>
+      <p>
+        SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されます。
+      </p>
+      <h4 id="language-parser-lalr">LALR法</h4>
+      <p>
+        SPVMのソースコードは、LALR法によって解析できます。yacc/bisonで生成されたパーサージェネレータによって解析することができます。
+      </p>
+      <h4 id="language-parser-component">構成要素</h4>
+      <p>
+        SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
+      </p>
+      <h4 id="language-parser-line-terminater">行終端</h4>
+      <p>
+        SPVMのソースコードの行終端は、ASCIIコードの「LF」「CR」「CR LF」です。
+      </p>
+      <p>
+        行終端が現れたときは、適切に行番号がインクリメントされます。
+      </p>
+      <h4 id="language-parser-space-character">空白文字</h4>
+      <p>
+        SPVMにおける空白文字はASCIIコードの「SP」「HT」「FF」と「<a href="#language-parser-line-terminater">行終端</a>」です。
+      </p>
+      <p>
+        空白文字はソースコード上では意味を持ちません。
+      </p>
+      <h4 id="language-parser-keyword">キーワード</h4>
+      <p>
+        SPVMにおけるキーワードは以下です。
+      </p>
+<pre>
+byte BEGIN case croak default double elsif else enum eq
+eval for float gt ge has if interface isa int last length
+lt le long my native ne next new our object package private
+public precompile pointer_t return require rw ro self switch
+sub string short scalar undef unless use void value_t while
+weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
+</pre>
+      <h4 id="language-parser-identifier">識別子</h4>
+      <p>
+        SPVMにおける識別子は「パッケージ名」「サブルーチン名」「フィールド名」「パッケージ変数名」「レキシカル変数名」です。
+      </p>
+      <h4 id="language-parser-separator">区切り文字</h4>
+      <p>
+        SPVMにおける区切り文字は以下です。
+      </p>
+<pre>
+( ) { } [ ] ; , ->
+</pre>
+
+      <h4 id="language-parser-operator">演算子</h4>
+      <p>
+        SPVMにおける演算子は以下です。
+      </p>
+<pre>
+=   >   <   !   ~
+==  <=  >=  !=  &&  ||  ++  --
++   -   *   /   &   |   ^   %   <<   >>   >>>
++=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
+\   $   @   .   
+</pre>
+      
       <h3 id="language-comment">コメント</h3>
       <p>
         コメントは「#」で始まり改行で終わります。
@@ -537,10 +612,13 @@ package Foo {
 </pre>
       <h3 id="language-field-definition">フィールド</h3>
       <p>
+        フィールドとは「new」を使ってオブジェクト生成した場合に、オブジェクトからアクセスできるデータ領域のことです。
+      </p>
+      <p>
         「has」キーワードを使用してフィールドを定義することができます。
       </p>
 <pre>
-has フィールド名 : 型名
+has フィールド名 : 型名;
 </pre>
       <p>
         フィールド定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
@@ -555,7 +633,7 @@ has フィールド名 : 型名
         フィールド定義には、デスクリプタを合わせて指定することができます。
       </p>
 <pre>
-has フィールド名 : デスクリプタ 型名
+has フィールド名 : デスクリプタ 型名;
 </pre>
       <p>
         <b>フィールドデスクリプタ</b>
@@ -593,7 +671,7 @@ has フィールド名 : デスクリプタ 型名
             <b>ro</b>
           </td>
           <td>
-            このフィールドは、読み込み用のアクセッサを持ちます。アクセッサ名は、フィールド名と同じです。
+            このフィールドは、読み込み用のフィールドアクセッサを持ちます。フィールドアクセッサ名は、フィールド名と同じです。フィールド名が「foo」の場合は、フィールドアクセッサ名は「foo」になります。
           </td>
         </tr>
         <tr>
@@ -601,7 +679,7 @@ has フィールド名 : デスクリプタ 型名
             <b>wo</b>
           </td>
           <td>
-            このフィールドは、書き込み用のアクセッサを持ちます。アクセッサ名は、「set_フィールド名」になります。
+            このフィールドは、書き込み用のフィールドアクセッサを持ちます。フィールドアクセッサ名は、「set_フィールド名」になります。フィールド名が「foo」の場合は、フィールドアクセッサ名は「set_foo」になります。
           </td>
         </tr>
         <tr>
@@ -609,7 +687,7 @@ has フィールド名 : デスクリプタ 型名
             <b>rw</b>
           </td>
           <td>
-            このフィールドは、読み込み用のアクセッサと書き込み用のアクセッサを持ちます。アクセッサ名は、それぞれ「フィールド名」「set_フィールド名」になります。
+            このフィールドは、読み込み用のフィールドアクセッサと書き込み用のフィールドアクセッサを持ちます。読み込み用のフィールドアクセッサ名は「ro」で説明したものと同じです。書き込み用のフィールドアクセッサ名は「wo」で説明したものと同じです。
           </td>
         </tr>
       </table>
@@ -620,10 +698,13 @@ has フィールド名 : デスクリプタ 型名
         「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
       </p>
       <p>
-        書き込み用のアクセッサの戻り値は「void型」です。
+        フィールドアクセッサとは、フィールドにアクセスするためのメソッドのことです。
       </p>
       <p>
-        SPVMのソースコードの中からアクセッサが呼び出された場合は、アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
+        書き込み用のフィールドアクセッサの戻り値は「void型」です。
+      </p>
+      <p>
+        SPVMのソースコードの中からフィールドアクセッサが呼び出された場合は、フィールドアクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
       </p>
       <p>
         <b>フィールド定義のサンプル</b>
@@ -646,6 +727,125 @@ package Foo {
   has num_rw : rw int;
 }
 </pre>
+
+      <h3 id="language-package-variable-definition">パッケージ変数定義</h3>
+      <p>
+        パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
+      </p>
+      <p>
+        「our」キーワードを使用してパッケージ変数を定義することができます。
+      </p>
+<pre>
+our パッケージ変数名 : 型名;
+</pre>
+      <p>
+        パッケージ変数定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+      </p>
+      <p>
+        パッケージ変数定義には「<a href="#language-type">型名</a>」が必要です。
+      </p>
+      <p>
+        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
+      </p>
+      <p>
+        パッケージ変数定義には、デスクリプタを合わせて指定することができます。
+      </p>
+<pre>
+our パッケージ変数名 : デスクリプタ 型名;
+</pre>
+      <p>
+        <b>パッケージ変数デスクリプタ</b>
+      </p>
+      <p>
+        パッケージ変数で指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできません。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>ro</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、パッケージ変数名から「$」を除いたものです。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>wo</b>
+          </td>
+          <td>
+            このパッケージ変数は、書き込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、「SET_パッケージ変数名から$を除いたもの」になります。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「SET_FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>rw</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサと書き込み用のパッケージ変数アクセッサを持ちます。読み込み用のパッケージ変数アクセッサ名は「ro」で説明したものと同じです。書き込み用のパッケージ変数アクセッサ名は「wo」で説明したものと同じです。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
+      </p>
+      <p>
+        書き込み用のパッケージ変数アクセッサの戻り値は「void型」です。
+      </p>
+      <p>
+        SPVMのソースコードの中からパッケージ変数アクセッサが呼び出された場合は、パッケージ変数アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
+      </p>
+      <p>
+        <b>パッケージ変数定義のサンプル</b>
+      </p>
+      <p>
+        パッケージ変数定義のサンプルです。
+      </p>
+<pre>
+package Foo {
+  our $NUM1 : byte;
+  our $NUM2 : short;
+  our $NUM3 : int;
+  our $NUM4 : long;
+  our $NUM5 : float;
+  our $NUM6 : double;
+
+  our $NUM_PUBLIC : public int;
+  our $NUM_RO : ro int;
+  our $NUM_WO : wo int;
+  our $NUM_RW : rw int;
+}
+</pre>
+      
       
       <h3 id="language-type">型</h3>
       <ul class="toc">
@@ -1171,6 +1371,58 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
+      <h3>
+        SPVMを開発するにあたって参考にした言語を教えてください。
+      </h3>
+      <p>
+        言語仕様と文法についてはPerlを主に参考にしています。必要な部分でPerl 6の文法・キーワードも採用しています。「has」「native」「ro」「rw」「wo」など。
+      </p>
+      <p>
+        言語仕様とバーチャルマシンについては、Java言語とJavaVMの言語仕様を多くを参考にしています。
+      </p>
+      <p>
+        数値型と数値計算においては、Javaの計算規則とほぼ同じです。数値型の種類、演算子の種類、拡張型変換、縮小型変換などです。
+      </p>
+      <p>
+        言語仕様においては、ボクシング、アンボクシング、可変長引数については、Javaを参考に作りました。
+      </p>
+      <p>
+        SPVMのバーチャルマシンの初期実装は、JavaVMを参考にして、可変長バイト命令を解釈するスタック型VMとして作成されました。現在のSPVMは、64bitの固定長命令を解釈するレジスター型VMとなっています。
+      </p>
+      <p>
+        文字列がUTF-8であることと、インターフェースの実装については、go言語の言語仕様を参考にしています。
+      </p>
+      <h3>なぜレジスタ型VMを採用していますか</h3>
+      <p>
+        レジスタ型VMを採用している最も大きな理由は、SPVMのオペレーションコードを、C言語のソースコードに変換するときに、1対1で対応させることができるためです。gccの最適化が適用できます。
+      </p>
+      <h3>列挙にint型以外の型を利用することはできますか</h3>
+      <p>
+        残念なことですが、列挙に利用できるるのはint型だけです。
+      <p>
+      <p>
+        他の型の定数を利用したい場合は、定数を返すサブルーチンを定義してください。
+      </p>
+<pre>
+sub FOO : double () {
+  return 3.14;
+}
+</pre>
+      <p>
+        一つの定数を返すサブルーチンは、定数としてインライン展開されることが仕様上で保証されているので、パフォーマンスを気にせず利用できます。
+      </p>
+      <h3>
+        SPVMのサブルーチン呼び出しでかっこを省略できないのはなぜですか。
+      </h3>
+      <p>
+        SPVMにおいては、メソッド呼び出し、クラスメソッド呼び出しについては、かっこの省略が可能です。サブルーチン名だけを指定した場合においては、かっこの省略ができません。
+      </p>
+      <p>
+        これは、サブルーチン名だけでは、識別子名がサブルーチンであることを、ソースコードの中で、決定できないためです。パッケージ名やフィールド名との区別ができません。
+      </p>
+      <p>
+        他のソースファイルを解析することによって、かっこを省略する構文は、理論的には可能ですが、SPVMでは、単一ファイルの中で、静的な構文解析を完了できるということを重要視しました。
+      </p>
       <h3>サポートされるGCCのバージョンを教えてください</h3>
       <p>
         gcc 4.3で確認しており、保証される最低のバージョンはgcc 4.3です。C99がサポートされている必要があります。
@@ -1345,7 +1597,58 @@ SPVM_NATIVE_Foo__Bar__baz(SPVM_ENV* env, SPVM_VALUE* stack) {
       <p>
         残念ながら、SPVMからPerlのサブルーチンを呼び出すことはできません。
       </p>
-
+      <h3>C言語のconstやJavaのfinalのような機能はありますか。</h3>
+      <p>
+        一度代入した値を変更できなくする機能はありませんが、他の機能の組み合わせで実現することができます。
+      </p>
+      <p>
+        <b>コンパイル時定数で数値型の場合</b>
+      </p>
+      <p>
+        定数サブルーチンを使用します。
+      </p>
+<pre>
+package Foo {
+  sub VAL : double () {
+    return 5.1234;
+  }
+}
+</pre>
+      
+      <p>
+        <b>コンパイル時定数でオブジェクト型の場合</b>
+      </p>
+      <p>
+        パッケージ変数を定義します。パッケージ変数に読み込み用のアクセッサを定義します。BEGINブロックを使って、パッケージ変数を初期化します。
+      </p>
+<pre>
+package Foo {
+  our $POINT : ro int;
+  
+  BEGIN {
+    $POINT = Point->new;
+  }
+}
+</pre>
+      <h3>シングルトンを生成することはできますか。</h3>
+      <p>
+        はいできます。
+      </p>
+      <p>
+        パッケージ変数を定義します。BEGINブロックを使って、パッケージ変数を初期化します。singletonメソッドで、オブジェクトを返します。
+      </p>
+<pre>
+package Foo {
+  our $SINGLETON : Foo;
+  BEGIN {
+    $SINGLETON = new Foo;
+  }
+  
+  sub singleton : Foo () {
+    return $SINGLETON;
+  }
+}
+</pre>
       <h3>SPVMの開発に参加することはできますか。</h3>
 
       <p>
