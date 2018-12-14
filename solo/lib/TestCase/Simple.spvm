@@ -51,4 +51,9 @@ package TestCase::Simple {
     
     return 0;
   }
+  
+  sub file : string () {
+    my $file = __FILE__;
+    return $file;
+  }
 }

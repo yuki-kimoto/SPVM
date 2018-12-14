@@ -169,6 +169,7 @@ enum {
   SPVM_OP_C_ID_BEGIN,
   SPVM_OP_C_ID_REQUIRE,
   SPVM_OP_C_ID_IF_REQUIRE,
+  SPVM_OP_C_ID_CURRENT_PACKAGE,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];

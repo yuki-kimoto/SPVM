@@ -324,6 +324,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               break;
             }
+            case SPVM_OP_C_ID_CURRENT_PACKAGE: {
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, package->name, strlen(package->name), op_cur->file, op_cur->line);
+              SPVM_OP* op_new = SPVM_OP_build_constant(compiler, op_constant);
+
+              SPVM_OP_CHECKER_check_tree(compiler, op_new, check_ast_info);
+              if (compiler->error_count > 0) {
+                return;
+              }
+
+              SPVM_OP_replace_op(compiler, op_stab, op_new);
+              op_cur = op_new;
+              
+              break;
+            }
             case SPVM_OP_C_ID_CONSTANT: {
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
               

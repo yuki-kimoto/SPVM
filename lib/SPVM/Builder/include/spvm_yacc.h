@@ -87,28 +87,29 @@
      WEAKEN = 303,
      CROAK = 304,
      NEW = 305,
-     SPECIAL_ASSIGN = 306,
-     ASSIGN = 307,
-     OR = 308,
-     AND = 309,
-     BIT_XOR = 310,
-     BIT_OR = 311,
-     BIT_AND = 312,
-     REL = 313,
-     SHIFT = 314,
-     REMAINDER = 315,
-     DIVIDE = 316,
-     MULTIPLY = 317,
-     ISA = 318,
-     LENGTH = 319,
-     DEREF = 320,
-     REF = 321,
-     UMINUS = 322,
-     SCALAR = 323,
-     NOT = 324,
-     DEC = 325,
-     INC = 326,
-     ARROW = 327
+     CURRENT_PACKAGE = 306,
+     SPECIAL_ASSIGN = 307,
+     ASSIGN = 308,
+     OR = 309,
+     AND = 310,
+     BIT_XOR = 311,
+     BIT_OR = 312,
+     BIT_AND = 313,
+     REL = 314,
+     SHIFT = 315,
+     REMAINDER = 316,
+     DIVIDE = 317,
+     MULTIPLY = 318,
+     ISA = 319,
+     LENGTH = 320,
+     DEREF = 321,
+     REF = 322,
+     UMINUS = 323,
+     SCALAR = 324,
+     NOT = 325,
+     DEC = 326,
+     INC = 327,
+     ARROW = 328
    };
 #endif
 /* Tokens.  */
@@ -160,28 +161,29 @@
 #define WEAKEN 303
 #define CROAK 304
 #define NEW 305
-#define SPECIAL_ASSIGN 306
-#define ASSIGN 307
-#define OR 308
-#define AND 309
-#define BIT_XOR 310
-#define BIT_OR 311
-#define BIT_AND 312
-#define REL 313
-#define SHIFT 314
-#define REMAINDER 315
-#define DIVIDE 316
-#define MULTIPLY 317
-#define ISA 318
-#define LENGTH 319
-#define DEREF 320
-#define REF 321
-#define UMINUS 322
-#define SCALAR 323
-#define NOT 324
-#define DEC 325
-#define INC 326
-#define ARROW 327
+#define CURRENT_PACKAGE 306
+#define SPECIAL_ASSIGN 307
+#define ASSIGN 308
+#define OR 309
+#define AND 310
+#define BIT_XOR 311
+#define BIT_OR 312
+#define BIT_AND 313
+#define REL 314
+#define SHIFT 315
+#define REMAINDER 316
+#define DIVIDE 317
+#define MULTIPLY 318
+#define ISA 319
+#define LENGTH 320
+#define DEREF 321
+#define REF 322
+#define UMINUS 323
+#define SCALAR 324
+#define NOT 325
+#define DEC 326
+#define INC 327
+#define ARROW 328
 
 
 

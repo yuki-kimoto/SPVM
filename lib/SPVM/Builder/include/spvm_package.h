@@ -50,6 +50,7 @@ struct SPVM_package {
   int32_t no_dup_basic_type_ids_constant_pool_id;
   int32_t object_field_indexes_constant_pool_id;
   const char* load_path;
+  const char* load_rel_path;
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;
   int32_t id;

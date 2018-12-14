@@ -18,6 +18,9 @@ enum {
 struct SPVM_compiler {
   // Current parsed file name
   const char* cur_file;
+  
+  // Current parsed file relative name
+  const char* cur_rel_file;
 
   // Current parsed source
   char* cur_src;

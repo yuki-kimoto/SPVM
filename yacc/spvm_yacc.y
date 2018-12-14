@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND DOT3 FATCAMMA RW RO WO BEGIN REQUIRE
-%token <opval> RETURN WEAKEN CROAK NEW
+%token <opval> RETURN WEAKEN CROAK NEW CURRENT_PACKAGE
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -627,6 +627,7 @@ normal_term
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
+  | CURRENT_PACKAGE
 
 normal_terms
   : normal_terms ',' normal_term

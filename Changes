@@ -1,5 +1,8 @@
-0.0402 2018-12-08
+0.0403 2018-12-08
   - fix line terminator
+  - add __LINE__
+  - add __FILE__
+  - add __PACKAGE__
 0.0402 2018-12-07
   - add package variable access native api
   

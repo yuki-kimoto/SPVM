@@ -169,6 +169,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "BEGIN",
   "REQUIRE",
   "IF_REQUIRE",
+  "CURRENT_PACKAGE",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -1449,6 +1450,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
   package->load_path = compiler->cur_file;
+  package->load_rel_path = compiler->cur_rel_file;
   
   int32_t is_anon;
   if (op_type) {
