@@ -741,3 +741,49 @@ int32_t SPVM_NATIVE_SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;;
 }
+
+// https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
+int32_t SPVM_NATIVE_SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  int32_t seed = stack[1].ival;
+
+  int8_t* buf = env->get_byte_array_elements_new(env, object);
+  int32_t string_length = env->get_array_length(env, object);
+
+  uint32_t m = 0x5bd1e995;
+  uint32_t hash = seed ^ len;
+
+  // Mix 4 bytes at a time into the hash.
+  while(len >= 4) {
+    uint32_t k = unaligned_load(buf);
+    memcpy(&result, p, sizeof(result));
+    k *= m;
+    k ^= k >> 24;
+    k *= m;
+    hash *= m;
+    hash ^= k;
+    buf += 4;
+    len -= 4;
+  }
+
+  // Handle the last few bytes of the input array.
+  switch(len) {
+    case 3:
+      hash ^= (unsigned char)buf[2] << 16;
+    case 2:
+      hash ^= (unsigned char)buf[1] << 8;
+    case 1:
+      hash ^= (unsigned char)buf[0];
+      hash *= m;
+    };
+
+  // Do a few final mixes of the hash.
+  hash ^= hash >> 13;
+  hash *= m;
+  hash ^= hash >> 15;
+  stack[0].ival = hash;
+
+  return SPVM_SUCCESS;;
+}
