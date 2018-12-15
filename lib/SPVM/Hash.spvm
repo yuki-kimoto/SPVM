@@ -44,8 +44,8 @@ package SPVM::Hash : private {
     }
     my $self = new SPVM::Hash;
     my $capacity = 2;
-    if (@$objects >= INT32_MAX / 2) {
-      $capacity = INT32_MAX;
+    if (@$objects >= INT32_MAX() / 2) {
+      $capacity = INT32_MAX();
     }
     else {
       while ($capacity < @$objects / 2) {
