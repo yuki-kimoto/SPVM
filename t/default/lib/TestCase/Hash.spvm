@@ -187,7 +187,7 @@ package TestCase::Hash {
     unless ($hash->delete("carol") == undef) {
       return 0;
     }
-    unless ($hahs->count == 2) {
+    unless ($hash->count == 2) {
       return 0;
     }
     unless ($hash->exists("bob") == 1) {
