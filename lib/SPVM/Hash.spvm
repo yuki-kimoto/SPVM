@@ -4,7 +4,7 @@ package SPVM::Hash : private {
   has bucket_count : private int;
   has count : private int;
   has entries : private SPVM::HashEntry [];
-  has max_load_factor : private double;
+  has max_load_factor : public rw double;
 
   sub _bucket_count : int ($self : self) {
     return $self->{bucket_count};
@@ -162,14 +162,6 @@ package SPVM::Hash : private {
       $prev = $ref;
       $ref = $ref->next_entry;
     }
-  }
-
-  sub max_load_factor : double ($self : self) {
-    return $self->{max_load_factor};
-  }
-
-  sub set_max_load_factor : void ($self : self, $max_load_factor : double) {
-    $self->{max_load_factor} = $max_load_factor;
   }
 
   sub load_factor : double ($self : self) {
