@@ -163,16 +163,16 @@ package TestCase::Hash {
     return 1;
   }
 
-  sub test_delete : int () {
-    my $keys = ["alice", "bob"];
-    my $vals = [SPVM::Int->new(1), SPVM::Int->new(2)];
-    my $hash = SPVM::Hash->new;
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $hash->set($keys->[$i], $vals->[$i]);
+  sub test_delete_with_no_hash_collision : int () {
+    my $capacity = 16;
+    my $hash = SPVM::Hash->new_with_capacity($capacity);
+    $hash->set("alice", SPVM::Int->new(1));
+    $hash->set("bob", SPVM::Int->new(2));
+    unless (SPVM::Hash->_index_by_key("alice", $hash->_bucket_count)
+        != (SPVM::Hash->_index_by_key("bob", 123456789) % $capacity)) {
+      return 0;
     }
-    my $val_alice = $hash->delete("alice");
-    unless (((SPVM::Int)$val_alice)->val == 1) {
-      croak "val_alice: " . ((SPVM::Int)$val_alice)->val;
+    unless (((SPVM::Int)($hash->delete("alice")))->val == 1) {
       return 0;
     }
     unless ($hash->exists("alice") == 0) {
@@ -191,6 +191,40 @@ package TestCase::Hash {
       return 0;
     }
     unless ($hash->exists("bob") == 1) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_delete_with_hash_collision : int () {
+    my $hash = SPVM::Hash->new;
+    $hash->set("alice", SPVM::Int->new(1));
+    $hash->set("bob", SPVM::Int->new(2));
+    unless (((SPVM::Int)$hash->delete("alice"))->val == 1) {
+      return 0;
+    }
+    unless ($hash->exists("alice") == 0) {
+      return 0;
+    }
+    unless ($hash->count == 1) {
+      return 0;
+    }
+    unless ($hash->delete("alice") == undef) {
+      return 0;
+    }
+    unless ($hash->count == 1) {
+      return 0;
+    }
+    unless ($hash->exists("bob") == 1) {
+      return 0;
+    }
+    unless (((SPVM::Int)($hash->delete("bob")))->val == 2) {
+      return 0;
+    }
+    unless ($hash->count == 0) {
+      return 0;
+    }
+    unless ($hash->exists("bob") == 0) {
       return 0;
     }
     return 1;
