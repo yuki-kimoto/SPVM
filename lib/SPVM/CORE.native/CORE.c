@@ -748,10 +748,10 @@ int32_t SPVM_NATIVE_SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* object = stack[0].oval;
-  int32_t seed = stack[1].ival;
+  uint32_t seed = stack[1].ival;
 
   const char* buf = (const char*)env->belems(env, object);
-  int32_t len = env->len(env, object);
+  uint32_t len = env->len(env, object);
 
   uint32_t m = 0x5bd1e995;
   uint32_t hash = seed ^ len;
@@ -784,7 +784,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   hash ^= hash >> 13;
   hash *= m;
   hash ^= hash >> 15;
-  stack[0].ival = hash;
+  stack[0].lval = hash; // return a long value to ensure being positive.
 
   return SPVM_SUCCESS;;
 }
