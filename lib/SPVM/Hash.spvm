@@ -1,9 +1,9 @@
-package SPVM::Hash : private {
+package SPVM::Hash {
   use SPVM::HashEntry;
 
-  has bucket_count : private int;
-  has count : private int;
-  has entries : private SPVM::HashEntry [];
+  has bucket_count : int;
+  has count : int;
+  has entries : SPVM::HashEntry [];
   has max_load_factor : public rw double;
 
   sub _bucket_count : int ($self : self) {
@@ -17,6 +17,54 @@ package SPVM::Hash : private {
   sub _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
     return (int)(murmur_hash($key, $default_seed) % $bucket_count);
+  }
+
+  sub _set_to_container : void ($entries : SPVM::HashEntry[], $bucket_count : int, $count_ref : int&,
+    $key : string, $val : object) {
+    my $index = _index_by_key($key, $bucket_count);
+    my $ref = $entries->[$index];
+    unless ($ref) {
+      $entries->[$index] = SPVM::HashEntry->new($key, $val, undef);
+      ++$$count_ref;
+      return;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        $ref->set_val($val);
+        return;
+      }
+      unless ($ref->next_entry) {
+        $ref->set_next_entry(SPVM::HashEntry->new($key, $val, undef));
+        ++$$count_ref;
+        return;
+      }
+      $ref = $ref->next_entry;
+    }
+  }
+
+  sub _rehash : void ($self : self) {
+    my $new_bucket_count : int;
+    if ($self->{bucket_count} > INT32_MAX() / 2) {
+      if ($self->{bucket_count} == INT32_MAX()) {
+        return;
+      }
+      $new_bucket_count = INT32_MAX();
+    }
+    else {
+      $new_bucket_count = $self->{bucket_count} * 2;
+    }
+    my $new_entries = new SPVM::HashEntry [$new_bucket_count];
+    my $new_count = 0;
+    # iterate entries
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->key, $ref->val);
+        $ref = $ref->next_entry;
+      }
+    }
+    $self->{bucket_count} = $new_bucket_count;
+    $self->{entries} = $new_entries;
   }
 
   sub new : SPVM::Hash () {
@@ -66,29 +114,6 @@ package SPVM::Hash : private {
 
   sub count : int ($self : self) {
     return $self->{count};
-  }
-
-  sub _set_to_container : void ($entries : SPVM::HashEntry[], $bucket_count : int, $count_ref : int&,
-                                $key : string, $val : object) {
-    my $index = _index_by_key($key, $bucket_count);
-    my $ref = $entries->[$index];
-    unless ($ref) {
-      $entries->[$index] = SPVM::HashEntry->new($key, $val, undef);
-      ++$$count_ref;
-      return;
-    }
-    while (1) {
-      if ($ref->key eq $key) {
-        $ref->set_val($val);
-        return;
-      }
-      unless ($ref->next_entry) {
-        $ref->set_next_entry(SPVM::HashEntry->new($key, $val, undef));
-        ++$$count_ref;
-        return;
-      }
-      $ref = $ref->next_entry;
-    }
   }
 
   sub set : void ($self : self, $key : string, $val : object) {
@@ -166,31 +191,6 @@ package SPVM::Hash : private {
 
   sub load_factor : double ($self : self) {
     return (double) $self->{count} / $self->{bucket_count};
-  }
-
-  sub _rehash : void ($self : self) {
-    my $new_bucket_count : int;
-    if ($self->{bucket_count} > INT32_MAX() / 2) {
-      if ($self->{bucket_count} == INT32_MAX()) {
-        return;
-      }
-      $new_bucket_count = INT32_MAX();
-    }
-    else {
-      $new_bucket_count = $self->{bucket_count} * 2;
-    }
-    my $new_entries = new SPVM::HashEntry [$new_bucket_count];
-    my $new_count = 0;
-    # iterate entries
-    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->key, $ref->val);
-        $ref = $ref->next_entry;
-      }
-    }
-    $self->{bucket_count} = $new_bucket_count;
-    $self->{entries} = $new_entries;
   }
 
   sub keys : string[] ($self : self) {

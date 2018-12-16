@@ -1,7 +1,7 @@
-package SPVM::HashEntry : private {
-  has key : private string;
-  has val : private object;
-  has next_entry : private SPVM::HashEntry;
+package SPVM::HashEntry {
+  has key : string;
+  has val : object;
+  has next_entry : SPVM::HashEntry;
     
   sub new : SPVM::HashEntry ($key : string, $val : object, $next_entry : SPVM::HashEntry) {
     my $self = new SPVM::HashEntry;
