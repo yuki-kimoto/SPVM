@@ -597,17 +597,7 @@ SPVM_OP* SPVM_OP_build_constant(SPVM_COMPILER* compiler, SPVM_OP* op_constant) {
   
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  // New String
-  if (SPVM_TYPE_is_string_type(compiler, constant->type->basic_type->id, constant->type->dimension, 0)) {
-    SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_constant->file, op_constant->line);
-    SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant);
-
-    return op_new;
-  }
-  // Constant
-  else {
-    return op_constant;
-  }
+  return op_constant;
 }
 
 SPVM_OP* SPVM_OP_new_op_constant_byte(SPVM_COMPILER* compiler, int8_t value, const char* file, int32_t line) {

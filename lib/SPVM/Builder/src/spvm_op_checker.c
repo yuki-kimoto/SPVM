@@ -327,15 +327,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_CURRENT_PACKAGE: {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, package->name, strlen(package->name), op_cur->file, op_cur->line);
-              SPVM_OP* op_new = SPVM_OP_build_constant(compiler, op_constant);
 
-              SPVM_OP_CHECKER_check_tree(compiler, op_new, check_ast_info);
+              SPVM_OP_CHECKER_check_tree(compiler, op_constant, check_ast_info);
               if (compiler->error_count > 0) {
                 return;
               }
 
-              SPVM_OP_replace_op(compiler, op_stab, op_new);
-              op_cur = op_new;
+              SPVM_OP_replace_op(compiler, op_stab, op_constant);
+              op_cur = op_constant;
               
               break;
             }
@@ -1007,10 +1006,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Add type info to constant pool
                 SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
-              }
-              // Constant string
-              else if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT) {
-                // None
               }
               else {
                 assert(0);
@@ -3493,8 +3488,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         create_tmp_var = 1;
                         break;
                       case SPVM_OP_C_ID_CONSTANT: {
-                        if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag) && op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                          create_tmp_var = 1;
+                        if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
+                          if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
+                            create_tmp_var = 1;
+                          }
+                          else if (SPVM_TYPE_is_string_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
+                            create_tmp_var = 1;
+                          }
                         }
                         break;
                       }
