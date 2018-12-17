@@ -604,9 +604,6 @@ normal_term
   | EXCEPTION_VAR
   | package_var_access
   | CONSTANT
-    {
-      $$ = SPVM_OP_build_constant(compiler, $1);
-    }
   | UNDEF
   | call_sub
   | field_access
