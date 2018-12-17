@@ -239,4 +239,7 @@ package SPVM::CORE {
   
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
+
+  # hasher function
+  native sub murmur_hash : long ($string : string, $seed : int);
 }

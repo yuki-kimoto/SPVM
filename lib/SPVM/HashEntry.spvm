@@ -1,0 +1,33 @@
+package SPVM::HashEntry {
+  has key : string;
+  has val : object;
+  has next_entry : SPVM::HashEntry;
+    
+  sub new : SPVM::HashEntry ($key : string, $val : object, $next_entry : SPVM::HashEntry) {
+    my $self = new SPVM::HashEntry;
+    $self->{key} = $key;
+    $self->{val} = $val;
+    $self->{next_entry} = $next_entry;
+    return $self;
+  }
+
+  sub key : string ($self : self) {
+    return $self->{key};
+  }
+
+  sub val : object ($self : self) {
+    return $self->{val};
+  }
+
+  sub next_entry : SPVM::HashEntry ($self : self) {
+    return $self->{next_entry};
+  }
+
+  sub set_val : void ($self : self, $value : object) {
+    $self->{val} = $value;
+  }
+
+  sub set_next_entry : void ($self : self, $next_entry : SPVM::HashEntry) {
+    $self->{next_entry} = $next_entry;
+  }
+}

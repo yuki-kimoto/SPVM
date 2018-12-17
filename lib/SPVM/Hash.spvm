@@ -1,0 +1,223 @@
+package SPVM::Hash {
+  use SPVM::HashEntry;
+
+  has bucket_count : int;
+  has count : int;
+  has entries : SPVM::HashEntry [];
+  has max_load_factor : public rw double;
+
+  sub _bucket_count : int ($self : self) {
+    return $self->{bucket_count};
+  }
+
+  sub _entries : SPVM::HashEntry [] ($self : self) {
+    return $self->{entries};
+  }
+
+  sub _index_by_key : int ($key : string, $bucket_count : int) {
+    my $default_seed = 123456789;
+    return (int)(murmur_hash($key, $default_seed) % $bucket_count);
+  }
+
+  sub _set_to_container : void ($entries : SPVM::HashEntry[], $bucket_count : int, $count_ref : int&,
+    $key : string, $val : object) {
+    my $index = _index_by_key($key, $bucket_count);
+    my $ref = $entries->[$index];
+    unless ($ref) {
+      $entries->[$index] = SPVM::HashEntry->new($key, $val, undef);
+      ++$$count_ref;
+      return;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        $ref->set_val($val);
+        return;
+      }
+      unless ($ref->next_entry) {
+        $ref->set_next_entry(SPVM::HashEntry->new($key, $val, undef));
+        ++$$count_ref;
+        return;
+      }
+      $ref = $ref->next_entry;
+    }
+  }
+
+  sub _rehash : void ($self : self) {
+    my $new_bucket_count : int;
+    if ($self->{bucket_count} > INT32_MAX() / 2) {
+      if ($self->{bucket_count} == INT32_MAX()) {
+        return;
+      }
+      $new_bucket_count = INT32_MAX();
+    }
+    else {
+      $new_bucket_count = $self->{bucket_count} * 2;
+    }
+    my $new_entries = new SPVM::HashEntry [$new_bucket_count];
+    my $new_count = 0;
+    # iterate entries
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->key, $ref->val);
+        $ref = $ref->next_entry;
+      }
+    }
+    $self->{bucket_count} = $new_bucket_count;
+    $self->{entries} = $new_entries;
+  }
+
+  sub new : SPVM::Hash () {
+    my $self = new SPVM::Hash;
+    my $default_capacity = 32;
+    $self->{bucket_count} = $default_capacity;
+    $self->{entries} = new SPVM::HashEntry[$default_capacity];
+    $self->{count} = 0;
+    $self->{max_load_factor} = 1.0;
+    return $self;
+  }
+
+  sub new_with_capacity : SPVM::Hash ($capacity : int) {
+    my $self = new SPVM::Hash;
+    $self->{bucket_count} = $capacity;
+    $self->{entries} = new SPVM::HashEntry[$capacity];
+    $self->{count} = 0;
+    $self->{max_load_factor} = 1.0;
+    return $self;
+  }
+
+  sub new_with_array : SPVM::Hash ($objects : object []) {
+    unless (@$objects % 2 == 0) {
+      croak "Odd number of elements provided";
+    }
+    my $self = new SPVM::Hash;
+    my $capacity = 2;
+    if (@$objects >= INT32_MAX() / 2) {
+      $capacity = INT32_MAX();
+    }
+    else {
+      while ($capacity < @$objects / 2) {
+        $capacity *= 2;
+      }
+    }
+    $self->{bucket_count} = $capacity;
+    $self->{entries} = new SPVM::HashEntry[$capacity];
+    my $count = 0;
+    for (my $i = 0; $i < @$objects / 2; ++$i) {
+      _set_to_container($self->{entries}, $self->{bucket_count}, \$count,
+          (string)($objects->[2 * $i]), $objects->[2 * $i + 1]);
+    }
+    $self->{count} = $count;
+    $self->{max_load_factor} = 1.0;
+    return $self;
+  }
+
+  sub count : int ($self : self) {
+    return $self->{count};
+  }
+
+  sub set : void ($self : self, $key : string, $val : object) {
+    unless ($key) {
+      croak "key must not be undef";
+    }
+    unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
+      $self->_rehash;
+    }
+    my $count = $self->{count};
+    _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
+    $self->{count} = $count;
+  }
+
+  sub get : object ($self : self, $key : string) {
+    my $index = _index_by_key($key, $self->{bucket_count});
+    my $ref = $self->{entries}->[$index];
+    unless ($ref) {
+      return undef;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        return $ref->val;
+      }
+      unless ($ref->next_entry) {
+        return undef;
+      }
+      $ref = $ref->next_entry;
+    }
+  }
+
+  sub exists : int ($self : self, $key : string) {
+    my $index = _index_by_key($key, $self->{bucket_count});
+    my $ref = $self->{entries}->[$index];
+    unless ($ref) {
+      return 0;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        return 1;
+      }
+      unless ($ref->next_entry) {
+        return 0;
+      }
+      $ref = $ref->next_entry;
+    }
+  }
+
+  sub delete : object ($self : self, $key : string) {
+    my $index = _index_by_key($key, $self->{bucket_count});
+    my $ref = $self->{entries}->[$index];
+    my $prev: SPVM::HashEntry = undef;
+    unless ($ref) {
+      return 0;
+    }
+    while (1) {
+      if ($ref->key eq $key) {
+        my $ret = $ref->val;
+        if ($prev) {
+          $prev->set_next_entry($ref->next_entry);
+        }
+        else {
+          $self->{entries}->[$index] = $ref->next_entry;
+        }
+        $self->{count}--;
+        return $ret;
+      }
+      unless ($ref->next_entry) {
+        return undef;
+      }
+      $prev = $ref;
+      $ref = $ref->next_entry;
+    }
+  }
+
+  sub load_factor : double ($self : self) {
+    return (double) $self->{count} / $self->{bucket_count};
+  }
+
+  sub keys : string[] ($self : self) {
+    my $retval = new string[$self->{count}];
+    # iterate entries
+    my $count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        $retval->[$count++] = $self->{entries}->[$i]->key;
+        $ref = $ref->next_entry;
+      }
+    }
+    return $retval;
+  }
+
+  sub values : object[] ($self : self) {
+    my $retval = new object[$self->{count}];
+    # iterate entries
+    my $count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        $retval->[$count++] = $self->{entries}->[$i]->val;
+        $ref = $ref->next_entry;
+      }
+    }
+    return $retval;
+  }
+}
