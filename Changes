@@ -4,7 +4,10 @@
   - add __FILE__
   - add __PACKAGE__
   - If . left and right is both constant string, concat them at compile time.
-
+  - SPVM::Bool::new_true is renamed to SPVM::Bool::TRUE and this become singleton
+  - SPVM::Bool::new_false is renamed to SPVM::Bool::FALSE and this become singleton
+  - add TRUE core function
+  - add FALSE core function
 0.0402 2018-12-07
   - add package variable access native api
   

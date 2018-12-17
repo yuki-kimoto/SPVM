@@ -11,6 +11,14 @@ package SPVM::CORE {
   native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   
+  sub TRUE : SPVM::Bool () {
+    return SPVM::Bool->TRUE;
+  }
+
+  sub FALSE : SPVM::Bool () {
+    return SPVM::Bool->FALSE;
+  }
+  
   sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;
     

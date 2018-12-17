@@ -1,21 +1,15 @@
 package SPVM::Bool {
+  our $TRUE : ro SPVM::Bool;
+  our $FALSE : ro SPVM::Bool;
   has val : ro int;
   
-  sub new_true : SPVM::Bool () {
+  BEGIN {
+    # Singleton true
+    $TRUE = new SPVM::Bool;
+    $TRUE->{val} = 1;
     
-    my $self = new SPVM::Bool;
-    
-    $self->{val} = 1;
-    
-    return $self;
-  }
-  
-  sub new_false : SPVM::Bool () {
-
-    my $self = new SPVM::Bool;
-    
-    $self->{val} = 0;
-    
-    return $self;
+    # Singleton false
+    $FALSE = new SPVM::Bool;
+    $FALSE->{val} = 0;
   }
 }

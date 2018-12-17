@@ -1,13 +1,21 @@
 package TestCase::Bool {
   sub basic : int () {
-    my $obj_value1 = SPVM::Bool->new_true;
-    my $obj_value2 = SPVM::Bool->new_false;
+    my $true = SPVM::Bool->TRUE;
+    my $false = SPVM::Bool->FALSE;
     
-    unless ($obj_value1->val == 1) {
+    unless ($true->val == 1) {
       return 0;
     }
     
-    unless ($obj_value2->val == 0) {
+    unless ($false->val == 0) {
+      return 0;
+    }
+    
+    unless ($true == SPVM::Bool->TRUE) {
+      return 0;
+    }
+    
+    unless ($false == SPVM::Bool->FALSE) {
       return 0;
     }
     
