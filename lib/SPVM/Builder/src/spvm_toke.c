@@ -641,7 +641,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
         if (*compiler->bufptr == '\\') {
           compiler->bufptr++;
-          if (*compiler->bufptr == 'b') {
+          if (*compiler->bufptr == 'a') {
+            ch = '\a';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == '0') {
+            ch = '\0';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 'b') {
             ch = '\b';
             compiler->bufptr++;
           }

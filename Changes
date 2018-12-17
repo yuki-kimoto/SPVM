@@ -1,5 +1,6 @@
 0.0404 2018-12-18
   - support ascii escape '\x1F' syntax in character literal
+  - support excape character '\0' '\a'
 0.0403 2018-12-17
   - fix line terminator
   - add __LINE__
