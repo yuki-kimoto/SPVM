@@ -641,40 +641,40 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
         if (*compiler->bufptr == '\\') {
           compiler->bufptr++;
-          if (*compiler->bufptr == 'a') {
-            ch = '\a';
+          if (*compiler->bufptr == '0') {
+            ch = '\0';
             compiler->bufptr++;
           }
-          else if (*compiler->bufptr == '0') {
-            ch = '\0';
+          else if (*compiler->bufptr == 'a') {
+            ch = '\a';
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'b') {
             ch = '\b';
             compiler->bufptr++;
           }
-          else if (*compiler->bufptr == 't') {
-            ch = '\t';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'n') {
-            ch = '\n';
-            compiler->bufptr++;
-          }
           else if (*compiler->bufptr == 'f') {
             ch = '\f';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == 't') {
+            ch = '\t';
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == 'r') {
             ch = '\r';
             compiler->bufptr++;
           }
-          else if (*compiler->bufptr == '"') {
-            ch = '\"';
+          else if (*compiler->bufptr == 'n') {
+            ch = '\n';
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == '\'') {
             ch = '\'';
+            compiler->bufptr++;
+          }
+          else if (*compiler->bufptr == '"') {
+            ch = '\"';
             compiler->bufptr++;
           }
           else if (*compiler->bufptr == '\\') {
@@ -793,14 +793,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             while (char_ptr != compiler->bufptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
-                if (*char_ptr == 'r') {
-                  str[str_length] = 0x0D;
+                if (*char_ptr == '0') {
+                  str[str_length] = '\0';
                 }
-                else if (*char_ptr == 'n') {
-                  str[str_length] = 0x0A;
-                }
-                else if (*char_ptr == 't') {
-                  str[str_length] = '\t';
+                else if (*char_ptr == 'a') {
+                  str[str_length] = '\a';
                 }
                 else if (*char_ptr == 'b') {
                   str[str_length] = '\b';
@@ -808,8 +805,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (*char_ptr == 'f') {
                   str[str_length] = '\f';
                 }
-                else if (*char_ptr == '0') {
-                  str[str_length] = '\0';
+                else if (*char_ptr == 't') {
+                  str[str_length] = '\t';
+                }
+                else if (*char_ptr == 'r') {
+                  str[str_length] = '\r';
+                }
+                else if (*char_ptr == 'n') {
+                  str[str_length] = '\n';
+                }
+                else if (*char_ptr == '\'') {
+                  str[str_length] = '\'';
+                }
+                else if (*char_ptr == '"') {
+                  str[str_length] = '\"';
+                }
+                else if (*char_ptr == '\\') {
+                  str[str_length] = '\\';
                 }
                 else {
                   str[str_length] = *char_ptr;
