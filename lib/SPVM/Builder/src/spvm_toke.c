@@ -823,6 +823,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (*char_ptr == '\\') {
                   str[str_length] = '\\';
                 }
+                // Hex ascii code
+                else if (*char_ptr == 'x') {
+                  char_ptr++;
+                  if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
+                    char* num_str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 3);
+                    num_str[0] = *char_ptr;
+                    char_ptr++;
+                    if (
+                      isdigit(*char_ptr)
+                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
+                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
+                    )
+                    {
+                      num_str[1] = *char_ptr;
+                      char_ptr++;
+                      char *end;
+                      ch = (char)strtol(num_str, &end, 16);
+                    }
+                    else {
+                      SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                    }
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                  }
+                }
                 else {
                   SPVM_COMPILER_error(compiler, "Invalid escape character in string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 }
