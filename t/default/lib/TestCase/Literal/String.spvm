@@ -170,6 +170,12 @@ package TestCase::Literal::String {
   }
 
   sub escape_unicode : int () {
+    my $string = "\N{U+3042}\N{U+3044}\N{U+3046}";
     
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
   }
 }

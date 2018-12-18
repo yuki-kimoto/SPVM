@@ -2,6 +2,7 @@
   - support ascii escape '\x1F' syntax in character literal
   - support string literal excape character '\0' '\a'
   - support string literal ascii escape character
+  - support unicode escape in string literal "\N{U+3042}\N{U+3044}\N{U+3046}"
 0.0403 2018-12-17
   - fix line terminator
   - add __LINE__

@@ -906,7 +906,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         if (valid) {
                           char utf8_chars[4];
                           int32_t byte_length = SPVM_UNICODE_convert_unicode_to_utf8(unicode, (uint8_t*)utf8_chars);
-                          for (int32_t byte_index = 0; byte_index < byte_length; byte_length++) {
+                          for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
                             str[str_length] = utf8_chars[byte_index];
                             str_length++;
                           }
