@@ -17,5 +17,8 @@
 #define SPVM_UNICODE_UTF8_COUNT(ch)  (((ch) & 0xc0) == 0x80)
 
 int32_t SPVM_UNICODE_convert_unicode_to_utf8(int32_t uc, uint8_t* dst);
+int32_t SPVM_UNICODE_convert_unicode_to_utf8(int32_t uc, uint8_t* dst);
+int32_t SPVM_UNICODE_codepoint_valid(int32_t uc);
+int32_t SPVM_UNICODE_iterate(const uint8_t *str, int32_t strlen, int32_t *dst);
 
 #endif

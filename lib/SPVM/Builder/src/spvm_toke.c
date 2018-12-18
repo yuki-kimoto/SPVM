@@ -26,6 +26,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
+#include "spvm_unicode.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -783,7 +784,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             continue;
           }
           
-          int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr);
+          int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr) * 4;
 
           compiler->bufptr++;
           
@@ -847,6 +848,58 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                  }
+                }
+                // Unicode code point. This is converted to UTF-8
+                else if (*char_ptr == 'N') {
+                  char_ptr++;
+                  if (*char_ptr == '{' && *(char_ptr + 1) == 'U' && *(char_ptr + 2) == '+') {
+                    char_ptr += 3;
+                    char* char_start_ptr = char_ptr;
+                    int32_t unicode_chars_length = 0;
+                    
+                    while (
+                      isdigit(*char_ptr)
+                      || *char_ptr == 'a'  || *char_ptr == 'b'  || *char_ptr == 'c'  || *char_ptr == 'd'  || *char_ptr == 'e'  || *char_ptr == 'f'
+                      || *char_ptr == 'A'  || *char_ptr == 'B'  || *char_ptr == 'C'  || *char_ptr == 'D'  || *char_ptr == 'E'  || *char_ptr == 'F'
+                    )
+                    {
+                      char_ptr++;
+                      unicode_chars_length++;
+                    }
+                    if (*char_ptr == '}') {
+                      char_ptr++;
+                      if (unicode_chars_length < 1) {
+                        SPVM_COMPILER_error(compiler, "Unicode code point is empty at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                      }
+                      else if (unicode_chars_length > 8) {
+                        SPVM_COMPILER_error(compiler, "Too big unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                      }
+                      else {
+                        char* unicode_chars = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, unicode_chars_length + 1);
+                        memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
+                        char *end;
+                        int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
+                        int32_t valid = SPVM_UNICODE_codepoint_valid(unicode);
+                        if (valid) {
+                          char utf8_chars[4];
+                          int32_t byte_length = SPVM_UNICODE_convert_unicode_to_utf8(unicode, (uint8_t*)utf8_chars);
+                          for (int32_t byte_index = 0; byte_index < byte_length; byte_length++) {
+                            str[str_length] = utf8_chars[byte_index];
+                            str_length++;
+                          }
+                        }
+                        else {
+                          SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                        }
+                      }
+                    }
+                    else {
+                      SPVM_COMPILER_error(compiler, "Unicode escape need close bracket at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                    }
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "Invalid unicode escape of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                   }
                 }
                 else {
