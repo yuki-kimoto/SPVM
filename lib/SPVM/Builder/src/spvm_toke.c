@@ -796,33 +796,53 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 char_ptr++;
                 if (*char_ptr == '0') {
                   str[str_length] = '\0';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 'a') {
                   str[str_length] = '\a';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 'b') {
                   str[str_length] = '\b';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 'f') {
                   str[str_length] = '\f';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 't') {
                   str[str_length] = '\t';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 'r') {
                   str[str_length] = '\r';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == 'n') {
                   str[str_length] = '\n';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == '\'') {
                   str[str_length] = '\'';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == '"') {
                   str[str_length] = '\"';
+                  str_length++;
+                  char_ptr++;
                 }
                 else if (*char_ptr == '\\') {
                   str[str_length] = '\\';
+                  str_length++;
+                  char_ptr++;
                 }
                 // Hex ascii code
                 else if (*char_ptr == 'x') {
@@ -841,6 +861,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       char_ptr++;
                       char *end;
                       ch = (char)strtol(num_str, &end, 16);
+                      str[str_length] = ch;
+                      str_length++;
                     }
                     else {
                       SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
@@ -905,13 +927,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else {
                   SPVM_COMPILER_error(compiler, "Invalid escape character in string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 }
-                str_length++;
               }
               else {
                 str[str_length] = *char_ptr;
                 str_length++;
+                char_ptr++;
               }
-              char_ptr++;
             }
           }
           str[str_length] = '\0';
