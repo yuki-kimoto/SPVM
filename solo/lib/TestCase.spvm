@@ -72,6 +72,15 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    
+    {
+      my $string = "abc";
+      
+      unless (length $string == 3) {
+        return 0;
+      }
+    }
+
     {
       my $concat_constant = "abc" . "def";
       

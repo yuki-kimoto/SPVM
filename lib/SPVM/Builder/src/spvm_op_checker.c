@@ -3500,6 +3500,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_NEGATE:
                       case SPVM_OP_C_ID_PLUS:
                       case SPVM_OP_C_ID_ARRAY_LENGTH:
+                      case SPVM_OP_C_ID_STRING_LENGTH:
                       case SPVM_OP_C_ID_NEW:
                       case SPVM_OP_C_ID_CONCAT:
                       case SPVM_OP_C_ID_EXCEPTION_VAR:
