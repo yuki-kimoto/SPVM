@@ -824,7 +824,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str[str_length] = '\\';
                 }
                 else {
-                  str[str_length] = *char_ptr;
+                  SPVM_COMPILER_error(compiler, "Invalid escape character in string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 }
                 str_length++;
               }
