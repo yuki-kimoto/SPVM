@@ -195,6 +195,19 @@ cpanm SPVM
       <p>
         SPVMのサブルーチンはコンパイル時に、機械語へコンパイルすることができます。
       </p>
+      <h3>覚えやすく簡単な文法</h3>
+      <p>
+        SPVMの文法は覚えやすく簡単になるように設計されています。
+      </p>
+      <p>
+        文法の95%以上はPerlの文法を採用しています。Perlをすでに学んでいるユーザーであれば、2時間あれば、すべての文法を覚えてしまうことができるでしょう。
+      </p>
+      <p>
+        型の種類、型の規変換規則は、明確です。型推論は、常に右から左へ行われます。
+      </p>
+      <p>
+        継承はなく「汎用オブジェクト型」と「インターフェース」を使って、ポリモーフィズムを実現します。
+      </p>
 
       <h2 id="tutorial">SPVMのチュートリアル</h2>
 
@@ -374,9 +387,9 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-parser">構文解析</a>
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
-        <li><a href="#language-package-definition">パッケージ定義</a>
-        <li><a href="#language-field-definition">フィールド定義</a>
-        <li><a href="#language-package-variable-definition">パッケージ変数定義</a>
+        <li><a href="#language-package">パッケージ</a>
+        <li><a href="#language-field">フィールド</a>
+        <li><a href="#language-package-variable">パッケージ変数</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-undef">未定義値</a></li>
@@ -386,7 +399,7 @@ my $total = MyMath->sum($sp_nums);
       <h3 id="language-parser">構文解析</h3>
       <ul class="toc">
         <li><a href="#language-parser-encoding">ソースコードの文字コード</a>
-        <li><a href="#language-parser-lalr">LALR法</a>
+        <li><a href="#language-parser-lalr">LALR(1)法</a>
         <li><a href="#language-parser-component">構成要素</a>
         <li><a href="#language-parser-line-terminater">行終端</a>
         <li><a href="#language-parser-space-character">空白文字</a>
@@ -398,9 +411,9 @@ my $total = MyMath->sum($sp_nums);
       <p>
         SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されます。
       </p>
-      <h4 id="language-parser-lalr">LALR法</h4>
+      <h4 id="language-parser-lalr">LALR(1)法</h4>
       <p>
-        SPVMのソースコードは、LALR法によって解析できます。yacc/bisonで生成されたパーサージェネレータによって解析することができます。
+        SPVMのソースコードは、LALR(1)法によって解析できます。yacc/bisonで生成されたパーサージェネレータによって解析することができます。
       </p>
       <h4 id="language-parser-component">構成要素</h4>
       <p>
@@ -488,7 +501,12 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 =cut
 </pre>
 
-      <h3 id="language-package-definition">パッケージ</h3>
+      <h3 id="language-package">パッケージ</h3>
+      <ul class="toc">
+        <li><a href="#language-package-definition">パッケージの定義</a></li>
+      </ul>
+      
+      <h4 id="language-package-definition">パッケージの定義</h4>
       <p>
         パッケージを定義するには以下の構文を使用します。
       </p>
@@ -616,7 +634,11 @@ package Foo {
   }
 }
 </pre>
-      <h3 id="language-field-definition">フィールド</h3>
+      <h3 id="language-field">フィールド</h3>
+      <ul class="toc">
+        <li><a href="#language-field-definition">フィールドの定義</a></li>
+      </ul>
+      <h4 id="language-field-definition">フィールドの定義</h4>
       <p>
         フィールドとは「new」を使ってオブジェクト生成した場合に、オブジェクトからアクセスできるデータ領域のことです。
       </p>
@@ -734,7 +756,13 @@ package Foo {
 }
 </pre>
 
-      <h3 id="language-package-variable-definition">パッケージ変数定義</h3>
+      <h3 id="language-package-variable">パッケージ変数</h3>
+      <ul class="toc">
+        <li>
+          <a href="#language-package-variable-definition">パッケージ変数の定義</a>
+        </li>
+      </ul>
+      <h4 id="language-package-variable-definition">パッケージ変数の定義</h4>
       <p>
         パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
       </p>
@@ -1737,6 +1765,11 @@ $list->add("hello!");
 my $str = (string)$list->get(0);
 </pre>
 
+      <h3>継承はありますか</h3>
+      <p>
+        残念ですが、継承はありません。SPVMでは「汎用オブジェクト型」と「インターフェース」を使って、ポリモーフィズムを実現します。
+      </p>
+      
       <h3>サブルーチンのオーバーロードはありますか。</h3>
       <p>
         サブルーチンのオーバーロードはありません。サブルーチンは、サブルーチン名で一意的に識別されます。
