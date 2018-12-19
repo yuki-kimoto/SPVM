@@ -379,6 +379,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-package-variable-definition">パッケージ変数定義</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
+        <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
       </ul>
@@ -939,14 +940,13 @@ package Foo {
       <p>
         型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
       </p>
-      
+
       <h3 id="language-literal">リテラル</h3>
       <ul class="toc">
         <li><a href="#language-literal-integer">整数リテラル</a></li>
         <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
         <li><a href="#language-literal-character">文字リテラル</a></li>
         <li><a href="#language-literal-string">文字列リテラル</a></li>
-        <li><a href="#language-literal-undef">未定義値</a></li>
       </ul>
 
       <h4 id="language-literal-integer">整数リテラル</h3>
@@ -1163,6 +1163,9 @@ package Foo {
         文字リテラルの内容は「ひとつのAsciiの印字可能文字」あるいは「ひとつのエスケープ文字」です。
       </p>
       <p>
+        文字リテラルの型は「byte型」になります。
+      </p>
+      <p>
         不正な文字リテラルの場合は、コンパイルエラーになります。
       </p>
       <p>
@@ -1176,6 +1179,22 @@ package Foo {
           <th>
             説明
           </th>
+        </tr>
+        <tr>
+          <td>
+            <b>\0</b>
+          </td>
+          <td>
+            Asciiコードの0「NUL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\a</b>
+          </td>
+          <td>
+            Asciiコードの7「BEL」
+          </td>
         </tr>
         <tr>
           <td>
@@ -1241,15 +1260,15 @@ package Foo {
             Asciiコードの92「\」
           </td>
         </tr>
+        <tr>
+          <td>
+            <b>\xの後ろに二桁の16進数</b>
+          </td>
+          <td>
+            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
       </table>
-      
-      <p>
-        上記以外のAsciiコードを直接表現したい場合は、<a href="#language-literal-integer">整数リテラル</a>を使用して、直接代入することができます。
-      </p>
-<pre>
-my $ch = (byte)0;
-my $ch = (byte)13;
-</pre>
       
       <p>
         <b>文字リテラルのサンプル</b>
@@ -1258,11 +1277,12 @@ my $ch = (byte)13;
         文字リテラルのサンプルです。
       </p>
 <pre>
-# 文字
+# 文字リテラル
 'a'
 'x'
 
-# エスケープ文字
+# エスケープ文字を使った文字リテラル
+'\a'
 '\b'
 '\t'
 '\n'
@@ -1271,11 +1291,13 @@ my $ch = (byte)13;
 '\"'
 '\''
 '\\'
+'\x0D'
+'\x0A'
 </pre>
       
       <h4 id="language-literal-string">文字列リテラル</h3>
       
-      <h4 id="language-literal-undef">未定義値</h3>
+      <h3 id="language-undef">未定義値</h3>
       <p>
         未定義は「undef」で表現されます。
       </p>
@@ -1294,10 +1316,6 @@ undef
       <p>
         未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
       </p>
-      <p>
-        Perlと異なる点は、SPVMにおいては「undef」は関数ではなくリテラルであるということです。
-      </p>
-      
       <h3 id="language-condition-part">条件部</h3>
       <p>
         条件部とは、条件判定が行われる部分のことです。SPVMでは、以下の部分が条件部となります。
