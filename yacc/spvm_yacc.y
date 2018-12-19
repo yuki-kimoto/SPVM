@@ -31,7 +31,7 @@
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
-%type <opval> opt_statements statements statement normal_statement if_statement else_statement 
+%type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
 %type <opval> unop binop
@@ -443,8 +443,7 @@ statements
   | statement
 
 statement
-  : normal_statement
-  | if_statement
+  : if_statement
   | for_statement
   | while_statement
   | block
@@ -453,9 +452,7 @@ statement
   | default_statement
   | eval_block
   | if_require_statement
-
-normal_statement
-  : normal_term ';'
+  | normal_term ';'
     {
       $$ = $1;
     }
