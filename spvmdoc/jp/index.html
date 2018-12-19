@@ -390,6 +390,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-package">パッケージ</a>
         <li><a href="#language-field">フィールド</a>
         <li><a href="#language-package-variable">パッケージ変数</a>
+        <li><a href="#language-enum">列挙</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-undef">未定義値</a></li>
@@ -879,7 +880,66 @@ package Foo {
   our $NUM_RW : rw int;
 }
 </pre>
-      
+      <h3 id="language-enum">列挙</h3>
+      <ul class="toc">
+        <li>
+          <a href="#language-enum-definition">列挙の定義</a>
+        </li>
+      </ul>
+      <h4 id="language-enum-definition">列挙の定義</h4>
+      <p>
+        列挙は連続したint型の定数を定義したい場合に利用します。
+      </p>
+      <p>
+        列挙は「enum」キーワードを使って定義することができます。
+      </p>
+<pre>
+enum {
+  FLAG1,
+  FLAG2,
+  FLAG3
+}
+</pre>
+      <p>
+        列挙の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+      </p>
+      <p>
+        最初の値は「0」から始まります。値は「1」づつインクリメントされます。この例の場合は「FLAG1」は「0」、「FALG2」は「1」、「FLAG3は「2」になります。
+      </p>
+      <p>
+        列挙の末尾の要素の後ろには「,」をつけることができます。
+      </p>
+<pre>
+enum {
+  FLAG1,
+  FLAG2,
+  FLAG3,
+}
+</pre>
+      <p>
+        列挙はint型を戻り値とする「定数サブルーチン」のエイリアスです。次のサブルーチン定義と等価です。
+      </p>
+<pre>
+sub FLAG1 : int () { return 0; }
+sub FLAG2 : int () { return 1; }
+sub FLAG3 : int () { return 2; }
+</pre>
+      <p>
+        enumの要素には、int型の値を設定することができます。
+      </p>
+<pre>
+enum {
+  FLAG1,
+  FLAG2 = 4,
+  FLAG3,
+}
+</pre>
+      <p>
+        上記の場合は「FLAG1」は「0」、「FALG2」は「4」、「FLAG3」は「5」になります。
+      </p>
+      <p>
+        enumの定義が不正な場合は、コンパイルエラーになります。
+      </p>
       
       <h3 id="language-type">型</h3>
       <ul class="toc">
