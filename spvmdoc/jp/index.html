@@ -453,7 +453,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 ==  <=  >=  !=  &&  ||  ++  --
 +   -   *   /   &   |   ^   %   <<   >>   >>>
 +=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
-\   $   @   .   
+\   $   @   .   .=
 </pre>
       
       <h3 id="language-comment">コメント</h3>
@@ -1296,6 +1296,146 @@ package Foo {
 </pre>
       
       <h4 id="language-literal-string">文字列リテラル</h3>
+      <p>
+        文字列リテラルは、ダブルクォート「"」で囲まれます。
+      </p>
+      <p>
+        文字列リテラルの内容は「0個以上のAsciiの印字可能文字あるいはエスケープ文字」です。
+      </p>
+      <p>
+        文字列リテラルの型は「string型」になります。
+      </p>
+      <p>
+        不正な文字列リテラルの場合は、コンパイルエラーになります。
+      </p>
+      <p>
+        <b>エスケープ文字</b>
+      </p>
+      <table class="toc">
+        <tr>
+          <th>
+            エスケープ文字
+          </th>
+          <th>
+            説明
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>\0</b>
+          </td>
+          <td>
+            Asciiコードの0「NUL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\a</b>
+          </td>
+          <td>
+            Asciiコードの7「BEL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\b</b>
+          </td>
+          <td>
+            Asciiコードの8「BS」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\t</b>
+          </td>
+          <td>
+            Asciiコードの9「HT」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\n</b>
+          </td>
+          <td>
+            Asciiコードの10「LF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\f</b>
+          </td>
+          <td>
+            Asciiコードの12「FF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\r</b>
+          </td>
+          <td>
+            Asciiコードの13「CR」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\"</b>
+          </td>
+          <td>
+            Asciiコードの34「"」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\'</b>
+          </td>
+          <td>
+            Asciiコードの39「'」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\\</b>
+          </td>
+          <td>
+            Asciiコードの92「\」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\xの後ろに二桁の16進数</b>
+          </td>
+          <td>
+            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\N{}の中の複数桁の16進数</b>
+          </td>
+          <td>
+            Unicodeのコードポイントを16進数で指定します。UTF-8に変換されます。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
+      </table>
+      <p>
+        Unicodeのコードポイントを指定するエスケープ文字以外は、<a href="#language-literal-character">文字リテラル</a>のエスケープ文字と共通です。
+      </p>
+      <p>
+        <b>文字列リテラルのサンプル</b>
+      </p>
+      <p>
+        文字列リテラルのサンプルです。
+      </p>
+<pre>
+# 文字列リテラル
+"abc"
+"あいう"
+
+# エスケープ文字を使った文字列リテラル
+"abc\tdef\n"
+"\x0D\x0A"
+"\N{U+3042}\N{U+3044}\N{U+3046}"
+</pre>
       
       <h3 id="language-undef">未定義値</h3>
       <p>
