@@ -34,7 +34,6 @@
 %type <opval> opt_statements statements statement normal_statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> expression
 %type <opval> unop binop
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length
@@ -460,10 +459,26 @@ normal_statement
     {
       $$ = $1;
     }
-  | expression ';'
+  | LAST ';'
+  | NEXT ';'
+  | RETURN ';'
     {
-      $$ = $1;
+      $$ = SPVM_OP_build_return(compiler, $1, NULL);
     }
+  | RETURN normal_term ';'
+    {
+      $$ = SPVM_OP_build_return(compiler, $1, $2);
+    }
+  | CROAK ';'
+    {
+      $$ = SPVM_OP_build_croak(compiler, $1, NULL);
+    }
+  | CROAK normal_term ';'
+    {
+      $$ = SPVM_OP_build_croak(compiler, $1, $2);
+    }
+  | weaken_field ';'
+  | weaken_array_element ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
@@ -555,27 +570,6 @@ eval_block
     {
       $$ = SPVM_OP_build_eval(compiler, $1, $2);
     }
-
-expression
-  : LAST
-  | NEXT
-  | RETURN {
-      $$ = SPVM_OP_build_return(compiler, $1, NULL);
-    }
-  | RETURN normal_term
-    {
-      $$ = SPVM_OP_build_return(compiler, $1, $2);
-    }
-  | CROAK
-    {
-      $$ = SPVM_OP_build_croak(compiler, $1, NULL);
-    }
-  | CROAK normal_term
-    {
-      $$ = SPVM_OP_build_croak(compiler, $1, $2);
-    }
-  | weaken_field
-  | weaken_array_element
 
 opt_normal_terms
   :	/* Empty */
