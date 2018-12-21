@@ -392,6 +392,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-package-variable">パッケージ変数</a>
         <li><a href="#language-enum">列挙</a>
         <li><a href="#language-type">型</a></li>
+        <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-undef">未定義値</a></li>
@@ -1108,9 +1109,86 @@ enum {
         </tr>
       </table>
       
+      <h3 id="language-block">ブロック</h3>
+      
+      <p>
+        ブロックは「{」で始まり「}」で終わります。
+      </p>
+<pre>
+# ブロック
+{
+
+}
+</pre>
+      <p>
+        ブロックは、「文ブロック」と「文ブロックではないブロック」に分けられます。
+      </p>
+      <h4 id="language-block-statement">文ブロック</h4>
+      <p>
+        文ブロックは「単純なブロック」「サブルーチンのブロック」「evalブロック」「ifブロック」「elsifブロック」「elseブロック」「forブロック」「whileブロック」です。
+      </p>
+<pre>
+# 単純なブロック
+{
+
+}
+
+# サブルーチンのブロック
+sub : int () {
+
+}
+
+# evalブロック
+eval {
+
+}
+
+# ifブロック、elseifブロック、elseブロック
+if (条件1) {
+
+}
+elsif (条件2) {
+
+}
+else {
+
+}
+
+# for ブロック
+for (my $i = 0; $i < 3; $i++) {
+
+}
+
+# whileブロック
+while (条件) {
+
+}
+</pre>
+      <p>
+        文ブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
+      </p>
+      <p>
+        文ブロックは、スコープを作ります。ブロックの中で宣言された変数に、オブジェクトが代入されている場合は、ブロックの終了の直後に、解放されます。
+      </p>
+
+      <h4 id="language-block-other">文ブロックではないブロック</h4>
+      <p>
+        「パッケージブロック」「列挙ブロック」は「文ブロックではないブロック」です。
+      </p>
+<pre>
+# パッケージブロック
+package Foo {
+
+}
+
+# 列挙ブロック
+enum {
+
+}
+</pre>
       <h3 id="language-statement">文</h3>
       <p>
-        文とは、ひとつの処理のことで「単純なブロック」「サブルーチンのブロック」「BEGINのブロック」「evalのブロック」の中に記述することができます。
+        文とは、ひとつの処理のことで「ブロック」の中に記述することができます。
       </p>
       <ul class="toc">
         <li><a href="#language-statement-next">next文</a></li>
@@ -1118,12 +1196,29 @@ enum {
       </ul>
       <h4 id="language-statement-next">next文</h3>
       <p>
-        「next文」によってforのループブロックの次の先頭に移動することができます。
+        「next文」によってforのループブロックを脱出して、次のループブロックの先頭に移動することができます。
       </p>
+<pre>
+next
+</pre>
+      <p>
+        <b>next文のサンプル</b>
+      </p>
+<pre>
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    next;
+  }
+}
+</pre>
+
       <h4 id="language-statement-last">last文</h3>
       <p>
         「last文」によってforのループブロックから脱出することができます。
       </p>
+<pre>
+last
+</pre>
       
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="toc">
