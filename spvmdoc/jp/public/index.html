@@ -392,6 +392,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-package-variable">パッケージ変数</a>
         <li><a href="#language-enum">列挙</a>
         <li><a href="#language-type">型</a></li>
+        <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
@@ -603,10 +604,10 @@ package Point : public {
         </tr>
       </table>
       <p>
-        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーになります。
       </p>
       <p>
-        「interface」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+        「interface」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーになります。
       </p>
       
       <p>
@@ -726,10 +727,10 @@ has フィールド名 : デスクリプタ 型名;
         </tr>
       </table>
       <p>
-        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーになります。
       </p>
       <p>
-        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーになります。
       </p>
       <p>
         フィールドアクセッサとは、フィールドにアクセスするためのメソッドのことです。
@@ -762,7 +763,7 @@ package Foo {
 }
 </pre>
       <p>
-        不正なフィールドの定義は、コンパイルエラーになります。
+        不正なフィールドの定義は、コンパイル時エラーになります。
       </p>
 
       <h3 id="language-package-variable">パッケージ変数</h3>
@@ -853,10 +854,10 @@ our パッケージ変数名 : デスクリプタ 型名;
         </tr>
       </table>
       <p>
-        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーになります。
       </p>
       <p>
-        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイルエラーになります。
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーになります。
       </p>
       <p>
         パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
@@ -968,7 +969,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
         </tr>
       </table>
       <p>
-        「native」と「precompile」の両方のデスクリプタが指定された場合は、コンパイルエラーになります。
+        「native」と「precompile」の両方のデスクリプタが指定された場合は、コンパイル時エラーになります。
       </p>
       
       <p>
@@ -1038,7 +1039,7 @@ enum {
         上記の場合は「FLAG1」は「0」、「FALG2」は「4」、「FLAG3」は「5」になります。
       </p>
       <p>
-        enumの定義が不正な場合は、コンパイルエラーになります。
+        enumの定義が不正な場合は、コンパイル時エラーになります。
       </p>
       
       <h3 id="language-type">型</h3>
@@ -1108,6 +1109,66 @@ enum {
           </td>
         </tr>
       </table>
+      <h3 id="language-term">項</h3>
+      <p>
+        算術演算子の両辺、サブルーチンの引数などになることができる最小の単位を「項」と呼びます。
+      </p>
+      <p>
+        「項」には「<a href="#language-statement">式</a>」として扱える「<a href="#language-term-expression">式項</a>」、式にはなれず、条件部のみで利用できる「<a href="#language-statement">条件項</a>」があります。
+      </p>
+      <ul>
+        <li>式項</li>
+        <li >条件項</li>
+      <ul>
+      <h4  id="language-term-expression">式項</h4>
+      <p>
+        式項は以下で定義されます。
+      </p>
+      <ul>
+        <li>変数</li>
+        <li>例外変数</li>
+        <li>パッケージ変数の読み取り</li>
+        <li>定数リテラル</li>
+        <li>未定義値</li>
+        <li>サブルーチン呼び出し</li>
+        <li>フィールドの読み取り</li>
+        <li>配列の要素の読み取り</li>
+        <li>型変換</li>
+        <li>new演算子</li>
+        <li>配列の初期化</li>
+        <li>配列の長さ</li>
+        <li>文字列の長さ</li>
+        <li>変数宣言</li>
+        <li>二項演算子</li>
+        <li>単項演算子</li>
+        <li>リファレンス演算子</li>
+        <li>デリファレンス演算子</li>
+        <li>代入演算子</li>
+        <li>インクリメント演算子</li>
+        <li>デクリメント演算子</li>
+        <li>__PACKAGE__演算子</li>
+        <li>__FILE__演算子</li>
+        <li>__LINE__演算子</li>
+        <li>(式項)</li>
+      </u>
+
+      <h4 id="language-term-logical">条件項</h4>
+      <ul>
+        <li>比較演算子</li>
+        <li>論理演算子</li>
+        <li>(条件項)</li>
+      </u>
+
+      <h3 id="language-operator">演算子</h3>
+      <ul class="toc">
+        <li><a href="language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="language-operator-arithmetic">数値比較演算子</a></li>
+        <li><a href="language-operator-arithmetic">文字列比較演算子</a></li>
+        <li><a href="language-operator-arithmetic">論理演算子</a></li>
+      </ul>
+      <p>
+        
+      </p>
       
       <h3 id="language-block">ブロック</h3>
       
@@ -1226,12 +1287,50 @@ enum {
 </pre>
       <h3 id="language-statement">文</h3>
       <p>
-        文とは、ひとつの処理のことで「ブロック」の中に記述することができます。
+        文とは、ひとつの処理のことで「<a href="#language-block-statement">文ブロック</a>」の中に記述することができます。
       </p>
-      <ul class="toc">
+      <p>
+        文は以下からなります。
+      </p>
+      <ul>
+        <li><a href="#language-statement-if">if文</a></li>
+        <li><a href="#language-statement-for">for文</a></li>
+        <li><a href="#language-statement-while">while文</a></li>
+        <li><a href="#language-statement-switch">switch文</a></li>
+        <li><a href="#language-statement-case">case文</a></li>
+        <li><a href="#language-statement-default">default文</a></li>
+        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
+        <li><a href="#language-statement-eval">eval文</a></li>
+        <li><a href="#language-statement-ifrequire">if require文</a></li>
         <li><a href="#language-statement-next">next文</a></li>
         <li><a href="#language-statement-last">last文</a></li>
+        <li><a href="#language-statement-return">return文</a></li>
+        <li><a href="#language-statement-croak">croak文</a></li>
+        <li><a href="#language-statement-weaken">weaken文</a></li>
+        <li><a href="#language-statement-term-expression">式項文</a></li>
+        <li><a href="#language-statement-empty">空文</a></li>
       </ul>
+
+      <h4 id="language-statement-return">return文</h3>
+      <p>
+        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
+      </p>
+<pre>
+return;
+</pre>
+      <p>
+        戻り値がある場合は、<a href="#language-term-expression">式項</a>を指定することができます。
+      </p>
+<pre>
+return 式項;
+</pre>
+      <p>
+        <a href="#language-subroutine-definition">サブルーチンの定義</a>において戻り値の型が「void型」である場合は、式項が存在してはいけません。これが満たされない場合は、コンパイル時エラーになります。
+      </p>
+      <p>
+        <a href="#language-subroutine-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式項の型と一致していなければなりません。これが満たされない場合は、コンパイル時エラーになります。
+      </p>
+
       <h4 id="language-statement-next">next文</h3>
       <p>
         「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
@@ -1304,7 +1403,32 @@ switch ($num) {
     # デフォルト
 }
 </pre>
-      
+      <h4 id="language-statement-term-expression">式項文</h4>
+      <p>
+        式項文は「<a href="#language-term-expression">式項</a>」と「;」で構成される文のことです。
+      </p>
+<pre>
+式項;
+</pre>
+
+      <p>
+        式項文のサンプルです。
+      </p>
+<pre>
+1;
+$var;
+1 + 2;
+foo();
+my $num = 1 + 2;
+</pre>
+
+      <h4 id="language-statement-empty">空文</h4>
+      <p>
+        空文は「;」だけで終わる文のことです。
+      </p>
+<pre>
+;
+</pre>
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="toc">
         <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
@@ -1347,25 +1471,25 @@ switch ($num) {
         整数リテラルの型は、デフォルトでは「int型」になります。
       </p>
       <p>
-        整数リテラルがint型で表現できる数値の範囲を超えている場合は、コンパイルエラーになります。
+        整数リテラルがint型で表現できる数値の範囲を超えている場合は、コンパイル時エラーになります。
       </p>
       <p>
         末尾に「L」あるいは「l」のサフィックスをつけることで「long型」の整数リテラルを表現できます。
       </p>
       <p>
-        long型の整数リテラルの場合は、long型で表現できる数値の範囲を超えている場合は、コンパイルエラーになります。
+        long型の整数リテラルの場合は、long型で表現できる数値の範囲を超えている場合は、コンパイル時エラーになります。
       </p>
       <p>
         区切り文字として「_」を使用することができます。区切り文字は意味を持ちません。
       </p>
       <p>
-        不正な整数リテラルの表現はコンパイルエラーになります。
+        不正な整数リテラルの表現はコンパイル時エラーになります。
       </p>
       <p>
-        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイルエラーとなります。
+        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
       </p>
       <p>
-        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイルエラーとなります。
+        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
       </p>
       <p>
         整数リテラルのサンプルです。
@@ -1392,7 +1516,7 @@ switch ($num) {
         その後ろに「0～9」「a～f」「A～F」のひとつ以上の連続した文字が続きます。
       </p>
       <p>
-        不正な16進数表現は、コンパイルエラーになります。
+        不正な16進数表現は、コンパイル時エラーになります。
       </p>
       <p>
         整数リテラルを16進数で表現したサンプルです。
@@ -1417,7 +1541,7 @@ switch ($num) {
         その後ろに「0～7」のひとつ以上の連続した文字が続きます。
       </p>
       <p>
-        不正な8進数表現は、コンパイルエラーになります。
+        不正な8進数表現は、コンパイル時エラーになります。
       </p>
       <p>
         整数リテラルを8進数で表現したサンプルです。
@@ -1441,7 +1565,7 @@ switch ($num) {
         その後ろに「0」か「1」のひとつ以上の連続した文字が続きます。
       </p>
       <p>
-        不正な2進数表現は、コンパイルエラーになります。
+        不正な2進数表現は、コンパイル時エラーになります。
       </p>
       <p>
         整数リテラルを2進数で表現したサンプルです。
@@ -1510,10 +1634,10 @@ switch ($num) {
         サフィックスが省略された場合は、浮動小数点リテラルの型は「double型」になります。
       </p>
       <p>
-        浮動小数点リテラルが「float型」の場合はC標準の「strtof関数」を使って、文字列からfloat型への変換が行われます。変換が失敗した場合は、コンパイルエラーになります。
+        浮動小数点リテラルが「float型」の場合はC標準の「strtof関数」を使って、文字列からfloat型への変換が行われます。変換が失敗した場合は、コンパイル時エラーになります。
       </p>
       <p>
-        浮動小数点リテラルが「double型」の場合はC標準の「strtod関数」を使って、文字列からdouble型への変換が行われます。変換が失敗した場合は、コンパイルエラーになります。
+        浮動小数点リテラルが「double型」の場合はC標準の「strtod関数」を使って、文字列からdouble型への変換が行われます。変換が失敗した場合は、コンパイル時エラーになります。
       </p>
       <p>
         無限大を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-INFINITY">INFINITY関数</a>」「<a href="#stdfunc-INFINITYF">INFINITYF関数</a>」を使用してください。
@@ -1550,7 +1674,7 @@ switch ($num) {
         文字リテラルの型は「byte型」になります。
       </p>
       <p>
-        不正な文字リテラルの場合は、コンパイルエラーになります。
+        不正な文字リテラルの場合は、コンパイル時エラーになります。
       </p>
       <p>
         <b>エスケープ文字</b>
@@ -1690,7 +1814,7 @@ switch ($num) {
         文字列リテラルの型は「string型」になります。
       </p>
       <p>
-        不正な文字列リテラルの場合は、コンパイルエラーになります。
+        不正な文字列リテラルの場合は、コンパイル時エラーになります。
       </p>
       <p>
         <b>エスケープ文字</b>
@@ -1918,6 +2042,25 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
+      <h3>比較演算子や論理演算子が戻り値を返せないのはなぜですか?</h3>
+      <p>
+        SPVMでは、条件判定した結果は、内部的な条件フラグに保存されます。これを、戻り値にすることは可能なはずですが、現在は実装されていません。
+      </p>
+      <p>
+        戻り値が欲しい場合は、少し面倒ですが、次のように記述してください。
+      </p>
+<pre>
+my $flag : int;
+if ($num > 3) {
+  $flag = 1;
+}
+else {
+  $flag = 0;
+}
+</pre>
+      <h3>
+        SPVMの1.0はいつリリースされますか。
+      </h3>
       <h3>
         SPVMの1.0はいつリリースされますか。
       </h3>
