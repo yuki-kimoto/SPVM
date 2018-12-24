@@ -95,12 +95,12 @@
      BIT_XOR = 311,
      BIT_OR = 312,
      BIT_AND = 313,
-     REL = 314,
-     SHIFT = 315,
-     REMAINDER = 316,
-     DIVIDE = 317,
-     MULTIPLY = 318,
-     ISA = 319,
+     ISA = 314,
+     REL = 315,
+     SHIFT = 316,
+     REMAINDER = 317,
+     DIVIDE = 318,
+     MULTIPLY = 319,
      LENGTH = 320,
      DEREF = 321,
      REF = 322,
@@ -170,12 +170,12 @@
 #define BIT_XOR 311
 #define BIT_OR 312
 #define BIT_AND 313
-#define REL 314
-#define SHIFT 315
-#define REMAINDER 316
-#define DIVIDE 317
-#define MULTIPLY 318
-#define ISA 319
+#define ISA 314
+#define REL 315
+#define SHIFT 316
+#define REMAINDER 317
+#define DIVIDE 318
+#define MULTIPLY 319
 #define LENGTH 320
 #define DEREF 321
 #define REF 322

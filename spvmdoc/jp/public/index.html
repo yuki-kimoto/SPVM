@@ -1179,9 +1179,9 @@ enum {
 右結合 代入演算子「=」、特殊代入演算子「+=」「-=」「*=」「/=」「&=」「|=」「^=」「%=」「<<=」「>>=」「>>>=」「.=」
 左結合 条件OR演算子「||」
 左結合 条件AND演算子 「&&」
-%left <opval> BIT_OR BIT_XOR
-%left <opval> BIT_AND
-%nonassoc <opval> REL
+左結合 ビットOR演算子「|」ビットXOR演算子 「^」
+左結合 ビットAND演算子「&」
+結合不可 比較演算子 「==」「!=」「>」「<」「<=」「>=」「eq」「ne」「gt」「ge」「lt」「le」「isa」
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER

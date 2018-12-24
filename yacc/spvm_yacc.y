@@ -49,11 +49,10 @@
 %left <opval> COND_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
-%nonassoc <opval> REL
+%nonassoc <opval> REL ISA
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%nonassoc <opval> ISA
 %right <opval> COND_COMPLEMENT BIT_COMPLEMENT '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
