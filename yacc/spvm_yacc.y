@@ -22,7 +22,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> AMPERSAND DOT3 FATCAMMA RW RO WO BEGIN REQUIRE
+%token <opval> DOT3 FATCAMMA RW RO WO BEGIN REQUIRE
 %token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE
 
 %type <opval> grammar
@@ -48,7 +48,7 @@
 %left <opval> COND_OR
 %left <opval> COND_AND
 %left <opval> BIT_OR BIT_XOR
-%left <opval> BIT_AND
+%left <opval> '&'
 %nonassoc <opval> REL ISA
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
@@ -708,9 +708,10 @@ binop
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term AMPERSAND expression_term %prec BIT_AND
+  | expression_term '&' expression_term
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, $2->file, $2->line);
+      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
   | expression_term BIT_OR expression_term
     {
@@ -1007,7 +1008,7 @@ basic_type
     }
 
 ref_type
-  : basic_type AMPERSAND
+  : basic_type '&'
     {
       $$ = SPVM_OP_build_ref_type(compiler, $1);
     }

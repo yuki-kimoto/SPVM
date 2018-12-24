@@ -75,44 +75,42 @@
      DOUBLE = 291,
      STRING = 292,
      OBJECT = 293,
-     AMPERSAND = 294,
-     DOT3 = 295,
-     FATCAMMA = 296,
-     RW = 297,
-     RO = 298,
-     WO = 299,
-     BEGIN = 300,
-     REQUIRE = 301,
-     RETURN = 302,
-     WEAKEN = 303,
-     CROAK = 304,
-     CURRENT_PACKAGE = 305,
-     SPECIAL_ASSIGN = 306,
-     ASSIGN = 307,
-     COND_OR = 308,
-     COND_AND = 309,
-     BIT_XOR = 310,
-     BIT_OR = 311,
-     BIT_AND = 312,
-     ISA = 313,
-     REL = 314,
-     SHIFT = 315,
-     REMAINDER = 316,
-     DIVIDE = 317,
-     MULTIPLY = 318,
-     CAST = 319,
-     NEW = 320,
-     MINUS = 321,
-     PLUS = 322,
-     LENGTH = 323,
-     DEREF = 324,
-     REF = 325,
-     SCALAR = 326,
-     BIT_NOT = 327,
-     COND_NOT = 328,
-     DEC = 329,
-     INC = 330,
-     ARROW = 331
+     DOT3 = 294,
+     FATCAMMA = 295,
+     RW = 296,
+     RO = 297,
+     WO = 298,
+     BEGIN = 299,
+     REQUIRE = 300,
+     RETURN = 301,
+     WEAKEN = 302,
+     CROAK = 303,
+     CURRENT_PACKAGE = 304,
+     SPECIAL_ASSIGN = 305,
+     ASSIGN = 306,
+     COND_OR = 307,
+     COND_AND = 308,
+     BIT_XOR = 309,
+     BIT_OR = 310,
+     ISA = 311,
+     REL = 312,
+     SHIFT = 313,
+     REMAINDER = 314,
+     DIVIDE = 315,
+     MULTIPLY = 316,
+     CAST = 317,
+     NEW = 318,
+     MINUS = 319,
+     PLUS = 320,
+     LENGTH = 321,
+     DEREF = 322,
+     REF = 323,
+     SCALAR = 324,
+     BIT_NOT = 325,
+     COND_NOT = 326,
+     DEC = 327,
+     INC = 328,
+     ARROW = 329
    };
 #endif
 /* Tokens.  */
@@ -152,44 +150,42 @@
 #define DOUBLE 291
 #define STRING 292
 #define OBJECT 293
-#define AMPERSAND 294
-#define DOT3 295
-#define FATCAMMA 296
-#define RW 297
-#define RO 298
-#define WO 299
-#define BEGIN 300
-#define REQUIRE 301
-#define RETURN 302
-#define WEAKEN 303
-#define CROAK 304
-#define CURRENT_PACKAGE 305
-#define SPECIAL_ASSIGN 306
-#define ASSIGN 307
-#define COND_OR 308
-#define COND_AND 309
-#define BIT_XOR 310
-#define BIT_OR 311
-#define BIT_AND 312
-#define ISA 313
-#define REL 314
-#define SHIFT 315
-#define REMAINDER 316
-#define DIVIDE 317
-#define MULTIPLY 318
-#define CAST 319
-#define NEW 320
-#define MINUS 321
-#define PLUS 322
-#define LENGTH 323
-#define DEREF 324
-#define REF 325
-#define SCALAR 326
-#define BIT_NOT 327
-#define COND_NOT 328
-#define DEC 329
-#define INC 330
-#define ARROW 331
+#define DOT3 294
+#define FATCAMMA 295
+#define RW 296
+#define RO 297
+#define WO 298
+#define BEGIN 299
+#define REQUIRE 300
+#define RETURN 301
+#define WEAKEN 302
+#define CROAK 303
+#define CURRENT_PACKAGE 304
+#define SPECIAL_ASSIGN 305
+#define ASSIGN 306
+#define COND_OR 307
+#define COND_AND 308
+#define BIT_XOR 309
+#define BIT_OR 310
+#define ISA 311
+#define REL 312
+#define SHIFT 313
+#define REMAINDER 314
+#define DIVIDE 315
+#define MULTIPLY 316
+#define CAST 317
+#define NEW 318
+#define MINUS 319
+#define PLUS 320
+#define LENGTH 321
+#define DEREF 322
+#define REF 323
+#define SCALAR 324
+#define BIT_NOT 325
+#define COND_NOT 326
+#define DEC 327
+#define INC 328
+#define ARROW 329
 
 
 
