@@ -86,31 +86,32 @@
      RETURN = 302,
      WEAKEN = 303,
      CROAK = 304,
-     NEW = 305,
-     CURRENT_PACKAGE = 306,
-     SPECIAL_ASSIGN = 307,
-     ASSIGN = 308,
-     COND_OR = 309,
-     COND_AND = 310,
-     BIT_XOR = 311,
-     BIT_OR = 312,
-     BIT_AND = 313,
-     ISA = 314,
-     REL = 315,
-     SHIFT = 316,
-     REMAINDER = 317,
-     DIVIDE = 318,
-     MULTIPLY = 319,
-     LENGTH = 320,
-     DEREF = 321,
-     REF = 322,
-     UMINUS = 323,
-     SCALAR = 324,
-     BIT_NOT = 325,
-     COND_NOT = 326,
-     DEC = 327,
-     INC = 328,
-     ARROW = 329
+     CURRENT_PACKAGE = 305,
+     SPECIAL_ASSIGN = 306,
+     ASSIGN = 307,
+     COND_OR = 308,
+     COND_AND = 309,
+     BIT_XOR = 310,
+     BIT_OR = 311,
+     BIT_AND = 312,
+     ISA = 313,
+     REL = 314,
+     SHIFT = 315,
+     REMAINDER = 316,
+     DIVIDE = 317,
+     MULTIPLY = 318,
+     CAST = 319,
+     NEW = 320,
+     LENGTH = 321,
+     DEREF = 322,
+     REF = 323,
+     UMINUS = 324,
+     SCALAR = 325,
+     BIT_NOT = 326,
+     COND_NOT = 327,
+     DEC = 328,
+     INC = 329,
+     ARROW = 330
    };
 #endif
 /* Tokens.  */
@@ -161,31 +162,32 @@
 #define RETURN 302
 #define WEAKEN 303
 #define CROAK 304
-#define NEW 305
-#define CURRENT_PACKAGE 306
-#define SPECIAL_ASSIGN 307
-#define ASSIGN 308
-#define COND_OR 309
-#define COND_AND 310
-#define BIT_XOR 311
-#define BIT_OR 312
-#define BIT_AND 313
-#define ISA 314
-#define REL 315
-#define SHIFT 316
-#define REMAINDER 317
-#define DIVIDE 318
-#define MULTIPLY 319
-#define LENGTH 320
-#define DEREF 321
-#define REF 322
-#define UMINUS 323
-#define SCALAR 324
-#define BIT_NOT 325
-#define COND_NOT 326
-#define DEC 327
-#define INC 328
-#define ARROW 329
+#define CURRENT_PACKAGE 305
+#define SPECIAL_ASSIGN 306
+#define ASSIGN 307
+#define COND_OR 308
+#define COND_AND 309
+#define BIT_XOR 310
+#define BIT_OR 311
+#define BIT_AND 312
+#define ISA 313
+#define REL 314
+#define SHIFT 315
+#define REMAINDER 316
+#define DIVIDE 317
+#define MULTIPLY 318
+#define CAST 319
+#define NEW 320
+#define LENGTH 321
+#define DEREF 322
+#define REF 323
+#define UMINUS 324
+#define SCALAR 325
+#define BIT_NOT 326
+#define COND_NOT 327
+#define DEC 328
+#define INC 329
+#define ARROW 330
 
 
 

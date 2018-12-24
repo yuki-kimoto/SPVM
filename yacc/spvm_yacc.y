@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> AMPERSAND DOT3 FATCAMMA RW RO WO BEGIN REQUIRE
-%token <opval> RETURN WEAKEN CROAK NEW CURRENT_PACKAGE
+%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -36,7 +36,7 @@
 %type <opval> block eval_block begin_block if_require_statement
 %type <opval> unop binop
 %type <opval> call_sub opt_vaarg
-%type <opval> array_access field_access weaken_field weaken_array_element convert_type array_length
+%type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
 %type <opval> deref ref assign incdec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
@@ -53,6 +53,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
+%right <opval> NEW CAST
 %right <opval> COND_NOT BIT_NOT '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
@@ -774,10 +775,16 @@ array_init
     }
 
 convert_type
-  : '(' type ')' expression_term
+  : convert expression_term %prec CAST
     {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $2->file, $2->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
+      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $1->file, $1->line);
+      $$ = SPVM_OP_build_convert(compiler, op_convert, $1, $2);
+    }
+
+convert
+  : '(' type ')'
+    {
+      $$ = $2;
     }
 
 array_access
