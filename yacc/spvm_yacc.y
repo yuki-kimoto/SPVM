@@ -56,7 +56,6 @@
 %right <opval> NEW CAST
 %right <opval> COND_NOT BIT_NOT '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
-%nonassoc <opval> ')'
 %left <opval> ARROW
 %left <opval> '('
 %left <opval> '[' '{'
