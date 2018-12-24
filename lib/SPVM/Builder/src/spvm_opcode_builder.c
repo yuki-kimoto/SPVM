@@ -1873,7 +1873,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
-                      else if (op_assign_src->id == SPVM_OP_C_ID_COMPLEMENT) {
+                      else if (op_assign_src->id == SPVM_OP_C_ID_BIT_COMPLEMENT) {
 
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1883,12 +1883,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t var_id_in;
                         switch (type_dist->basic_type->id) {
                           case SPVM_BASIC_TYPE_C_ID_INT:
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEMENT_INT);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BIT_COMPLEMENT_INT);
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             var_id_in = SPVM_OP_get_var_id(compiler, op_assign_src->first);
                             break;
                           case SPVM_BASIC_TYPE_C_ID_LONG:
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEMENT_LONG);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BIT_COMPLEMENT_LONG);
                             var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                             var_id_in = SPVM_OP_get_var_id(compiler, op_assign_src->first);
                             break;

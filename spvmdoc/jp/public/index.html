@@ -1165,9 +1165,33 @@ enum {
         <li><a href="language-operator-arithmetic">数値比較演算子</a></li>
         <li><a href="language-operator-arithmetic">文字列比較演算子</a></li>
         <li><a href="language-operator-arithmetic">論理演算子</a></li>
+        <li><a href="language-operator-precedence">演算子の優先順位</a></liL
       </ul>
+      <h3 href="language-operator-precedence">演算子の優先順位</h3>
       <p>
-        
+        演算子の優先順位は、第一に括弧「()」で囲まれている部分が評価され、第二に「<a href="#language-operator-precedence-mplicitly">暗黙的な演算子の優先順位</a>」によって評価されます。
+      </p>
+      <h4 href="language-operator-precedence-mplicitly">暗黙的な演算子の優先順位</h4>
+      <p>
+        暗黙的な演算子の優先順位です。上にあるものが低く、下にあるものが高くなっています。
+      </p>
+      <p>
+右結合 代入演算子「=」、特殊代入演算子「+=」「-=」「*=」「/=」「&=」「|=」「^=」「%=」「<<=」「>>=」「>>>=」「.=」
+左結合 条件OR演算子「||」
+左結合 条件AND演算子 「&&」
+%left <opval> BIT_OR BIT_XOR
+%left <opval> BIT_AND
+%nonassoc <opval> REL
+%left <opval> SHIFT
+%left <opval> '+' '-' '.'
+%left <opval> MULTIPLY DIVIDE REMAINDER
+%nonassoc <opval> ISA
+%right <opval> NOT '~' '@' SCALAR UMINUS REF DEREF LENGTH
+%nonassoc <opval> INC DEC
+%nonassoc <opval> ')'
+%left <opval> ARROW
+%left <opval> '('
+%left <opval> '[' '{'        
       </p>
       
       <h3 id="language-block">ブロック</h3>

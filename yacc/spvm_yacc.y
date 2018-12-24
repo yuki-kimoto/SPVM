@@ -45,8 +45,8 @@
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
-%left <opval> OR
-%left <opval> AND
+%left <opval> COND_OR
+%left <opval> COND_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
 %nonassoc <opval> REL
@@ -54,7 +54,7 @@
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
 %nonassoc <opval> ISA
-%right <opval> NOT '~' '@' SCALAR UMINUS REF DEREF LENGTH
+%right <opval> COND_COMPLEMENT BIT_COMPLEMENT '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
 %left <opval> ARROW
@@ -651,7 +651,7 @@ unop
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
-  | '~' expression_term
+  | BIT_COMPLEMENT expression_term
     {
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
@@ -903,15 +903,15 @@ condition_term
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
-  | term OR term
+  | term COND_OR term
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
-  | term AND term
+  | term COND_AND term
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
-  | NOT term
+  | COND_COMPLEMENT term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }

@@ -1808,7 +1808,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_COMPLEMENT: {
+            case SPVM_OP_C_ID_BIT_COMPLEMENT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               // Must be numeric type
@@ -3491,12 +3491,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_BIT_AND:
                       case SPVM_OP_C_ID_BIT_OR:
                       case SPVM_OP_C_ID_BIT_XOR:
-                      case SPVM_OP_C_ID_BIT_NOT:
+                      case SPVM_OP_C_ID_BIT_COMPLEMENT:
                       case SPVM_OP_C_ID_REMAINDER:
                       case SPVM_OP_C_ID_LEFT_SHIFT:
                       case SPVM_OP_C_ID_RIGHT_SHIFT:
                       case SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED:
-                      case SPVM_OP_C_ID_COMPLEMENT:
                       case SPVM_OP_C_ID_NEGATE:
                       case SPVM_OP_C_ID_PLUS:
                       case SPVM_OP_C_ID_ARRAY_LENGTH:

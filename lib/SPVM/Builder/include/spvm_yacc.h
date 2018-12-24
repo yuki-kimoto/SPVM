@@ -90,8 +90,8 @@
      CURRENT_PACKAGE = 306,
      SPECIAL_ASSIGN = 307,
      ASSIGN = 308,
-     OR = 309,
-     AND = 310,
+     COND_OR = 309,
+     COND_AND = 310,
      BIT_XOR = 311,
      BIT_OR = 312,
      BIT_AND = 313,
@@ -106,10 +106,11 @@
      REF = 322,
      UMINUS = 323,
      SCALAR = 324,
-     NOT = 325,
-     DEC = 326,
-     INC = 327,
-     ARROW = 328
+     BIT_COMPLEMENT = 325,
+     COND_COMPLEMENT = 326,
+     DEC = 327,
+     INC = 328,
+     ARROW = 329
    };
 #endif
 /* Tokens.  */
@@ -164,8 +165,8 @@
 #define CURRENT_PACKAGE 306
 #define SPECIAL_ASSIGN 307
 #define ASSIGN 308
-#define OR 309
-#define AND 310
+#define COND_OR 309
+#define COND_AND 310
 #define BIT_XOR 311
 #define BIT_OR 312
 #define BIT_AND 313
@@ -180,10 +181,11 @@
 #define REF 322
 #define UMINUS 323
 #define SCALAR 324
-#define NOT 325
-#define DEC 326
-#define INC 327
-#define ARROW 328
+#define BIT_COMPLEMENT 325
+#define COND_COMPLEMENT 326
+#define DEC 327
+#define INC 328
+#define ARROW 329
 
 
 

@@ -407,9 +407,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Or
         if (*compiler->bufptr == '|') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_OR);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_OR);
           yylvalp->opval = op;
-          return OR;
+          return COND_OR;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
@@ -431,9 +431,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Or
         if (*compiler->bufptr == '&') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_AND);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_AND);
           yylvalp->opval = op;
-          return AND;
+          return COND_AND;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
@@ -624,16 +624,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return REL;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NOT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_COMPLEMENT);
           yylvalp->opval = op;
-          return NOT;
+          return COND_COMPLEMENT;
         }
         
       case '~': {
         compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COMPLEMENT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_COMPLEMENT);
           yylvalp->opval = op;
-        return '~';
+        return BIT_COMPLEMENT;
       }
       // Character Literal
       case '\'': {
