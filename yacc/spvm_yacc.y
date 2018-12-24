@@ -52,11 +52,12 @@
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA
 %left <opval> SHIFT
+%nonassoc <opval> SCALAR LENGTH REQUIRE
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> COND_NOT BIT_NOT '@' SCALAR REF DEREF LENGTH PLUS MINUS REQUIRE NEW CAST
+%right <opval> COND_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST 
 %nonassoc <opval> INC DEC
-%left <opval> ARROW
+%left <opval> ARROW NEW
 %left <opval> '[' '{' '('
 
 %%

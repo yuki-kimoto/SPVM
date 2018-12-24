@@ -105,22 +105,22 @@
      NUMGE = 321,
      NUMGT = 322,
      SHIFT = 323,
-     REMAINDER = 324,
-     DIVIDE = 325,
-     MULTIPLY = 326,
-     CAST = 327,
-     NEW = 328,
-     REQUIRE = 329,
-     MINUS = 330,
-     PLUS = 331,
-     LENGTH = 332,
+     REQUIRE = 324,
+     LENGTH = 325,
+     SCALAR = 326,
+     REMAINDER = 327,
+     DIVIDE = 328,
+     MULTIPLY = 329,
+     CAST = 330,
+     MINUS = 331,
+     PLUS = 332,
      DEREF = 333,
      REF = 334,
-     SCALAR = 335,
-     BIT_NOT = 336,
-     COND_NOT = 337,
-     DEC = 338,
-     INC = 339,
+     BIT_NOT = 335,
+     COND_NOT = 336,
+     DEC = 337,
+     INC = 338,
+     NEW = 339,
      ARROW = 340
    };
 #endif
@@ -191,22 +191,22 @@
 #define NUMGE 321
 #define NUMGT 322
 #define SHIFT 323
-#define REMAINDER 324
-#define DIVIDE 325
-#define MULTIPLY 326
-#define CAST 327
-#define NEW 328
-#define REQUIRE 329
-#define MINUS 330
-#define PLUS 331
-#define LENGTH 332
+#define REQUIRE 324
+#define LENGTH 325
+#define SCALAR 326
+#define REMAINDER 327
+#define DIVIDE 328
+#define MULTIPLY 329
+#define CAST 330
+#define MINUS 331
+#define PLUS 332
 #define DEREF 333
 #define REF 334
-#define SCALAR 335
-#define BIT_NOT 336
-#define COND_NOT 337
-#define DEC 338
-#define INC 339
+#define BIT_NOT 335
+#define COND_NOT 336
+#define DEC 337
+#define INC 338
+#define NEW 339
 #define ARROW 340
 
 
