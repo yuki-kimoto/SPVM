@@ -1018,10 +1018,10 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_NEGATE_DOUBLE:
         double_vars[opcode->operand0] = -double_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BIT_COMPLEMENT_INT:
+      case SPVM_OPCODE_C_ID_BIT_NOT_INT:
         int_vars[opcode->operand0] = ~int_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BIT_COMPLEMENT_LONG:
+      case SPVM_OPCODE_C_ID_BIT_NOT_LONG:
         long_vars[opcode->operand0] = ~long_vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_LONG:

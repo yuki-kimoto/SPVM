@@ -624,16 +624,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return REL;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_COMPLEMENT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_NOT);
           yylvalp->opval = op;
-          return COND_COMPLEMENT;
+          return COND_NOT;
         }
         
       case '~': {
         compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_COMPLEMENT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_NOT);
           yylvalp->opval = op;
-        return BIT_COMPLEMENT;
+        return BIT_NOT;
       }
       // Character Literal
       case '\'': {

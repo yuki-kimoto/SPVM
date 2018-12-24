@@ -76,7 +76,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "POST_INC",
   "PRE_DEC",
   "POST_DEC",
-  "COMPLEMENT",
+  "NOT",
   "NEGATE",
   "PLUS",
   "EQ",
@@ -92,14 +92,14 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "BIT_AND",
   "BIT_OR",
   "BIT_XOR",
-  "BIT_COMPLEMENT",
+  "BIT_NOT",
   "REMAINDER",
   "LEFT_SHIFT",
   "RIGHT_SHIFT",
   "RIGHT_SHIFT_UNSIGNED",
   "COND_AND",
   "COND_OR",
-  "COND_COMPLEMENT",
+  "COND_NOT",
   "ARRAY_ACCESS",
   "ASSIGN",
   "CALL_SUB",
@@ -1163,7 +1163,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BIT_XOR:
     case SPVM_OP_C_ID_BIT_OR:
     case SPVM_OP_C_ID_BIT_AND:
-    case SPVM_OP_C_ID_BIT_COMPLEMENT:
+    case SPVM_OP_C_ID_BIT_NOT:
     case SPVM_OP_C_ID_PLUS:
     case SPVM_OP_C_ID_NEGATE:
     case SPVM_OP_C_ID_NEW:
@@ -2610,7 +2610,7 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   
   // Convert ! to if statement
   // before
-  //  COND_COMPLEMENT
+  //  COND_NOT
   //    first
   
   // after 

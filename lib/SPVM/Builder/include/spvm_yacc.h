@@ -106,8 +106,8 @@
      REF = 322,
      UMINUS = 323,
      SCALAR = 324,
-     BIT_COMPLEMENT = 325,
-     COND_COMPLEMENT = 326,
+     BIT_NOT = 325,
+     COND_NOT = 326,
      DEC = 327,
      INC = 328,
      ARROW = 329
@@ -181,8 +181,8 @@
 #define REF 322
 #define UMINUS 323
 #define SCALAR 324
-#define BIT_COMPLEMENT 325
-#define COND_COMPLEMENT 326
+#define BIT_NOT 325
+#define COND_NOT 326
 #define DEC 327
 #define INC 328
 #define ARROW 329

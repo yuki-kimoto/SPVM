@@ -141,8 +141,8 @@
      REF = 322,
      UMINUS = 323,
      SCALAR = 324,
-     BIT_COMPLEMENT = 325,
-     COND_COMPLEMENT = 326,
+     BIT_NOT = 325,
+     COND_NOT = 326,
      DEC = 327,
      INC = 328,
      ARROW = 329
@@ -216,8 +216,8 @@
 #define REF 322
 #define UMINUS 323
 #define SCALAR 324
-#define BIT_COMPLEMENT 325
-#define COND_COMPLEMENT 326
+#define BIT_NOT 325
+#define COND_NOT 326
 #define DEC 327
 #define INC 328
 #define ARROW 329
@@ -683,9 +683,9 @@ static const char *const yytname[] =
   "CURRENT_PACKAGE", "SPECIAL_ASSIGN", "ASSIGN", "COND_OR", "COND_AND",
   "BIT_XOR", "BIT_OR", "BIT_AND", "ISA", "REL", "SHIFT", "'+'", "'-'",
   "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'", "LENGTH", "DEREF",
-  "REF", "UMINUS", "SCALAR", "BIT_COMPLEMENT", "COND_COMPLEMENT", "DEC",
-  "INC", "')'", "ARROW", "'('", "'['", "'{'", "':'", "'}'", "';'", "','",
-  "']'", "$accept", "grammar", "opt_packages", "packages", "package",
+  "REF", "UMINUS", "SCALAR", "BIT_NOT", "COND_NOT", "DEC", "INC", "')'",
+  "ARROW", "'('", "'['", "'{'", "':'", "'}'", "';'", "','", "']'",
+  "$accept", "grammar", "opt_packages", "packages", "package",
   "package_block", "opt_declarations", "declarations", "declaration",
   "begin_block", "use", "require", "enumeration", "enumeration_block",
   "opt_enumeration_values", "enumeration_values", "enumeration_value",

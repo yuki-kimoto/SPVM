@@ -1182,11 +1182,10 @@ enum {
 左結合 ビットOR演算子「|」ビットXOR演算子 「^」
 左結合 ビットAND演算子「&」
 結合不可 比較演算子 「==」「!=」「>」「<」「<=」「>=」「eq」「ne」「gt」「ge」「lt」「le」「isa」
-%left <opval> SHIFT
-%left <opval> '+' '-' '.'
-%left <opval> MULTIPLY DIVIDE REMAINDER
-%nonassoc <opval> ISA
-%right <opval> NOT '~' '@' SCALAR UMINUS REF DEREF LENGTH
+左結合 シフト演算子 「<<」「>>」「>>>」
+左結合 加算演算子「+」 減算演算子「-」文字列連結演算子「.」
+左結合 乗算演算子「*」除算演算子「/」剰余演算子「%」
+右結合 NOT '~' '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
 %left <opval> ARROW

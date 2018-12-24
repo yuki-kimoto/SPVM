@@ -53,7 +53,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> COND_COMPLEMENT BIT_COMPLEMENT '@' SCALAR UMINUS REF DEREF LENGTH
+%right <opval> COND_NOT BIT_NOT '@' SCALAR UMINUS REF DEREF LENGTH
 %nonassoc <opval> INC DEC
 %nonassoc <opval> ')'
 %left <opval> ARROW
@@ -650,7 +650,7 @@ unop
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
-  | BIT_COMPLEMENT expression_term
+  | BIT_NOT expression_term
     {
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
@@ -910,7 +910,7 @@ condition_term
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
-  | COND_COMPLEMENT term
+  | COND_NOT term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
