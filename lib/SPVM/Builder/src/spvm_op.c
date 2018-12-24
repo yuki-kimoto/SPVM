@@ -1073,7 +1073,7 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
-    assert(0);
+    op_var = op;
   }
   
   return op_var;
@@ -1082,7 +1082,9 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
 int32_t SPVM_OP_get_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
-  switch (op->id) {
+  SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+
+  switch (op_var->id) {
     case SPVM_OP_C_ID_EQ:
     case SPVM_OP_C_ID_NE:
     case SPVM_OP_C_ID_GT:
@@ -1100,11 +1102,12 @@ int32_t SPVM_OP_get_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     {
       return 0;
     }
-    default: {
-      SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
+    case SPVM_OP_C_ID_VAR: {
       
       return op_var->uv.var->my->var_id;
     }
+    default:
+      assert(0);
   }
 }
 
