@@ -40,7 +40,7 @@
 %type <opval> deref ref assign incdec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
-%type <opval> term opt_expression_terms expression_terms expression_term condition_term
+%type <opval> term terms opt_terms
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
@@ -451,7 +451,7 @@ statement
   | default_statement
   | eval_block
   | if_require_statement
-  | expression_term ';'
+  | term ';'
     {
       $$ = $1;
     }
@@ -461,7 +461,7 @@ statement
     {
       $$ = SPVM_OP_build_return(compiler, $1, NULL);
     }
-  | RETURN expression_term ';'
+  | RETURN term ';'
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
@@ -469,7 +469,7 @@ statement
     {
       $$ = SPVM_OP_build_croak(compiler, $1, NULL);
     }
-  | CROAK expression_term ';'
+  | CROAK term ';'
     {
       $$ = SPVM_OP_build_croak(compiler, $1, $2);
     }
@@ -493,13 +493,13 @@ while_statement
     }
 
 switch_statement
-  : SWITCH '(' expression_term ')' block
+  : SWITCH '(' term ')' block
     {
       $$ = SPVM_OP_build_switch_statement(compiler, $1, $3, $5);
     }
 
 case_statement
-  : CASE expression_term ':'
+  : CASE term ':'
     {
       $$ = SPVM_OP_build_case_statement(compiler, $1, $2);
     }
@@ -567,12 +567,12 @@ eval_block
       $$ = SPVM_OP_build_eval(compiler, $1, $2);
     }
 
-opt_expression_terms
+opt_terms
   :	/* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	expression_terms
+  |	terms
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -585,10 +585,6 @@ opt_expression_terms
     }
     
 term
-  : expression_term
-  | condition_term
-
-expression_term
   : var
   | EXCEPTION_VAR
   | package_var_access
@@ -609,14 +605,12 @@ expression_term
   | deref
   | assign
   | incdec
-  | '(' expression_term ')'
+  | '(' term ')'
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
   | CURRENT_PACKAGE
-
-condition_term
-  : expression_term REL expression_term
+  | term REL term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
@@ -636,13 +630,9 @@ condition_term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
-  | '(' condition_term ')'
-    {
-      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
-    }
 
-expression_terms
-  : expression_terms ',' expression_term
+terms
+  : terms ',' term
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -656,104 +646,104 @@ expression_terms
       
       $$ = op_list;
     }
-  | expression_terms ','
+  | terms ','
     {
       $$ = $1;
     }
-  | expression_term
+  | term
     {
       $$ = $1;
     }
 
 unop
-  : '+' expression_term %prec PLUS
+  : '+' term %prec PLUS
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PLUS, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
-  | '-' expression_term %prec MINUS
+  | '-' term %prec MINUS
     {
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
-  | BIT_NOT expression_term
+  | BIT_NOT term
     {
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
 
 incdec
-  : INC expression_term
+  : INC term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
       $$ = SPVM_OP_build_incdec(compiler, op, $2);
     }
-  | expression_term INC
+  | term INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
       $$ = SPVM_OP_build_incdec(compiler, op, $1);
     }
-  | DEC expression_term
+  | DEC term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
       $$ = SPVM_OP_build_incdec(compiler, op, $2);
     }
-  | expression_term DEC
+  | term DEC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
       $$ = SPVM_OP_build_incdec(compiler, op, $1);
     }
 
 binop
-  : expression_term '+' expression_term
+  : term '+' term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
-  | expression_term '-' expression_term
+  | term '-' term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
-  | expression_term '.' expression_term
+  | term '.' term
     {
       $$ = SPVM_OP_build_concat(compiler, $2, $1, $3);
     }
-  | expression_term MULTIPLY expression_term
+  | term MULTIPLY term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term DIVIDE expression_term
+  | term DIVIDE term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term REMAINDER expression_term
+  | term REMAINDER term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term BIT_XOR expression_term
+  | term BIT_XOR term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term '&' expression_term
+  | term '&' term
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, $2->file, $2->line);
       $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
     }
-  | expression_term BIT_OR expression_term
+  | term BIT_OR term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression_term SHIFT expression_term
+  | term SHIFT term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
 
 assign
-  : expression_term ASSIGN expression_term
+  : term ASSIGN term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | expression_term SPECIAL_ASSIGN expression_term
+  | term SPECIAL_ASSIGN term
     {
       $$ = SPVM_OP_build_special_assign(compiler, $2, $1, $3);
     }
@@ -767,7 +757,7 @@ new
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
-  | NEW array_type '{' opt_expression_terms '}'
+  | NEW array_type '{' opt_terms '}'
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, $4);
     }
@@ -794,14 +784,14 @@ new
     }
 
 array_init
-  : '[' opt_expression_terms ']'
+  : '[' opt_terms ']'
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2);
     }
 
 convert_type
-  : convert expression_term %prec CAST
+  : convert term %prec CAST
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $1->file, $1->line);
       $$ = SPVM_OP_build_convert(compiler, op_convert, $1, $2);
@@ -814,49 +804,49 @@ convert
     }
 
 array_access
-  : expression_term ARROW '[' expression_term ']'
+  : term ARROW '[' term ']'
     {
       $$ = SPVM_OP_build_array_access(compiler, $1, $4);
     }
-  | array_access '[' expression_term ']'
+  | array_access '[' term ']'
     {
       $$ = SPVM_OP_build_array_access(compiler, $1, $3);
     }
-  | field_access '[' expression_term ']'
+  | field_access '[' term ']'
     {
       $$ = SPVM_OP_build_array_access(compiler, $1, $3);
     }
 
 call_sub
-  : NAME '(' opt_expression_terms  ')'
+  : NAME '(' opt_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, NULL, $1, $3);
     }
-  | basic_type ARROW sub_name '(' opt_expression_terms  ')'
+  | basic_type ARROW sub_name '(' opt_terms  ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
   | basic_type ARROW sub_name
     {
-      SPVM_OP* op_expression_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_expression_terms);
+      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
     }
-  | expression_term ARROW sub_name '(' opt_expression_terms ')'
+  | term ARROW sub_name '(' opt_terms ')'
     {
       $$ = SPVM_OP_build_call_sub(compiler, $1, $3, $5);
     }
-  | expression_term ARROW sub_name
+  | term ARROW sub_name
     {
-      SPVM_OP* op_expression_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_expression_terms);
+      SPVM_OP* op_terms = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_sub(compiler, $1, $3, op_terms);
     }
-  | expression_term ARROW '(' opt_expression_terms ')'
+  | term ARROW '(' opt_terms ')'
     {
       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", $2->file, $2->line);
       $$ = SPVM_OP_build_call_sub(compiler, $1, op_sub_name, $4);
     }
 field_access
-  : expression_term ARROW '{' field_name '}'
+  : term ARROW '{' field_name '}'
     {
       $$ = SPVM_OP_build_field_access(compiler, $1, $4);
     }
@@ -882,29 +872,29 @@ weaken_array_element
     }
 
 array_length
-  : '@' expression_term
+  : '@' term
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $2);
     }
-  | '@' '{' expression_term '}'
+  | '@' '{' term '}'
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
     }
-  | SCALAR '@' expression_term
+  | SCALAR '@' term
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
     }
-  | SCALAR '@' '{' expression_term '}'
+  | SCALAR '@' '{' term '}'
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
     }
 
 string_length
-  : LENGTH expression_term
+  : LENGTH term
     {
       $$ = SPVM_OP_build_string_length(compiler, $1, $2);
     }
@@ -1024,11 +1014,11 @@ array_type
     }
 
 array_type_with_length
-  : basic_type '[' expression_term ']'
+  : basic_type '[' term ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }
-  | array_type '[' expression_term ']'
+  | array_type '[' term ']'
     {
       $$ = SPVM_OP_build_array_type(compiler, $1, $3);
     }

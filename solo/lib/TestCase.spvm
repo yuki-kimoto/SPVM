@@ -73,6 +73,10 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $foo = 2 > 1;
+      warn($foo);
+    }
+    {
       my $string = "\N{U+3042}\N{U+3044}\N{U+3046}";
     }
     
