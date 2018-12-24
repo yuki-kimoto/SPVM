@@ -104,10 +104,10 @@
      NUMLT = 320,
      NUMGE = 321,
      NUMGT = 322,
-     SHIFT = 323,
-     REQUIRE = 324,
-     LENGTH = 325,
-     SCALAR = 326,
+     REQUIRE = 323,
+     LENGTH = 324,
+     SCALAR = 325,
+     SHIFT = 326,
      REMAINDER = 327,
      DIVIDE = 328,
      MULTIPLY = 329,
@@ -190,10 +190,10 @@
 #define NUMLT 320
 #define NUMGE 321
 #define NUMGT 322
-#define SHIFT 323
-#define REQUIRE 324
-#define LENGTH 325
-#define SCALAR 326
+#define REQUIRE 323
+#define LENGTH 324
+#define SCALAR 325
+#define SHIFT 326
 #define REMAINDER 327
 #define DIVIDE 328
 #define MULTIPLY 329
