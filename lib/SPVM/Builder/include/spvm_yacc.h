@@ -102,16 +102,17 @@
      MULTIPLY = 318,
      CAST = 319,
      NEW = 320,
-     LENGTH = 321,
-     DEREF = 322,
-     REF = 323,
-     UMINUS = 324,
-     SCALAR = 325,
-     BIT_NOT = 326,
-     COND_NOT = 327,
-     DEC = 328,
-     INC = 329,
-     ARROW = 330
+     MINUS = 321,
+     PLUS = 322,
+     LENGTH = 323,
+     DEREF = 324,
+     REF = 325,
+     SCALAR = 326,
+     BIT_NOT = 327,
+     COND_NOT = 328,
+     DEC = 329,
+     INC = 330,
+     ARROW = 331
    };
 #endif
 /* Tokens.  */
@@ -178,16 +179,17 @@
 #define MULTIPLY 318
 #define CAST 319
 #define NEW 320
-#define LENGTH 321
-#define DEREF 322
-#define REF 323
-#define UMINUS 324
-#define SCALAR 325
-#define BIT_NOT 326
-#define COND_NOT 327
-#define DEC 328
-#define INC 329
-#define ARROW 330
+#define MINUS 321
+#define PLUS 322
+#define LENGTH 323
+#define DEREF 324
+#define REF 325
+#define SCALAR 326
+#define BIT_NOT 327
+#define COND_NOT 328
+#define DEC 329
+#define INC 330
+#define ARROW 331
 
 
 

@@ -54,7 +54,7 @@
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
 %right <opval> NEW CAST
-%right <opval> COND_NOT BIT_NOT '@' SCALAR UMINUS REF DEREF LENGTH
+%right <opval> COND_NOT BIT_NOT '@' SCALAR REF DEREF LENGTH PLUS MINUS
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %left <opval> '('
@@ -640,12 +640,12 @@ expression_terms
     }
 
 unop
-  : '+' expression_term %prec UMINUS
+  : '+' expression_term %prec PLUS
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PLUS, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op, $2);
     }
-  | '-' expression_term %prec UMINUS
+  | '-' expression_term %prec MINUS
     {
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
