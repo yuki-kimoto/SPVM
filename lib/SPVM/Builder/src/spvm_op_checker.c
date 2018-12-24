@@ -3614,7 +3614,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             int32_t my_var_id = 0;
             int32_t my_byte_var_id = 0;
             int32_t my_short_var_id = 0;
-            int32_t my_int_var_id = 0;
+            // 0 is condition flag
+            int32_t my_int_var_id = 1;
             int32_t my_long_var_id = 0;
             int32_t my_float_var_id = 0;
             int32_t my_double_var_id = 0;
