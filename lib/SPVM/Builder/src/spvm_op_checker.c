@@ -521,7 +521,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_EQ: {
+            case SPVM_OP_C_ID_NUMERIC_EQ: {
               SPVM_OP* op_first = op_cur->first;
               SPVM_OP* op_last = op_cur->last;
               
@@ -583,7 +583,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_NE: {
+            case SPVM_OP_C_ID_NUMERIC_NE: {
               SPVM_OP* op_first = op_cur->first;
               SPVM_OP* op_last = op_cur->last;
 
@@ -647,7 +647,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_LT: {
+            case SPVM_OP_C_ID_NUMERIC_LT: {
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -665,7 +665,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               break;
             }
-            case SPVM_OP_C_ID_LE: {
+            case SPVM_OP_C_ID_NUMERIC_LE: {
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -683,7 +683,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_GT: {
+            case SPVM_OP_C_ID_NUMERIC_GT: {
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -701,7 +701,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_GE: {
+            case SPVM_OP_C_ID_NUMERIC_GE: {
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);

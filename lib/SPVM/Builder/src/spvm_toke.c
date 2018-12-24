@@ -501,7 +501,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // ==
           if (*compiler->bufptr == '=') {
             compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_EQ);
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_EQ);
             yylvalp->opval = op;
             return REL;
           }
@@ -545,14 +545,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LE);
           yylvalp->opval = op;
           return REL;
         }
         // <
         else {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LT);
           yylvalp->opval = op;
           return REL;
         }
@@ -603,14 +603,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // >=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_GE);
           yylvalp->opval = op;
           return REL;
         }
         // >
         else {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_GT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_GT);
           yylvalp->opval = op;
           return REL;
         }
@@ -619,7 +619,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NE);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_NE);
           yylvalp->opval = op;
           return REL;
         }
@@ -628,7 +628,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
           return COND_NOT;
         }
-        
       case '~': {
         compiler->bufptr++;
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_NOT);

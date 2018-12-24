@@ -3879,7 +3879,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_ID_GT: {
+                  case SPVM_OP_C_ID_NUMERIC_GT: {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
 
                     SPVM_OPCODE opcode;
@@ -3920,7 +3920,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_ID_GE: {
+                  case SPVM_OP_C_ID_NUMERIC_GE: {
 
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
 
@@ -3962,7 +3962,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     break;
                   }
-                  case  SPVM_OP_C_ID_LT: {
+                  case  SPVM_OP_C_ID_NUMERIC_LT: {
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
                     
                     SPVM_OPCODE opcode;
@@ -4003,7 +4003,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case SPVM_OP_C_ID_LE: {
+                  case SPVM_OP_C_ID_NUMERIC_LE: {
 
                     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
 
@@ -4045,7 +4045,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
-                  case  SPVM_OP_C_ID_EQ: {
+                  case  SPVM_OP_C_ID_NUMERIC_EQ: {
                     if (op_cur->first->id == SPVM_OP_C_ID_UNDEF || op_cur->last->id == SPVM_OP_C_ID_UNDEF) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -4121,7 +4121,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     break;
                   }
-                  case  SPVM_OP_C_ID_NE: {
+                  case  SPVM_OP_C_ID_NUMERIC_NE: {
                     
                     if (op_cur->first->id == SPVM_OP_C_ID_UNDEF || op_cur->last->id == SPVM_OP_C_ID_UNDEF) {
                       SPVM_OPCODE opcode;
