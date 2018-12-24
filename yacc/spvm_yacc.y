@@ -53,8 +53,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> NEW CAST
-%right <opval> COND_NOT BIT_NOT '@' SCALAR REF DEREF LENGTH PLUS MINUS REQUIRE
+%right <opval> COND_NOT BIT_NOT '@' SCALAR REF DEREF LENGTH PLUS MINUS REQUIRE NEW CAST
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %left <opval> '[' '{' '('
