@@ -49,7 +49,8 @@
 %left <opval> COND_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> '&'
-%nonassoc <opval> REL ISA
+%nonassoc <opval> NUMEQ NUMNE STREQ STRNE
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
@@ -899,7 +900,51 @@ ref
     }
 
 condition_term
-  : expression_term REL expression_term
+  : expression_term NUMEQ expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMNE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMGT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMGE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMLT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMLE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STREQ expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRNE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRGT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRGE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRLT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRLE expression_term
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }

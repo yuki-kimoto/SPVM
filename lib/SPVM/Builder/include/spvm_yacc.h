@@ -91,26 +91,37 @@
      COND_AND = 307,
      BIT_XOR = 308,
      BIT_OR = 309,
-     ISA = 310,
-     REL = 311,
-     SHIFT = 312,
-     REMAINDER = 313,
-     DIVIDE = 314,
-     MULTIPLY = 315,
-     CAST = 316,
-     NEW = 317,
-     REQUIRE = 318,
-     MINUS = 319,
-     PLUS = 320,
-     LENGTH = 321,
-     DEREF = 322,
-     REF = 323,
-     SCALAR = 324,
-     BIT_NOT = 325,
-     COND_NOT = 326,
-     DEC = 327,
-     INC = 328,
-     ARROW = 329
+     STRNE = 310,
+     STREQ = 311,
+     NUMNE = 312,
+     NUMEQ = 313,
+     ISA = 314,
+     STRLE = 315,
+     STRLT = 316,
+     STRGE = 317,
+     STRGT = 318,
+     NUMLE = 319,
+     NUMLT = 320,
+     NUMGE = 321,
+     NUMGT = 322,
+     SHIFT = 323,
+     REMAINDER = 324,
+     DIVIDE = 325,
+     MULTIPLY = 326,
+     CAST = 327,
+     NEW = 328,
+     REQUIRE = 329,
+     MINUS = 330,
+     PLUS = 331,
+     LENGTH = 332,
+     DEREF = 333,
+     REF = 334,
+     SCALAR = 335,
+     BIT_NOT = 336,
+     COND_NOT = 337,
+     DEC = 338,
+     INC = 339,
+     ARROW = 340
    };
 #endif
 /* Tokens.  */
@@ -166,26 +177,37 @@
 #define COND_AND 307
 #define BIT_XOR 308
 #define BIT_OR 309
-#define ISA 310
-#define REL 311
-#define SHIFT 312
-#define REMAINDER 313
-#define DIVIDE 314
-#define MULTIPLY 315
-#define CAST 316
-#define NEW 317
-#define REQUIRE 318
-#define MINUS 319
-#define PLUS 320
-#define LENGTH 321
-#define DEREF 322
-#define REF 323
-#define SCALAR 324
-#define BIT_NOT 325
-#define COND_NOT 326
-#define DEC 327
-#define INC 328
-#define ARROW 329
+#define STRNE 310
+#define STREQ 311
+#define NUMNE 312
+#define NUMEQ 313
+#define ISA 314
+#define STRLE 315
+#define STRLT 316
+#define STRGE 317
+#define STRGT 318
+#define NUMLE 319
+#define NUMLT 320
+#define NUMGE 321
+#define NUMGT 322
+#define SHIFT 323
+#define REMAINDER 324
+#define DIVIDE 325
+#define MULTIPLY 326
+#define CAST 327
+#define NEW 328
+#define REQUIRE 329
+#define MINUS 330
+#define PLUS 331
+#define LENGTH 332
+#define DEREF 333
+#define REF 334
+#define SCALAR 335
+#define BIT_NOT 336
+#define COND_NOT 337
+#define DEC 338
+#define INC 339
+#define ARROW 340
 
 
 
