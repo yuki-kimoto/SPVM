@@ -81,25 +81,25 @@
      RO = 297,
      WO = 298,
      BEGIN = 299,
-     REQUIRE = 300,
-     RETURN = 301,
-     WEAKEN = 302,
-     CROAK = 303,
-     CURRENT_PACKAGE = 304,
-     SPECIAL_ASSIGN = 305,
-     ASSIGN = 306,
-     COND_OR = 307,
-     COND_AND = 308,
-     BIT_XOR = 309,
-     BIT_OR = 310,
-     ISA = 311,
-     REL = 312,
-     SHIFT = 313,
-     REMAINDER = 314,
-     DIVIDE = 315,
-     MULTIPLY = 316,
-     CAST = 317,
-     NEW = 318,
+     RETURN = 300,
+     WEAKEN = 301,
+     CROAK = 302,
+     CURRENT_PACKAGE = 303,
+     SPECIAL_ASSIGN = 304,
+     ASSIGN = 305,
+     COND_OR = 306,
+     COND_AND = 307,
+     BIT_XOR = 308,
+     BIT_OR = 309,
+     ISA = 310,
+     REL = 311,
+     SHIFT = 312,
+     REMAINDER = 313,
+     DIVIDE = 314,
+     MULTIPLY = 315,
+     CAST = 316,
+     NEW = 317,
+     REQUIRE = 318,
      MINUS = 319,
      PLUS = 320,
      LENGTH = 321,
@@ -156,25 +156,25 @@
 #define RO 297
 #define WO 298
 #define BEGIN 299
-#define REQUIRE 300
-#define RETURN 301
-#define WEAKEN 302
-#define CROAK 303
-#define CURRENT_PACKAGE 304
-#define SPECIAL_ASSIGN 305
-#define ASSIGN 306
-#define COND_OR 307
-#define COND_AND 308
-#define BIT_XOR 309
-#define BIT_OR 310
-#define ISA 311
-#define REL 312
-#define SHIFT 313
-#define REMAINDER 314
-#define DIVIDE 315
-#define MULTIPLY 316
-#define CAST 317
-#define NEW 318
+#define RETURN 300
+#define WEAKEN 301
+#define CROAK 302
+#define CURRENT_PACKAGE 303
+#define SPECIAL_ASSIGN 304
+#define ASSIGN 305
+#define COND_OR 306
+#define COND_AND 307
+#define BIT_XOR 308
+#define BIT_OR 309
+#define ISA 310
+#define REL 311
+#define SHIFT 312
+#define REMAINDER 313
+#define DIVIDE 314
+#define MULTIPLY 315
+#define CAST 316
+#define NEW 317
+#define REQUIRE 318
 #define MINUS 319
 #define PLUS 320
 #define LENGTH 321
