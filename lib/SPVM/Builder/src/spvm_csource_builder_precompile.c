@@ -192,13 +192,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_value(SPVM_ENV* env, SPVM_STRIN
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bool(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = !!");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_eq(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -206,7 +206,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_eq(SPVM_ENV* env, SPVM_STRING_BUFFER* s
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ne(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " != ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -214,7 +214,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ne(SPVM_ENV* env, SPVM_STRING_BUFFER* s
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " > ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -222,7 +222,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(SPVM_ENV* env, SPVM_STRING_BUFFER* s
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ge(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " >= ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -230,7 +230,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ge(SPVM_ENV* env, SPVM_STRING_BUFFER* s
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_lt(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " < ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -238,7 +238,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_lt(SPVM_ENV* env, SPVM_STRING_BUFFER* s
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_le(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " <= ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -1309,9 +1309,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   // Exception
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t exception_flag = 0;\n");
 
-  // Condition flag
-  SPVM_STRING_BUFFER_add(string_buffer, "  register int32_t condition_flag;\n");
-
   if (sub->mortal_stack_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
     SPVM_STRING_BUFFER_add_int(string_buffer, sub->mortal_stack_length);
@@ -1559,12 +1556,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bool(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         break;
       case SPVM_OPCODE_C_ID_IS_UNDEF:
-        SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+        SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " == NULL);\n");
         break;
       case SPVM_OPCODE_C_ID_IS_NOT_UNDEF:
-        SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+        SPVM_STRING_BUFFER_add(string_buffer, "  int_vars[0] = (");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " != NULL);\n");
         break;
@@ -1689,10 +1686,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int_vars[0] = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int_vars[0] = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
@@ -1739,10 +1736,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = env->has_interface(env, object, interface_basic_type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int_vars[0] = env->has_interface(env, object, interface_basic_type_id);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int_vars[0] = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
@@ -1782,22 +1779,22 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_STRING_EQ:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp == 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_NE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp != 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp != 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_GT:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 1);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp == 1);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_GE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp >= 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp >= 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_LT:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == -1);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp == -1);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_LE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp <= 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int_vars[0] = (cmp <= 0);\n");
             break;
         }
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -3084,13 +3081,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag == 0) { goto L");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (int_vars[0] == 0) { goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_IF_NE_ZERO: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (condition_flag) { goto L");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (int_vars[0]) { goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
