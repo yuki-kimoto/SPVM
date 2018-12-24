@@ -57,8 +57,7 @@
 %right <opval> COND_NOT BIT_NOT '@' SCALAR REF DEREF LENGTH PLUS MINUS REQUIRE
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
-%left <opval> '('
-%left <opval> '[' '{'
+%left <opval> '[' '{' '('
 
 %%
 
