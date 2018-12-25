@@ -1,0 +1,70 @@
+package TestCase::If {
+  
+  sub if_true : int () {
+    
+    if (1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub if_false : int () {
+    
+    if (0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub elsif_match : int () {
+    
+    my $num = 2;
+    if ($num == 1) {
+      return 0;
+    }
+    elsif ($num == 2) {
+      return 1;
+    }
+    elsif ($num == 3) {
+      return 0;
+    }
+    else {
+      return 0;
+    }
+    return 0;
+  }
+
+  sub else_match : int () {
+    
+    my $num = 4;
+    if ($num == 1) {
+      return 0;
+    }
+    elsif ($num == 2) {
+      return 0;
+    }
+    elsif ($num == 3) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub if_my : int () {
+    
+    if (my $num = 3) {
+      if ($num == 3) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    
+    return 0;
+  }
+}
