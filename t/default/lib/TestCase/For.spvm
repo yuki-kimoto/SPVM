@@ -1,5 +1,21 @@
-package TestCase::Loop {
+package TestCase::For {
   use TestCase::Minimal;
+
+  sub omit_init_inc : int () {
+    
+    my $i = 0;
+    my $total = 0;
+    for (; $i < 11;) {
+      $total += $i;
+      $i++;
+    }
+    
+    unless ($total == 55) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub nested_last_with_switch : int () {
     my $num1 = 0;
@@ -130,20 +146,6 @@ package TestCase::Loop {
       }
     }
 
-    my $success_while = 0;
-    {
-      my $total = 0;
-      my $i = 0;
-      while ($i <= 3) {
-        $total = $total + $i;
-        $i++;
-      }
-      
-      if ($total == 6) {
-        $success_while = 1;
-      }
-    }
-    
     # Check also object count
     my $success_last_object = 0;
     {
@@ -181,11 +183,9 @@ package TestCase::Loop {
     if ($success_basic) {
       if ($success_last) {
         if ($success_next) {
-          if ($success_while) {
-            if ($success_last_object) {
-              if ($success_next_object) {
-                return 1;
-              }
+          if ($success_last_object) {
+            if ($success_next_object) {
+              return 1;
             }
           }
         }

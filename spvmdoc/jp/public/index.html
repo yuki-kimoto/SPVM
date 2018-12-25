@@ -406,7 +406,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-condition-part">条件部</a></li>
       </ul>
       <h3 id="language-parser">構文解析</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-parser-encoding">ソースコードの文字コード</a>
         <li><a href="#language-parser-lalr">LALR(1)法</a>
         <li><a href="#language-parser-component">構成要素</a>
@@ -2271,13 +2271,13 @@ sub NANF : float ()
         これを、戻り値にすることは可能なはずですが、現在は実装されていません。
       </p>
       <p>
-        実装されていない理由は、一時変数の増加とオペレーションコードの増加が見込まれ、最適な形で実装することが、現在の作者の実力不足です。
+        実装されていない理由は、一時変数の増加とオペレーションコードの増加が見込まれ、最適な形で実装することが、現在の作者の実力では困難であることです。
       </p>
       <p>
         現在の内部実装では、条件判定した結果は、内部的な条件フラグに保存されます。
       </p>
       <p>
-        戻り値が欲しい場合は、少し面倒ですが、次のように記述してください。
+        戻り値が欲しい場合は、次のように記述してください。
       </p>
 <pre>
 my $flag : int;

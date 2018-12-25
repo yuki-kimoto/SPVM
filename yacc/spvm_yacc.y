@@ -40,7 +40,7 @@
 %type <opval> deref ref assign incdec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
-%type <opval> term opt_expressions expressions expression condition
+%type <opval> term opt_expressions expressions expression condition opt_expression
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
@@ -482,7 +482,7 @@ statement
     }
 
 for_statement
-  : FOR '(' expression ';' term ';' expression ')' block
+  : FOR '(' opt_expression ';' term ';' opt_expression ')' block
     {
       $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $5, $7, $9);
     }
@@ -588,6 +588,13 @@ opt_expressions
 term
   : expression
   | condition
+
+opt_expression
+  : /* Empty */
+    {
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+    }
+  | expression
 
 expression
   : var

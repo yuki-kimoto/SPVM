@@ -1,0 +1,27 @@
+package TestCase::While {
+  use TestCase::Minimal;
+  
+  # while
+  sub basic : int () {
+  
+    my $success_while = 0;
+    {
+      my $total = 0;
+      my $i = 0;
+      while ($i <= 3) {
+        $total = $total + $i;
+        $i++;
+      }
+      
+      if ($total == 6) {
+        $success_while = 1;
+      }
+    }
+    
+    unless ($success_while) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
