@@ -54,8 +54,9 @@ package TestCase::If {
     return 0;
   }
 
-  sub if_my : int () {
+  sub condition_my : int () {
     
+    my $num = 5;
     if (my $num = 3) {
       if ($num == 3) {
         return 1;

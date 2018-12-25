@@ -1,7 +1,6 @@
 package TestCase::While {
   use TestCase::Minimal;
   
-  # while
   sub basic : int () {
   
     my $success_while = 0;
@@ -23,5 +22,19 @@ package TestCase::While {
     }
     
     return 1;
+  }
+
+  sub condition_my : int () {
+    
+    my $num = 5;
+    while (my $num = 3) {
+      if ($num == 3) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    return 0;
   }
 }

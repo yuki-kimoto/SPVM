@@ -5,6 +5,10 @@
       
     }
   - fix % operator error message seg fault bug
+  - support my declaration in while condition
+    while (my $num = 1) {
+      
+    }
 0.0404 2018-12-18
   - support ascii escape '\x1F' syntax in character literal
   - support string literal excape character '\0' '\a'

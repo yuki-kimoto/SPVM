@@ -231,6 +231,8 @@ t/default/convert.t
 t/default/enum.t
 t/default/exception.t
 t/default/extension.t
+t/default/for.t
+t/default/if.t
 t/default/increment.t
 t/default/inline.t
 t/default/interface.t
@@ -275,6 +277,7 @@ t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
 t/default/lib/TestCase/CompileError/Literal/IntOutOfRange.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
 t/default/lib/TestCase/CompileError/PackageVar/Private.spvm
+t/default/lib/TestCase/CompileError/Remainder/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/TestCase/CompileError/Sub/Begin.spvm
 t/default/lib/TestCase/CompileError/Term/SingleParenthesArrayLength.spvm
@@ -303,7 +306,9 @@ t/default/lib/TestCase/Extension2.native/Extension2.config
 t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/FILE.spvm
 t/default/lib/TestCase/Float.spvm
+t/default/lib/TestCase/For.spvm
 t/default/lib/TestCase/Hash.spvm
+t/default/lib/TestCase/If.spvm
 t/default/lib/TestCase/Increment.spvm
 t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Int.spvm
@@ -323,7 +328,6 @@ t/default/lib/TestCase/Literal/String.spvm
 t/default/lib/TestCase/Literal/Undef.spvm
 t/default/lib/TestCase/LogicalOperator.spvm
 t/default/lib/TestCase/Long.spvm
-t/default/lib/TestCase/Loop.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NumericOperator.spvm
@@ -338,6 +342,7 @@ t/default/lib/TestCase/Point_3l.spvm
 t/default/lib/TestCase/Point_3s.spvm
 t/default/lib/TestCase/Pointer.native/Pointer.c
 t/default/lib/TestCase/Pointer.spvm
+t/default/lib/TestCase/Precedence.spvm
 t/default/lib/TestCase/Private.spvm
 t/default/lib/TestCase/Ref.spvm
 t/default/lib/TestCase/Short.spvm
@@ -350,17 +355,18 @@ t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
+t/default/lib/TestCase/While.spvm
 t/default/literal-character.t
 t/default/literal-floating-point.t
 t/default/literal-integer.t
 t/default/literal-string.t
 t/default/literal-undef.t
 t/default/logical-operator.t
-t/default/loop.t
 t/default/numeric-operator.t
 t/default/object.t
 t/default/package_var.t
 t/default/perl-api.t
+t/default/precedence.t
 t/default/ref.t
 t/default/special-assign.t
 t/default/string.t
@@ -370,6 +376,7 @@ t/default/unless.t
 t/default/value_t_array.t
 t/default/var.t
 t/default/weaken.t
+t/default/while.t
 t/exe.t
 t/lib/TestAuto.pm
 t/spvm_build/.gitkeep

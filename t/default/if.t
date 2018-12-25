@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::If->if_false());
   ok(TestCase::If->elsif_match());
   ok(TestCase::If->else_match());
-  ok(TestCase::If->if_my());
+  ok(TestCase::If->condition_my());
 }
 
 
