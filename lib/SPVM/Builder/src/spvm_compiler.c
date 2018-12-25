@@ -349,6 +349,10 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
         (void) va_arg(args, int);
         message_length += 30;
       }
+      else if (*(found_ptr + 1) == '%') {
+        // Nothing
+        found_ptr++;
+      }
       else {
         assert(0);
       }
