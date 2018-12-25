@@ -111,3 +111,17 @@
 	  letter-spacing:2px;
 	  font-size:17px;
 	}
+
+	.list {
+	  padding:0px 12px 10px 12px;
+	}
+	.list li{
+	  list-style:disc;
+	  background-position:4px;
+	  background-size:18px;
+	  padding-left:0px;
+	  line-height:160%;
+	  letter-spacing:2px;
+	  font-size:17px;
+	  margin-left:26px;
+	}

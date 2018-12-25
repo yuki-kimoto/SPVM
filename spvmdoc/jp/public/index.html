@@ -385,6 +385,11 @@ my $total = MyMath->sum($sp_nums);
       </p>
       <ul class="toc">
         <li><a href="#language-parser">構文解析</a>
+        <li><a href="#language-term">項</a>
+        <li><a href="#language-expression">式</a>
+        <li><a href="#language-condition">条件</a>
+        <li><a href="#language-condition-part">条件部</a>
+        <li><a href="#language-statement">文</a>
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
         <li><a href="#language-package">パッケージ</a>
@@ -891,9 +896,9 @@ package Foo {
 </pre>
       <h3 id="language-sub">サブルーチン</h3>
       <ul class="toc">
-        <li><a href="#language-field-definition">サブルーチンの定義</a></li>
+        <li><a href="#language-sub-definition">サブルーチン定義</a></li>
       </ul>
-      <h4 id="language-field-definition">サブルーチンの定義</h4>
+      <h4 id="language-sub-definition">サブルーチン定義</h4>
       <p>
         「sub」キーワードを使用してサブルーチンを定義することができます。
       </p>
@@ -903,7 +908,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
 }
 </pre>
       <p>
-        サブルーチンの定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+        サブルーチン定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
       </p>
       <p>
         サブルーチン名は、1文字以上の「a～z」「A～Z」「0～9」「_」で構成する必要があります。先頭は、数字から始めることはできません。連続した「_」を使用することはできません。
@@ -915,7 +920,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
         戻りの型名には、「void型」「数値型」「オブジェクト型」を指定することができます。
       </p>
       <p>
-        サブルーチンの定義には「戻り値の型名」と「0個以上の引数の定義」が必要です。「引数の定義」は「引数名」と「引数の型名」からなります。
+        サブルーチン定義には「戻り値の型名」と「0個以上の引数の定義」が必要です。「引数の定義」は「引数名」と「引数の型名」からなります。
       </p>
       <p>
         引数名は、変数名である必要があります。
@@ -1111,20 +1116,19 @@ enum {
       </table>
       <h3 id="language-term">項</h3>
       <p>
-        算術演算子の両辺、サブルーチンの引数などになることができる最小の単位を「項」と呼びます。
+        算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
       </p>
       <p>
-        「項」には「<a href="#language-statement">式</a>」として扱える「<a href="#language-term-expression">式である項</a>」、条件部のみで利用できる「<a href="#language-statement">条件項</a>」があります。
+        「項」には、戻り値を持つ「<a href="#language-expression">式</a>」と、戻り値を持たず<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
       </p>
-      <ul>
-        <li>式である項</li>
-        <li >条件項</li>
-      <ul>
-      <h4  id="language-term-expression">式項</h4>
+      <h3 id="language-expression">式</h3>
       <p>
-        式である項は以下で定義されます。
+        式は次の項目で定義されます。
       </p>
-      <ul>
+      <p>
+        <b>式の一覧</b>
+      </p>
+      <ul class="list">
         <li>変数</li>
         <li>例外変数</li>
         <li>パッケージ変数の読み取り</li>
@@ -1149,15 +1153,220 @@ enum {
         <li>__PACKAGE__演算子</li>
         <li>__FILE__演算子</li>
         <li>__LINE__演算子</li>
-        <li>(式項)</li>
-      </u>
+        <li>(式)</li>
+      </ul>
 
-      <h4 id="language-term-logical">条件項</h4>
-      <ul>
+      <h3 id="language-condition">条件</h3>
+      <p>
+        条件は次の項目で定義されます。
+      </p>
+      <p>
+        <b>条件の一覧</b>
+      </p>
+      <ul class="list">
         <li>比較演算子</li>
         <li>論理演算子</li>
-        <li>(条件項)</li>
-      </u>
+        <li>(条件)</li>
+      </ul>
+
+      <h3 id="language-condition-part">条件部</h3>
+      <p>
+        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-expression">式</a>」と「<a href="#language-condition">条件</a>」が記述できます。
+      </p>
+      <p>
+        <b>if文のかっこの中</b>
+      </p>
+<pre>
+if (条件部) {
+
+}
+</pre>
+      <p>
+        <b>unless文のかっこの中</b>
+      </p>
+<pre>
+unless (条件部) {
+
+}
+</pre>
+      <p>
+        <b>forのかっこの中の二つ目</b>
+      </p>
+<pre>
+for (初期化;条件部;次の値;) {
+
+}
+</pre>
+      <p>
+        <b>whileのかっこの中</b>
+      </p>
+<pre>
+while (条件部) {
+
+}
+</pre>
+      <p>
+        <b>論理AND演算子の左右</b>
+      </p>
+<pre>
+条件部 && 条件部
+</pre>
+      <p>
+        <b>論理OR演算子の左右</b>
+      </p>
+<pre>
+条件部 || 条件部
+</pre>
+      <p>
+        <b>論理否定演算子の右側</b>
+      </p>
+<pre>
+!条件部
+</pre>
+      <h3 id="language-statement">文</h3>
+      <p>
+        文とは、ひとつの処理のことで「<a href="#language-block-statement">文ブロック</a>」の中に記述することができます。
+      </p>
+      <p>
+        文は以下からなります。
+      </p>
+      <ul>
+        <li><a href="#language-statement-if">if文</a></li>
+        <li><a href="#language-statement-for">for文</a></li>
+        <li><a href="#language-statement-while">while文</a></li>
+        <li><a href="#language-statement-switch">switch文</a></li>
+        <li><a href="#language-statement-case">case文</a></li>
+        <li><a href="#language-statement-default">default文</a></li>
+        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
+        <li><a href="#language-statement-eval">eval文</a></li>
+        <li><a href="#language-statement-ifrequire">if require文</a></li>
+        <li><a href="#language-statement-next">next文</a></li>
+        <li><a href="#language-statement-last">last文</a></li>
+        <li><a href="#language-statement-return">return文</a></li>
+        <li><a href="#language-statement-croak">croak文</a></li>
+        <li><a href="#language-statement-weaken">weaken文</a></li>
+        <li><a href="#language-statement-expression">式文</a></li>
+        <li><a href="#language-statement-empty">空文</a></li>
+      </ul>
+
+      <h4 id="language-statement-return">return文</h3>
+      <p>
+        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
+      </p>
+<pre>
+return;
+</pre>
+      <p>
+        戻り値がある場合は、<a href="#language-expression">式</a>を指定することができます。
+      </p>
+<pre>
+return 式;
+</pre>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h4 id="language-statement-next">next文</h3>
+      <p>
+        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
+      </p>
+<pre>
+next;
+</pre>
+      <p>
+        <b>next文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    next;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+</pre>
+
+      <h4 id="language-statement-last">last文</h3>
+      <p>
+        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
+      </p>
+<pre>
+last;
+</pre>
+      <p>
+        <b>last文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    last;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+# switch
+my $num = 3;
+switch ($num) {
+  case 1 :
+    # 処理1
+    last;
+  case 2 :
+    # 処理2
+    last;
+  case 3 :
+    # 処理3
+    last;
+  default:
+    # デフォルト
+}
+</pre>
+      <h4 id="language-statement-expression">式文</h4>
+      <p>
+        式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
+      </p>
+<pre>
+式;
+</pre>
+
+      <p>
+        式文のサンプルです。
+      </p>
+<pre>
+1;
+$var;
+1 + 2;
+foo();
+my $num = 1 + 2;
+</pre>
+
+      <h4 id="language-statement-empty">空文</h4>
+      <p>
+        空文は「;」だけで終わる文のことです。
+      </p>
+<pre>
+;
+</pre>
 
       <h3 id="language-operator">演算子</h3>
       <ul class="toc">
@@ -1466,150 +1675,6 @@ package Foo {
 enum {
 
 }
-</pre>
-      <h3 id="language-statement">文</h3>
-      <p>
-        文とは、ひとつの処理のことで「<a href="#language-block-statement">文ブロック</a>」の中に記述することができます。
-      </p>
-      <p>
-        文は以下からなります。
-      </p>
-      <ul>
-        <li><a href="#language-statement-if">if文</a></li>
-        <li><a href="#language-statement-for">for文</a></li>
-        <li><a href="#language-statement-while">while文</a></li>
-        <li><a href="#language-statement-switch">switch文</a></li>
-        <li><a href="#language-statement-case">case文</a></li>
-        <li><a href="#language-statement-default">default文</a></li>
-        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
-        <li><a href="#language-statement-eval">eval文</a></li>
-        <li><a href="#language-statement-ifrequire">if require文</a></li>
-        <li><a href="#language-statement-next">next文</a></li>
-        <li><a href="#language-statement-last">last文</a></li>
-        <li><a href="#language-statement-return">return文</a></li>
-        <li><a href="#language-statement-croak">croak文</a></li>
-        <li><a href="#language-statement-weaken">weaken文</a></li>
-        <li><a href="#language-statement-term-expression">式項文</a></li>
-        <li><a href="#language-statement-empty">空文</a></li>
-      </ul>
-
-      <h4 id="language-statement-return">return文</h3>
-      <p>
-        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
-      </p>
-<pre>
-return;
-</pre>
-      <p>
-        戻り値がある場合は、<a href="#language-term-expression">式項</a>を指定することができます。
-      </p>
-<pre>
-return 式項;
-</pre>
-      <p>
-        <a href="#language-subroutine-definition">サブルーチンの定義</a>において戻り値の型が「void型」である場合は、式項が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <a href="#language-subroutine-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式項の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-
-      <h4 id="language-statement-next">next文</h3>
-      <p>
-        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
-      </p>
-<pre>
-next;
-</pre>
-      <p>
-        <b>next文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    next;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-</pre>
-
-      <h4 id="language-statement-last">last文</h3>
-      <p>
-        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
-      </p>
-<pre>
-last;
-</pre>
-      <p>
-        <b>last文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    last;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-# switch
-my $num = 3;
-switch ($num) {
-  case 1 :
-    # 処理1
-    last;
-  case 2 :
-    # 処理2
-    last;
-  case 3 :
-    # 処理3
-    last;
-  default:
-    # デフォルト
-}
-</pre>
-      <h4 id="language-statement-term-expression">式項文</h4>
-      <p>
-        式項文は「<a href="#language-term-expression">式項</a>」と「;」で構成される文のことです。
-      </p>
-<pre>
-式項;
-</pre>
-
-      <p>
-        式項文のサンプルです。
-      </p>
-<pre>
-1;
-$var;
-1 + 2;
-foo();
-my $num = 1 + 2;
-</pre>
-
-      <h4 id="language-statement-empty">空文</h4>
-      <p>
-        空文は「;」だけで終わる文のことです。
-      </p>
-<pre>
-;
 </pre>
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="toc">
@@ -2146,42 +2211,6 @@ undef
       <p>
         未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
       </p>
-      <h3 id="language-condition-part">条件部</h3>
-      <p>
-        条件部とは、条件判定が行われる部分のことです。SPVMでは、以下の部分が条件部となります。
-      </p>
-      <p>
-        if文のかっこの中。
-      </p>
-<pre>
-if (条件部) {
-
-}
-</pre>
-      <p>
-        unless文のかっこの中。
-      </p>
-<pre>
-unless (条件部) {
-
-}
-</pre>
-      <p>
-        forのかっこの中の二つ目。
-      </p>
-<pre>
-for (初期化;条件部;次の値;) {
-
-}
-</pre>
-      <p>
-        whileのかっこの中。
-      </p>
-<pre>
-while (条件部) {
-
-}
-</pre>
 
       <h2 id="stdfunc">標準関数</h2>
       <p>
