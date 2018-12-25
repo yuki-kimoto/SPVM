@@ -616,6 +616,76 @@ expression_term
     }
   | CURRENT_PACKAGE
 
+condition_term
+  : expression_term NUMEQ expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMNE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMGT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMGE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMLT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term NUMLE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STREQ expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRNE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRGT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRGE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRLT expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term STRLE expression_term
+    {
+      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+    }
+  | expression_term ISA type
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+  | term COND_OR term
+    {
+      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
+    }
+  | term COND_AND term
+    {
+      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
+    }
+  | COND_NOT term
+    {
+      $$ = SPVM_OP_build_not(compiler, $1, $2);
+    }
+  | '(' condition_term ')'
+    {
+      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
+    }
+
 expression_terms
   : expression_terms ',' expression_term
     {
@@ -899,76 +969,6 @@ ref
     {
       SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
       $$ = SPVM_OP_build_ref(compiler, op_ref, $3);
-    }
-
-condition_term
-  : expression_term NUMEQ expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term NUMNE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term NUMGT expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term NUMGE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term NUMLT expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term NUMLE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STREQ expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STRNE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STRGT expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STRGE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STRLT expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression_term STRLE expression_term
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | term ISA type
-    {
-      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
-    }
-  | term COND_OR term
-    {
-      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
-    }
-  | term COND_AND term
-    {
-      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
-    }
-  | COND_NOT term
-    {
-      $$ = SPVM_OP_build_not(compiler, $1, $2);
-    }
-  | '(' condition_term ')'
-    {
-      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
 
 my_var
