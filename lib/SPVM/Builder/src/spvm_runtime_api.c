@@ -819,6 +819,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t constant_pool_id = opcode->operand1;
         int32_t check_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t check_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+
+        assert(check_basic_type_id != SPVM_BASIC_TYPE_C_ID_STRING);
         
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
@@ -2723,6 +2725,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t constant_pool_id = opcode->operand2;
           int32_t check_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
           int32_t check_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+          
+          assert(check_basic_type_id != SPVM_BASIC_TYPE_C_ID_STRING);
           
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);

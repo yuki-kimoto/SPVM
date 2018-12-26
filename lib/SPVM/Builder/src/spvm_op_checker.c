@@ -62,7 +62,7 @@ void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPV
       runtime_type_dimension = type->dimension;
     }
     
-    // type constant pool id
+    // runtime type constant pool id
     char runtime_type_id_string[sizeof(int32_t) * 2];
     memcpy(runtime_type_id_string, &runtime_basic_type_id, sizeof(int32_t));
     memcpy((char*)(runtime_type_id_string + sizeof(int32_t)), &runtime_type_dimension, sizeof(int32_t));
@@ -72,8 +72,8 @@ void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPV
       type->constant_pool_id = found_constant_pool_id;
     }
     else {
-      int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, type->basic_type->id);
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, type->dimension);
+      int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, runtime_basic_type_id);
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, runtime_type_dimension);
       type->constant_pool_id = constant_pool_id;
       SPVM_HASH_insert(package->constant_pool_32bit2_value_symtable, runtime_type_id_string, sizeof(int32_t) * 2, (void*)(intptr_t)constant_pool_id);
     }

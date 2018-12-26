@@ -2611,7 +2611,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               var_id_in = SPVM_OP_get_var_id(compiler, op_src_term);
                             }
                             opcode.operand2 = op_dist_type->uv.type->constant_pool_id;
-
+                            
                             opcode.operand0 = var_id_out;
                             opcode.operand1 = var_id_in;
                             
