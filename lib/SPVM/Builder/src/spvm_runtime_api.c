@@ -392,7 +392,6 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     // Increment ref count of return value
     if (!exception_flag) {
       switch (sub->return_runtime_type) {
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -412,7 +411,6 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     // Decrement ref count of return value
     if (!exception_flag) {
       switch (sub->return_runtime_type) {
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -669,7 +667,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -4109,7 +4106,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   // Decrement ref count of return value
   if (!exception_flag) {
     switch (sub->return_runtime_type) {
-      case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
       case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
       case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
       case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -5027,9 +5023,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_str_raw(SPVM_ENV* env, const char* bytes, int3
 
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_barray_raw(env, length);
   
-  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
-  object->type_dimension = 0;
-  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+  object->type_dimension = 1;
+  object->runtime_type = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   if (length > 0) {
     if (bytes == NULL) {
