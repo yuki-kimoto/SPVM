@@ -45,7 +45,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     my $string1 = SPVM::new_str("あいう");
     my $string2 = SPVM::new_str_from_bin(encode('UTF-8', "えお"));
     my $string3 = TestCase::PerlAPI->string_argments_and_return_value($string1, $string2);
-    isa_ok($string3, 'SPVM::Data::String');
+    isa_ok($string3, 'SPVM::Data::Array');
     is($string3->to_str, "あいうえお");
     is($string3->to_bin, encode('UTF-8', "あいうえお"));
   }
@@ -55,7 +55,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     my $string1 = SPVM::new_str_from_bin("abc");
     my $string2 = SPVM::new_str("de");
     my $string3 = TestCase::PerlAPI->string_argments_and_return_value($string1, $string2);
-    isa_ok($string3, 'SPVM::Data::String');
+    isa_ok($string3, 'SPVM::Data::Array');
     is($string3->to_str, "abcde");
     is($string3->to_bin, "abcde");
     is_deeply($string3->to_elems, [ord('a'), ord('b'), ord('c'), ord('d'), ord('e')]);

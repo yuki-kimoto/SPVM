@@ -569,7 +569,7 @@ new_str_from_bin(...)
   env->inc_ref_count(env, string);
 
   // New sv array
-  SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::String");
+  SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
   
   XPUSHs(sv_string);
   XSRETURN(1);
@@ -2243,7 +2243,7 @@ call_sub(...)
           env->inc_ref_count(env, return_value);
           
           if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_STRING) {
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::String");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
           }
           else if (sub->return_type_dimension > 0) {
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
@@ -2485,8 +2485,8 @@ to_elems(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
-  // Array must be SPVM::Data::Array or SPVM::Data::String
-  if (!(SvROK(sv_array) && (sv_derived_from(sv_array, "SPVM::Data::Array") || sv_derived_from(sv_array, "SPVM::Data::String")))) {
+  // Array must be SPVM::Data::Array or SPVM::Data::Array
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
     croak("Array must be SPVM::Data::Array object");
   }
   
@@ -2698,8 +2698,8 @@ to_bin(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
   // Array must be SPVM::Data::Array object or SPVM::Data::Sgtring
-  if (!(SvROK(sv_array) && (sv_derived_from(sv_array, "SPVM::Data::Array") || sv_derived_from(sv_array, "SPVM::Data::String")))) {
-    croak("Data must be SPVM::Data::Array or SPVM::Data::String");
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
+    croak("Data must be SPVM::Data::Array");
   }
   
   // Get object
