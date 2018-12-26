@@ -41,25 +41,29 @@ void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPV
 
   if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
     SPVM_PACKAGE* package = op_package->uv.package;
-    
-    // No duplicate basic type id
+
     SPVM_TYPE* type = op_type->uv.type;
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type->basic_type->name, strlen(type->basic_type->name));
-    if (found_basic_type == NULL) {
-      SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type->basic_type->id);
-      SPVM_HASH_insert(package->info_basic_type_id_symtable, type->basic_type->name, strlen(type->basic_type->name), type->basic_type);
-    }
-    
+
     // Runtime type
     int32_t runtime_basic_type_id;
     int32_t runtime_type_dimension;
+    const char* runtime_basic_type_name;
     if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
       runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
       runtime_type_dimension = type->dimension + 1;
+      runtime_basic_type_name = "byte";
     }
     else {
       runtime_basic_type_id = type->basic_type->id;
       runtime_type_dimension = type->dimension;
+      runtime_basic_type_name = type->basic_type->name;
+    }
+    
+    // No duplicate basic type id
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name));
+    if (found_basic_type == NULL) {
+      SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)runtime_basic_type_id);
+      SPVM_HASH_insert(package->info_basic_type_id_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), type->basic_type);
     }
     
     // runtime type constant pool id

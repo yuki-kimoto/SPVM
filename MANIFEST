@@ -119,7 +119,6 @@ lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
 lib/SPVM/Data/Array.pm
 lib/SPVM/Data/Package.pm
-lib/SPVM/Data/String.pm
 lib/SPVM/Document/ExchangeAPI.pod
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/Language.pod

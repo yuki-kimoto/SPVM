@@ -228,8 +228,21 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
     assert(portable_sub->file_id);
     portable_sub->line = sub->line;
     portable_sub->args_alloc_length = sub->args_alloc_length;
-    portable_sub->return_basic_type_id = sub->return_type->basic_type->id;
-    portable_sub->return_type_dimension = sub->return_type->dimension;
+
+
+    int32_t runtime_return_basic_type_id;
+    int32_t runtime_return_type_dimension;
+    if (sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+      runtime_return_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+      runtime_return_type_dimension = sub->return_type->dimension + 1;
+    }
+    else {
+      runtime_return_basic_type_id = sub->return_type->basic_type->id;
+      runtime_return_type_dimension = sub->return_type->dimension;
+    }
+
+    portable_sub->return_basic_type_id = runtime_return_basic_type_id;
+    portable_sub->return_type_dimension = runtime_return_type_dimension;
     portable_sub->return_type_flag = sub->return_type->flag;
     portable_sub->opcodes_base = sub->opcodes_base;
     portable_sub->mortal_stack_length = sub->mortal_stack_length;
@@ -251,8 +264,20 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_id);
       
       SPVM_RUNTIME_ARG* portable_arg = &portable->args[args_base + arg_id];
-      portable_arg->basic_type_id = arg->type->basic_type->id;
-      portable_arg->type_dimension = arg->type->dimension;
+
+      int32_t runtime_basic_type_id;
+      int32_t runtime_type_dimension;
+      if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+        runtime_type_dimension = arg->type->dimension + 1;
+      }
+      else {
+        runtime_basic_type_id = arg->type->basic_type->id;
+        runtime_type_dimension = arg->type->dimension;
+      }
+
+      portable_arg->basic_type_id = runtime_basic_type_id;
+      portable_arg->type_dimension = runtime_type_dimension;
       portable_arg->type_flag = arg->type->flag;
       portable_arg->var_id = arg->var_id;
       portable_arg->runtime_type = arg->runtime_type;
