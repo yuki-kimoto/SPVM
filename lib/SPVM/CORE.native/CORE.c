@@ -11,6 +11,20 @@
 #include <complex.h>
 #include <memory.h>
 
+int32_t SPVM_NATIVE_SPVM__CORE__type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* object = stack[0].oval;
+  
+  if (object == NULL) {
+    return SPVM_EXCEPTION;
+  }
+  
+  void* type_name = env->type_name(env, object);
+  
+  stack[0].oval = type_name;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
   double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;

@@ -32,18 +32,23 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-ok(TestCase::CoreFunc::Math->test_join());
+ok(TestCase::CoreFunc::Math->test_join);
+
+# type_name
+{
+  ok(TestCase::CoreFunc::Basic->test_type_name);
+}
 
 # Copy
 {
-  ok(TestCase::CoreFunc::Basic->test_copy_string());
-  ok(TestCase::CoreFunc::Basic->test_copy_byte_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_short_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_int_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_long_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_float_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_float_array());
-  ok(TestCase::CoreFunc::Basic->test_copy_object_array());
+  ok(TestCase::CoreFunc::Basic->test_copy_string);
+  ok(TestCase::CoreFunc::Basic->test_copy_byte_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_short_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_int_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_long_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_float_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_float_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_object_array);
 }
 
 # Constant integral functions
@@ -60,17 +65,17 @@ ok(TestCase::CoreFunc::Math->test_join());
 
 # Constant floating point number functions
 {
-  is(SPVM::CORE->FLT_MAX, POSIX::FLT_MAX());
-  is(SPVM::CORE->FLT_MIN, POSIX::FLT_MIN());
-  is(SPVM::CORE->DBL_MAX, POSIX::DBL_MAX());
-  is(SPVM::CORE->DBL_MIN, POSIX::DBL_MIN());
+  is(SPVM::CORE->FLT_MAX, POSIX::FLT_MAX);
+  is(SPVM::CORE->FLT_MIN, POSIX::FLT_MIN);
+  is(SPVM::CORE->DBL_MAX, POSIX::DBL_MAX);
+  is(SPVM::CORE->DBL_MIN, POSIX::DBL_MIN);
 }
 
 # Call subroutine
 {
-  ok(TestCase::CoreFunc::Math->test_sin());
-  ok(TestCase::CoreFunc::Math->test_cos());
-  ok(TestCase::CoreFunc::Math->test_tan());
+  ok(TestCase::CoreFunc::Math->test_sin);
+  ok(TestCase::CoreFunc::Math->test_cos);
+  ok(TestCase::CoreFunc::Math->test_tan);
 }
 
 # float
@@ -78,9 +83,9 @@ ok(TestCase::CoreFunc::Math->test_join());
   ok(TestCase::CoreFunc::Math->test_float_pass_positive_infinity($POSITIVE_INFINITY));
   ok(TestCase::CoreFunc::Math->test_float_pass_nan($NaN));
   
-  ok(TestCase::CoreFunc::Math->test_isinff());
-  ok(TestCase::CoreFunc::Math->test_isfinitef());
-  ok(TestCase::CoreFunc::Math->test_isnanf());
+  ok(TestCase::CoreFunc::Math->test_isinff);
+  ok(TestCase::CoreFunc::Math->test_isfinitef);
+  ok(TestCase::CoreFunc::Math->test_isnanf);
   
   is(SPVM::CORE->INFINITYF(), $POSITIVE_INFINITY);
   
@@ -92,9 +97,9 @@ ok(TestCase::CoreFunc::Math->test_join());
   ok(TestCase::CoreFunc::Math->test_double_pass_positive_infinity($POSITIVE_INFINITY));
   ok(TestCase::CoreFunc::Math->test_double_pass_nan($NaN));
   
-  ok(TestCase::CoreFunc::Math->test_isinf());
-  ok(TestCase::CoreFunc::Math->test_isfinite());
-  ok(TestCase::CoreFunc::Math->test_isnan());
+  ok(TestCase::CoreFunc::Math->test_isinf);
+  ok(TestCase::CoreFunc::Math->test_isfinite);
+  ok(TestCase::CoreFunc::Math->test_isnan);
   
   is(SPVM::CORE->INFINITY(), $POSITIVE_INFINITY);
   
@@ -102,9 +107,9 @@ ok(TestCase::CoreFunc::Math->test_join());
 }
 
 {
-  ok(TestCase::CoreFunc::Math->test_byte_constant());
-  ok(TestCase::CoreFunc::Math->test_short_constant());
-  ok(TestCase::CoreFunc::Math->test_int_constant());
+  ok(TestCase::CoreFunc::Math->test_byte_constant);
+  ok(TestCase::CoreFunc::Math->test_short_constant);
+  ok(TestCase::CoreFunc::Math->test_int_constant);
 }
 
 {

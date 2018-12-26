@@ -161,5 +161,7 @@ struct SPVM_env {
   int32_t (*enter_scope)(SPVM_ENV* env);
   void (*push_mortal)(SPVM_ENV* env, void* object);
   void (*leave_scope)(SPVM_ENV* env, int32_t original_mortal_stack_top);
+  void* (*type_name_raw)(SPVM_ENV* env, void* object);
+  void* (*type_name)(SPVM_ENV* env, void* object);
 };
 #endif

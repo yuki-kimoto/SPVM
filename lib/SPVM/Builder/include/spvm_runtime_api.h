@@ -202,4 +202,7 @@ void SPVM_RUNTIME_API_set_fpkgvar(SPVM_ENV* env, int32_t pkgvar_id, float value)
 void SPVM_RUNTIME_API_set_dpkgvar(SPVM_ENV* env, int32_t pkgvar_id, double value);
 void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, int32_t pkgvar_id, SPVM_OBJECT* value);
 
+SPVM_OBJECT* SPVM_RUNTIME_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
+SPVM_OBJECT* SPVM_RUNTIME_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
+
 #endif

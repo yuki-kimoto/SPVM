@@ -2,6 +2,7 @@ package SPVM::CORE {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
   
+  native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
   native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
   native sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);

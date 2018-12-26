@@ -9,6 +9,8 @@
     while (my $num = 1) {
       
     }
+  - add type_name core func
+  - fix native object return bug
 0.0404 2018-12-18
   - support ascii escape '\x1F' syntax in character literal
   - support string literal excape character '\0' '\a'
