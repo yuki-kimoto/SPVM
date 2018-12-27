@@ -21,25 +21,16 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message)
   compiler->error_count++;
   
   // Current token
-  int32_t length = 0;
-  int32_t empty_count = 0;
-  const char* ptr = compiler->befbufptr;
-  while (ptr != compiler->bufptr) {
-    if (*ptr == ' ' || *ptr == '\t' || *ptr == '\n') {
-      empty_count++;
-    }
-    else {
-      length++;
-    }
-    ptr++;
-  }
+  const char* ptr = compiler->bufptr;
+  char* line_start_ptr = compiler->bufptr_line_start;
+  int32_t length = ptr - line_start_ptr + 1;
   
-  char* token = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(length + 1);
-  memcpy(token, compiler->befbufptr + empty_count, length);
-  token[length] = '\0';
+  char* near = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(length + 1);
+  memcpy(near, line_start_ptr, length);
+  near[length] = '\0';
   
-  fprintf(stderr, "Unexpected token \"%s\" at %s line %d\n", token, compiler->cur_file, compiler->cur_line);
-  free(token);
+  fprintf(stderr, "Syntax error near\n%s at %s line %d\n", near, compiler->cur_file, compiler->cur_line);
+  free(near);
 }
 
 // Print token value for debug

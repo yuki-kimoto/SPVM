@@ -30,6 +30,9 @@ struct SPVM_compiler {
   
   // Allocator
   SPVM_COMPILER_ALLOCATOR* allocator;
+
+  // Current line start position
+  char* bufptr_line_start;
   
   // Current buffer position
   char* bufptr;
