@@ -1086,27 +1086,68 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_OP* op_type = op_cur->last;
               
-              // Left term must be object type
-              if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
-                SPVM_COMPILER_error(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              SPVM_TYPE* check_type = op_type->uv.type;
               
-              // Right type must be object type
-              if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                // Right type must be not any object type
-                if (SPVM_TYPE_is_any_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                  SPVM_COMPILER_error(compiler, "isa rigth type must be not any object type at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
+              int32_t compile_time_check;
+              if (SPVM_TYPE_is_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+                compile_time_check = 1;
+              }
+              else if (SPVM_TYPE_is_value_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+                compile_time_check = 1;
+              }
+              else {
+                compile_time_check = 0;
+              }
+              if (compile_time_check) {
+                // If left type is same as right type, this return true, otherwise return false
+                if (term_type->basic_type->id == check_type->basic_type->id && term_type->dimension == check_type->dimension) {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_cur->file, op_cur->line);
+                  SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_constant_true);
+                  SPVM_OP_replace_op(compiler, op_stab, op_bool);
+                  SPVM_OP_CHECKER_check_tree(compiler, op_bool, check_ast_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
+                  op_cur = op_bool;
+                }
+                else {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_cur->file, op_cur->line);
+                  SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_constant_false);
+                  SPVM_OP_replace_op(compiler, op_stab, op_bool);
+                  SPVM_OP_CHECKER_check_tree(compiler, op_bool, check_ast_info);
+                  if (compiler->error_count > 0) {
+                    return;
+                  }
+                  op_cur = op_bool;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "isa rigth type must be object type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+                // Left term must be object type
+                if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                // Right type must be object type
+                if (SPVM_TYPE_is_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+                  // Right type must be not any object type
+                  if (SPVM_TYPE_is_any_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
+                    SPVM_COMPILER_error(compiler, "isa rigth type must be not any object type at %s line %d\n", op_cur->file, op_cur->line);
+                    return;
+                  }
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "isa rigth type must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
 
-              // Add type info to constant pool
-              SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+                // Add type info to constant pool
+                SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+              }
               
               break;
             }

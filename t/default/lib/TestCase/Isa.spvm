@@ -2,6 +2,35 @@ package TestCase::Isa {
   use TestCase::Minimal;
   use TestCase::Simple;
   use SPVM::Comparator;
+  use SPVM::Complex_2d;
+
+  sub isa_numeric_type : int () {
+    my $num : int;
+    
+    unless ($num isa int) {
+      return 0;
+    }
+    
+    if ($num isa long) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub isa_value_type : int () {
+    my $num : SPVM::Complex_2d;
+    
+    unless ($num isa SPVM::Complex_2d) {
+      return 0;
+    }
+    
+    if ($num isa SPVM::Complex_2f) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub isa_match_class : int () {
     my $minimal = TestCase::Minimal->new;

@@ -1,4 +1,4 @@
-0.0405 2018-12-26
+0.0405 2018-12-27
   - fix operator precidence. more perlish.
   - can omit for init, inc part
     for (;CONDITION;) {
@@ -12,6 +12,7 @@
   - add type_name core func
   - fix native object return bug
   - in runtime, string type become byte array type
+  - support isa numeric type and value type
 0.0404 2018-12-18
   - support ascii escape '\x1F' syntax in character literal
   - support string literal excape character '\0' '\a'
