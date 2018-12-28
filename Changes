@@ -1,4 +1,4 @@
-0.0405 2018-12-27
+0.0405 2018-12-28
   - fix operator precidence. more perlish.
   - can omit for init, inc part
     for (;CONDITION;) {
