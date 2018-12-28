@@ -68,7 +68,7 @@ package TestCase::String {
         return 0;
       }
       
-      unless ($string != $bytes) {
+      unless ($string == $bytes) {
         return 0;
       }
     }

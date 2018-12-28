@@ -14,6 +14,77 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/default/lib";
 
+# Assign
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::StringToBytArray');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::DifferentObject');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::ConstToNoConst');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NotNumericToNumeric');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::UnboxingDifferentType');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Assign::BoxingDifferentType');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Remainder
 {
   {
@@ -131,70 +202,6 @@ use lib "$FindBin::Bin/default/lib";
   {
     my $build = SPVM::Builder->new;
     $build->use('TestCase::CompileError::Bool::NotNumericObject');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
-# Assign
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::DifferentObject');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::ConstToNoConst');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NotNumericToNumeric');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::UnboxingDifferentType');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::BoxingDifferentType');
     my $success = $build->compile_spvm();
     ok($success == 0);
   }

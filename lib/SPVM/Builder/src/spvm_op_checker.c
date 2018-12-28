@@ -4373,7 +4373,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     else {
       const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
       const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-      SPVM_COMPILER_error(compiler, "Can't automatically convert %s to %s at %s line %d\n", src_type_name, dist_type_name, op_src->file, op_src->line);
+      SPVM_COMPILER_error(compiler, "Can't convert %s to %s implicitly at %s line %d\n", src_type_name, dist_type_name, op_src->file, op_src->line);
       return NULL;
     }
   }
