@@ -1191,6 +1191,7 @@ enum {
         <li>ポインタ型</li>
         <li>インターフェース型</li>
         <li>配列型</li>
+        <li>汎用オブジェクト型</li>
         <li>値型</li>
         <li>リファレンス型</li>
       </ul>
@@ -1243,7 +1244,7 @@ my $foo = new Foo;
 
       <h4 id="language-type-pointer">ポインタ型</h4>
       <p>
-        ポインタ型とは「パッケージの定義」において「pointer_t デスクリプタ」が指定されたものをいいます。
+        ポインタ型とは「<a href="#language-package-definition">パッケージの定義</a>」において「pointer_t デスクリプタ」が指定されたものをいいます。
       </p>
 <pre>
 package Foo : pointer_t {
@@ -1259,7 +1260,72 @@ package Foo : pointer_t {
       <p>
         ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーになります。
       </p>
-      
+      <h5 id="language-type-interface">インターフェース型</h5>
+      <p>
+        インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface デスクリプタ」が指定されたものをいいます。
+      </p>
+<pre>
+package SPVM::Comparator : interface {
+  sub compare : int ($self : self, $x1 : object, $x2 : object);
+}
+</pre>
+      <p>
+        インターフェスは、C言語における関数ポインタと同一の機能を提供するために設計されました。
+      </p>
+      <p>
+        インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドである必要があります。
+      </p>
+      <p>
+        インターフェース型は「フィールドの定義」「パッケージ変数の定義」を持つことはできません。
+      </p>
+      <p>
+        インターフェース型の値を、new演算子によって実体化することはできません。
+      </p>
+      <p>
+        インターフェース型は「パッケージ型」です。
+      </p>
+      <p>
+        インターフェース型は「オブジェクト型」です。
+      </p>
+      <p>
+        インターフェース型には、定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトを代入できます。
+      </p>
+<pre>
+# クラスの定義
+package SomeComparator {
+  sub compare : int ($self : self, $x1 : object, $x2 : object) {
+    
+  }
+}
+
+# インターフェース型への代入
+my $comparator : comparator = new SomeComparator;
+</pre>
+      <p>
+        インターフェース型には、同一のシグネチャを持つ無名サブルーチンを代入することができます。
+      </p>
+<pre>
+# インターフェース型への代入
+my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+  
+}
+</pre>
+      <h4 id="language-type-any-object">値型</h4>
+      <p>
+        汎用オブジェクト型は「object」で表現します。
+      </p>
+<pre>
+my $object : object;
+</pre>
+      <p>
+        汎用オブジェクト型は、C言語の「void*」型を表現するために設計されました。
+      </p>
+      <p>
+        汎用オブジェクト型には「オブジェクト型」の値を代入できます。
+      </p>
+<pre>
+my $object : object = new Foo;
+</pre>
       <h4 id="language-type-value">値型</h4>
       <p>
         値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
