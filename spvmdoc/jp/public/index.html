@@ -1054,6 +1054,7 @@ enum {
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
         <li><a href="#language-type-value">値型</a></li>
+        <li><a href="#language-type-ref">リファレンス型</a></li>
       </ul>
       <h4 id="language-type-summary">型の概要</h3>
       <p>
@@ -1177,8 +1178,19 @@ enum {
       <p>
         浮動小数点の計算規則については、算術演算子を参考にしてください。
       </p>
-      <h4 id="language-type-object">オブジェクト型</h3>
-      <h4 id="language-type-value">値型</h3>
+      <h4 id="language-type-object">オブジェクト型</h4>
+      <ul>
+        <li>オブジェクト型の概要</li>
+        <li>パッケージ型</li>
+        <li>クラス型</li>
+        <li>インターフェース型</li>
+        <li>ポインタ型</li>
+        <li>配列型</li>
+      </ul>
+      <h5>パッケージ型</h5>
+      
+      
+      <h4 id="language-type-value">値型</h4>
       <p>
         値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
       </p>
@@ -1311,8 +1323,46 @@ foo($x, $y, $z);
 <pre>
 my $points : Point_3i[] = new Point_3i[];
 </pre>
+      <h4 id="language-type-ref">リファレンス型</h4>
+      <p>
+        リファレンス型とは、変数への参照を表現する型のことです。数値型か値型の名前の後ろに「&」を付けることで定義できます。
+      </p>
+<pre>
+my $num : int;
+my $num_ref : int& = \$num;
 
+my $point : Point_3i;;
+my $point_ref : Point_3i& = \$point;
+</pre>
+      <p>
+        リファレンス型は、単独では存在できず、リファレンスが代入される必要があります。
+      </p>
+      <p>
+        リファレンスにできるのは、数値型と値型のみです。オブジェクト型をリファレンスにすることはできません。
+      </p>
+      <p>
+        リファレンス型は、サブルーチンの引数にすることができます。
+      </p>
+<pre>
+foo($num_ref);
+foo($point_ref);
+</pre>
+      <p>
+        デリファレンスすることで、参照先の値を取得したり、変更することができます。
+      </p>
+<pre>
+# の値を
+my $num2 = $$num_ref;
 
+# 数値型の値を変更
+$$num_ref = 3;
+
+# 値型の値を取得
+my $point2 = $$point_ref;
+
+# 値型の値を設定
+$$point_ref = $point2;
+</pre>
 
       <h3 id="language-term">項</h3>
       <p>
@@ -2838,7 +2888,7 @@ package Foo {
       </p>
       <h3>ドキュメント最終更新日</h3>
       <p>
-        2018年12月12日
+        2018年12月29日
       </p>
       <h2>明日は</h2>
       
