@@ -1049,10 +1049,21 @@ enum {
       
       <h3 id="language-type">型</h3>
       <ul class="toc">
+        <li><a href="#language-type-summary">型の概要</a></li>
         <li><a href="#language-type-integer">整数型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
       </ul>
+      <h4 id="language-type-summary">型の概要</h3>
+      <p>
+        SPVMは、静的型言語です。すべてのデータは静的な型を持ちます。
+      </p>
+      <p>
+        レキシカル変数の宣言、フィールドの定義、パッケージ変数の定義、サブルーチンの定義の引数と戻り値において、型が指定される必要があります。
+      </p>
+      <p>
+        レキシカル変数の宣言においては、型推論を利用して、暗黙的に型を指定することもできます。
+      </p>
       <h4 id="language-type-integer">整数型</h3>
       <p>
         SPVMの整数型は以下の4つです。
@@ -1074,7 +1085,7 @@ enum {
             <b>byte</b>
           </td>
           <td>
-            8bit符号付整数
+            8bit符号付整数型
           </td>
           <td>
             -128～127
@@ -1085,7 +1096,7 @@ enum {
             <b>short</b>
           </td>
           <td>
-            16bit符号付整数
+            16bit符号付整数型
           </td>
           <td>
             -32768～32767
@@ -1096,7 +1107,7 @@ enum {
             <b>int</b>
           </td>
           <td>
-            32bit符号付整数
+            32bit符号付整数型
           </td>
           <td>
             -2147483648～2147483647
@@ -1107,13 +1118,64 @@ enum {
             <b>long</b>
           </td>
           <td>
-            64bit符号付整数
+            64bit符号付整数型
           </td>
           <td>
             -9223372036854775808～9223372036854775807
           </td>
         </tr>
       </table>
+      <p>
+        SPVMの整数型には、符号なし整数型は存在しません。
+      </p>
+      <p>
+        整数の計算規則については、算術演算子を参考にしてください。
+      </p>
+      <h4 id="language-type-floating-point">浮動小数点型</h3>
+      <p>
+        SPVMの浮動小数点型は以下の2つです。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            説明
+          </th>
+          <th>
+            範囲
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            単精度浮動小数点型 - 32bitで浮動小数点を表現します
+          </td>
+          <td>
+            C標準マクロ FLT_MIN～FLT_MAX
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            倍精度浮動小数点型 - 64bitで浮動小数点を表現します
+          </td>
+          <td>
+            C標準マクロ DBL_MIN～DBL_MAX
+          </td>
+        </tr>
+      </table>
+      <p>
+        浮動小数点の表現方法については、処理系に依存します。
+      </p>
+      <p>
+        浮動小数点の計算規則については、算術演算子を参考にしてください。
+      </p>
       <h3 id="language-term">項</h3>
       <p>
         算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
