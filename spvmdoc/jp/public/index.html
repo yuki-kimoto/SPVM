@@ -1188,8 +1188,8 @@ enum {
         <li>オブジェクト型</li>
         <li>パッケージ型</li>
         <li>クラス型</li>
-        <li>インターフェース型</li>
         <li>ポインタ型</li>
+        <li>インターフェース型</li>
         <li>配列型</li>
         <li>値型</li>
         <li>リファレンス型</li>
@@ -1213,6 +1213,9 @@ my $object : object = "abc";
       <p>
         パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
       </p>
+      <p>
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
+      </p>
       <h5>クラス型</h5>
       <p>
         クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
@@ -1228,9 +1231,14 @@ packag Foo {
 <pre>
 my $foo = new Foo;
 </pre>
-      
       <p>
-        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
+        クラス型は<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
+        クラス型は<a href="#language-type-package">パッケージ型</a>です。
+      </p>
+      <p>
+        「<a href="#language-type-pointer">ポインタ型</a>はクラス型です。
       </p>
 
       <h4 id="language-type-pointer">ポインタ型</h4>
