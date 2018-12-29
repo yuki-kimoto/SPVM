@@ -1050,6 +1050,7 @@ enum {
       <h3 id="language-type">型</h3>
       <ul class="toc">
         <li><a href="#language-type-summary">型の概要</a></li>
+        <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integer">整数型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
@@ -1065,6 +1066,10 @@ enum {
       </p>
       <p>
         レキシカル変数の宣言においては、型推論を利用して、暗黙的に型を指定することもできます。
+      </p>
+      <h4 id="language-type-numeric">数値型</h3>
+      <p>
+        数値型は「<a href="#language-type-integer">整数型」と「<a href="#language-type-floating-point">浮動小数点型</a>」を合わせたものをいいます。
       </p>
       <h4 id="language-type-integer">整数型</h3>
       <p>
@@ -1180,15 +1185,72 @@ enum {
       </p>
       <h4 id="language-type-object">オブジェクト型</h4>
       <ul>
-        <li>オブジェクト型の概要</li>
+        <li>オブジェクト型</li>
         <li>パッケージ型</li>
         <li>クラス型</li>
         <li>インターフェース型</li>
         <li>ポインタ型</li>
         <li>配列型</li>
+        <li>値型</li>
+        <li>リファレンス型</li>
       </ul>
+      <h5>オブジェクト型</h5>
+      <p>
+        オブジェクト型とは「クラス型」「インターフェース型」「配列型」「文字列型」「汎用オブジェクト型」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
+      </p>
+      <p>
+        オブジェクト型の値は「汎用オブジェクト型」に代入できます。
+      </p>
+<pre>
+my $object : object = new Foo;
+my $object : object = new Foo[];
+my $object : object = "abc";
+</pre>
       <h5>パッケージ型</h5>
+      <p>
+        パッケージ型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型のことをいいます。
+      </p>
+      <p>
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
+      </p>
+      <h5>クラス型</h5>
+      <p>
+        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
+      </p>
+<pre>
+packag Foo {
+  
+}
+</pre>
+      <p>
+        クラス型はnew演算子によって、オブジェクトを生成することができます。
+      </p>
+<pre>
+my $foo = new Foo;
+</pre>
       
+      <p>
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
+      </p>
+
+      <h4 id="language-type-pointer">ポインタ型</h4>
+      <p>
+        ポインタ型とは「パッケージの定義」において「pointer_t デスクリプタ」が指定されたものをいいます。
+      </p>
+<pre>
+package Foo : pointer_t {
+  
+}
+</pre>
+      <p>
+        ポインタ型は、クラス型の一種です。
+      </p>
+      <p>
+        ポインタ型のデータには、C言語のポインタを保存することができます。
+      </p>
+      <p>
+        ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーになります。
+      </p>
       
       <h4 id="language-type-value">値型</h4>
       <p>
