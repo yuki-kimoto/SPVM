@@ -1015,6 +1015,9 @@ sub foo : int () { return 5 + 3; }
         <li>
           <a href="#language-enum-definition">列挙の定義</a>
         </li>
+        <li>
+          <a href="#language-enum-call">列挙の呼び出し</a>
+        </li>
       </ul>
       <h4 id="language-enum-definition">列挙の定義</h4>
       <p>
@@ -1077,6 +1080,33 @@ enum {
       <p>
         enumの定義が不正な場合は、コンパイル時エラーが発生します。
       </p>
+      <h4 id="language-enum-call">列挙の呼び出し</h4>
+      <p>
+        列挙は、定数サブルーチンのエイリアスなので、サブルーチン呼び出しとまったく同じ方法で呼び出すことができます。
+      </p>
+<pre>
+my $flag1 = Foo->FLAG1;
+my $flag2 = Foo->FLAG2;
+my $flag3 = Foo->FLAG3;
+</pre>
+      <p>
+        switch文のcase文において利用することもできます。
+      </p>
+<pre>
+switch ($num) {
+  case Foo->FLAG1:
+  
+    last;
+  case Foo->FLAG2:
+    
+    last:
+  case Foo->FLAG3:
+  
+    last:
+  default:
+  
+}
+</pre>
       
       <h3 id="language-type">型</h3>
       <ul class="toc">
