@@ -401,7 +401,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-enum">列挙</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-operator">演算子</a></li>
-        <li><a href="#language-block">ブロック</a></li>
+        <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-undef">未定義値</a></li>
@@ -1107,9 +1107,17 @@ switch ($num) {
   
 }
 </pre>
+      <h3 id="language-lex-var">レキシカル変数</h3>
+      <ul class="list">
+        <li><a href="#language-type-lex-var-declaration">レキシカル変数の宣言</a></li>
+      </ul>
+      <h3 id="language-lex-var">レキシカル変数の宣言</h3>
+      <p>
+        レキシカル変数とは、スコープを持つ変数のことです。
+      </p>
       
       <h3 id="language-type">型</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-type-summary">型の概要</a></li>
         <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integer">整数型</a></li>
@@ -1773,7 +1781,7 @@ while (条件部) {
 </pre>
       <h3 id="language-statement">文</h3>
       <p>
-        文とは、ひとつの処理のことで「<a href="#language-block-statement">文ブロック</a>」の中に記述することができます。
+        文とは、ひとつの処理のことで「<a href="#language-block-statement">スコープブロック</a>」の中に記述することができます。
       </p>
       <p>
         文は以下からなります。
@@ -2109,26 +2117,45 @@ my $num = 1 + 2;
       </table>
       </p>
       
-      <h3 id="language-block">ブロック</h3>
-      
+      <h3 id="language-scope">スコープ</h3>
+      <ul class="toc">
+        <li><a href="#language-scope-summary">スコープの概要</a>
+        <li><a href="#language-scope-block">スコープブロック</a>
+      </ul>
+      <h4 id="language-scope-summary">スコープの概要</h4>
       <p>
-        ブロックは「{」で始まり「}」で終わります。
+        スコープとは、スコープブロックに囲まれた範囲のことをいいます。
+      </p>
+      <p>
+        レキシカル変数は、宣言されている位置で、モータルとして登録されます。
       </p>
 <pre>
-# ブロック
 {
-
+  # レキシカル変数をモータルとして登録
+  my $num = new Foo;
 }
 </pre>
       <p>
-        ブロックは、「<a href="#language-block-statement">文ブロック</a>」と「<a href="#language-block-other">文ブロックではないブロック</a>」に分けられます。
-      </p>
-      <h4 id="language-block-statement">文ブロック</h4>
-      <p>
-        文ブロックは「<a href="#language-block-statement-simple">単純なブロック</a>」「<a href="#language-block-statement-sub">サブルーチンブロック</a>」「<a href="#language-block-statement-eval">evalブロック</a>」「<a href="#language-block-statement-if">ifブロック</a>」「<a href="#language-block-statement-elsif">elsifブロック</a>」「<a href="#language-block-statement-else">elseブロック</a>」「<a href="#language-block-statement-for">forブロック</a>」「<a href="#language-block-statement-while">whileブロック</a>」「<a href="#language-block-statement-switch">switchブロック</a>」です。
+        モータルなレキシカル変数に代入されたオブジェクトが、未定義値ではない場合は、リファレンスカウントが1増やされます。
       </p>
       <p>
-        文ブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
+        スコープの終わりに到達すると、モータルとして宣言されたレキシカル変数に代入されているオブジェクトは、未定義値でない場合、リファレンスカウントをが1減らされ、0になった場合は、解放されます。
+      </p>
+      <h4 id="language-scope-block">スコープブロック</h4>
+      <p>
+        スコープブロックとは、スコープを作るブロックのことです。スコープブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
+      </p>
+<pre>
+# スコープブロック
+{
+  my $num = 1;
+  $num++;
+}
+</pre>
+      <p>
+        <b>スコープブロックの一覧</b>
+      <p>
+        
       </p>
       <h5 id="language-block-statement-simple">単純なブロック</h5>
 <pre>
@@ -2200,30 +2227,7 @@ switch (条件) {
 
 }
 </pre>
-      <p>
-        文ブロックは、スコープを作ります。ブロックの中で宣言された変数に、オブジェクトが代入されている場合は、ブロックの終了の直後に、解放されます。
-      </p>
 
-      <h4 id="language-block-other">文ブロックではないブロック</h4>
-      <p>
-        「<a href="#language-block-statement-package">パッケージブロック</a>」「<a href="#language-block-statement-enum">列挙ブロック</a>」は「文ブロックではないブロック」です。
-      </p>
-
-      <h5 id="language-block-statement-package">パッケージブロック</h5>
-<pre>
-# パッケージブロック
-package Foo {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-enum">列挙ブロック</h5>
-<pre>
-# 列挙ブロック
-enum {
-
-}
-</pre>
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="toc">
         <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
