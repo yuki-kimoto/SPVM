@@ -1053,7 +1053,13 @@ enum {
         <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integer">整数型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
+        <li><a href="#language-type-package">パッケージ型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
+        <li><a href="#language-type-class">クラス型</a></li>
+        <li><a href="#language-type-interface">インターフェース型</a></li>
+        <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
+        <li><a href="#language-type-array">配列型</a></li>
+        <li><a href="#language-type-string">文字列型</a></li>
         <li><a href="#language-type-value">値型</a></li>
         <li><a href="#language-type-ref">リファレンス型</a></li>
       </ul>
@@ -1069,7 +1075,7 @@ enum {
       </p>
       <h4 id="language-type-numeric">数値型</h3>
       <p>
-        数値型は「<a href="#language-type-integer">整数型」と「<a href="#language-type-floating-point">浮動小数点型</a>」を合わせたものをいいます。
+        数値型は「<a href="#language-type-integer">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
       </p>
       <h4 id="language-type-integer">整数型</h3>
       <p>
@@ -1183,21 +1189,47 @@ enum {
       <p>
         浮動小数点の計算規則については、算術演算子を参考にしてください。
       </p>
-      <h4 id="language-type-object">オブジェクト型</h4>
-      <ul>
-        <li>オブジェクト型</li>
-        <li>パッケージ型</li>
-        <li>クラス型</li>
-        <li>ポインタ型</li>
-        <li>インターフェース型</li>
-        <li>配列型</li>
-        <li>汎用オブジェクト型</li>
-        <li>値型</li>
-        <li>リファレンス型</li>
-      </ul>
-      <h5>オブジェクト型</h5>
+      <h4 id="language-type-package">パッケージ型</h4>
       <p>
-        オブジェクト型とは「クラス型」「インターフェース型」「配列型」「文字列型」「汎用オブジェクト型」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
+        パッケージ型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型のことをいいます。
+      </p>
+<pre>
+package Foo {
+
+}
+</pre>
+      <p>
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。
+      </p>
+<pre>
+# クラス型
+package Foo {
+
+}
+
+# インターフェース型
+package Foo : interface {
+
+}
+
+# 値型
+package Foo : value_t {
+
+}
+</pre>
+      <p>
+        <a href="#language-type-pointer">ポインタ型</a>は、クラス型でもあるので、ポインタ型もパッケージ型になります。
+      </p>
+<pre>
+# ポインタ型
+package Foo : pointer_t {
+
+}
+</pre>
+
+      <h4 id="language-type-object">オブジェクト型</h4>
+      <p>
+        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
       </p>
       <p>
         オブジェクト型の値は「汎用オブジェクト型」に代入できます。
@@ -1207,14 +1239,7 @@ my $object : object = new Foo;
 my $object : object = new Foo[];
 my $object : object = "abc";
 </pre>
-      <h5>パッケージ型</h5>
-      <p>
-        パッケージ型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型のことをいいます。
-      </p>
-      <p>
-        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。「<a href="#language-type-numeric">数値型</a>」と「<a href="#language-type-ref">リファレンス型</a>」は、含まれません。
-      </p>
-      <h5>クラス型</h5>
+      <h4 id="language-type-class">クラス型</h4>
       <p>
         クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
       </p>
@@ -1257,7 +1282,7 @@ package Foo : pointer_t {
       <p>
         ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーになります。
       </p>
-      <h5 id="language-type-interface">インターフェース型</h5>
+      <h4 id="language-type-interface">インターフェース型</h4>
       <p>
         インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface デスクリプタ」が指定されたものをいいます。
       </p>
@@ -1309,20 +1334,76 @@ my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : objec
 </pre>
       <h4 id="language-type-any-object">汎用オブジェクト型</h4>
       <p>
-        汎用オブジェクト型は「object」で表現します。
+        汎用オブジェクト型は「object」で表現します。C言語の「void*」型を表現するために設計されました。
       </p>
 <pre>
 my $object : object;
 </pre>
-      <p>
-        汎用オブジェクト型は、C言語の「void*」型を表現するために設計されました。
-      </p>
       <p>
         汎用オブジェクト型には「オブジェクト型」の値を代入できます。
       </p>
 <pre>
 my $object : object = new Foo;
 </pre>
+      <h4 id="language-type-array">配列型</h4>
+      <p>
+        配列型は、連続した複数のデータ領域を表現します。
+      </p>
+      <h4 id="language-type-string">文字列型</h4>
+      <p>
+        文字列型は、文字列を表現する型です。stringによって表現します。C言語の「const char*」を表現するために設計されました。
+      </p>
+<pre>
+my $str : string;
+</pre>
+      <p>
+        文字列リテラルによって、生成された文字列オブジェクトを代入できます。
+      </p>
+<pre>
+my $str : string = "abc";
+</pre>
+      <p>
+        SPVMの文字列は、要素を変更できないバイト型の配列です。配列アクセスを行って、文字を取得することができます。
+      </p>
+<pre>
+# 文字の取得
+my $ch = $str->[1];
+</pre>
+      <p>
+        要素を変更しようとした場合は、コンパイル時エラーになります。
+      </p>
+<pre>
+# 要素の変更はコンパイルエラー
+$str->[1] = 'd';
+</pre>
+      <p>
+        文字列型は、コンパイルが終わった後は、バイト型の配列とまったく同じものになります。たとえば、一つ目の表現は、二つ目の表現として扱われます。
+      </p>
+<pre>
+# isa 文字列型
+if ($str isa string) {
+  
+}
+
+# isa バイト型の配列
+if ($str isa byte[]) {
+  
+}
+</pre>
+      <p>
+        SPVMの文字列は、変更不可ですが、これは、コンパイル時チェックであることに注意してください。
+      </p>
+      <p>
+        文字列型は、byte[]型に、キャストすることができ、実行時に文字列を変更することができます。
+      </p>
+<pre>
+my $bytes = (byte[])$str;
+$bytes->[1] = 'd';
+</pre>
+      <p>
+        文字列は、常に変更が可能であるものとして、扱ってください。
+      </p>
+
       <h4 id="language-type-value">値型</h4>
       <p>
         値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
