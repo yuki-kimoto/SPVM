@@ -898,8 +898,9 @@ package Foo {
 }
 </pre>
       <h3 id="language-sub">サブルーチン</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-sub-definition">サブルーチン定義</a></li>
+        <li><a href="#language-sub-constant">定数サブルーチン</a></li>
       </ul>
       <h4 id="language-sub-definition">サブルーチン定義</h4>
       <p>
@@ -988,6 +989,26 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
 sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, 引数名2 : 引数の型名2...) {
   
 }
+</pre>
+      <h4 id="language-sub-definition">定数サブルーチン</h4>
+      <p>
+        数値型の戻り値を持つサブルーチンで、戻り値が定数であるサブルーチンを定数サブルーチンといいます。
+      </p>
+<pre>
+sub foo : int () { return 5; }
+sub foo : long () { return 5L; }
+sub foo : float () { return 5.0f; }
+sub foo : double () { return 5.0; }
+</pre>
+      <p>
+        定数サブルーチンは、インライン展開されます。
+      </p>
+      <p>
+        SPVMは定数畳み込み最適化を行わないので、定数が演算されている場合は、定数サブルーチンにならず、インライン展開されないことに注意してください。
+      </p>
+<pre>
+# 定数サブルーチンではなくインライン展開されない
+sub foo : int () { return 5 + 3; }
 </pre>
       <h3 id="language-enum">列挙</h3>
       <ul class="list">
@@ -2750,6 +2771,10 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
+      <h3>定数畳み込み最適化は行われますか。</h3>
+      <p>
+        通常は、定数畳み込みの最適化は、行われませんが、プリコンパイルされたサブルーチンでは、定数畳み込みがCコンパイラによって試みらるでしょう。
+      </p>
       <h3>演算子の優先順位でPerlと異なる点を教えてください</h3>
       <p>
         演算子の優先順位はPerlをベースにして作成されており、ほぼPerlの優先順位だと考えて大丈夫です。
