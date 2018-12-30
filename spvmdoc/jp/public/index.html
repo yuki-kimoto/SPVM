@@ -400,7 +400,9 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-field">フィールド</a>
         <li><a href="#language-package-variable">パッケージ変数</a>
         <li><a href="#language-enum">列挙</a>
+        <li><a href="#language-lex-var">レキシカル変数</a>
         <li><a href="#language-type">型</a></li>
+        <li><a href="#language-type-inference">型推論</a></li>
         <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-statement">文</a></li>
@@ -1376,13 +1378,34 @@ switch ($num) {
 </pre>
       <h3 id="language-lex-var">レキシカル変数</h3>
       <ul class="list">
-        <li><a href="#language-type-lex-var-declaration">レキシカル変数の宣言</a></li>
+        <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
+        <li><a href="#language-lex-var-type-inference">型推論</a></li>
       </ul>
-      <h3 id="language-lex-var">レキシカル変数の宣言</h3>
+      <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
       <p>
-        レキシカル変数とは、スコープを持つ変数のことです。
+        レキシカル変数は「my」キーワードによって宣言します。「:」の後ろに「<a href="#language-type">型</a>」を指定する必要があります。
       </p>
-      
+<pre>
+my $num : int;
+</pre>
+      <p>
+        レキシカル変数は<a href="#language-scope-block">スコープブロック</a>の中で宣言され、<a href="#language-scope">スコープ</a>を持つ変数のことです。
+      </p>
+<pre>
+{
+  my $num : int;
+}
+</pre>
+      <p>
+        <a href="#language-type-inference">型推論</a>によって、レキシカル変数を宣言するときに、型の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
+      </p>
+<pre>
+# int
+my $num = 1;
+
+# double
+my $num = 1.0;
+</pre>
       <h3 id="language-type">型</h3>
       <ul class="list">
         <li><a href="#language-type-summary">型の概要</a></li>
@@ -1935,6 +1958,20 @@ my $x = $point_ref->{x};
 
 # リファレンス型の対象が値型であった場合に、値型のフィールドを設定
 $point_ref->{x} = 1;
+</pre>
+      <h3 id="language-type-inference">型推論</h3>
+      <p>
+        型推論によって、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>するときに、<a href="#language-type">型</a>の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
+      </p>
+<pre>
+# int
+my $num = 1;
+
+# double
+my $num = 1.0;
+
+# Foo
+my $foo = new Foo;
 </pre>
 
       <h3 id="language-operator">演算子</h3>
