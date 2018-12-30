@@ -390,26 +390,25 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-parser">構文解析</a>
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
+        <li><a href="#language-package">パッケージ</a>
+        <li><a href="#language-package-var">パッケージ変数</a>
+        <li><a href="#language-field">フィールド</a>
+        <li><a href="#language-sub">サブルーチン</a>
+        <li><a href="#language-enum">列挙</a>
+        <li><a href="#language-lex-var">レキシカル変数</a>
         <li><a href="#language-block">ブロック</a>
+        <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-term">項</a>
         <li><a href="#language-expression">式</a>
         <li><a href="#language-condition">条件</a>
         <li><a href="#language-condition-part">条件部</a>
+        <li><a href="#language-literal">リテラル</a></li>
+        <li><a href="#language-undef">未定義値</a></li>
+        <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-statement">文</a>
-        <li><a href="#language-package">パッケージ</a>
-        <li><a href="#language-field">フィールド</a>
-        <li><a href="#language-package-variable">パッケージ変数</a>
-        <li><a href="#language-enum">列挙</a>
-        <li><a href="#language-lex-var">レキシカル変数</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
-        <li><a href="#language-operator">演算子</a></li>
-        <li><a href="#language-scope">スコープ</a></li>
-        <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
-        <li><a href="#language-undef">未定義値</a></li>
-        <li><a href="#language-literal">リテラル</a></li>
-        <li><a href="#language-condition-part">条件部</a></li>
       </ul>
       <h3 id="language-parser">構文解析</h3>
       <ul class="list">
@@ -515,275 +514,8 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 
 =cut
 </pre>
-      <h3 id="language-block">ブロック</h3>
-      <p>
-        「{」と「}」で囲まれた部分のことをブロックと呼びます。
-      </p>
-<pre>
-# ブロック
-{
-
-}
-</pre>
-      <p>
-        ブロックの中には、スコープを作る<a href="#language-scope-block">スコープブロック</a>があります。
-      </p>
-      <h3 id="language-term">項</h3>
-      <p>
-        算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
-      </p>
-      <p>
-        「項」には、戻り値を持つ「<a href="#language-expression">式</a>」と、戻り値を持たず<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
-      </p>
-      <h3 id="language-expression">式</h3>
-      <p>
-        式は次の項目で定義されます。
-      </p>
-      <p>
-        <b>式の一覧</b>
-      </p>
-      <ul class="list">
-        <li>変数</li>
-        <li>例外変数</li>
-        <li>パッケージ変数の読み取り</li>
-        <li>定数リテラル</li>
-        <li>未定義値</li>
-        <li>サブルーチン呼び出し</li>
-        <li>フィールドの読み取り</li>
-        <li>配列の要素の読み取り</li>
-        <li>型変換</li>
-        <li>new演算子</li>
-        <li>配列の初期化</li>
-        <li>配列の長さ</li>
-        <li>文字列の長さ</li>
-        <li>変数宣言</li>
-        <li>二項演算子</li>
-        <li>単項演算子</li>
-        <li>リファレンス演算子</li>
-        <li>デリファレンス演算子</li>
-        <li>代入演算子</li>
-        <li>インクリメント演算子</li>
-        <li>デクリメント演算子</li>
-        <li>__PACKAGE__演算子</li>
-        <li>__FILE__演算子</li>
-        <li>__LINE__演算子</li>
-        <li>(式)</li>
-      </ul>
-
-      <h3 id="language-condition">条件</h3>
-      <p>
-        条件は次の項目で定義されます。
-      </p>
-      <p>
-        <b>条件の一覧</b>
-      </p>
-      <ul class="list">
-        <li>比較演算子</li>
-        <li>論理演算子</li>
-        <li>(条件)</li>
-      </ul>
-
-      <h3 id="language-condition-part">条件部</h3>
-      <p>
-        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-expression">式</a>」と「<a href="#language-condition">条件</a>」が記述できます。
-      </p>
-      <p>
-        <b>if文のかっこの中</b>
-      </p>
-<pre>
-if (条件部) {
-
-}
-</pre>
-      <p>
-        <b>unless文のかっこの中</b>
-      </p>
-<pre>
-unless (条件部) {
-
-}
-</pre>
-      <p>
-        <b>forのかっこの中の二つ目</b>
-      </p>
-<pre>
-for (初期化;条件部;次の値;) {
-
-}
-</pre>
-      <p>
-        <b>whileのかっこの中</b>
-      </p>
-<pre>
-while (条件部) {
-
-}
-</pre>
-      <p>
-        <b>論理AND演算子の左右</b>
-      </p>
-<pre>
-条件部 && 条件部
-</pre>
-      <p>
-        <b>論理OR演算子の左右</b>
-      </p>
-<pre>
-条件部 || 条件部
-</pre>
-      <p>
-        <b>論理否定演算子の右側</b>
-      </p>
-<pre>
-!条件部
-</pre>
-      <h3 id="language-statement">文</h3>
-      <p>
-        文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
-      </p>
-      <p>
-        文の一覧です。
-      </p>
-      <ul class="list">
-        <li><a href="#language-statement-if">if文</a></li>
-        <li><a href="#language-statement-for">for文</a></li>
-        <li><a href="#language-statement-while">while文</a></li>
-        <li><a href="#language-statement-switch">switch文</a></li>
-        <li><a href="#language-statement-case">case文</a></li>
-        <li><a href="#language-statement-default">default文</a></li>
-        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
-        <li><a href="#language-statement-eval">eval文</a></li>
-        <li><a href="#language-statement-ifrequire">if require文</a></li>
-        <li><a href="#language-statement-next">next文</a></li>
-        <li><a href="#language-statement-last">last文</a></li>
-        <li><a href="#language-statement-return">return文</a></li>
-        <li><a href="#language-statement-croak">croak文</a></li>
-        <li><a href="#language-statement-weaken">weaken文</a></li>
-        <li><a href="#language-statement-expression">式文</a></li>
-        <li><a href="#language-statement-empty">空文</a></li>
-      </ul>
-
-      <h4 id="language-statement-return">return文</h3>
-      <p>
-        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
-      </p>
-<pre>
-return;
-</pre>
-      <p>
-        戻り値がある場合は、<a href="#language-expression">式</a>を指定することができます。
-      </p>
-<pre>
-return 式;
-</pre>
-      <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-
-      <h4 id="language-statement-next">next文</h3>
-      <p>
-        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
-      </p>
-<pre>
-next;
-</pre>
-      <p>
-        <b>next文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    next;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-</pre>
-
-      <h4 id="language-statement-last">last文</h3>
-      <p>
-        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
-      </p>
-<pre>
-last;
-</pre>
-      <p>
-        <b>last文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    last;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-# switch
-my $num = 3;
-switch ($num) {
-  case 1 :
-    # 処理1
-    last;
-  case 2 :
-    # 処理2
-    last;
-  case 3 :
-    # 処理3
-    last;
-  default:
-    # デフォルト
-}
-</pre>
-      <h4 id="language-statement-expression">式文</h4>
-      <p>
-        式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
-      </p>
-<pre>
-式;
-</pre>
-
-      <p>
-        式文のサンプルです。
-      </p>
-<pre>
-1;
-$var;
-1 + 2;
-foo();
-my $num = 1 + 2;
-</pre>
-
-      <h4 id="language-statement-empty">空文</h4>
-      <p>
-        空文は「;」だけで終わる文のことです。
-      </p>
-<pre>
-;
-</pre>
-
       <h3 id="language-package">パッケージ</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-package-definition">パッケージの定義</a></li>
       </ul>
       
@@ -915,8 +647,131 @@ package Foo {
   }
 }
 </pre>
+      <h3 id="language-package-var">パッケージ変数</h3>
+      <ul class="list">
+        <li>
+          <a href="#language-package-var-definition">パッケージ変数の定義</a>
+        </li>
+      </ul>
+      <h4 id="language-package-var-definition">パッケージ変数の定義</h4>
+      <p>
+        パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
+      </p>
+      <p>
+        「our」キーワードを使用してパッケージ変数を定義することができます。
+      </p>
+<pre>
+our パッケージ変数名 : 型名;
+</pre>
+      <p>
+        パッケージ変数の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+      </p>
+      <p>
+        パッケージ変数の定義には「<a href="#language-type">型名</a>」が必要です。型名には「数値型」と「オブジェクト型」を指定できます。
+      </p>
+      <p>
+        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
+      </p>
+      <p>
+        パッケージ変数定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
+      </p>
+<pre>
+our パッケージ変数名 : デスクリプタ 型名;
+</pre>
+      <p>
+        <b>パッケージ変数デスクリプタ</b>
+      </p>
+      <p>
+        パッケージ変数で指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできません。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>ro</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、パッケージ変数名から「$」を除いたものです。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>wo</b>
+          </td>
+          <td>
+            このパッケージ変数は、書き込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、「SET_パッケージ変数名から$を除いたもの」になります。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「SET_FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>rw</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサと書き込み用のパッケージ変数アクセッサを持ちます。読み込み用のパッケージ変数アクセッサ名は「ro」で説明したものと同じです。書き込み用のパッケージ変数アクセッサ名は「wo」で説明したものと同じです。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
+      </p>
+      <p>
+        書き込み用のパッケージ変数アクセッサの戻り値は「void型」です。
+      </p>
+      <p>
+        SPVMのソースコードの中からパッケージ変数アクセッサが呼び出された場合は、パッケージ変数アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
+      </p>
+      <p>
+        <b>パッケージ変数定義のサンプル</b>
+      </p>
+      <p>
+        パッケージ変数定義のサンプルです。
+      </p>
+<pre>
+package Foo {
+  our $NUM1 : byte;
+  our $NUM2 : short;
+  our $NUM3 : int;
+  our $NUM4 : long;
+  our $NUM5 : float;
+  our $NUM6 : double;
+
+  our $NUM_PUBLIC : public int;
+  our $NUM_RO : ro int;
+  our $NUM_WO : wo int;
+  our $NUM_RW : rw int;
+}
+</pre>
       <h3 id="language-field">フィールド</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
       </ul>
       <h4 id="language-field-definition">フィールドの定義</h4>
@@ -1043,129 +898,6 @@ package Foo {
         不正なフィールドの定義は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-package-variable">パッケージ変数</h3>
-      <ul class="toc">
-        <li>
-          <a href="#language-package-variable-definition">パッケージ変数の定義</a>
-        </li>
-      </ul>
-      <h4 id="language-package-variable-definition">パッケージ変数の定義</h4>
-      <p>
-        パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
-      </p>
-      <p>
-        「our」キーワードを使用してパッケージ変数を定義することができます。
-      </p>
-<pre>
-our パッケージ変数名 : 型名;
-</pre>
-      <p>
-        パッケージ変数の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
-      </p>
-      <p>
-        パッケージ変数の定義には「<a href="#language-type">型名</a>」が必要です。型名には「数値型」と「オブジェクト型」を指定できます。
-      </p>
-      <p>
-        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
-      </p>
-      <p>
-        パッケージ変数定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
-      </p>
-<pre>
-our パッケージ変数名 : デスクリプタ 型名;
-</pre>
-      <p>
-        <b>パッケージ変数デスクリプタ</b>
-      </p>
-      <p>
-        パッケージ変数で指定できるデスクリプタの一覧です。
-      </p>
-      <table>
-        <tr>
-          <th>
-            デスクリプタ名
-          </th>
-          <th>
-            役割
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>public</b>
-          </td>
-          <td>
-            このパッケージ変数は、外部のパッケージからアクセスできます。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>private</b>
-          </td>
-          <td>
-            このパッケージ変数は、外部のパッケージからアクセスできません。デフォルトの設定です。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>ro</b>
-          </td>
-          <td>
-            このパッケージ変数は、読み込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、パッケージ変数名から「$」を除いたものです。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「FOO」になります。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>wo</b>
-          </td>
-          <td>
-            このパッケージ変数は、書き込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、「SET_パッケージ変数名から$を除いたもの」になります。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「SET_FOO」になります。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>rw</b>
-          </td>
-          <td>
-            このパッケージ変数は、読み込み用のパッケージ変数アクセッサと書き込み用のパッケージ変数アクセッサを持ちます。読み込み用のパッケージ変数アクセッサ名は「ro」で説明したものと同じです。書き込み用のパッケージ変数アクセッサ名は「wo」で説明したものと同じです。
-          </td>
-        </tr>
-      </table>
-      <p>
-        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
-      </p>
-      <p>
-        書き込み用のパッケージ変数アクセッサの戻り値は「void型」です。
-      </p>
-      <p>
-        SPVMのソースコードの中からパッケージ変数アクセッサが呼び出された場合は、パッケージ変数アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
-      </p>
-      <p>
-        <b>パッケージ変数定義のサンプル</b>
-      </p>
-      <p>
-        パッケージ変数定義のサンプルです。
-      </p>
-<pre>
-package Foo {
-  our $NUM1 : byte;
-  our $NUM2 : short;
-  our $NUM3 : int;
-  our $NUM4 : long;
-  our $NUM5 : float;
-  our $NUM6 : double;
-
-  our $NUM_PUBLIC : public int;
-  our $NUM_RO : ro int;
-  our $NUM_WO : wo int;
-  our $NUM_RW : rw int;
-}
-</pre>
       <h3 id="language-sub">サブルーチン</h3>
       <ul class="list">
         <li><a href="#language-sub-definition">サブルーチン定義</a></li>
@@ -1406,6 +1138,1095 @@ my $num = 1;
 # double
 my $num = 1.0;
 </pre>
+      <h3 id="language-block">ブロック</h3>
+      <p>
+        「{」と「}」で囲まれた部分のことをブロックと呼びます。
+      </p>
+<pre>
+# ブロック
+{
+
+}
+</pre>
+      <p>
+        ブロックの中には、スコープを作る<a href="#language-scope-block">スコープブロック</a>があります。
+      </p>
+      <h3 id="language-scope">スコープ</h3>
+      <ul class="list">
+        <li><a href="#language-scope-role">スコープの役割</a>
+        <li><a href="#language-scope-block">スコープブロック</a>
+      </ul>
+      <h4 id="language-scope-role">スコープの役割</h4>
+      <p>
+        スコープとは<a href="#language-scope-block">スコープブロック</a>に囲まれた範囲のことをいいます。
+      </p>
+<pre>
+# スコープブロック
+{
+
+}
+</pre>
+      <p>
+        スコープの中で宣言されたレキシカル変数は、実行時に、宣言されている位置で、モータルなレキシカル変数として登録されます。
+      </p>
+<pre>
+{
+  # レキシカル変数をモータルとして登録
+  my $num = new Foo;
+}
+</pre>
+      <p>
+        モータルなレキシカル変数に代入されたオブジェクトが、未定義値ではない場合は、リファレンスカウントが1増やされます。
+      </p>
+      <p>
+        スコープの終わりに到達すると、モータルなレキシカル変数に代入されているオブジェクトは、未定義値でない場合、リファレンスカウントが1減らされ、0になった場合は、解放されます。
+      </p>
+      <h4 id="language-scope-block">スコープブロック</h4>
+      <p>
+        スコープブロックとは、スコープを作るブロックのことです。スコープブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
+      </p>
+<pre>
+# スコープブロック
+{
+  my $num = 1;
+  $num++;
+}
+</pre>
+      <p>
+        <b>スコープブロックの一覧</b>
+      <p>
+        
+      </p>
+      <h5 id="language-block-statement-simple">単純なブロック</h5>
+<pre>
+# 単純なブロック
+{
+
+}
+</pre>
+
+      <h5 id="language-block-statement-sub">サブルーチンブロック</h5>
+<pre>
+# サブルーチンのブロック
+sub : int () {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-eval">evalブロック</h5>
+<pre>
+# evalブロック
+eval {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-if">ifブロック</h5>
+<pre>
+# ifブロック
+if (条件1) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-elsif">elsifブロック</h5>
+<pre>
+#elsifブロック
+elsif (条件2) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-else">elseブロック</h5>
+<pre>
+# elseブロック
+else {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-for">forブロック</h5>
+<pre>
+# for ブロック
+for (my $i = 0; $i < 3; $i++) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-while">whileブロック</h5>
+<pre>
+# whileブロック
+while (条件) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-switch">switchブロック</h5>
+<pre>
+switch (条件) {
+
+}
+</pre>
+      <h3 id="language-term">項</h3>
+      <p>
+        算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
+      </p>
+      <p>
+        「項」には、戻り値を持つ「<a href="#language-expression">式</a>」と、戻り値を持たず<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
+      </p>
+      <h3 id="language-expression">式</h3>
+      <p>
+        式は次の項目で定義されます。
+      </p>
+      <p>
+        <b>式の一覧</b>
+      </p>
+      <ul class="list">
+        <li>変数</li>
+        <li>例外変数</li>
+        <li>パッケージ変数の読み取り</li>
+        <li>定数リテラル</li>
+        <li>未定義値</li>
+        <li>サブルーチン呼び出し</li>
+        <li>フィールドの読み取り</li>
+        <li>配列の要素の読み取り</li>
+        <li>型変換</li>
+        <li>new演算子</li>
+        <li>配列の初期化</li>
+        <li>配列の長さ</li>
+        <li>文字列の長さ</li>
+        <li>変数宣言</li>
+        <li>二項演算子</li>
+        <li>単項演算子</li>
+        <li>リファレンス演算子</li>
+        <li>デリファレンス演算子</li>
+        <li>代入演算子</li>
+        <li>インクリメント演算子</li>
+        <li>デクリメント演算子</li>
+        <li>__PACKAGE__演算子</li>
+        <li>__FILE__演算子</li>
+        <li>__LINE__演算子</li>
+        <li>(式)</li>
+      </ul>
+
+      <h3 id="language-condition">条件</h3>
+      <p>
+        条件は次の項目で定義されます。
+      </p>
+      <p>
+        <b>条件の一覧</b>
+      </p>
+      <ul class="list">
+        <li>比較演算子</li>
+        <li>論理演算子</li>
+        <li>(条件)</li>
+      </ul>
+
+      <h3 id="language-condition-part">条件部</h3>
+      <p>
+        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-expression">式</a>」と「<a href="#language-condition">条件</a>」が記述できます。
+      </p>
+      <p>
+        <b>if文のかっこの中</b>
+      </p>
+<pre>
+if (条件部) {
+
+}
+</pre>
+      <p>
+        <b>unless文のかっこの中</b>
+      </p>
+<pre>
+unless (条件部) {
+
+}
+</pre>
+      <p>
+        <b>forのかっこの中の二つ目</b>
+      </p>
+<pre>
+for (初期化;条件部;次の値;) {
+
+}
+</pre>
+      <p>
+        <b>whileのかっこの中</b>
+      </p>
+<pre>
+while (条件部) {
+
+}
+</pre>
+      <p>
+        <b>論理AND演算子の左右</b>
+      </p>
+<pre>
+条件部 && 条件部
+</pre>
+      <p>
+        <b>論理OR演算子の左右</b>
+      </p>
+<pre>
+条件部 || 条件部
+</pre>
+      <p>
+        <b>論理否定演算子の右側</b>
+      </p>
+<pre>
+!条件部
+</pre>
+      
+      <h3 id="language-literal">リテラル</h3>
+      <ul class="list">
+        <li><a href="#language-literal-integer">整数リテラル</a></li>
+        <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
+        <li><a href="#language-literal-character">文字リテラル</a></li>
+        <li><a href="#language-literal-string">文字列リテラル</a></li>
+      </ul>
+      <h4 id="language-literal-integer">整数リテラル</h3>
+      <p>
+        <b>10進数表現</b>
+      </p>
+      <p>
+        整数リテラルの数値部は「0～9」の1つ以上の連続した文字で表現されます。
+      </p>
+      <p>
+        先頭に「+」あるいは「-」の符号をつけることができます。
+      </p>
+      <p>
+        整数リテラルの型は、デフォルトでは「int型」になります。
+      </p>
+      <p>
+        整数リテラルがint型で表現できる数値の範囲を超えている場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        末尾に「L」あるいは「l」のサフィックスをつけることで「long型」の整数リテラルを表現できます。
+      </p>
+      <p>
+        long型の整数リテラルの場合は、long型で表現できる数値の範囲を超えている場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        区切り文字として「_」を使用することができます。区切り文字は意味を持ちません。
+      </p>
+      <p>
+        不正な整数リテラルの表現はコンパイル時エラーが発生します。
+      </p>
+      <p>
+        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
+      </p>
+      <p>
+        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
+      </p>
+      <p>
+        整数リテラルのサンプルです。
+      </p>
+<pre>
+123
++123
+-123
+123L
+123l
+123_456_789
+-123_456_789L
+</pre>
+      <p>
+        <b>16進数表現</b>
+      </p>
+      <p>
+        整数リテラルの数値部は<b>16進数</b>を使って表現することができます。
+      </p>
+      <p>
+       数値部を16進数を使って表現するときは「0x」から始めます。
+      </p>
+      <p>
+        その後ろに「0～9」「a～f」「A～F」のひとつ以上の連続した文字が続きます。
+      </p>
+      <p>
+        不正な16進数表現は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        整数リテラルを16進数で表現したサンプルです。
+      </p>
+<pre>
+0x3b4f
+-0x3F1A
+0xDeL
+0xFFFFFFFF_FFFFFFFF
+</pre>
+
+      <p>
+        <b>8進数表現</b>
+      </p>
+      <p>
+        整数リテラルの数値部は<b>8進数</b>を使って表現することができます。
+      </p>
+      <p>
+       数値部を8進数を使って表現するときは「0」から始めます。
+      </p>
+      <p>
+        その後ろに「0～7」のひとつ以上の連続した文字が続きます。
+      </p>
+      <p>
+        不正な8進数表現は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        整数リテラルを8進数で表現したサンプルです。
+      </p>
+<pre>
+0755
+-0644
+0666L
+0655_755
+</pre>
+      <p>
+        <b>2進数表現</b>
+      </p>
+      <p>
+        整数リテラルの数値部は<b>2進数</b>を使って表現することができます。
+      </p>
+      <p>
+       数値部を2進数を使って表現するときは「0b」から始めます。
+      </p>
+      <p>
+        その後ろに「0」か「1」のひとつ以上の連続した文字が続きます。
+      </p>
+      <p>
+        不正な2進数表現は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        整数リテラルを2進数で表現したサンプルです。
+      </p>
+<pre>
+0b0101
+-0b1010
+0b110000L
+0b10101010_10101010
+</pre>
+
+
+      <h4 id="language-literal-floating-point">浮動小数点リテラル</h3>
+      <p>
+        浮動小数点リテラルは「符号部」「数値部」「指数部」「サフィックス」から構成されます。
+      <p>
+      <p>
+        浮動小数点リテラルには「10進数浮動小数点リテラル」と「16進数浮動小数点リテラル」があります。
+      </p>
+      <p>
+        「符号部」は「+」か「-」で表現されます。「符号部」の存在は、任意です。「符号部」が存在する場合は、先頭にある必要があります。
+      </p>
+      <p>
+        「10進数浮動小数点リテラル」は、数値部が「一桁以上の10進数字」で始まる必要があります。
+      </p>
+      <p>
+        「10進数字」とは「0～9」のことです。
+      </p>
+      <p>
+        「10進数浮動小数点リテラル」は、数値部に「小数点」が含まれているか、含まれていない場合は「指数部」あるいは「サフィックス」が必要です。
+      </p>
+      <p>
+        「小数点」とは「.」のことです。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、数値部が「0x」あるいは「0X」で始まり、その後ろに「一桁以上の16進数字」が続く必要があります。
+      </p>
+      <p>
+        16進数字とは「0～9」「a～f」「A～F」のことです。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、「数値部」に「小数点」を含むことができます。
+      </p>
+      <p>
+        「数値部」はアンダーライン「_」を含むことができます。これは単なる区切り文字で、無視されます。
+      </p>
+      <p>
+        「16進数浮動小数点リテラル」は、「指数部」が必要です。
+      </p>
+      <p>
+        「指数部」は「指数表現」と「符号付10進整数」で構成されます。
+      </p>
+      <p>
+        「指数表現」は「10進数浮動小数点リテラル」の場合は「e」あるいは「E」、「16進数浮動小数点リテラル」の場合は「p」あるいは「P」になります。
+      </p>
+      <p>
+        「指数部」の意味は「10進数浮動小数点リテラル」の場合は、10進数による桁移動、「16進数浮動小数点リテラル」の場合は、2進数による桁移動になります。
+      </p>
+      <p>
+        末尾に「f」あるいは「F」のサフィックスをつけると、浮動小数点リテラルの型は「float型」になります。
+      </p>
+      <p>
+        末尾に「d」あるいは「D」のサフィックスをつけると、浮動小数点リテラルの型は「double型」になります。
+      </p>
+      <p>
+        サフィックスが省略された場合は、浮動小数点リテラルの型は「double型」になります。
+      </p>
+      <p>
+        浮動小数点リテラルが「float型」の場合はC標準の「strtof関数」を使って、文字列からfloat型への変換が行われます。変換が失敗した場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        浮動小数点リテラルが「double型」の場合はC標準の「strtod関数」を使って、文字列からdouble型への変換が行われます。変換が失敗した場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        無限大を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-INFINITY">INFINITY関数</a>」「<a href="#stdfunc-INFINITYF">INFINITYF関数</a>」を使用してください。
+      </p>
+      <p>
+        非値を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-NAN">NAN関数</a>」「<a href="#stdfunc-NANF">NANF関数</a>」を使用してください。
+      </p>
+      <p>
+        浮動小数点リテラルのサンプルです
+      </p>
+<pre>
+1.32
+-1.32
+1.32f
+1.32F
+1.32e3
+1.32e-3
+1.32E+3
+1.32E-3
+0x3d3d.edp0
+0x3d3d.edp3
+0x3d3d.edP3
+0x3d3d.edP-3f
+</pre>
+
+      <h4 id="language-literal-character">文字リテラル</h3>
+      <p>
+        文字リテラルは、シングルクォート「'」で囲まれます。
+      </p>
+      <p>
+        文字リテラルの内容は「ひとつのAsciiの印字可能文字」あるいは「ひとつのエスケープ文字」です。
+      </p>
+      <p>
+        文字リテラルの型は「byte型」になります。
+      </p>
+      <p>
+        不正な文字リテラルの場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>エスケープ文字</b>
+      </p>
+      <table class="toc">
+        <tr>
+          <th>
+            エスケープ文字
+          </th>
+          <th>
+            説明
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>\0</b>
+          </td>
+          <td>
+            Asciiコードの0「NUL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\a</b>
+          </td>
+          <td>
+            Asciiコードの7「BEL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\b</b>
+          </td>
+          <td>
+            Asciiコードの8「BS」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\t</b>
+          </td>
+          <td>
+            Asciiコードの9「HT」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\n</b>
+          </td>
+          <td>
+            Asciiコードの10「LF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\f</b>
+          </td>
+          <td>
+            Asciiコードの12「FF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\r</b>
+          </td>
+          <td>
+            Asciiコードの13「CR」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\"</b>
+          </td>
+          <td>
+            Asciiコードの34「"」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\'</b>
+          </td>
+          <td>
+            Asciiコードの39「'」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\\</b>
+          </td>
+          <td>
+            Asciiコードの92「\」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\xの後ろに二桁の16進数</b>
+          </td>
+          <td>
+            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
+      </table>
+      
+      <p>
+        <b>文字リテラルのサンプル</b>
+      </p>
+      <p>
+        文字リテラルのサンプルです。
+      </p>
+<pre>
+# 文字リテラル
+'a'
+'x'
+
+# エスケープ文字を使った文字リテラル
+'\a'
+'\b'
+'\t'
+'\n'
+'\f'
+'\r'
+'\"'
+'\''
+'\\'
+'\x0D'
+'\x0A'
+</pre>
+      
+      <h4 id="language-literal-string">文字列リテラル</h3>
+      <p>
+        文字列リテラルは、ダブルクォート「"」で囲まれます。
+      </p>
+      <p>
+        文字列リテラルの内容は「0個以上のAsciiの印字可能文字あるいはエスケープ文字」です。
+      </p>
+      <p>
+        文字列リテラルの型は「string型」になります。
+      </p>
+      <p>
+        不正な文字列リテラルの場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>エスケープ文字</b>
+      </p>
+      <table class="toc">
+        <tr>
+          <th>
+            エスケープ文字
+          </th>
+          <th>
+            説明
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>\0</b>
+          </td>
+          <td>
+            Asciiコードの0「NUL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\a</b>
+          </td>
+          <td>
+            Asciiコードの7「BEL」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\b</b>
+          </td>
+          <td>
+            Asciiコードの8「BS」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\t</b>
+          </td>
+          <td>
+            Asciiコードの9「HT」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\n</b>
+          </td>
+          <td>
+            Asciiコードの10「LF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\f</b>
+          </td>
+          <td>
+            Asciiコードの12「FF」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\r</b>
+          </td>
+          <td>
+            Asciiコードの13「CR」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\"</b>
+          </td>
+          <td>
+            Asciiコードの34「"」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\'</b>
+          </td>
+          <td>
+            Asciiコードの39「'」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\\</b>
+          </td>
+          <td>
+            Asciiコードの92「\」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\xの後ろに二桁の16進数</b>
+          </td>
+          <td>
+            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\N{}の中の複数桁の16進数</b>
+          </td>
+          <td>
+            Unicodeのコードポイントを16進数で指定します。UTF-8に変換されます。16進数は「0～9」「a～f」「A～F」で表現します。
+          </td>
+        </tr>
+      </table>
+      <p>
+        Unicodeのコードポイントを指定するエスケープ文字以外は、<a href="#language-literal-character">文字リテラル</a>のエスケープ文字と共通です。
+      </p>
+      <p>
+        <b>文字列リテラルのサンプル</b>
+      </p>
+      <p>
+        文字列リテラルのサンプルです。
+      </p>
+<pre>
+# 文字列リテラル
+"abc"
+"あいう"
+
+# エスケープ文字を使った文字列リテラル
+"abc\tdef\n"
+"\x0D\x0A"
+"\N{U+3042}\N{U+3044}\N{U+3046}"
+</pre>
+      
+      <h3 id="language-undef">未定義値</h3>
+      <p>
+        未定義は「undef」で表現されます。
+      </p>
+<pre>
+undef
+</pre>
+      <p>
+        未定義値は、任意のオブジェクト型の変数に代入することができます。
+      </p>
+      <p>
+        未定義値はオブジェクト型の値と「==」「!=」演算子を使用して、比較することができます。未定義値は、生成されたオブジェクトと等しくない事が保証されます。
+      </p>
+      <p>
+        未定義は条件部で使われた場合は、偽になります。
+      </p>
+      <p>
+        未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
+      </p>
+      <h3 id="language-operator">演算子</h3>
+      <ul class="list">
+        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
+        <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
+        <li><a href="#language-operator-arithmetic">論理演算子</a></li>
+        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
+      </ul>
+      <h4 id="language-operator-precedence">演算子の優先順位</h4>
+      <p>
+        演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
+      </p>
+      <table>
+        <tr>
+          <th>結合方向</th>
+          <th>演算子</th>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            <ul>
+            代入演算子「=」<br>
+            加算代入演算子「+=」<br>
+            減算代入演算子「-=」<br>
+            乗算代入演算子「*=」<br>
+            除算代入演算子「/=」<br>
+            剰余代入演算子「%=」<br>
+            ビットAND代入演算子「&=」<br>
+            ビットOR代入演算子「|=」<br>
+            ビット排他OR代入演算子「^=」<br>
+            左シフト代入演算子「<<=」<br>
+            符号付右シフト代入演算子「>>=」<br>
+            符号なし右シフト演算子「>>>=」<br>
+            文字列結合代入演算子「.=」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            条件OR演算子「||」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            条件AND演算子 「&&」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            ビットOR演算子「|」<br>
+            ビットXOR演算子 「^」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            ビットAND演算子「&」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            数値等価演算子「==」<br>
+            数値非等価演算子「!=」<br>
+            文字列等価演算子「eq」<br>
+            文字列非等価演算子「ne」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            数値大なり演算子「>」<br>
+            数値小なり演算子「<」<br>
+            数値大なり等価演算子「>=」<br>
+            数値小なり等価演算子「<=」<br>
+            文字列大なり演算子「gt」<br>
+            文字列大なり等価演算子「ge」<br>
+            文字列小なり演算子「lt」<br>
+            文字列小なり等価演算子「le」<br>
+            isa演算子「isa」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合 
+          </td>
+          <td>
+            スカラ演算子「scalar」<br>
+            文字列長取得演算子「length」<br>
+            require演算子「require」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合 
+          </td>
+          <td>
+            左シフト演算子 「<<」<br>
+            符号付き右シフト演算子「>>」<br>
+            符号なし右シフト演算子「>>>」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            加算演算子「+」<br>
+            減算演算子「-」<br>
+            文字列連結演算子「.」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            乗算演算子「*」<br>
+            除算演算子「/」<br>
+            剰余演算子「%」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            条件NOT演算子「!」<br>
+            ビットNOT演算子「~」<br>
+            リファレンス演算子「\」<br>
+            プラス演算子「+」<br>
+            マイナス演算子「-」<br>
+            配列長取得演算子「@」<br>
+            デリファレンス演算子「$」<br>
+            型キャスト「(型名)」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            前置インクリメント演算子「++」<br>
+            後置インクリメント演算子「++」<br>
+            前置デクリメント演算子「--」<br>
+            後置デクリメント演算子「--」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            new演算子「new」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            アロー演算子「->」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            左ブラケット「[」<br>
+            左ブレース「{」<br>
+            左括弧「(」
+          </td>
+        </tr>
+      </table>
+      <h3 id="language-statement">文</h3>
+      <p>
+        文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
+      </p>
+      <p>
+        文の一覧です。
+      </p>
+      <ul class="list">
+        <li><a href="#language-statement-if">if文</a></li>
+        <li><a href="#language-statement-for">for文</a></li>
+        <li><a href="#language-statement-while">while文</a></li>
+        <li><a href="#language-statement-switch">switch文</a></li>
+        <li><a href="#language-statement-case">case文</a></li>
+        <li><a href="#language-statement-default">default文</a></li>
+        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
+        <li><a href="#language-statement-eval">eval文</a></li>
+        <li><a href="#language-statement-ifrequire">if require文</a></li>
+        <li><a href="#language-statement-next">next文</a></li>
+        <li><a href="#language-statement-last">last文</a></li>
+        <li><a href="#language-statement-return">return文</a></li>
+        <li><a href="#language-statement-croak">croak文</a></li>
+        <li><a href="#language-statement-weaken">weaken文</a></li>
+        <li><a href="#language-statement-expression">式文</a></li>
+        <li><a href="#language-statement-empty">空文</a></li>
+      </ul>
+
+      <h4 id="language-statement-return">return文</h3>
+      <p>
+        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
+      </p>
+<pre>
+return;
+</pre>
+      <p>
+        戻り値がある場合は、<a href="#language-expression">式</a>を指定することができます。
+      </p>
+<pre>
+return 式;
+</pre>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h4 id="language-statement-next">next文</h3>
+      <p>
+        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
+      </p>
+<pre>
+next;
+</pre>
+      <p>
+        <b>next文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    next;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+</pre>
+
+      <h4 id="language-statement-last">last文</h3>
+      <p>
+        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
+      </p>
+<pre>
+last;
+</pre>
+      <p>
+        <b>last文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    last;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+# switch
+my $num = 3;
+switch ($num) {
+  case 1 :
+    # 処理1
+    last;
+  case 2 :
+    # 処理2
+    last;
+  case 3 :
+    # 処理3
+    last;
+  default:
+    # デフォルト
+}
+</pre>
+      <h4 id="language-statement-expression">式文</h4>
+      <p>
+        式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
+      </p>
+<pre>
+式;
+</pre>
+
+      <p>
+        式文のサンプルです。
+      </p>
+<pre>
+1;
+$var;
+1 + 2;
+foo();
+my $num = 1 + 2;
+</pre>
+
+      <h4 id="language-statement-empty">空文</h4>
+      <p>
+        空文は「;」だけで終わる文のことです。
+      </p>
+<pre>
+;
+</pre>
+
       <h3 id="language-type">型</h3>
       <ul class="list">
         <li><a href="#language-type-summary">型の概要</a></li>
@@ -1973,319 +2794,8 @@ my $num = 1.0;
 # Foo
 my $foo = new Foo;
 </pre>
-
-      <h3 id="language-operator">演算子</h3>
-      <ul class="toc">
-        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
-        <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">論理演算子</a></li>
-        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
-      </ul>
-      <h3 id="language-operator-precedence">演算子の優先順位</h3>
-      <p>
-        演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
-      </p>
-      <table>
-        <tr>
-          <th>結合方向</th>
-          <th>演算子</th>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            <ul>
-            代入演算子「=」<br>
-            加算代入演算子「+=」<br>
-            減算代入演算子「-=」<br>
-            乗算代入演算子「*=」<br>
-            除算代入演算子「/=」<br>
-            剰余代入演算子「%=」<br>
-            ビットAND代入演算子「&=」<br>
-            ビットOR代入演算子「|=」<br>
-            ビット排他OR代入演算子「^=」<br>
-            左シフト代入演算子「<<=」<br>
-            符号付右シフト代入演算子「>>=」<br>
-            符号なし右シフト演算子「>>>=」<br>
-            文字列結合代入演算子「.=」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            条件OR演算子「||」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            条件AND演算子 「&&」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            ビットOR演算子「|」<br>
-            ビットXOR演算子 「^」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            ビットAND演算子「&」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            数値等価演算子「==」<br>
-            数値非等価演算子「!=」<br>
-            文字列等価演算子「eq」<br>
-            文字列非等価演算子「ne」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            数値大なり演算子「>」<br>
-            数値小なり演算子「<」<br>
-            数値大なり等価演算子「>=」<br>
-            数値小なり等価演算子「<=」<br>
-            文字列大なり演算子「gt」<br>
-            文字列大なり等価演算子「ge」<br>
-            文字列小なり演算子「lt」<br>
-            文字列小なり等価演算子「le」<br>
-            isa演算子「isa」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合 
-          </td>
-          <td>
-            スカラ演算子「scalar」<br>
-            文字列長取得演算子「length」<br>
-            require演算子「require」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合 
-          </td>
-          <td>
-            左シフト演算子 「<<」<br>
-            符号付き右シフト演算子「>>」<br>
-            符号なし右シフト演算子「>>>」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            加算演算子「+」<br>
-            減算演算子「-」<br>
-            文字列連結演算子「.」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            乗算演算子「*」<br>
-            除算演算子「/」<br>
-            剰余演算子「%」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            条件NOT演算子「!」<br>
-            ビットNOT演算子「~」<br>
-            リファレンス演算子「\」<br>
-            プラス演算子「+」<br>
-            マイナス演算子「-」<br>
-            配列長取得演算子「@」<br>
-            デリファレンス演算子「$」<br>
-            型キャスト「(型名)」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            前置インクリメント演算子「++」<br>
-            後置インクリメント演算子「++」<br>
-            前置デクリメント演算子「--」<br>
-            後置デクリメント演算子「--」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            new演算子「new」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            アロー演算子「->」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            左ブラケット「[」<br>
-            左ブレース「{」<br>
-            左括弧「(」
-          </td>
-        </tr>
-      </table>
-      </p>
-      
-      <h3 id="language-scope">スコープ</h3>
-      <ul class="toc">
-        <li><a href="#language-scope-role">スコープの役割</a>
-        <li><a href="#language-scope-block">スコープブロック</a>
-      </ul>
-      <h4 id="language-scope-role">スコープの役割</h4>
-      <p>
-        スコープとは<a href="#language-scope-block">スコープブロック</a>に囲まれた範囲のことをいいます。
-      </p>
-<pre>
-# スコープブロック
-{
-
-}
-</pre>
-      <p>
-        スコープの中で宣言されたレキシカル変数は、実行時に、宣言されている位置で、モータルなレキシカル変数として登録されます。
-      </p>
-<pre>
-{
-  # レキシカル変数をモータルとして登録
-  my $num = new Foo;
-}
-</pre>
-      <p>
-        モータルなレキシカル変数に代入されたオブジェクトが、未定義値ではない場合は、リファレンスカウントが1増やされます。
-      </p>
-      <p>
-        スコープの終わりに到達すると、モータルなレキシカル変数に代入されているオブジェクトは、未定義値でない場合、リファレンスカウントが1減らされ、0になった場合は、解放されます。
-      </p>
-      <h4 id="language-scope-block">スコープブロック</h4>
-      <p>
-        スコープブロックとは、スコープを作るブロックのことです。スコープブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
-      </p>
-<pre>
-# スコープブロック
-{
-  my $num = 1;
-  $num++;
-}
-</pre>
-      <p>
-        <b>スコープブロックの一覧</b>
-      <p>
-        
-      </p>
-      <h5 id="language-block-statement-simple">単純なブロック</h5>
-<pre>
-# 単純なブロック
-{
-
-}
-</pre>
-
-      <h5 id="language-block-statement-sub">サブルーチンブロック</h5>
-<pre>
-# サブルーチンのブロック
-sub : int () {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-eval">evalブロック</h5>
-<pre>
-# evalブロック
-eval {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-if">ifブロック</h5>
-<pre>
-# ifブロック
-if (条件1) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-elsif">elsifブロック</h5>
-<pre>
-#elsifブロック
-elsif (条件2) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-else">elseブロック</h5>
-<pre>
-# elseブロック
-else {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-for">forブロック</h5>
-<pre>
-# for ブロック
-for (my $i = 0; $i < 3; $i++) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-while">whileブロック</h5>
-<pre>
-# whileブロック
-while (条件) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-switch">switchブロック</h5>
-<pre>
-switch (条件) {
-
-}
-</pre>
-
       <h3 id="language-type-convertion">型変換</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
         <li><a href="#language-type-convertion-widning">拡大型変換</a></li>
       </ul>
@@ -2302,522 +2812,6 @@ switch (条件) {
       </p>
       <p>
         型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
-      </p>
-
-      <h3 id="language-literal">リテラル</h3>
-      <ul class="toc">
-        <li><a href="#language-literal-integer">整数リテラル</a></li>
-        <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
-        <li><a href="#language-literal-character">文字リテラル</a></li>
-        <li><a href="#language-literal-string">文字列リテラル</a></li>
-      </ul>
-
-      <h4 id="language-literal-integer">整数リテラル</h3>
-      <p>
-        <b>10進数表現</b>
-      </p>
-      <p>
-        整数リテラルの数値部は「0～9」の1つ以上の連続した文字で表現されます。
-      </p>
-      <p>
-        先頭に「+」あるいは「-」の符号をつけることができます。
-      </p>
-      <p>
-        整数リテラルの型は、デフォルトでは「int型」になります。
-      </p>
-      <p>
-        整数リテラルがint型で表現できる数値の範囲を超えている場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        末尾に「L」あるいは「l」のサフィックスをつけることで「long型」の整数リテラルを表現できます。
-      </p>
-      <p>
-        long型の整数リテラルの場合は、long型で表現できる数値の範囲を超えている場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        区切り文字として「_」を使用することができます。区切り文字は意味を持ちません。
-      </p>
-      <p>
-        不正な整数リテラルの表現はコンパイル時エラーが発生します。
-      </p>
-      <p>
-        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
-      </p>
-      <p>
-        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
-      </p>
-      <p>
-        整数リテラルのサンプルです。
-      </p>
-<pre>
-123
-+123
--123
-123L
-123l
-123_456_789
--123_456_789L
-</pre>
-      <p>
-        <b>16進数表現</b>
-      </p>
-      <p>
-        整数リテラルの数値部は<b>16進数</b>を使って表現することができます。
-      </p>
-      <p>
-       数値部を16進数を使って表現するときは「0x」から始めます。
-      </p>
-      <p>
-        その後ろに「0～9」「a～f」「A～F」のひとつ以上の連続した文字が続きます。
-      </p>
-      <p>
-        不正な16進数表現は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        整数リテラルを16進数で表現したサンプルです。
-      </p>
-<pre>
-0x3b4f
--0x3F1A
-0xDeL
-0xFFFFFFFF_FFFFFFFF
-</pre>
-
-      <p>
-        <b>8進数表現</b>
-      </p>
-      <p>
-        整数リテラルの数値部は<b>8進数</b>を使って表現することができます。
-      </p>
-      <p>
-       数値部を8進数を使って表現するときは「0」から始めます。
-      </p>
-      <p>
-        その後ろに「0～7」のひとつ以上の連続した文字が続きます。
-      </p>
-      <p>
-        不正な8進数表現は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        整数リテラルを8進数で表現したサンプルです。
-      </p>
-<pre>
-0755
--0644
-0666L
-0655_755
-</pre>
-      <p>
-        <b>2進数表現</b>
-      </p>
-      <p>
-        整数リテラルの数値部は<b>2進数</b>を使って表現することができます。
-      </p>
-      <p>
-       数値部を2進数を使って表現するときは「0b」から始めます。
-      </p>
-      <p>
-        その後ろに「0」か「1」のひとつ以上の連続した文字が続きます。
-      </p>
-      <p>
-        不正な2進数表現は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        整数リテラルを2進数で表現したサンプルです。
-      </p>
-<pre>
-0b0101
--0b1010
-0b110000L
-0b10101010_10101010
-</pre>
-
-
-      <h4 id="language-literal-floating-point">浮動小数点リテラル</h3>
-      <p>
-        浮動小数点リテラルは「符号部」「数値部」「指数部」「サフィックス」から構成されます。
-      <p>
-      <p>
-        浮動小数点リテラルには「10進数浮動小数点リテラル」と「16進数浮動小数点リテラル」があります。
-      </p>
-      <p>
-        「符号部」は「+」か「-」で表現されます。「符号部」の存在は、任意です。「符号部」が存在する場合は、先頭にある必要があります。
-      </p>
-      <p>
-        「10進数浮動小数点リテラル」は、数値部が「一桁以上の10進数字」で始まる必要があります。
-      </p>
-      <p>
-        「10進数字」とは「0～9」のことです。
-      </p>
-      <p>
-        「10進数浮動小数点リテラル」は、数値部に「小数点」が含まれているか、含まれていない場合は「指数部」あるいは「サフィックス」が必要です。
-      </p>
-      <p>
-        「小数点」とは「.」のことです。
-      </p>
-      <p>
-        「16進数浮動小数点リテラル」は、数値部が「0x」あるいは「0X」で始まり、その後ろに「一桁以上の16進数字」が続く必要があります。
-      </p>
-      <p>
-        16進数字とは「0～9」「a～f」「A～F」のことです。
-      </p>
-      <p>
-        「16進数浮動小数点リテラル」は、「数値部」に「小数点」を含むことができます。
-      </p>
-      <p>
-        「数値部」はアンダーライン「_」を含むことができます。これは単なる区切り文字で、無視されます。
-      </p>
-      <p>
-        「16進数浮動小数点リテラル」は、「指数部」が必要です。
-      </p>
-      <p>
-        「指数部」は「指数表現」と「符号付10進整数」で構成されます。
-      </p>
-      <p>
-        「指数表現」は「10進数浮動小数点リテラル」の場合は「e」あるいは「E」、「16進数浮動小数点リテラル」の場合は「p」あるいは「P」になります。
-      </p>
-      <p>
-        「指数部」の意味は「10進数浮動小数点リテラル」の場合は、10進数による桁移動、「16進数浮動小数点リテラル」の場合は、2進数による桁移動になります。
-      </p>
-      <p>
-        末尾に「f」あるいは「F」のサフィックスをつけると、浮動小数点リテラルの型は「float型」になります。
-      </p>
-      <p>
-        末尾に「d」あるいは「D」のサフィックスをつけると、浮動小数点リテラルの型は「double型」になります。
-      </p>
-      <p>
-        サフィックスが省略された場合は、浮動小数点リテラルの型は「double型」になります。
-      </p>
-      <p>
-        浮動小数点リテラルが「float型」の場合はC標準の「strtof関数」を使って、文字列からfloat型への変換が行われます。変換が失敗した場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        浮動小数点リテラルが「double型」の場合はC標準の「strtod関数」を使って、文字列からdouble型への変換が行われます。変換が失敗した場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        無限大を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-INFINITY">INFINITY関数</a>」「<a href="#stdfunc-INFINITYF">INFINITYF関数</a>」を使用してください。
-      </p>
-      <p>
-        非値を表現する浮動小数点リテラルはありません。標準関数である「<a href="#stdfunc-NAN">NAN関数</a>」「<a href="#stdfunc-NANF">NANF関数</a>」を使用してください。
-      </p>
-      <p>
-        浮動小数点リテラルのサンプルです
-      </p>
-<pre>
-1.32
--1.32
-1.32f
-1.32F
-1.32e3
-1.32e-3
-1.32E+3
-1.32E-3
-0x3d3d.edp0
-0x3d3d.edp3
-0x3d3d.edP3
-0x3d3d.edP-3f
-</pre>
-
-      <h4 id="language-literal-character">文字リテラル</h3>
-      <p>
-        文字リテラルは、シングルクォート「'」で囲まれます。
-      </p>
-      <p>
-        文字リテラルの内容は「ひとつのAsciiの印字可能文字」あるいは「ひとつのエスケープ文字」です。
-      </p>
-      <p>
-        文字リテラルの型は「byte型」になります。
-      </p>
-      <p>
-        不正な文字リテラルの場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <b>エスケープ文字</b>
-      </p>
-      <table class="toc">
-        <tr>
-          <th>
-            エスケープ文字
-          </th>
-          <th>
-            説明
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>\0</b>
-          </td>
-          <td>
-            Asciiコードの0「NUL」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\a</b>
-          </td>
-          <td>
-            Asciiコードの7「BEL」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\b</b>
-          </td>
-          <td>
-            Asciiコードの8「BS」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\t</b>
-          </td>
-          <td>
-            Asciiコードの9「HT」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\n</b>
-          </td>
-          <td>
-            Asciiコードの10「LF」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\f</b>
-          </td>
-          <td>
-            Asciiコードの12「FF」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\r</b>
-          </td>
-          <td>
-            Asciiコードの13「CR」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\"</b>
-          </td>
-          <td>
-            Asciiコードの34「"」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\'</b>
-          </td>
-          <td>
-            Asciiコードの39「'」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\\</b>
-          </td>
-          <td>
-            Asciiコードの92「\」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\xの後ろに二桁の16進数</b>
-          </td>
-          <td>
-            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
-          </td>
-        </tr>
-      </table>
-      
-      <p>
-        <b>文字リテラルのサンプル</b>
-      </p>
-      <p>
-        文字リテラルのサンプルです。
-      </p>
-<pre>
-# 文字リテラル
-'a'
-'x'
-
-# エスケープ文字を使った文字リテラル
-'\a'
-'\b'
-'\t'
-'\n'
-'\f'
-'\r'
-'\"'
-'\''
-'\\'
-'\x0D'
-'\x0A'
-</pre>
-      
-      <h4 id="language-literal-string">文字列リテラル</h3>
-      <p>
-        文字列リテラルは、ダブルクォート「"」で囲まれます。
-      </p>
-      <p>
-        文字列リテラルの内容は「0個以上のAsciiの印字可能文字あるいはエスケープ文字」です。
-      </p>
-      <p>
-        文字列リテラルの型は「string型」になります。
-      </p>
-      <p>
-        不正な文字列リテラルの場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <b>エスケープ文字</b>
-      </p>
-      <table class="toc">
-        <tr>
-          <th>
-            エスケープ文字
-          </th>
-          <th>
-            説明
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>\0</b>
-          </td>
-          <td>
-            Asciiコードの0「NUL」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\a</b>
-          </td>
-          <td>
-            Asciiコードの7「BEL」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\b</b>
-          </td>
-          <td>
-            Asciiコードの8「BS」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\t</b>
-          </td>
-          <td>
-            Asciiコードの9「HT」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\n</b>
-          </td>
-          <td>
-            Asciiコードの10「LF」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\f</b>
-          </td>
-          <td>
-            Asciiコードの12「FF」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\r</b>
-          </td>
-          <td>
-            Asciiコードの13「CR」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\"</b>
-          </td>
-          <td>
-            Asciiコードの34「"」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\'</b>
-          </td>
-          <td>
-            Asciiコードの39「'」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\\</b>
-          </td>
-          <td>
-            Asciiコードの92「\」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\xの後ろに二桁の16進数</b>
-          </td>
-          <td>
-            直接Asciiコードを指定します。16進数は「0～9」「a～f」「A～F」で表現します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>\N{}の中の複数桁の16進数</b>
-          </td>
-          <td>
-            Unicodeのコードポイントを16進数で指定します。UTF-8に変換されます。16進数は「0～9」「a～f」「A～F」で表現します。
-          </td>
-        </tr>
-      </table>
-      <p>
-        Unicodeのコードポイントを指定するエスケープ文字以外は、<a href="#language-literal-character">文字リテラル</a>のエスケープ文字と共通です。
-      </p>
-      <p>
-        <b>文字列リテラルのサンプル</b>
-      </p>
-      <p>
-        文字列リテラルのサンプルです。
-      </p>
-<pre>
-# 文字列リテラル
-"abc"
-"あいう"
-
-# エスケープ文字を使った文字列リテラル
-"abc\tdef\n"
-"\x0D\x0A"
-"\N{U+3042}\N{U+3044}\N{U+3046}"
-</pre>
-      
-      <h3 id="language-undef">未定義値</h3>
-      <p>
-        未定義は「undef」で表現されます。
-      </p>
-<pre>
-undef
-</pre>
-      <p>
-        未定義値は、任意のオブジェクト型の変数に代入することができます。
-      </p>
-      <p>
-        未定義値はオブジェクト型の値と「==」「!=」演算子を使用して、比較することができます。未定義値は、生成されたオブジェクトと等しくない事が保証されます。
-      </p>
-      <p>
-        未定義は条件部で使われた場合は、偽になります。
-      </p>
-      <p>
-        未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
       </p>
 
       <h2 id="stdfunc">標準関数</h2>
