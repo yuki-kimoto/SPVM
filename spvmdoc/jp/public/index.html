@@ -17,7 +17,10 @@
         if(window.addEventListener)window.addEventListener("load",init,false);
         else if(window.attachEvent)window.attachEvent("onload",init);
         
-        
+        $(".to-top").click(function() {
+          // ページの一番上までスクロールさせます。
+          $('body, html').animate({scrollTop: 0}, 300, 'linear');;
+        });
       });
     </script>
 
@@ -3125,7 +3128,7 @@ package Foo {
       </p>
       <h3>ドキュメント最終更新日</h3>
       <p>
-        2018年12月29日
+        2018年12月30日
       </p>
       <h2>明日は</h2>
       
@@ -3137,6 +3140,7 @@ package Foo {
       </p>
     </div>
     <div class="footer">
+      <div><a href="javascript:void(0)" class="to-top">▲</a></div>
       <a href="https://github.com/yuki-kimoto/SPVM">SPVMプロジェクト</a>
     </div>
   </body>

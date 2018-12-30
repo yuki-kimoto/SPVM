@@ -125,3 +125,16 @@
 	  font-size:17px;
 	  margin-left:26px;
 	}
+
+  .to-top {
+    color:white;
+    background:#93b7ff;
+    padding:8px 10px;
+    border-radius:3px;
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    opacity:0.7;
+    
+  }
+  
