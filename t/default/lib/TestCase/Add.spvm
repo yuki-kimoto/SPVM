@@ -84,6 +84,26 @@ package TestCase::Add {
     return 1;
   }
 
+  sub add_int_int : int () {
+    my $total1 = 2147483646 + 1;
+    
+    unless ($total1 == 2147483647) {
+      return 0;
+    }
+    
+    unless ($total1 isa int) {
+      return 0;
+    }
+
+    my $total2 = -2147483648 + 1;
+
+    unless ($total2 == -2147483647) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub add_int_float : int () {
     my $total = 1 + 0.25f;
     
