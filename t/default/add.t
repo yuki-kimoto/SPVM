@@ -23,6 +23,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Add->add_int_short());
   ok(TestCase::Add->add_byte_int());
   ok(TestCase::Add->add_short_int());
+  ok(TestCase::Add->add_int_float());
+  ok(TestCase::Add->add_int_double());
   
   ok(TestCase::Add->add());
   is(TestCase::Add->add_int_max(), 2147483647);

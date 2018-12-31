@@ -84,6 +84,34 @@ package TestCase::Add {
     return 1;
   }
 
+  sub add_int_float : int () {
+    my $total = 1 + 0.25f;
+    
+    unless ($total == 1.25f) {
+      return 0;
+    }
+    
+    unless ($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_int_double : int () {
+    my $total = 1 + 0.25;
+    
+    unless ($total == 1.25) {
+      return 0;
+    }
+    
+    unless ($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   # Add
   sub add_int_max : int () {
     return (int)2147483646 + (int)1;
