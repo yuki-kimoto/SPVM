@@ -1296,6 +1296,7 @@ switch (条件) {
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
         <li>変数宣言</li>
+        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
         <li>二項演算子</li>
         <li>単項演算子</li>
         <li>リファレンス演算子</li>
@@ -1894,11 +1895,122 @@ undef
       <h3 id="language-operator">演算子</h3>
       <ul class="list">
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-add">加算演算子</a></li>
+        <li><a href="#language-operator-subtract">減算演算子</a></li>
         <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">論理演算子</a></li>
         <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
       </ul>
+      <h4 id="language-operator-arithmetic">算術演算子</h4>
+      <p>
+        算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子からなります。
+      </p>
+      <h4 id="language-operator-add">加算演算子</h4>
+      <p>
+        加算演算子は「+」で表現されます。
+      </p>
+<pre>
+左オペランド + 右オペランド
+</pre>
+      <p>
+        加算演算子は<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        オペランドは、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+      <p>
+      <p>
+        左オペランドあるいは、右オペランドが、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+      </p>
+      <p>
+        左オペランドの型が、右オペランドの型よりも小さい場合は、左オペランドに<a href="#language-type-convertion-widening">拡大型変換</a>が行われ右オペランドと同じ型になります。
+      </p>
+      <p>
+        右オペランドの型が、左オペランドの型よりも小さい場合は、右オペランドに<a href="#language-type-convertion-widening">拡大型変換</a>が行われ左オペランドと同じ型になります。
+      </p>
+      <p>
+        演算結果の型は、拡大型変換された場合は、拡大型変換された型です。。
+      </p>
+      <p>
+        加算演算子は、例外を発生させません。
+      </p>
+      <p>
+        <b>整数演算</b>
+      </p>
+      <p>
+        各オペランドが整数型の場合は、整数演算が行われます。
+      </p>
+      <p>
+        整数演算は、左オペランドに右オペランドを加算した数を返します。
+      </p>
+      <p>
+        値がオーバーフローした場合は、符号は反転し、加算した結果が、2の補数表現であるような結果が返されます。たとえば、int型の最大値に1を足した場合は、int型の最小値になります。
+      </p>
+      <p>
+        「左オペランド - 右オペランド」の結果は「左オペランド + (-右オペランド)」の結果と常に同じです。
+      </p>
+      <p>
+        「0 - オペランド」の結果は「-オペランド」の結果と常に同じです。
+      </p>
+      <p>
+        <b>浮動小数点演算</b>
+      </p>
+      <p>
+        各オペランドが浮動小数点型の場合は、浮動小数点演算が行われます。
+      </p>
+      <p>
+        浮動小数点演算は、左オペランドに右オペランドを加算した数を返します。
+      </p>
+      <p>
+        計算結果はIEEE 754演算の規則が適用されます。
+      </p>
+      <p>
+        右オペランドあるいは左オペランドがNANの場合は、結果はNANです。
+      </p>
+      <p>
+        符号が反対の無限大の合計は、NANです。
+      </p>
+      <p>
+        正の無限大に、正の無限大あるいは有限値を足したものは、正の無限大になります。
+      </p>
+      <p>
+        負の無限大に、負の無限大あるいは有限値を足したものは、負の無限大になります。
+      </p>
+      <p>
+        符号が異なる0の合計は、正の0になります。
+      </p>
+      <p>
+        符号が同一の0の合計は、その符号の0になります。
+      </p>
+      <p>
+        絶対値が同じで、符号が異なる値の合計は、正の0になります。
+      </p>
+      <p>
+        各オペランドが、無限大あるいはNANあるいは0でない場合で、同符号か、絶対の異なる異符号の場合は、正しい計算結果が返されます。
+      </p>
+      <p>
+        演算結果の値が大きすぎる場合は、正の無限大になります。
+      </p>
+      <p>
+        演算結果の値が小さすぎる場合は、負の無限大になります。
+      </p>
+      <p>
+        それ以外の場合は、IEEE 754の最近傍への丸めモードを使用して、丸められます。
+      </p>
+      <p>
+        オペランドが「0.0」の場合は「0.0 - オペランド」は「+0.0」ですが「-オペランド」は「-0.0」です。
+      </p>
+      <h4 id="language-operator-subtract">減算演算子</h4>
+      <p>
+        減算演算子は「-」で表現され、左辺から右辺を減算した数求めます。
+      </p>
+<pre>
+左オペランド - 右オペランド
+</pre>
+      <p>
+        減算演算子の仕様は、減算した数を求めること以外は、<a href="#language-operator-add">加算演算子</a>と全く同じです。
+      </p>
+      
       <h4 id="language-operator-precedence">演算子の優先順位</h4>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
@@ -2322,6 +2434,9 @@ my $num = 1 + 2;
         SPVMの整数型には、符号なし整数型は存在しません。
       </p>
       <p>
+        負の値は、2の補数で表現されます。
+      </p>
+      <p>
         整数の計算規則については、算術演算子を参考にしてください。
       </p>
       <h4 id="language-type-floating-point">浮動小数点型</h3>
@@ -2364,7 +2479,7 @@ my $num = 1 + 2;
         </tr>
       </table>
       <p>
-        浮動小数点の表現方法については、処理系に依存します。
+        浮動小数点の表現方法はIEEE 754です。
       </p>
       <p>
         浮動小数点の計算規則については、算術演算子を参考にしてください。
@@ -2796,22 +2911,24 @@ my $foo = new Foo;
 </pre>
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="list">
+        <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
         <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
-        <li><a href="#language-type-convertion-widning">拡大型変換</a></li>
+        <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
       </ul>
-      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
+      <h4 id="language-type-convertion-narrowing">数値型の順序</h4>
       <p>
-        縮小型変換とは、数値型において広い型から狭い型への変換が行われる場合に適用される変換の規則のことです。
+        数値型は、型の順序を持ちます。
       </p>
       <p>
-        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
+        型の順序は小さい方から「byte」「short」「int」「long」「float」「double」です。
+      </p>
+      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
+      <p>
+        縮小型変換とは、数値型において大きい型から小さい型への変換が行われる場合に適用される変換の規則のことです。
       </p>
       <h4 id="language-type-convertion-widening">拡大型変換</h4>
       <p>
-        拡大型変換とは、数値型において狭い型から広い型への変換が行われる場合に適用される変換の規則のことです。
-      </p>
-      <p>
-        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
+        拡大型変換とは、数値型において小さい型から大きい型への変換が行われる場合に適用される変換の規則のことです。
       </p>
 
       <h2 id="stdfunc">標準関数</h2>
