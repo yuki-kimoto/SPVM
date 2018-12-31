@@ -218,6 +218,7 @@ t/copy_default_to_precompile.pl
 t/default/__FILE__.t
 t/default/__LINE__.t
 t/default/__PACKAGE__.t
+t/default/add.t
 t/default/array.t
 t/default/assign.t
 t/default/begin.t
@@ -238,6 +239,7 @@ t/default/interface.t
 t/default/isa.t
 t/default/lib-CORE.t
 t/default/lib/TestCase.spvm
+t/default/lib/TestCase/Add.spvm
 t/default/lib/TestCase/Array.spvm
 t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
@@ -256,6 +258,7 @@ t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToByte.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToInt.spvm
 t/default/lib/TestCase/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/default/lib/TestCase/CompileError/Assign/NotNumericToNumeric.spvm
+t/default/lib/TestCase/CompileError/Assign/StringToBytArray.spvm
 t/default/lib/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Bool/NotNumericObject.spvm
 t/default/lib/TestCase/CompileError/CallSub/ArrayLength.spvm
@@ -349,6 +352,7 @@ t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Sub.spvm
+t/default/lib/TestCase/Subtract.spvm
 t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
@@ -370,6 +374,7 @@ t/default/ref.t
 t/default/special-assign.t
 t/default/string.t
 t/default/sub.t
+t/default/subtract.t
 t/default/switch.t
 t/default/unless.t
 t/default/value_t_array.t
