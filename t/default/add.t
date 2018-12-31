@@ -17,20 +17,22 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Add
 {
-  ok(TestCase::Add->add_byte_byte());
-  ok(TestCase::Add->add_short_short());
-  ok(TestCase::Add->add_int_byte());
-  ok(TestCase::Add->add_int_short());
-  ok(TestCase::Add->add_byte_int());
-  ok(TestCase::Add->add_short_int());
-  ok(TestCase::Add->add_int_int());
-  ok(TestCase::Add->add_int_float());
-  ok(TestCase::Add->add_int_double());
+  ok(TestCase::Add->add_byte_byte);
+  ok(TestCase::Add->add_short_short);
+  ok(TestCase::Add->add_int_byte);
+  ok(TestCase::Add->add_int_short);
+  ok(TestCase::Add->add_byte_int);
+  ok(TestCase::Add->add_short_int);
+  ok(TestCase::Add->add_int_int);
+  ok(TestCase::Add->add_int_float);
+  ok(TestCase::Add->add_int_double);
+  ok(TestCase::Add->add_overflow);
+  ok(TestCase::Add->add_minus);
+  ok(TestCase::Add->add_zero_minus);
   
-  ok(TestCase::Add->add());
+  ok(TestCase::Add->add);
   is(TestCase::Add->add_int_max(), 2147483647);
   is(TestCase::Add->add_int_min(), -2147483647);
-  is(TestCase::Add->add_int_overflow(), -2147483648);
   is(TestCase::Add->add_long_max(), 9223372036854775807);
   is(TestCase::Add->add_long_min(), -9223372036854775807);
   is(TestCase::Add->add_long_overflow(), -9223372036854775808);

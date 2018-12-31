@@ -132,6 +132,43 @@ package TestCase::Add {
     return 1;
   }
 
+  sub add_overflow : int () {
+    my $total = 2147483647 + 1;
+    
+    unless ($total == -2147483648) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub add_minus : int ()  {
+    my $total1 = 12 - 3;
+    my $total2 = 12 + (-3);
+
+    unless ($total1 == $total2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_zero_minus : int ()  {
+    my $total1 = 0 - 3;
+    my $total2 = -3;
+
+    unless ($total1 == $total2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  # Old tests
   # Add
   sub add_int_max : int () {
     return (int)2147483646 + (int)1;
@@ -141,10 +178,6 @@ package TestCase::Add {
     return (int)-2147483648 + (int)1;
   }
   
-  sub add_int_overflow : int () {
-    return (int)2147483647 + (int)1;
-  }
-
   sub add_long_max : long () {
     return (long)9223372036854775806L + (long)1;
   }
