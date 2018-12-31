@@ -1,4 +1,89 @@
 package TestCase::Add {
+
+  sub add_byte_byte : int () {
+    my $total = (byte)126 + (byte)127;
+    
+    unless ($total == 253) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_short_short : int () {
+    my $total = (short)32766 + (short)32767;
+    
+    unless ($total == 65533) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_int_byte : int () {
+    my $total = 1 + (byte)3;
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_int_short : int () {
+    my $total = 1 + (short)3;
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_byte_int : int () {
+    my $total = (byte)3 + 1;
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_short_int : int () {
+    my $total = (short)3 + 1;
+    
+    unless ($total == 4) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   # Add
   sub add_int_max : int () {
     return (int)2147483646 + (int)1;
