@@ -1182,7 +1182,7 @@ switch ($num) {
       <h3 id="language-lex-var">レキシカル変数</h3>
       <ul class="list">
         <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
-        <li><a href="#language-lex-var-type-inference">型推論</a></li>
+        <li><a href="#language-lex-var-initial-value">レキシカル変数の初期値</a></li>
       </ul>
       <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
       <p>
@@ -1200,6 +1200,9 @@ my $num : int;
 }
 </pre>
       <p>
+        レキシカル変数は、<a href="#language-lex-var-declaration">レキシカル変数の初期値</a>によって初期化されます。
+      </p>
+      <p>
         <a href="#language-type-inference">型推論</a>によって、レキシカル変数を宣言するときに、型の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
       </p>
 <pre>
@@ -1209,6 +1212,10 @@ my $num = 1;
 # double
 my $num = 1.0;
 </pre>
+      <h4 id="language-lex-var-declaration">レキシカル変数の初期値</h4>
+      <p>
+        レキシカル変数は、代入演算子によって明示的に初期化されなかった場合は、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
       <h3 id="language-block">ブロック</h3>
       <p>
         「{」と「}」で囲まれた部分のことをブロックと呼びます。
