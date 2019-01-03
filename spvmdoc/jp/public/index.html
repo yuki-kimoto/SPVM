@@ -651,6 +651,7 @@ package Foo {
       <ul class="list">
         <li>
           <a href="#language-package-var-definition">パッケージ変数の定義</a>
+          <a href="#language-package-var-initial-value">パッケージ変数の初期値</a>
         </li>
       </ul>
       <h4 id="language-package-var-definition">パッケージ変数の定義</h4>
@@ -770,6 +771,76 @@ package Foo {
   our $NUM_RW : rw int;
 }
 </pre>
+      <h4 id="language-package-var-initial-value">パッケージ変数の初期値</h4>
+      <p>
+        パッケージ変数は、コンパイルが終了して、実行時に入る前に、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        この初期値は、<a href="#language-begin-block">BEGINブロック</a>を使うことで、変更することができます。
+      </p>
+<pre>
+package Foo {
+  our $VAR;
+  
+  BEGIN {
+    $VAR = 3;
+  }
+}
+</pre>
+      <h3 id="language-begin-block">BEGINブロック</h3>
+      <p>
+        BEGINブロックとは、コンパイル時が終了し、実行時に入る前に、実行されるブロックのことです。
+      </p>
+      <p>
+        BEGINキーワードを使用してBEGINブロックを定義することができます。
+      </p>
+<pre>
+BEGIN {
+
+}
+</pre>
+      <p>
+        BEGINブロックは、パッケージの定義の直下にある必要があります。
+      </p>
+<pre>
+package Foo {
+  BEGIN {
+
+  }
+}
+</pre>
+      <p>
+        BEGINブロックの中には、0個以上の<a href="#language-statement">文</a>を書くことができます。
+      </p>
+<pre>
+BEGIN {
+  my $foo = 1 + 1;
+  my $bar;
+}
+</pre>
+      <p>
+        return文を書くことはできません。BEGINブロックは、引数がなく、戻り値がvoidのサブルーチンとして定義されます。
+      </p>
+      <p>
+        BEGINブロックは、いくつでも定義できます。
+      </p>
+      <p>
+        BEGINブロックの実行順序は、保証されません。他のパッケージにBEGINブロックが定義されている場合は、そのBEGINブロックが先に実行されることを想定しないでください。
+      </p>
+      <p>
+        BEGINブロックの一般的な用途は、パッケージ変数を初期化することです。
+      </p>
+<pre>
+package Foo {
+  our $NUM : int;
+  our $POINT : Point;
+  BEGIN {
+    $NUM = 3;
+    $POINT = Point->new;
+  }
+}
+</pre>
+
       <h3 id="language-field">フィールド</h3>
       <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
@@ -2342,6 +2413,7 @@ my $num = 1 + 2;
       <h3 id="language-type">型</h3>
       <ul class="list">
         <li><a href="#language-type-summary">型の概要</a></li>
+        <li><a href="#language-type-initial-value">型の初期値</a></li>
         <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integer">整数型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
@@ -2365,6 +2437,89 @@ my $num = 1 + 2;
       <p>
         レキシカル変数の宣言においては、型推論を利用して、暗黙的に型を指定することもできます。
       </p>
+      <h4 id="language-type-initial-value">型の初期値</h3>
+      <p>
+        レキシカル変数の初期値、<a href="#language-package-var-initial-value">パッケージ変数の初期値</a>、オブジェクトの生成におけるフィールドの初期値は、型の初期値によって決まります。
+      </p>
+      <p>
+        型の初期化値の一覧です。データにおけるすべてのビット列は0に設定されます。
+      </p>
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            初期値
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>オブジェクト型</b>
+          </td>
+          <td>
+            undef
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>値型</b>
+          </td>
+          <td>
+            すべてのフィールドが0
+          </td>
+        </tr>
+      </table>
+      
       <h4 id="language-type-numeric">数値型</h3>
       <p>
         数値型は「<a href="#language-type-integer">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
