@@ -395,6 +395,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-field">フィールド</a>
         <li><a href="#language-sub">サブルーチン</a>
         <li><a href="#language-enum">列挙</a>
+        <li><a href="#language-begin-block">BEGINブロック</a>
         <li><a href="#language-lex-var">レキシカル変数</a>
         <li><a href="#language-block">ブロック</a>
         <li><a href="#language-scope">スコープ</a></li>
@@ -787,60 +788,6 @@ package Foo {
   }
 }
 </pre>
-      <h3 id="language-begin-block">BEGINブロック</h3>
-      <p>
-        BEGINブロックとは、コンパイル時が終了し、実行時に入る前に、実行されるブロックのことです。
-      </p>
-      <p>
-        BEGINキーワードを使用してBEGINブロックを定義することができます。
-      </p>
-<pre>
-BEGIN {
-
-}
-</pre>
-      <p>
-        BEGINブロックは、パッケージの定義の直下にある必要があります。
-      </p>
-<pre>
-package Foo {
-  BEGIN {
-
-  }
-}
-</pre>
-      <p>
-        BEGINブロックの中には、0個以上の<a href="#language-statement">文</a>を書くことができます。
-      </p>
-<pre>
-BEGIN {
-  my $foo = 1 + 1;
-  my $bar;
-}
-</pre>
-      <p>
-        return文を書くことはできません。BEGINブロックは、引数がなく、戻り値がvoidのサブルーチンとして定義されます。
-      </p>
-      <p>
-        BEGINブロックは、いくつでも定義できます。
-      </p>
-      <p>
-        BEGINブロックの実行順序は、保証されません。他のパッケージにBEGINブロックが定義されている場合は、そのBEGINブロックが先に実行されることを想定しないでください。
-      </p>
-      <p>
-        BEGINブロックの一般的な用途は、パッケージ変数を初期化することです。
-      </p>
-<pre>
-package Foo {
-  our $NUM : int;
-  our $POINT : Point;
-  BEGIN {
-    $NUM = 3;
-    $POINT = Point->new;
-  }
-}
-</pre>
-
       <h3 id="language-field">フィールド</h3>
       <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
@@ -1179,6 +1126,60 @@ switch ($num) {
   
 }
 </pre>
+      <h3 id="language-begin-block">BEGINブロック</h3>
+      <p>
+        BEGINブロックとは、コンパイル時が終了し、実行時に入る前に、実行されるブロックのことです。
+      </p>
+      <p>
+        BEGINキーワードを使用してBEGINブロックを定義することができます。
+      </p>
+<pre>
+BEGIN {
+
+}
+</pre>
+      <p>
+        BEGINブロックは、パッケージの定義の直下にある必要があります。
+      </p>
+<pre>
+package Foo {
+  BEGIN {
+
+  }
+}
+</pre>
+      <p>
+        BEGINブロックの中には、0個以上の<a href="#language-statement">文</a>を書くことができます。
+      </p>
+<pre>
+BEGIN {
+  my $foo = 1 + 1;
+  my $bar;
+}
+</pre>
+      <p>
+        return文を書くことはできません。BEGINブロックは、引数がなく、戻り値がvoidのサブルーチンとして定義されます。
+      </p>
+      <p>
+        BEGINブロックは、いくつでも定義できます。
+      </p>
+      <p>
+        BEGINブロックの実行順序は、保証されません。他のパッケージにBEGINブロックが定義されている場合は、そのBEGINブロックが先に実行されることを想定しないでください。
+      </p>
+      <p>
+        BEGINブロックの一般的な用途は、パッケージ変数を初期化することです。
+      </p>
+<pre>
+package Foo {
+  our $NUM : int;
+  our $POINT : Point;
+  BEGIN {
+    $NUM = 3;
+    $POINT = Point->new;
+  }
+}
+</pre>
+
       <h3 id="language-lex-var">レキシカル変数</h3>
       <ul class="list">
         <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
