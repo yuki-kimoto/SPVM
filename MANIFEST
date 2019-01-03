@@ -224,6 +224,7 @@ t/default/assign.t
 t/default/begin.t
 t/default/bit-operator.t
 t/default/comparison-operator.t
+t/default/compile-error.t
 t/default/complex.t
 t/default/concat.t
 t/default/constant.t
@@ -248,6 +249,8 @@ t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
+t/default/lib/TestCase/CompileError/Add/LeftIsNotNumeric.spvm
+t/default/lib/TestCase/CompileError/Add/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ArrayInit/ArrayLength.spvm
 t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm

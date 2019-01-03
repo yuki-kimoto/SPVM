@@ -391,6 +391,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
         <li><a href="#language-package">パッケージ</a>
+        <li><a href="#language-use-module">モジュールの読み込み</a>
         <li><a href="#language-package-var">パッケージ変数</a>
         <li><a href="#language-field">フィールド</a>
         <li><a href="#language-sub">サブルーチン</a>
@@ -410,6 +411,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
+        <li><a href="#language-auto-loaded-package">自動的にロードされるパッケージ</a></li>
       </ul>
       <h3 id="language-parser">構文解析</h3>
       <ul class="list">
@@ -530,8 +532,13 @@ package パッケージ名 {
 }
 </pre>
       <p>
-        パッケージ名は「大文字」で始まる必要があります。
+        パッケージ名は「大文字」で始まる必要があります。パッケージ名には「::」を使用することができます。
       </p>
+<p>
+Foo
+Foo::Bar
+Foo::Bar::Baz
+</p>
       <p>
         「パッケージ名」の後に「:」をつなげてその後ろに「デスクリプタ」を指定することができます。
       </p>
@@ -647,6 +654,28 @@ package Foo {
   
   }
 }
+</pre>
+      <h3 id="language-use-module">モジュールの読み込み</h3>
+      <p>
+        モジュールを読み込むには、useキーワードを使用します。
+      </p>
+<pre>
+use Foo;
+use Foo::Bar;
+</pre>
+      <p>
+        モジュールはコンパイル時に読み込まれます。
+      </p>
+      <p>
+        モジュールは、モジュールの読み込みパスに、以下のルールで配置される必要があります。
+      </p>
+      <p>
+        「::」を「/」に変更。末尾に「.spvm」をつける。
+      </p>
+<pre>
+Foo.spvm
+Foo/Bar.spvm
+Foo/Bar/Baz.spvm
 </pre>
       <h3 id="language-package-var">パッケージ変数</h3>
       <ul class="list">
@@ -3113,10 +3142,77 @@ my $foo = new Foo;
 </pre>
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="list">
+        <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
+        <li><a href="#language-type-convertion-explicite">明示的な型変換</a></li>
         <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
         <li><a href="#language-type-convertion-narrowing">縮小型変換</a></li>
         <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
+        <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
+        <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
+        <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
       </ul>
+      <h4 id="language-type-convertion-numeric-type-order">暗黙的な型変換</h4>
+      <p>
+        暗黙的な型変換とは、SPVMによって行われる自動的な型変換のことです。次の箇所が、暗黙的な型変換が行われる可能性のある個所です。
+      </p>
+      <ul>
+        <li>異なる型に代入する場合</li>
+        <li>異なる型のサブルーチンの引数に渡す場合</li>
+        <li>戻り値とは異なる型を返却する場合</li>
+      </ul>
+      <p>
+        次の場合に暗黙的な型変換が行われます。
+      </p>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の拡大型変換
+my $num : long = 123;
+my $num : double = 12.5f;
+</pre>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の縮小型変換
+my $num : byte = 123;
+my $num : short = 134;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : object = $num;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が対応する数値を表現するオブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : SPVM::Int = $num;
+</pre>
+      <p>
+        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
+      </p>
+<pre>
+# object型からの暗黙のアンボクシング変換 - 
+my $object : object;
+my $num : int = $object;
+</pre>
+      <p>
+        移動元の型が数値を表現するオブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。
+      </p>
+<pre>
+# 数値を表現するオブジェクト型からの暗黙のアンボクシング変換
+my $num_obj = SPVM::Int->new(3);
+my $num : int = $num_obj;
+</pre>
+
+      
       <h4 id="language-type-convertion-numeric-type-order">数値型の順序</h4>
       <p>
         <a href="#language-type-numeric">数値型</a>は、型の順序を持ちます。型の順序は小さい方から「byte」「short」「int」「long」「float」「double」です。
@@ -3129,7 +3225,91 @@ my $foo = new Foo;
       <p>
         拡大型変換とは、<a href="#language-type-numeric">数値型</a>において小さい型から大きい型への変換が行われる場合に適用される変換の規則のことです。
       </p>
-
+      <h4 id="language-type-convertion-boxing">ボクシング変換</h4>
+      <p>
+        ボクシング変換とは、数値型の値を、数値を表現するオブジェクト型に変換する操作のことをいいます。
+      </p>
+      <h4 id="language-type-convertion-unboxing">アンボクシング変換</h4>
+      <p>
+        アンボクシング変換とは、数値を表現するオブジェクト型の値を、対応する数値型の値に変換する操作のことをいいます。
+      </p>
+      <h4 id="language-type-numeric-object">数値を表現するオブジェクト型</h4>
+      <p>
+        SPVMには、数値を表現するオブジェクト型として以下の型があります。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>数値型</b>
+          </th>
+          <th>
+            対応するオブジェクト型
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            SPVM::Byte
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            SPVM::Short
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            SPVM::Int
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            SPVM::Long
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            SPVM::Float
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            SPVM::Double
+          </td>
+        </tr>
+      </table>
+      <h3 id="language-auto-loaded-module">自動的にロードされるモジュール</h3>
+      <p>
+        自動的にロードされるモジュールは以下です。use構文によって読み込まなくても利用することができます。
+      </p>
+      <ul>
+        <li>SPVM::CORE</li>
+        <li>SPVM::Byte</li>
+        <li>SPVM::Short</li>
+        <li>SPVM::Int</li>
+        <li>SPVM::Long</li>
+        <li>SPVM::Float</li>
+        <li>SPVM::Double</li>
+        <li>SPVM::Bool</li>
+      </ul>
+      
       <h2 id="stdfunc">標準関数</h2>
       <p>
         SPVMの標準関数の一覧です。
