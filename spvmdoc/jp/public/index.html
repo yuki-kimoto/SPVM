@@ -3140,6 +3140,41 @@ my $num = 1.0;
 # Foo
 my $foo = new Foo;
 </pre>
+      <h3 id="language-type-compatible">互換性のある型</h3>
+      <p>
+        互換性のある型とは、型変換なしで、値の移動ができる型のことです。
+      </p>
+      <p>
+        型に互換があるのは次の場合です。
+      </p>
+      <p>
+        移動元と移動先の型が同名の場合
+      </p>
+<pre>
+my $num1 : int;
+my $num2 : int;
+$num1 = $num2;
+</pre>
+      <p>
+        移動元の型がbyte[]型で、移動先の型が文字列型の場合
+      </p>
+<pre>
+my $bytes = new byte[3];
+my $str : string;
+$str = $bytes;
+</pre>
+      <p>
+        移動元の型がオブジェクト型で、移動先の型が汎用オブジェクト型の場合
+      </p>
+<pre>
+my $foo : Foo = new Foo;
+my $object : object;
+$object = $foo;
+</pre>
+      <p>
+        型に互換性がない場合は、<a href="#language-type-convertion-implicite">暗黙的な型変換</a>が試みられます。暗黙の型変換に失敗した場合は、コンパイル時エラーになります。
+      </p>
+      
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="list">
         <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
@@ -3212,6 +3247,19 @@ my $num_obj = SPVM::Int->new(3);
 my $num : int = $num_obj;
 </pre>
 
+      <h4 id="language-type-convertion-explicite">明示的な型変換</h4>
+      <p>
+        明示的な型変換とは、型変換を明示的に記述して行う型変換のことを言います。「(」「型名」「)」と記述します。
+      </p>
+<pre>
+(long)
+</pre>
+      int型の値をlong型に変換するサンプルは以下のようになります。
+<pre>
+my $num = (long)3;
+</pre>
+      
+      
       
       <h4 id="language-type-convertion-numeric-type-order">数値型の順序</h4>
       <p>
@@ -3295,9 +3343,9 @@ my $num : int = $num_obj;
           </td>
         </tr>
       </table>
-      <h3 id="language-auto-loaded-module">自動的にロードされるモジュール</h3>
+      <h3 id="language-auto-loaded-module">自動的に読み込まれるモジュール</h3>
       <p>
-        自動的にロードされるモジュールは以下です。use構文によって読み込まなくても利用することができます。
+        自動的に読み込まれるモジュールは以下です。<a href="language-use-module">use</a>キーワードによって読み込まなくても利用することができます。
       </p>
       <ul>
         <li>SPVM::CORE</li>
