@@ -681,6 +681,8 @@ Foo/Bar/Baz.spvm
       <ul class="list">
         <li>
           <a href="#language-package-var-definition">パッケージ変数の定義</a>
+        </li>
+        <li>
           <a href="#language-package-var-initial-value">パッケージ変数の初期値</a>
         </li>
       </ul>
@@ -1038,7 +1040,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
   
 }
 </pre>
-      <h4 id="language-sub-definition">定数サブルーチン</h4>
+      <h4 id="language-sub-constant">定数サブルーチン</h4>
       <p>
         数値型の戻り値を持つサブルーチンで、戻り値が定数であるサブルーチンを定数サブルーチンといいます。
       </p>
@@ -1230,7 +1232,7 @@ my $num : int;
 }
 </pre>
       <p>
-        レキシカル変数は、<a href="#language-lex-var-declaration">レキシカル変数の初期値</a>によって初期化されます。
+        レキシカル変数は、<a href="#language-lex-var-initial-value">レキシカル変数の初期値</a>によって初期化されます。
       </p>
       <p>
         <a href="#language-type-inference">型推論</a>によって、レキシカル変数を宣言するときに、型の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
@@ -1242,9 +1244,9 @@ my $num = 1;
 # double
 my $num = 1.0;
 </pre>
-      <h4 id="language-lex-var-declaration">レキシカル変数の初期値</h4>
+      <h4 id="language-lex-var-initial-value">レキシカル変数の初期値</h4>
       <p>
-        レキシカル変数は、代入演算子によって明示的に初期化されなかった場合は、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+        レキシカル変数は、代入演算子によって明示的に初期化されなかった場合は、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
       </p>
       <h3 id="language-block">ブロック</h3>
       <p>
@@ -3201,11 +3203,11 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
         <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
       </ul>
-      <h4 id="language-type-convertion-numeric-type-order">暗黙的な型変換</h4>
+      <h4 id="language-type-convertion-implicite">暗黙的な型変換</h4>
       <p>
         暗黙的な型変換とは、SPVMによって行われる自動的な型変換のことです。次の箇所が、暗黙的な型変換が行われる可能性のある個所です。
       </p>
-      <ul>
+      <ul class="list">
         <li>異なる型に代入する場合</li>
         <li>異なる型のサブルーチンの引数に渡す場合</li>
         <li>戻り値とは異なる型を返却する場合</li>
@@ -3283,15 +3285,15 @@ my $num : int = (int)4;
         明示的な型変換の一覧です。
       </p>
       <p>
-        移動元の型と指定した型における変換の内容の一覧です。移動元の型と指定した型において<a href="language-type-compatible">型の互換性</a>がなく、この一覧にない場合は、コンパイルエラーになります。
+        移動元の型と指定した型における変換の内容の一覧です。移動元の型と指定した型において<a href="#language-type-compatible">型の互換性</a>がなく、この一覧にない場合は、コンパイルエラーになります。
       </p>
       <table>
         <tr>
           <th>
-            <b>移動元の型</b>
+            <b>指定した型</b>
           </th>
           <th>
-            <b>指定した型</b>
+            <b>移動元の型</b>
           </th>
           <th>
             変換の内容
@@ -3299,10 +3301,10 @@ my $num : int = (int)4;
         </tr>
         <tr>
           <td>
-            <b>string</b>
+            <b>byte[]</b>
           </td>
           <td>
-            <b>byte[]</b>
+            <b>string</b>
           </td>
           <td>
             オブジェクトがコピーされます。
@@ -3310,10 +3312,10 @@ my $num : int = (int)4;
         </tr>
         <tr>
           <td>
-            <b>小さな数値型</b>
+            <b>大きな数値型</b>
           </td>
           <td>
-            <b>大きな数値型</b>
+            <b>小さな数値型</b>
           </td>
           <td>
             <a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
@@ -3321,10 +3323,10 @@ my $num : int = (int)4;
         </tr>
         <tr>
           <td>
-            <b>大きな数値型</b>
+            <b>小さな数値型</b>
           </td>
           <td>
-            <b>小さな数値型</b>
+            <b>大きな数値型</b>
           </td>
           <td>
             <a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
@@ -3332,35 +3334,13 @@ my $num : int = (int)4;
         </tr>
         <tr>
           <td>
-            <b>数値型</b>
-          </td>
-          <td>
-            <b>対応する数値を表現するオブジェクト型</b>
-          </td>
-          <td>
-            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>数値型</b>
-          </td>
-          <td>
-            <b>汎用オブジェクト型</b>
-          </td>
-          <td>
-            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
-          </td>
-        </tr>
-        <tr>
-          <td>
             <b>対応する数値を表現するオブジェクト型</b>
           </td>
           <td>
             <b>数値型</b>
           </td>
           <td>
-            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
           </td>
         </tr>
         <tr>
@@ -3371,6 +3351,17 @@ my $num : int = (int)4;
             <b>数値型</b>
           </td>
           <td>
+            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <b>対応する数値を表現するオブジェクト型</b>
+          </td>
+          <td>
             <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
           </td>
         </tr>
@@ -3378,8 +3369,19 @@ my $num : int = (int)4;
           <td>
             <b>数値型</b>
           </td>
+          <td>
+            <b>汎用オブジェクト型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
           <td>
             <b>文字列型</b>
+          </td>
+          <td>
+            <b>数値型</b>
           </td>
           <td>
             数値が、C標準のsprintf関数の「%g」フォーマットを使って、文字列化されます。
@@ -3473,7 +3475,7 @@ my $num : int = (int)4;
       <p>
         自動的に読み込まれるモジュールは以下です。<a href="language-use-module">use</a>キーワードによって読み込まなくても利用することができます。
       </p>
-      <ul>
+      <ul class="list">
         <li>SPVM::CORE</li>
         <li>SPVM::Byte</li>
         <li>SPVM::Short</li>
@@ -3914,7 +3916,7 @@ package Foo {
       </p>
       <h3>ドキュメント最終更新日</h3>
       <p>
-        2018年12月30日
+        2019年1月3日
       </p>
       <h2>明日は</h2>
       
