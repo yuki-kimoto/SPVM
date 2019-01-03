@@ -2803,10 +2803,47 @@ my $object : object;
 <pre>
 my $object : object = new Foo;
 </pre>
+      <h4 id="language-type-basic">基本型</h4>
+      <p>
+        次元を持たない型を基本型と呼びます。<a href="#language-type-numeric">数値型</a>、<a href="#language-type-package">パッケージ型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-string">文字列型</a>は、基本型です。
+      </p>
       <h4 id="language-type-array">配列型</h4>
       <p>
-        配列型は、連続した複数のデータ領域を表現します。
+        配列型は、連続した複数のデータ領域を表現します。<a href="#language-type-basic">基本型</a>は、配列にすることができます。
       </p>
+<pre>
+int[]
+double[]
+Point[]
+object[]
+string[]
+</pre>
+      <p>
+        配列は次元を持ち最大255次元まで表現できます。
+      </p>
+<pre>
+# 二次元
+int[][]
+
+# 三次元
+int[][][]
+</pre>
+      <p>
+        配列型は、<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
+        配列を作成するには、new演算子を使用します。以下の例では、要素数が3のint型の配列を作成しています。
+      </p>
+<p>
+my $nums = new int[3];
+</p>
+      <p>
+        多次元配列を作成するときも、new演算子を使用します。以下の例では、要素数が3のint[]型の配列を作成しています。
+      </p>
+<p>
+my $nums = new int[][3];
+</p>
+      
       <h4 id="language-type-string">文字列型</h4>
       <p>
         文字列型は、文字列を表現する型です。stringによって表現します。C言語の「const char*」を表現するために設計されました。
