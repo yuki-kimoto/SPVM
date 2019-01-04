@@ -241,7 +241,7 @@ package SPVM::JSON {
       return $self->_decode_false($s, $i, $end);
     }
     else {
-      croak "Cannot decode string"; # TODO: substr. "Cannot decode string at ..."
+      croak "Cannot decode string"; # TODO: substr. "Cannot decode string at (substrings)"
     }
   }
 
