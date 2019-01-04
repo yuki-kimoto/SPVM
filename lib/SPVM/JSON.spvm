@@ -71,25 +71,26 @@ package SPVM::JSON {
     my $decimal_part : long = 0;
     my $decimal_length = 0;
     my $has_digit = 0;
-    my $has_dot = 0; # 0: not appeared yet. 1: already appeared. -1: 0, or dot should appear
+    my $has_sign = 0;
+    my $dot_status = 0; # 0: not appeared yet. 1: already appeared. -1: 0, or dot should appear
     if ($s->[$$i] == '-') {
-      $int_part *= -1;
       $$i++;
+      $has_sign = 1;
     }
     if ($s->[$$i] == '0') {
       $$i++;
       $has_digit = 1;
-      $has_dot = -1;
+      $dot_status = -1;
     }
     while ($$i < $end) {
       if ($s->[$$i] == '.') {
-        if ($has_dot == 1) {
+        if ($dot_status == 1) {
           croak "Invalid digits: Dot should appear at most once";
         }
         unless ($has_digit) {
           croak "Invalid digits: Not found digits before decimal";
         }
-        $has_dot = 1;
+        $dot_status = 1;
         $$i++;
         unless ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
           croak "Invalid digits: Not found digits after dot";
@@ -98,11 +99,11 @@ package SPVM::JSON {
         $decimal_length++;
       }
       elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
-        if ($has_dot == -1) { # dot should appear
+        if ($dot_status == -1) { # dot should appear
           croak "Invalid digits: '.' should exist if the first digit is '0'";
         }
         $has_digit = 1;
-        if ($has_dot) {
+        if ($dot_status) {
           $decimal_part *= 10;
           $decimal_part += $s->[$$i++] - '0';
           $decimal_length++;
@@ -120,14 +121,29 @@ package SPVM::JSON {
     unless ($has_digit) {
       croak "Invalid digits: Not found digits after '-'";
     }
-    if ($has_dot == 1) {
-      return SPVM::Double->new($int_part + (double)$decimal_part / pow(10, $decimal_length));
+    if ($dot_status == 1) {
+      my $value = $int_part + (double)$decimal_part / pow(10, $decimal_length);
+      if ($has_sign) {
+        $value *= -1;
+      }
+      print("Double: $value\n");
+      return SPVM::Double->new($value);
     }
     elsif ($int_part > INT32_MAX()) {
-      return SPVM::Long->new($int_part);
+      my $value = $int_part;
+      if ($has_sign) {
+        $value *= -1;
+      }
+      print("Long: $value\n");
+      return SPVM::Long->new($value);
     }
     else {
-      return SPVM::Int->new((int)$int_part);
+      my $value = (int)$int_part;
+      if ($has_sign) {
+        $value *= -1;
+      }
+      print("Int: $value\n");
+      return SPVM::Int->new($value);
     }
   }
 
@@ -269,7 +285,7 @@ package SPVM::JSON {
       return (string)(((SPVM::Int)$o)->val); # FIXME: (string)のキャストを外したときのエラー: "." operater right value must be defined
     }
     elsif ($o isa SPVM::Long) {
-      croak "Not implemented: encode value SPVM::Long";
+      return (string)(((SPVM::Long)$o)->val);
     }
     elsif ($o isa SPVM::Bool) {
       if (((SPVM::Bool)$o)->val) {
@@ -306,6 +322,7 @@ package SPVM::JSON {
       return undef;
     }
     my $ret = $self->_decode_value($json_text, \$iter, $length);
+    _skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
       croak "Not all json_text is decoded yet. Remains at $iter";
     }

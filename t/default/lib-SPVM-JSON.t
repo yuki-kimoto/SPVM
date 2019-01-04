@@ -16,7 +16,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->test_empty);
   ok(TestCase::JSON->test_flat_hash);
   ok(TestCase::JSON->test_flat_list);
+  ok(TestCase::JSON->test_digits_int);
+  ok(TestCase::JSON->test_digits_long);
+  ok(TestCase::JSON->test_digits_double);
   ok(TestCase::JSON->test_nest_object);
+  ok(TestCase::JSON->test_spaces);
 }
 
 
