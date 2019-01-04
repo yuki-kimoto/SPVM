@@ -171,7 +171,28 @@ package TestCase::JSON {
   }
 
   sub test_nest_object : int () {
-    warn("Not implemented test: test_nest_object");
-    return 0;
+    my $json_texts = [
+        "{\"a\":{\"b\":1,\"c\":{\"d\":0.1,\"e\":true,\"f\":\"str\",\"g\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"END\":\"EOF\"}"
+    ];
+    my $objects = [(object)
+      SPVM::Hash->new_with_array([(object)
+        "a", SPVM::Hash->new_with_array([(object)
+          "b", SPVM::Int->new(1),
+          "c", SPVM::Hash->new_with_array([(object)
+            "d", SPVM::Double->new(0.1),
+            "e", SPVM::Bool->TRUE,
+            "f", "str",
+            "g", SPVM::List->new_with_array([(object)
+              "elem", "ents",
+              SPVM::Hash->new_with_array([(object)
+                "key", "value"
+              ])
+            ])
+          ])
+        ]),
+        "END", "EOF"
+      ])
+    ];
+    return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
 }

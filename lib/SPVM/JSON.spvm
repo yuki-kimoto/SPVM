@@ -172,6 +172,7 @@ package SPVM::JSON {
       _skip_spaces_at_not_end($s, $i, $end);
       $hash->set($key, $self->_decode_value($s, $i, $end));
     }
+    _expect_token($s, $i, $end, "}");
     return $hash;
   }
 
@@ -196,6 +197,7 @@ package SPVM::JSON {
       }
       $list->push($self->_decode_value($s, $i, $end));
     }
+    _expect_token($s, $i, $end, "]");
     return $list;
   }
 
