@@ -145,6 +145,20 @@ package TestCase::UnaryMinus {
     return 1;
   }
 
+  sub unary_minus_float_nan : int () {
+    my $value = -NANF();
+     
+    unless ($value isa float) {
+      return 0;
+    }
+    
+    unless (isnanf($value)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub unary_minus_double : int () {
     my $value = -DBL_MAX();
     
@@ -199,6 +213,20 @@ package TestCase::UnaryMinus {
     }
     
     unless(signbit($zero_minus)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_double_nan : int () {
+    my $value = -NAN();
+     
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless (isnan($value)) {
       return 0;
     }
     
