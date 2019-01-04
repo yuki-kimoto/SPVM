@@ -132,12 +132,19 @@ package TestCase::JSON {
 
   sub test_empty : int () {
     my $json = SPVM::JSON->new;
-    my $input = ["", "     "];
-    my $expected = ["", ""];
+    my $input = [
+      # empty
+      "",
+      # spaces
+      " ", "\n", "\t", "\r",
+      # multiple spaces
+      " \r\n\t  \r\r\t\t\n "
+    ];
+    my $expected = ["", "", "", "", "", ""];
     return _validate_json_text_strictly($json, $input, $expected);
   }
 
-  sub test_hash : int () {
+  sub test_flat_hash : int () {
     my $json_texts = ["{}", "{\"digit\":123}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"double2\":123.45}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"a\":1,\"A\":0.1,\"ABC\":3.1415,\"qwerty\":\"asdfg\"}"];
     my $objects = [(object)
       SPVM::Hash->new_with_array(new object [0]),
@@ -152,7 +159,7 @@ package TestCase::JSON {
     return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
 
-  sub test_list : int () {
+  sub test_flat_list : int () {
     my $json_texts = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",0.123,3.1415]"];
     my $objects = [(object)
       SPVM::List->new_with_array(new object [0]),
@@ -161,5 +168,10 @@ package TestCase::JSON {
       SPVM::List->new_with_array([(object) SPVM::Int->new(123), "abc", SPVM::Int->new(0), "123abc", SPVM::Double->new(0.123), SPVM::Double->new(3.1415)])
     ];
     return _validate(SPVM::JSON->new, $json_texts, $objects);
+  }
+
+  sub test_nest_object : int () {
+    warn("Not implemented test: test_nest_object");
+    return 0;
   }
 }

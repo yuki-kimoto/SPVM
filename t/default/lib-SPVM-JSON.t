@@ -14,8 +14,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # SPVM::JSON
 {
   ok(TestCase::JSON->test_empty);
-  ok(TestCase::JSON->test_hash);
-  ok(TestCase::JSON->test_list);
+  ok(TestCase::JSON->test_flat_hash);
+  ok(TestCase::JSON->test_flat_list);
+  ok(TestCase::JSON->test_nest_object);
 }
 
 
