@@ -34,7 +34,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> unop binop relop numrelop strrelop isa
+%type <opval> unop binop relop numrelop strrelop isa conditionop
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
 %type <opval> deref ref assign inc dec
@@ -687,9 +687,8 @@ strrelop
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
 
-condition
-  : relop
-  | term LOGICAL_OR term
+conditionop
+  : term LOGICAL_OR term
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
@@ -701,6 +700,10 @@ condition
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
+
+condition
+  : relop
+  | conditionop
   | '(' condition ')'
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
@@ -757,6 +760,7 @@ inc
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
       $$ = SPVM_OP_build_inc(compiler, op, $1);
     }
+
 dec
   : DEC expression
     {
