@@ -41,6 +41,20 @@ package TestCase::UnaryMinus {
     
     return 1;
   }
+
+  sub unary_minus_int_overflow : int () {
+    my $value = -INT32_MIN();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == INT32_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub unary_minus_long : int () {
     my $value = -INT64_MAX();
@@ -50,6 +64,20 @@ package TestCase::UnaryMinus {
     }
     
     unless ($value == -INT64_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_long_overflow : int () {
+    my $value = -INT64_MIN();
+    
+    unless ($value isa long) {
+      return 0;
+    }
+    
+    unless ($value == INT64_MIN()) {
       return 0;
     }
     

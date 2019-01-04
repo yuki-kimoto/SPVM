@@ -22,7 +22,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::UnaryMinus->unary_minus_byte);
     ok(TestCase::UnaryMinus->unary_minus_short);
     ok(TestCase::UnaryMinus->unary_minus_int);
+    ok(TestCase::UnaryMinus->unary_minus_int_overflow);
     ok(TestCase::UnaryMinus->unary_minus_long);
+    ok(TestCase::UnaryMinus->unary_minus_long_overflow);
     ok(TestCase::UnaryMinus->unary_minus_float);
     ok(TestCase::UnaryMinus->unary_minus_double);
   }
