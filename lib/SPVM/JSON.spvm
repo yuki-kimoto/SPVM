@@ -305,6 +305,10 @@ package SPVM::JSON {
     if ($iter == $length) {
       return undef;
     }
-    return $self->_decode_value($json_text, \$iter, $length);
+    my $ret = $self->_decode_value($json_text, \$iter, $length);
+    unless ($iter == $length) {
+      croak "Not all json_text is decoded yet. Remains at $iter";
+    }
+    return $ret;
   }
 }
