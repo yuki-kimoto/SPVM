@@ -26,7 +26,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::UnaryMinus->unary_minus_long);
     ok(TestCase::UnaryMinus->unary_minus_long_overflow);
     ok(TestCase::UnaryMinus->unary_minus_float);
+    ok(TestCase::UnaryMinus->unary_minus_float_inf);
+    ok(TestCase::UnaryMinus->unary_minus_float_zero);
     ok(TestCase::UnaryMinus->unary_minus_double);
+    ok(TestCase::UnaryMinus->unary_minus_double_inf);
+    ok(TestCase::UnaryMinus->unary_minus_double_zero);
   }
 
   # Unary minus - Compile Error

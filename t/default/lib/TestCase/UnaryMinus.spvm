@@ -97,6 +97,54 @@ package TestCase::UnaryMinus {
     
     return 1;
   }
+  sub unary_minus_float_inf : int () {
+    {
+      my $value = -INFINITYF();
+      
+      unless ($value isa float) {
+        return 0;
+      }
+      
+      unless ($value == -INFINITYF()) {
+        return 0;
+      }
+
+      unless (-$value == INFINITYF()) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub unary_minus_float_zero : int () {
+    my $zero_plus = 0.0f;
+
+    if (signbitf($zero_plus)) {
+      return 0;
+    }
+    
+    my $zero_minus = -$zero_plus;
+    
+    unless ($zero_minus isa float) {
+      return 0;
+    }
+    
+    
+    unless ($zero_minus == 0.0f) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0f) {
+      return 0;
+    }
+    
+    unless(signbitf($zero_minus)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub unary_minus_double : int () {
     my $value = -DBL_MAX();
     
@@ -110,4 +158,51 @@ package TestCase::UnaryMinus {
     
     return 1;
   }
+
+  sub unary_minus_double_inf : int () {
+    my $value = -INFINITY();
+    
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless ($value == -INFINITY()) {
+      return 0;
+    }
+    
+    unless (-$value == INFINITY()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_double_zero : int () {
+    my $zero_plus = 0.0;
+
+    if (signbit($zero_plus)) {
+      return 0;
+    }
+    
+    my $zero_minus = -$zero_plus;
+    
+    unless ($zero_minus isa double) {
+      return 0;
+    }
+    
+    unless ($zero_minus == 0.0) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0) {
+      return 0;
+    }
+    
+    unless(signbit($zero_minus)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }
