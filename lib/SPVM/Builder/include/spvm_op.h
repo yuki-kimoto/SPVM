@@ -393,7 +393,8 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 
-SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first);
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first);
+SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_first);
 
 SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign);
 SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access);

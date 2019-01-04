@@ -37,7 +37,7 @@
 %type <opval> unop binop
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
-%type <opval> deref ref assign incdec
+%type <opval> deref ref assign inc dec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
 %type <opval> term opt_expressions expressions expression condition opt_expression
@@ -616,7 +616,8 @@ expression
   | ref
   | deref
   | assign
-  | incdec
+  | inc
+  | dec
   | '(' expression ')'
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
@@ -733,26 +734,27 @@ unop
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
 
-incdec
+inc
   : INC expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $2);
+      $$ = SPVM_OP_build_inc(compiler, op, $2);
     }
   | expression INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $1);
+      $$ = SPVM_OP_build_inc(compiler, op, $1);
     }
-  | DEC expression
+dec
+  : DEC expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $2);
+      $$ = SPVM_OP_build_dec(compiler, op, $2);
     }
   | expression DEC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $1);
+      $$ = SPVM_OP_build_dec(compiler, op, $1);
     }
 
 binop

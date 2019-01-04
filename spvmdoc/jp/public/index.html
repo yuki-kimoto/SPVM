@@ -1394,12 +1394,12 @@ switch (条件) {
       <ul class="list">
         <li>変数</li>
         <li>例外変数</li>
-        <li>パッケージ変数の読み取り</li>
+        <li>パッケージ変数の取得</li>
         <li>定数リテラル</li>
         <li>未定義値</li>
         <li>サブルーチン呼び出し</li>
-        <li>フィールドの読み取り</li>
-        <li>配列の要素の読み取り</li>
+        <li>フィールドの取得</li>
+        <li>配列の要素の取得</li>
         <li>型変換</li>
         <li>new演算子</li>
         <li>配列の初期化</li>
@@ -1407,8 +1407,8 @@ switch (条件) {
         <li>文字列の長さ</li>
         <li>変数宣言</li>
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-unary">単項演算子</a></li>
         <li>二項演算子</li>
-        <li>単項演算子</li>
         <li>リファレンス演算子</li>
         <li>デリファレンス演算子</li>
         <li>代入演算子</li>
@@ -2051,7 +2051,7 @@ undef
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
       </ul>
-      <h4 id="language-operator-operator">演算子の概要</h4>
+      <h4 id="language-operator-summary">演算子の概要</h4>
       <p>
         演算子は、<a href="#language-operator-unary">単項演算子</a>、<a href="#language-operator-binary">二項演算子</a>、<a href="#language-operator-condition-unary">条件単項演算子</a>、<a href="#language-operator-condition-binary">条件二項演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>からなります。
       </p>
@@ -2086,7 +2086,7 @@ undef
             <a href="#language-operator-unary-minus">単項マイナス演算子</a>
           </td>
           <td>
-            +式
+            -式
           </td>
         </tr>
         <tr>
@@ -2100,7 +2100,7 @@ undef
       </table>
       <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
       <p>
-        単項プラス演算子は「+」で表現されます。
+        単項プラス演算子は「+式」で表現されます。
       </p>
 <pre>
 +式
@@ -2109,14 +2109,20 @@ undef
         単項プラス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行った結果を返します。
       </p>
       <p>
-        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         単項プラス演算子は例外を発生させません。
       </p>
-      <h4 id="language-operator-unary-plus">単項マイナス演算子</h4>
       <p>
-        単項マイナス演算子は「-」で表現されます。
+        <b>単項プラス演算子のサンプル</b>
+      </p>
+<pre>
+my $num = +10;
+</pre>
+      <h4 id="language-operator-unary-minus">単項マイナス演算子</h4>
+      <p>
+        単項マイナス演算子は「-式」で表現されます。
       </p>
 <pre>
 -式
@@ -2139,11 +2145,17 @@ undef
         <li>正の0を反転させたものは、負の0です。</li>
       </ul>
       <p>
-        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         単項マイナス演算子は例外を発生させません。
       </p>
+      <p>
+        単項マイナス演算子のサンプル
+      </p>
+<pre>
+my $num = -10;
+</pre>
       
       <h4 id="language-operator-arithmetic">算術演算子</h4>
       <p>
@@ -2160,7 +2172,7 @@ undef
         加算演算子は<a href="#language-expression">式</a>です。
       </p>
       <p>
-        式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+        式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式あるいは、右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
@@ -2920,7 +2932,7 @@ package Foo : pointer_t {
         ポインタ型のデータには、C言語のポインタを保存することができます。
       </p>
       <p>
-        ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーになります。
+        ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーが発生します。
       </p>
       <h4 id="language-type-interface">インターフェース型</h4>
       <p>
@@ -3049,7 +3061,7 @@ my $str : string = "abc";
 my $ch = $str->[1];
 </pre>
       <p>
-        要素を変更しようとした場合は、コンパイル時エラーになります。
+        要素を変更しようとした場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 要素の変更はコンパイルエラー
@@ -3134,7 +3146,7 @@ my $point : Point_3i;
         サフィックスは、実際に定義されている数値型と対応している必要があります。
       </p>
       <p>
-        不正な値型の定義の場合は、コンパイル時エラーになります。
+        不正な値型の定義の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         <b>値型のサフィクスの一覧</b>
@@ -3340,7 +3352,7 @@ $objects_dim1_dist = $objects_dim2_src;
 my $objets : object[] = new int[3];
 </pre>
       <p>
-        型に互換性がない場合は、<a href="#language-type-convertion-implicite">暗黙的な型変換</a>が試みられます。暗黙の型変換に失敗した場合は、コンパイル時エラーになります。
+        型に互換性がない場合は、<a href="#language-type-convertion-implicite">暗黙的な型変換</a>が試みられます。暗黙の型変換に失敗した場合は、コンパイル時エラーが発生します。
       </p>
       
       <h3 id="language-type-convertion">型変換</h3>

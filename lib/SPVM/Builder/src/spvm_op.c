@@ -2462,17 +2462,30 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_incdec, op_incdec->last, op_first);
+  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "inc/dec target value must be mutable at %s line %d\n", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "Operand of ++ operator must be mutable at %s line %d\n", op_first->file, op_first->line);
   }
   
-  return op_incdec;
+  return op_inc;
 }
+
+SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
+
+  if (!SPVM_OP_is_mutable(compiler, op_first)) {
+    SPVM_COMPILER_error(compiler, "Operand of -- operator must be mutable at %s line %d\n", op_first->file, op_first->line);
+  }
+  
+  return op_dec;
+}
+
 
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
   
