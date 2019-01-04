@@ -45,8 +45,8 @@
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
-%left <opval> COND_OR
-%left <opval> COND_AND
+%left <opval> LOGICAL_OR
+%left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> '&'
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
@@ -55,7 +55,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> COND_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST
 %nonassoc <opval> INC DEC
 %right <opval> NEW
 %left <opval> ARROW
@@ -677,15 +677,15 @@ condition
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
-  | term COND_OR term
+  | term LOGICAL_OR term
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
-  | term COND_AND term
+  | term LOGICAL_AND term
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
-  | COND_NOT term
+  | LOGICAL_NOT term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
@@ -726,7 +726,7 @@ unop
     }
   | '-' expression %prec MINUS
     {
-      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
+      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MINUS, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
   | BIT_NOT expression

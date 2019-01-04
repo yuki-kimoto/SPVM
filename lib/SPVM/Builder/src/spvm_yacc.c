@@ -122,8 +122,8 @@
      CURRENT_PACKAGE = 303,
      SPECIAL_ASSIGN = 304,
      ASSIGN = 305,
-     COND_OR = 306,
-     COND_AND = 307,
+     LOGICAL_OR = 306,
+     LOGICAL_AND = 307,
      BIT_XOR = 308,
      BIT_OR = 309,
      STRNE = 310,
@@ -152,7 +152,7 @@
      DEREF = 333,
      REF = 334,
      BIT_NOT = 335,
-     COND_NOT = 336,
+     LOGICAL_NOT = 336,
      DEC = 337,
      INC = 338,
      NEW = 339,
@@ -208,8 +208,8 @@
 #define CURRENT_PACKAGE 303
 #define SPECIAL_ASSIGN 304
 #define ASSIGN 305
-#define COND_OR 306
-#define COND_AND 307
+#define LOGICAL_OR 306
+#define LOGICAL_AND 307
 #define BIT_XOR 308
 #define BIT_OR 309
 #define STRNE 310
@@ -238,7 +238,7 @@
 #define DEREF 333
 #define REF 334
 #define BIT_NOT 335
-#define COND_NOT 336
+#define LOGICAL_NOT 336
 #define DEC 337
 #define INC 338
 #define NEW 339
@@ -714,29 +714,29 @@ static const char *const yytname[] =
   "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE",
   "STRING", "OBJECT", "DOT3", "FATCAMMA", "RW", "RO", "WO", "BEGIN",
   "RETURN", "WEAKEN", "CROAK", "CURRENT_PACKAGE", "SPECIAL_ASSIGN",
-  "ASSIGN", "COND_OR", "COND_AND", "BIT_XOR", "BIT_OR", "'&'", "STRNE",
-  "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE", "STRGT",
-  "NUMLE", "NUMLT", "NUMGE", "NUMGT", "REQUIRE", "LENGTH", "SCALAR",
-  "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'",
-  "CAST", "MINUS", "PLUS", "DEREF", "REF", "BIT_NOT", "COND_NOT", "DEC",
-  "INC", "NEW", "ARROW", "'['", "'{'", "'('", "':'", "'}'", "';'", "')'",
-  "','", "']'", "$accept", "grammar", "opt_packages", "packages",
-  "package", "package_block", "opt_declarations", "declarations",
-  "declaration", "begin_block", "use", "require", "enumeration",
-  "enumeration_block", "opt_enumeration_values", "enumeration_values",
-  "enumeration_value", "our", "has", "sub", "anon_sub", "opt_args", "args",
-  "arg", "opt_vaarg", "invocant", "opt_descriptors", "descriptors",
-  "opt_statements", "statements", "statement", "for_statement",
-  "while_statement", "switch_statement", "case_statement",
-  "default_statement", "if_require_statement", "if_statement",
-  "else_statement", "block", "eval_block", "opt_expressions", "term",
-  "opt_expression", "expression", "condition", "expressions", "unop",
-  "inc", "dec", "binop", "assign", "new", "array_init", "convert_type",
-  "convert", "array_access", "call_sub", "field_access", "weaken_field",
-  "weaken_array_element", "array_length", "string_length", "deref", "ref",
-  "my_var", "var", "package_var_access", "type", "basic_type", "ref_type",
-  "array_type", "array_type_with_length", "type_or_void", "field_name",
-  "sub_name", "opt_sub_names", "sub_names", 0
+  "ASSIGN", "LOGICAL_OR", "LOGICAL_AND", "BIT_XOR", "BIT_OR", "'&'",
+  "STRNE", "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE",
+  "STRGT", "NUMLE", "NUMLT", "NUMGE", "NUMGT", "REQUIRE", "LENGTH",
+  "SCALAR", "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE",
+  "MULTIPLY", "'@'", "CAST", "MINUS", "PLUS", "DEREF", "REF", "BIT_NOT",
+  "LOGICAL_NOT", "DEC", "INC", "NEW", "ARROW", "'['", "'{'", "'('", "':'",
+  "'}'", "';'", "')'", "','", "']'", "$accept", "grammar", "opt_packages",
+  "packages", "package", "package_block", "opt_declarations",
+  "declarations", "declaration", "begin_block", "use", "require",
+  "enumeration", "enumeration_block", "opt_enumeration_values",
+  "enumeration_values", "enumeration_value", "our", "has", "sub",
+  "anon_sub", "opt_args", "args", "arg", "opt_vaarg", "invocant",
+  "opt_descriptors", "descriptors", "opt_statements", "statements",
+  "statement", "for_statement", "while_statement", "switch_statement",
+  "case_statement", "default_statement", "if_require_statement",
+  "if_statement", "else_statement", "block", "eval_block",
+  "opt_expressions", "term", "opt_expression", "expression", "condition",
+  "expressions", "unop", "inc", "dec", "binop", "assign", "new",
+  "array_init", "convert_type", "convert", "array_access", "call_sub",
+  "field_access", "weaken_field", "weaken_array_element", "array_length",
+  "string_length", "deref", "ref", "my_var", "var", "package_var_access",
+  "type", "basic_type", "ref_type", "array_type", "array_type_with_length",
+  "type_or_void", "field_name", "sub_name", "opt_sub_names", "sub_names", 0
 };
 #endif
 
@@ -2959,7 +2959,7 @@ yyreduce:
   case 139:
 #line 728 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
+      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MINUS, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
       (yyval.opval) = SPVM_OP_build_unop(compiler, op_negate, (yyvsp[(2) - (2)].opval));
     ;}
     break;

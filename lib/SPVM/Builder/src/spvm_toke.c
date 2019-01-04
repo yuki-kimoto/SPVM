@@ -410,9 +410,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Or
         if (*compiler->bufptr == '|') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_OR);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LOGICAL_OR);
           yylvalp->opval = op;
-          return COND_OR;
+          return LOGICAL_OR;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
@@ -434,9 +434,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // Or
         if (*compiler->bufptr == '&') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_AND);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LOGICAL_AND);
           yylvalp->opval = op;
-          return COND_AND;
+          return LOGICAL_AND;
         }
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
@@ -627,9 +627,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return NUMNE;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_COND_NOT);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LOGICAL_NOT);
           yylvalp->opval = op;
-          return COND_NOT;
+          return LOGICAL_NOT;
         }
       case '~': {
         compiler->bufptr++;

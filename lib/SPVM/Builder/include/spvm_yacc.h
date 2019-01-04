@@ -87,8 +87,8 @@
      CURRENT_PACKAGE = 303,
      SPECIAL_ASSIGN = 304,
      ASSIGN = 305,
-     COND_OR = 306,
-     COND_AND = 307,
+     LOGICAL_OR = 306,
+     LOGICAL_AND = 307,
      BIT_XOR = 308,
      BIT_OR = 309,
      STRNE = 310,
@@ -117,7 +117,7 @@
      DEREF = 333,
      REF = 334,
      BIT_NOT = 335,
-     COND_NOT = 336,
+     LOGICAL_NOT = 336,
      DEC = 337,
      INC = 338,
      NEW = 339,
@@ -173,8 +173,8 @@
 #define CURRENT_PACKAGE 303
 #define SPECIAL_ASSIGN 304
 #define ASSIGN 305
-#define COND_OR 306
-#define COND_AND 307
+#define LOGICAL_OR 306
+#define LOGICAL_AND 307
 #define BIT_XOR 308
 #define BIT_OR 309
 #define STRNE 310
@@ -203,7 +203,7 @@
 #define DEREF 333
 #define REF 334
 #define BIT_NOT 335
-#define COND_NOT 336
+#define LOGICAL_NOT 336
 #define DEC 337
 #define INC 338
 #define NEW 339
