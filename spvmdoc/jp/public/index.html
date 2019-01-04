@@ -1983,6 +1983,32 @@ while (条件部) {
 "\N{U+3042}\N{U+3044}\N{U+3046}"
 </pre>
       
+      <h3 id="language-string">文字列</h3>
+      <p>
+        SPVMの文字列のデータ表現は、byte型の配列です。特別な内部表現を持たない、単なるバイト列です。
+      </p>
+<pre>
+my $string = new byte[3];
+$string->[0] = 'a';
+$string->[1] = 'b';
+$string->[2] = 'c';
+</pre>
+      <p>
+        byte型の配列は、<a href="#language-type-string">文字列型</a>に代入できます。文字列型は、コンパイル時には要素を変更できない型ですが、実行時はbyte型の配列になります。
+      </p>
+<pre>
+my $string_const : string = $string;
+</pre>
+      <p>
+        <a href="#language-literal-string">文字列リテラル</a>を代入することによって、文字列を作成できます。文字列リテラルを元にしたstring型の新しい文字列を返します。
+      </p>
+<pre>
+my $string_const = "abc";
+</pre>
+      <p>
+        byte[]はC言語の「char*」、文字列型はC言語の「const char*」に該当するように設計されています。
+      </p>
+      
       <h3 id="language-undef">未定義値</h3>
       <p>
         未定義は「undef」で表現されます。
@@ -2220,11 +2246,20 @@ undef
       
       <h3 id="language-operator-concat">文字列連結演算子</h3>
       <p>
-        文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返却します。
+        文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返します。
       </p>
 <pre>
 左式 . 右式
 </pre>
+      <p>
+        左式と右式の両方が、<a href="#language-literal-string">文字列リテラル</a>であった場合は、コンパイル時に連結された文字列リテラルが生成され、それを元にした新しい文字列を返します。
+      </p>
+      <p>
+        
+      </p>
+      <p>
+        左辺あるいは右辺が数値型
+      </p>
       
       <h4 id="language-operator-subtract">減算演算子</h4>
       <p>
@@ -3258,15 +3293,15 @@ my $num = 1.0;
 # Foo
 my $foo = new Foo;
 </pre>
-      <h3 id="language-type-compatible">互換性のある型</h3>
+      <h3 id="language-type-compatible">型の互換性</h3>
       <p>
-        互換性のある型とは、型変換なしで、値の移動ができる型のことです。
+        型に互換性があるというのは、型変換なしで、値の移動ができる型のことです。
       </p>
       <p>
         型に互換性があるのは次の場合です。
       </p>
       <p>
-        移動元と移動先の型が同名の場合
+        <b>移動元と移動先の型が同名の場合</b>
       </p>
 <pre>
 my $num1 : int;
@@ -3274,7 +3309,7 @@ my $num2 : int;
 $num1 = $num2;
 </pre>
       <p>
-        移動元の型がbyte[]型で、移動先の型が文字列型の場合
+        <b>移動元の型がbyte[]型で、移動先の型が文字列型の場合</b>
       </p>
 <pre>
 my $bytes = new byte[3];
@@ -3282,7 +3317,7 @@ my $str : string;
 $str = $bytes;
 </pre>
       <p>
-        移動元の型がオブジェクト型で、移動先の型が汎用オブジェクト型の場合
+        <b>移動元の型がオブジェクト型で、移動先の型が汎用オブジェクト型の場合</b>
       </p>
 <pre>
 my $foo : Foo = new Foo;
@@ -3290,7 +3325,7 @@ my $object : object;
 $object = $foo;
 </pre>
       <p>
-        移動元の型と移動先の型が、汎用オブジェクト型あるいは、汎用オブジェクト型の配列で、移動元の型の次元数が、移動先の型の次元数以上の場合。
+        <b>移動元の型と移動先の型が、汎用オブジェクト型あるいは、汎用オブジェクト型の配列で、移動元の型の次元数が、移動先の型の次元数以上の場合</b>
       </p>
 <pre>
 my $objects_dim2_src : object[];
