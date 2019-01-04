@@ -1,0 +1,308 @@
+package SPVM::JSON {
+  use SPVM::Hash;
+  use SPVM::List;
+  use SPVM::Int;
+  use SPVM::Long;
+  use SPVM::Double;
+  use SPVM::Bool;
+
+  sub _skip_spaces : void ($s : string, $i : int&, $end : int) {
+    while (1) {
+      if ($$i == $end) {
+        return;
+      }
+      unless ($s->[$$i] == ' ' || $s->[$$i] == '\n' || $s->[$$i] == '\t' || $s->[$$i] == '\r') {
+        last;
+      }
+      $$i++;
+    }
+  }
+
+  sub _skip_spaces_at_not_end : void ($s : string, $i : int&, $end : int) {
+    _skip_spaces($s, $i, $end);
+    if ($$i == $end) {
+      croak "Incomplete hash";
+    }
+  }
+
+  sub _expect_token : void ($s : string, $i : int&, $end : int, $expected : string) {
+    my $length = length $expected;
+    unless ($$i + $length <= $end) {
+      croak "Expected token: $expected doesn't exist";
+    }
+    my $begin = $$i;
+    while (1) {
+      unless ($s->[$$i] == $expected->[$$i - $begin]) {
+        croak "Expected token: $expected doesn't exist";
+      }
+      $$i++;
+      if ($$i - $begin == $length) {
+        last;
+      }
+    }
+  }
+
+  sub _decode_string : string ($self : self, $s : string, $i : int&, $end : int) {
+    # TODO: change better way to substr
+    my $chars = SPVM::List->new;
+    _expect_token($s, $i, $end, "\"");
+    while (1) { 
+      if ($$i >= $end || $s->[$$i] == '"') {
+        last;
+      }
+      $chars->push(SPVM::Int->new($s->[$$i]));
+      ++$$i;
+    }
+    if ($$i == $end) {
+      croak "Invalid string. end-quote doesn't exist";
+    }
+    _expect_token($s, $i, $end, "\"");
+    my $chars_length = $chars->length;
+    my $value = new byte [$chars_length];
+    for (my $k = 0; $k < $chars_length; $k++) {
+      my $got = ((SPVM::Int)$chars->shift)->val;
+      $value->[$k] = (byte)$got;
+    }
+    return (string)$value;
+  }
+
+  sub _decode_digits : object ($self : self, $s : string, $i : int&, $end : int) {
+    my $int_part : long = 0;
+    my $decimal_part : long = 0;
+    my $decimal_length = 0;
+    my $has_digit = 0;
+    my $has_dot = 0; # 0: not appeared yet. 1: already appeared. -1: 0, or dot should appear
+    if ($s->[$$i] == '-') {
+      $int_part *= -1;
+      $$i++;
+    }
+    if ($s->[$$i] == '0') {
+      $$i++;
+      $has_digit = 1;
+      $has_dot = -1;
+    }
+    while ($$i < $end) {
+      if ($s->[$$i] == '.') {
+        if ($has_dot == 1) {
+          croak "Invalid digits: Dot should appear at most once";
+        }
+        unless ($has_digit) {
+          croak "Invalid digits: Not found digits before decimal";
+        }
+        $has_dot = 1;
+        $$i++;
+        unless ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          croak "Invalid digits: Not found digits after dot";
+        }
+        $decimal_part = $s->[$$i++] - '0';
+        $decimal_length++;
+      }
+      elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
+        if ($has_dot == -1) { # dot should appear
+          croak "Invalid digits: '.' should exist if the first digit is '0'";
+        }
+        $has_digit = 1;
+        if ($has_dot) {
+          $decimal_part *= 10;
+          $decimal_part += $s->[$$i++] - '0';
+          $decimal_length++;
+        }
+        else {
+          $int_part *= 10;
+          $int_part += $s->[$$i++] - '0';
+        }
+      }
+      else {
+        last;
+      }
+    }
+
+    unless ($has_digit) {
+      croak "Invalid digits: Not found digits after '-'";
+    }
+    if ($has_dot == 1) {
+      return SPVM::Double->new($int_part + (double)$decimal_part / pow(10, $decimal_length));
+    }
+    elsif ($int_part > INT32_MAX()) {
+      return SPVM::Long->new($int_part);
+    }
+    else {
+      return SPVM::Int->new((int)$int_part);
+    }
+  }
+
+  sub _decode_true : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "true");
+    return SPVM::Bool->TRUE;
+  }
+
+  sub _decode_false : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "false");
+    return SPVM::Bool->FALSE;
+  }
+
+  sub _decode_hash : SPVM::Hash ($self : self, $s : string, $i : int&, $end : int) {
+    my $hash = SPVM::Hash->new;
+    my $has_element = 0;
+    _expect_token($s, $i, $end, "{");
+    while (1) {
+      # end of hash
+      _skip_spaces_at_not_end($s, $i, $end);
+      if ($s->[$$i] == '}') {
+        last;
+      }
+
+      # comma
+      if ($has_element) {
+        _expect_token($s, $i, $end, ",");
+        _skip_spaces_at_not_end($s, $i, $end);
+      }
+      else {
+        $has_element = 1;
+      }
+
+      # key
+      my $key = $self->_decode_string($s, $i, $end);
+
+      # separator
+      _skip_spaces_at_not_end($s, $i, $end);
+      _expect_token($s, $i, $end, ":");
+
+      # value
+      _skip_spaces_at_not_end($s, $i, $end);
+      $hash->set($key, $self->_decode_value($s, $i, $end));
+    }
+    return $hash;
+  }
+
+  sub _decode_list : SPVM::List ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "[");
+    my $list = SPVM::List->new;
+    my $has_element = 0;
+    while (1) {
+      # end of list
+      _skip_spaces_at_not_end($s, $i, $end);
+      if ($s->[$$i] == ']') {
+        last;
+      }
+
+      # comma
+      if ($has_element) {
+        _expect_token($s, $i, $end, ",");
+        _skip_spaces_at_not_end($s, $i, $end);
+      }
+      else {
+        $has_element = 1;
+      }
+      $list->push($self->_decode_value($s, $i, $end));
+    }
+    return $list;
+  }
+
+  sub _decode_value : object ($self : self, $s : string, $i : int&, $end : int) {
+    # objects
+    _skip_spaces_at_not_end($s, $i, $end);
+    if ($s->[$$i] == '{') {
+      return $self->_decode_hash($s, $i, $end);
+    }
+    elsif ($s->[$$i] == '[') {
+      return $self->_decode_list($s, $i, $end);
+    }
+
+    # primitives
+    elsif ($s->[$$i] == '"') {
+      return $self->_decode_string($s, $i, $end);
+    }
+    elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9' || $s->[$$i] == '-') {
+      return $self->_decode_digits($s, $i, $end);
+    }
+    elsif ($s->[$$i] == 't') {
+      return $self->_decode_true($s, $i, $end);
+    }
+    elsif ($s->[$$i] == 'f') {
+      return $self->_decode_false($s, $i, $end);
+    }
+    else {
+      croak "Cannot decode string"; # TODO: substr. "Cannot decode string at ..."
+    }
+  }
+
+  sub _encode_value : string ($self : self, $o : object) {
+    # objects
+    if ($o isa SPVM::Hash) {
+      my $text = "{";
+      my $hash = (SPVM::Hash)$o;
+      my $keys = $hash->keys;
+      for (my $i = 0; $i < @$keys; $i++) {
+        if ($i > 0) {
+          $text .= ",";
+        }
+        $text .= "\"" . $keys->[$i] . "\":";
+        unless ($hash->exists($keys->[$i])) {
+          croak "Unexpected error. Not found key: " . $keys->[$i];
+        }
+        $text .= $self->_encode_value($hash->get($keys->[$i]));
+      }
+      $text .= "}";
+      return $text;
+    }
+    elsif ($o isa SPVM::List) {
+      my $text = "[";
+      my $list = (SPVM::List)$o;
+      my $length = $list->length;
+      for (my $i = 0; $i < $length; $i++) {
+        if ($i > 0) {
+          $text .= ",";
+        }
+        $text .= $self->_encode_value($list->get($i));
+      }
+      $text .= "]";
+      return $text;
+    }
+    # primitives
+    elsif ($o isa string) {
+      return "\"" . (string)$o . "\"";
+    }
+    elsif ($o isa SPVM::Int) {
+      return (string)(((SPVM::Int)$o)->val); # FIXME: (string)のキャストを外したときのエラー: "." operater right value must be defined
+    }
+    elsif ($o isa SPVM::Long) {
+      croak "Not implemented: encode value SPVM::Long";
+    }
+    elsif ($o isa SPVM::Bool) {
+      if (((SPVM::Bool)$o)->val) {
+        return "true";
+      }
+      else {
+        return "false";
+      }
+    }
+    elsif ($o isa SPVM::Double) {
+      return (string)(((SPVM::Double)$o)->val);
+    }
+    else {
+      croak "Unknown object type";
+    }
+  }
+
+  sub new : SPVM::JSON () {
+    return new SPVM::JSON;
+  }
+
+  sub encode : string ($self : self, $object : object) {
+    unless ($object) {
+      return "";
+    }
+    return $self->_encode_value($object);
+  }
+
+  sub decode : object ($self : self, $json_text : string) {
+    my $length = length $json_text;
+    my $iter = 0;
+    _skip_spaces($json_text, \$iter, $length);
+    if ($iter == $length) {
+      return undef;
+    }
+    return $self->_decode_value($json_text, \$iter, $length);
+  }
+}
