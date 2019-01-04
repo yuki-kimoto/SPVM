@@ -5,20 +5,29 @@ package TestCase::JSON {
   use SPVM::Double;
   use SPVM::Bool;
 
-  sub _validate : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
-    for (my $i = 0; $i < @$input; $i++) {
-      my $decoded = $json->decode($input->[$i]);
-      my $actual = $json->encode($decoded);
-      unless ($actual eq $expected->[$i]) {
-        warn("input: " . $input->[$i] . "\nexpected: " . $expected->[$i] . "\nactual: $actual");
+  # TODO: Extract _object_equals, _hash_equals and _list_equals as test utilities, something like Test::More::is_deeply
+  sub _object_equals : int ($lhs : object, $rhs : object) {
+    if ($lhs isa SPVM::Hash) {
+      unless ($rhs isa SPVM::Hash) {
+        return 0;
+      }
+      my $x = (SPVM::Hash)$lhs;
+      my $y = (SPVM::Hash)$rhs;
+      unless (_hash_equals($x, $y)) {
         return 0;
       }
     }
-    return 1;
-  }
-
-  sub _primitive_equals : int ($lhs : object, $rhs : object) {
-    if ($lhs isa SPVM::Int) {
+    elsif ($lhs isa SPVM::List) {
+      unless ($rhs isa SPVM::List) {
+        return 0;
+      }
+      my $x = (SPVM::List)$lhs;
+      my $y = (SPVM::List)$rhs;
+      unless (_list_equals($x, $y)) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Int) {
       unless ($rhs isa SPVM::Int) {
         return 0;
       }
@@ -59,6 +68,7 @@ package TestCase::JSON {
       }
     }
     else {
+      warn("typename mismatch. lhs: " . type_name($lhs) . ", rhs: " . type_name($rhs));
       return 0;
     }
     return 1;
@@ -69,9 +79,52 @@ package TestCase::JSON {
     for (my $i = 0; $i < 2; $i++) {
       my $keys = $targets->[$i]->keys;
       for (my $j = 0; $j < @$keys; $j++) {
-        unless (_primitive_equals($targets->[1 - $i]->get($keys->[$j]), $targets->[$i]->get($keys->[$j]))) {
+        unless (_object_equals($targets->[1 - $i]->get($keys->[$j]), $targets->[$i]->get($keys->[$j]))) {
           return 0;
         }
+      }
+    }
+    return 1;
+  }
+
+  sub _list_equals : int ($lhs : SPVM::List, $rhs : SPVM::List) {
+    unless ($lhs->length == $rhs->length) {
+      return 0;
+    }
+    for (my $i = 0; $i < $lhs->length; $i++) {
+      unless (_object_equals($lhs->get($i), $rhs->get($i))) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub _validate_json_text_strictly : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
+    for (my $i = 0; $i < @$input; $i++) {
+      my $decoded = $json->decode($input->[$i]);
+      my $actual = $json->encode($decoded);
+      unless ($actual eq $expected->[$i]) {
+        warn("input: " . $input->[$i] . "\nexpected: " . $expected->[$i] . "\nactual: $actual");
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub _validate : int ($json : SPVM::JSON, $json_texts : string[], $objects : object[]) {
+    unless (@$json_texts == @$objects) {
+      croak "testcase json_texts and objects lengths are mismatch"; # FIXME: Invalid escape character in string literal at t/default/lib/TestCase/JSON.spvm line 115
+    }
+    for (my $i = 0; $i < @$json_texts; $i++) {
+      my $decoded = $json->decode($json_texts->[$i]);
+      unless (_object_equals($decoded, $objects->[$i])) {
+        return 0;
+      }
+      # decode() returns valid object, and then check encode().
+      my $encoded = $json->encode($decoded);
+      my $restructured = $json->decode($encoded);
+      unless (_object_equals($restructured, $objects->[$i])) {
+        return 0;
       }
     }
     return 1;
@@ -81,12 +134,12 @@ package TestCase::JSON {
     my $json = SPVM::JSON->new;
     my $input = ["", "     "];
     my $expected = ["", ""];
-    return _validate($json, $input, $expected);
+    return _validate_json_text_strictly($json, $input, $expected);
   }
 
   sub test_hash : int () {
-    my $input = ["{}", "{\"digit\":123}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"double2\":123.45}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"a\":1,\"A\":0.1,\"ABC\":3.1415,\"qwerty\":\"asdfg\"}"];
-    my $expected = [
+    my $json_texts = ["{}", "{\"digit\":123}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"double2\":123.45}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"a\":1,\"A\":0.1,\"ABC\":3.1415,\"qwerty\":\"asdfg\"}"];
+    my $objects = [(object)
       SPVM::Hash->new_with_array(new object [0]),
       SPVM::Hash->new_with_array([(object) "digit",SPVM::Int->new(123)]),
       SPVM::Hash->new_with_array([(object) "string","vstr"]),
@@ -96,32 +149,17 @@ package TestCase::JSON {
       SPVM::Hash->new_with_array([(object) "bool_false",SPVM::Bool->FALSE]),
       SPVM::Hash->new_with_array([(object) "a",SPVM::Int->new(1),"A",SPVM::Double->new(0.1),"ABC",SPVM::Double->new(3.1415),"qwerty","asdfg"])
     ];
-    unless (@$input == @$expected) {
-      croak "input and expected sizes are mismatch";
-    }
-    my $json = SPVM::JSON->new;
-    for (my $i = 0; $i < @$input; $i++) {
-      my $o = $json->decode($input->[$i]);
-      unless ($o isa SPVM::Hash) {
-        warn("Cannot decode testcase as SPVM::Hash");
-        return 0;
-      }
-      unless (_hash_equals((SPVM::Hash)$o, (SPVM::Hash)$expected->[$i])) {
-        return 0;
-      }
-      # decode() returns valid object, and then check encode().
-      my $encoded = $json->encode($o);
-      my $o2 = $json->decode($encoded);
-      unless (_hash_equals((SPVM::Hash)$o2, (SPVM::Hash)$expected->[$i])) {
-        return 0;
-      }
-    }
-    return 1;
+    return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
 
   sub test_list : int () {
-    my $tests = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",0.123,3.1415]"];
-    my $json = SPVM::JSON->new;
-    return _validate($json, $tests, $tests);
+    my $json_texts = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",0.123,3.1415]"];
+    my $objects = [(object)
+      SPVM::List->new_with_array(new object [0]),
+      SPVM::List->new_with_array([(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)]),
+      SPVM::List->new_with_array([(object) "abc", "123"]),
+      SPVM::List->new_with_array([(object) SPVM::Int->new(123), "abc", SPVM::Int->new(0), "123abc", SPVM::Double->new(0.123), SPVM::Double->new(3.1415)])
+    ];
+    return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
 }
