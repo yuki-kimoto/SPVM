@@ -2151,10 +2151,32 @@ my $num = +10;
         単項マイナス演算子は例外を発生させません。
       </p>
       <p>
-        単項マイナス演算子のサンプル
+        <b>単項マイナス演算子のサンプル</b>
       </p>
 <pre>
 my $num = -10;
+</pre>
+      <h4 id="language-operator-bit-not">ビット否定演算子</h4>
+      <p>
+        ビット否定演算子は「~式」で表現されます。
+      </p>
+<pre>
+~式
+</pre>
+      <p>
+        ビット否定演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、すべてのビットを反転させた結果を返します。すべての場合で「~x」は「(-x)-1」と等しくなります。
+      </p>
+      <p>
+        式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        ビット否定演算子は例外を発生させません。
+      </p>
+      <p>
+        <b>ビット否定演算子のサンプル</b>
+      </p>
+<pre>
+my $num = ~0xFF0A;
 </pre>
       
       <h4 id="language-operator-arithmetic">算術演算子</h4>
@@ -3559,10 +3581,10 @@ my $num : int = (int)4;
       </p>
       <h4 id="language-type-convertion-unary-widening">単項拡大型変換</h4>
       <p>
-        単項拡大型変換とは、byte型とshort型の値を、int型に拡大する変換のことをいいます。
+        単項拡大型変換とは、byte型とshort型の値を、int型に拡大する変換のことをいいます。int型以上の型の場合は、変換が行われません。
       </p>
       <p>
-        int型以上の型の場合は、変換が行われません。
+        型の拡大の前後で、数値としての同一性が保たれます。たとえば、byte型の「-123」を、単項拡大型変換をするとint型の「-123」になります。
       </p>
       <p>
         単項拡大型変換が行われるのは以下の場合です。
