@@ -54,6 +54,7 @@ package TestCase::JSON {
       my $x = (SPVM::Double)$lhs;
       my $y = (SPVM::Double)$rhs;
       unless ($x->val == $y->val) {
+        warn("lhs: " . $x->val . " rhs: " . $y->val);
         return 0;
       }
     }
@@ -155,10 +156,10 @@ package TestCase::JSON {
   }
 
   sub test_flat_hash : int () {
-    my $json_texts = ["{}", "{\"digit\":123}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"a\":1,\"A\":0.1,\"ABC\":false,\"qwerty\":\"asdfg\"}"];
+    my $json_texts = ["{}", "{\"digit\":42}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"a\":1,\"A\":0.1,\"ABC\":false,\"qwerty\":\"asdfg\"}"];
     my $objects = [(object)
       SPVM::Hash->new_with_array(new object [0]),
-      SPVM::Hash->new_with_array([(object) "digit",SPVM::Int->new(123)]),
+      SPVM::Hash->new_with_array([(object) "digit",SPVM::Int->new(42)]),
       SPVM::Hash->new_with_array([(object) "string","vstr"]),
       SPVM::Hash->new_with_array([(object) "double",SPVM::Double->new(0.123)]),
       SPVM::Hash->new_with_array([(object) "bool_true",SPVM::Bool->TRUE]),
@@ -203,7 +204,7 @@ package TestCase::JSON {
   }
 
   sub test_digits_double : int () {
-    my $json_texts = ["[0.123,-0.123,3.14,-3.14,123.987,-123.987,123456789.987654321,-123456789.987654321]"];
+    my $json_texts = ["[0.123,-0.123,3.14,-3.14,123.987,-123.987,1.23456e+1,1.23456e-1,1.23456e+08,1.23456e-08,1.23456e+008,1.23456e-008,1.23456e+018,1.23456e-018,9.9e-100,9.9e+300,-1.23e+123]"];
     my $objects = [(object)
       SPVM::List->new_with_array([(object)
         SPVM::Double->new(0.123),
@@ -212,8 +213,17 @@ package TestCase::JSON {
         SPVM::Double->new(-3.14),
         SPVM::Double->new(123.987),
         SPVM::Double->new(-123.987),
-        SPVM::Double->new(123456789.987654321),
-        SPVM::Double->new(-123456789.987654321)
+        SPVM::Double->new(1.23456e+1),
+        SPVM::Double->new(1.23456e-1),
+        SPVM::Double->new(1.23456e+08),
+        SPVM::Double->new(1.23456e-08),
+        SPVM::Double->new(1.23456e+008),
+        SPVM::Double->new(1.23456e-008),
+        SPVM::Double->new(1.23456e+018),
+        SPVM::Double->new(1.23456e-018),
+        SPVM::Double->new(9.9e-100),
+        SPVM::Double->new(9.9e+300),
+        SPVM::Double->new(-1.23e+123)
       ])
     ];
     return _validate(SPVM::JSON->new, $json_texts, $objects);

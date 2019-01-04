@@ -67,53 +67,78 @@ package SPVM::JSON {
   }
 
   sub _decode_digits : object ($self : self, $s : string, $i : int&, $end : int) {
-    my $int_part : long = 0;
-    my $decimal_part : long = 0;
-    my $decimal_length = 0;
+    my $digits : long = 0;
+    my $offset = 0;
     my $has_digit = 0;
     my $has_sign = 0;
-    my $dot_status = 0; # 0: not appeared yet. 1: already appeared. -1: 0, or dot should appear
+    my $decimal_stat = 0; # 0: '.' hasn't appeared yet. 1: '.' or 'e' has already appeared. 2: value is "0" or next char should be '.'
     if ($s->[$$i] == '-') {
       $$i++;
       $has_sign = 1;
     }
     if ($s->[$$i] == '0') {
-      $$i++;
+      ++$$i;
       $has_digit = 1;
-      $dot_status = -1;
+      $decimal_stat = 2;
     }
     while ($$i < $end) {
       if ($s->[$$i] == '.') {
-        if ($dot_status == 1) {
+        if ($decimal_stat == 1) {
           croak "Invalid digits: Dot should appear at most once";
         }
         unless ($has_digit) {
-          croak "Invalid digits: Not found digits before decimal";
+          croak "Invalid digits: Not found digits before dot";
         }
-        $dot_status = 1;
-        $$i++;
-        unless ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
+        $decimal_stat = 1;
+        ++$$i;
+        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
           croak "Invalid digits: Not found digits after dot";
         }
-        $decimal_part = $s->[$$i++] - '0';
-        $decimal_length++;
+        $digits *= 10;
+        $digits += $s->[$$i++] - '0';
+        ++$offset;
+      }
+      elsif ($decimal_stat == 2) {
+        # value is "0"
+        last;
       }
       elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
-        if ($dot_status == -1) { # dot should appear
-          croak "Invalid digits: '.' should exist if the first digit is '0'";
-        }
         $has_digit = 1;
-        if ($dot_status) {
-          $decimal_part *= 10;
-          $decimal_part += $s->[$$i++] - '0';
-          $decimal_length++;
+        if ($decimal_stat == 1) {
+          $digits *= 10;
+          $digits += $s->[$$i++] - '0';
+          ++$offset;
         }
         else {
-          $int_part *= 10;
-          $int_part += $s->[$$i++] - '0';
+          $digits *= 10;
+          $digits += $s->[$$i++] - '0';
         }
       }
+      elsif ($s->[$$i] == 'e') {
+        ++$$i;
+        $decimal_stat = 1;
+        unless ($$i < $end && ($s->[$$i] == '+') || ($s->[$$i] == '-')) {
+          croak "Invalid digits: '+' or '-' is expected after 'e'";
+        }
+        my $side : int; # -1: "e+XX", +1: "e-XX"
+        if ($s->[$$i++] == '+') {
+          $side = -1;
+        }
+        else {
+          $side = +1;
+        }
+        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          croak "Invalid digits: digits should exist after 'e'";
+        }
+        my $exp = $s->[$$i++] - '0';
+        while ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          $exp *= 10;
+          $exp += $s->[$$i++] - '0';
+        }
+        $offset += $side * $exp;
+      }
       else {
+        # digits has decoded.
         last;
       }
     }
@@ -121,28 +146,25 @@ package SPVM::JSON {
     unless ($has_digit) {
       croak "Invalid digits: Not found digits after '-'";
     }
-    if ($dot_status == 1) {
-      my $value = $int_part + (double)$decimal_part / pow(10, $decimal_length);
+    if ($decimal_stat == 1) {
+      my $value = (double) $digits / pow(10, $offset);
       if ($has_sign) {
         $value *= -1;
       }
-      print("Double: $value\n");
       return SPVM::Double->new($value);
     }
-    elsif ($int_part > INT32_MAX()) {
-      my $value = $int_part;
+    elsif ($digits > INT32_MAX()) {
+      my $value = $digits;
       if ($has_sign) {
         $value *= -1;
       }
-      print("Long: $value\n");
       return SPVM::Long->new($value);
     }
     else {
-      my $value = (int)$int_part;
+      my $value = (int)$digits;
       if ($has_sign) {
         $value *= -1;
       }
-      print("Int: $value\n");
       return SPVM::Int->new($value);
     }
   }
@@ -296,6 +318,7 @@ package SPVM::JSON {
       }
     }
     elsif ($o isa SPVM::Double) {
+      my $value = (SPVM::Double)$o;
       return (string)(((SPVM::Double)$o)->val);
     }
     else {
