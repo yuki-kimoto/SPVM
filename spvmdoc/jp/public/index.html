@@ -2004,14 +2004,121 @@ undef
       </p>
       <h3 id="language-operator">演算子</h3>
       <ul class="list">
+        <li><a href="#language-operator-summary">演算子の概要</a></li>
+        <li><a href="#language-operator-operand">オペランド</a></li>
+        <li><a href="#language-operator-unary">単項演算子</a></li>
+        <li><a href="#language-operator-unary-plus">単項プラス演算子</a></li>
+        <li><a href="#language-operator-unary-minus">単項マイナス演算子</a></li>
+        <li><a href="#language-operator-bit-not">ビット否定演算子</a></li>
+        <li><a href="#language-operator-binary">二項演算子</a></li>
+        <li><a href="#language-operator-condition-unary">条件単項演算子</a></li>
+        <li><a href="#language-operator-condition-binary">条件二項演算子</a></li>
+        <li><a href="#language-operator-inc">インクリメント演算子</a></li>
+        <li><a href="#language-operator-dec">デクリメント演算子</a></li>
+        <li><a href="#language-operator-condition">条件演算子</a></li>
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
         <li><a href="#language-operator-add">加算演算子</a></li>
         <li><a href="#language-operator-subtract">減算演算子</a></li>
         <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">論理演算子</a></li>
+        <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
       </ul>
+      <h4 id="language-operator-operator">演算子の概要</h4>
+      <p>
+        演算子は、<a href="#language-operator-unary">単項演算子</a>、<a href="#language-operator-binary">二項演算子</a>、<a href="#language-operator-condition-unary">条件単項演算子</a>、<a href="#language-operator-condition-binary">条件二項演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>からなります。
+      </p>
+      <h4 id="language-operator-unary">単項演算子</h4>
+      <p>
+        単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子のことをいいます。<a href="#language-operator-inc">インクリメント演算子</a>と<a href="#language-operator-dec">デクリメント演算子</a>は含みません。
+      </p>
+<pre>
+演算子 式
+</pre>
+      <p>
+        単項演算子は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>単項演算子の一覧</b>
+      </p>
+      <table>
+        <tr>
+          <th>名前</th>
+          <th>演算子</th>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-unary-plus">単項プラス演算子</a>
+          </td>
+          <td>
+            +式
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-unary-minus">単項マイナス演算子</a>
+          </td>
+          <td>
+            +式
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-bit-not">ビット否定演算子</a>
+          </td>
+          <td>
+            ~式
+          </td>
+        </tr>
+      </table>
+      <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
+      <p>
+        単項プラス演算子は「+」で表現されます。
+      </p>
+<pre>
++式
+</pre>
+      <p>
+        単項プラス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行った結果を返します。
+      </p>
+      <p>
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+      </p>
+      <p>
+        単項プラス演算子は例外を発生させません。
+      </p>
+      <h4 id="language-operator-unary-plus">単項マイナス演算子</h4>
+      <p>
+        単項マイナス演算子は「-」で表現されます。
+      </p>
+<pre>
+-式
+</pre>
+      <p>
+        単項マイナス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、その後、符号を反転させた結果を返します。
+      </p>
+      <p>
+        値が<a href="#language-type-integral">整数型</a>の場合は、符号の反転は、0から引き算した値と全く同じです。SPVMの整数演算は、2の補数によるため、int型あるいはlong型の最小値を反転させた場合は、オーバーフローが発生し、元の値と同じになります。
+      </p>
+      <p>
+        値が<a href="#language-type-floating-point">浮動小数点型</a>の場合は、符号ビットを反転させるだけです。否定は、0からの引き算と同じではありません。もし「x」が「+0.0」であれば「0.0 - x」は「+0.0」ですが「-x」は「-0.0」になります。
+      </p>
+      <p>
+        特別な場合としては以下の場合があります。
+      </p>
+      <ul class="list">
+        <li>NANの符号を反転させたものはNANです。</li>
+        <li>正の無限大の符号を反転させたものは、負の無限大です。</li>
+        <li>正の0を反転させたものは、負の0です。</li>
+      </ul>
+      <p>
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+      </p>
+      <p>
+        単項マイナス演算子は例外を発生させません。
+      </p>
+      
       <h4 id="language-operator-arithmetic">算術演算子</h4>
       <p>
         算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子からなります。
@@ -2021,22 +2128,22 @@ undef
         加算演算子は「+」で表現されます。
       </p>
 <pre>
-左オペランド + 右オペランド
+左式 + 右式
 </pre>
       <p>
         加算演算子は<a href="#language-expression">式</a>です。
       </p>
       <p>
-        オペランドは、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
+        式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーになります。
       <p>
       <p>
-        左オペランドあるいは、右オペランドが、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        左式あるいは、右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        左オペランドの型が、右オペランドの型よりも小さい場合は、左オペランドに<a href="#language-type-convertion-widening">拡大型変換</a>が行われ右オペランドと同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ右式と同じ型になります。
       </p>
       <p>
-        右オペランドの型が、左オペランドの型よりも小さい場合は、右オペランドに<a href="#language-type-convertion-widening">拡大型変換</a>が行われ左オペランドと同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ左式と同じ型になります。
       </p>
       <p>
         演算結果の型は、拡大型変換された場合は、拡大型変換された型です。
@@ -2048,34 +2155,34 @@ undef
         <b>整数演算</b>
       </p>
       <p>
-        各オペランドが整数型の場合は、整数演算が行われます。
+        各式が整数型の場合は、整数演算が行われます。
       </p>
       <p>
-        整数演算は、左オペランドに右オペランドを加算した数を返します。
+        整数演算は、左式に右式を加算した数を返します。
       </p>
       <p>
         値がオーバーフローした場合は、符号は反転し、加算した結果が、2の補数表現であるような結果が返されます。たとえば、int型の最大値に1を足した場合は、int型の最小値になります。
       </p>
       <p>
-        「左オペランド - 右オペランド」の結果は「左オペランド + (-右オペランド)」の結果と常に同じです。
+        「左式 - 右式」の結果は「左式 + (-右式)」の結果と常に同じです。
       </p>
       <p>
-        「0 - オペランド」の結果は「-オペランド」の結果と常に同じです。
+        「0 - 式」の結果は「-式」の結果と常に同じです。
       </p>
       <p>
         <b>浮動小数点演算</b>
       </p>
       <p>
-        各オペランドが浮動小数点型の場合は、浮動小数点演算が行われます。
+        各式が浮動小数点型の場合は、浮動小数点演算が行われます。
       </p>
       <p>
-        浮動小数点演算は、左オペランドに右オペランドを加算した数を返します。
+        浮動小数点演算は、左式に右式を加算した数を返します。
       </p>
       <p>
         計算結果はIEEE 754演算の規則が適用されます。
       </p>
       <p>
-        右オペランドあるいは左オペランドがNANの場合は、結果はNANです。
+        右式あるいは左式がNANの場合は、結果はNANです。
       </p>
       <p>
         符号が反対の無限大の合計は、NANです。
@@ -2096,7 +2203,7 @@ undef
         絶対値が同じで、符号が異なる値の合計は、正の0になります。
       </p>
       <p>
-        各オペランドが、無限大あるいはNANあるいは0でない場合で、同符号か、絶対の異なる異符号の場合は、正しい計算結果が返されます。
+        各式が、無限大あるいはNANあるいは0でない場合で、同符号か、絶対の異なる異符号の場合は、正しい計算結果が返されます。
       </p>
       <p>
         演算結果の値が大きすぎる場合は、正の無限大になります。
@@ -2108,14 +2215,23 @@ undef
         それ以外の場合は、IEEE 754の最近傍への丸めモードを使用して、丸められます。
       </p>
       <p>
-        オペランドが「0.0」の場合は「0.0 - オペランド」は「+0.0」ですが「-オペランド」は「-0.0」です。
+        式が「0.0」の場合は「0.0 - 式」は「+0.0」ですが「-式」は「-0.0」です。
       </p>
+      
+      <h3 id="language-operator-concat">文字列連結演算子</h3>
+      <p>
+        文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返却します。
+      </p>
+<pre>
+左式 . 右式
+</pre>
+      
       <h4 id="language-operator-subtract">減算演算子</h4>
       <p>
         減算演算子は「-」で表現され、左辺から右辺を減算した数を求めます。
       </p>
 <pre>
-左オペランド - 右オペランド
+左式 - 右式
 </pre>
       <p>
         減算演算子の仕様は、減算した数を求めること以外は、<a href="#language-operator-add">加算演算子</a>と全く同じです。
@@ -2454,7 +2570,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-summary">型の概要</a></li>
         <li><a href="#language-type-initial-value">型の初期値</a></li>
         <li><a href="#language-type-numeric">数値型</a></li>
-        <li><a href="#language-type-integer">整数型</a></li>
+        <li><a href="#language-type-integral">整数型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-package">パッケージ型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
@@ -2561,9 +2677,9 @@ my $num = 1 + 2;
       
       <h4 id="language-type-numeric">数値型</h3>
       <p>
-        数値型は「<a href="#language-type-integer">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
+        数値型は「<a href="#language-type-integral">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
       </p>
-      <h4 id="language-type-integer">整数型</h3>
+      <h4 id="language-type-integral">整数型</h3>
       <p>
         SPVMの整数型は以下の4つです。
       </p>
@@ -3197,6 +3313,7 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
         <li><a href="#language-type-convertion-explicite">明示的な型変換</a></li>
         <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
+        <li><a href="#language-type-convertion-unary-widening">単項拡大型変換</a></li>
         <li><a href="#language-type-convertion-narrowing">縮小型変換</a></li>
         <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
@@ -3393,6 +3510,23 @@ my $num : int = (int)4;
       <p>
         <a href="#language-type-numeric">数値型</a>は、型の順序を持ちます。型の順序は小さい方から「byte」「short」「int」「long」「float」「double」です。
       </p>
+      <h4 id="language-type-convertion-unary-widening">単項拡大型変換</h4>
+      <p>
+        単項拡大型変換とは、byte型とshort型の値を、int型に拡大する変換のことをいいます。
+      </p>
+      <p>
+        int型以上の型の場合は、変換が行われません。
+      </p>
+      <p>
+        単項拡大型変換が行われるのは以下の場合です。
+      </p>
+      <ul class="list">
+        <li>配列のインデックス</li>
+        <li>配列を作成する場合の次元</li>
+        <li>単項プラス演算子のオペランド</li>
+        <li>単項マイナス演算子のオペランド</li>
+        <li>シフト演算子「<<」「>>」「>>>」の左右のオペランド</li>
+      </ul>
       <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
       <p>
         縮小型変換とは、<a href="#language-type-numeric">数値型</a>において大きい型から小さい型への変換が行われる場合に適用される変換の規則のことです。
