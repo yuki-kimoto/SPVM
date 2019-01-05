@@ -1,6 +1,7 @@
 0.0406 2018-01-04
   - add signbit CORE func
   - add signbitf CORE func
+  - add specification some tests
 0.0405 2018-12-28
   - fix operator precidence. more perlish.
   - can omit for init, inc part
