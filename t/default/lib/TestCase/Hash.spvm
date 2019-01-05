@@ -426,23 +426,63 @@ package TestCase::Hash {
     my $capacity = 16;
     my $hash = SPVM::Hash->new_with_capacity($capacity);
     $hash->{max_load_factor} = 1024 * 16 + 1; # large enough not to rehash.
+    my $keys = new string [1024];
+    my $vals = new object [1024];
     for (my $i = 0; $i < 1024; ++$i) {
       my $byte_key = (byte []) "AA"; # 32^2 = 1024. 32: [A-Za-z]
       $byte_key->[0] += $i / 32;
       $byte_key->[1] += $i % 32;
-      $hash->set((string)$byte_key, SPVM::Int->new($i));
+      $keys->[$i] = (string)$byte_key;
+      $vals->[$i] = SPVM::Int->new($i);
+      $hash->set($keys->[$i], $vals->[$i]);
     }
     # guarantee that rehash doesn't occur.
     unless ($hash->_bucket_count == $capacity) {
       return 0;
     }
+
+    # test set/get
     for (my $i = 0; $i < 1024; ++$i) {
-      my $byte_key = (byte []) "AA";
-      $byte_key->[0] += $i / 32;
-      $byte_key->[1] += $i % 32;
-      unless (((SPVM::Int)$hash->get((string)$byte_key))->val == $i) {
+      my $lhs = (SPVM::Int)$hash->get($keys->[$i]);
+      my $rhs = (SPVM::Int)$vals->[$i];
+      unless ($lhs->val == $rhs->val) {
         return 0;
-      };
+      }
+    }
+
+    # test keys
+    my $got_keys = $hash->keys;
+    my $lhs = new object [@$got_keys];
+    for (my $i = 0; $i < @$got_keys; $i++) {
+      $lhs->[$i] = $got_keys->[$i];
+    }
+    my $rhs = new object [@$keys];
+    for (my $i = 0; $i < @$keys; $i++) {
+      $rhs->[$i] = $keys->[$i];
+    }
+    my $strcmp = sub : int ($self : self, $lhs : object, $rhs : object) {
+      my $s = (string)$lhs;
+      my $t = (string)$rhs;
+      unless ($s eq $t) {
+        return 0;
+      }
+      return 1;
+    };
+    unless (_same_unordered_objects($lhs, $rhs, $strcmp)) {
+      return 0;
+    }
+
+    # test values
+    my $intcmp = sub : int ($self : self, $lhs : object, $rhs : object) {
+      my $x = (SPVM::Int)$lhs;
+      my $y = (SPVM::Int)$rhs;
+      unless ($x->val == $y->val) {
+        return 0;
+      }
+      return 1;
+    };
+    unless (_same_unordered_objects($hash->values, $vals, $intcmp)) {
+      return 0;
     }
     return 1;
   }
