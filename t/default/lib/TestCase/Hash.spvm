@@ -351,13 +351,13 @@ package TestCase::Hash {
   }
 
   sub test_keys : int () {
-    my $hashmap = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new;
     my $keys = ["a", "bb", "12345"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
     for (my $i = 0; $i < @$keys; ++$i) {
-      $hashmap->set($keys->[$i], $vals->[$i]);
+      $hash->set($keys->[$i], $vals->[$i]);
     }
-    my $got_keys = $hashmap->keys;
+    my $got_keys = $hash->keys;
     unless (@$got_keys == @$keys) {
       return 0;
     }
@@ -377,13 +377,13 @@ package TestCase::Hash {
   }
 
   sub test_values : int () {
-    my $hashmap = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new;
     my $keys = ["a", "bb", "12345"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(1), SPVM::Int->new(9)];
     for (my $i = 0; $i < @$keys; ++$i) {
-      $hashmap->set($keys->[$i], $vals->[$i]);
+      $hash->set($keys->[$i], $vals->[$i]);
     }
-    my $got_vals = $hashmap->values;
+    my $got_vals = $hash->values;
     unless (@$got_vals == @$vals) {
       return 0;
     }
