@@ -231,17 +231,17 @@ package TestCase::JSON {
 
   sub test_nest_object : int () {
     my $json_texts = [
-        "{\"a\":{\"b\":1,\"c\":{\"d\":0.1,\"e\":true,\"f\":\"str\",\"g\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"END\":\"EOF\"}"
+        "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"end\":\"eof\"}"
     ];
     my $objects = [(object)
       SPVM::Hash->new_with_array([(object)
-        "a", SPVM::Hash->new_with_array([(object)
-          "b", SPVM::Int->new(1),
-          "c", SPVM::Hash->new_with_array([(object)
-            "d", SPVM::Double->new(0.1),
-            "e", SPVM::Bool->TRUE,
-            "f", "str",
-            "g", SPVM::List->new_with_array([(object)
+        "A", SPVM::Hash->new_with_array([(object)
+          "B", SPVM::Int->new(1),
+          "C", SPVM::Hash->new_with_array([(object)
+            "D", SPVM::Double->new(0.1),
+            "E", SPVM::Bool->TRUE,
+            "F", "str",
+            "G", SPVM::List->new_with_array([(object)
               "elem", "ents",
               SPVM::Hash->new_with_array([(object)
                 "key", "value"
@@ -249,10 +249,20 @@ package TestCase::JSON {
             ])
           ])
         ]),
-        "END", "EOF"
+        "end", "eof"
       ])
     ];
-    return _validate(SPVM::JSON->new, $json_texts, $objects);
+
+    my $json = SPVM::JSON->new;
+    unless (_validate($json, $json_texts, $objects)) {
+      return 0;
+    }
+    # test canonical hash encoding
+    $json->{canonical} = 1;
+    unless (_validate_json_text_strictly($json, $json_texts, $json_texts)) {
+      return 0;
+    }
+    return 1;
   }
 
   sub test_spaces : int () {
@@ -276,5 +286,75 @@ package TestCase::JSON {
       ])
     ];
     return _validate(SPVM::JSON->new, $json_texts, $objects);
+  }
+
+  sub test_pretty_name_separator : int () {
+    my $hash = SPVM::Hash->new_with_array([(object) "key", "value"]);
+    my $json = SPVM::JSON->new;
+    $json->{pretty} = 1;
+    $json->{indent_length} = 0;
+
+    $json->{space_before} = 0;
+    $json->{space_after} = 0;
+    unless ($json->encode($hash) eq "{\n\"key\":\"value\"\n}") {
+      return 0;
+    }
+    $json->{space_before} = 1;
+    $json->{space_after} = 0;
+    unless ($json->encode($hash) eq "{\n\"key\" :\"value\"\n}") {
+      return 0;
+    }
+    $json->{space_before} = 0;
+    $json->{space_after} = 1;
+    unless ($json->encode($hash) eq "{\n\"key\": \"value\"\n}") {
+      return 0;
+    }
+    $json->{space_before} = 1;
+    $json->{space_after} = 1;
+    unless ($json->encode($hash) eq "{\n\"key\" : \"value\"\n}") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_pretty_line_feed : int () {
+    my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
+    my $json = SPVM::JSON->new;
+    $json->{pretty} = 1;
+    $json->{indent_length} = 0;
+    $json->{space_before} = 0;
+    $json->{space_after} = 0;
+    $json->{canonical} = 1;
+    my $expected = "{\n\"a\":\"v1\",\n\"b\":\"v2\",\n\"c\":[\n\"x\",\n\"y\"\n]\n}";
+    my $actual = $json->encode($hash);
+    unless ($expected eq $actual) {
+      warn ("expected:\n$expected\nactual:\n$actual");
+    }
+    return 1;
+  }
+
+  sub test_pretty_indent : int () {
+    my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
+    my $json = SPVM::JSON->new;
+    $json->{pretty} = 1;
+    $json->{indent_length} = 2;
+    $json->{space_before} = 0;
+    $json->{space_after} = 0;
+    $json->{canonical} = 1;
+    my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
+    my $actual = $json->encode($hash);
+    unless ($expected eq $actual) {
+      warn ("expected:\n$expected\nactual:\n$actual");
+      return 0;
+    }
+    $json->{indent_char} = '\t';
+    $json->{indent_length} = 1;
+    $expected = "{\n\t\"a\":\"v1\",\n\t\"b\":\"v2\",\n\t\"c\":[\n\t\t\"x\",\n\t\t\"y\"\n\t]\n}";
+    $actual = $json->encode($hash);
+    unless ($expected eq $actual) {
+      warn ("expected:\n$expected\nactual:\n$actual");
+      return 0;
+    }
+    return 1;
   }
 }

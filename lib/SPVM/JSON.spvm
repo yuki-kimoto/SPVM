@@ -6,6 +6,14 @@ package SPVM::JSON {
   use SPVM::Double;
   use SPVM::Bool;
 
+  has pretty : public int;
+  has indent_char : public byte;
+  has indent_length : public int;
+  has space_before : public int;
+  has space_after : public int;
+  has relaxed : public int;
+  has canonical : public int;
+
   sub _skip_spaces : void ($s : string, $i : int&, $end : int) {
     while (1) {
       if ($$i == $end) {
@@ -267,34 +275,109 @@ package SPVM::JSON {
     }
   }
 
-  sub _encode_value : string ($self : self, $o : object) {
+  sub _make_indent : string ($self : self, $depth : int) {
+    unless ($depth > 0 && $self->{indent_length} > 0) {
+      return "";
+    }
+    my $sum_length = $self->{indent_length} * $depth;
+    my $indent_bytes = new byte [$sum_length];
+    for (my $i = 0; $i < $sum_length; $i++) {
+      $indent_bytes->[$i] = $self->{indent_char};
+    }
+    return (string)$indent_bytes;
+  }
+
+  # TODO: Use separated sort function from this module
+  sub _sort_keys : void ($keys : string[]) {
+    for (my $i = 0; $i < @$keys - 1; $i++) {
+      for (my $j = @$keys - 1; $j > $i; $j--) {
+        if ($keys->[$j - 1] gt $keys->[$j]) {
+          my $temp = $keys->[$j - 1];
+          $keys->[$j - 1] = $keys->[$j];
+          $keys->[$j] = $temp;
+        }
+      }
+    }
+  }
+
+  sub _encode_value : string ($self : self, $o : object, $depth : int) {
     # objects
     if ($o isa SPVM::Hash) {
-      my $text = "{";
+      my $text = "";
+      if ($self->{pretty}) {
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
+      }
+      $text .= "{";
+      if ($self->{pretty}) {
+        $text .= "\n";
+      }
       my $hash = (SPVM::Hash)$o;
       my $keys = $hash->keys;
+      if ($self->{canonical}) {
+        _sort_keys($keys); # TODO: Use separated sort function from this module
+      }
       for (my $i = 0; $i < @$keys; $i++) {
         if ($i > 0) {
           $text .= ",";
+          if ($self->{pretty}) {
+            $text .= "\n";
+          }
         }
-        $text .= "\"" . $keys->[$i] . "\":";
+        if ($self->{pretty}) {
+          $text .= $self->_make_indent($depth + 1);
+        }
+        $text .= "\"" . $keys->[$i] . "\"";
+        if ($self->{pretty} && $self->{space_before}) {
+          $text .= " ";
+        }
+        $text .= ":";
+        if ($self->{pretty} && $self->{space_after}) {
+          $text .= " ";
+        }
         unless ($hash->exists($keys->[$i])) {
           croak "Unexpected error. Not found key: " . $keys->[$i];
         }
-        $text .= $self->_encode_value($hash->get($keys->[$i]));
+        $text .= $self->_encode_value($hash->get($keys->[$i]), $depth + 1);
+      }
+      if ($self->{pretty}) {
+        $text .= "\n";
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
       }
       $text .= "}";
       return $text;
     }
     elsif ($o isa SPVM::List) {
-      my $text = "[";
+      my $text = "";
+      $text .= "[";
+      if ($self->{pretty}) {
+        $text .= "\n";
+      }
       my $list = (SPVM::List)$o;
       my $length = $list->length;
       for (my $i = 0; $i < $length; $i++) {
         if ($i > 0) {
           $text .= ",";
+          if ($self->{pretty}) {
+            $text .= "\n";
+          }
         }
-        $text .= $self->_encode_value($list->get($i));
+        if ($self->{pretty}) {
+          $text .= $self->_make_indent($depth + 1);
+        }
+        $text .= $self->_encode_value($list->get($i), $depth + 1);
+      }
+      if ($self->{pretty}) {
+        $text .= "\n";
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
       }
       $text .= "]";
       return $text;
@@ -318,7 +401,6 @@ package SPVM::JSON {
       }
     }
     elsif ($o isa SPVM::Double) {
-      my $value = (SPVM::Double)$o;
       return (string)(((SPVM::Double)$o)->val);
     }
     else {
@@ -327,14 +409,21 @@ package SPVM::JSON {
   }
 
   sub new : SPVM::JSON () {
-    return new SPVM::JSON;
+    my $json = new SPVM::JSON;
+    $json->{pretty} = 0;
+    $json->{indent_char} = ' ';
+    $json->{indent_length} = 4;
+    $json->{space_before} = 1;
+    $json->{space_after} = 1;
+    $json->{relaxed} = 1;
+    return $json;
   }
 
   sub encode : string ($self : self, $object : object) {
     unless ($object) {
       return "";
     }
-    return $self->_encode_value($object);
+    return $self->_encode_value($object, 0);
   }
 
   sub decode : object ($self : self, $json_text : string) {
