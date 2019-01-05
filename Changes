@@ -16,7 +16,6 @@
   - fix native object return bug
   - in runtime, string type become byte array type
   - support isa numeric type and value type
-  - improve syntax error messege to know the right error character
   - cast is done in (byte[])$string instead of copy
 0.0404 2018-12-18
   - support ascii escape '\x1F' syntax in character literal
