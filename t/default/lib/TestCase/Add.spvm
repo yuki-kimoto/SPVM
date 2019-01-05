@@ -168,8 +168,10 @@ package TestCase::Add {
     return 1;
   }
   
-  # Old tests
-  # Add
+  #
+  # Optional Tests
+  #
+  
   sub add_int_max : int () {
     return (int)2147483646 + (int)1;
   }

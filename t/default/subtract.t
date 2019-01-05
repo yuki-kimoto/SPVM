@@ -11,7 +11,42 @@ use SPVM 'TestCase::Subtract';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Subtract
+# Spec tests
+{
+  # Subtract - Operation
+  {
+    ok(TestCase::Subtract->subtract_byte_byte);
+    ok(TestCase::Subtract->subtract_short_short);
+    ok(TestCase::Subtract->subtract_int_byte);
+    ok(TestCase::Subtract->subtract_int_short);
+    ok(TestCase::Subtract->subtract_byte_int);
+    ok(TestCase::Subtract->subtract_short_int);
+    ok(TestCase::Subtract->subtract_int_int);
+    ok(TestCase::Subtract->subtract_int_float);
+    ok(TestCase::Subtract->subtract_int_double);
+    ok(TestCase::Subtract->subtract_overflow);
+    ok(TestCase::Subtract->subtract_minus);
+    ok(TestCase::Subtract->subtract_zero_minus);
+  }
+
+  # Subtract - Compile Error
+  {
+    {
+      my $build = SPVM::Builder->new;
+      $build->use('TestCase::CompileError::Subtract::LeftIsNotNumeric');
+      my $success = $build->compile_spvm();
+      ok($success == 0);
+    }
+    {
+      my $build = SPVM::Builder->new;
+      $build->use('TestCase::CompileError::Subtract::RightIsNotNumeric');
+      my $success = $build->compile_spvm();
+      ok($success == 0);
+    }
+  }
+}
+
+# Optional tests
 {
   ok(TestCase::Subtract->subtract());
 
