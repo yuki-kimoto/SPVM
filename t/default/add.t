@@ -31,6 +31,20 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Add->add_overflow);
     ok(TestCase::Add->add_minus);
     ok(TestCase::Add->add_zero_minus);
+
+    ok(TestCase::Add->add_float_nan_left);
+    ok(TestCase::Add->add_float_nan_right);
+    ok(TestCase::Add->add_double_nan_left);
+    ok(TestCase::Add->add_double_nan_right);
+    ok(TestCase::Add->add_float_plus_inf_minus_inf);
+    ok(TestCase::Add->add_double_plus_inf_minus_inf);
+    ok(TestCase::Add->add_float_inf_plus_value);
+    ok(TestCase::Add->add_double_inf_plus_value);
+    ok(TestCase::Add->add_float_minus_inf_minus_value);
+    ok(TestCase::Add->add_double_minus_inf_minus_value);
+    ok(TestCase::Add->add_float_plus_zero_minus_zero);
+    ok(TestCase::Add->add_double_plus_zero_minus_zero);
+    ok(TestCase::Add->add_double_same_sign_zero);
   }
 
   # Add - Compile Error
