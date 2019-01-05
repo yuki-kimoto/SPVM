@@ -352,6 +352,33 @@ package TestCase::Add {
     return 1;
   }
 
+  sub add_float_same_sign_zero : int () {
+    {
+      my $total = 0.0f + 0.0f;
+
+      unless ($total == 0f) {
+        return 0;
+      }
+
+      if (signbitf($total)) {
+        return 0;
+      }
+    }
+    {
+      my $total = -0.0f + -0.0f;
+
+      unless($total == 0f) {
+        return 0;
+      }
+
+      unless (signbitf($total)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub add_double_same_sign_zero : int () {
     {
       my $total = 0.0 + 0.0;
@@ -374,6 +401,78 @@ package TestCase::Add {
       unless (signbit($total)) {
         return 0;
       }
+    }
+    
+    return 1;
+  }
+
+  sub add_float_over_max : int () {
+    my $total = FLT_MAX() + FLT_MAX();
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (isinff($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_over_max : int () {
+    my $total = DBL_MAX() + DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (isinf($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_over_min : int () {
+    my $total = -FLT_MAX() + -FLT_MAX();
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (isinff($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_over_min : int () {
+    my $total = -DBL_MAX() + -DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (isinf($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
     }
     
     return 1;

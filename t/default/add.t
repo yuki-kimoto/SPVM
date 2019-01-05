@@ -44,7 +44,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Add->add_double_minus_inf_minus_value);
     ok(TestCase::Add->add_float_plus_zero_minus_zero);
     ok(TestCase::Add->add_double_plus_zero_minus_zero);
+    ok(TestCase::Add->add_float_same_sign_zero);
     ok(TestCase::Add->add_double_same_sign_zero);
+    ok(TestCase::Add->add_float_over_max);
+    ok(TestCase::Add->add_double_over_max);
+    ok(TestCase::Add->add_float_over_min);
+    ok(TestCase::Add->add_double_over_min);
   }
 
   # Add - Compile Error
