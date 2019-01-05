@@ -27,6 +27,23 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Subtract->subtract_overflow);
     ok(TestCase::Subtract->subtract_minus);
     ok(TestCase::Subtract->subtract_zero_minus);
+
+    ok(TestCase::Subtract->subtract_float_nan_left);
+    ok(TestCase::Subtract->subtract_float_nan_right);
+    ok(TestCase::Subtract->subtract_double_nan_left);
+    ok(TestCase::Subtract->subtract_double_nan_right);
+    ok(TestCase::Subtract->subtract_float_plus_inf_minus_inf);
+    ok(TestCase::Subtract->subtract_double_plus_inf_minus_inf);
+    ok(TestCase::Subtract->subtract_float_inf_plus_value);
+    ok(TestCase::Subtract->subtract_double_inf_plus_value);
+    ok(TestCase::Subtract->subtract_float_minus_inf_minus_value);
+    ok(TestCase::Subtract->subtract_double_minus_inf_minus_value);
+    ok(TestCase::Subtract->subtract_float_plus_zero_minus_zero);
+    ok(TestCase::Subtract->subtract_double_plus_zero_minus_zero);
+    ok(TestCase::Subtract->subtract_float_over_max);
+    ok(TestCase::Subtract->subtract_double_over_max);
+    ok(TestCase::Subtract->subtract_float_over_min);
+    ok(TestCase::Subtract->subtract_double_over_min);
   }
 
   # Subtract - Compile Error

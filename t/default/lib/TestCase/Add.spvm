@@ -307,7 +307,7 @@ package TestCase::Add {
   }
 
   sub add_double_minus_inf_minus_value : int () {
-    my $total = -INFINITY() - 1;
+    my $total = -INFINITY() + 1;
     
     unless(isinf($total)) {
       return 0;
