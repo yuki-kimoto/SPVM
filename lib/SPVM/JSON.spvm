@@ -10,7 +10,6 @@ package SPVM::JSON {
   has indent_length : public int;
   has space_before : public int;
   has space_after : public int;
-  has relaxed : public int;
   has canonical : public int;
 
   sub _skip_spaces : void ($s : string, $i : int&, $end : int) {
@@ -30,6 +29,14 @@ package SPVM::JSON {
     if ($$i == $end) {
       croak "Incomplete hash";
     }
+  }
+
+  sub _dump_remain : string ($s : string, $i : int&, $end : int) {
+    my $remain = "";
+    for (my $k = $$i; $k < $end; $k++) {
+      $remain .= $s->[$k];
+    }
+    return $remain;
   }
 
   sub _expect_token : void ($s : string, $i : int&, $end : int, $expected : string) {
@@ -269,8 +276,10 @@ package SPVM::JSON {
     elsif ($s->[$$i] == 'f') {
       return $self->_decode_false($s, $i, $end);
     }
+
+    # unknown token
     else {
-      croak "Cannot decode string"; # TODO: substr. "Cannot decode string at (substrings)"
+      croak "Unexpected token. Remains... '" . _dump_remain($s, $i, $end) . "'";
     }
   }
 
@@ -413,7 +422,6 @@ package SPVM::JSON {
     $json->{indent_length} = 0;
     $json->{space_before} = 0;
     $json->{space_after} = 0;
-    $json->{relaxed} = 1;
     return $json;
   }
 
