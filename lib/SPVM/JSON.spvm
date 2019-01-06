@@ -6,7 +6,6 @@ package SPVM::JSON {
   use SPVM::Double;
   use SPVM::Bool;
 
-  has pretty : public int;
   has indent : public int;
   has indent_length : public int;
   has space_before : public int;
@@ -304,14 +303,14 @@ package SPVM::JSON {
     # objects
     if ($o isa SPVM::Hash) {
       my $text = "";
-      if ($self->{pretty} && $self->{indent}) {
+      if ($self->{indent}) {
         my $indent = $self->_make_indent($depth);
         unless ($indent eq "") { # FIXME: 空文字連結
           $text .= $indent;
         }
       }
       $text .= "{";
-      if ($self->{pretty} && $self->{indent}) {
+      if ($self->{indent}) {
         $text .= "\n";
       }
       my $hash = (SPVM::Hash)$o;
@@ -322,19 +321,19 @@ package SPVM::JSON {
       for (my $i = 0; $i < @$keys; $i++) {
         if ($i > 0) {
           $text .= ",";
-          if ($self->{pretty} && $self->{indent}) {
+          if ($self->{indent}) {
             $text .= "\n";
           }
         }
-        if ($self->{pretty} && $self->{indent}) {
+        if ($self->{indent}) {
           $text .= $self->_make_indent($depth + 1);
         }
         $text .= "\"" . $keys->[$i] . "\"";
-        if ($self->{pretty} && $self->{space_before}) {
+        if ($self->{space_before}) {
           $text .= " ";
         }
         $text .= ":";
-        if ($self->{pretty} && $self->{space_after}) {
+        if ($self->{space_after}) {
           $text .= " ";
         }
         unless ($hash->exists($keys->[$i])) {
@@ -342,7 +341,7 @@ package SPVM::JSON {
         }
         $text .= $self->_encode_value($hash->get($keys->[$i]), $depth + 1);
       }
-      if ($self->{pretty} && $self->{indent}) {
+      if ($self->{indent}) {
         $text .= "\n";
         my $indent = $self->_make_indent($depth);
         unless ($indent eq "") { # FIXME: 空文字連結
@@ -355,7 +354,7 @@ package SPVM::JSON {
     elsif ($o isa SPVM::List) {
       my $text = "";
       $text .= "[";
-      if ($self->{pretty} && $self->{indent}) {
+      if ($self->{indent}) {
         $text .= "\n";
       }
       my $list = (SPVM::List)$o;
@@ -363,16 +362,16 @@ package SPVM::JSON {
       for (my $i = 0; $i < $length; $i++) {
         if ($i > 0) {
           $text .= ",";
-          if ($self->{pretty} && $self->{indent}) {
+          if ($self->{indent}) {
             $text .= "\n";
           }
         }
-        if ($self->{pretty} && $self->{indent}) {
+        if ($self->{indent}) {
           $text .= $self->_make_indent($depth + 1);
         }
         $text .= $self->_encode_value($list->get($i), $depth + 1);
       }
-      if ($self->{pretty} && $self->{indent}) {
+      if ($self->{indent}) {
         $text .= "\n";
         my $indent = $self->_make_indent($depth);
         unless ($indent eq "") { # FIXME: 空文字連結
@@ -410,11 +409,10 @@ package SPVM::JSON {
 
   sub new : SPVM::JSON () {
     my $json = new SPVM::JSON;
-    $json->{pretty} = 0;
-    $json->{indent} = 1;
-    $json->{indent_length} = 4;
-    $json->{space_before} = 1;
-    $json->{space_after} = 1;
+    $json->{indent} = 0;
+    $json->{indent_length} = 0;
+    $json->{space_before} = 0;
+    $json->{space_after} = 0;
     $json->{relaxed} = 1;
     return $json;
   }
@@ -439,5 +437,12 @@ package SPVM::JSON {
       croak "Not all json_text is decoded yet. Remains at $iter";
     }
     return $ret;
+  }
+
+  sub pretty : void ($self : self) {
+    $self->{indent} = 1;
+    $self->{indent_length} = 3;
+    $self->{space_before} = 1;
+    $self->{space_after} = 1;
   }
 }

@@ -5,7 +5,7 @@ package TestCase::JSON {
   use SPVM::Double;
   use SPVM::Bool;
 
-  # TODO: Extract _object_equals, _hash_equals and _list_equals as test utilities, something like Test::More::is_deeply
+  # TODO: Extract pre_object_equals, _hash_equals and _list_equals as test utilities, something like Test::More::is_deeply
   sub _object_equals : int ($lhs : object, $rhs : object) {
     if ($lhs isa SPVM::Hash) {
       unless ($rhs isa SPVM::Hash) {
@@ -288,59 +288,53 @@ package TestCase::JSON {
     return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
 
-  sub test_pretty_name_separator : int () {
+  sub test_format_name_separator : int () {
     my $hash = SPVM::Hash->new_with_array([(object) "key", "value"]);
     my $json = SPVM::JSON->new;
-    $json->{pretty} = 1;
-    $json->{indent_length} = 0;
-
     $json->{space_before} = 0;
     $json->{space_after} = 0;
-    unless ($json->encode($hash) eq "{\n\"key\":\"value\"\n}") {
+    unless ($json->encode($hash) eq "{\"key\":\"value\"}") {
       return 0;
     }
     $json->{space_before} = 1;
     $json->{space_after} = 0;
-    unless ($json->encode($hash) eq "{\n\"key\" :\"value\"\n}") {
+    unless ($json->encode($hash) eq "{\"key\" :\"value\"}") {
       return 0;
     }
     $json->{space_before} = 0;
     $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\n\"key\": \"value\"\n}") {
+    unless ($json->encode($hash) eq "{\"key\": \"value\"}") {
       return 0;
     }
     $json->{space_before} = 1;
     $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\n\"key\" : \"value\"\n}") {
+    unless ($json->encode($hash) eq "{\"key\" : \"value\"}") {
       return 0;
     }
     return 1;
   }
 
-  sub test_pretty_no_indent : int () {
+  sub test_format_indent : int () {
     my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
-    $json->{pretty} = 1;
-    $json->{indent} = 0;
+    $json->{indent} = 1;
+    $json->{indent_length} = 2;
     $json->{canonical} = 1;
-    my $expected = "{\"a\" : \"v1\",\"b\" : \"v2\",\"c\" : [\"x\",\"y\"]}";
+    my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
     my $actual = $json->encode($hash);
     unless ($expected eq $actual) {
       warn ("expected:\n$expected\nactual:\n$actual");
+      return 0;
     }
     return 1;
   }
 
-  sub test_pretty_indent : int () {
+  sub test_format_pretty : int () {
     my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
-    $json->{pretty} = 1;
-    $json->{indent} = 1;
-    $json->{indent_length} = 2;
-    $json->{space_before} = 0;
-    $json->{space_after} = 0;
     $json->{canonical} = 1;
-    my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
+    $json->pretty;
+    my $expected = "{\n   \"a\" : \"v1\",\n   \"b\" : \"v2\",\n   \"c\" : [\n      \"x\",\n      \"y\"\n   ]\n}";
     my $actual = $json->encode($hash);
     unless ($expected eq $actual) {
       warn ("expected:\n$expected\nactual:\n$actual");
