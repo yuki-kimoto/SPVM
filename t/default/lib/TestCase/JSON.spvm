@@ -317,15 +317,13 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_pretty_line_feed : int () {
+  sub test_pretty_no_indent : int () {
     my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{pretty} = 1;
-    $json->{indent_length} = 0;
-    $json->{space_before} = 0;
-    $json->{space_after} = 0;
+    $json->{indent} = 0;
     $json->{canonical} = 1;
-    my $expected = "{\n\"a\":\"v1\",\n\"b\":\"v2\",\n\"c\":[\n\"x\",\n\"y\"\n]\n}";
+    my $expected = "{\"a\" : \"v1\",\"b\" : \"v2\",\"c\" : [\"x\",\"y\"]}";
     my $actual = $json->encode($hash);
     unless ($expected eq $actual) {
       warn ("expected:\n$expected\nactual:\n$actual");
@@ -337,20 +335,13 @@ package TestCase::JSON {
     my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{pretty} = 1;
+    $json->{indent} = 1;
     $json->{indent_length} = 2;
     $json->{space_before} = 0;
     $json->{space_after} = 0;
     $json->{canonical} = 1;
     my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
     my $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    $json->{indent_char} = '\t';
-    $json->{indent_length} = 1;
-    $expected = "{\n\t\"a\":\"v1\",\n\t\"b\":\"v2\",\n\t\"c\":[\n\t\t\"x\",\n\t\t\"y\"\n\t]\n}";
-    $actual = $json->encode($hash);
     unless ($expected eq $actual) {
       warn ("expected:\n$expected\nactual:\n$actual");
       return 0;
