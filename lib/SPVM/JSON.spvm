@@ -439,10 +439,18 @@ package SPVM::JSON {
     return $ret;
   }
 
-  sub pretty : void ($self : self) {
-    $self->{indent} = 1;
-    $self->{indent_length} = 3;
-    $self->{space_before} = 1;
-    $self->{space_after} = 1;
+  sub pretty : void ($self : self, $pretty : int) {
+    if ($pretty) {
+      $self->{indent} = 1;
+      $self->{indent_length} = 3;
+      $self->{space_before} = 1;
+      $self->{space_after} = 1;
+    }
+    else {
+      $self->{indent} = 0;
+      $self->{indent_length} = 0;
+      $self->{space_before} = 0;
+      $self->{space_after} = 0;
+    }
   }
 }

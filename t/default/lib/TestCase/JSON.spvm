@@ -333,9 +333,16 @@ package TestCase::JSON {
     my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{canonical} = 1;
-    $json->pretty;
+    $json->pretty(1);
     my $expected = "{\n   \"a\" : \"v1\",\n   \"b\" : \"v2\",\n   \"c\" : [\n      \"x\",\n      \"y\"\n   ]\n}";
     my $actual = $json->encode($hash);
+    unless ($expected eq $actual) {
+      warn ("expected:\n$expected\nactual:\n$actual");
+      return 0;
+    }
+    $json->pretty(0);
+    $expected = "{\"a\":\"v1\",\"b\":\"v2\",\"c\":[\"x\",\"y\"]}";
+    $actual = $json->encode($hash);
     unless ($expected eq $actual) {
       warn ("expected:\n$expected\nactual:\n$actual");
       return 0;
