@@ -11,30 +11,6 @@ use SPVM 'TestCase::NumericOperator';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Add
-{
-  ok(TestCase::NumericOperator->add());
-
-  is(TestCase::NumericOperator->add_int_max(), 2147483647);
-  is(TestCase::NumericOperator->add_int_min(), -2147483647);
-  is(TestCase::NumericOperator->add_int_overflow(), -2147483648);
-  is(TestCase::NumericOperator->add_long_max(), 9223372036854775807);
-  is(TestCase::NumericOperator->add_long_min(), -9223372036854775807);
-  is(TestCase::NumericOperator->add_long_overflow(), -9223372036854775808);
-}
-
-# Subtract
-{
-  ok(TestCase::NumericOperator->subtract());
-
-  is(TestCase::NumericOperator->subtract_int_max(), 2147483646);
-  is(TestCase::NumericOperator->subtract_int_min(), -2147483648);
-  is(TestCase::NumericOperator->subtract_int_underflow(), 2147483647);
-  is(TestCase::NumericOperator->subtract_long_max(), 9223372036854775806);
-  is(TestCase::NumericOperator->subtract_long_min(), -9223372036854775808);
-  is(TestCase::NumericOperator->subtract_long_underflow(), 9223372036854775807);
-}
-
 # Multiply
 {
   ok(TestCase::NumericOperator->multiply());

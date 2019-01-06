@@ -29,16 +29,16 @@ package SPVM::Hash {
       return;
     }
     while (1) {
-      if ($ref->key eq $key) {
-        $ref->set_val($val);
+      if ($ref->{key} eq $key) {
+        $ref->{val} = $val;
         return;
       }
-      unless ($ref->next_entry) {
-        $ref->set_next_entry(SPVM::HashEntry->new($key, $val, undef));
+      unless ($ref->{next_entry}) {
+        $ref->{next_entry} = SPVM::HashEntry->new($key, $val, undef);
         ++$$count_ref;
         return;
       }
-      $ref = $ref->next_entry;
+      $ref = $ref->{next_entry};
     }
   }
 
@@ -59,8 +59,8 @@ package SPVM::Hash {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->key, $ref->val);
-        $ref = $ref->next_entry;
+        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
+        $ref = $ref->{next_entry};
       }
     }
     $self->{bucket_count} = $new_bucket_count;
@@ -135,13 +135,13 @@ package SPVM::Hash {
       return undef;
     }
     while (1) {
-      if ($ref->key eq $key) {
-        return $ref->val;
+      if ($ref->{key} eq $key) {
+        return $ref->{val};
       }
-      unless ($ref->next_entry) {
+      unless ($ref->{next_entry}) {
         return undef;
       }
-      $ref = $ref->next_entry;
+      $ref = $ref->{next_entry};
     }
   }
 
@@ -152,13 +152,13 @@ package SPVM::Hash {
       return 0;
     }
     while (1) {
-      if ($ref->key eq $key) {
+      if ($ref->{key} eq $key) {
         return 1;
       }
-      unless ($ref->next_entry) {
+      unless ($ref->{next_entry}) {
         return 0;
       }
-      $ref = $ref->next_entry;
+      $ref = $ref->{next_entry};
     }
   }
 
@@ -170,22 +170,22 @@ package SPVM::Hash {
       return 0;
     }
     while (1) {
-      if ($ref->key eq $key) {
-        my $ret = $ref->val;
+      if ($ref->{key} eq $key) {
+        my $ret = $ref->{val};
         if ($prev) {
-          $prev->set_next_entry($ref->next_entry);
+          $prev->{next_entry} = $ref->{next_entry};
         }
         else {
-          $self->{entries}->[$index] = $ref->next_entry;
+          $self->{entries}->[$index] = $ref->{next_entry};
         }
         $self->{count}--;
         return $ret;
       }
-      unless ($ref->next_entry) {
+      unless ($ref->{next_entry}) {
         return undef;
       }
       $prev = $ref;
-      $ref = $ref->next_entry;
+      $ref = $ref->{next_entry};
     }
   }
 
@@ -202,6 +202,7 @@ package SPVM::Hash {
       while ($ref) {
         $retval->[$count++] = copy_string($ref->key);
         $ref = $ref->next_entry;
+
       }
     }
     return $retval;

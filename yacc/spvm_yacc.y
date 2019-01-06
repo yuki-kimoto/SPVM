@@ -34,10 +34,10 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> unop binop
+%type <opval> unop binop relop numrelop strrelop isa conditionop
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
-%type <opval> deref ref assign incdec
+%type <opval> deref ref assign inc dec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
 %type <opval> term opt_expressions expressions expression condition opt_expression
@@ -45,8 +45,8 @@
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
-%left <opval> COND_OR
-%left <opval> COND_AND
+%left <opval> LOGICAL_OR
+%left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> '&'
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
@@ -55,7 +55,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> COND_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST
 %nonassoc <opval> INC DEC
 %right <opval> NEW
 %left <opval> ARROW
@@ -616,14 +616,26 @@ expression
   | ref
   | deref
   | assign
-  | incdec
+  | inc
+  | dec
   | '(' expression ')'
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
   | CURRENT_PACKAGE
 
-condition
+relop
+  : numrelop
+  | strrelop
+  | isa
+
+isa
+  : expression ISA type
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+
+numrelop
   : expression NUMEQ expression
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
@@ -648,7 +660,9 @@ condition
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression STREQ expression
+
+strrelop
+  : expression STREQ expression
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
@@ -672,22 +686,24 @@ condition
     {
       $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
     }
-  | expression ISA type
-    {
-      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
-    }
-  | term COND_OR term
+
+conditionop
+  : term LOGICAL_OR term
     {
       $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
     }
-  | term COND_AND term
+  | term LOGICAL_AND term
     {
       $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
     }
-  | COND_NOT term
+  | LOGICAL_NOT term
     {
       $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
+
+condition
+  : relop
+  | conditionop
   | '(' condition ')'
     {
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
@@ -725,7 +741,7 @@ unop
     }
   | '-' expression %prec MINUS
     {
-      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEGATE, $1->file, $1->line);
+      SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MINUS, $1->file, $1->line);
       $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
     }
   | BIT_NOT expression
@@ -733,26 +749,28 @@ unop
       $$ = SPVM_OP_build_unop(compiler, $1, $2);
     }
 
-incdec
+inc
   : INC expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, $1->file, $1->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $2);
+      $$ = SPVM_OP_build_inc(compiler, op, $2);
     }
   | expression INC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, $2->file, $2->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $1);
+      $$ = SPVM_OP_build_inc(compiler, op, $1);
     }
-  | DEC expression
+
+dec
+  : DEC expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, $1->file, $1->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $2);
+      $$ = SPVM_OP_build_dec(compiler, op, $2);
     }
   | expression DEC
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, $2->file, $2->line);
-      $$ = SPVM_OP_build_incdec(compiler, op, $1);
+      $$ = SPVM_OP_build_dec(compiler, op, $1);
     }
 
 binop

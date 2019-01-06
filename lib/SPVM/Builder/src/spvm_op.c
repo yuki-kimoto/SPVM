@@ -76,8 +76,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "POST_INC",
   "PRE_DEC",
   "POST_DEC",
-  "NOT",
-  "NEGATE",
+  "MINUS",
   "PLUS",
   "EQ",
   "NE",
@@ -97,9 +96,9 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "LEFT_SHIFT",
   "RIGHT_SHIFT",
   "RIGHT_SHIFT_UNSIGNED",
-  "COND_AND",
-  "COND_OR",
-  "COND_NOT",
+  "LOGICAL_AND",
+  "LOGICAL_OR",
+  "LOGICAL_NOT",
   "ARRAY_ACCESS",
   "ASSIGN",
   "CALL_SUB",
@@ -1165,7 +1164,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BIT_AND:
     case SPVM_OP_C_ID_BIT_NOT:
     case SPVM_OP_C_ID_PLUS:
-    case SPVM_OP_C_ID_NEGATE:
+    case SPVM_OP_C_ID_MINUS:
     case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CAST:
     case SPVM_OP_C_ID_ARRAY_INIT:
@@ -2462,17 +2461,30 @@ SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP*
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_incdec, op_incdec->last, op_first);
+  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "inc/dec target value must be mutable at %s line %d\n", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "Operand of ++ operator must be mutable at %s line %d\n", op_first->file, op_first->line);
   }
   
-  return op_incdec;
+  return op_inc;
 }
+
+SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
+
+  if (!SPVM_OP_is_mutable(compiler, op_first)) {
+    SPVM_COMPILER_error(compiler, "Operand of -- operator must be mutable at %s line %d\n", op_first->file, op_first->line);
+  }
+  
+  return op_dec;
+}
+
 
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
   
@@ -2610,7 +2622,7 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   
   // Convert ! to if statement
   // before
-  //  COND_NOT
+  //  LOGICAL_NOT
   //    first
   
   // after 

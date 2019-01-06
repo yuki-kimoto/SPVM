@@ -12,7 +12,7 @@ use Test::More 'no_plan';
 my $file = 't/' . basename $0;
 
 use FindBin;
-use lib "$FindBin::Bin/default/lib";
+use lib "$FindBin::Bin/lib";
 
 # Assign
 {

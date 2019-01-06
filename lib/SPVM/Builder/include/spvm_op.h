@@ -76,8 +76,7 @@ enum {
   SPVM_OP_C_ID_POST_INC,
   SPVM_OP_C_ID_PRE_DEC,
   SPVM_OP_C_ID_POST_DEC,
-  SPVM_OP_C_ID_COND_NOT,
-  SPVM_OP_C_ID_NEGATE,
+  SPVM_OP_C_ID_MINUS,
   SPVM_OP_C_ID_PLUS,
   SPVM_OP_C_ID_NUMERIC_EQ,
   SPVM_OP_C_ID_NUMERIC_NE,
@@ -97,9 +96,9 @@ enum {
   SPVM_OP_C_ID_LEFT_SHIFT,
   SPVM_OP_C_ID_RIGHT_SHIFT,
   SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED,
-  SPVM_OP_C_ID_COND_AND,
-  SPVM_OP_C_ID_COND_OR,
-  SPVM_OP_C_ID_COND_COMPELEMNT,
+  SPVM_OP_C_ID_LOGICAL_AND,
+  SPVM_OP_C_ID_LOGICAL_OR,
+  SPVM_OP_C_ID_LOGICAL_NOT,
   SPVM_OP_C_ID_ARRAY_ACCESS,
   SPVM_OP_C_ID_ASSIGN,
   SPVM_OP_C_ID_CALL_SUB,
@@ -393,7 +392,8 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 
-SPVM_OP* SPVM_OP_build_incdec(SPVM_COMPILER* compiler, SPVM_OP* op_incdec, SPVM_OP* op_first);
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first);
+SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_first);
 
 SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign);
 SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access);

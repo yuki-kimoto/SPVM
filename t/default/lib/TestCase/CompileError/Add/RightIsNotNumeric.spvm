@@ -1,0 +1,7 @@
+package TestCase::CompileError::Add::RightIsNotNumeric {
+  use TestCase::Minimal;
+  sub main : int () {
+    my $minimal = TestCase::Minimal->new;
+    1 + $minimal;
+  }
+}

@@ -247,6 +247,28 @@ int32_t SPVM_NATIVE_SPVM__CORE__NAN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
+int32_t SPVM_NATIVE_SPVM__CORE__signbitf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  double fval = stack[0].fval;
+  
+  stack[0].ival = signbit(fval);
+  
+  return SPVM_SUCCESS;;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__signbit(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  double dval = stack[0].dval;
+  
+  stack[0].ival = signbit(dval);
+  
+  return SPVM_SUCCESS;;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__isinf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

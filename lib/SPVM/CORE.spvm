@@ -12,6 +12,9 @@ package SPVM::CORE {
   native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   
+  native sub signbitf : int ($num : float);
+  native sub signbit : int ($num : double);
+  
   sub TRUE : SPVM::Bool () {
     return SPVM::Bool->TRUE;
   }

@@ -1939,7 +1939,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
-                      else if (op_assign_src->id == SPVM_OP_C_ID_NEGATE) {
+                      else if (op_assign_src->id == SPVM_OP_C_ID_MINUS) {
 
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));

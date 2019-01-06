@@ -742,7 +742,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -753,7 +753,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -776,7 +776,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -787,7 +787,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -810,7 +810,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -821,7 +821,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -953,7 +953,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   assert(index_type);
                   if (SPVM_TYPE_is_numeric_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
-                    SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_index_term);
+                    SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_index_term);
                     if (compiler->error_count > 0) {
                       return;
                     }
@@ -1850,16 +1850,32 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               break;
             }
-            case SPVM_OP_C_ID_NEGATE: {
+            case SPVM_OP_C_ID_PLUS: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               // Must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Operand of unary + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
+              SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
+              if (compiler->error_count > 0) {
                 return;
               }
               
-              SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+              break;
+            }
+            case SPVM_OP_C_ID_MINUS: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              // Must be numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Operand of unary - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
               if (compiler->error_count > 0) {
                 return;
               }
@@ -1871,27 +1887,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "~ operator right value must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Operand of ~ operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
-              if (compiler->error_count > 0) {
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_PLUS: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              
-              // Must be numeric type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-
-              SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->first);
+              SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
               if (compiler->error_count > 0) {
                 return;
               }
@@ -1902,27 +1902,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be undef
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "+ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right value must not be undef
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "+ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-
               // Left value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "+ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "+ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1938,27 +1926,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be undef
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "- operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right value Must not be undef
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "- operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-
               // Left value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "- operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "- operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1974,26 +1950,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be undef
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "* operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right value Must not be undef
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "* operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
               // Left value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "* operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "* operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2010,26 +1974,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be undef
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "/ operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right value Must not be undef
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "/ operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-
               // Left value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "/ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "/ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2046,26 +1998,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be undef
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "%% operator left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right value Must not be undef
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "%% operator right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-
               // Left value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "%% operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "%% operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2754,7 +2694,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right value must be integer
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_numeric_convertion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -3247,7 +3187,7 @@ void SPVM_OP_CHECKER_apply_unary_string_convertion(SPVM_COMPILER* compiler, SPVM
   SPVM_OP_replace_op(compiler, op_stab, op_convert);
 }
 
-void SPVM_OP_CHECKER_apply_unary_numeric_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
+void SPVM_OP_CHECKER_apply_unary_widening_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_term);
   
@@ -3567,7 +3507,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_LEFT_SHIFT:
                       case SPVM_OP_C_ID_RIGHT_SHIFT:
                       case SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED:
-                      case SPVM_OP_C_ID_NEGATE:
+                      case SPVM_OP_C_ID_MINUS:
                       case SPVM_OP_C_ID_PLUS:
                       case SPVM_OP_C_ID_ARRAY_LENGTH:
                       case SPVM_OP_C_ID_STRING_LENGTH:
@@ -4100,7 +4040,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   // Dist type is numeric type
   int32_t can_assign = 0;
   int32_t narrowing_convertion_error = 0;
-  int32_t need_convertion = 0;
+  int32_t need_implicite_convertion = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -4111,7 +4051,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       // Dist type is more wide than source type
       else if (dist_type->basic_type->id > src_type->basic_type->id) {
         can_assign = 1;
-        need_convertion = 1;
+        need_implicite_convertion = 1;
       }
       // Dist type is narrow than source type
       else if (dist_type->basic_type->id < src_type->basic_type->id) {
@@ -4168,7 +4108,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
         }
         
         if (can_narrowing_convertion) {
-          need_convertion = 1;
+          need_implicite_convertion = 1;
           can_assign = 1;
         }
         else {
@@ -4180,12 +4120,12 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         can_assign = 1;
-        need_convertion = 1;
+        need_implicite_convertion = 1;
       }
       else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         if (src_type->basic_type->id == dist_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
           can_assign = 1;
-          need_convertion = 1;
+          need_implicite_convertion = 1;
         }
         else {
           can_assign = 0;
@@ -4234,7 +4174,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       // Source type is number
       if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         can_assign = 1;
-        need_convertion = 1;
+        need_implicite_convertion = 1;
       }
       // Source type is string
       else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -4260,7 +4200,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       // Source type is numeric type
       else if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         can_assign = 1;
-        need_convertion = 1;
+        need_implicite_convertion = 1;
       }
       // Source type is undef type
       else if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -4275,7 +4215,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
         if (dist_type->basic_type->id == src_type->basic_type->id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
           can_assign = 1;
-          need_convertion = 1;
+          need_implicite_convertion = 1;
         }
         else {
           can_assign = 0;
@@ -4378,7 +4318,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     }
   }
   
-  if (need_convertion) {
+  if (need_implicite_convertion) {
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
     
     SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_src->file, op_src->line);

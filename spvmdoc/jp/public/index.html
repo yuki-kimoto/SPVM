@@ -17,7 +17,10 @@
         if(window.addEventListener)window.addEventListener("load",init,false);
         else if(window.attachEvent)window.attachEvent("onload",init);
         
-        
+        $(".to-top").click(function() {
+          // ページの一番上までスクロールさせます。
+          $('body, html').animate({scrollTop: 0}, 300, 'linear');;
+        });
       });
     </script>
 
@@ -385,25 +388,30 @@ my $total = MyMath->sum($sp_nums);
       </p>
       <ul class="toc">
         <li><a href="#language-parser">構文解析</a>
+        <li><a href="#language-comment">コメント</a>
+        <li><a href="#language-pod">POD</a>
+        <li><a href="#language-package">パッケージ</a>
+        <li><a href="#language-use-module">モジュールの読み込み</a>
+        <li><a href="#language-package-var">パッケージ変数</a>
+        <li><a href="#language-field">フィールド</a>
+        <li><a href="#language-sub">サブルーチン</a>
+        <li><a href="#language-enum">列挙</a>
+        <li><a href="#language-begin-block">BEGINブロック</a>
+        <li><a href="#language-lex-var">レキシカル変数</a>
+        <li><a href="#language-block">ブロック</a>
+        <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-term">項</a>
         <li><a href="#language-expression">式</a>
         <li><a href="#language-condition">条件</a>
         <li><a href="#language-condition-part">条件部</a>
-        <li><a href="#language-statement">文</a>
-        <li><a href="#language-comment">コメント</a>
-        <li><a href="#language-pod">POD</a>
-        <li><a href="#language-package">パッケージ</a>
-        <li><a href="#language-field">フィールド</a>
-        <li><a href="#language-package-variable">パッケージ変数</a>
-        <li><a href="#language-enum">列挙</a>
-        <li><a href="#language-type">型</a></li>
-        <li><a href="#language-operator">演算子</a></li>
-        <li><a href="#language-block">ブロック</a></li>
-        <li><a href="#language-statement">文</a></li>
-        <li><a href="#language-type-convertion">型変換</a></li>
-        <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-literal">リテラル</a></li>
-        <li><a href="#language-condition-part">条件部</a></li>
+        <li><a href="#language-undef">未定義値</a></li>
+        <li><a href="#language-operator">演算子</a></li>
+        <li><a href="#language-statement">文</a>
+        <li><a href="#language-type">型</a></li>
+        <li><a href="#language-type-inference">型推論</a></li>
+        <li><a href="#language-type-convertion">型変換</a></li>
+        <li><a href="#language-auto-loaded-package">自動的にロードされるパッケージ</a></li>
       </ul>
       <h3 id="language-parser">構文解析</h3>
       <ul class="list">
@@ -509,9 +517,8 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 
 =cut
 </pre>
-
       <h3 id="language-package">パッケージ</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-package-definition">パッケージの定義</a></li>
       </ul>
       
@@ -525,8 +532,13 @@ package パッケージ名 {
 }
 </pre>
       <p>
-        パッケージ名は「大文字」で始まる必要があります。
+        パッケージ名は「大文字」で始まる必要があります。パッケージ名には「::」を使用することができます。
       </p>
+<p>
+Foo
+Foo::Bar
+Foo::Bar::Baz
+</p>
       <p>
         「パッケージ名」の後に「:」をつなげてその後ろに「デスクリプタ」を指定することができます。
       </p>
@@ -643,8 +655,172 @@ package Foo {
   }
 }
 </pre>
+      <h3 id="language-use-module">モジュールの読み込み</h3>
+      <p>
+        モジュールを読み込むには、useキーワードを使用します。
+      </p>
+<pre>
+use Foo;
+use Foo::Bar;
+</pre>
+      <p>
+        モジュールはコンパイル時に読み込まれます。
+      </p>
+      <p>
+        モジュールは、モジュールの読み込みパスに、以下のルールで配置される必要があります。
+      </p>
+      <p>
+        「::」を「/」に変更。末尾に「.spvm」をつける。
+      </p>
+<pre>
+Foo.spvm
+Foo/Bar.spvm
+Foo/Bar/Baz.spvm
+</pre>
+      <h3 id="language-package-var">パッケージ変数</h3>
+      <ul class="list">
+        <li>
+          <a href="#language-package-var-definition">パッケージ変数の定義</a>
+        </li>
+        <li>
+          <a href="#language-package-var-initial-value">パッケージ変数の初期値</a>
+        </li>
+      </ul>
+      <h4 id="language-package-var-definition">パッケージ変数の定義</h4>
+      <p>
+        パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
+      </p>
+      <p>
+        「our」キーワードを使用してパッケージ変数を定義することができます。
+      </p>
+<pre>
+our パッケージ変数名 : 型名;
+</pre>
+      <p>
+        パッケージ変数の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+      </p>
+      <p>
+        パッケージ変数の定義には「<a href="#language-type">型名</a>」が必要です。型名には「数値型」と「オブジェクト型」を指定できます。
+      </p>
+      <p>
+        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
+      </p>
+      <p>
+        パッケージ変数定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
+      </p>
+<pre>
+our パッケージ変数名 : デスクリプタ 型名;
+</pre>
+      <p>
+        <b>パッケージ変数デスクリプタ</b>
+      </p>
+      <p>
+        パッケージ変数で指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            このパッケージ変数は、外部のパッケージからアクセスできません。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>ro</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、パッケージ変数名から「$」を除いたものです。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>wo</b>
+          </td>
+          <td>
+            このパッケージ変数は、書き込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、「SET_パッケージ変数名から$を除いたもの」になります。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「SET_FOO」になります。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>rw</b>
+          </td>
+          <td>
+            このパッケージ変数は、読み込み用のパッケージ変数アクセッサと書き込み用のパッケージ変数アクセッサを持ちます。読み込み用のパッケージ変数アクセッサ名は「ro」で説明したものと同じです。書き込み用のパッケージ変数アクセッサ名は「wo」で説明したものと同じです。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
+      </p>
+      <p>
+        書き込み用のパッケージ変数アクセッサの戻り値は「void型」です。
+      </p>
+      <p>
+        SPVMのソースコードの中からパッケージ変数アクセッサが呼び出された場合は、パッケージ変数アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
+      </p>
+      <p>
+        <b>パッケージ変数定義のサンプル</b>
+      </p>
+      <p>
+        パッケージ変数定義のサンプルです。
+      </p>
+<pre>
+package Foo {
+  our $NUM1 : byte;
+  our $NUM2 : short;
+  our $NUM3 : int;
+  our $NUM4 : long;
+  our $NUM5 : float;
+  our $NUM6 : double;
+
+  our $NUM_PUBLIC : public int;
+  our $NUM_RO : ro int;
+  our $NUM_WO : wo int;
+  our $NUM_RW : rw int;
+}
+</pre>
+      <h4 id="language-package-var-initial-value">パッケージ変数の初期値</h4>
+      <p>
+        パッケージ変数は、コンパイルが終了して、実行時に入る前に、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        この初期値は、<a href="#language-begin-block">BEGINブロック</a>を使うことで、変更することができます。
+      </p>
+<pre>
+package Foo {
+  our $VAR;
+  
+  BEGIN {
+    $VAR = 3;
+  }
+}
+</pre>
       <h3 id="language-field">フィールド</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
       </ul>
       <h4 id="language-field-definition">フィールドの定義</h4>
@@ -771,132 +947,10 @@ package Foo {
         不正なフィールドの定義は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-package-variable">パッケージ変数</h3>
-      <ul class="toc">
-        <li>
-          <a href="#language-package-variable-definition">パッケージ変数の定義</a>
-        </li>
-      </ul>
-      <h4 id="language-package-variable-definition">パッケージ変数の定義</h4>
-      <p>
-        パッケージ変数とは、パッケージに属する、プログラムの開始から終了まで維持されるグローバル変数のことです。
-      </p>
-      <p>
-        「our」キーワードを使用してパッケージ変数を定義することができます。
-      </p>
-<pre>
-our パッケージ変数名 : 型名;
-</pre>
-      <p>
-        パッケージ変数の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
-      </p>
-      <p>
-        パッケージ変数の定義には「<a href="#language-type">型名</a>」が必要です。型名には「数値型」と「オブジェクト型」を指定できます。
-      </p>
-      <p>
-        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
-      </p>
-      <p>
-        パッケージ変数定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
-      </p>
-<pre>
-our パッケージ変数名 : デスクリプタ 型名;
-</pre>
-      <p>
-        <b>パッケージ変数デスクリプタ</b>
-      </p>
-      <p>
-        パッケージ変数で指定できるデスクリプタの一覧です。
-      </p>
-      <table>
-        <tr>
-          <th>
-            デスクリプタ名
-          </th>
-          <th>
-            役割
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>public</b>
-          </td>
-          <td>
-            このパッケージ変数は、外部のパッケージからアクセスできます。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>private</b>
-          </td>
-          <td>
-            このパッケージ変数は、外部のパッケージからアクセスできません。デフォルトの設定です。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>ro</b>
-          </td>
-          <td>
-            このパッケージ変数は、読み込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、パッケージ変数名から「$」を除いたものです。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「FOO」になります。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>wo</b>
-          </td>
-          <td>
-            このパッケージ変数は、書き込み用のパッケージ変数アクセッサを持ちます。パッケージ変数アクセッサ名は、「SET_パッケージ変数名から$を除いたもの」になります。パッケージ変数名が「$FOO」の場合は、パッケージ変数アクセッサ名は「SET_FOO」になります。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>rw</b>
-          </td>
-          <td>
-            このパッケージ変数は、読み込み用のパッケージ変数アクセッサと書き込み用のパッケージ変数アクセッサを持ちます。読み込み用のパッケージ変数アクセッサ名は「ro」で説明したものと同じです。書き込み用のパッケージ変数アクセッサ名は「wo」で説明したものと同じです。
-          </td>
-        </tr>
-      </table>
-      <p>
-        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        「ro」「wo」「rw」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        パッケージ変数アクセッサとは、パッケージ変数にアクセスするためのクラスメソッドのことです。
-      </p>
-      <p>
-        書き込み用のパッケージ変数アクセッサの戻り値は「void型」です。
-      </p>
-      <p>
-        SPVMのソースコードの中からパッケージ変数アクセッサが呼び出された場合は、パッケージ変数アクセッサはインライン展開されます。それ以外の場合は、インライン展開されません。
-      </p>
-      <p>
-        <b>パッケージ変数定義のサンプル</b>
-      </p>
-      <p>
-        パッケージ変数定義のサンプルです。
-      </p>
-<pre>
-package Foo {
-  our $NUM1 : byte;
-  our $NUM2 : short;
-  our $NUM3 : int;
-  our $NUM4 : long;
-  our $NUM5 : float;
-  our $NUM6 : double;
-
-  our $NUM_PUBLIC : public int;
-  our $NUM_RO : ro int;
-  our $NUM_WO : wo int;
-  our $NUM_RW : rw int;
-}
-</pre>
       <h3 id="language-sub">サブルーチン</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-sub-definition">サブルーチン定義</a></li>
+        <li><a href="#language-sub-constant">定数サブルーチン</a></li>
       </ul>
       <h4 id="language-sub-definition">サブルーチン定義</h4>
       <p>
@@ -986,18 +1040,38 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
   
 }
 </pre>
+      <h4 id="language-sub-constant">定数サブルーチン</h4>
+      <p>
+        数値型の戻り値を持つサブルーチンで、戻り値が定数であるサブルーチンを定数サブルーチンといいます。
+      </p>
+<pre>
+sub foo : int () { return 5; }
+sub foo : long () { return 5L; }
+sub foo : float () { return 5.0f; }
+sub foo : double () { return 5.0; }
+</pre>
+      <p>
+        定数サブルーチンは、インライン展開されます。
+      </p>
+      <p>
+        SPVMは定数畳み込み最適化を行わないので、定数が演算されている場合は、定数サブルーチンにならず、インライン展開されないことに注意してください。
+      </p>
+<pre>
+# 定数サブルーチンではなくインライン展開されない
+sub foo : int () { return 5 + 3; }
+</pre>
       <h3 id="language-enum">列挙</h3>
-      <ul class="toc">
+      <ul class="list">
         <li>
           <a href="#language-enum-definition">列挙の定義</a>
+        </li>
+        <li>
+          <a href="#language-enum-call">列挙の呼び出し</a>
         </li>
       </ul>
       <h4 id="language-enum-definition">列挙の定義</h4>
       <p>
-        列挙は連続したint型の定数を定義したい場合に利用します。
-      </p>
-      <p>
-        列挙は「enum」キーワードを使って定義することができます。
+        列挙はint型の定数を定義したい場合に利用します。連続したint型の定数を簡単に定義できます。「enum」キーワードを使って定義します。
       </p>
 <pre>
 enum {
@@ -1009,6 +1083,16 @@ enum {
       <p>
         列挙の定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
       </p>
+<pre>
+package Foo {
+  enum {
+    FLAG1,
+    FLAG2,
+    FLAG3
+  }
+}
+</pre>
+
       <p>
         最初の値は「0」から始まります。値は「1」づつインクリメントされます。この例の場合は「FLAG1」は「0」、「FALG2」は「1」、「FLAG3は「2」になります。
       </p>
@@ -1046,324 +1130,253 @@ enum {
       <p>
         enumの定義が不正な場合は、コンパイル時エラーが発生します。
       </p>
-      
-      <h3 id="language-type">型</h3>
-      <ul class="toc">
-        <li><a href="#language-type-summary">型の概要</a></li>
-        <li><a href="#language-type-integer">整数型</a></li>
-        <li><a href="#language-type-floating-point">浮動小数点型</a></li>
-        <li><a href="#language-type-object">オブジェクト型</a></li>
-        <li><a href="#language-type-value">値型</a></li>
-        <li><a href="#language-type-ref">リファレンス型</a></li>
-      </ul>
-      <h4 id="language-type-summary">型の概要</h3>
+      <h4 id="language-enum-call">列挙の呼び出し</h4>
       <p>
-        SPVMは、静的型言語です。すべてのデータは静的な型を持ちます。
-      </p>
-      <p>
-        レキシカル変数の宣言、フィールドの定義、パッケージ変数の定義、サブルーチンの定義の引数と戻り値において、型が指定される必要があります。
-      </p>
-      <p>
-        レキシカル変数の宣言においては、型推論を利用して、暗黙的に型を指定することもできます。
-      </p>
-      <h4 id="language-type-integer">整数型</h3>
-      <p>
-        SPVMの整数型は以下の4つです。
-      </p>
-      <table>
-        <tr>
-          <th>
-            <b>型名</b>
-          </th>
-          <th>
-            説明
-          </th>
-          <th>
-            範囲
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>byte</b>
-          </td>
-          <td>
-            8bit符号付整数型
-          </td>
-          <td>
-            -128～127
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>short</b>
-          </td>
-          <td>
-            16bit符号付整数型
-          </td>
-          <td>
-            -32768～32767
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>int</b>
-          </td>
-          <td>
-            32bit符号付整数型
-          </td>
-          <td>
-            -2147483648～2147483647
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>long</b>
-          </td>
-          <td>
-            64bit符号付整数型
-          </td>
-          <td>
-            -9223372036854775808～9223372036854775807
-          </td>
-        </tr>
-      </table>
-      <p>
-        SPVMの整数型には、符号なし整数型は存在しません。
-      </p>
-      <p>
-        整数の計算規則については、算術演算子を参考にしてください。
-      </p>
-      <h4 id="language-type-floating-point">浮動小数点型</h3>
-      <p>
-        SPVMの浮動小数点型は以下の2つです。
-      </p>
-      <table>
-        <tr>
-          <th>
-            <b>型名</b>
-          </th>
-          <th>
-            説明
-          </th>
-          <th>
-            範囲
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>float</b>
-          </td>
-          <td>
-            単精度浮動小数点型 - 32bitで浮動小数点を表現します
-          </td>
-          <td>
-            C標準マクロ FLT_MIN～FLT_MAX
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>double</b>
-          </td>
-          <td>
-            倍精度浮動小数点型 - 64bitで浮動小数点を表現します
-          </td>
-          <td>
-            C標準マクロ DBL_MIN～DBL_MAX
-          </td>
-        </tr>
-      </table>
-      <p>
-        浮動小数点の表現方法については、処理系に依存します。
-      </p>
-      <p>
-        浮動小数点の計算規則については、算術演算子を参考にしてください。
-      </p>
-      <h4 id="language-type-object">オブジェクト型</h4>
-      <ul>
-        <li>オブジェクト型の概要</li>
-        <li>パッケージ型</li>
-        <li>クラス型</li>
-        <li>インターフェース型</li>
-        <li>ポインタ型</li>
-        <li>配列型</li>
-      </ul>
-      <h5>パッケージ型</h5>
-      
-      
-      <h4 id="language-type-value">値型</h4>
-      <p>
-        値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
-      </p>
-      <p>
-        パッケージの定義において「value_t」デスクリプタを指定することで、値型となります。
+        列挙は、定数サブルーチンのエイリアスなので、サブルーチン呼び出しとまったく同じ方法で呼び出すことができます。
       </p>
 <pre>
-package Point_3i : value_t {
-  has x : int;
-  has y : int;
-  has z : int;
+my $flag1 = Foo->FLAG1;
+my $flag2 = Foo->FLAG2;
+my $flag3 = Foo->FLAG3;
+</pre>
+      <p>
+        switch文のcase文において利用することもできます。
+      </p>
+<pre>
+switch ($num) {
+  case Foo->FLAG1:
+  
+    last;
+  case Foo->FLAG2:
+    
+    last:
+  case Foo->FLAG3:
+  
+    last:
+  default:
+  
+}
+</pre>
+      <h3 id="language-begin-block">BEGINブロック</h3>
+      <p>
+        BEGINブロックとは、コンパイル時が終了し、実行時に入る前に、実行されるブロックのことです。
+      </p>
+      <p>
+        BEGINキーワードを使用してBEGINブロックを定義することができます。
+      </p>
+<pre>
+BEGIN {
+
 }
 </pre>
       <p>
-        このサンプルでは、3つの連続したint型を「Point_3i」として定義しています。
-      </p>
-      <p>
-        フィールドに指定できるのは、整数型と浮動小数点型だけです。
-      </p>
-      <p>
-        値型のフィールドの個数の最大値は16個に制限されています。
-      </p>
-      <p>
-        すべてのフィールドのデータ型は、同一の型である必要があります。
-      </p>
-      <p>
-        利用する場合は、変数の宣言を行ってください。すべての領域が、0で初期化されます。
+        BEGINブロックは、パッケージの定義の直下にある必要があります。
       </p>
 <pre>
-my $point : Point_3i;
-</pre>
-      <p>
-        値型のデータは、サブルーチンのスタック領域に確保されます。
-      </p>
-      <p>
-        値型のデータは、連続していることが保証されます。
-      </p>
-      <p>
-        値型の名前は、パッケージ名の規則を満たしている必要があります。
-      </p>
-      <p>
-        それに加えて、最後が「_」「フィールドの個数」「サフィックス」で終わる必要があります。
-      </p>
-      <p>
-        フィールドの個数は、実際に定義されているフィールドの個数と一致している必要があります。
-      </p>
-      <p>
-        サフィックスは、実際に定義されている数値型と対応している必要があります。
-      </p>
-      <p>
-        不正な値型の定義の場合は、コンパイル時エラーになります。
-      </p>
-      <p>
-        <b>値型のサフィクスの一覧</b>
-      </p>
-      <table>
-        <tr>
-          <th>
-            <b>数値型</b>
-          </th>
-          <th>
-            サフィックス
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>byte</b>
-          </td>
-          <td>
-            b
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>short</b>
-          </td>
-          <td>
-            s
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>int</b>
-          </td>
-          <td>
-            i
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>long</b>
-          </td>
-          <td>
-            l
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>float</b>
-          </td>
-          <td>
-            f
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>double</b>
-          </td>
-          <td>
-            d
-          </td>
-        </tr>
-      </table>
-      <p>
-        サブルーチンの引数として値型を渡す場合は、内部的にはフィールドで定義された複数のデータ型に展開されて渡されます。
-      </p>
-<pre>
-# SPVM上
-foo($point);
+package Foo {
+  BEGIN {
 
-# 内部
-foo($x, $y, $z);
+  }
+}
 </pre>
       <p>
-        このことはSPVMから値型を利用している場合は、意識する必要がありませんが、エクステンションにおいて、サーブルーチンの引数を受け取るときに、意識する必要があります。
-      </p>
-      <p>
-        値型は配列にすることができます。この場合、配列の領域は、値型として定義されたデータがヒープ領域上で、連続していることが保証されます。
+        BEGINブロックの中には、0個以上の<a href="#language-statement">文</a>を書くことができます。
       </p>
 <pre>
-my $points : Point_3i[] = new Point_3i[];
+BEGIN {
+  my $foo = 1 + 1;
+  my $bar;
+}
 </pre>
-      <h4 id="language-type-ref">リファレンス型</h4>
       <p>
-        リファレンス型とは、変数への参照を表現する型のことです。数値型か値型の名前の後ろに「&」を付けることで定義できます。
+        return文を書くことはできません。BEGINブロックは、引数がなく、戻り値がvoidのサブルーチンとして定義されます。
+      </p>
+      <p>
+        BEGINブロックは、いくつでも定義できます。
+      </p>
+      <p>
+        BEGINブロックの実行順序は、保証されません。他のパッケージにBEGINブロックが定義されている場合は、そのBEGINブロックが先に実行されることを想定しないでください。
+      </p>
+      <p>
+        BEGINブロックの一般的な用途は、パッケージ変数を初期化することです。
+      </p>
+<pre>
+package Foo {
+  our $NUM : int;
+  our $POINT : Point;
+  BEGIN {
+    $NUM = 3;
+    $POINT = Point->new;
+  }
+}
+</pre>
+
+      <h3 id="language-lex-var">レキシカル変数</h3>
+      <ul class="list">
+        <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
+        <li><a href="#language-lex-var-initial-value">レキシカル変数の初期値</a></li>
+      </ul>
+      <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
+      <p>
+        レキシカル変数は「my」キーワードによって宣言します。「:」の後ろに「<a href="#language-type">型</a>」を指定する必要があります。
       </p>
 <pre>
 my $num : int;
-my $num_ref : int& = \$num;
-
-my $point : Point_3i;;
-my $point_ref : Point_3i& = \$point;
 </pre>
       <p>
-        リファレンス型は、単独では存在できず、リファレンスが代入される必要があります。
-      </p>
-      <p>
-        リファレンスにできるのは、数値型と値型のみです。オブジェクト型をリファレンスにすることはできません。
-      </p>
-      <p>
-        リファレンス型は、サブルーチンの引数にすることができます。
+        レキシカル変数は<a href="#language-scope-block">スコープブロック</a>の中で宣言され、<a href="#language-scope">スコープ</a>を持つ変数のことです。
       </p>
 <pre>
-foo($num_ref);
-foo($point_ref);
+{
+  my $num : int;
+}
 </pre>
       <p>
-        デリファレンスすることで、参照先の値を取得したり、変更することができます。
+        レキシカル変数は、<a href="#language-lex-var-initial-value">レキシカル変数の初期値</a>によって初期化されます。
+      </p>
+      <p>
+        <a href="#language-type-inference">型推論</a>によって、レキシカル変数を宣言するときに、型の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
       </p>
 <pre>
-# の値を
-my $num2 = $$num_ref;
+# int
+my $num = 1;
 
-# 数値型の値を変更
-$$num_ref = 3;
+# double
+my $num = 1.0;
+</pre>
+      <h4 id="language-lex-var-initial-value">レキシカル変数の初期値</h4>
+      <p>
+        レキシカル変数は、代入演算子によって明示的に初期化されなかった場合は、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <h3 id="language-block">ブロック</h3>
+      <p>
+        「{」と「}」で囲まれた部分のことをブロックと呼びます。
+      </p>
+<pre>
+# ブロック
+{
 
-# 値型の値を取得
-my $point2 = $$point_ref;
+}
+</pre>
+      <p>
+        ブロックの中には、スコープを作る<a href="#language-scope-block">スコープブロック</a>があります。
+      </p>
+      <h3 id="language-scope">スコープ</h3>
+      <ul class="list">
+        <li><a href="#language-scope-role">スコープの役割</a>
+        <li><a href="#language-scope-block">スコープブロック</a>
+      </ul>
+      <h4 id="language-scope-role">スコープの役割</h4>
+      <p>
+        スコープとは<a href="#language-scope-block">スコープブロック</a>に囲まれた範囲のことをいいます。
+      </p>
+<pre>
+# スコープブロック
+{
 
-# 値型の値を設定
-$$point_ref = $point2;
+}
+</pre>
+      <p>
+        スコープの中で宣言されたレキシカル変数は、実行時に、宣言されている位置で、モータルなレキシカル変数として登録されます。
+      </p>
+<pre>
+{
+  # レキシカル変数をモータルとして登録
+  my $num = new Foo;
+}
+</pre>
+      <p>
+        モータルなレキシカル変数に代入されたオブジェクトが、未定義値ではない場合は、リファレンスカウントが1増やされます。
+      </p>
+      <p>
+        スコープの終わりに到達すると、モータルなレキシカル変数に代入されているオブジェクトは、未定義値でない場合、リファレンスカウントが1減らされ、0になった場合は、解放されます。
+      </p>
+      <h4 id="language-scope-block">スコープブロック</h4>
+      <p>
+        スコープブロックとは、スコープを作るブロックのことです。スコープブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
+      </p>
+<pre>
+# スコープブロック
+{
+  my $num = 1;
+  $num++;
+}
+</pre>
+      <p>
+        <b>スコープブロックの一覧</b>
+      <p>
+        
+      </p>
+      <h5 id="language-block-statement-simple">単純なブロック</h5>
+<pre>
+# 単純なブロック
+{
+
+}
 </pre>
 
+      <h5 id="language-block-statement-sub">サブルーチンブロック</h5>
+<pre>
+# サブルーチンのブロック
+sub : int () {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-eval">evalブロック</h5>
+<pre>
+# evalブロック
+eval {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-if">ifブロック</h5>
+<pre>
+# ifブロック
+if (条件1) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-elsif">elsifブロック</h5>
+<pre>
+#elsifブロック
+elsif (条件2) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-else">elseブロック</h5>
+<pre>
+# elseブロック
+else {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-for">forブロック</h5>
+<pre>
+# for ブロック
+for (my $i = 0; $i < 3; $i++) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-while">whileブロック</h5>
+<pre>
+# whileブロック
+while (条件) {
+
+}
+</pre>
+
+      <h5 id="language-block-statement-switch">switchブロック</h5>
+<pre>
+switch (条件) {
+
+}
+</pre>
       <h3 id="language-term">項</h3>
       <p>
         算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
@@ -1381,20 +1394,21 @@ $$point_ref = $point2;
       <ul class="list">
         <li>変数</li>
         <li>例外変数</li>
-        <li>パッケージ変数の読み取り</li>
+        <li>パッケージ変数の取得</li>
         <li>定数リテラル</li>
         <li>未定義値</li>
         <li>サブルーチン呼び出し</li>
-        <li>フィールドの読み取り</li>
-        <li>配列の要素の読み取り</li>
+        <li>フィールドの取得</li>
+        <li>配列の要素の取得</li>
         <li>型変換</li>
         <li>new演算子</li>
         <li>配列の初期化</li>
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
         <li>変数宣言</li>
+        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-unary">単項演算子</a></li>
         <li>二項演算子</li>
-        <li>単項演算子</li>
         <li>リファレンス演算子</li>
         <li>デリファレンス演算子</li>
         <li>代入演算子</li>
@@ -1473,487 +1487,14 @@ while (条件部) {
 <pre>
 !条件部
 </pre>
-      <h3 id="language-statement">文</h3>
-      <p>
-        文とは、ひとつの処理のことで「<a href="#language-block-statement">文ブロック</a>」の中に記述することができます。
-      </p>
-      <p>
-        文は以下からなります。
-      </p>
-      <ul>
-        <li><a href="#language-statement-if">if文</a></li>
-        <li><a href="#language-statement-for">for文</a></li>
-        <li><a href="#language-statement-while">while文</a></li>
-        <li><a href="#language-statement-switch">switch文</a></li>
-        <li><a href="#language-statement-case">case文</a></li>
-        <li><a href="#language-statement-default">default文</a></li>
-        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
-        <li><a href="#language-statement-eval">eval文</a></li>
-        <li><a href="#language-statement-ifrequire">if require文</a></li>
-        <li><a href="#language-statement-next">next文</a></li>
-        <li><a href="#language-statement-last">last文</a></li>
-        <li><a href="#language-statement-return">return文</a></li>
-        <li><a href="#language-statement-croak">croak文</a></li>
-        <li><a href="#language-statement-weaken">weaken文</a></li>
-        <li><a href="#language-statement-expression">式文</a></li>
-        <li><a href="#language-statement-empty">空文</a></li>
-      </ul>
-
-      <h4 id="language-statement-return">return文</h3>
-      <p>
-        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
-      </p>
-<pre>
-return;
-</pre>
-      <p>
-        戻り値がある場合は、<a href="#language-expression">式</a>を指定することができます。
-      </p>
-<pre>
-return 式;
-</pre>
-      <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-
-      <h4 id="language-statement-next">next文</h3>
-      <p>
-        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
-      </p>
-<pre>
-next;
-</pre>
-      <p>
-        <b>next文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    next;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-</pre>
-
-      <h4 id="language-statement-last">last文</h3>
-      <p>
-        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
-      </p>
-<pre>
-last;
-</pre>
-      <p>
-        <b>last文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    last;
-  }
-}
-
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-# switch
-my $num = 3;
-switch ($num) {
-  case 1 :
-    # 処理1
-    last;
-  case 2 :
-    # 処理2
-    last;
-  case 3 :
-    # 処理3
-    last;
-  default:
-    # デフォルト
-}
-</pre>
-      <h4 id="language-statement-expression">式文</h4>
-      <p>
-        式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
-      </p>
-<pre>
-式;
-</pre>
-
-      <p>
-        式文のサンプルです。
-      </p>
-<pre>
-1;
-$var;
-1 + 2;
-foo();
-my $num = 1 + 2;
-</pre>
-
-      <h4 id="language-statement-empty">空文</h4>
-      <p>
-        空文は「;」だけで終わる文のことです。
-      </p>
-<pre>
-;
-</pre>
-
-      <h3 id="language-operator">演算子</h3>
-      <ul class="toc">
-        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
-        <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">論理演算子</a></li>
-        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
-      </ul>
-      <h3 id="language-operator-precedence">演算子の優先順位</h3>
-      <p>
-        演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
-      </p>
-      <table>
-        <tr>
-          <th>結合方向</th>
-          <th>演算子</th>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            <ul>
-            代入演算子「=」<br>
-            加算代入演算子「+=」<br>
-            減算代入演算子「-=」<br>
-            乗算代入演算子「*=」<br>
-            除算代入演算子「/=」<br>
-            剰余代入演算子「%=」<br>
-            ビットAND代入演算子「&=」<br>
-            ビットOR代入演算子「|=」<br>
-            ビット排他OR代入演算子「^=」<br>
-            左シフト代入演算子「<<=」<br>
-            符号付右シフト代入演算子「>>=」<br>
-            符号なし右シフト演算子「>>>=」<br>
-            文字列結合代入演算子「.=」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            条件OR演算子「||」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            条件AND演算子 「&&」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            ビットOR演算子「|」<br>
-            ビットXOR演算子 「^」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            ビットAND演算子「&」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            数値等価演算子「==」<br>
-            数値非等価演算子「!=」<br>
-            文字列等価演算子「eq」<br>
-            文字列非等価演算子「ne」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            数値大なり演算子「>」<br>
-            数値小なり演算子「<」<br>
-            数値大なり等価演算子「>=」<br>
-            数値小なり等価演算子「<=」<br>
-            文字列大なり演算子「gt」<br>
-            文字列大なり等価演算子「ge」<br>
-            文字列小なり演算子「lt」<br>
-            文字列小なり等価演算子「le」<br>
-            isa演算子「isa」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合 
-          </td>
-          <td>
-            スカラ演算子「scalar」<br>
-            文字列長取得演算子「length」<br>
-            require演算子「require」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合 
-          </td>
-          <td>
-            左シフト演算子 「<<」<br>
-            符号付き右シフト演算子「>>」<br>
-            符号なし右シフト演算子「>>>」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            加算演算子「+」<br>
-            減算演算子「-」<br>
-            文字列連結演算子「.」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            乗算演算子「*」<br>
-            除算演算子「/」<br>
-            剰余演算子「%」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            条件NOT演算子「!」<br>
-            ビットNOT演算子「~」<br>
-            リファレンス演算子「\」<br>
-            プラス演算子「+」<br>
-            マイナス演算子「-」<br>
-            配列長取得演算子「@」<br>
-            デリファレンス演算子「$」<br>
-            型キャスト「(型名)」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            非結合
-          </td>
-          <td>
-            前置インクリメント演算子「++」<br>
-            後置インクリメント演算子「++」<br>
-            前置デクリメント演算子「--」<br>
-            後置デクリメント演算子「--」
-          </td>
-        </tr>
-        <tr>
-          <td>
-            右結合
-          </td>
-          <td>
-            new演算子「new」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            アロー演算子「->」<br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            左結合
-          </td>
-          <td>
-            左ブラケット「[」<br>
-            左ブレース「{」<br>
-            左括弧「(」
-          </td>
-        </tr>
-      </table>
-      </p>
       
-      <h3 id="language-block">ブロック</h3>
-      
-      <p>
-        ブロックは「{」で始まり「}」で終わります。
-      </p>
-<pre>
-# ブロック
-{
-
-}
-</pre>
-      <p>
-        ブロックは、「<a href="#language-block-statement">文ブロック</a>」と「<a href="#language-block-other">文ブロックではないブロック</a>」に分けられます。
-      </p>
-      <h4 id="language-block-statement">文ブロック</h4>
-      <p>
-        文ブロックは「<a href="#language-block-statement-simple">単純なブロック</a>」「<a href="#language-block-statement-sub">サブルーチンブロック</a>」「<a href="#language-block-statement-eval">evalブロック</a>」「<a href="#language-block-statement-if">ifブロック</a>」「<a href="#language-block-statement-elsif">elsifブロック</a>」「<a href="#language-block-statement-else">elseブロック</a>」「<a href="#language-block-statement-for">forブロック</a>」「<a href="#language-block-statement-while">whileブロック</a>」「<a href="#language-block-statement-switch">switchブロック</a>」です。
-      </p>
-      <p>
-        文ブロックには、0個以上の<a href="#language-statement">文</a>を記述することができます。
-      </p>
-      <h5 id="language-block-statement-simple">単純なブロック</h5>
-<pre>
-# 単純なブロック
-{
-
-}
-</pre>
-
-      <h5 id="language-block-statement-sub">サブルーチンブロック</h5>
-<pre>
-# サブルーチンのブロック
-sub : int () {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-eval">evalブロック</h5>
-<pre>
-# evalブロック
-eval {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-if">ifブロック</h5>
-<pre>
-# ifブロック
-if (条件1) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-elsif">elsifブロック</h5>
-<pre>
-#elsifブロック
-elsif (条件2) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-else">elseブロック</h5>
-<pre>
-# elseブロック
-else {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-for">forブロック</h5>
-<pre>
-# for ブロック
-for (my $i = 0; $i < 3; $i++) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-while">whileブロック</h5>
-<pre>
-# whileブロック
-while (条件) {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-switch">switchブロック</h5>
-<pre>
-switch (条件) {
-
-}
-</pre>
-      <p>
-        文ブロックは、スコープを作ります。ブロックの中で宣言された変数に、オブジェクトが代入されている場合は、ブロックの終了の直後に、解放されます。
-      </p>
-
-      <h4 id="language-block-other">文ブロックではないブロック</h4>
-      <p>
-        「<a href="#language-block-statement-package">パッケージブロック</a>」「<a href="#language-block-statement-enum">列挙ブロック</a>」は「文ブロックではないブロック」です。
-      </p>
-
-      <h5 id="language-block-statement-package">パッケージブロック</h5>
-<pre>
-# パッケージブロック
-package Foo {
-
-}
-</pre>
-
-      <h5 id="language-block-statement-enum">列挙ブロック</h5>
-<pre>
-# 列挙ブロック
-enum {
-
-}
-</pre>
-      <h3 id="language-type-convertion">型変換</h3>
-      <ul class="toc">
-        <li><a href="#language-type-convertion-narrwing">縮小型変換</a></li>
-        <li><a href="#language-type-convertion-widning">拡大型変換</a></li>
-      </ul>
-      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
-      <p>
-        縮小型変換とは、数値型において広い型から狭い型への変換が行われる場合に適用される変換の規則のことです。
-      </p>
-      <p>
-        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
-      </p>
-      <h4 id="language-type-convertion-widening">拡大型変換</h4>
-      <p>
-        拡大型変換とは、数値型において狭い型から広い型への変換が行われる場合に適用される変換の規則のことです。
-      </p>
-      <p>
-        型の順序は狭い方から「byte」「short」「int」「long」「float」「double」です。
-      </p>
-
       <h3 id="language-literal">リテラル</h3>
-      <ul class="toc">
+      <ul class="list">
         <li><a href="#language-literal-integer">整数リテラル</a></li>
         <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
         <li><a href="#language-literal-character">文字リテラル</a></li>
         <li><a href="#language-literal-string">文字列リテラル</a></li>
       </ul>
-
       <h4 id="language-literal-integer">整数リテラル</h3>
       <p>
         <b>10進数表現</b>
@@ -2442,6 +1983,32 @@ enum {
 "\N{U+3042}\N{U+3044}\N{U+3046}"
 </pre>
       
+      <h3 id="language-string">文字列</h3>
+      <p>
+        SPVMの文字列のデータ表現は、byte型の配列です。特別な内部表現を持たない、単なるバイト列です。
+      </p>
+<pre>
+my $string = new byte[3];
+$string->[0] = 'a';
+$string->[1] = 'b';
+$string->[2] = 'c';
+</pre>
+      <p>
+        byte型の配列は、<a href="#language-type-string">文字列型</a>に代入できます。文字列型は、コンパイル時には要素を変更できない型ですが、実行時はbyte型の配列になります。
+      </p>
+<pre>
+my $string_const : string = $string;
+</pre>
+      <p>
+        <a href="#language-literal-string">文字列リテラル</a>を代入することによって、文字列を作成できます。文字列リテラルを元にしたstring型の新しい文字列を返します。
+      </p>
+<pre>
+my $string_const = "abc";
+</pre>
+      <p>
+        byte[]はC言語の「char*」、文字列型はC言語の「const char*」に該当するように設計されています。
+      </p>
+      
       <h3 id="language-undef">未定義値</h3>
       <p>
         未定義は「undef」で表現されます。
@@ -2461,7 +2028,1667 @@ undef
       <p>
         未定義値は、エクステンションにおいてC言語の値として利用された場合は、0と等しくなることが保証されます。
       </p>
+      <h3 id="language-operator">演算子</h3>
+      <ul class="list">
+        <li><a href="#language-operator-summary">演算子の概要</a></li>
+        <li><a href="#language-operator-operand">オペランド</a></li>
+        <li><a href="#language-operator-unary">単項演算子</a></li>
+        <li><a href="#language-operator-unary-plus">単項プラス演算子</a></li>
+        <li><a href="#language-operator-unary-minus">単項マイナス演算子</a></li>
+        <li><a href="#language-operator-bit-not">ビット否定演算子</a></li>
+        <li><a href="#language-operator-binary">二項演算子</a></li>
+        <li><a href="#language-operator-condition-unary">条件単項演算子</a></li>
+        <li><a href="#language-operator-condition-binary">条件二項演算子</a></li>
+        <li><a href="#language-operator-inc">インクリメント演算子</a></li>
+        <li><a href="#language-operator-dec">デクリメント演算子</a></li>
+        <li><a href="#language-operator-condition">条件演算子</a></li>
+        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-add">加算演算子</a></li>
+        <li><a href="#language-operator-subtract">減算演算子</a></li>
+        <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
+        <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
+        <li><a href="#language-operator-arithmetic">論理演算子</a></li>
+        <li><a href="#language-operator-concat">文字列連結演算子</a></li>
+        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
+      </ul>
+      <h4 id="language-operator-summary">演算子の概要</h4>
+      <p>
+        演算子は、<a href="#language-operator-unary">単項演算子</a>、<a href="#language-operator-binary">二項演算子</a>、<a href="#language-operator-condition-unary">条件単項演算子</a>、<a href="#language-operator-condition-binary">条件二項演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>からなります。
+      </p>
+      <h4 id="language-operator-unary">単項演算子</h4>
+      <p>
+        単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子のことをいいます。<a href="#language-operator-inc">インクリメント演算子</a>と<a href="#language-operator-dec">デクリメント演算子</a>は含みません。
+      </p>
+<pre>
+演算子 式
+</pre>
+      <p>
+        単項演算子は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>単項演算子の一覧</b>
+      </p>
+      <table>
+        <tr>
+          <th>名前</th>
+          <th>演算子</th>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-unary-plus">単項プラス演算子</a>
+          </td>
+          <td>
+            +式
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-unary-minus">単項マイナス演算子</a>
+          </td>
+          <td>
+            -式
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#language-operator-bit-not">ビット否定演算子</a>
+          </td>
+          <td>
+            ~式
+          </td>
+        </tr>
+      </table>
+      <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
+      <p>
+        単項プラス演算子は「+式」で表現されます。
+      </p>
+<pre>
++式
+</pre>
+      <p>
+        単項プラス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行った結果を返します。
+      </p>
+      <p>
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        単項プラス演算子は例外を発生させません。
+      </p>
+      <p>
+        <b>単項プラス演算子のサンプル</b>
+      </p>
+<pre>
+my $num = +10;
+</pre>
+      <h4 id="language-operator-unary-minus">単項マイナス演算子</h4>
+      <p>
+        単項マイナス演算子は「-式」で表現されます。
+      </p>
+<pre>
+-式
+</pre>
+      <p>
+        単項マイナス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、その後、符号を反転させた結果を返します。
+      </p>
+      <p>
+        値が<a href="#language-type-integral">整数型</a>の場合は、符号の反転は、0から引き算した値と全く同じです。SPVMの整数演算は、2の補数によるため、int型あるいはlong型の最小値を反転させた場合は、オーバーフローが発生し、元の値と同じになります。
+      </p>
+      <p>
+        値が<a href="#language-type-floating-point">浮動小数点型</a>の場合は、符号ビットを反転させるだけです。否定は、0からの引き算と同じではありません。もし「x」が「+0.0」であれば「0.0 - x」は「+0.0」ですが「-x」は「-0.0」になります。
+      </p>
+      <p>
+        特別な場合としては以下の場合があります。
+      </p>
+      <ul class="list">
+        <li>NANの符号を反転させたものはNANです。</li>
+        <li>正の無限大の符号を反転させたものは、負の無限大です。</li>
+        <li>正の0を反転させたものは、負の0です。</li>
+      </ul>
+      <p>
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        単項マイナス演算子は例外を発生させません。
+      </p>
+      <p>
+        <b>単項マイナス演算子のサンプル</b>
+      </p>
+<pre>
+my $num = -10;
+</pre>
+      <h4 id="language-operator-bit-not">ビット否定演算子</h4>
+      <p>
+        ビット否定演算子は「~式」で表現されます。
+      </p>
+<pre>
+~式
+</pre>
+      <p>
+        ビット否定演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、すべてのビットを反転させた結果を返します。すべての場合で「~x」は「(-x)-1」と等しくなります。
+      </p>
+      <p>
+        式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        ビット否定演算子は例外を発生させません。
+      </p>
+      <p>
+        <b>ビット否定演算子のサンプル</b>
+      </p>
+<pre>
+my $num = ~0xFF0A;
+</pre>
+      
+      <h4 id="language-operator-arithmetic">算術演算子</h4>
+      <p>
+        算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子からなります。
+      </p>
+      <h4 id="language-operator-add">加算演算子</h4>
+      <p>
+        加算演算子は「+」で表現されます。
+      </p>
+<pre>
+左式 + 右式
+</pre>
+      <p>
+        加算演算子は<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式あるいは、右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+      </p>
+      <p>
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ右式と同じ型になります。
+      </p>
+      <p>
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ左式と同じ型になります。
+      </p>
+      <p>
+        演算結果の型は、拡大型変換された場合は、拡大型変換された型です。
+      </p>
+      <p>
+        加算演算子は、例外を発生させません。
+      </p>
+      <p>
+        <b>整数演算</b>
+      </p>
+      <p>
+        各式が整数型の場合は、整数演算が行われます。
+      </p>
+      <p>
+        整数演算は、左式に右式を加算した数を返します。
+      </p>
+      <p>
+        値がオーバーフローした場合は、符号は反転し、加算した結果が、2の補数表現であるような結果が返されます。たとえば、int型の最大値に1を足した場合は、int型の最小値になります。
+      </p>
+      <p>
+        「左式 - 右式」の結果は「左式 + (-右式)」の結果と常に同じです。
+      </p>
+      <p>
+        「0 - 式」の結果は「-式」の結果と常に同じです。
+      </p>
+      <p>
+        <b>浮動小数点演算</b>
+      </p>
+      <p>
+        各式が浮動小数点型の場合は、浮動小数点演算が行われます。
+      </p>
+      <p>
+        浮動小数点演算は、左式に右式を加算した数を返します。
+      </p>
+      <p>
+        計算結果はIEEE 754演算の規則が適用されます。
+      </p>
+      <p>
+        右式あるいは左式がNANの場合は、結果はNANです。
+      </p>
+      <p>
+        符号が反対の無限大の合計は、NANです。
+      </p>
+      <p>
+        正の無限大に、正の無限大あるいは有限値を足したものは、正の無限大になります。
+      </p>
+      <p>
+        負の無限大に、負の無限大あるいは有限値を足したものは、負の無限大になります。
+      </p>
+      <p>
+        符号が異なる0の合計は、正の0になります。
+      </p>
+      <p>
+        符号が同一の0の合計は、その符号の0になります。
+      </p>
+      <p>
+        絶対値が同じで、符号が異なる値の合計は、正の0になります。
+      </p>
+      <p>
+        各式が、無限大あるいはNANあるいは0でない場合で、同符号か、絶対の異なる異符号の場合は、正しい計算結果が返されます。
+      </p>
+      <p>
+        演算結果の値が大きすぎる場合は、正の無限大になります。
+      </p>
+      <p>
+        演算結果の値が小さすぎる場合は、負の無限大になります。
+      </p>
+      <p>
+        それ以外の場合は、IEEE 754の最近傍への丸めモードを使用して、丸められます。
+      </p>
+      <p>
+        式が「0.0」の場合は「0.0 - 式」は「+0.0」ですが「-式」は「-0.0」です。
+      </p>
+      
+      <h3 id="language-operator-concat">文字列連結演算子</h3>
+      <p>
+        文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返します。
+      </p>
+<pre>
+左式 . 右式
+</pre>
+      <p>
+        左式と右式の両方が、<a href="#language-literal-string">文字列リテラル</a>であった場合は、コンパイル時に連結された文字列リテラルが生成され、それを元にした新しい文字列を返します。
+      </p>
+      <p>
+        
+      </p>
+      <p>
+        左辺あるいは右辺が数値型
+      </p>
+      
+      <h4 id="language-operator-subtract">減算演算子</h4>
+      <p>
+        減算演算子は「-」で表現され、左辺から右辺を減算した数を求めます。
+      </p>
+<pre>
+左式 - 右式
+</pre>
+      <p>
+        減算演算子の仕様は、減算した数を求めること以外は、<a href="#language-operator-add">加算演算子</a>と全く同じです。
+      </p>
+      
+      <h4 id="language-operator-precedence">演算子の優先順位</h4>
+      <p>
+        演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
+      </p>
+      <table>
+        <tr>
+          <th>結合方向</th>
+          <th>演算子</th>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            <ul>
+            代入演算子「=」<br>
+            加算代入演算子「+=」<br>
+            減算代入演算子「-=」<br>
+            乗算代入演算子「*=」<br>
+            除算代入演算子「/=」<br>
+            剰余代入演算子「%=」<br>
+            ビットAND代入演算子「&=」<br>
+            ビットOR代入演算子「|=」<br>
+            ビット排他OR代入演算子「^=」<br>
+            左シフト代入演算子「<<=」<br>
+            符号付右シフト代入演算子「>>=」<br>
+            符号なし右シフト演算子「>>>=」<br>
+            文字列結合代入演算子「.=」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            条件OR演算子「||」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            条件AND演算子 「&&」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            ビットOR演算子「|」<br>
+            ビットXOR演算子 「^」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            ビットAND演算子「&」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            数値等価演算子「==」<br>
+            数値非等価演算子「!=」<br>
+            文字列等価演算子「eq」<br>
+            文字列非等価演算子「ne」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            数値大なり演算子「>」<br>
+            数値小なり演算子「<」<br>
+            数値大なり等価演算子「>=」<br>
+            数値小なり等価演算子「<=」<br>
+            文字列大なり演算子「gt」<br>
+            文字列大なり等価演算子「ge」<br>
+            文字列小なり演算子「lt」<br>
+            文字列小なり等価演算子「le」<br>
+            isa演算子「isa」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合 
+          </td>
+          <td>
+            スカラ演算子「scalar」<br>
+            文字列長取得演算子「length」<br>
+            require演算子「require」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合 
+          </td>
+          <td>
+            左シフト演算子 「<<」<br>
+            符号付き右シフト演算子「>>」<br>
+            符号なし右シフト演算子「>>>」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            加算演算子「+」<br>
+            減算演算子「-」<br>
+            文字列連結演算子「.」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            乗算演算子「*」<br>
+            除算演算子「/」<br>
+            剰余演算子「%」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            条件NOT演算子「!」<br>
+            ビットNOT演算子「~」<br>
+            リファレンス演算子「\」<br>
+            プラス演算子「+」<br>
+            マイナス演算子「-」<br>
+            配列長取得演算子「@」<br>
+            デリファレンス演算子「$」<br>
+            型キャスト「(型名)」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            非結合
+          </td>
+          <td>
+            前置インクリメント演算子「++」<br>
+            後置インクリメント演算子「++」<br>
+            前置デクリメント演算子「--」<br>
+            後置デクリメント演算子「--」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            右結合
+          </td>
+          <td>
+            new演算子「new」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            アロー演算子「->」<br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左結合
+          </td>
+          <td>
+            左ブラケット「[」<br>
+            左ブレース「{」<br>
+            左括弧「(」
+          </td>
+        </tr>
+      </table>
+      <h3 id="language-statement">文</h3>
+      <p>
+        文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
+      </p>
+      <p>
+        文の一覧です。
+      </p>
+      <ul class="list">
+        <li><a href="#language-statement-if">if文</a></li>
+        <li><a href="#language-statement-for">for文</a></li>
+        <li><a href="#language-statement-while">while文</a></li>
+        <li><a href="#language-statement-switch">switch文</a></li>
+        <li><a href="#language-statement-case">case文</a></li>
+        <li><a href="#language-statement-default">default文</a></li>
+        <li><a href="#language-statement-block-simple">単純ブロック</a></li>
+        <li><a href="#language-statement-eval">eval文</a></li>
+        <li><a href="#language-statement-ifrequire">if require文</a></li>
+        <li><a href="#language-statement-next">next文</a></li>
+        <li><a href="#language-statement-last">last文</a></li>
+        <li><a href="#language-statement-return">return文</a></li>
+        <li><a href="#language-statement-croak">croak文</a></li>
+        <li><a href="#language-statement-weaken">weaken文</a></li>
+        <li><a href="#language-statement-expression">式文</a></li>
+        <li><a href="#language-statement-empty">空文</a></li>
+      </ul>
 
+      <h4 id="language-statement-return">return文</h3>
+      <p>
+        return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
+      </p>
+<pre>
+return;
+</pre>
+      <p>
+        戻り値がある場合は、<a href="#language-expression">式</a>を指定することができます。
+      </p>
+<pre>
+return 式;
+</pre>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h4 id="language-statement-next">next文</h3>
+      <p>
+        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
+      </p>
+<pre>
+next;
+</pre>
+      <p>
+        <b>next文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    next;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+</pre>
+
+      <h4 id="language-statement-last">last文</h3>
+      <p>
+        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
+      </p>
+<pre>
+last;
+</pre>
+      <p>
+        <b>last文のサンプル</b>
+      </p>
+<pre>
+# for
+for (my $i = 0; $i < 3; $i++) {
+  if ($i == 1) {
+    last;
+  }
+}
+
+# while
+my $i = 0;
+while ($i < 3;) {
+  if ($i == 1) {
+    next;
+  }
+  $i++;
+}
+
+# switch
+my $num = 3;
+switch ($num) {
+  case 1 :
+    # 処理1
+    last;
+  case 2 :
+    # 処理2
+    last;
+  case 3 :
+    # 処理3
+    last;
+  default:
+    # デフォルト
+}
+</pre>
+      <h4 id="language-statement-expression">式文</h4>
+      <p>
+        式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
+      </p>
+<pre>
+式;
+</pre>
+
+      <p>
+        式文のサンプルです。
+      </p>
+<pre>
+1;
+$var;
+1 + 2;
+foo();
+my $num = 1 + 2;
+</pre>
+
+      <h4 id="language-statement-empty">空文</h4>
+      <p>
+        空文は「;」だけで終わる文のことです。
+      </p>
+<pre>
+;
+</pre>
+
+      <h3 id="language-type">型</h3>
+      <ul class="list">
+        <li><a href="#language-type-summary">型の概要</a></li>
+        <li><a href="#language-type-initial-value">型の初期値</a></li>
+        <li><a href="#language-type-numeric">数値型</a></li>
+        <li><a href="#language-type-integral">整数型</a></li>
+        <li><a href="#language-type-floating-point">浮動小数点型</a></li>
+        <li><a href="#language-type-package">パッケージ型</a></li>
+        <li><a href="#language-type-object">オブジェクト型</a></li>
+        <li><a href="#language-type-class">クラス型</a></li>
+        <li><a href="#language-type-interface">インターフェース型</a></li>
+        <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
+        <li><a href="#language-type-array">配列型</a></li>
+        <li><a href="#language-type-string">文字列型</a></li>
+        <li><a href="#language-type-value">値型</a></li>
+        <li><a href="#language-type-ref">リファレンス型</a></li>
+      </ul>
+      <h4 id="language-type-summary">型の概要</h3>
+      <p>
+        SPVMは、静的型言語です。すべてのデータは静的な型を持ちます。
+      </p>
+      <p>
+        レキシカル変数の宣言、フィールドの定義、パッケージ変数の定義、サブルーチンの定義の引数と戻り値において、型が指定される必要があります。
+      </p>
+      <p>
+        レキシカル変数の宣言においては、型推論を利用して、暗黙的に型を指定することもできます。
+      </p>
+      <h4 id="language-type-initial-value">型の初期値</h3>
+      <p>
+        レキシカル変数の初期値、<a href="#language-package-var-initial-value">パッケージ変数の初期値</a>、オブジェクトの生成におけるフィールドの初期値は、型の初期値によって決まります。
+      </p>
+      <p>
+        型の初期化値の一覧です。データにおけるすべてのビット列は0に設定されます。
+      </p>
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            初期値
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>オブジェクト型</b>
+          </td>
+          <td>
+            undef
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>値型</b>
+          </td>
+          <td>
+            すべてのフィールドが0
+          </td>
+        </tr>
+      </table>
+      
+      <h4 id="language-type-numeric">数値型</h3>
+      <p>
+        数値型は「<a href="#language-type-integral">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
+      </p>
+      <h4 id="language-type-integral">整数型</h3>
+      <p>
+        SPVMの整数型は以下の4つです。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            説明
+          </th>
+          <th>
+            範囲
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            8bit符号付整数型
+          </td>
+          <td>
+            -128～127
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            16bit符号付整数型
+          </td>
+          <td>
+            -32768～32767
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            32bit符号付整数型
+          </td>
+          <td>
+            -2147483648～2147483647
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            64bit符号付整数型
+          </td>
+          <td>
+            -9223372036854775808～9223372036854775807
+          </td>
+        </tr>
+      </table>
+      <p>
+        SPVMの整数型には、符号なし整数型は存在しません。
+      </p>
+      <p>
+        負の値は、2の補数で表現されます。
+      </p>
+      <p>
+        整数の計算規則については、算術演算子を参考にしてください。
+      </p>
+      <h4 id="language-type-floating-point">浮動小数点型</h3>
+      <p>
+        SPVMの浮動小数点型は以下の2つです。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>型名</b>
+          </th>
+          <th>
+            説明
+          </th>
+          <th>
+            範囲
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            単精度浮動小数点型 - 32bitで浮動小数点を表現します
+          </td>
+          <td>
+            C標準マクロ FLT_MIN～FLT_MAX
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            倍精度浮動小数点型 - 64bitで浮動小数点を表現します
+          </td>
+          <td>
+            C標準マクロ DBL_MIN～DBL_MAX
+          </td>
+        </tr>
+      </table>
+      <p>
+        浮動小数点の表現方法はIEEE 754です。
+      </p>
+      <p>
+        浮動小数点の計算規則については、算術演算子を参考にしてください。
+      </p>
+      <h4 id="language-type-package">パッケージ型</h4>
+      <p>
+        パッケージ型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型のことをいいます。
+      </p>
+<pre>
+package Foo {
+
+}
+</pre>
+      <p>
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。
+      </p>
+<pre>
+# クラス型
+package Foo {
+
+}
+
+# インターフェース型
+package Foo : interface {
+
+}
+
+# 値型
+package Foo : value_t {
+
+}
+</pre>
+      <p>
+        <a href="#language-type-pointer">ポインタ型</a>は、クラス型でもあるので、ポインタ型もパッケージ型になります。
+      </p>
+<pre>
+# ポインタ型
+package Foo : pointer_t {
+
+}
+</pre>
+
+      <h4 id="language-type-object">オブジェクト型</h4>
+      <p>
+        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
+      </p>
+      <p>
+        オブジェクト型の値は「汎用オブジェクト型」に代入できます。
+      </p>
+<pre>
+my $object : object = new Foo;
+my $object : object = new Foo[];
+my $object : object = "abc";
+</pre>
+      <h4 id="language-type-class">クラス型</h4>
+      <p>
+        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
+      </p>
+<pre>
+packag Foo {
+  
+}
+</pre>
+      <p>
+        クラス型はnew演算子によって、オブジェクトを生成することができます。
+      </p>
+<pre>
+my $foo = new Foo;
+</pre>
+      <p>
+        クラス型は<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
+        クラス型は<a href="#language-type-package">パッケージ型</a>です。
+      </p>
+      <p>
+        「<a href="#language-type-pointer">ポインタ型</a>はクラス型です。
+      </p>
+
+      <h4 id="language-type-pointer">ポインタ型</h4>
+      <p>
+        ポインタ型とは「<a href="#language-package-definition">パッケージの定義</a>」において「pointer_t デスクリプタ」が指定されたものをいいます。
+      </p>
+<pre>
+package Foo : pointer_t {
+  
+}
+</pre>
+      <p>
+        ポインタ型は、クラス型の一種です。
+      </p>
+      <p>
+        ポインタ型のデータには、C言語のポインタを保存することができます。
+      </p>
+      <p>
+        ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーが発生します。
+      </p>
+      <h4 id="language-type-interface">インターフェース型</h4>
+      <p>
+        インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface デスクリプタ」が指定されたものをいいます。
+      </p>
+<pre>
+package SPVM::Comparator : interface {
+  sub compare : int ($self : self, $x1 : object, $x2 : object);
+}
+</pre>
+      <p>
+        インターフェスは、C言語における関数ポインタと同一の機能を提供するために設計されました。
+      </p>
+      <p>
+        インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドである必要があります。
+      </p>
+      <p>
+        インターフェース型は「フィールドの定義」「パッケージ変数の定義」を持つことはできません。
+      </p>
+      <p>
+        インターフェース型の値を、new演算子によって実体化することはできません。
+      </p>
+      <p>
+        インターフェース型は「パッケージ型」です。
+      </p>
+      <p>
+        インターフェース型は「オブジェクト型」です。
+      </p>
+      <p>
+        インターフェース型には、定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトを代入できます。
+      </p>
+<pre>
+# クラスの定義
+package SomeComparator {
+  sub compare : int ($self : self, $x1 : object, $x2 : object) {
+    
+  }
+}
+
+# インターフェース型への代入
+my $comparator : comparator = new SomeComparator;
+</pre>
+      <p>
+        インターフェース型には、同一のシグネチャを持つ無名サブルーチンを代入することができます。
+      </p>
+<pre>
+# インターフェース型への代入
+my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+  
+}
+</pre>
+      <h4 id="language-type-any-object">汎用オブジェクト型</h4>
+      <p>
+        汎用オブジェクト型は「object」で表現します。C言語の「void*」型を表現するために設計されました。
+      </p>
+<pre>
+my $object : object;
+</pre>
+      <p>
+        汎用オブジェクト型には「オブジェクト型」の値を代入できます。
+      </p>
+<pre>
+my $object : object = new Foo;
+my $object : object = "abc";
+my $object : object = new Foo[3];
+</pre>
+      <h4 id="language-type-basic">基本型</h4>
+      <p>
+        次元を持たない型を基本型と呼びます。<a href="#language-type-numeric">数値型</a>、<a href="#language-type-package">パッケージ型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-string">文字列型</a>は、基本型です。
+      </p>
+      <h4 id="language-type-array">配列型</h4>
+      <p>
+        配列型は、連続した複数のデータ領域を表現します。<a href="#language-type-basic">基本型</a>は、配列にすることができます。
+      </p>
+<pre>
+int[]
+double[]
+Point[]
+object[]
+string[]
+</pre>
+      <p>
+        配列は次元を持ち最大255次元まで表現できます。
+      </p>
+<pre>
+# 二次元
+int[][]
+
+# 三次元
+int[][][]
+</pre>
+      <p>
+        配列型は、<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
+        配列を作成するには、new演算子を使用します。以下の例では、要素数が3のint型の配列を作成しています。
+      </p>
+<p>
+my $nums = new int[3];
+</p>
+      <p>
+        多次元配列を作成するときも、new演算子を使用します。以下の例では、要素数が3のint[]型の配列を作成しています。
+      </p>
+<p>
+my $nums = new int[][3];
+</p>
+      
+      <h4 id="language-type-string">文字列型</h4>
+      <p>
+        文字列型は、文字列を表現する型です。stringによって表現します。C言語の「const char*」を表現するために設計されました。
+      </p>
+<pre>
+my $str : string;
+</pre>
+      <p>
+        文字列リテラルによって、生成された文字列オブジェクトを代入できます。
+      </p>
+<pre>
+my $str : string = "abc";
+</pre>
+      <p>
+        SPVMの文字列は、要素を変更できないバイト型の配列です。配列アクセスを行って、文字を取得することができます。
+      </p>
+<pre>
+# 文字の取得
+my $ch = $str->[1];
+</pre>
+      <p>
+        要素を変更しようとした場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 要素の変更はコンパイルエラー
+$str->[1] = 'd';
+</pre>
+      <p>
+        文字列型は、コンパイルが終わった後は、バイト型の配列とまったく同じものになります。たとえば、一つ目の表現は、二つ目の表現として扱われます。
+      </p>
+<pre>
+# isa 文字列型
+if ($str isa string) {
+  
+}
+
+# isa バイト型の配列
+if ($str isa byte[]) {
+  
+}
+</pre>
+      <p>
+        SPVMの文字列は、変更不可ですが、これは、コンパイル時チェックであることに注意してください。
+      </p>
+      <p>
+        文字列型は、byte[]型に、キャストすることができ、実行時に文字列を変更することができます。
+      </p>
+<pre>
+my $bytes = (byte[])$str;
+$bytes->[1] = 'd';
+</pre>
+      <p>
+        文字列は、常に変更が可能であるものとして、扱ってください。
+      </p>
+
+      <h4 id="language-type-value">値型</h4>
+      <p>
+        値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
+      </p>
+      <p>
+        パッケージの定義において「value_t」デスクリプタを指定することで、値型となります。
+      </p>
+<pre>
+package Point_3i : value_t {
+  has x : int;
+  has y : int;
+  has z : int;
+}
+</pre>
+      <p>
+        このサンプルでは、3つの連続したint型を「Point_3i」として定義しています。
+      </p>
+      <p>
+        フィールドに指定できるのは、整数型と浮動小数点型だけです。
+      </p>
+      <p>
+        値型のフィールドの個数の最大値は16個に制限されています。
+      </p>
+      <p>
+        すべてのフィールドのデータ型は、同一の型である必要があります。
+      </p>
+      <p>
+        利用する場合は、変数の宣言を行ってください。すべての領域が、0で初期化されます。
+      </p>
+<pre>
+my $point : Point_3i;
+</pre>
+      <p>
+        値型のデータは、サブルーチンのスタック領域に確保されます。
+      </p>
+      <p>
+        値型のデータは、連続していることが保証されます。
+      </p>
+      <p>
+        値型の名前は、パッケージ名の規則を満たしている必要があります。
+      </p>
+      <p>
+        それに加えて、最後が「_」「フィールドの個数」「サフィックス」で終わる必要があります。
+      </p>
+      <p>
+        フィールドの個数は、実際に定義されているフィールドの個数と一致している必要があります。
+      </p>
+      <p>
+        サフィックスは、実際に定義されている数値型と対応している必要があります。
+      </p>
+      <p>
+        不正な値型の定義の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>値型のサフィクスの一覧</b>
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>数値型</b>
+          </th>
+          <th>
+            サフィックス
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            b
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            s
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            i
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            l
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            f
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            d
+          </td>
+        </tr>
+      </table>
+
+      <p>
+        値型のフィールドの設定と取得は、アロー演算子で行うことができます。
+      </p>
+<pre>
+# 値型のフィールドの取得
+my $x = $point->{x};
+
+# 値型のフィールドの設定
+$point->{x} = 1;
+</pre>
+      <p>
+        サブルーチンの引数として値型を渡す場合は、内部的にはフィールドで定義された複数のデータ型に展開されて渡されます。
+      </p>
+<pre>
+# SPVM上
+foo($point);
+
+# 内部
+foo($x, $y, $z);
+</pre>
+      <p>
+        このことはSPVMから値型を利用している場合は、意識する必要がありませんが、エクステンションにおいて、サーブルーチンの引数を受け取るときに、意識する必要があります。
+      </p>
+      <p>
+        値型は配列にすることができます。この場合、配列の領域は、値型として定義されたデータがヒープ領域上で、連続していることが保証されます。
+      </p>
+     
+<pre>
+my $points : Point_3i[] = new Point_3i[];
+</pre>
+      <h4 id="language-type-ref">リファレンス型</h4>
+      <p>
+        リファレンス型とは、変数への参照を表現する型のことです。数値型か値型の名前の後ろに「&」を付けることで定義できます。
+      </p>
+<pre>
+my $num : int;
+my $num_ref : int& = \$num;
+
+my $point : Point_3i;;
+my $point_ref : Point_3i& = \$point;
+</pre>
+      <p>
+        リファレンス型は、単独では存在できず、リファレンスが代入される必要があります。
+      </p>
+      <p>
+        リファレンスにできるのは、数値型と値型のみです。オブジェクト型をリファレンスにすることはできません。
+      </p>
+      <p>
+        リファレンス型は、サブルーチンの引数にすることができます。
+      </p>
+<pre>
+foo($num_ref);
+foo($point_ref);
+</pre>
+      <p>
+        デリファレンスすることで、参照先の値を取得したり、変更することができます。
+      </p>
+<pre>
+# の値を
+my $num2 = $$num_ref;
+
+# 数値型の値を変更
+$$num_ref = 3;
+
+# 値型の値を取得
+my $point2 = $$point_ref;
+
+# 値型の値を設定
+$$point_ref = $point2;
+</pre>
+
+      <p>
+        リファレンス型の対象が値型であった場合に、値型のフィールドの設定と取得は、アロー演算子で行うことができます。
+      </p>
+<pre>
+# リファレンス型の対象が値型であった場合に、値型のフィールドを取得
+my $x = $point_ref->{x};
+
+# リファレンス型の対象が値型であった場合に、値型のフィールドを設定
+$point_ref->{x} = 1;
+</pre>
+      <h3 id="language-type-inference">型推論</h3>
+      <p>
+        型推論によって、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>するときに、<a href="#language-type">型</a>の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
+      </p>
+<pre>
+# int
+my $num = 1;
+
+# double
+my $num = 1.0;
+
+# Foo
+my $foo = new Foo;
+</pre>
+      <h3 id="language-type-compatible">型の互換性</h3>
+      <p>
+        型に互換性があるというのは、型変換なしで、値の移動ができる型のことです。
+      </p>
+      <p>
+        型に互換性があるのは次の場合です。
+      </p>
+      <p>
+        <b>移動元と移動先の型が同名の場合</b>
+      </p>
+<pre>
+my $num1 : int;
+my $num2 : int;
+$num1 = $num2;
+</pre>
+      <p>
+        <b>移動元の型がbyte[]型で、移動先の型が文字列型の場合</b>
+      </p>
+<pre>
+my $bytes = new byte[3];
+my $str : string;
+$str = $bytes;
+</pre>
+      <p>
+        <b>移動元の型がオブジェクト型で、移動先の型が汎用オブジェクト型の場合</b>
+      </p>
+<pre>
+my $foo : Foo = new Foo;
+my $object : object;
+$object = $foo;
+</pre>
+      <p>
+        <b>移動元の型と移動先の型が、汎用オブジェクト型あるいは、汎用オブジェクト型の配列で、移動元の型の次元数が、移動先の型の次元数以上の場合</b>
+      </p>
+<pre>
+my $objects_dim2_src : object[];
+my $objects_dim1_dist : object;
+$objects_dim1_dist = $objects_dim2_src;
+</pre>
+      <p>
+        注意点として、汎用オブジェクトの配列と基本型の配列には互換性はありません。
+      </p>
+<pre>
+# コンパイルエラー
+my $objets : object[] = new int[3];
+</pre>
+      <p>
+        型に互換性がない場合は、<a href="#language-type-convertion-implicite">暗黙的な型変換</a>が試みられます。暗黙の型変換に失敗した場合は、コンパイル時エラーが発生します。
+      </p>
+      
+      <h3 id="language-type-convertion">型変換</h3>
+      <ul class="list">
+        <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
+        <li><a href="#language-type-convertion-explicite">明示的な型変換</a></li>
+        <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
+        <li><a href="#language-type-convertion-unary-widening">単項拡大型変換</a></li>
+        <li><a href="#language-type-convertion-narrowing">縮小型変換</a></li>
+        <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
+        <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
+        <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
+        <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
+      </ul>
+      <h4 id="language-type-convertion-implicite">暗黙的な型変換</h4>
+      <p>
+        暗黙的な型変換とは、SPVMによって行われる自動的な型変換のことです。次の箇所が、暗黙的な型変換が行われる可能性のある個所です。
+      </p>
+      <ul class="list">
+        <li>異なる型に代入する場合</li>
+        <li>異なる型のサブルーチンの引数に渡す場合</li>
+        <li>戻り値とは異なる型を返却する場合</li>
+      </ul>
+      <p>
+        次の場合に暗黙的な型変換が行われます。
+      </p>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の拡大型変換
+my $num : long = 123;
+my $num : double = 12.5f;
+</pre>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の縮小型変換
+my $num : byte = 123;
+my $num : short = 134;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : object = $num;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が対応する数値を表現するオブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : SPVM::Int = $num;
+</pre>
+      <p>
+        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
+      </p>
+<pre>
+# object型からの暗黙のアンボクシング変換 - 
+my $object : object;
+my $num : int = $object;
+</pre>
+      <p>
+        移動元の型が数値を表現するオブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。
+      </p>
+<pre>
+# 数値を表現するオブジェクト型からの暗黙のアンボクシング変換
+my $num_obj = SPVM::Int->new(3);
+my $num : int = $num_obj;
+</pre>
+
+      <h4 id="language-type-convertion-explicite">明示的な型変換</h4>
+      <p>
+        明示的な型変換とは、型変換を明示的に記述して行う型変換のことを言います。「(」「型名」「)」と記述します。
+      </p>
+<pre>
+(long)
+</pre>
+      int型の値をlong型に変換するサンプルは以下のようになります。
+<pre>
+my $num = (long)3;
+</pre>
+      <p>
+        移動元の型と指定した型が同一の場合は、単に値のコピーになります。
+      </p>
+<pre>
+my $num : int = (int)4;
+</pre>
+      <p>
+        明示的な型変換の一覧です。
+      </p>
+      <p>
+        移動元の型と指定した型における変換の内容の一覧です。移動元の型と指定した型において<a href="#language-type-compatible">型の互換性</a>がなく、この一覧にない場合は、コンパイルエラーになります。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>指定した型</b>
+          </th>
+          <th>
+            <b>移動元の型</b>
+          </th>
+          <th>
+            変換の内容
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte[]</b>
+          </td>
+          <td>
+            <b>string</b>
+          </td>
+          <td>
+            オブジェクトがコピーされます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>大きな数値型</b>
+          </td>
+          <td>
+            <b>小さな数値型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>小さな数値型</b>
+          </td>
+          <td>
+            <b>大きな数値型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>対応する数値を表現するオブジェクト型</b>
+          </td>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>汎用オブジェクト型</b>
+          </td>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <b>対応する数値を表現するオブジェクト型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <b>汎用オブジェクト型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>文字列型</b>
+          </td>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            数値が、C標準のsprintf関数の「%g」フォーマットを使って、文字列化されます。
+          </td>
+        </tr>
+      </table>
+      
+      <h4 id="language-type-convertion-numeric-type-order">数値型の順序</h4>
+      <p>
+        <a href="#language-type-numeric">数値型</a>は、型の順序を持ちます。型の順序は小さい方から「byte」「short」「int」「long」「float」「double」です。
+      </p>
+      <h4 id="language-type-convertion-unary-widening">単項拡大型変換</h4>
+      <p>
+        単項拡大型変換とは、byte型とshort型の値を、int型に拡大する変換のことをいいます。int型以上の型の場合は、変換が行われません。
+      </p>
+      <p>
+        型の拡大の前後で、数値としての同一性が保たれます。たとえば、byte型の「-123」を、単項拡大型変換をするとint型の「-123」になります。
+      </p>
+      <p>
+        単項拡大型変換が行われるのは以下の場合です。
+      </p>
+      <ul class="list">
+        <li>配列のインデックス</li>
+        <li>配列を作成する場合の次元</li>
+        <li>単項プラス演算子のオペランド</li>
+        <li>単項マイナス演算子のオペランド</li>
+        <li>シフト演算子「<<」「>>」「>>>」の左右のオペランド</li>
+      </ul>
+      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
+      <p>
+        縮小型変換とは、<a href="#language-type-numeric">数値型</a>において大きい型から小さい型への変換が行われる場合に適用される変換の規則のことです。
+      </p>
+      <h4 id="language-type-convertion-widening">拡大型変換</h4>
+      <p>
+        拡大型変換とは、<a href="#language-type-numeric">数値型</a>において小さい型から大きい型への変換が行われる場合に適用される変換の規則のことです。
+      </p>
+      <h4 id="language-type-convertion-boxing">ボクシング変換</h4>
+      <p>
+        ボクシング変換とは、数値型の値を、数値を表現するオブジェクト型に変換する操作のことをいいます。
+      </p>
+      <h4 id="language-type-convertion-unboxing">アンボクシング変換</h4>
+      <p>
+        アンボクシング変換とは、数値を表現するオブジェクト型の値を、対応する数値型の値に変換する操作のことをいいます。
+      </p>
+      <h4 id="language-type-numeric-object">数値を表現するオブジェクト型</h4>
+      <p>
+        SPVMには、数値を表現するオブジェクト型として以下の型があります。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>数値型</b>
+          </th>
+          <th>
+            対応するオブジェクト型
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            SPVM::Byte
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            SPVM::Short
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            SPVM::Int
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            SPVM::Long
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            SPVM::Float
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            SPVM::Double
+          </td>
+        </tr>
+      </table>
+      <h3 id="language-auto-loaded-module">自動的に読み込まれるモジュール</h3>
+      <p>
+        自動的に読み込まれるモジュールは以下です。<a href="language-use-module">use</a>キーワードによって読み込まなくても利用することができます。
+      </p>
+      <ul class="list">
+        <li>SPVM::CORE</li>
+        <li>SPVM::Byte</li>
+        <li>SPVM::Short</li>
+        <li>SPVM::Int</li>
+        <li>SPVM::Long</li>
+        <li>SPVM::Float</li>
+        <li>SPVM::Double</li>
+        <li>SPVM::Bool</li>
+      </ul>
+      
       <h2 id="stdfunc">標準関数</h2>
       <p>
         SPVMの標準関数の一覧です。
@@ -2503,6 +3730,10 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
+      <h3>定数畳み込み最適化は行われますか。</h3>
+      <p>
+        通常は、定数畳み込みの最適化は、行われませんが、プリコンパイルされたサブルーチンでは、定数畳み込みがCコンパイラによって試みらるでしょう。
+      </p>
       <h3>演算子の優先順位でPerlと異なる点を教えてください</h3>
       <p>
         演算子の優先順位はPerlをベースにして作成されており、ほぼPerlの優先順位だと考えて大丈夫です。
@@ -2888,7 +4119,7 @@ package Foo {
       </p>
       <h3>ドキュメント最終更新日</h3>
       <p>
-        2018年12月29日
+        2019年1月3日
       </p>
       <h2>明日は</h2>
       
@@ -2900,6 +4131,7 @@ package Foo {
       </p>
     </div>
     <div class="footer">
+      <div><a href="javascript:void(0)" class="to-top">▲</a></div>
       <a href="https://github.com/yuki-kimoto/SPVM">SPVMプロジェクト</a>
     </div>
   </body>
