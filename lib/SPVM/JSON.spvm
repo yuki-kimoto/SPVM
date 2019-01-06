@@ -1,0 +1,464 @@
+package SPVM::JSON {
+  use SPVM::Hash;
+  use SPVM::List;
+  use SPVM::Int;
+  use SPVM::Long;
+  use SPVM::Double;
+  use SPVM::Bool;
+
+  has indent : public int;
+  has indent_length : public int;
+  has space_before : public int;
+  has space_after : public int;
+  has canonical : public int;
+
+  sub _skip_spaces : void ($s : string, $i : int&, $end : int) {
+    while (1) {
+      if ($$i == $end) {
+        return;
+      }
+      unless ($s->[$$i] == ' ' || $s->[$$i] == '\n' || $s->[$$i] == '\t' || $s->[$$i] == '\r') {
+        last;
+      }
+      $$i++;
+    }
+  }
+
+  sub _skip_spaces_at_not_end : void ($s : string, $i : int&, $end : int) {
+    _skip_spaces($s, $i, $end);
+    if ($$i == $end) {
+      croak "Incomplete hash";
+    }
+  }
+
+  sub _dump_remain : string ($s : string, $i : int&, $end : int) {
+    my $remain = "";
+    for (my $k = $$i; $k < $end; $k++) {
+      $remain .= $s->[$k];
+    }
+    return $remain;
+  }
+
+  sub _expect_token : void ($s : string, $i : int&, $end : int, $expected : string) {
+    my $length = length $expected;
+    unless ($$i + $length <= $end) {
+      croak "Expected token: $expected doesn't exist";
+    }
+    my $begin = $$i;
+    while (1) {
+      unless ($s->[$$i] == $expected->[$$i - $begin]) {
+        croak "Expected token: $expected doesn't exist";
+      }
+      $$i++;
+      if ($$i - $begin == $length) {
+        last;
+      }
+    }
+  }
+
+  sub _decode_string : string ($self : self, $s : string, $i : int&, $end : int) {
+    # TODO: change better way to substr
+    my $chars = SPVM::List->new;
+    _expect_token($s, $i, $end, "\"");
+    while (1) { 
+      if ($$i >= $end || $s->[$$i] == '"') {
+        last;
+      }
+      $chars->push(SPVM::Int->new($s->[$$i]));
+      ++$$i;
+    }
+    if ($$i == $end) {
+      croak "Invalid string. end-quote doesn't exist";
+    }
+    _expect_token($s, $i, $end, "\"");
+    my $chars_length = $chars->length;
+    my $value = new byte [$chars_length];
+    for (my $k = 0; $k < $chars_length; $k++) {
+      my $got = ((SPVM::Int)$chars->shift)->val;
+      $value->[$k] = (byte)$got;
+    }
+    return (string)$value;
+  }
+
+  sub _decode_digits : object ($self : self, $s : string, $i : int&, $end : int) {
+    my $digits : long = 0;
+    my $offset = 0;
+    my $has_digit = 0;
+    my $has_sign = 0;
+    my $decimal_stat = 0; # 0: '.' hasn't appeared yet. 1: '.' or 'e' has already appeared. 2: value is "0" or next char should be '.'
+    if ($s->[$$i] == '-') {
+      $$i++;
+      $has_sign = 1;
+    }
+    if ($s->[$$i] == '0') {
+      ++$$i;
+      $has_digit = 1;
+      $decimal_stat = 2;
+    }
+    while ($$i < $end) {
+      if ($s->[$$i] == '.') {
+        if ($decimal_stat == 1) {
+          croak "Invalid digits: Dot should appear at most once";
+        }
+        unless ($has_digit) {
+          croak "Invalid digits: Not found digits before dot";
+        }
+        $decimal_stat = 1;
+        ++$$i;
+        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          croak "Invalid digits: Not found digits after dot";
+        }
+        $digits *= 10;
+        $digits += $s->[$$i++] - '0';
+        ++$offset;
+      }
+      elsif ($decimal_stat == 2) {
+        # value is "0"
+        last;
+      }
+      elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
+        $has_digit = 1;
+        if ($decimal_stat == 1) {
+          $digits *= 10;
+          $digits += $s->[$$i++] - '0';
+          ++$offset;
+        }
+        else {
+          $digits *= 10;
+          $digits += $s->[$$i++] - '0';
+        }
+      }
+      elsif ($s->[$$i] == 'e') {
+        ++$$i;
+        $decimal_stat = 1;
+        unless ($$i < $end && ($s->[$$i] == '+') || ($s->[$$i] == '-')) {
+          croak "Invalid digits: '+' or '-' is expected after 'e'";
+        }
+        my $side : int; # -1: "e+XX", +1: "e-XX"
+        if ($s->[$$i++] == '+') {
+          $side = -1;
+        }
+        else {
+          $side = +1;
+        }
+        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          croak "Invalid digits: digits should exist after 'e'";
+        }
+        my $exp = $s->[$$i++] - '0';
+        while ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
+          $exp *= 10;
+          $exp += $s->[$$i++] - '0';
+        }
+        $offset += $side * $exp;
+      }
+      else {
+        # digits has decoded.
+        last;
+      }
+    }
+
+    unless ($has_digit) {
+      croak "Invalid digits: Not found digits after '-'";
+    }
+    if ($decimal_stat == 1) {
+      my $value = (double) $digits / pow(10, $offset);
+      if ($has_sign) {
+        $value *= -1;
+      }
+      return SPVM::Double->new($value);
+    }
+    elsif ($digits > INT32_MAX()) {
+      my $value = $digits;
+      if ($has_sign) {
+        $value *= -1;
+      }
+      return SPVM::Long->new($value);
+    }
+    else {
+      my $value = (int)$digits;
+      if ($has_sign) {
+        $value *= -1;
+      }
+      return SPVM::Int->new($value);
+    }
+  }
+
+  sub _decode_true : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "true");
+    return SPVM::Bool->TRUE;
+  }
+
+  sub _decode_false : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "false");
+    return SPVM::Bool->FALSE;
+  }
+
+  sub _decode_hash : SPVM::Hash ($self : self, $s : string, $i : int&, $end : int) {
+    my $hash = SPVM::Hash->new;
+    my $has_element = 0;
+    _expect_token($s, $i, $end, "{");
+    while (1) {
+      # end of hash
+      _skip_spaces_at_not_end($s, $i, $end);
+      if ($s->[$$i] == '}') {
+        last;
+      }
+
+      # comma
+      if ($has_element) {
+        _expect_token($s, $i, $end, ",");
+        _skip_spaces_at_not_end($s, $i, $end);
+      }
+      else {
+        $has_element = 1;
+      }
+
+      # key
+      my $key = $self->_decode_string($s, $i, $end);
+
+      # separator
+      _skip_spaces_at_not_end($s, $i, $end);
+      _expect_token($s, $i, $end, ":");
+
+      # value
+      _skip_spaces_at_not_end($s, $i, $end);
+      $hash->set($key, $self->_decode_value($s, $i, $end));
+    }
+    _expect_token($s, $i, $end, "}");
+    return $hash;
+  }
+
+  sub _decode_list : SPVM::List ($self : self, $s : string, $i : int&, $end : int) {
+    _expect_token($s, $i, $end, "[");
+    my $list = SPVM::List->new;
+    my $has_element = 0;
+    while (1) {
+      # end of list
+      _skip_spaces_at_not_end($s, $i, $end);
+      if ($s->[$$i] == ']') {
+        last;
+      }
+
+      # comma
+      if ($has_element) {
+        _expect_token($s, $i, $end, ",");
+        _skip_spaces_at_not_end($s, $i, $end);
+      }
+      else {
+        $has_element = 1;
+      }
+      $list->push($self->_decode_value($s, $i, $end));
+    }
+    _expect_token($s, $i, $end, "]");
+    return $list;
+  }
+
+  sub _decode_value : object ($self : self, $s : string, $i : int&, $end : int) {
+    # objects
+    _skip_spaces_at_not_end($s, $i, $end);
+    if ($s->[$$i] == '{') {
+      return $self->_decode_hash($s, $i, $end);
+    }
+    elsif ($s->[$$i] == '[') {
+      return $self->_decode_list($s, $i, $end);
+    }
+
+    # primitives
+    elsif ($s->[$$i] == '"') {
+      return $self->_decode_string($s, $i, $end);
+    }
+    elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9' || $s->[$$i] == '-') {
+      return $self->_decode_digits($s, $i, $end);
+    }
+    elsif ($s->[$$i] == 't') {
+      return $self->_decode_true($s, $i, $end);
+    }
+    elsif ($s->[$$i] == 'f') {
+      return $self->_decode_false($s, $i, $end);
+    }
+
+    # unknown token
+    else {
+      croak "Unexpected token. Remains... '" . _dump_remain($s, $i, $end) . "'";
+    }
+  }
+
+  sub _make_indent : string ($self : self, $depth : int) {
+    unless ($depth > 0 && $self->{indent} && $self->{indent_length} > 0) {
+      return "";
+    }
+    my $sum_length = $self->{indent_length} * $depth;
+    my $indent_bytes = new byte [$sum_length];
+    for (my $i = 0; $i < $sum_length; $i++) {
+      $indent_bytes->[$i] = ' ';
+    }
+    return (string)$indent_bytes;
+  }
+
+  # TODO: Use separated sort function from this module
+  sub _sort_keys : void ($keys : string[]) {
+    for (my $i = 0; $i < @$keys - 1; $i++) {
+      for (my $j = @$keys - 1; $j > $i; $j--) {
+        if ($keys->[$j - 1] gt $keys->[$j]) {
+          my $temp = $keys->[$j - 1];
+          $keys->[$j - 1] = $keys->[$j];
+          $keys->[$j] = $temp;
+        }
+      }
+    }
+  }
+
+  sub _encode_value : string ($self : self, $o : object, $depth : int) {
+    # objects
+    if ($o isa SPVM::Hash) {
+      my $text = "";
+      if ($self->{indent}) {
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
+      }
+      $text .= "{";
+      if ($self->{indent}) {
+        $text .= "\n";
+      }
+      my $hash = (SPVM::Hash)$o;
+      my $keys = $hash->keys;
+      if ($self->{canonical}) {
+        _sort_keys($keys); # TODO: Use separated sort function from this module
+      }
+      for (my $i = 0; $i < @$keys; $i++) {
+        if ($i > 0) {
+          $text .= ",";
+          if ($self->{indent}) {
+            $text .= "\n";
+          }
+        }
+        if ($self->{indent}) {
+          $text .= $self->_make_indent($depth + 1);
+        }
+        $text .= "\"" . $keys->[$i] . "\"";
+        if ($self->{space_before}) {
+          $text .= " ";
+        }
+        $text .= ":";
+        if ($self->{space_after}) {
+          $text .= " ";
+        }
+        unless ($hash->exists($keys->[$i])) {
+          croak "Unexpected error. Not found key: " . $keys->[$i];
+        }
+        $text .= $self->_encode_value($hash->get($keys->[$i]), $depth + 1);
+      }
+      if ($self->{indent}) {
+        $text .= "\n";
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
+      }
+      $text .= "}";
+      return $text;
+    }
+    elsif ($o isa SPVM::List) {
+      my $text = "";
+      $text .= "[";
+      if ($self->{indent}) {
+        $text .= "\n";
+      }
+      my $list = (SPVM::List)$o;
+      my $length = $list->length;
+      for (my $i = 0; $i < $length; $i++) {
+        if ($i > 0) {
+          $text .= ",";
+          if ($self->{indent}) {
+            $text .= "\n";
+          }
+        }
+        if ($self->{indent}) {
+          $text .= $self->_make_indent($depth + 1);
+        }
+        $text .= $self->_encode_value($list->get($i), $depth + 1);
+      }
+      if ($self->{indent}) {
+        $text .= "\n";
+        my $indent = $self->_make_indent($depth);
+        unless ($indent eq "") { # FIXME: 空文字連結
+          $text .= $indent;
+        }
+      }
+      $text .= "]";
+      return $text;
+    }
+    # primitives
+    elsif ($o isa string) {
+      return "\"" . (string)$o . "\"";
+    }
+    elsif ($o isa SPVM::Int) {
+      return (string)(((SPVM::Int)$o)->val); # FIXME: (string)のキャストを外したときのエラー: "." operater right value must be defined
+    }
+    elsif ($o isa SPVM::Long) {
+      return (string)(((SPVM::Long)$o)->val);
+    }
+    elsif ($o isa SPVM::Bool) {
+      if (((SPVM::Bool)$o)->val) {
+        return "true";
+      }
+      else {
+        return "false";
+      }
+    }
+    elsif ($o isa SPVM::Double) {
+      return (string)(((SPVM::Double)$o)->val);
+    }
+    else {
+      croak "Unknown object type";
+    }
+  }
+
+  sub new : SPVM::JSON () {
+    my $json = new SPVM::JSON;
+    $json->{indent} = 0;
+    $json->{indent_length} = 0;
+    $json->{space_before} = 0;
+    $json->{space_after} = 0;
+    return $json;
+  }
+
+  sub encode : string ($self : self, $object : object) {
+    unless ($object) {
+      return "";
+    }
+    return $self->_encode_value($object, 0);
+  }
+
+  sub decode : object ($self : self, $json_text : string) {
+    my $length = length $json_text;
+    my $iter = 0;
+    _skip_spaces($json_text, \$iter, $length);
+    if ($iter == $length) {
+      return undef;
+    }
+    my $ret = $self->_decode_value($json_text, \$iter, $length);
+    _skip_spaces($json_text, \$iter, $length);
+    unless ($iter == $length) {
+      croak "Not all json_text is decoded yet. Remains at $iter";
+    }
+    return $ret;
+  }
+
+  sub pretty : void ($self : self, $pretty : int) {
+    if ($pretty) {
+      $self->{indent} = 1;
+      $self->{indent_length} = 3;
+      $self->{space_before} = 1;
+      $self->{space_after} = 1;
+    }
+    else {
+      $self->{indent} = 0;
+      $self->{indent_length} = 0;
+      $self->{space_before} = 0;
+      $self->{space_after} = 0;
+    }
+  }
+}
