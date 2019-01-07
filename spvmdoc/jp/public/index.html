@@ -430,6 +430,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
+        <li><a href="#language-operator-order">演算子の優先順位</a></li>
         <li><a href="#language-statement">文</a>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
@@ -1657,14 +1658,10 @@ switch (条件) {
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
         <li>変数宣言</li>
-        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
-        <li><a href="#language-operator-unary">単項演算子</a></li>
-        <li>二項演算子</li>
+        <li><a href="#language-operator">演算子</a></li>
         <li>リファレンス演算子</li>
         <li>デリファレンス演算子</li>
         <li>代入演算子</li>
-        <li>インクリメント演算子</li>
-        <li>デクリメント演算子</li>
         <li>__PACKAGE__演算子</li>
         <li>__FILE__演算子</li>
         <li>__LINE__演算子</li>
@@ -2302,13 +2299,40 @@ undef
         <li><a href="#language-operator-multiply">乗算演算子</a></li>
         <li><a href="#language-operator-divide">除算演算子</a></li>
         <li><a href="#language-operator-remainder">剰余演算子</a></li>
+        <li><a href="#language-operator-bit-and">ビットAND演算子</a></li>
+        <li><a href="#language-operator-bit-or">ビットOR演算子</a></li>
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
-        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
       </ul>
       <h4 id="language-operator-summary">演算子の概要</h4>
       <p>
         演算子は、<a href="#language-operator-unary">単項演算子</a>、<a href="#language-operator-binary">二項演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>、<a href="#language-operator-comparison">比較演算子</a>、<a href="#language-operator-logical">論理演算子</a>、<a href="#language-operator-assign">代入演算子</a>からなります。
+      </p>
+      <h4 id="language-operator-arithmetic">算術演算子</h4>
+      <p>
+        算術演算子は、算術を行う演算子のことで、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>からなります。
+      </p>
+      <h4 id="language-operator-bit">ビット演算子</h4>
+      <p>
+        ビット演算子は、ビット演算を行う演算子のことで、><a href="#language-operator-bit-and">ビットAND演算子</a>、<a href="#language-operator-bit-or">ビットOR演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>からなります。
+      </p>
+      <h4 id="language-operator-comparison">比較演算子</h4>
+      <p>
+        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+      </p>
+<pre>
+左式 比較演算子 右式
+</pre>
+      <p>
+        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
+      </p>
+      
+      <h4 id="language-operator-logical">論理演算子</h4>
+      <p>
+        論理演算子は、論理演算を行う演算子のことで、><a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>からなります。
+      </p>
+      <p>
+        論理演算子は、<a href="#language-condition">条件</a>を返します。
       </p>
       <h4 id="language-operator-unary">単項演算子</h4>
       <p>
@@ -2335,17 +2359,6 @@ undef
       <p>
         二項演算子には、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、ビットAND演算子、ビットOR演算子、シフト演算子、文字列連結演算子があります。
       </p>
-      <h4 id="language-operator-comparison">比較演算子</h4>
-      <p>
-        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
-      </p>
-<pre>
-左式 比較演算子 右式
-</pre>
-      <p>
-        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
-      </p>
-      
       <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
       <p>
         単項プラス演算子は「+」で表現される<a href="#language-operator-unary">単項演算子</a>です。
@@ -2428,10 +2441,6 @@ my $num = -10;
 my $num = ~0xFF0A;
 </pre>
 
-      <h4 id="language-operator-arithmetic">算術演算子</h4>
-      <p>
-        算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>からなります。
-      </p>
       <h4 id="language-operator-add">加算演算子</h4>
       <p>
         加算演算子は「+」で表現される<a href="#language-operator-binary">二項演算子</a>です。
@@ -2616,6 +2625,64 @@ x % y;
         剰余演算子は、右辺が0であった場合に、例外が発生します。
       </p>
 
+      <h4 id="language-operator-bit-and">ビットAND演算子</h4>
+      <p>
+        ビットANDは「&」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 & 右式
+</pre>
+      <p>
+        右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+      </p>
+      <p>
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+      </p>
+      <p>
+        ビットAND演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+      </p>
+<pre>
+x & y;
+</pre>
+      <p>
+        ビットAND演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        ビットAND演算子は、例外を発生させません。
+      </p>
+
+      <h4 id="language-operator-bit-or">ビットOR演算子</h4>
+      <p>
+        ビットORは「|」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 | 右式
+</pre>
+      <p>
+        右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+      </p>
+      <p>
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+      </p>
+      <p>
+        ビットOR演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+      </p>
+<pre>
+x | y;
+</pre>
+      <p>
+        ビットOR演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        ビットOR演算子は、例外を発生させません。
+      </p>
+
       <h3 id="language-operator-concat">文字列連結演算子</h3>
       <p>
         文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返します。
@@ -2633,7 +2700,7 @@ x % y;
         左辺あるいは右辺が数値型
       </p>
       
-      <h4 id="language-operator-precedence">演算子の優先順位</h4>
+      <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
       </p>
@@ -3087,9 +3154,6 @@ my $num = 1 + 2;
           <th>
             説明
           </th>
-          <th>
-            範囲
-          </th>
         </tr>
         <tr>
           <td>
@@ -3097,9 +3161,6 @@ my $num = 1 + 2;
           </td>
           <td>
             8bit符号付整数型
-          </td>
-          <td>
-            -128～127
           </td>
         </tr>
         <tr>
@@ -3109,9 +3170,6 @@ my $num = 1 + 2;
           <td>
             16bit符号付整数型
           </td>
-          <td>
-            -32768～32767
-          </td>
         </tr>
         <tr>
           <td>
@@ -3119,9 +3177,6 @@ my $num = 1 + 2;
           </td>
           <td>
             32bit符号付整数型
-          </td>
-          <td>
-            -2147483648～2147483647
           </td>
         </tr>
         <tr>
@@ -3131,19 +3186,13 @@ my $num = 1 + 2;
           <td>
             64bit符号付整数型
           </td>
-          <td>
-            -9223372036854775808～9223372036854775807
-          </td>
         </tr>
       </table>
       <p>
         SPVMの整数型には、符号なし整数型は存在しません。
       </p>
       <p>
-        負の値は、2の補数で表現されます。
-      </p>
-      <p>
-        整数の計算規則については、算術演算子を参考にしてください。
+        整数の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
       </p>
       <h4 id="language-type-floating-point">浮動小数点型</h3>
       <p>
@@ -3157,9 +3206,6 @@ my $num = 1 + 2;
           <th>
             説明
           </th>
-          <th>
-            範囲
-          </th>
         </tr>
         <tr>
           <td>
@@ -3169,7 +3215,7 @@ my $num = 1 + 2;
             単精度浮動小数点型 - 32bitで浮動小数点を表現します
           </td>
           <td>
-            C標準マクロ FLT_MIN～FLT_MAX
+            C標準マクロ -FLT_MAX～FLT_MAX
           </td>
         </tr>
         <tr>
@@ -3179,16 +3225,10 @@ my $num = 1 + 2;
           <td>
             倍精度浮動小数点型 - 64bitで浮動小数点を表現します
           </td>
-          <td>
-            C標準マクロ DBL_MIN～DBL_MAX
-          </td>
         </tr>
       </table>
       <p>
-        浮動小数点の表現方法はIEEE 754です。
-      </p>
-      <p>
-        浮動小数点の計算規則については、算術演算子を参考にしてください。
+        浮動小数点の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
       </p>
       <h4 id="language-type-package">パッケージ型</h4>
       <p>
