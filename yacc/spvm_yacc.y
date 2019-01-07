@@ -699,10 +699,6 @@ binary_op
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, $2->file, $2->line);
       $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
-  | expression '.' expression
-    {
-      $$ = SPVM_OP_build_concat(compiler, $2, $1, $3);
-    }
   | expression MULTIPLY expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
@@ -731,6 +727,10 @@ binary_op
   | expression SHIFT expression
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression '.' expression
+    {
+      $$ = SPVM_OP_build_concat(compiler, $2, $1, $3);
     }
 
 condition

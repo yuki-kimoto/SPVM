@@ -640,10 +640,10 @@ static const yytype_int16 yyrhs[] =
       -1,   144,    -1,    73,   144,    -1,    74,   144,    -1,    85,
      144,    -1,    88,   144,    -1,   144,    88,    -1,    87,   144,
       -1,   144,    87,    -1,   144,    73,   144,    -1,   144,    74,
-     144,    -1,   144,    75,   144,    -1,   144,    78,   144,    -1,
-     144,    77,   144,    -1,   144,    76,   144,    -1,   144,    53,
-     144,    -1,   144,    55,   144,    -1,   144,    54,   144,    -1,
-     144,    72,   144,    -1,   151,    -1,   155,    -1,    93,   150,
+     144,    -1,   144,    78,   144,    -1,   144,    77,   144,    -1,
+     144,    76,   144,    -1,   144,    53,   144,    -1,   144,    55,
+     144,    -1,   144,    54,   144,    -1,   144,    72,   144,    -1,
+     144,    75,   144,    -1,   151,    -1,   155,    -1,    93,   150,
       97,    -1,   152,    -1,   153,    -1,   154,    -1,   144,    59,
      144,    -1,   144,    58,   144,    -1,   144,    68,   144,    -1,
      144,    67,   144,    -1,   144,    66,   144,    -1,   144,    65,
@@ -691,7 +691,7 @@ static const yytype_uint16 yyrline[] =
      605,   606,   607,   608,   609,   610,   611,   612,   613,   614,
      615,   616,   617,   618,   619,   620,   621,   625,   628,   642,
      646,   652,   657,   662,   668,   673,   680,   685,   692,   697,
-     702,   706,   710,   714,   718,   722,   727,   731,   737,   738,
+     702,   706,   710,   714,   718,   723,   727,   731,   737,   738,
      739,   745,   746,   747,   750,   754,   758,   762,   766,   770,
      776,   780,   784,   788,   792,   796,   802,   808,   812,   816,
      822,   826,   832,   836,   840,   844,   867,   874,   881,   887,
@@ -846,8 +846,8 @@ static const yytype_uint8 yydefact[] =
       92,   138,   141,   142,   143,   139,     0,     0,    94,     0,
        0,    79,     0,    70,    72,    49,   185,     0,     0,    49,
       49,    49,     0,    49,   166,   119,     0,   116,   168,   207,
-       0,     0,     0,   161,   160,   134,   136,   135,   137,   128,
-     129,   130,   133,   132,   131,    49,     0,    49,   176,     0,
+       0,     0,     0,   161,   160,   133,   135,   134,   136,   128,
+     129,   137,   132,   131,   130,    49,     0,    49,   176,     0,
        0,     0,     0,   174,   213,   212,     0,    34,    22,   218,
      191,    23,   159,     0,    91,    92,     0,    49,    49,     0,
       49,    49,    49,    49,     0,    49,    49,    49,    49,    49,
@@ -2931,7 +2931,7 @@ yyreduce:
   case 130:
 #line 703 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_concat(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
@@ -2959,15 +2959,15 @@ yyreduce:
   case 134:
 #line 719 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, (yyvsp[(2) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
   case 135:
-#line 723 "yacc/spvm_yacc.y"
+#line 724 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, (yyvsp[(2) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 
@@ -2981,7 +2981,7 @@ yyreduce:
   case 137:
 #line 732 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_concat(compiler, (yyvsp[(2) - (3)].opval), (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
 

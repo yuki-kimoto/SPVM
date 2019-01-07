@@ -2243,8 +2243,12 @@ undef
       <h3 id="language-operator">演算子</h3>
       <ul class="list">
         <li><a href="#language-operator-summary">演算子の概要</a></li>
-        <li><a href="#language-operator-operand">オペランド</a></li>
         <li><a href="#language-operator-unary">単項演算子</a></li>
+        <li><a href="#language-operator-binary">二項演算子</a></li>
+        <li><a href="#language-operator-comparison">比較演算子</a></li>
+        <li><a href="#language-operator-comparison-numeric">数値比較演算子</a></li>
+        <li><a href="#language-operator-comparison-string">文字列比較演算子</a></li>
+        <li><a href="#language-operator-logical">論理演算子</a></li>
         <li><a href="#language-operator-unary-plus">単項プラス演算子</a></li>
         <li><a href="#language-operator-unary-minus">単項マイナス演算子</a></li>
         <li><a href="#language-operator-bit-not">ビット否定演算子</a></li>
@@ -2257,9 +2261,8 @@ undef
         <li><a href="#language-operator-add">加算演算子</a></li>
         <li><a href="#language-operator-subtract">減算演算子</a></li>
         <li><a href="#language-operator-multiply">乗算演算子</a></li>
-        <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
-        <li><a href="#language-operator-arithmetic">論理演算子</a></li>
+        <li><a href="#language-operator-divide">除算演算子</a></li>
+        <li><a href="#language-operator-remainder">剰余演算子</a></li>
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
@@ -2270,47 +2273,40 @@ undef
       </p>
       <h4 id="language-operator-unary">単項演算子</h4>
       <p>
-        単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子のことをいいます。<a href="#language-operator-inc">インクリメント演算子</a>と<a href="#language-operator-dec">デクリメント演算子</a>は含みません。
+        単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子で、演算結果として<a href="#language-expression">式</a>を返すもののことをいいます。
       </p>
 <pre>
-演算子 式
+単項演算子 式
 </pre>
       <p>
-        単項演算子は、<a href="#language-expression">式</a>を返します。
+        単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>があります。
       </p>
       <p>
-        <b>単項演算子の一覧</b>
+        <a href="#language-operator-inc">インクリメント演算子</a>と<a href="#language-operator-dec">デクリメント演算子</a>は、単項演算子には含まれません。
       </p>
-      <table>
-        <tr>
-          <th>名前</th>
-          <th>演算子</th>
-        </tr>
-        <tr>
-          <td>
-            <a href="#language-operator-unary-plus">単項プラス演算子</a>
-          </td>
-          <td>
-            +式
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a href="#language-operator-unary-minus">単項マイナス演算子</a>
-          </td>
-          <td>
-            -式
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a href="#language-operator-bit-not">ビット否定演算子</a>
-          </td>
-          <td>
-            ~式
-          </td>
-        </tr>
-      </table>
+
+      <h4 id="language-operator-binary">二項演算子</h4>
+      <p>
+        二項演算子とは、左式と右式の間に置かれる演算子で、演算結果として<a href="#language-expression">式</a>を返すものをいいます。
+      </p>
+<pre>
+左式 二項演算子 右式
+</pre>
+
+      <p>
+        二項演算子には、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、ビットAND演算子、ビットOR演算子、シフト演算子、文字列連結演算子があります。
+      </p>
+      <h4 id="language-operator-comparison">比較演算子</h4>
+      <p>
+        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+      </p>
+<pre>
+左式 比較演算子 右式
+</pre>
+      <p>
+        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
+      </p>
+      
       <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
       <p>
         単項プラス演算子は「+」で表現される<a href="#language-operator-unary">単項演算子</a>です。
