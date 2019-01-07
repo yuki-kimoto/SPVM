@@ -414,7 +414,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
         <li><a href="#language-package">パッケージ</a>
-        <li><a href="#language-use-module">モジュールの読み込み</a>
+        <li><a href="#language-module">モジュール</a>
         <li><a href="#language-package-var">パッケージ変数</a>
         <li><a href="#language-field">フィールド</a>
         <li><a href="#language-sub">サブルーチン</a>
@@ -434,7 +434,6 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
-        <li><a href="#language-auto-loaded-package">自動的にロードされるパッケージ</a></li>
       </ul>
       <h3 id="language-c99">C99準拠</h3>
       <ul class="list">
@@ -867,7 +866,47 @@ package Foo {
   }
 }
 </pre>
-      <h3 id="language-use-module">モジュールの読み込み</h3>
+      <h3 id="language-module">モジュール</h3>
+      <ul>
+        <li>モジュールの概要</li>
+        <li>モジュールの読み込み</li>
+      </ul>
+      <h3 class="language-module-summary">モジュールの概要</h3>
+      <p>
+        モジュールとは、SPVMのソースコードとして読み込むことができるひとつのファイルのことをいいます。
+      </p>
+<pre>
+# lib/path/Foo/Bar.spvm
+package Foo::Bar {
+
+}
+</pre>
+      <p>
+        モジュールには、複数のパッケージを含むことができます。
+      </p>
+<pre>
+# lib/path/Foo/Bar.spvm
+package Foo::Bar {
+
+}
+
+package Foo::Bar::Baz {
+
+}
+</pre>
+      <h3 class="language-module-path">モジュールのファイル名</h3>
+      <p>
+        モジュールは、モジュールの読み込みパスに、以下のファイル名で配置される必要があります。
+      </p>
+      <p>
+        「::」を「/」に変更。末尾に「.spvm」をつける。
+      </p>
+<pre>
+Foo.spvm
+Foo/Bar.spvm
+Foo/Bar/Baz.spvm
+</pre>
+      <h3 class="language-module-load">モジュールの読み込み</h3>
       <p>
         モジュールを読み込むには、useキーワードを使用します。
       </p>
@@ -879,15 +918,15 @@ use Foo::Bar;
         モジュールはコンパイル時に読み込まれます。
       </p>
       <p>
-        モジュールは、モジュールの読み込みパスに、以下のルールで配置される必要があります。
+        モジュールが存在しなかった場合は、コンパイルエラーになります。
       </p>
       <p>
-        「::」を「/」に変更。末尾に「.spvm」をつける。
+        useキーワードは、パッケージの定義の直下で定義する必要があります。
       </p>
 <pre>
-Foo.spvm
-Foo/Bar.spvm
-Foo/Bar/Baz.spvm
+package Foo {
+  use Foo;
+}
 </pre>
       <h3 id="language-package-var">パッケージ変数</h3>
       <ul class="list">
