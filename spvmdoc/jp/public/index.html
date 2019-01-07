@@ -2282,7 +2282,7 @@ undef
         単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>があります。
       </p>
       <p>
-        <a href="#language-operator-inc">インクリメント演算子</a>と<a href="#language-operator-dec">デクリメント演算子</a>は、単項演算子には含まれません。
+        インクリメント演算子とデクリメント演算子は、単項演算子には含まれません。
       </p>
 
       <h4 id="language-operator-binary">二項演算子</h4>
@@ -2318,7 +2318,7 @@ undef
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        式の型がint型より小さい場合は<a href="#language-expression">式</a>に対して、int型への<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
       </p>
       <p>
         単項プラス演算子は、与えられた値をコピーして返します。
@@ -2343,7 +2343,7 @@ my $num = +10;
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        式の型がint型より小さい場合は<a href="#language-expression">式</a>に対して、int型への<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
       </p>
       <p>
         単項マイナス演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2369,6 +2369,9 @@ my $num = -10;
 </pre>
       <p>
         式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        最初に<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
       </p>
       <p>
         ビット否定演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -3866,10 +3869,7 @@ my $num : int = (int)4;
       </p>
       <h4 id="language-type-convertion-unary-widening">単項拡大型変換</h4>
       <p>
-        単項拡大型変換とは、byte型とshort型の値を、int型に拡大する変換のことをいいます。int型以上の型の場合は、変換が行われません。
-      </p>
-      <p>
-        型の拡大の前後で、数値としての同一性が保たれます。たとえば、byte型の「-123」を、単項拡大型変換をするとint型の「-123」になります。
+        単項拡大型変換とは、<a href="#language-expression">式</a>がbyte型あるいはshort型であった場合に、int型へ<a href="#language-type-convertion-widening">拡大型変換</a>を行うことをいいます。
       </p>
       <p>
         単項拡大型変換が行われるのは以下の場合です。
