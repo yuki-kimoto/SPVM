@@ -34,7 +34,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> unop binop relop numrelop strrelop isa conditionop
+%type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
 %type <opval> deref ref assign inc dec
@@ -611,8 +611,8 @@ expression
   | array_length
   | string_length
   | my_var
-  | binop
-  | unop
+  | binary_op
+  | unary_op
   | ref
   | deref
   | assign
@@ -623,91 +623,6 @@ expression
       $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
     }
   | CURRENT_PACKAGE
-
-relop
-  : numrelop
-  | strrelop
-  | isa
-
-isa
-  : expression ISA type
-    {
-      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
-    }
-
-numrelop
-  : expression NUMEQ expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression NUMNE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression NUMGT expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression NUMGE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression NUMLT expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression NUMLE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-
-strrelop
-  : expression STREQ expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression STRNE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression STRGT expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression STRGE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression STRLT expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-  | expression STRLE expression
-    {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
-    }
-
-conditionop
-  : term LOGICAL_OR term
-    {
-      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
-    }
-  | term LOGICAL_AND term
-    {
-      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
-    }
-  | LOGICAL_NOT term
-    {
-      $$ = SPVM_OP_build_not(compiler, $1, $2);
-    }
-
-condition
-  : relop
-  | conditionop
-  | '(' condition ')'
-    {
-      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
-    }
 
 expressions
   : expressions ',' expression
@@ -733,20 +648,20 @@ expressions
       $$ = $1;
     }
 
-unop
+unary_op
   : '+' expression %prec PLUS
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PLUS, $1->file, $1->line);
-      $$ = SPVM_OP_build_unop(compiler, op, $2);
+      $$ = SPVM_OP_build_unary_op(compiler, op, $2);
     }
   | '-' expression %prec MINUS
     {
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MINUS, $1->file, $1->line);
-      $$ = SPVM_OP_build_unop(compiler, op_negate, $2);
+      $$ = SPVM_OP_build_unary_op(compiler, op_negate, $2);
     }
   | BIT_NOT expression
     {
-      $$ = SPVM_OP_build_unop(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
 
 inc
@@ -773,16 +688,16 @@ dec
       $$ = SPVM_OP_build_dec(compiler, op, $1);
     }
 
-binop
+binary_op
   : expression '+' expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, $2->file, $2->line);
-      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
   | expression '-' expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, $2->file, $2->line);
-      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
   | expression '.' expression
     {
@@ -790,32 +705,117 @@ binop
     }
   | expression MULTIPLY expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression DIVIDE expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression REMAINDER expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression BIT_XOR expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression '&' expression
     {
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, $2->file, $2->line);
-      $$ = SPVM_OP_build_binop(compiler, op, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
   | expression BIT_OR expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression SHIFT expression
     {
-      $$ = SPVM_OP_build_binop(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+
+condition
+  : comparison_op
+  | logical_op
+  | '(' condition ')'
+    {
+      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
+    }
+
+comparison_op
+  : num_comparison_op
+  | str_comparison_op
+  | isa
+
+num_comparison_op
+  : expression NUMEQ expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression NUMNE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression NUMGT expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression NUMGE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression NUMLT expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression NUMLE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+
+str_comparison_op
+  : expression STREQ expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression STRNE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression STRGT expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression STRGE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression STRLT expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+  | expression STRLE expression
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+    
+isa
+  : expression ISA type
+    {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+
+logical_op
+  : term LOGICAL_OR term
+    {
+      $$ = SPVM_OP_build_or(compiler, $2, $1, $3);
+    }
+  | term LOGICAL_AND term
+    {
+      $$ = SPVM_OP_build_and(compiler, $2, $1, $3);
+    }
+  | LOGICAL_NOT term
+    {
+      $$ = SPVM_OP_build_not(compiler, $1, $2);
     }
 
 assign

@@ -2453,12 +2453,21 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
   return op_call_sub;
 }
 
-SPVM_OP* SPVM_OP_build_unop(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   // Build op
   SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_first);
   
   return op_unary;
+}
+
+SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_first);
+  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_last);
+  
+  return op_bin;
 }
 
 SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
@@ -2493,15 +2502,6 @@ SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_type);
   
   return op_isa;
-}
-
-SPVM_OP* SPVM_OP_build_binop(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
-  
-  // Build op
-  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_first);
-  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_last);
-  
-  return op_bin;
 }
 
 SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat, SPVM_OP* op_first, SPVM_OP* op_last) {
