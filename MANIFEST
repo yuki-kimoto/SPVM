@@ -1,8 +1,6 @@
 Changes
 doc/index.html
 lib/SPVM.pm
-lib/SPVM/Bool.pm
-lib/SPVM/Bool.spvm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/C.pm
@@ -134,6 +132,9 @@ lib/SPVM/Hash.spvm
 lib/SPVM/HashEntry.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
+lib/SPVM/JSON.spvm
+lib/SPVM/JSON/Bool.pm
+lib/SPVM/JSON/Bool.spvm
 lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
@@ -246,7 +247,6 @@ t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
 t/default/lib/TestCase/BitNot.spvm
 t/default/lib/TestCase/BitOperator.spvm
-t/default/lib/TestCase/Bool.spvm
 t/default/lib/TestCase/Byte.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
@@ -328,6 +328,8 @@ t/default/lib/TestCase/Interface/ImplementInterface1.spvm
 t/default/lib/TestCase/Interface/ImplementInterface2.spvm
 t/default/lib/TestCase/Interface/Interface.spvm
 t/default/lib/TestCase/Isa.spvm
+t/default/lib/TestCase/JSON.spvm
+t/default/lib/TestCase/JSON/Bool.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm
 t/default/lib/TestCase/LINERN.spvm

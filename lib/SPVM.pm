@@ -178,7 +178,7 @@ L<SPVM::CORE> - Standard Functions
 
 =head2 Standard Modules
 
-L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>, L<SPVM::Bool>
+L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>
 
 =head2 Exchange API
 

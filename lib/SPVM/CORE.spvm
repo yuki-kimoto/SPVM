@@ -15,14 +15,6 @@ package SPVM::CORE {
   native sub signbitf : int ($num : float);
   native sub signbit : int ($num : double);
   
-  sub TRUE : SPVM::Bool () {
-    return SPVM::Bool->TRUE;
-  }
-
-  sub FALSE : SPVM::Bool () {
-    return SPVM::Bool->FALSE;
-  }
-  
   sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;
     

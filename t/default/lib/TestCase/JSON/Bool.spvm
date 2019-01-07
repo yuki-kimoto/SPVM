@@ -1,0 +1,25 @@
+package TestCase::JSON::Bool {
+  use SPVM::JSON::Bool;
+  sub basic : int () {
+    my $true = SPVM::JSON::Bool->TRUE;
+    my $false = SPVM::JSON::Bool->FALSE;
+    
+    unless ($true->val == 1) {
+      return 0;
+    }
+    
+    unless ($false->val == 0) {
+      return 0;
+    }
+    
+    unless ($true == SPVM::JSON::Bool->TRUE) {
+      return 0;
+    }
+    
+    unless ($false == SPVM::JSON::Bool->FALSE) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

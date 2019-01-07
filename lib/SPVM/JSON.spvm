@@ -4,7 +4,7 @@ package SPVM::JSON {
   use SPVM::Int;
   use SPVM::Long;
   use SPVM::Double;
-  use SPVM::Bool;
+  use SPVM::JSON::Bool;
 
   has indent : public int;
   has indent_length : public int;
@@ -183,14 +183,14 @@ package SPVM::JSON {
     }
   }
 
-  sub _decode_true : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+  sub _decode_true : SPVM::JSON::Bool ($self : self, $s : string, $i : int&, $end : int) {
     _expect_token($s, $i, $end, "true");
-    return SPVM::Bool->TRUE;
+    return SPVM::JSON::Bool->TRUE;
   }
 
-  sub _decode_false : SPVM::Bool ($self : self, $s : string, $i : int&, $end : int) {
+  sub _decode_false : SPVM::JSON::Bool ($self : self, $s : string, $i : int&, $end : int) {
     _expect_token($s, $i, $end, "false");
-    return SPVM::Bool->FALSE;
+    return SPVM::JSON::Bool->FALSE;
   }
 
   sub _decode_hash : SPVM::Hash ($self : self, $s : string, $i : int&, $end : int) {
@@ -400,8 +400,8 @@ package SPVM::JSON {
     elsif ($o isa SPVM::Long) {
       return (string)(((SPVM::Long)$o)->val);
     }
-    elsif ($o isa SPVM::Bool) {
-      if (((SPVM::Bool)$o)->val) {
+    elsif ($o isa SPVM::JSON::Bool) {
+      if (((SPVM::JSON::Bool)$o)->val) {
         return "true";
       }
       else {

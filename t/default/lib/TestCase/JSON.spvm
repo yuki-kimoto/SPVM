@@ -3,7 +3,7 @@ package TestCase::JSON {
   use SPVM::List;
   use SPVM::Int;
   use SPVM::Double;
-  use SPVM::Bool;
+  use SPVM::JSON::Bool;
 
   # TODO: Extract pre_object_equals, _hash_equals and _list_equals as test utilities, something like Test::More::is_deeply
   sub _object_equals : int ($lhs : object, $rhs : object) {
@@ -58,12 +58,12 @@ package TestCase::JSON {
         return 0;
       }
     }
-    elsif ($lhs isa SPVM::Bool) {
-      unless ($rhs isa SPVM::Bool) {
+    elsif ($lhs isa SPVM::JSON::Bool) {
+      unless ($rhs isa SPVM::JSON::Bool) {
         return 0;
       }
-      my $x = (SPVM::Bool)$lhs;
-      my $y = (SPVM::Bool)$rhs;
+      my $x = (SPVM::JSON::Bool)$lhs;
+      my $y = (SPVM::JSON::Bool)$rhs;
       unless ($x->val == $y->val) {
         return 0;
       }
@@ -162,9 +162,9 @@ package TestCase::JSON {
       SPVM::Hash->new_with_array([(object) "digit",SPVM::Int->new(42)]),
       SPVM::Hash->new_with_array([(object) "string","vstr"]),
       SPVM::Hash->new_with_array([(object) "double",SPVM::Double->new(0.123)]),
-      SPVM::Hash->new_with_array([(object) "bool_true",SPVM::Bool->TRUE]),
-      SPVM::Hash->new_with_array([(object) "bool_false",SPVM::Bool->FALSE]),
-      SPVM::Hash->new_with_array([(object) "a",SPVM::Int->new(1),"A",SPVM::Double->new(0.1),"ABC",SPVM::Bool->FALSE,"qwerty","asdfg"])
+      SPVM::Hash->new_with_array([(object) "bool_true",SPVM::JSON::Bool->TRUE]),
+      SPVM::Hash->new_with_array([(object) "bool_false",SPVM::JSON::Bool->FALSE]),
+      SPVM::Hash->new_with_array([(object) "a",SPVM::Int->new(1),"A",SPVM::Double->new(0.1),"ABC",SPVM::JSON::Bool->FALSE,"qwerty","asdfg"])
     ];
     return _validate(SPVM::JSON->new, $json_texts, $objects);
   }
@@ -239,7 +239,7 @@ package TestCase::JSON {
           "B", SPVM::Int->new(1),
           "C", SPVM::Hash->new_with_array([(object)
             "D", SPVM::Double->new(0.1),
-            "E", SPVM::Bool->TRUE,
+            "E", SPVM::JSON::Bool->TRUE,
             "F", "str",
             "G", SPVM::List->new_with_array([(object)
               "elem", "ents",
@@ -282,7 +282,7 @@ package TestCase::JSON {
       ]),
       # Root type is "list"
       SPVM::List->new_with_array([(object)
-        SPVM::Int->new(1), SPVM::Double->new(3.14), SPVM::Bool->TRUE, "a"
+        SPVM::Int->new(1), SPVM::Double->new(3.14), SPVM::JSON::Bool->TRUE, "a"
       ])
     ];
     return _validate(SPVM::JSON->new, $json_texts, $objects);
