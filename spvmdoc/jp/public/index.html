@@ -2313,16 +2313,19 @@ undef
       </table>
       <h4 id="language-operator-unary-plus">単項プラス演算子</h4>
       <p>
-        単項プラス演算子は「+式」で表現されます。
+        単項プラス演算子は「+」で表現される<a href="#language-operator-unary">単項演算子</a>です。
       </p>
 <pre>
 +式
 </pre>
       <p>
-        単項プラス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行った結果を返します。
+        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式の型がint型より小さい場合は<a href="#language-expression">式</a>に対して、int型への<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+      </p>
+      <p>
+        単項プラス演算子は、与えられた値をコピーして返します。
       </p>
       <p>
         単項プラス演算子は例外を発生させません。
@@ -2335,31 +2338,23 @@ my $num = +10;
 </pre>
       <h4 id="language-operator-unary-minus">単項マイナス演算子</h4>
       <p>
-        単項マイナス演算子は「-式」で表現されます。
+        単項マイナス演算子は「-」で表現される<a href="#language-operator-unary">単項演算子</a>です。
       </p>
 <pre>
 -式
 </pre>
       <p>
-        単項マイナス演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、その後、符号を反転させた結果を返します。
-      </p>
-      <p>
-        値が<a href="#language-type-integral">整数型</a>の場合は、符号の反転は、0から引き算した値と全く同じです。SPVMの整数演算は、2の補数によるため、int型あるいはlong型の最小値を反転させた場合は、オーバーフローが発生し、元の値と同じになります。
-      </p>
-      <p>
-        値が<a href="#language-type-floating-point">浮動小数点型</a>の場合は、符号ビットを反転させるだけです。否定は、0からの引き算と同じではありません。もし「x」が「+0.0」であれば「0.0 - x」は「+0.0」ですが「-x」は「-0.0」になります。
-      </p>
-      <p>
-        特別な場合としては以下の場合があります。
-      </p>
-      <ul class="list">
-        <li>NANの符号を反転させたものはNANです。</li>
-        <li>正の無限大の符号を反転させたものは、負の無限大です。</li>
-        <li>正の0を反転させたものは、負の0です。</li>
-      </ul>
-      <p>
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
+      <p>
+        式の型がint型より小さい場合は<a href="#language-expression">式</a>に対して、int型への<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+      </p>
+      <p>
+        単項マイナス演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+      </p>
+<pre>
+-x
+</pre>
       <p>
         単項マイナス演算子は例外を発生させません。
       </p>
@@ -2371,17 +2366,20 @@ my $num = -10;
 </pre>
       <h4 id="language-operator-bit-not">ビット否定演算子</h4>
       <p>
-        ビット否定演算子は「~式」で表現されます。
+        ビット否定演算子は「~」で表現される<a href="#language-operator-unary">単項演算子</a>です。
       </p>
 <pre>
 ~式
 </pre>
       <p>
-        ビット否定演算子は与えられた<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>を行い、すべてのビットを反転させた結果を返します。すべての場合で「~x」は「(-x)-1」と等しくなります。
-      </p>
-      <p>
         式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
+      <p>
+        ビット否定演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+      </p>
+<pre>
+~x
+</pre>
       <p>
         ビット否定演算子は例外を発生させません。
       </p>
@@ -2391,10 +2389,10 @@ my $num = -10;
 <pre>
 my $num = ~0xFF0A;
 </pre>
-      
+
       <h4 id="language-operator-arithmetic">算術演算子</h4>
       <p>
-        算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子からなります。
+        算術演算子は、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>からなります。
       </p>
       <h4 id="language-operator-add">加算演算子</h4>
       <p>
@@ -2548,7 +2546,7 @@ x / y;
         浮動小数点型に対する演算の場合には、除算演算子は、例外を発生させません。
       </p>
       
-      <h4 id="language-operator-divide">剰余演算子</h4>
+      <h4 id="language-operator-remainder">剰余演算子</h4>
       <p>
         剰余演算子は「%」で表現される<a href="#language-operator-binary">二項演算子</a>です。
       </p>
