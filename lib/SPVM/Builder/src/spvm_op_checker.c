@@ -1952,13 +1952,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left value must not be object type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "* operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Left operand of * operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
               if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "* operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of * operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
@@ -1976,13 +1976,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left value must not be object type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "/ operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Left operand of / operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
               if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "/ operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of / operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1999,14 +1999,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left value must not be object type
-              if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "%% operator left value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of %% operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
               // Right value must not be object type
-              if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "%% operator right value must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+              if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of %% operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               

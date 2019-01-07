@@ -985,14 +985,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           long_vars[opcode->operand0] = long_vars[opcode->operand1] % long_vars[opcode->operand2];
         }
         break;
-      case SPVM_OPCODE_C_ID_REMAINDER_FLOAT:
-        float_vars[opcode->operand0]
-          = (float)remainderf(float_vars[opcode->operand1], float_vars[opcode->operand2]);
-        break;
-      case SPVM_OPCODE_C_ID_REMAINDER_DOUBLE:
-        double_vars[opcode->operand0]
-          = remainder(double_vars[opcode->operand1], double_vars[opcode->operand2]);
-        break;
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_INT:
         int_vars[opcode->operand0]
           = int_vars[opcode->operand1] << (int_vars[opcode->operand2] & 0x1f);

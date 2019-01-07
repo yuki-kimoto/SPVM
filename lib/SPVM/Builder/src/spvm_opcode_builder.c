@@ -1653,18 +1653,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             var_id_in1 = SPVM_OP_get_var_id(compiler, op_assign_src->first);
                             var_id_in2 = SPVM_OP_get_var_id(compiler, op_assign_src->last);
                             break;
-                          case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_FLOAT);
-                            var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
-                            var_id_in1 = SPVM_OP_get_var_id(compiler, op_assign_src->first);
-                            var_id_in2 = SPVM_OP_get_var_id(compiler, op_assign_src->last);
-                            break;
-                          case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_DOUBLE);
-                            var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
-                            var_id_in1 = SPVM_OP_get_var_id(compiler, op_assign_src->first);
-                            var_id_in2 = SPVM_OP_get_var_id(compiler, op_assign_src->last);
-                            break;
                           default:
                             assert(0);
                         }
