@@ -1716,12 +1716,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_PLUS: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
-              // Must be numeric type
+              // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Operand of unary + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
+              // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
               if (compiler->error_count > 0) {
                 return;
@@ -1732,12 +1733,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_MINUS: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
-              // Must be numeric type
+              // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Operand of unary - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
+              // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
               if (compiler->error_count > 0) {
                 return;
@@ -1748,12 +1750,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_BIT_NOT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
-              // Must be numeric type
+              // Operand must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Operand of ~ operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
+              // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
               if (compiler->error_count > 0) {
                 return;
@@ -1765,19 +1768,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must be numeric type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be numeric type
               if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of + operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Upgrade type
+              // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
               if (compiler->error_count > 0) {
                 return;
@@ -1789,19 +1792,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must be numeric type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be numeric type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of - operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Upgrade type
+              // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
               if (compiler->error_count > 0) {
                 return;
@@ -1813,19 +1816,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must be numeric type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of * operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be numeric type
               if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of * operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Upgrade type
+              // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
               if (compiler->error_count > 0) {
                 return;
@@ -1837,19 +1840,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must be numeric type
               if (!first_type || !SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of / operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be numeric type
               if (!last_type || !SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of / operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Upgrade type
+              // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
               if (compiler->error_count > 0) {
                 return;
@@ -1861,19 +1864,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must be integral type
               if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of %% operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be integral type
               if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of %% operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Upgrade type
+              // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
               if (compiler->error_count > 0) {
                 return;
@@ -1885,13 +1888,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must must be integral type
               if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of & operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be integral type
               if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of & operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
@@ -1908,13 +1911,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must not be object type
+              // Left operand must must be integral type
               if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Left operand of | operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
 
-              // Right value must not be object type
+              // Right operand must be integral type
               if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "Right operand of | operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
@@ -1931,7 +1934,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Can receive only numeric type
+              // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
@@ -1943,6 +1946,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
+              // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
@@ -1965,7 +1969,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Can receive only numeric type
+              // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
@@ -1977,6 +1981,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
+              // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
@@ -1999,7 +2004,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Can receive only numeric type
+              // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
                 if (compiler->error_count > 0) {
@@ -2011,6 +2016,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
+              // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
@@ -2046,14 +2052,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              // Right value is numeric type
+              // Right operand is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_string_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
                   return;
                 }
               }
-              // Right value is not string type
+              // Right operand is not string type
               else if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "\".\" operator right value must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
@@ -2689,7 +2695,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left value must be array or string
+              // Left operand must be array or string
               if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) &&
                 !SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
               )
@@ -2703,7 +2709,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST;
               }
               
-              // Right value must be integer
+              // Right operand must be integer
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
                 if (compiler->error_count > 0) {
