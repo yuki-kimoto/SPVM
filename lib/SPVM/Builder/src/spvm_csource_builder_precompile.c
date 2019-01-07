@@ -327,13 +327,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_left_shift(SPVM_ENV* env, SPVM_STRING_B
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " << (");
+  SPVM_STRING_BUFFER_add(string_buffer, " << ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else {
     assert(0);
@@ -350,13 +350,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_right_shift_unsigned(SPVM_ENV* env, SPV
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(env, ctype_id));
   SPVM_STRING_BUFFER_add(string_buffer, ")");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " >> (");
+  SPVM_STRING_BUFFER_add(string_buffer, " >> ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else {
     assert(0);
@@ -369,13 +369,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_right_shift(SPVM_ENV* env, SPVM_STRING_
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " >> (");
+  SPVM_STRING_BUFFER_add(string_buffer, " >> ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x1f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG) {
-    SPVM_STRING_BUFFER_add(string_buffer, " & 0x3f))");
+    SPVM_STRING_BUFFER_add(string_buffer, ")");
   }
   else {
     assert(0);
