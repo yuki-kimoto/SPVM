@@ -427,7 +427,7 @@ my $total = MyMath->sum($sp_nums);
         数値演算における仕様は、C99に準拠します。C99で、未定義・処理系依存のものは、SPVMにおいても未定義・処理系依存です。
       </p>
       <p>
-        加算演算子、減算演算子、乗算演算子、除算演算子、剰余演算子、シフト演算子、ビット演算子においては、C99における演算との対応が仕様化されます。
+        <a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子、シフト演算子、ビット演算子においては、C99における演算との対応が仕様化されます。
       </p>
       <p>
         数値から文字列への変換における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
@@ -2235,6 +2235,7 @@ undef
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
         <li><a href="#language-operator-add">加算演算子</a></li>
         <li><a href="#language-operator-subtract">減算演算子</a></li>
+        <li><a href="#language-operator-multiply">乗算演算子</a></li>
         <li><a href="#language-operator-arithmetic">数値比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">文字列比較演算子</a></li>
         <li><a href="#language-operator-arithmetic">論理演算子</a></li>
@@ -2396,14 +2397,11 @@ my $num = ~0xFF0A;
         右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
-        加算演算子は、C99における以下の演算と完全に一致します。xとyは同一の型です。
+        加算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 x + y;
 </pre>
-      <p>
-        <a href="#language-c99-type">C99との型の対応</a>に一致した、int、long、float、doubleにおける演算が定義されます。
-      </p>
       <p>
         加算演算子は<a href="#language-expression">式</a>を返します。
       </p>
@@ -2413,71 +2411,119 @@ x + y;
       <p>
         加算演算子は、例外を発生させません。
       </p>
+      <h4 id="language-operator-subtract">減算演算子</h4>
       <p>
-        <b>整数演算</b>
+        減算演算子は「-」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 - 右式
+</pre>
+      <p>
+        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        各式が整数型の場合は、整数演算が行われます。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        整数演算は、左式に右式を加算した数を返します。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        値がオーバーフローした場合は、符号は反転し、加算した結果が、2の補数表現であるような結果が返されます。たとえば、int型の最大値に1を足した場合は、int型の最小値になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
-        「左式 - 右式」の結果は「左式 + (-右式)」の結果と常に同じです。
+        減算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+      </p>
+<pre>
+x - y;
+</pre>
+      <p>
+        減算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        「0 - 式」の結果は「-式」の結果と常に同じです。
+        減算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
       </p>
       <p>
-        <b>浮動小数点演算</b>
+        減算演算子は、例外を発生させません。
+      </p>
+      <h4 id="language-operator-multiply">乗算演算子</h4>
+      <p>
+        乗算演算子は「*」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 * 右式
+</pre>
+      <p>
+        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        各式が浮動小数点型の場合は、浮動小数点演算が行われます。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        浮動小数点演算は、左式に右式を加算した数を返します。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        計算結果はIEEE 754演算の規則が適用されます。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
-        右式あるいは左式がNANの場合は、結果はNANです。
+        乗算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+      </p>
+<pre>
+x * y;
+</pre>
+      <p>
+        乗算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        符号が反対の無限大の合計は、NANです。
+        乗算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
       </p>
       <p>
-        正の無限大に、正の無限大あるいは有限値を足したものは、正の無限大になります。
+        乗算演算子は、例外を発生させません。
+      </p>
+      <h4 id="language-operator-divide">除算演算子</h4>
+      <p>
+        除算演算子は「/」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 / 右式
+</pre>
+      <p>
+        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        負の無限大に、負の無限大あるいは有限値を足したものは、負の無限大になります。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        符号が異なる0の合計は、正の0になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        符号が同一の0の合計は、その符号の0になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
-        絶対値が同じで、符号が異なる値の合計は、正の0になります。
+        除算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+      </p>
+<pre>
+x / y;
+</pre>
+      <p>
+        除算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        各式が、無限大あるいはNANあるいは0でない場合で、同符号か、絶対の異なる異符号の場合は、正しい計算結果が返されます。
+        除算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
       </p>
       <p>
-        演算結果の値が大きすぎる場合は、正の無限大になります。
+        整数型に対する演算の場合には、除算演算子は、右辺が0であった場合に、例外が発生します。
       </p>
       <p>
-        演算結果の値が小さすぎる場合は、負の無限大になります。
-      </p>
-      <p>
-        それ以外の場合は、IEEE 754の最近傍への丸めモードを使用して、丸められます。
-      </p>
-      <p>
-        式が「0.0」の場合は「0.0 - 式」は「+0.0」ですが「-式」は「-0.0」です。
+        浮動小数点型に対する演算の場合には、除算演算子は、例外を発生させません。
       </p>
       
       <h3 id="language-operator-concat">文字列連結演算子</h3>
@@ -2495,17 +2541,6 @@ x + y;
       </p>
       <p>
         左辺あるいは右辺が数値型
-      </p>
-      
-      <h4 id="language-operator-subtract">減算演算子</h4>
-      <p>
-        減算演算子は「-」で表現され、左辺から右辺を減算した数を求めます。
-      </p>
-<pre>
-左式 - 右式
-</pre>
-      <p>
-        減算演算子の仕様は、減算した数を求めること以外は、<a href="#language-operator-add">加算演算子</a>と全く同じです。
       </p>
       
       <h4 id="language-operator-precedence">演算子の優先順位</h4>
@@ -3933,10 +3968,10 @@ sub NANF : float ()
       <h2 id="faq">FAQ</h2>
       <h3>C99以外で書かれたライブラリは利用できますか</h3>
       <p>
-        加算演算子・減算演算子で、オーバーフローした場合の動作はどうなりますか。
+        加算演算子・減算演算子・乗算演算子の整数演算でオーバーフローした場合の動作はどうなりますか。
       </p>
       <p>
-        C99は、加算演算子・減算演算子におけるオーバーフロー時の動作について定義していないので、処理系依存になります。
+        C99は、加算演算子・減算演算子・乗算演算子における整数演算のオーバーフロー時の動作について定義していないので、処理系依存になります。
       </p>
       <p>
         ほとんどの環境においては、2の補数表現を使って、整数を表現し加算と減算を行いますので、2の補数表現で演算を行った場合の結果になることが期待されます。
