@@ -387,6 +387,7 @@ my $total = MyMath->sum($sp_nums);
         SPVMの言語仕様の詳細です。
       </p>
       <ul class="toc">
+        <li><a href="#language-c99">C99準拠</a>
         <li><a href="#language-parser">構文解析</a>
         <li><a href="#language-comment">コメント</a>
         <li><a href="#language-pod">POD</a>
@@ -413,6 +414,19 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-auto-loaded-package">自動的にロードされるパッケージ</a></li>
       </ul>
+      <h3 id="language-parser">C99準拠</h3>
+      <p>
+        SPVM自体のソースコードは、C言語で書かれ、C99に準拠します。
+      </p>
+      <p>
+        数値演算における仕様は、C99に準拠します。C99で、未定義・処理系依存のものは、SPVMにおいても未定義・処理系依存です。
+      </p>
+      <p>
+        加算演算子、減算演算子、乗算演算子、除算演算子、剰余演算子、シフト演算子、ビット演算子においては、C99における演算との対応が仕様化されます。
+      </p>
+      <p>
+        数値の文字列化における仕様は、C99に準拠します。C99のsrpintfの「%g」フォーマットが仕様になります。
+      </p>
       <h3 id="language-parser">構文解析</h3>
       <ul class="list">
         <li><a href="#language-parser-encoding">ソースコードの文字コード</a>
@@ -3729,6 +3743,10 @@ sub NANF : float ()
       </p>
 
       <h2 id="faq">FAQ</h2>
+      <h3>C99以外で書かれたライブラリは利用できますか</h3>
+      <p>
+        はい。ライブラリがC89、C11、C++の各仕様で書かれていても利用できます。C99準拠というのは、SPVM自体のソースコード自体において適用されるだけです。
+      </p>
       <h3>定数畳み込み最適化は行われますか。</h3>
       <p>
         通常は、定数畳み込みの最適化は、行われませんが、プリコンパイルされたサブルーチンでは、定数畳み込みがCコンパイラによって試みらるでしょう。
