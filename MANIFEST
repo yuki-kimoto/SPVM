@@ -1,5 +1,4 @@
 Changes
-doc/index.html
 lib/SPVM.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Builder.pm

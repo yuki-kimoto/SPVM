@@ -2598,9 +2598,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               var_id_out = SPVM_OP_get_var_id(compiler, op_dist_term);
                               var_id_in = SPVM_OP_get_var_id(compiler, op_src_term);
                             }
-                            // CHECK_INTERFACE_TYPE
+                            // CHECK_INTERFACE
                             else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_INTERFACE);
                               var_id_out = SPVM_OP_get_var_id(compiler, op_dist_term);
                               var_id_in = SPVM_OP_get_var_id(compiler, op_src_term);
                             }

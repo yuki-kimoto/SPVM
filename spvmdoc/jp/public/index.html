@@ -456,7 +456,7 @@ my $total = MyMath->sum($sp_nums);
       </p>
 <pre>
 byte BEGIN case croak default double elsif else enum eq
-eval for float gt ge has if interface isa int last length
+eval for float gt ge has if interface_t isa int last length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
 sub string short scalar undef unless use void value_t while
@@ -597,7 +597,7 @@ package Point : public {
         </tr>
         <tr>
           <td>
-            <b>interface</b>
+            <b>interface_t</b>
           </td>
           <td>
             このパッケージは「インターフェイス型」になります。
@@ -624,7 +624,7 @@ package Point : public {
         「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        「interface」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
+        「interface_t」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
       </p>
       
       <p>
@@ -2882,7 +2882,7 @@ package Foo {
 }
 
 # インターフェース型
-package Foo : interface {
+package Foo : interface_t {
 
 }
 
@@ -2958,15 +2958,15 @@ package Foo : pointer_t {
       </p>
       <h4 id="language-type-interface">インターフェース型</h4>
       <p>
-        インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface デスクリプタ」が指定されたものをいいます。
+        インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface_t デスクリプタ」が指定されたものをいいます。
       </p>
 <pre>
-package SPVM::Comparator : interface {
+package SPVM::Comparator : interface_t {
   sub compare : int ($self : self, $x1 : object, $x2 : object);
 }
 </pre>
       <p>
-        インターフェスは、C言語における関数ポインタと同一の機能を提供するために設計されました。
+        インターフェスは、C言語における関数ポインタに該当する機能を提供するために設計されました。
       </p>
       <p>
         インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドである必要があります。
@@ -3948,7 +3948,7 @@ use SPVM::BuildDir "$FindBin::Bin/mydir;
         インターフェースのひとつの例は、標準モジュールである「SPVM::Comparable」です。
       </p>
 <pre>
-package SPVM::Comparable : interface {
+package SPVM::Comparable : interface_t {
   sub compare : int ($self : self, $object1 : object, $object2 : object);
 }
 </pre>

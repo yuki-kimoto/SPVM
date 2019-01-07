@@ -2743,7 +2743,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE: {
+      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {

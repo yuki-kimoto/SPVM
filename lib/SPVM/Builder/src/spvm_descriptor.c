@@ -4,7 +4,7 @@
 #include "spvm_compiler.h"
 
 const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
-  "interface",
+  "interface_t",
   "value_t",
   "pointer_t",
   "native",

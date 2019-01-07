@@ -1477,7 +1477,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_INTERFACE:
+        case SPVM_DESCRIPTOR_C_ID_INTERFACE_T:
           package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
           category_descriptors_count++;
           break;

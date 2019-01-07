@@ -3315,7 +3315,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE_TYPE: {
+      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
         int32_t constant_pool_id = opcode->operand2;
 
         int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];

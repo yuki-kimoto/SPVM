@@ -1,5 +1,6 @@
 0.0407 2018-01-07
   - Change SPVM::Bool to SPVM::JSON::Bool
+  - rename interface descriptor to interface_t
 0.0406 2018-01-04
   - add signbit CORE func
   - add signbitf CORE func
