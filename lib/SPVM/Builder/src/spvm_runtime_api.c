@@ -993,19 +993,19 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         long_vars[opcode->operand0]
           = long_vars[opcode->operand1] << int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_RIGHT_SHIFT_INT:
+      case SPVM_OPCODE_C_ID_RIGHT_ARITHMETIC_SHIFT_INT:
         int_vars[opcode->operand0]
           = int_vars[opcode->operand1] >> int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_RIGHT_SHIFT_LONG:
+      case SPVM_OPCODE_C_ID_RIGHT_ARITHMETIC_SHIFT_LONG:
         long_vars[opcode->operand0]
           = long_vars[opcode->operand1] >> int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_RIGHT_SHIFT_UNSIGNED_INT:
+      case SPVM_OPCODE_C_ID_RIGHT_LOGICAL_SHIFT_INT:
         int_vars[opcode->operand0]
           = (int32_t)((uint32_t)int_vars[opcode->operand1] >> int_vars[opcode->operand2]);
         break;
-      case SPVM_OPCODE_C_ID_RIGHT_SHIFT_UNSIGNED_LONG:
+      case SPVM_OPCODE_C_ID_RIGHT_LOGICAL_SHIFT_LONG:
         long_vars[opcode->operand0]
           = (int64_t)((uint64_t)long_vars[opcode->operand1] >> int_vars[opcode->operand2]);
         break;

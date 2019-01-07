@@ -770,7 +770,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_RIGHT_SHIFT: {
+            case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -804,7 +804,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED: {
+            case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -1655,11 +1655,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT:
                   culc_op_id = SPVM_OP_C_ID_LEFT_SHIFT;
                   break;
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT:
-                  culc_op_id = SPVM_OP_C_ID_RIGHT_SHIFT;
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_ARITHMETIC_SHIFT:
+                  culc_op_id = SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT;
                   break;
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED:
-                  culc_op_id = SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED;
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_LOGICAL_SHIFT:
+                  culc_op_id = SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT;
                   break;
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR:
                   culc_op_id = SPVM_OP_C_ID_BIT_XOR;
@@ -1708,8 +1708,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   break;
 
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT:
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT:
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_SHIFT_UNSIGNED:
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_ARITHMETIC_SHIFT:
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_LOGICAL_SHIFT:
                   if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
                     || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
                   {
@@ -3505,8 +3505,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_BIT_NOT:
                       case SPVM_OP_C_ID_REMAINDER:
                       case SPVM_OP_C_ID_LEFT_SHIFT:
-                      case SPVM_OP_C_ID_RIGHT_SHIFT:
-                      case SPVM_OP_C_ID_RIGHT_SHIFT_UNSIGNED:
+                      case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
+                      case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
                       case SPVM_OP_C_ID_MINUS:
                       case SPVM_OP_C_ID_PLUS:
                       case SPVM_OP_C_ID_ARRAY_LENGTH:
