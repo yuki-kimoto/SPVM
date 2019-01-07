@@ -736,108 +736,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_LEFT_SHIFT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Can receive only numeric type
-              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, "<< operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-                
-                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, "<< operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Can receive only numeric type
-              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, ">> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-                
-                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, ">> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Can receive only numeric type
-              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, ">>> operator left value must be integral at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
-                  return;
-                }
-                
-                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
-                  SPVM_COMPILER_error(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-              else {
-                SPVM_COMPILER_error(compiler, ">>> operator right value must be int at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
             case SPVM_OP_C_ID_NEW: {
               assert(op_cur->first);
               if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
@@ -1037,41 +935,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Can receive only integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "^ operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_BIT_OR: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Can receive only integral type
-              if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "| operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              
-              SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_BIT_AND: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Can receive only integral type
-              if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "& operator can receive only integral type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2016,6 +1879,154 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
                                               
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_AND: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left value must not be object type
+              if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of & operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right value must not be object type
+              if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of & operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_OR: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left value must not be object type
+              if (!first_type || !SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of | operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right value must not be object type
+              if (!last_type || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of | operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_LEFT_SHIFT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Can receive only numeric type
+              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Left operand of << operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
+                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "Right operand of << operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Right operand of << operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Can receive only numeric type
+              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Left operand of >> operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
+                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "Right operand of >> operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Right operand of >> operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Can receive only numeric type
+              if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Left operand of >>> operator must be integral type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_OP_CHECKER_apply_unary_widening_convertion(compiler, op_cur->last);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+                
+                if (last_type->dimension == 0 && last_type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "Right operand of >>> operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "Right operand of >>> operator must be int type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
               break;
             }
             case SPVM_OP_C_ID_CONCAT: {

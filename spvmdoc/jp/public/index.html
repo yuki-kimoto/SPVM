@@ -2683,6 +2683,38 @@ x | y;
         ビットOR演算子は、例外を発生させません。
       </p>
 
+      <h4 id="language-operator-left-shift">左シフト演算子</h4>
+      <p>
+        左シフトは「<<」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+<pre>
+左式 << 右式
+</pre>
+      <p>
+        左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      <p>
+      <p>
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+      </p>
+      <p>
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+      </p>
+      <p>
+        左シフト演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+      </p>
+<pre>
+x << y;
+</pre>
+      <p>
+        左シフト演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        左シフト演算子は、例外を発生させません。
+      </p>
+
       <h3 id="language-operator-concat">文字列連結演算子</h3>
       <p>
         文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返します。
