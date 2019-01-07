@@ -14,6 +14,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Concat
 {
+  ok(TestCase::Concat->concat_empty_string);
   ok(TestCase::Concat->concat_bytes);
   ok(TestCase::Concat->concat_string);
   ok(TestCase::Concat->concat_left_is_number);

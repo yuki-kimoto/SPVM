@@ -4419,14 +4419,18 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SP
   int32_t string2_length = SPVM_RUNTIME_API_len(env, string2);
   
   int32_t string3_length = string1_length + string2_length;
-  SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_str_raw(env, NULL, string3_length);
+  SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_barray_raw(env, string3_length);
   
   int8_t* string1_bytes = SPVM_RUNTIME_API_belems(env, string1);
   int8_t* string2_bytes = SPVM_RUNTIME_API_belems(env, string2);
   int8_t* string3_bytes = SPVM_RUNTIME_API_belems(env, string3);
   
-  memcpy(string3_bytes, string1_bytes, string1_length);
-  memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
+  if (string1_length > 0) {
+    memcpy(string3_bytes, string1_bytes, string1_length);
+  }
+  if (string2_length) {
+    memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
+  }
   
   return string3;
 }

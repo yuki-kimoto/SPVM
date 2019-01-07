@@ -1,5 +1,38 @@
 package TestCase::Concat {
-    sub concat_bytes : int () {
+  sub concat_empty_string : int () {
+    {
+      my $text = "abc" . "";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "abc";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text .= "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text . "";
+    }
+    return 1;
+  }
+  
+  sub concat_bytes : int () {
     
     my $string = (byte[])"abc" . (byte[])"def";
     
