@@ -314,7 +314,7 @@ package SPVM::JSON {
       my $text = "";
       if ($self->{indent}) {
         my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") { # FIXME: 空文字連結
+        unless ($indent eq "") {
           $text .= $indent;
         }
       }
@@ -353,7 +353,7 @@ package SPVM::JSON {
       if ($self->{indent}) {
         $text .= "\n";
         my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") { # FIXME: 空文字連結
+        unless ($indent eq "") {
           $text .= $indent;
         }
       }
@@ -383,7 +383,7 @@ package SPVM::JSON {
       if ($self->{indent}) {
         $text .= "\n";
         my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") { # FIXME: 空文字連結
+        unless ($indent eq "") {
           $text .= $indent;
         }
       }
@@ -395,7 +395,7 @@ package SPVM::JSON {
       return "\"" . (string)$o . "\"";
     }
     elsif ($o isa SPVM::Int) {
-      return (string)(((SPVM::Int)$o)->val); # FIXME: (string)のキャストを外したときのエラー: "." operater right value must be defined
+      return (string)(((SPVM::Int)$o)->val);
     }
     elsif ($o isa SPVM::Long) {
       return (string)(((SPVM::Long)$o)->val);
