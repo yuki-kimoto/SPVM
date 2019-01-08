@@ -22,17 +22,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::UnaryMinus->unary_minus_byte);
     ok(TestCase::UnaryMinus->unary_minus_short);
     ok(TestCase::UnaryMinus->unary_minus_int);
-    ok(TestCase::UnaryMinus->unary_minus_int_overflow);
     ok(TestCase::UnaryMinus->unary_minus_long);
-    ok(TestCase::UnaryMinus->unary_minus_long_overflow);
     ok(TestCase::UnaryMinus->unary_minus_float);
     ok(TestCase::UnaryMinus->unary_minus_float_inf);
     ok(TestCase::UnaryMinus->unary_minus_float_zero);
     ok(TestCase::UnaryMinus->unary_minus_float_nan);
     ok(TestCase::UnaryMinus->unary_minus_double);
-    ok(TestCase::UnaryMinus->unary_minus_double_inf);
-    ok(TestCase::UnaryMinus->unary_minus_double_zero);
-    ok(TestCase::UnaryMinus->unary_minus_double_nan);
   }
 
   # Unary minus - Compile Error
@@ -44,6 +39,25 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
       ok($success == 0);
     }
   }
+}
+
+#
+# Integral type overflow is not defined in C99
+# If in some environment, these tests fail, please comment out
+#
+{
+  ok(TestCase::UnaryMinus->unary_minus_int_overflow);
+  ok(TestCase::UnaryMinus->unary_minus_long_overflow);
+}
+
+#
+# Nan, Inf, sign operation is not defined in C99
+# If in some environment, these tests fail, please comment out
+#
+{
+  ok(TestCase::UnaryMinus->unary_minus_double_inf);
+  ok(TestCase::UnaryMinus->unary_minus_double_zero);
+  ok(TestCase::UnaryMinus->unary_minus_double_nan);
 }
 
 # All object is freed

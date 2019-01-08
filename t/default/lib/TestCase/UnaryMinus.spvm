@@ -42,20 +42,6 @@ package TestCase::UnaryMinus {
     return 1;
   }
 
-  sub unary_minus_int_overflow : int () {
-    my $value = -INT32_MIN();
-    
-    unless ($value isa int) {
-      return 0;
-    }
-    
-    unless ($value == INT32_MIN()) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
   sub unary_minus_long : int () {
     my $value = -INT64_MAX();
     
@@ -70,20 +56,6 @@ package TestCase::UnaryMinus {
     return 1;
   }
 
-  sub unary_minus_long_overflow : int () {
-    my $value = -INT64_MIN();
-    
-    unless ($value isa long) {
-      return 0;
-    }
-    
-    unless ($value == INT64_MIN()) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
   sub unary_minus_float : int () {
     my $value = -FLT_MAX();
     
@@ -97,6 +69,53 @@ package TestCase::UnaryMinus {
     
     return 1;
   }
+  sub unary_minus_double : int () {
+    my $value = -DBL_MAX();
+    
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless ($value == -DBL_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub unary_minus_int_overflow : int () {
+    my $value = -INT32_MIN();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == INT32_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub unary_minus_long_overflow : int () {
+    my $value = -INT64_MIN();
+    
+    unless ($value isa long) {
+      return 0;
+    }
+    
+    unless ($value == INT64_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
   sub unary_minus_float_inf : int () {
     {
       my $value = -INFINITYF();
@@ -153,20 +172,6 @@ package TestCase::UnaryMinus {
     }
     
     unless (isnanf($value)) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  sub unary_minus_double : int () {
-    my $value = -DBL_MAX();
-    
-    unless ($value isa double) {
-      return 0;
-    }
-    
-    unless ($value == -DBL_MAX()) {
       return 0;
     }
     
@@ -232,5 +237,4 @@ package TestCase::UnaryMinus {
     
     return 1;
   }
-
 }

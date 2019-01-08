@@ -1,4 +1,4 @@
-0.0407 2018-01-07
+0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t
   - remove floating point x % y
