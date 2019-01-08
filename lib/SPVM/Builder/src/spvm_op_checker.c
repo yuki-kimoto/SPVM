@@ -2013,7 +2013,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              // If . left and right is both constant string, concat them at compile time
+              // If . left and right is both string literal, concat them at compile time
               if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT && op_cur->last->id == SPVM_OP_C_ID_CONSTANT) {
                 SPVM_OP* op_constant_string1 = op_cur->first;
                 int32_t string1_length = op_constant_string1->uv.constant->string_length;
