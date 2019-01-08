@@ -57,7 +57,6 @@ package SPVM::JSON {
   }
 
   sub _decode_string : string ($self : self, $s : string, $i : int&, $end : int) {
-    # TODO: change better way to substr
     my $chars = SPVM::List->new;
     _expect_token($s, $i, $end, "\"");
     while (1) { 
