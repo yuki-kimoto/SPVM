@@ -216,6 +216,7 @@ package TestCase::Hash {
     unless ($hash->count == 1) {
       return 0;
     }
+    
     unless ($hash->exists("bob") == 1) {
       return 0;
     }

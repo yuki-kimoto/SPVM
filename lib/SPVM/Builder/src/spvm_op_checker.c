@@ -1650,67 +1650,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_invalid = 0;
                 }
               }
-              // Numeric type
-              else if (SPVM_TYPE_is_numeric_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                if (op_term) {
-                  // Automatical numeric convertion
-                  op_term = SPVM_OP_CHECKER_check_assign(compiler, sub->return_type, op_term);
-                  if (compiler->error_count > 0) {
-                    return;
-                  }
-                  
-                  SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
-                  if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
-                    is_invalid = 0;
-                  }
-                  else {
-                    is_invalid = 1;
-                  }
-                }
-                else {
-                  is_invalid = 1;
-                }
-              }
-              // Object type
-              else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                if (op_term) {
-                  if (op_term->id == SPVM_OP_C_ID_UNDEF) {
-                    is_invalid = 0;
-                  }
-                  else if (SPVM_TYPE_is_object_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                    is_invalid = 0;
-                  }
-                  else {
-                    is_invalid = 1;
-                  }
-                }
-                else {
-                  is_invalid = 1;
-                }
-              }
-              // Value type
-              else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
-                if (op_term) {
-                  SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
-                  if (term_type->basic_type->id == sub->return_type->basic_type->id && term_type->dimension == sub->return_type->dimension && term_type->flag == sub->return_type->flag) {
-                    is_invalid = 0;
-                  }
-                  else {
-                    is_invalid = 1;
-                  }
-                }
-                else {
-                  is_invalid = 1;
-                }
-              }
               else {
-                assert(0);
+                // Automatical numeric convertion
+                SPVM_OP_CHECKER_check_assign(compiler, sub->return_type, op_term);
+                if (compiler->error_count > 0) {
+                  return;
+                }
               }
 
-              if (is_invalid) {
-                SPVM_COMPILER_error(compiler, "Invalid return type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
               break;
             }
             case SPVM_OP_C_ID_PLUS: {

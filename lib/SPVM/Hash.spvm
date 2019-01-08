@@ -167,7 +167,7 @@ package SPVM::Hash {
     my $ref = $self->{entries}->[$index];
     my $prev: SPVM::HashEntry = undef;
     unless ($ref) {
-      return 0;
+      return undef;
     }
     while (1) {
       if ($ref->{key} eq $key) {
