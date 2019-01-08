@@ -453,7 +453,7 @@ my $total = MyMath->sum($sp_nums);
         <a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子、シフト演算子、ビット演算子においては、C99における演算との対応が仕様化されます。
       </p>
       <p>
-        数値から文字列への変換における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
+        数値から文字列への型変換における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
       </p>
       <h4 id="language-c99-type">C99との型の対応</h3>
       <p>
@@ -1793,10 +1793,10 @@ while (条件部) {
         不正な整数リテラルの表現はコンパイル時エラーが発生します。
       </p>
       <p>
-        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
+        整数リテラルがbyte型の変数に代入される場合、あるいはbyte型のサブルーチンの引数として渡される場合で、byte型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>によって、byte型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
       </p>
       <p>
-        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
+        整数リテラルがshort型の変数に代入される場合、あるいはshort型のサブルーチンの引数として渡される場合で、short型で表現できる数値の範囲を超えていない場合は、<a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>によって、short型に自動的に変換されます。範囲を超えている場合は、コンパイル時エラーとなります。
       </p>
       <p>
         整数リテラルのサンプルです。
@@ -2391,7 +2391,7 @@ undef
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         単項プラス演算子は、与えられた値をコピーして返します。
@@ -2416,7 +2416,7 @@ my $num = +10;
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         単項マイナス演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2444,16 +2444,16 @@ my $num = -10;
         右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         加算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2481,16 +2481,16 @@ x + y;
         右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         減算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2518,16 +2518,16 @@ x - y;
         右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         乗算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2555,16 +2555,16 @@ x * y;
         右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-widening">拡大型変換</a>が行われint型になります。
+        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
       </p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         除算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
@@ -2596,10 +2596,10 @@ x / y;
         右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         剰余演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -2633,10 +2633,10 @@ x % y;
         右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         ビットAND演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -2662,10 +2662,10 @@ x & y;
         右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、右式と同じ型になります。
+        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-widening">拡大型変換</a>が行われ、左式と同じ型になります。
+        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
       </p>
       <p>
         ビットOR演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -2690,7 +2690,7 @@ x | y;
         式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         ビット否定演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -2723,7 +2723,7 @@ my $num = ~0xFF0A;
         左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
@@ -2752,7 +2752,7 @@ x << y;
         左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
@@ -2781,7 +2781,7 @@ x >> y;
         左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-widening">単項拡大型変換</a>が行われます。
+        最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
@@ -2807,7 +2807,7 @@ x >> y;
 左式 . 右式
 </pre>
       <p>
-        左式あるいは右式が、<a href="#language-type-numeric">数値型</a>であった場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a>によって文字列に変換されます。
+        左式あるいは右式が、<a href="#language-type-numeric">数値型</a>であった場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>によって文字列に変換されます。
       </p>
       <p>
         左式と右式はどちらも<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。そうでない場合は、コンパイルエラーになります。
@@ -3904,10 +3904,11 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
         <li><a href="#language-type-convertion-explicite">明示的な型変換</a></li>
         <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
-        <li><a href="#language-type-convertion-unary-widening">単項拡大型変換</a></li>
-        <li><a href="#language-type-convertion-narrowing">縮小型変換</a></li>
-        <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
-        <li><a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a></li>
+        <li><a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a></li>
+        <li><a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a></li>
+        <li><a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a></li>
+        <li><a href="#language-type-convertion-numeric-widening">数値拡大型変換</a></li>
+        <li><a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a></li>
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
         <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
@@ -3925,7 +3926,7 @@ my $objets : object[] = new int[3];
         次の場合に暗黙的な型変換が行われます。
       </p>
       <p>
-        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われます。
       </p>
 <pre>
 # 暗黙の拡大型変換
@@ -3933,7 +3934,7 @@ my $num : long = 123;
 my $num : double = 12.5f;
 </pre>
       <p>
-        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>が行われます。
       </p>
 <pre>
 # 暗黙の縮小型変換
@@ -3972,7 +3973,7 @@ my $num : int = $object;
 my $num_obj = SPVM::Int->new(3);
 my $num : int = $num_obj;
 </pre>
-        移動元の型が数値型で、移動先の型が、文字列型の場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a>が行われます。以下の場合の例では、数値の「123」が文字列「"123"」に変換されたものが代入されます。
+        移動元の型が数値型で、移動先の型が、文字列型の場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>が行われます。以下の場合の例では、数値の「123」が文字列「"123"」に変換されたものが代入されます。
       </p>
 <pre>
 # 文字列型への暗黙のボクシング変換
@@ -4034,7 +4035,7 @@ my $num : int = (int)4;
             <b>小さな数値型</b>
           </td>
           <td>
-            <a href="#language-type-convertion-widening">拡大型変換</a>が行われます。
+            <a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われます。
           </td>
         </tr>
         <tr>
@@ -4045,7 +4046,7 @@ my $num : int = (int)4;
             <b>大きな数値型</b>
           </td>
           <td>
-            <a href="#language-type-convertion-narrowing">縮小型変換</a>が行われます。
+            <a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>が行われます。
           </td>
         </tr>
         <tr>
@@ -4109,12 +4110,12 @@ my $num : int = (int)4;
       <p>
         <a href="#language-type-numeric">数値型</a>は、型の順序を持ちます。型の順序は小さい方から「byte」「short」「int」「long」「float」「double」です。
       </p>
-      <h4 id="language-type-convertion-unary-widening">単項拡大型変換</h4>
+      <h4 id="language-type-convertion-unary-numeric-widening">単項数値拡大型変換</h4>
       <p>
-        単項拡大型変換とは、<a href="#language-expression">式</a>がbyte型あるいはshort型であった場合に、int型へ<a href="#language-type-convertion-widening">拡大型変換</a>を行うことをいいます。
+        単項数値拡大型変換とは、<a href="#language-expression">式</a>がbyte型あるいはshort型であった場合に、int型へ<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>を行うことをいいます。
       </p>
       <p>
-        単項拡大型変換が行われるのは以下の場合です。
+        単項数値拡大型変換が行われるのは以下の場合です。
       </p>
       <ul class="list">
         <li>配列のインデックス</li>
@@ -4123,13 +4124,46 @@ my $num : int = (int)4;
         <li>単項マイナス演算子のオペランド</li>
         <li>シフト演算子「<<」「>>」「>>>」の左右のオペランド</li>
       </ul>
-      <h4 id="language-type-convertion-narrowing">縮小型変換</h4>
+      <h4 id="language-type-convertion-binary-numeric-widening">二項数値拡大型変換</h4>
       <p>
-        縮小型変換とは、<a href="#language-type-numeric">数値型</a>において大きい型から小さい型への変換が行われる場合に適用される変換の規則のことです。
+        二項数値拡大型変換とは、左辺と右辺に数値型をとる二項演算子において、左式と右式に適用される<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>のことをいいます。
       </p>
-      <h4 id="language-type-convertion-widening">拡大型変換</h4>
       <p>
-        拡大型変換とは、<a href="#language-type-numeric">数値型</a>において小さい型から大きい型への変換が行われる場合に適用される変換の規則のことです。
+        次のルールが適用されます。
+      </p>
+      <p>
+        1. 一方の式が、double型の場合は、他方の型はdouble型に変換されます。
+      </p>
+      <p>
+        2. 一方の式が、float型の場合は、他方の型はfloat型に変換されます。
+      </p>
+      <p>
+        3. 一方の式が、long型の場合は、他方の型はlong型に変換されます。
+      </p>
+      <p>
+        4. それ以外の場合は、int型に変換されます。
+      </p>
+      <p>
+        二項数値拡大型変換が行われるのは以下の場合です。
+      </p>
+      <ul class="list">
+        <li><a href="#language-operator-add">加算演算子</a></li>
+        <li><a href="#language-operator-subtract">減算演算子</a></li>
+        <li><a href="#language-operator-multiply">乗算演算子</a></li>
+        <li><a href="#language-operator-divide">除算演算子</a></li>
+        <li><a href="#language-operator-remainder">剰余演算子</a></li>
+        <li><a href="#language-operator-bit-and">ビットAND演算子</a></li>
+        <li><a href="#language-operator-bit-or">ビットOR演算子</a></li>
+        <li><a href="#language-operator-comparison-numeric">数値比較演算子</a></li>
+      </ul>
+
+      <h4 id="language-type-convertion-numeric-narrowing">数値縮小型変換</h4>
+      <p>
+        数値縮小型変換とは、<a href="#language-type-numeric">数値型</a>において大きい型から小さい型への変換が行われる場合に適用される変換の規則のことです。
+      </p>
+      <h4 id="language-type-convertion-numeric-widening">数値拡大型変換</h4>
+      <p>
+        数値拡大型変換とは、<a href="#language-type-numeric">数値型</a>において小さい型から大きい型への変換が行われる場合に適用される変換の規則のことです。
       </p>
       <h4 id="language-type-convertion-boxing">ボクシング変換</h4>
       <p>
@@ -4201,9 +4235,9 @@ my $num : int = (int)4;
           </td>
         </tr>
       </table>
-      <h4 id="language-type-convertion-numeric-to-string">数値から文字列への変換</h4>
+      <h4 id="language-type-convertion-numeric-to-string">数値から文字列への型変換</h4>
       <p>
-        文字列型への変換とは、<a href="#language-type-numeric">数値型</a>が<a href="#language-type-string">文字列型</a>に変換される場合に適用される変換規則のことです。
+        数値から文字列への型変換とは、<a href="#language-type-numeric">数値型</a>が<a href="#language-type-string">文字列型</a>に変換される場合に適用される変換規則のことです。
       </p>
       <p>
         数値型の値をC99のsprintfの「%g」フォーマットを使って、SPVMの文字列へ変換します。
@@ -4347,7 +4381,7 @@ else {
         言語仕様と文法についてはPerlを主に参考にしています。必要な部分でPerl 6の文法・キーワードも採用しています。「has」「native」「ro」「rw」「wo」など。
       </p>
       <p>
-        言語仕様とバーチャルマシンについては、Java言語とJavaVMの言語仕様を多くを参考にしています。
+        言語仕様とバーチャルマシンについては、Java言語とJavaVMの言語仕様を参考にしました。
       </p>
       <p>
         数値型と数値計算においては、Javaの計算規則とほぼ同じです。数値型の種類、演算子の種類、拡張型変換、縮小型変換などです。
