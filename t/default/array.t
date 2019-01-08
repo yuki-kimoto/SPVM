@@ -33,6 +33,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Array initialization
 {
+  ok(TestCase::Array->array_init_empty());
   ok(TestCase::Array->array_init_byte());
   ok(TestCase::Array->array_init_short());
   ok(TestCase::Array->array_init_int());

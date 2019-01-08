@@ -2,6 +2,19 @@ package TestCase::Array {
   use TestCase::Minimal;
   
   # Array store undef
+  sub array_init_empty : int () {
+    my $objects = [];
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub array_init_fatcamma : int () {
     my $pair = [(object)"x" => 1, "y" => 2];
     

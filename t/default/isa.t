@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # isa
 {
+  ok(TestCase::Isa->isa_any_object_type());
   ok(TestCase::Isa->isa_numeric_type());
   ok(TestCase::Isa->isa_value_type());
   ok(TestCase::Isa->isa_match_class());

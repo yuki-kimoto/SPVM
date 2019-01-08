@@ -186,7 +186,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
               
-              int32_t length;
+              int32_t length = 0;
               {
                 SPVM_OP* op_term_element = op_list_elements->first;
                 int32_t index = 0;
@@ -304,6 +304,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 length = index;
               }
               
+              // Default element type is object
+              if (length == 0) {
+                op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
+                SPVM_TYPE* type_element = op_type_element->uv.type;
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                type_new->basic_type = type_element->basic_type;
+                type_new->dimension = type_element->dimension + 1;
+                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
+              }
+              
               SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
               SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
 
@@ -314,11 +324,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
-              if (length == 0) {
-                SPVM_COMPILER_error(compiler, "Array initialization need at least one element at %s line %d\n", file, line);
-                return;
-              }
-              
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
               if (compiler->error_count > 0) {
@@ -958,6 +963,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_value_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
                 compile_time_check = 1;
               }
+              else if (SPVM_TYPE_is_any_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+                compile_time_check = 1;
+              }
               else {
                 compile_time_check = 0;
               }
@@ -991,20 +999,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 // Left term must be object type
                 if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "isa left value must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Left operand of isa operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }
                 
                 // Right type must be object type
-                if (SPVM_TYPE_is_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
-                  // Right type must be not any object type
-                  if (SPVM_TYPE_is_any_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
-                    SPVM_COMPILER_error(compiler, "isa rigth type must be not any object type at %s line %d\n", op_cur->file, op_cur->line);
-                    return;
-                  }
-                }
-                else {
-                  SPVM_COMPILER_error(compiler, "isa rigth type must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                if (!SPVM_TYPE_is_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Right operand of isa operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }
 

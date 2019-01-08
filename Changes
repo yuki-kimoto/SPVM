@@ -3,6 +3,10 @@
   - rename interface descriptor to interface_t
   - remove floating point x % y
   - shift operation right operand is used directory
+  - isa operator can check any object type
+  - empty array init type become object[]
+    my $objects = [];
+    
 0.0406 2018-01-04
   - add signbit CORE func
   - add signbitf CORE func

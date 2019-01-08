@@ -4,6 +4,16 @@ package TestCase::Isa {
   use SPVM::Comparator;
   use SPVM::Complex_2d;
 
+  sub isa_any_object_type : int () {
+    my $num : object;
+    
+    unless ($num isa object) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub isa_numeric_type : int () {
     my $num : int;
     
