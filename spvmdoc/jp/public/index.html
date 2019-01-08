@@ -2391,10 +2391,16 @@ undef
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+        <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        単項プラス演算子は、与えられた値をコピーして返します。
+        その後、単項プラス演算子は、与えられた値をコピーして返します。
+      </p>
+      <p>
+        単項プラス演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        単項プラス演算子の結果の型は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>された型です。
       </p>
       <p>
         単項プラス演算子は例外を発生させません。
@@ -2416,14 +2422,20 @@ my $num = +10;
         式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に、<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+        <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        単項マイナス演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+        その後、単項マイナス演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 -x
 </pre>
+      <p>
+        単項マイナス演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        単項マイナス演算子の結果の型は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>された型です。
+      </p>
       <p>
         単項マイナス演算子は例外を発生させません。
       </p>
@@ -2441,22 +2453,13 @@ my $num = -10;
 左式 + 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
-      </p>
-      <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
-      </p>
-      <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        加算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+        その後、加算演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 x + y;
@@ -2465,7 +2468,7 @@ x + y;
         加算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        加算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
+        加算演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         加算演算子は、例外を発生させません。
@@ -2478,22 +2481,13 @@ x + y;
 左式 - 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
-      </p>
-      <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
-      </p>
-      <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        減算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+        その後、減算演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 x - y;
@@ -2502,7 +2496,7 @@ x - y;
         減算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        減算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
+        減算演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         減算演算子は、例外を発生させません。
@@ -2515,22 +2509,13 @@ x - y;
 左式 * 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
-      </p>
-      <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
-      </p>
-      <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        乗算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+        その後、乗算演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 x * y;
@@ -2539,7 +2524,7 @@ x * y;
         乗算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        乗算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
+        乗算演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         乗算演算子は、例外を発生させません。
@@ -2552,22 +2537,13 @@ x * y;
 左式 / 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式が、int型より小さい型の場合は、演算される前に、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われint型になります。
-      </p>
-      <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
-      </p>
-      <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        除算演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
+        その後、除算演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型における演算が定義されます。
       </p>
 <pre>
 x / y;
@@ -2576,7 +2552,7 @@ x / y;
         除算演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        除算演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
+        除算演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         整数型に対する演算の場合には、除算演算子は、右辺が0であった場合に、例外が発生します。
@@ -2593,16 +2569,13 @@ x / y;
 左式 % 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        剰余演算子は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        その後、剰余演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 x % y;
@@ -2611,7 +2584,7 @@ x % y;
         剰余演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
-        剰余演算子の型は、拡大型変換されなかった場合は、左式・右式の型、拡大型変換された場合は、拡大型変換された型です。
+        剰余演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         剰余演算子は、右辺が0であった場合に、例外が発生します。
@@ -2630,22 +2603,22 @@ x % y;
 左式 & 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        ビットAND演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        その後、ビットAND演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 x & y;
 </pre>
       <p>
         ビットAND演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        ビットAND演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
       </p>
       <p>
         ビットAND演算子は、例外を発生させません。
@@ -2659,16 +2632,13 @@ x & y;
 左式 | 右式
 </pre>
       <p>
-        右式と左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左式の型が、右式の型よりも小さい場合は、左式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、右式と同じ型になります。
+        左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式の型が、左式の型よりも小さい場合は、右式に<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われ、左式と同じ型になります。
-      </p>
-      <p>
-        ビットOR演算子の演算結果は、C99における以下の演算結果と完全に一致します。xとyは同一の型です。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        その後、ビットOR演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 x | y;
@@ -2677,8 +2647,12 @@ x | y;
         ビットOR演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
+        ビットOR演算子の結果の型は、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>された型です。
+      </p>
+      <p>
         ビットOR演算子は、例外を発生させません。
       </p>
+      
       <h4 id="language-operator-bit-not">ビット否定演算子</h4>
       <p>
         ビット否定演算子は「~」で表現される<a href="#language-operator-unary">単項演算子</a>です。
@@ -2690,14 +2664,20 @@ x | y;
         式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        最初に<a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+        <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        ビット否定演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        その後、ビット否定演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 ~x
 </pre>
+      <p>
+        ビット否定演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        ビット否定演算子の結果の型は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>された型です。
+      </p>
       <p>
         ビット否定演算子は例外を発生させません。
       </p>
@@ -2729,7 +2709,7 @@ my $num = ~0xFF0A;
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        左シフト演算子の演算結果は、C99における以下の演算結果と完全に一致します。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        左シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 x << y;
@@ -2758,7 +2738,7 @@ x << y;
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        算術右シフト演算子の演算結果は、C99における以下の演算結果と完全に一致します。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        算術右シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 x >> y;
@@ -2787,7 +2767,7 @@ x >> y;
         右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
-        論理右シフト演算子の演算結果は、C99における以下の演算結果と完全に一致します。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
+        論理右シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
       </p>
 <pre>
 (符号付整数型キャスト)((符号なし整数型キャスト)x >> y);
