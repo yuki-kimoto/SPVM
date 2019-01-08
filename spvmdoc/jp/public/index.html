@@ -428,6 +428,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-condition">条件</a>
         <li><a href="#language-condition-part">条件部</a>
         <li><a href="#language-literal">リテラル</a></li>
+        <li><a href="#language-string">文字列</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-operator-order">演算子の優先順位</a></li>
@@ -2780,19 +2781,28 @@ x >> y;
       
       <h3 id="language-operator-concat">文字列連結演算子</h3>
       <p>
-        文字列連結演算子は「.」で表現されます。文字列を連結して、新しい文字列を返します。
+        文字列連結演算子は「.」で表現される<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
 左式 . 右式
 </pre>
       <p>
-        左式と右式の両方が、<a href="#language-literal-string">文字列リテラル</a>であった場合は、コンパイル時に連結された文字列リテラルが生成され、それを元にした新しい文字列を返します。
+        左式あるいは右式が、<a href="#language-type-numeric">数値型</a>であった場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a>によって文字列に変換されます。
       </p>
       <p>
-        
+        左式と右式はどちらも<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。そうでない場合は、コンパイルエラーになります。
       </p>
       <p>
-        左辺あるいは右辺が数値型
+        文字列連結演算子は、左式と右式で表現される<a href="#language-string">文字列</a>を連結し、新しい文字列を返します。
+      </p>
+      <p>
+        文字列連結演算子は<a href="#language-expression">式</a>を返し、型は<a href="#language-type-string">文字列型</a>です。
+      </p>
+      <p>
+        左式と右式の両方が、<a href="#language-literal-string">文字列リテラル</a>であった場合は、コンパイル時に連結された文字列リテラルが生成されます。パフォーマンスのコストを意識せずに、文字列連結演算子で、文字列リテラルを連結できます。
+      </p>
+      <p>
+        実行時に、左式あるいは右式が<a href="#language-undef">未定義値</a>だった場合は、例外が発生します。
       </p>
       
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
@@ -3136,7 +3146,9 @@ my $num = 1 + 2;
         <li><a href="#language-type-interface">インターフェース型</a></li>
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
+        <li><a href="#language-type-array-byte">byte配列型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
+        <li><a href="#language-type-string-compatible">文字列互換型</a></li>
         <li><a href="#language-type-value">値型</a></li>
         <li><a href="#language-type-ref">リファレンス型</a></li>
       </ul>
@@ -3523,6 +3535,13 @@ my $nums = new int[3];
 <p>
 my $nums = new int[][3];
 </p>
+      <h4 id="language-type-array-byte">byte配列型</h4>
+      <p>
+        SPVMにおいては、byte配列型は<a href="#language-type-string-compatible">文字列互換型</a>であるという点において特別な型です。
+      </p>
+<pre>
+byte[]
+</pre>
       
       <h4 id="language-type-string">文字列型</h4>
       <p>
@@ -3579,6 +3598,10 @@ $bytes->[1] = 'd';
         文字列は、常に変更が可能であるものとして、扱ってください。
       </p>
 
+      <h4 id="language-type-string-compatible">文字列互換型</h4>
+      <p>
+        文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byte配列型</a>のことを言います。
+      </p>
       <h4 id="language-type-value">値型</h4>
       <p>
         値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
@@ -3847,6 +3870,7 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-unary-widening">単項拡大型変換</a></li>
         <li><a href="#language-type-convertion-narrowing">縮小型変換</a></li>
         <li><a href="#language-type-convertion-widening">拡大型変換</a></li>
+        <li><a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a></li>
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
         <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
@@ -3880,7 +3904,7 @@ my $num : byte = 123;
 my $num : short = 134;
 </pre>
       <p>
-        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
+        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値を表現するオブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
       </p>
 <pre>
 # object型への暗黙のボクシング変換
@@ -3888,7 +3912,7 @@ my $num = 123;
 my $object : object = $num;
 </pre>
       <p>
-        移動元の型が数値型で、移動先の型が対応する数値を表現するオブジェクト型の場合は、対応する数値を表現するオブジェクト型へのボクシング変換が行われます。
+        移動元の型が数値型で、移動先の型が対応する数値を表現するオブジェクト型の場合は、対応する数値を表現するオブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
       </p>
 <pre>
 # object型への暗黙のボクシング変換
@@ -3896,7 +3920,7 @@ my $num = 123;
 my $object : SPVM::Int = $num;
 </pre>
       <p>
-        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
+        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
       </p>
 <pre>
 # object型からの暗黙のアンボクシング変換 - 
@@ -3904,12 +3928,19 @@ my $object : object;
 my $num : int = $object;
 </pre>
       <p>
-        移動元の型が数値を表現するオブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型におけるアンボクシング変換が行われます。
+        移動元の型が数値を表現するオブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
       </p>
 <pre>
 # 数値を表現するオブジェクト型からの暗黙のアンボクシング変換
 my $num_obj = SPVM::Int->new(3);
 my $num : int = $num_obj;
+</pre>
+        移動元の型が数値型で、移動先の型が、文字列型の場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への変換</a>が行われます。以下の場合の例では、数値の「123」が文字列「"123"」に変換されたものが代入されます。
+      </p>
+<pre>
+# 文字列型への暗黙のボクシング変換
+my $num = 123;
+my $str : string = $num;
 </pre>
 
       <h4 id="language-type-convertion-explicite">明示的な型変換</h4>
@@ -4133,6 +4164,13 @@ my $num : int = (int)4;
           </td>
         </tr>
       </table>
+      <h4 id="language-type-convertion-numeric-to-string">数値から文字列への変換</h4>
+      <p>
+        文字列型への変換とは、<a href="#language-type-numeric">数値型</a>が<a href="#language-type-string">文字列型</a>に変換される場合に適用される変換規則のことです。
+      </p>
+      <p>
+        数値型の値をC99のsprintfの「%g」フォーマットを使って、SPVMの文字列へ変換します。
+      </p>
       <h3 id="language-auto-loaded-module">自動的に読み込まれるモジュール</h3>
       <p>
         自動的に読み込まれるモジュールは以下です。<a href="language-use-module">use</a>キーワードによって読み込まなくても利用することができます。
