@@ -1075,6 +1075,7 @@ package Foo {
       <h3 id="language-field">フィールド</h3>
       <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
+        <li><a href="#language-field-access">フィールドアクセス</a></li>
       </ul>
       <h4 id="language-field-definition">フィールドの定義</h4>
       <p>
@@ -1198,6 +1199,25 @@ package Foo {
 </pre>
       <p>
         不正なフィールドの定義は、コンパイル時エラーが発生します。
+      </p>
+      <h4 id="language-field-access">フィールドアクセス</h4>
+      <p>
+        フィールドの取得の構文は以下です。
+      </p>
+<pre>
+インボーカー式->{フィールド名}
+</pre>
+      <p>
+        フィールドの設定の構文は以下です。
+      </p>
+<pre>
+インボーカー式->{フィールド名} = 右式;
+</pre>
+      <p>
+        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名がインボーカー式のパッケージに存在しない場合は、
       </p>
 
       <h3 id="language-sub">サブルーチン</h3>
@@ -2804,7 +2824,14 @@ x >> y;
       <p>
         実行時に、左式あるいは右式が<a href="#language-undef">未定義値</a>だった場合は、例外が発生します。
       </p>
-      
+      <p>
+        <b>文字列連結演算子のサンプル
+      </p>
+<pre>
+my $str = "abc" . "def";
+my $str = "def" . 34;
+my $str = 123 . 456;
+</pre>
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
@@ -3151,6 +3178,8 @@ my $num = 1 + 2;
         <li><a href="#language-type-string-compatible">文字列互換型</a></li>
         <li><a href="#language-type-value">値型</a></li>
         <li><a href="#language-type-ref">リファレンス型</a></li>
+        <li><a href="#language-type-ref-numeric">数値のリファレンス型</a></li>
+        <li><a href="#language-type-ref-value">値のリファレンス型</a></li>
       </ul>
       <h4 id="language-type-summary">型の概要</h3>
       <p>
@@ -3798,6 +3827,14 @@ my $x = $point_ref->{x};
 # リファレンス型の対象が値型であった場合に、値型のフィールドを設定
 $point_ref->{x} = 1;
 </pre>
+      <h4 id="language-type-ref-numeric">数値のリファレンス型</h4>
+      <p>
+        数値のリファレンス型とは、<a href="#language-type-numeric">数値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
+      </p>
+      <h4 id="language-type-ref-value">値のリファレンス型</h4>
+      <p>
+        値のリファレンス型とは、<a href="#language-type-value">値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
+      </p>
       <h3 id="language-type-inference">型推論</h3>
       <p>
         型推論によって、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>するときに、<a href="#language-type">型</a>の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
