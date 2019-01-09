@@ -96,7 +96,7 @@ int32_t SPVM_UNICODE_iterate(const uint8_t *str, int32_t strlen, int32_t *dst) {
 }
 
 // Convert UTF-32 to UTF-8
-int32_t convert_utf32_to_utf8_char(int32_t utf32ch, char* utf8ch) {
+int32_t SPVM_UNICODE_convert_utf32_to_utf8_char(int32_t utf32ch, char* utf8ch) {
   
   if (utf32ch < 0 || utf32ch > 0x10FFFF) {
     return 0;
@@ -133,7 +133,7 @@ int32_t convert_utf32_to_utf8_char(int32_t utf32ch, char* utf8ch) {
 }
 
 
-int32_t convert_utf32_to_utf16_char(int32_t utf32ch, int16_t* utf16ch) {
+int32_t SPVM_UNICODE_convert_utf32_to_utf16_char(int32_t utf32ch, int16_t* utf16ch) {
   if (utf32ch < 0 || utf32ch > 0x10FFFF) {
     return 0;
   }
@@ -152,79 +152,105 @@ int32_t convert_utf32_to_utf16_char(int32_t utf32ch, int16_t* utf16ch) {
   return length;
 }
 
-/*
-int GetU8ByteCount(char ch) {
-    if (0 <= uint8_t(ch) && uint8_t(ch) < 0x80) {
-        return 1;
-    }
-    if (0xC2 <= uint8_t(ch) && uint8_t(ch) < 0xE0) {
-        return 2;
-    }
-    if (0xE0 <= uint8_t(ch) && uint8_t(ch) < 0xF0) {
-        return 3;
-    }
-    if (0xF0 <= uint8_t(ch) && uint8_t(ch) < 0xF8) {
-        return 4;
-    }
-    return 0;
-}
+int32_t SPVM_UNICODE_is_utf16_high_surrogate(uint16_t ch) { return 0xD800 <= ch && ch < 0xDC00; }
 
-bool IsU8LaterByte(char ch) {
-    return 0x80 <= uint8_t(ch) && uint8_t(ch) < 0xC0;
-}
+int32_t SPVM_UNICODE_is_utf16_low_surrogate(uint16_t ch) { return 0xDC00 <= ch && ch < 0xE000; }
 
-bool ConvChU8ToU32(char* u8Ch, char32_t& utf32ch) {
-  int numBytes = GetU8ByteCount(u8Ch[0]);
-  if (numBytes == 0) {
-      return false;
+int32_t SPVM_UNICODE_convert_utf16_to_utf32_char(uint16_t* utf16ch, int32_t utf32ch) {
+  if (SPVM_UNICODE_is_utf16_high_surrogate(utf16ch[0])) {
+    if (SPVM_UNICODE_is_utf16_low_surrogate(utf16ch[1])) {
+      utf32ch = 0x10000 + ((int32_t)utf16ch[0] - 0xD800) * 0x400 + ((int32_t)utf16ch[1] - 0xDC00);
+    } else if (utf16ch[1] == 0) {
+      utf32ch = utf16ch[0];
+    } else {
+      return 0;
+    }
+  } else if (SPVM_UNICODE_is_utf16_low_surrogate(utf16ch[0])) {
+    if (utf16ch[1] == 0) {
+      utf32ch = utf16ch[0];
+    } else {
+      return 0;
+    }
+  } else {
+    utf32ch = utf16ch[0];
   }
-  switch (numBytes) {
+
+  return 1;
+}
+
+int32_t SPVM_UNICODE_get_utf8_char_byte_length(uint8_t ch) {
+  if (ch < 0x80) {
+    return 1;
+  }
+  else if (0xC2 <= ch && ch < 0xE0) {
+    return 2;
+  }
+  else if (0xE0 <= ch && ch < 0xF0) {
+    return 3;
+  }
+  else if (0xF0 <= ch && ch < 0xF8) {
+    return 4;
+  }
+  return 0;
+}
+
+int32_t SPVM_UNICODE_is_utf8_later_byte(char ch) {
+  return 0x80 <= (uint8_t)ch && (uint8_t)ch < 0xC0;
+}
+
+int32_t SPVM_UNICODE_convert_utf8_to_utf32_char(char* utf8ch, int32_t* utf32ch) {
+  int32_t length;
+  
+  int32_t num_bytes = SPVM_UNICODE_get_utf8_char_byte_length(utf8ch[0]);
+  if (num_bytes == 0) {
+    return 0;
+  }
+  switch (num_bytes) {
     case 1:
-      utf32ch = char32_t(uint8_t(u8Ch[0]));
+      *utf32ch = (int32_t)((uint8_t)(utf8ch[0]));
       break;
     case 2:
-      if (!IsU8LaterByte(u8Ch[1])) {
-          return false;
+      if (!SPVM_UNICODE_is_utf8_later_byte(utf8ch[1])) {
+        return 0;
       }
-      if ((uint8_t(u8Ch[0]) & 0x1E) == 0) {
-          return false;
+      if (((uint8_t)(utf8ch[0]) & 0x1E) == 0) {
+        return 0;
       }
 
-      utf32ch = char32_t(u8Ch[0] & 0x1F) << 6;
-      utf32ch |= char32_t(u8Ch[1] & 0x3F);
+      *utf32ch = (int32_t)(utf8ch[0] & 0x1F) << 6;
+      *utf32ch |= (int32_t)(utf8ch[1] & 0x3F);
       break;
     case 3:
-      if (!IsU8LaterByte(u8Ch[1]) || !IsU8LaterByte(u8Ch[2])) {
-          return false;
+      if (!SPVM_UNICODE_is_utf8_later_byte(utf8ch[1]) || !SPVM_UNICODE_is_utf8_later_byte(utf8ch[2])) {
+        return 0;
       }
-      if ((uint8_t(u8Ch[0]) & 0x0F) == 0 &&
-          (uint8_t(u8Ch[1]) & 0x20) == 0) {
-          return false;
+      if (((uint8_t)(utf8ch[0]) & 0x0F) == 0 &&
+        ((uint8_t)(utf8ch[1]) & 0x20) == 0) {
+        return 0;
       }
 
-      utf32ch = char32_t(u8Ch[0] & 0x0F) << 12;
-      utf32ch |= char32_t(u8Ch[1] & 0x3F) << 6;
-      utf32ch |= char32_t(u8Ch[2] & 0x3F);
+      *utf32ch = (int32_t)(utf8ch[0] & 0x0F) << 12;
+      *utf32ch |= (int32_t)(utf8ch[1] & 0x3F) << 6;
+      *utf32ch |= (int32_t)(utf8ch[2] & 0x3F);
       break;
     case 4:
-      if (!IsU8LaterByte(u8Ch[1]) || !IsU8LaterByte(u8Ch[2]) ||
-          !IsU8LaterByte(u8Ch[3])) {
-          return false;
+      if (!SPVM_UNICODE_is_utf8_later_byte(utf8ch[1]) || !SPVM_UNICODE_is_utf8_later_byte(utf8ch[2]) ||
+        !SPVM_UNICODE_is_utf8_later_byte(utf8ch[3])) {
+        return 0;
       }
-      if ((uint8_t(u8Ch[0]) & 0x07) == 0 &&
-          (uint8_t(u8Ch[1]) & 0x30) == 0) {
-          return false;
+      if (((uint8_t)(utf8ch[0]) & 0x07) == 0 &&
+        ((uint8_t)(utf8ch[1]) & 0x30) == 0) {
+        return 0;
       }
 
-      utf32ch = char32_t(u8Ch[0] & 0x07) << 18;
-      utf32ch |= char32_t(u8Ch[1] & 0x3F) << 12;
-      utf32ch |= char32_t(u8Ch[2] & 0x3F) << 6;
-      utf32ch |= char32_t(u8Ch[3] & 0x3F);
+      *utf32ch = (int32_t)(utf8ch[0] & 0x07) << 18;
+      *utf32ch |= (int32_t)(utf8ch[1] & 0x3F) << 12;
+      *utf32ch |= (int32_t)(utf8ch[2] & 0x3F) << 6;
+      *utf32ch |= (int32_t)(utf8ch[3] & 0x3F);
       break;
     default:
-      return false;
+      return 0;
   }
 
-  return true;
+  return num_bytes;
 }
-*/
