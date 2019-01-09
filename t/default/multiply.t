@@ -26,6 +26,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Multiply->multiply_byte_int);
     ok(TestCase::Multiply->multiply_short_int);
     ok(TestCase::Multiply->multiply_int_int);
+    ok(TestCase::Multiply->multiply_long_long);
     ok(TestCase::Multiply->multiply_int_float);
     ok(TestCase::Multiply->multiply_int_double);
     ok(TestCase::Multiply->multiply_float_float);

@@ -100,6 +100,19 @@ package TestCase::Multiply {
     
     return 1;
   }
+  
+  sub multiply_long_long : int () {
+    my $total1 = 2000000000L * 2L;
+    
+    unless ($total1 == 4000000000L) {
+      return 0;
+    }
+    
+    unless ($total1 isa long) {
+      return 0;
+    }
+    return 1;
+  }
 
   sub multiply_int_float : int () {
     my $total = 2 * 0.25f;

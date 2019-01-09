@@ -101,6 +101,20 @@ package TestCase::Divide {
     return 1;
   }
 
+  sub divide_long_long : int () {
+    my $total1 = -100000000000L / -2L;
+    
+    unless ($total1 == 50000000000L) {
+      return 0;
+    }
+    
+    unless ($total1 isa long) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub divide_int_float : int () {
     my $total = 5 / 2.5f;
     
