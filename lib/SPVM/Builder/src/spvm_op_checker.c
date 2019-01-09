@@ -548,59 +548,65 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_NUMERIC_EQ: {
               SPVM_OP* op_first = op_cur->first;
               SPVM_OP* op_last = op_cur->last;
+
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // undef == undef
-              if (op_first->id == SPVM_OP_C_ID_UNDEF && op_last->id == SPVM_OP_C_ID_UNDEF) {
-
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 
+                // Return constant 1
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_true = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
                 SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_first->file, op_first->line);
                 op_cur = op_bool;
-                
                 SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_true);
-                
                 SPVM_OP_replace_op(compiler, op_stab, op_bool);
-                
                 SPVM_OP_CHECKER_check_tree(compiler, op_bool, check_ast_info);
                 if (compiler->error_count > 0) {
                   return;
                 }
               }
-              // term == term
-              else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
+              // expression == undef
+              else if (!SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+                if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Left operand of == operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // undef == expression
+              else if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && !SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+                if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Right operand of == operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // expression == expression
+              else {
+                int32_t is_valid_type;
                 
-                // numeric == numeric
+                // Numeric type
                 if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                  
+                  is_valid_type = 1;
+                  
                   SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
                   if (compiler->error_count > 0) {
                     return;
                   }
                 }
-                // object == object
+                // Object type
                 else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                  // OK
+                  is_valid_type = 1;
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "Invalid == comparison at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
+                  is_valid_type = 0;
                 }
-              }
-              // term == undef
-              else if (op_first->id != SPVM_OP_C_ID_UNDEF && op_last->id == SPVM_OP_C_ID_UNDEF) {
-                SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-                if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "== left value must be object at %s line %d\n", op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-              // undef == term
-              else if (op_first->id == SPVM_OP_C_ID_UNDEF && op_last->id != SPVM_OP_C_ID_UNDEF) {
-                SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-                if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "== right value must be object at %s line %d\n", op_cur->file, op_cur->line);
+                
+                if (!is_valid_type) {
+                  SPVM_COMPILER_error(compiler, "Left and right operand of == operator must be numeric type or object type at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }
               }
