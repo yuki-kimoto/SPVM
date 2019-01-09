@@ -1,7 +1,0 @@
-package TestCase::CompileError::Remainder::LeftIsNotNumeric {
-  use TestCase::Minimal;
-  sub main : int () {
-    my $objects = TestCase::Minimal->new;
-    $objects % 2;
-  }
-}
