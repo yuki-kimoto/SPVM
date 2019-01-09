@@ -1701,6 +1701,9 @@ switch (条件) {
         <li>論理演算子</li>
         <li>(条件)</li>
       </ul>
+      <p>
+        条件の結果の型は、int型です。真の場合は、0以外の値、偽の場合は、0を返します。
+      </p>
 
       <h3 id="language-condition-part">条件部</h3>
       <p>
@@ -1756,6 +1759,23 @@ while (条件部) {
 <pre>
 !条件部
 </pre>
+      <p>
+        条件部に式が書かれた場合は、型に応じて真偽が決定します。
+      </p>
+      <table>
+        <tr>
+          <th>型</th>
+          <th>評価</th>
+        </tr>
+        <tr>
+          <td>
+            数値型
+          </td>
+          <td>
+            0以外の値の場合は
+          </td>
+        </tr>
+      </table>
       
       <h3 id="language-literal">リテラル</h3>
       <ul class="list">
@@ -2323,32 +2343,17 @@ undef
         <li><a href="#language-operator-comparison">比較演算子</a></li>
         <li><a href="#language-operator-comparison-numeric">数値比較演算子</a></li>
         <li><a href="#language-operator-comparison-string">文字列比較演算子</a></li>
+        <li><a href="#language-operator-isa">isa演算子</a></li>
         <li><a href="#language-operator-logical">論理演算子</a></li>
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
       </ul>
+      
       <h4 id="language-operator-summary">演算子の概要</h4>
       <p>
         演算子は、<a href="#language-operator-unary">単項演算子</a>、<a href="#language-operator-binary">二項演算子</a>、<a href="#language-operator-inc">インクリメント演算子</a>、<a href="#language-operator-dec">デクリメント演算子</a>、<a href="#language-operator-comparison">比較演算子</a>、<a href="#language-operator-logical">論理演算子</a>、<a href="#language-operator-assign">代入演算子</a>からなります。
       </p>
-      <h4 id="language-operator-comparison">比較演算子</h4>
-      <p>
-        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
-      </p>
-<pre>
-左式 比較演算子 右式
-</pre>
-      <p>
-        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
-      </p>
       
-      <h4 id="language-operator-logical">論理演算子</h4>
-      <p>
-        論理演算子は、論理演算を行う演算子のことで、><a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>からなります。
-      </p>
-      <p>
-        論理演算子は、<a href="#language-condition">条件</a>を返します。
-      </p>
       <h4 id="language-operator-unary">単項演算子</h4>
       <p>
         単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子で、演算結果として<a href="#language-expression">式</a>を返すもののことをいいます。
@@ -2778,8 +2783,137 @@ x >> y;
       <p>
         論理右シフト演算子は、例外を発生させません。
       </p>
+
+      <h4 id="language-operator-comparison">比較演算子</h4>
+      <p>
+        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+      </p>
+<pre>
+左式 比較演算子 右式
+</pre>
+      <p>
+        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
+      </p>
       
-      <h3 id="language-operator-concat">文字列連結演算子</h3>
+      <h4 id="language-operator-comparison-numeric">数値比較演算子</h4>
+      <p>
+        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+      </p>
+<pre>
+左式 数値比較演算子 右式
+</pre>
+      <p>
+        数値比較演算子の一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>演算子</th>
+          <th>比較可能な型</th>
+          <th>解説</th>
+        </tr>
+        <tr>
+          <td>
+            左式 == 右式
+          </td>
+          <td>
+            左式と右式が数値型、左式と右式がオブジェクト型(未定義値を含む)
+          </td>
+          <td>
+            左式と右式が等しい
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左式 != 右式
+          </td>
+          <td>
+            左式と右式が数値型、左式と右式がオブジェクト型(未定義値を含む)
+          </td>
+          <td>
+            左式と右式が等しくない
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左式 > 右式
+          </td>
+          <td>
+            左式と右式が数値型
+          </td>
+          <td>
+            左式は右式より大きい
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左式 >= 右式
+          </td>
+          <td>
+            左式と右式が数値型
+          </td>
+          <td>
+            左式は右式より大きいまたは等しい
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左式 < 右式
+          </td>
+          <td>
+            左式と右式が数値型
+          </td>
+          <td>
+            左式は右式より小さい
+          </td>
+        </tr>
+        <tr>
+          <td>
+            左式 <= 右式
+          </td>
+          <td>
+            左式と右式が数値型
+          </td>
+          <td>
+            左式は右式より小さいまたは等しい
+          </td>
+        </tr>
+      </table>
+      <p>
+        左辺と右辺の型は、比較可能な型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        数値型の比較の場合は、左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        その後、数値比較演算子は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型、float型、double型、オブジェクト型における演算が定義されます。
+      </p>
+<pre>
+# 数値型の比較、オブジェクト型の比較
+x == y;
+x != y;
+
+# 数値型の比較
+x > y;
+x >= y;
+x < y;
+x <= y;
+</pre>
+      <p>
+        数値比較演算子の結果の型は、int型です。真である場合は0以外の値を、偽である場合は0を返します。
+      </p>
+      <p>
+        数値比較演算子は、例外を発生させません。
+      </p>
+      
+      <h4 id="language-operator-logical">論理演算子</h4>
+      <p>
+        論理演算子は、論理演算を行う演算子のことで、><a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>からなります。
+      </p>
+      <p>
+        論理演算子は、<a href="#language-condition">条件</a>を返します。
+      </p>
+      
+      <h4 id="language-operator-concat">文字列連結演算子</h4>
       <p>
         文字列連結演算子は「.」で表現される<a href="#language-operator-binary">二項演算子</a>です。
       </p>

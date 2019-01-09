@@ -716,7 +716,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
     
     switch (opcode_id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:
-        condition_flag = !!int_vars[opcode->operand0];
+        condition_flag = int_vars[opcode->operand0];
         break;
       case SPVM_OPCODE_C_ID_BOOL_LONG:
         condition_flag = !!long_vars[opcode->operand0];

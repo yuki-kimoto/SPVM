@@ -192,9 +192,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand_value(SPVM_ENV* env, SPVM_STRIN
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_bool(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  if (ctype_id == SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = ");
+    SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in_index);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
+  else {
+    SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = !!");
+    SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in_index);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  }
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_eq(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
