@@ -421,18 +421,18 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-enum">列挙</a>
         <li><a href="#language-begin-block">BEGINブロック</a>
         <li><a href="#language-lex-var">レキシカル変数</a>
-        <li><a href="#language-block">ブロック</a>
+        <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
-        <li><a href="#language-term">項</a>
-        <li><a href="#language-expression">式</a>
-        <li><a href="#language-condition">条件</a>
-        <li><a href="#language-condition-part">条件部</a>
+        <li><a href="#language-term">項</a></li>
+        <li><a href="#language-expression">式</a></li>
+        <li><a href="#language-condition">条件</a></li>
+        <li><a href="#language-condition-part">条件部</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-string">文字列</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-operator-order">演算子の優先順位</a></li>
-        <li><a href="#language-statement">文</a>
+        <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
@@ -2352,6 +2352,9 @@ undef
         <li><a href="#language-operator-comparison-string">文字列比較演算子</a></li>
         <li><a href="#language-operator-isa">isa演算子</a></li>
         <li><a href="#language-operator-logical">論理演算子</a></li>
+        <li><a href="#language-operator-logical-and">論理AND演算子</a></li>
+        <li><a href="#language-operator-logical-or">論理OR演算子</a></li>
+        <li><a href="#language-operator-logical-not">論理NOT演算子</a></li>
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
       </ul>
@@ -2363,13 +2366,13 @@ undef
       
       <h4 id="language-operator-unary">単項演算子</h4>
       <p>
-        単項演算子とは、<a href="#language-expression">式</a>の前に置かれる演算子で、演算結果として<a href="#language-expression">式</a>を返すもののことをいいます。
+        単項演算子とは、<a href="#language-term">項</a>の前に置かれる演算子のことをいいます。
       </p>
 <pre>
-単項演算子 式
+単項演算子 項
 </pre>
       <p>
-        単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>があります。
+        単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>があります。
       </p>
       <p>
         インクリメント演算子とデクリメント演算子は、単項演算子には含まれません。
@@ -2377,14 +2380,14 @@ undef
 
       <h4 id="language-operator-binary">二項演算子</h4>
       <p>
-        二項演算子とは、左式と右式の間に置かれる演算子で、演算結果として<a href="#language-expression">式</a>を返すものをいいます。
+        二項演算子とは、左項と右項の間に置かれる演算子のことをいいます。項については、<a href="#language-term">項</a>を参考にしてください。
       </p>
 <pre>
-左式 二項演算子 右式
+左項 二項演算子 右項
 </pre>
 
       <p>
-        二項演算子には、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、ビットAND演算子、ビットOR演算子、シフト演算子、文字列連結演算子があります。
+        二項演算子には、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、<a href="#language-operator-bit-and">ビットAND演算子</a>、<a href="#language-operator-bit-or">ビットOR演算子</a>、<a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-shift">シフト演算子</a>、<a href="#language-operator-concat">文字列連結演算子</a>があります。
       </p>
 
       <h4 id="language-operator-arithmetic">算術演算子</h4>
@@ -2799,7 +2802,7 @@ x >> y;
 左式 比較演算子 右式
 </pre>
       <p>
-        比較演算子には、数値比較演算子、文字列比較演算子、isa演算子があります。
+        比較演算子には、<a href="#language-operator-comparison-numeric">数値比較演算子</a>、<a href="#language-operator-comparison-string">文字列比較演算子</a>、isa演算子があります。
       </p>
       
       <h4 id="language-operator-comparison-numeric">数値比較演算子</h4>
@@ -2982,9 +2985,6 @@ x <= y;
       <p>
         文字列比較演算子の結果の型は、int型です。真である場合は0以外の値を、偽である場合は0を返します。
       </p>
-      <p>
-        文字列比較演算子は、例外を発生させません。
-      </p>
       
       <h4 id="language-operator-logical">論理演算子</h4>
       <p>
@@ -2992,6 +2992,77 @@ x <= y;
       </p>
       <p>
         論理演算子は、<a href="#language-condition">条件</a>を返します。
+      </p>
+      <h4 id="language-operator-logical-and">論理AND演算子</h4>
+      <p>
+        論理AND演算子とは、論理AND演算を行うために、左項と右項の間に置かれる演算子で、「&&」で表現される<a href="#language-condition">条件</a>を返す二項演算子です。項については、<a href="#language-term">項</a>を参考にしてください。
+      </p>
+<pre>
+左項 && 右項
+</pre>
+      <p>
+        左項と右項は<a href="#language-condition-part">条件部</a>です。
+      </p>
+      <p>
+        論理AND演算子は次のように動作します。
+      </p>
+      <p>
+        1. 左項の評価が真であれば、右項を実行し、右項の評価が、真であれば、全体として真を返し、右項の評価が偽であれば、全体として偽を返します。
+      </p>
+      <p>
+        2. 左項の評価が偽であれば、全体として偽を返します。右項は実行されません。
+      </p>
+      <p>
+        論理AND演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理AND演算子は、例外を発生させません。
+      </p>
+      
+      <h4 id="language-operator-logical-and">論理OR演算子</h4>
+      <p>
+        論理OR演算子とは、論理OR演算を行うために、左項と右項の間に置かれる演算子で、「||」で表現される<a href="#language-condition">条件</a>を返す<a href="#language-operator-binary">二項演算子</a>です。項については、<a href="#language-term">項</a>を参考にしてください。
+      </p>
+<pre>
+左項 || 右項
+</pre>
+      <p>
+        左項と右項は<a href="#language-condition-part">条件部</a>です。
+      </p>
+      <p>
+        論理OR演算子は次のように動作します。
+      </p>
+      <p>
+        1. 左項の評価が真であれば、全体として、真を返します。右項は実行されません。
+      </p>
+      <p>
+        2. 左項の評価が偽であれば、右項を実行し、右項の評価が、真であれば、全体として真を返し、右項の評価が偽であれば、全体として偽を返します。
+      </p>
+      <p>
+        論理OR演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理OR演算子は、例外を発生させません。
+      </p>
+
+      <h4 id="language-operator-logical-and">論理NOT演算子</h4>
+      <p>
+        論理NOT演算子とは、論理NOT演算を行うために、項の左に置かれる演算子で、「!」で表現される<a href="#language-condition">条件</a>を返す<a href="#language-operator-binary">単項演算子</a>です。項については、<a href="#language-term">項</a>を参考にしてください。
+      </p>
+<pre>
+!項
+</pre>
+      <p>
+        項は<a href="#language-condition-part">条件部</a>です。
+      </p>
+      <p>
+        論理NOT演算子は、項が真であれば、偽を返します。項が偽であれば、真を返します。
+      </p>
+      <p>
+        論理NOT演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理NOT演算子は、例外を発生させません。
       </p>
       
       <h4 id="language-operator-concat">文字列連結演算子</h4>
