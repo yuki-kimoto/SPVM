@@ -131,3 +131,100 @@ int32_t convert_utf32_to_utf8_char(int32_t utf32ch, char* utf8ch) {
 
   return length;
 }
+
+
+int32_t convert_utf32_to_utf16_char(int32_t utf32ch, int16_t* utf16ch) {
+  if (utf32ch < 0 || utf32ch > 0x10FFFF) {
+    return 0;
+  }
+  
+  int32_t length;
+  if (utf32ch < 0x10000) {
+    utf16ch[0] = (int16_t)(utf32ch);
+    utf16ch[1] = 0;
+    length = 1;
+  } else {
+    utf16ch[0] = (int16_t)((utf32ch - 0x10000) / 0x400 + 0xD800);
+    utf16ch[1] = (int16_t)((utf32ch - 0x10000) % 0x400 + 0xDC00);
+    length = 2;
+  }
+
+  return length;
+}
+
+/*
+int GetU8ByteCount(char ch) {
+    if (0 <= uint8_t(ch) && uint8_t(ch) < 0x80) {
+        return 1;
+    }
+    if (0xC2 <= uint8_t(ch) && uint8_t(ch) < 0xE0) {
+        return 2;
+    }
+    if (0xE0 <= uint8_t(ch) && uint8_t(ch) < 0xF0) {
+        return 3;
+    }
+    if (0xF0 <= uint8_t(ch) && uint8_t(ch) < 0xF8) {
+        return 4;
+    }
+    return 0;
+}
+
+bool IsU8LaterByte(char ch) {
+    return 0x80 <= uint8_t(ch) && uint8_t(ch) < 0xC0;
+}
+
+bool ConvChU8ToU32(char* u8Ch, char32_t& utf32ch) {
+  int numBytes = GetU8ByteCount(u8Ch[0]);
+  if (numBytes == 0) {
+      return false;
+  }
+  switch (numBytes) {
+    case 1:
+      utf32ch = char32_t(uint8_t(u8Ch[0]));
+      break;
+    case 2:
+      if (!IsU8LaterByte(u8Ch[1])) {
+          return false;
+      }
+      if ((uint8_t(u8Ch[0]) & 0x1E) == 0) {
+          return false;
+      }
+
+      utf32ch = char32_t(u8Ch[0] & 0x1F) << 6;
+      utf32ch |= char32_t(u8Ch[1] & 0x3F);
+      break;
+    case 3:
+      if (!IsU8LaterByte(u8Ch[1]) || !IsU8LaterByte(u8Ch[2])) {
+          return false;
+      }
+      if ((uint8_t(u8Ch[0]) & 0x0F) == 0 &&
+          (uint8_t(u8Ch[1]) & 0x20) == 0) {
+          return false;
+      }
+
+      utf32ch = char32_t(u8Ch[0] & 0x0F) << 12;
+      utf32ch |= char32_t(u8Ch[1] & 0x3F) << 6;
+      utf32ch |= char32_t(u8Ch[2] & 0x3F);
+      break;
+    case 4:
+      if (!IsU8LaterByte(u8Ch[1]) || !IsU8LaterByte(u8Ch[2]) ||
+          !IsU8LaterByte(u8Ch[3])) {
+          return false;
+      }
+      if ((uint8_t(u8Ch[0]) & 0x07) == 0 &&
+          (uint8_t(u8Ch[1]) & 0x30) == 0) {
+          return false;
+      }
+
+      utf32ch = char32_t(u8Ch[0] & 0x07) << 18;
+      utf32ch |= char32_t(u8Ch[1] & 0x3F) << 12;
+      utf32ch |= char32_t(u8Ch[2] & 0x3F) << 6;
+      utf32ch |= char32_t(u8Ch[3] & 0x3F);
+      break;
+    default:
+      return false;
+  }
+
+  return true;
+}
+*/
