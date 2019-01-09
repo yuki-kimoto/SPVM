@@ -1702,7 +1702,7 @@ switch (条件) {
         <li>(条件)</li>
       </ul>
       <p>
-        条件の結果の型は、int型です。真の場合は、0以外の値、偽の場合は、0を返します。
+        条件の結果の型は、int型です。0以外の値の場合は真、0の場合は偽です。
       </p>
 
       <h3 id="language-condition-part">条件部</h3>
@@ -1760,22 +1760,29 @@ while (条件部) {
 !条件部
 </pre>
       <p>
-        条件部に式が書かれた場合は、型に応じて真偽が決定します。
+        条件部に式が書かれた場合は、結果の型はint型です。
       </p>
-      <table>
-        <tr>
-          <th>型</th>
-          <th>評価</th>
-        </tr>
-        <tr>
-          <td>
-            数値型
-          </td>
-          <td>
-            0以外の値の場合は
-          </td>
-        </tr>
-      </table>
+      <p>
+        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-undef">未定義値</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        条件部に式が書かれた場合は、型に応じた結果を返します。
+      </p>
+      <p>
+        式が<a href="#language-undef">未定義値</a>である場合は、0を返します。
+      </p>
+      <p>
+        式が、<a href="#language-type-numeric">数値型</a>の場合は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        型がint型の場合は、その値を返します。
+      </p>
+      <p>
+        型がlong型、float型、double型、オブジェクト型である場合は、C99における以下の演算と完全に一致する演算を行います。
+      </p>
+<pre>
+!!x
+</pre>
       
       <h3 id="language-literal">リテラル</h3>
       <ul class="list">
