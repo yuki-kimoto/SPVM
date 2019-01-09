@@ -3302,6 +3302,16 @@ my $str = 123 . 456;
           </td>
         </tr>
       </table>
+      <p>
+        演算子の優先順位は「()」を使うことによって、最優先にすることができます。
+      </p>
+<pre>
+# a * b が先
+a * b + c
+
+# b + c が先
+a * (b + c)
+</pre>
       <h3 id="language-statement">文</h3>
       <p>
         文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
