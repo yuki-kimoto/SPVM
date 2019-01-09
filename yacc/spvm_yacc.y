@@ -620,7 +620,7 @@ expression
   | dec
   | '(' expression ')'
     {
-      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
+      $$ = $2;
     }
   | CURRENT_PACKAGE
 
@@ -738,7 +738,7 @@ condition
   | logical_op
   | '(' condition ')'
     {
-      $$ = SPVM_OP_build_single_parenthes_term(compiler, $2);
+      $$ = $2;
     }
 
 comparison_op

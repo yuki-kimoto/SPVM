@@ -2515,13 +2515,6 @@ SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat, SPVM_
   return op_cancat;
 }
 
-SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
-  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
-    SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
-  }
-  return op_term;
-}
-
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Convert && to if statement

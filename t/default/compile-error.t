@@ -124,16 +124,6 @@ use lib "$FindBin::Bin/lib";
     ok($success == 0);
   }
 }
-# Term
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Term::SingleParenthesArrayLength');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
 # Array init
 {
   {

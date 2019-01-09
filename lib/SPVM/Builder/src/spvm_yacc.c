@@ -2822,7 +2822,7 @@ yyreduce:
   case 116:
 #line 622 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_single_parenthes_term(compiler, (yyvsp[(2) - (3)].opval));
+      (yyval.opval) = (yyvsp[(2) - (3)].opval);
     ;}
     break;
 
@@ -2988,7 +2988,7 @@ yyreduce:
   case 140:
 #line 740 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_single_parenthes_term(compiler, (yyvsp[(2) - (3)].opval));
+      (yyval.opval) = (yyvsp[(2) - (3)].opval);
     ;}
     break;
 
