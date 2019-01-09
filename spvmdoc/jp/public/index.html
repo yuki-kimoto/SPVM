@@ -1655,8 +1655,29 @@ switch (条件) {
         算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
       </p>
       <p>
-        「項」には、戻り値を持つ「<a href="#language-expression">式</a>」と、戻り値を持たず<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
+        「項」には、「<a href="#language-expression">式</a>」と、<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
       </p>
+      <p>
+        式と条件の違いは、条件は、式として利用できないということだけです。
+      </p>
+      <p>
+        項は常に、左から右の順番で評価されます。たとえば、以下の例では、3 * 3 が実行され結果は9になります。
+      </p>
+<pre>
+  my $i = 2;
+  my $j = ($i = 3）* $i;
+</pre>
+      <p>
+        exceptionサブルーチンが例外を発生させた場合は、$jの値は、10のままです。
+      </p>
+<pre>
+  my $j = 10;
+  eval {
+    excpetion() / ($j = 3);
+  };
+}
+</pre>
+                
       <h3 id="language-expression">式</h3>
       <p>
         式は次の項目で定義されます。
