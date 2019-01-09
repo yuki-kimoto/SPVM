@@ -509,8 +509,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_first = op_cur->first;
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
+              int32_t is_valid_type;
+                
               // undef type
               if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                
+                is_valid_type = 1;
                 
                 // Return constant 0
                 SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
@@ -521,23 +525,22 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   return;
                 }
               }
+              // Numeric type
+              else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))
+              {
+                is_valid_type = 1;
+              }
+              // Object type
+              else if (SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                is_valid_type = 1;
+              }
               else {
-                if (op_first->id == SPVM_OP_C_ID_IF) {
-                  // OK
-                }
-                else {
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_first);
-                  
-                  // Numeric or object
-                  if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag))
-                  {
-                    // OK
-                  }
-                  else {
-                    SPVM_COMPILER_error(compiler, "Invalid boolean type at %s line %d\n", op_cur->file, op_cur->line);
-                    return;
-                  }
-                }
+                is_valid_type = 0;
+              }
+              
+              if (!is_valid_type) {
+                SPVM_COMPILER_error(compiler, "Operand of condition must be numeric type or object type or undef type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
               }
               
               break;

@@ -1763,7 +1763,7 @@ while (条件部) {
         条件部に式が書かれた場合は、結果の型はint型です。
       </p>
       <p>
-        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-undef">未定義値</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         条件部に式が書かれた場合は、型に応じた結果を返します。
@@ -3403,6 +3403,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-package">パッケージ型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
+        <li><a href="#language-type-undef">未定義型</a></li>
         <li><a href="#language-type-class">クラス型</a></li>
         <li><a href="#language-type-interface">インターフェース型</a></li>
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
@@ -3650,6 +3651,17 @@ my $object : object = new Foo;
 my $object : object = new Foo[];
 my $object : object = "abc";
 </pre>
+      <h4 id="language-type-undef">未定義型</h4>
+      <p>
+        未定義型とは、<a href="#language-undef">未定義値</a>が持っている型のことです。明示的に利用することはできません。
+      </p>
+      <p>
+        未定義型の値は<a href="#language-undef">未定義値</a>のみです。
+      </p>
+      <p>
+        未定義型の値は、オブジェクト型に代入できます。他の型に代入した場合は、コンパイル時エラーが発生します。
+      </p>
+      
       <h4 id="language-type-class">クラス型</h4>
       <p>
         クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
