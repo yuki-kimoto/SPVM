@@ -101,6 +101,26 @@ package TestCase::Subtract {
     return 1;
   }
 
+  sub subtract_long_long : int () {
+    my $total1 = 9223372036854775807L - 1L;
+    
+    unless ($total1 == 9223372036854775806L) {
+      return 0;
+    }
+    
+    unless ($total1 isa long) {
+      return 0;
+    }
+
+    my $total2 = -9223372036854775807L - 1L;
+
+    unless ($total2 == -9223372036854775808L) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub subtract_int_float : int () {
     my $total = 1 - 0.25f;
     
