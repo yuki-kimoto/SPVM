@@ -1047,23 +1047,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "eq left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "eq right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "eq left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "eq right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1073,23 +1065,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "ne left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "ne right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ne left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ne right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1099,23 +1083,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "gt left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "gt right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "gt left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "gt right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1125,23 +1101,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "ge left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "ge right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ge left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "ge right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1151,23 +1119,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "lt left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "lt right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "lt left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "lt right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1177,23 +1137,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // undef check
-              if (!first_type) {
-                SPVM_COMPILER_error(compiler, "le left value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              if (!last_type) {
-                SPVM_COMPILER_error(compiler, "le right value must be not undef at %s line %d\n", op_cur->file, op_cur->line);
+              // Left operand must be string compatible type
+              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
-              // Can receive only numeric type
-              if (!SPVM_TYPE_is_string_compatible_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "le left type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
+              // Right operand must be string compatible type
               if (!SPVM_TYPE_is_string_compatible_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "le right type must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
