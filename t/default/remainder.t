@@ -26,6 +26,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Remainder->remainder_byte_int);
     ok(TestCase::Remainder->remainder_short_int);
     ok(TestCase::Remainder->remainder_int_int);
+    ok(TestCase::Remainder->remainder_long_long);
   }
 
   # Remainder - Compile Error

@@ -101,6 +101,20 @@ package TestCase::Remainder {
     return 1;
   }
 
+  sub remainder_long_long : int () {
+    my $total1 = 100000000001L % 2L;
+    
+    unless ($total1 == 1) {
+      return 0;
+    }
+    
+    unless ($total1 isa long) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   #
   # Optional tests
   #
