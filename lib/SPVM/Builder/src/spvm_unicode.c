@@ -94,3 +94,40 @@ int32_t SPVM_UNICODE_iterate(const uint8_t *str, int32_t strlen, int32_t *dst) {
   *dst = ((uc & 7)<<18) | ((*str & 0x3f)<<12) | ((str[1] & 0x3f)<<6) | (str[2] & 0x3f);
   return 4;
 }
+
+// Convert UTF-32 to UTF-8
+int32_t convert_utf32_to_utf8_char(int32_t utf32ch, char* utf8ch) {
+  
+  if (utf32ch < 0 || utf32ch > 0x10FFFF) {
+    return 0;
+  }
+  
+  int32_t length;
+  if (utf32ch < 128) {
+    utf8ch[0] = (char)utf32ch;
+    utf8ch[1] = 0;
+    utf8ch[2] = 0;
+    utf8ch[3] = 0;
+    length = 1;
+  } else if (utf32ch < 2048) {
+    utf8ch[0] = 0xC0 | (char)(utf32ch >> 6);
+    utf8ch[1] = 0x80 | ((char)utf32ch & 0x3F);
+    utf8ch[2] = 0;
+    utf8ch[3] = 0;
+    length = 2;
+  } else if (utf32ch < 65536) {
+    utf8ch[0] = 0xE0 | (char)(utf32ch >> 12);
+    utf8ch[1] = 0x80 | ((char)(utf32ch >> 6) & 0x3F);
+    utf8ch[2] = 0x80 | ((char)utf32ch & 0x3F);
+    utf8ch[3] = 0;
+    length = 3;
+  } else {
+    utf8ch[0] = 0xF0 | (char)(utf32ch >> 18);
+    utf8ch[1] = 0x80 | ((char)(utf32ch >> 12) & 0x3F);
+    utf8ch[2] = 0x80 | ((char)(utf32ch >> 6) & 0x3F);
+    utf8ch[3] = 0x80 | ((char)utf32ch & 0x3F);
+    length = 4;
+  }
+
+  return length;
+}
