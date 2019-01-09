@@ -1109,7 +1109,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_ISA: {
+    case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_IF:
+    {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
       break;
