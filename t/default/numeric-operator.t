@@ -11,11 +11,6 @@ use SPVM 'TestCase::NumericOperator';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Divide
-{
-  ok(TestCase::NumericOperator->divide());
-}
-
 # Remainder
 {
   ok(TestCase::NumericOperator->remainder());
