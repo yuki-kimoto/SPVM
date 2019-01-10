@@ -930,6 +930,56 @@ package Foo {
   use Foo;
 }
 </pre>
+      <h3 class="language-module-load-if-require">選択的なモジュールの読み込み</h3>
+      <p>
+        SPVMでは、モジュールが、検索パスに存在する場合だけ読み込み、そうでない場合は、ブロックの内部が存在しないことにできるif require文があります。これはC言語の「#ifdef」の一部の機能を実現するために設計されました。
+      </p>
+<pre>
+if (require Foo) {
+  
+}
+</pre>
+      <p>
+        if require文では、elsifやelseを続けることができないので注意してください。
+      </p>
+      <p>
+        一つの例を見てみましょう。以下の例で、Fooが存在しない場合は、コンパイルエラーにはならず、ifブロックの中身が存在しないことになります。そのため「my $foo = new Foo;」は、存在しないことになっているので、コンパイルエラーになりません。
+      </p>
+<pre>
+if (require Foo) {
+  my $foo = new Foo;
+}
+</pre>
+     <p>
+       ひとつのテクニックとして、if require構文と<a href="#language-type-interface">インターフェース型</a>と<a href="#language-sub-anon">無名サブルーチン</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
+     </p>
+<pre>
+package SomeInterface : interface_t {
+  sub foo : int ($self : self, $arg : int);
+}
+
+# 別の関数内
+my $interface : SomeInterface;
+
+unless ($inteface) {
+  if (require Foo) {
+    $interface = sub : int ($self : self, $arg : int) {
+      Foo->method1($arg);
+    };
+  }
+}
+
+unless ($inteface) {
+  if (require Bar) {
+    $interface = sub : int ($self : self, $arg : int) {
+      Bar->method2($arg);
+    }
+  }
+}
+
+my $result = $interface->foo(3);
+</pre>
+
       <h3 id="language-package-var">パッケージ変数</h3>
       <ul class="list">
         <li><a href="#language-package-var-definition">パッケージ変数の定義</a></li>
@@ -3796,6 +3846,7 @@ my $num = 1 + 2;
       <p>
         整数の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
       </p>
+      
       <h4 id="language-type-floating-point">浮動小数点型</h3>
       <p>
         SPVMの浮動小数点型は以下の2つです。
@@ -3816,9 +3867,6 @@ my $num = 1 + 2;
           <td>
             単精度浮動小数点型 - 32bitで浮動小数点を表現します
           </td>
-          <td>
-            C標準マクロ -FLT_MAX～FLT_MAX
-          </td>
         </tr>
         <tr>
           <td>
@@ -3832,6 +3880,7 @@ my $num = 1 + 2;
       <p>
         浮動小数点の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
       </p>
+      
       <h4 id="language-type-package">パッケージ型</h4>
       <p>
         パッケージ型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型のことをいいます。
