@@ -282,7 +282,7 @@ package MyMath {
 }
 </pre>
       <p>
-        パッケージのブロックの中では<b>サブルーチン定義</b>を行うことができます。
+        パッケージのブロックの中では<b>サブルーチンの定義</b>を行うことができます。
       </p>
 <pre>
 package MyMath {
@@ -1222,10 +1222,14 @@ package Foo {
 
       <h3 id="language-sub">サブルーチン</h3>
       <ul class="list">
-        <li><a href="#language-sub-definition">サブルーチン定義</a></li>
+        <li><a href="#language-sub-definition">サブルーチンの定義</a></li>
         <li><a href="#language-sub-constant">定数サブルーチン</a></li>
+        <li><a href="#language-sub-anon">無名サブルーチン</a></li>
+        <li><a href="#language-sub-method">メソッド</a></li>
+        <li><a href="#language-sub-signature">シグネチャ</a></li>
+        <li><a href="#language-sub-invocant">インボカント</a></li>
       </ul>
-      <h4 id="language-sub-definition">サブルーチン定義</h4>
+      <h4 id="language-sub-definition">サブルーチンの定義</h4>
       <p>
         「sub」キーワードを使用してサブルーチンを定義することができます。
       </p>
@@ -1235,7 +1239,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
 }
 </pre>
       <p>
-        サブルーチン定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
+        サブルーチンの定義は「<a href="#language-package-definition">パッケージ定義</a>」の直下で行う必要があります。
       </p>
       <p>
         サブルーチン名は、1文字以上の「a～z」「A～Z」「0～9」「_」で構成する必要があります。先頭は、数字から始めることはできません。連続した「_」を使用することはできません。
@@ -1247,7 +1251,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
         戻りの型名には、「void型」「数値型」「オブジェクト型」を指定することができます。
       </p>
       <p>
-        サブルーチン定義には「戻り値の型名」と「0個以上の引数の定義」が必要です。「引数の定義」は「引数名」と「引数の型名」からなります。
+        サブルーチンの定義には「戻り値の型名」と「0個以上の引数の定義」が必要です。「引数の定義」は「引数名」と「引数の型名」からなります。
       </p>
       <p>
         引数名は、変数名である必要があります。
@@ -1261,7 +1265,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
       </p>
       
       <p>
-        サブルーチン定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
+        サブルーチンの定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
       </p>
 <pre>
 デスクリプタ名 sub サブルーチン名 : 戻り値の型名 (引数の変数名1 : 引数の型名1, 引数の変数名2 : 引数の型名2, 以下続く) {
@@ -1313,6 +1317,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
   
 }
 </pre>
+
       <h4 id="language-sub-constant">定数サブルーチン</h4>
       <p>
         数値型の戻り値を持つサブルーチンで、戻り値が定数であるサブルーチンを定数サブルーチンといいます。
@@ -1333,6 +1338,78 @@ sub foo : double () { return 5.0; }
 # 定数サブルーチンではなくインライン展開されない
 sub foo : int () { return 5 + 3; }
 </pre>
+      <h4 id="language-sub-anon">無名サブルーチン</h4>
+      <p>
+        無名サブルーチンとは、名前を持たないサブルーチンのことです。無名サブルーチンは文です。
+      </p>
+<pre>
+sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+  
+}
+</pre>
+      <p>
+        無名サブルーチンを定義すると、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、それが式として返されます。
+      </p>
+      <p>
+        無名サブルーチンは、<a href="#language-sub-method">メソッド</a>である必要があります。
+      </p>
+      <p>
+        <b>無名サブルーチンのサンプル</b>
+      </p>
+<pre>
+my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+  
+}
+</pre>
+
+      <h4 id="language-sub-method">メソッド</h4>
+      <p>
+        メソッドとは、第一引数に<a href="#language-type-self">self型</a>を持つサブルーチンのことです。
+      </p>
+<pre>
+sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+  
+}
+</pre>
+
+      <h4 id="language-sub-invocant">インボカント</h4>
+      <p>
+        インボカントとは、self型が指定された引数のことをいいます。
+      </p>
+
+      <h4 id="language-sub-anon">シグネチャ</h4>
+      <p>
+        シグネチャとは、サブルーチンの戻り値と引数を次の規則で並べたものをいいます。引数は、存在しなくても構いません。間に空白を含むことはできません。
+      </p>
+      <p>
+        1. 戻り値の型名
+      </p>
+      <p>
+        2. (
+      </p>
+      <p>
+        3. 引数1,引数2, 引数3, 引数n
+      </p>
+      <p>
+        4. )
+      </p>
+      <p>
+        シグネチャのサンプルです。
+      </p>
+<pre>
+# サブルーチン定義
+sub foo : int ($num1 : double, $num2 : long[])
+
+# シグネチャ
+int(double,long[])
+
+# サブルーチン定義
+sub foo : void ()
+
+# シグネチャ
+void()
+</pre>
+      
       <h3 id="language-enum">列挙</h3>
       <ul class="list">
         <li>
@@ -1380,7 +1457,7 @@ enum {
 }
 </pre>
       <p>
-        列挙はint型を戻り値とする「定数サブルーチン」のエイリアスです。次のサブルーチン定義と等価です。
+        列挙はint型を戻り値とする「定数サブルーチン」のエイリアスです。次のサブルーチンの定義と等価です。
       </p>
 <pre>
 sub FLAG1 : int () { return 0; }
@@ -3006,6 +3083,28 @@ x <= y;
       <p>
         文字列比較演算子の結果の型は、int型です。真である場合は0以外の値を、偽である場合は0を返します。
       </p>
+      <h4 id="language-operator-isa">isa演算子</h4>
+      <p>
+        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+      </p>
+      <p>
+        isa演算子とはは、型の適合性をチェックするための演算子で、<a href="#language-condition">条件</a>を返します。
+      </p>
+<pre>
+左式 isa 右型
+</pre>
+      <p>
+        isa演算子は、右型に応じて、3種類の動作をします。
+      </p>
+      <p>
+        1. 右型が、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-value">値型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-ref">リファレンス型</a>の場合は、コンパイル時に左式の型が右型と同一のものであるかをチェックします。同一であった場合は真を、そうでない場合は偽を返します。
+      </p>
+      <p>
+        2. 右型が、<a href="#language-type-class">クラス型</a>であった場合は、実行時に左式の型が、クラス型と一致するかをチェックします。一致した場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        3. 右型が、<a href="#language-type-interface">インターフェース型</a>であった場合は、実行時に左式の型がクラス型であり、そのクラスがインターフェースを満たすかどうかをチェックします。満たした場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
       
       <h4 id="language-operator-logical">論理演算子</h4>
       <p>
@@ -3352,10 +3451,10 @@ return;
 return 式;
 </pre>
       <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
+        <a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型が「void型」である場合は、式が存在してはいけません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        <a href="#language-sub-definition">サブルーチン定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+        <a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
 
       <h4 id="language-statement-next">next文</h3>
@@ -3470,6 +3569,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-class">クラス型</a></li>
         <li><a href="#language-type-interface">インターフェース型</a></li>
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
+        <li><a href="#language-type-self">self型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
         <li><a href="#language-type-array-byte">byte配列型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
@@ -3796,13 +3896,25 @@ package SPVM::Comparator : interface_t {
         インターフェース型は「オブジェクト型」です。
       </p>
       <p>
-        インターフェース型には、定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトを代入できます。
+        インターフェース型には、インターフェースを満たしたクラス型のオブジェクトを代入できます。この場合、クラスはインターフェースに適合するといいます。クラスがインターフェースを満たすのは次の二つの場合です。
+      </p>
+      <p>
+        1. インターフェース型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、インターフェースに適合します。
       </p>
 <pre>
+# インターフェース型の定義
+package SPVM::Comparator : interface_t {
+  sub compare : int ($self : self, $x1 : object, $x2 : object);
+}
+
 # クラスの定義
 package SomeComparator {
   sub compare : int ($self : self, $x1 : object, $x2 : object) {
     
+  }
+  
+  sub foo : int () {
+  
   }
 }
 
@@ -3810,9 +3922,14 @@ package SomeComparator {
 my $comparator : comparator = new SomeComparator;
 </pre>
       <p>
-        インターフェース型には、同一のシグネチャを持つ無名サブルーチンを代入することができます。
+        2. インターフェース型として定義されたサブルーチンと同一のシグネチャを持つ無名サブルーチンは、インターフェースに適合します。
       </p>
 <pre>
+# インターフェース型の定義
+package SPVM::Comparator : interface_t {
+  sub compare : int ($self : self, $x1 : object, $x2 : object);
+}
+
 # インターフェース型への代入
 my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
@@ -3833,6 +3950,13 @@ my $object : object = new Foo;
 my $object : object = "abc";
 my $object : object = new Foo[3];
 </pre>
+      <h4 id="language-type-self">self型</h4>
+      <p>
+        self型とは、自身の属するパッケージ型を表現し、引数がインボカントであることを示します。
+      </p>
+      <p>
+        サブルーチンの第一引数の型としてのみ利用できます。
+      </p>
       <h4 id="language-type-basic">基本型</h4>
       <p>
         次元を持たない型を基本型と呼びます。<a href="#language-type-numeric">数値型</a>、<a href="#language-type-package">パッケージ型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-string">文字列型</a>は、基本型です。
