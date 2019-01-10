@@ -932,12 +932,10 @@ package Foo {
 </pre>
       <h3 id="language-package-var">パッケージ変数</h3>
       <ul class="list">
-        <li>
-          <a href="#language-package-var-definition">パッケージ変数の定義</a>
-        </li>
-        <li>
-          <a href="#language-package-var-initial-value">パッケージ変数の初期値</a>
-        </li>
+        <li><a href="#language-package-var-definition">パッケージ変数の定義</a></li>
+        <li><a href="#language-package-var-initial-value">パッケージ変数の初期値</a></li>
+        <li><a href="#language-package-var-get">パッケージ変数の取得</a></li>
+        <li><a href="#language-package-var-set">パッケージ変数の設定</a></li>
       </ul>
       <h4 id="language-package-var-definition">パッケージ変数の定義</h4>
       <p>
@@ -1065,13 +1063,83 @@ package Foo {
       </p>
 <pre>
 package Foo {
-  our $VAR;
+  our $VAR : int;
   
   BEGIN {
     $VAR = 3;
   }
 }
 </pre>
+      <h4 id="language-package-var-get">パッケージ変数の値の取得</h4>
+      <p>
+        パッケージ変数の値を取得するには以下の構文を使用します。
+      </p>
+<pre>
+$クラス名::パッケージ変数名
+</pre>
+      <p>
+        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
+      </p>
+<pre>
+$パッケージ変数名
+</pre>
+      <p>
+       パッケージ変数の値の取得は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        定義されていないパッケージ変数の値を取得しようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>パッケージ変数の値の取得のサンプル</b>
+      </p>
+<pre>
+package Foo {
+  our $VAR : int;
+  
+  sub bar : int () {
+    my $var1 = $Foo::VAR;
+    my $var2 = $VAR;
+  }
+}
+</pre>
+      <h4 id="language-package-var-get">パッケージ変数の値の設定</h4>
+      <p>
+        パッケージ変数の値を設定するには以下の構文を使用します。
+      </p>
+<pre>
+$クラス名::パッケージ変数名 = 右式
+</pre>
+        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
+      </p>
+<pre>
+$パッケージ変数名 = 右式
+</pre>
+      <p>
+        パッケージ変数設定は、<a href="#language-expression">式</a>を返します。返される結果は、代入後のパッケージ変数の値です。
+      </p>
+      <p>
+        定義されていないパッケージ変数の値を設定しようとした場合は、コンパイル時エラーが設定します。
+      </p>
+      <p>
+        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>パッケージ変数の値の設定のサンプル</b>
+      </p>
+<pre>
+package Foo {
+  our $VAR : int;
+  
+  sub bar : int () {
+    $Foo::VAR = 1;
+    $VAR = 3;
+  }
+}
+</pre>
+      
       <h3 id="language-field">フィールド</h3>
       <ul class="list">
         <li><a href="#language-field-definition">フィールドの定義</a></li>
