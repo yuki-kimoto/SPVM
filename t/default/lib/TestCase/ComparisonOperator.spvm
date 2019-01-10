@@ -74,6 +74,8 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # ne
     unless (!($string ne $string_same)) {
@@ -94,6 +96,36 @@ package TestCase::ComparisonOperator {
     unless (($string ne $string_empty)) {
       return 0;
     }
+    unless (!($string ne $bytes)) {
+      return 0;
+    }
+    unless (!($bytes ne $string)) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef ne $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string ne $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
@@ -105,6 +137,8 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # gt
     unless (!($string gt $string_same)) {
@@ -125,6 +159,36 @@ package TestCase::ComparisonOperator {
     unless ($string gt $string_empty) {
       return 0;
     }
+    unless (!($string gt $bytes)) {
+      return 0;
+    }
+    unless (!($bytes gt $string)) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef gt $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string gt $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
@@ -136,6 +200,8 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # ge
     unless ($string ge $string_same) {
@@ -156,6 +222,36 @@ package TestCase::ComparisonOperator {
     unless ($string ge $string_empty) {
       return 0;
     }
+    unless ($string ge $bytes) {
+      return 0;
+    }
+    unless ($bytes ge $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef ge $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string ge $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
@@ -167,6 +263,8 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # lt
     unless ($string lt $string_same) {
@@ -187,6 +285,36 @@ package TestCase::ComparisonOperator {
     unless (!($string lt $string_empty)) {
       return 0;
     }
+    unless ($string lt $bytes) {
+      return 0;
+    }
+    unless ($bytes lt $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef lt $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string lt $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
@@ -198,6 +326,8 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # le
     my $ok = 0;
@@ -219,10 +349,40 @@ package TestCase::ComparisonOperator {
     unless (!($string le $string_empty)) {
       return 0;
     }
+    unless ($string le $bytes) {
+      return 0;
+    }
+    unless ($bytes le $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef le $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string le $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
-  # If
+  # Bool
   sub bool_true_byte : int () {
     if ((int)(byte)1) {
       return 1;
