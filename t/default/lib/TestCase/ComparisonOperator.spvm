@@ -10,6 +10,7 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # eq
     my $ok = 0;
@@ -29,6 +30,12 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless (!($string eq $string_empty)) {
+      return 0;
+    }
+    unless ($string eq $bytes) {
+      return 0;
+    }
+    unless ($bytes eq $string) {
       return 0;
     }
     
