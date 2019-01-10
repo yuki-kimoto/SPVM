@@ -1,5 +1,6 @@
 0.0408 2018-01-09
   - remove list context @ error check becuase SPVM can not define list context correctly
+  - fix string comparison operator undef occur exception
 0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t

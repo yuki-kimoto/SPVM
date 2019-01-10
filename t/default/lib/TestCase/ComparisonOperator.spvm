@@ -9,27 +9,54 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
     
     # eq
     my $ok = 0;
-    if ($string eq $string_same) {
-      if (!($string eq $string_short)) {
-        if (!($string eq $string_long)) {
-          if (!($string eq $string_different_short)) {
-            if (!($string eq $string_different_long)) {
-              if (!($string eq $string_empty)) {
-                $ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless ($string eq $string_same) {
+      return 0;
     }
-    if ($ok) {
-      return 1;
+    unless (!($string eq $string_short)) {
+      return 0;
+    }
+    unless (!($string eq $string_long)) {
+      return 0;
+    }
+    unless (!($string eq $string_different_short)) {
+      return 0;
+    }
+    unless (!($string eq $string_different_long)) {
+      return 0;
+    }
+    unless (!($string eq $string_empty)) {
+      return 0;
     }
     
-    return 0;
+    {
+      eval {
+        if ($string_undef eq $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string eq $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
   }
 
   sub string_ne : int () {

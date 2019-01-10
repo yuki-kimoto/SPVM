@@ -1768,44 +1768,48 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object2 = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_array_length_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_array_length_offset);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes1 = env->belems(env, object1);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE_byte* bytes2 = env->belems(env, object2);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t cmp;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (retval) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = retval < 0 ? -1 : 1;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    } else if (length1 == lenght2) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    } else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      cmp = length1 < lenght2 ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_str_raw(env, \"Use of uninitialized value in string comparison operator\", 0)); \n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_array_length_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_array_length_offset);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes1 = env->belems(env, object1);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes2 = env->belems(env, object2);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      int32_t cmp;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (retval) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        cmp = retval < 0 ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      } else if (length1 == lenght2) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        cmp = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      } else {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        cmp = length1 < lenght2 ? -1 : 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_STRING_EQ:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp == 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_NE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp != 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp != 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_GT:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == 1);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp == 1);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_GE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp >= 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp >= 0);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_LT:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp == -1);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp == -1);\n");
             break;
           case SPVM_OPCODE_C_ID_STRING_LE:
-            SPVM_STRING_BUFFER_add(string_buffer, "    condition_flag = (cmp <= 0);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = (cmp <= 0);\n");
             break;
         }
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
         break;
