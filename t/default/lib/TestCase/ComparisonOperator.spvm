@@ -1,7 +1,7 @@
 package TestCase::ComparisonOperator {
   use TestCase;
   
-  sub string_comparison_operator : int () {
+  sub string_eq : int () {
     my $string = "abc";
     my $string_same = "abc";
     my $string_short = "ab";
@@ -11,94 +11,169 @@ package TestCase::ComparisonOperator {
     my $string_empty = "";
     
     # eq
-    my $eq_ok = 0;
+    my $ok = 0;
     if ($string eq $string_same) {
       if (!($string eq $string_short)) {
         if (!($string eq $string_long)) {
           if (!($string eq $string_different_short)) {
             if (!($string eq $string_different_long)) {
               if (!($string eq $string_empty)) {
-                $eq_ok = 1;
+                $ok = 1;
               }
             }
           }
         }
       }
     }
+    if ($ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
+  sub string_ne : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    
     # ne
-    my $ne_ok = 0;
+    my $ok = 0;
     if (!($string ne $string_same)) {
       if (($string ne $string_short)) {
         if (($string ne $string_long)) {
           if (($string ne $string_different_short)) {
             if (($string ne $string_different_long)) {
               if (($string ne $string_empty)) {
-                $ne_ok = 1;
+                $ok = 1;
               }
             }
           }
         }
       }
     }
+    if ($ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
+  sub string_gt : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    
     # gt
-    my $gt_ok = 0;
+    my $ok = 0;
     if (!($string gt $string_same)) {
       if ($string gt $string_short) {
         if (!($string gt $string_long)) {
           if (!($string gt $string_different_short)) {
             if (!($string gt $string_different_long)) {
               if ($string gt $string_empty) {
-                $gt_ok = 1;
+                $ok = 1;
               }
             }
           }
         }
       }
     }
+    if ($ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
+  sub string_ge : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    
     # ge
-    my $ge_ok = 0;
+    my $ok = 0;
     if ($string ge $string_same) {
       if ($string ge $string_short) {
         if (!($string ge $string_long)) {
           if (!($string ge $string_different_short)) {
             if (!($string ge $string_different_long)) {
               if ($string ge $string_empty) {
-                $ge_ok = 1;
+                $ok = 1;
               }
             }
           }
         }
       }
     }
+    if ($ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
+  sub string_lt : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    
     # lt
-    my $lt_ok = 0;
+    my $ok = 0;
     if ($string lt $string_same) {
       if (!($string lt $string_short)) {
         if ($string lt $string_long) {
           if ($string lt $string_different_short) {
             if ($string lt $string_different_long) {
               if (!($string lt $string_empty)) {
-                $lt_ok = 1;
+                $ok = 1;
               }
             }
           }
         }
       }
     }
+    if ($ok) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
+  sub string_le : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    
     # le
-    my $le_ok = 0;
+    my $ok = 0;
     if ($string le $string_same) {
       if (!($string le $string_short)) {
         if ($string le $string_long) {
           if ($string le $string_different_short) {
             if ($string le $string_different_long) {
               if (!($string le $string_empty)) {
-                $le_ok = 1;
+                $ok = 1;
               }
             }
           }
@@ -106,7 +181,7 @@ package TestCase::ComparisonOperator {
       }
     }
     
-    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok && $lt_ok && $le_ok) {
+    if ($ok) {
       return 1;
     }
     

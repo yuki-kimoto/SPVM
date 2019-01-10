@@ -163,14 +163,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::ComparisonOperator->numeric_ne_object_different);
     ok(TestCase::ComparisonOperator->numeric_ne_undef);
   }
-}
 
-# Optional tests
-{
   # String comparison operator
   {
     {
-      ok(TestCase::ComparisonOperator->string_comparison_operator);
+      ok(TestCase::ComparisonOperator->string_eq);
+      ok(TestCase::ComparisonOperator->string_ne);
+      ok(TestCase::ComparisonOperator->string_gt);
+      ok(TestCase::ComparisonOperator->string_ge);
+      ok(TestCase::ComparisonOperator->string_lt);
+      ok(TestCase::ComparisonOperator->string_le);
     }
   }
 }
