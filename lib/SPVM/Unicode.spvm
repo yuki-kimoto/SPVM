@@ -1,0 +1,41 @@
+package SPVM::Unicode {
+  sub encode_utf16 : short[] ($code_point_string : int[]) {
+    my $length = 0;
+    
+    # Culcurate length
+    for (my $i = 0; $i < @$code_point_string; $i++) {
+      my $code_point = $code_point_string->[$i];
+
+      if ($code_point < 0 || $code_point > 0x10FFFF) {
+        croak "Invalid code point in code point string";
+      }
+
+      if ($code_point < 0x10000) {
+        $length++;
+      }
+      else {
+        $length += 2;
+      }
+    }
+    
+    # Convert conde point to UTF-16
+    my $utf16_string = new short[$length];
+    my $pos = 0;
+    
+    for (my $i = 0; $i < @$code_point_string; $i++) {
+      my $code_point = $code_point_string->[$i];
+
+      if ($code_point < 0x10000) {
+        $utf16_string->[$pos] = (short)$code_point;
+        $pos++;
+      }
+      else {
+        $utf16_string->[$pos] = (short)(($code_point - 0x10000) / 0x400 + 0xD800);
+        $utf16_string->[$pos + 1] (short)(($code_point - 0x10000) % 0x400 + 0xDC00)
+        $pos += 2;
+      }
+    }
+    
+    return $utf16_string;
+  }
+}
