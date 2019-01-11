@@ -4,6 +4,7 @@
   - add new_list core func
   - add new_hash core func
   - add to_iarray to SPVM::List
+  - add unweaken and isweak statement
 0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t
