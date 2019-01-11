@@ -35,6 +35,17 @@ SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   return op;
 }
 
+int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (ch == 0x20 || ch == 0x0D || ch == 0x0A || ch == 0x09 || ch == 0x0C) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
@@ -479,7 +490,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (
               *compiler->bufptr == '='
               && strncmp(compiler->bufptr + 1, "cut", 3) == 0
-              && (*(compiler->bufptr + 4) == '\0' || isspace((int)*(compiler->bufptr + 4)))
+              && (*(compiler->bufptr + 4) == '\0' || SPVM_TOKE_is_white_space(compiler, *(compiler->bufptr + 4)))
             )
             {
               compiler->bufptr += 4;
@@ -1333,6 +1344,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             keyword[str_len] = '\0';
             SPVM_HASH_insert(compiler->name_symtable, keyword, str_len, keyword);
           }
+          
+          
           
           if (expect_sub_name) {
             // None
