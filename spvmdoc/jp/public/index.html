@@ -431,7 +431,8 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-string">文字列</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
-        <li><a href="#language-operator-order">演算子の優先順位</a></li>
+        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
+        <li><a href="#language-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
@@ -3529,6 +3530,76 @@ a * b + c
 # b + c が先
 a * (b + c)
 </pre>
+      <h3 id="language-operator-new-object">オブジェクトの生成</h3>
+      <p>
+        オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new パッケージ名;
+</pre>
+      <p>
+        指定されたパッケージは、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールドは、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        オブジェクトの生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>オブジェクトの生成のサンプル</b>
+      </p>
+<pre>
+my $object = new Foo;
+</pre>
+      <p>
+        配列を作成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new 型[要素数式];
+</pre>
+      <p>
+        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        要素数式で指定された長さの配列が生成されます。
+      </p>
+      <p>
+        配列の要素は、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        配列において、要素は、メモリ上に連続していることが保証されます。
+      </p>
+      <p>
+        配列の生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>配列の生成のサンプル</b>
+      </p>
+<pre>
+my $nums = new int[3];
+my $objects = new Foo[3];
+my $objects = new object[3];
+my $values = new Complex_2d[3]
+</pre>
+      <p>
+        配列型自体も、オブジェクト型ですので、上記の構文を使用して、多次元配列を作成することができます。
+      </p>
+<pre>
+my $nums = new int[][3];
+my $nums = new int[][][3];
+</pre>
+      
+      <h3 id="language-operator-array-init">配列の初期化</h3>
+      <p>
+      
+      </p>
       <h3 id="language-statement">文</h3>
       <p>
         文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
@@ -4052,6 +4123,7 @@ my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : objec
   
 }
 </pre>
+
       <h4 id="language-type-any-object">汎用オブジェクト型</h4>
       <p>
         汎用オブジェクト型は「object」で表現します。C言語の「void*」型を表現するために設計されました。
@@ -4067,17 +4139,25 @@ my $object : object = new Foo;
 my $object : object = "abc";
 my $object : object = new Foo[3];
 </pre>
+
       <h4 id="language-type-self">self型</h4>
       <p>
         self型とは、自身の属するパッケージ型を表現し、引数がインボカントであることを示します。
       </p>
       <p>
-        サブルーチンの第一引数の型としてのみ利用できます。
+       <a href="#language-sub-definition">サブルーチンの定義</a>において第一引数の型としてのみ利用できます。
       </p>
+      
+      <h4 id="language-type-void">void型</h4>
+      <p>
+        void型とは、<a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型としてだけ利用できる、存在しないことを示す特別な型です。
+      </p>
+      
       <h4 id="language-type-basic">基本型</h4>
       <p>
         次元を持たない型を基本型と呼びます。<a href="#language-type-numeric">数値型</a>、<a href="#language-type-package">パッケージ型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-string">文字列型</a>は、基本型です。
       </p>
+      
       <h4 id="language-type-array">配列型</h4>
       <p>
         配列型は、連続した複数のデータ領域を表現します。<a href="#language-type-basic">基本型</a>は、配列にすることができます。
