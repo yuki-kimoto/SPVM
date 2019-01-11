@@ -985,7 +985,7 @@ my $result = $interface->foo(3);
       <ul class="list">
         <li><a href="#language-package-var-definition">パッケージ変数の定義</a></li>
         <li><a href="#language-package-var-initial-value">パッケージ変数の初期値</a></li>
-        <li><a href="#language-package-var-get">パッケージ変数の取得</a></li>
+        <li><a href="#language-package-var-get">パッケージ変数の値の取得</a></li>
         <li><a href="#language-package-var-set">パッケージ変数の設定</a></li>
       </ul>
       <h4 id="language-package-var-definition">パッケージ変数の定義</h4>
@@ -1156,7 +1156,7 @@ package Foo {
   }
 }
 </pre>
-      <h4 id="language-package-var-set">パッケージ変数の値の設定</h4>
+      <h4 id="language-package-var-set">パッケージ変数の値の取得</h4>
       <p>
         パッケージ変数の値を設定するには以下の構文を使用します。
       </p>
@@ -1178,7 +1178,7 @@ $パッケージ変数名 = 右式
         パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        <b>パッケージ変数の値の設定のサンプル</b>
+        <b>パッケージ変数の値の取得のサンプル</b>
       </p>
 <pre>
 package Foo {
@@ -1684,6 +1684,7 @@ package Foo {
       <ul class="list">
         <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
         <li><a href="#language-lex-var-initial-value">レキシカル変数の初期値</a></li>
+        <li><a href="#language-lex-var-value-get">レキシカル変数の値の取得</a></li>
       </ul>
       <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
       <p>
@@ -1713,10 +1714,52 @@ my $num = 1;
 # double
 my $num = 1.0;
 </pre>
-      <h4 id="language-lex-var-initial-value">レキシカル変数の初期値</h4>
       <p>
-        レキシカル変数は、代入演算子によって明示的に初期化されなかった場合は、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
+        レキシカル変数の宣言は、レキシカル変数自体を表現する式を返します。次のような記述が可能です。
       </p>
+<pre>
+my $ppp = my $bar = 4;
+
+if (my $bar = 1) {
+  
+}
+
+while (my $bar = 1) {
+  
+}
+</pre>
+
+      <h4 id="language-lex-var-initial-value-get">レキシカル変数の値の取得</h4>
+      <p>
+        レキシカル変数の値の取得をするには、それ自体を記述します。
+      </p>
+<pre>
+レキシカル変数
+</pre>
+      <p>
+        レキシカル変数の値の取得は、式を返します。
+      </p>
+      <p>
+        <b>キシカル変数の値の取得のサンプル</b>
+      </p>
+<pre>
+$var;
+my $foo = $bar;
+</pre>
+
+      <h4 id="language-lex-var-initial-value-get">レキシカル変数の値の設定</h4>
+      <p>
+        レキシカル変数の値の設定については、代入演算子を見てください。
+      </p>
+<pre>
+$var = 式
+</pre>
+      
+      <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
+      <p>
+        
+      </p>
+      
       <h3 id="language-block">ブロック</h3>
       <p>
         「{」と「}」で囲まれた部分のことをブロックと呼びます。
@@ -1882,27 +1925,30 @@ switch (条件) {
         <b>式の一覧</b>
       </p>
       <ul class="list">
-        <li>変数</li>
+        <li><a href="#language-lex-var-initial-value-get">レキシカル変数の値の取得</a></li>
+        <li><a href="#language-lex-var-declaration">レキシカル変数変数の宣言</a></li>
         <li>例外変数</li>
-        <li>パッケージ変数の取得</li>
+        <li><a href="#language-package-var-set">パッケージ変数の値の設定</a></li>
+        <li><a href="#language-package-var-get">パッケージ変数の値の取得</a></li>
         <li>定数リテラル</li>
         <li>未定義値</li>
         <li>サブルーチン呼び出し</li>
+        <li>フィールドの設定</li>
         <li>フィールドの取得</li>
+        <li>配列の要素の設定</li>
         <li>配列の要素の取得</li>
         <li>型変換</li>
-        <li>new演算子</li>
-        <li>配列の初期化</li>
+        <li><a href="#language-operator-new-object">オブジェクトの生成</a></li>
+        <li><a href="#language-operator-array-init">配列の初期化</a></li>
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
-        <li>変数宣言</li>
         <li><a href="#language-operator">演算子</a></li>
         <li>リファレンス演算子</li>
         <li>デリファレンス演算子</li>
         <li>代入演算子</li>
-        <li>__PACKAGE__演算子</li>
-        <li>__FILE__演算子</li>
-        <li>__LINE__演算子</li>
+        <li>__PACKAGE__キーワード</li>
+        <li>__FILE__キーワード</li>
+        <li>__LINE__キーワード</li>
         <li>(式)</li>
       </ul>
 
