@@ -1,10 +1,12 @@
-0.0408 2018-01-09
+0.0408 2018-01-11
   - remove list context @ error check becuase SPVM can not define list context correctly
   - fix string comparison operator undef occur exception
   - add new_list core func
   - add new_hash core func
   - add to_iarray to SPVM::List
   - add unweaken and isweak statement
+  - fat camma left name become string literal
+    x => 1, y => 2
 0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t

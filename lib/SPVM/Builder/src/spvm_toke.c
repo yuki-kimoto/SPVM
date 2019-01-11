@@ -1331,22 +1331,41 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          
+          // Keyword string
           char* keyword;
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, str_len);
+          int32_t keyword_length = (compiler->bufptr - cur_token_ptr);
+          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, keyword_length);
           if (found_name) {
             keyword = found_name;
           }
           else {
-            keyword = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
-            memcpy(keyword, cur_token_ptr, str_len);
-            keyword[str_len] = '\0';
-            SPVM_HASH_insert(compiler->name_symtable, keyword, str_len, keyword);
+            keyword = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, keyword_length + 1);
+            memcpy(keyword, cur_token_ptr, keyword_length);
+            keyword[keyword_length] = '\0';
+            SPVM_HASH_insert(compiler->name_symtable, keyword, keyword_length, keyword);
+          }
+
+          // If following token is fat comma, keyword is manipulated as string literal
+          int32_t next_is_fat_camma = 0;
+          char* fat_camma_check_ptr = compiler->bufptr;
+          while (SPVM_TOKE_is_white_space(compiler, *fat_camma_check_ptr)) {
+            fat_camma_check_ptr++;
+          }
+          if (*fat_camma_check_ptr == '=' && *(fat_camma_check_ptr + 1) == '>') {
+            next_is_fat_camma = 1;
+          }
+          else {
+            next_is_fat_camma = 0;
+          }
+          if (next_is_fat_camma) {
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, keyword, keyword_length, compiler->cur_file, compiler->cur_line);
+            
+            yylvalp->opval = op_constant;
+            
+            return CONSTANT;
           }
           
-          
-          
+          // Keyword
           if (expect_sub_name) {
             // None
           }
