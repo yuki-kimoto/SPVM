@@ -3598,8 +3598,22 @@ my $nums = new int[][][3];
       
       <h3 id="language-operator-array-init">配列の初期化</h3>
       <p>
-      
+        SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
       </p>
+<pre>
+[]
+[式1, 式2, 式3]
+</pre>
+      <p>
+        配列の初期化は、式の要素数の長さを持った配列を返します。
+      </p>
+      <p>
+        配列の型は、式1の型を配列型にしたものです。要素が指定されない場合は、<a href="#language-type-any-object">汎用オブジェクト型</a>を配列型にしたものになります。
+      </p>
+      <p>
+        式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
+      </p>
+      
       <h3 id="language-statement">文</h3>
       <p>
         文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
