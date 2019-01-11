@@ -841,10 +841,6 @@ new
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
-  | NEW array_type '{' opt_expressions '}'
-    {
-      $$ = SPVM_OP_build_new(compiler, $1, $2, $4);
-    }
   | anon_sub
     {
       // Package

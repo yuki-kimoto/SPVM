@@ -486,7 +486,7 @@ package TestCase::Sub {
     $nums->[0] = 5;
   }
   sub call_void : int () {
-    my $nums = new int[] {1};
+    my $nums = [1];
     
     call_void_sub($nums);
     

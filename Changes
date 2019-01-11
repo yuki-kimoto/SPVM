@@ -7,6 +7,7 @@
   - add unweaken and isweak statement
   - fat camma left name become string literal
     x => 1, y => 2
+  - remove new Foo[] {x, y, z} syntax. Use [(Foo)x, y, z] instead.
 0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t
