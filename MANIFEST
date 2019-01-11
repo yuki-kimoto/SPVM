@@ -58,6 +58,8 @@ lib/SPVM/Builder/include/spvm_toke.h
 lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_unicode.h
 lib/SPVM/Builder/include/spvm_use.h
+lib/SPVM/Builder/include/spvm_utf8proc.h
+lib/SPVM/Builder/include/spvm_utf8proc_data.c
 lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_yacc.h
@@ -100,6 +102,7 @@ lib/SPVM/Builder/src/spvm_toke.c
 lib/SPVM/Builder/src/spvm_type.c
 lib/SPVM/Builder/src/spvm_unicode.c
 lib/SPVM/Builder/src/spvm_use.c
+lib/SPVM/Builder/src/spvm_utf8proc.c
 lib/SPVM/Builder/src/spvm_util_allocator.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_yacc.c
@@ -139,6 +142,7 @@ lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/Unicode.spvm
 LICENSE.txt
 Makefile.PL
 MANIFEST			This list of files
@@ -233,6 +237,7 @@ t/default/divide.t
 t/default/enum.t
 t/default/exception.t
 t/default/extension.t
+t/default/fat-camma.t
 t/default/for.t
 t/default/if.t
 t/default/increment.t
@@ -320,6 +325,7 @@ t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.native/Extension2.c
 t/default/lib/TestCase/Extension2.native/Extension2.config
 t/default/lib/TestCase/Extension2.spvm
+t/default/lib/TestCase/FatCamma.spvm
 t/default/lib/TestCase/FILE.spvm
 t/default/lib/TestCase/Float.spvm
 t/default/lib/TestCase/For.spvm
@@ -376,6 +382,7 @@ t/default/lib/TestCase/Switch.spvm
 t/default/lib/TestCase/Term.spvm
 t/default/lib/TestCase/UnaryMinus.spvm
 t/default/lib/TestCase/UnaryPlus.spvm
+t/default/lib/TestCase/Unicode.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
