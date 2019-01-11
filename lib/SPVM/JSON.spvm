@@ -94,7 +94,7 @@ package SPVM::JSON {
       unless ($s->[$$i] == $expected->[$$i - $begin]) {
         _croak_with_dump_remain("Expected token: $expected doesn't exist", $s, $i, $end);
       }
-      $$i++;
+      ++$$i;
       if ($$i - $begin == $length) {
         last;
       }
@@ -120,7 +120,7 @@ package SPVM::JSON {
     _expect_token($s, $i, $end, "\"");
     my $chars_length = $chars->length;
     my $value = new byte [$chars_length];
-    for (my $k = 0; $k < $chars_length; $k++) {
+    for (my $k = 0; $k < $chars_length; ++$k) {
       my $got = ((SPVM::Int)$chars->shift)->val;
       $value->[$k] = (byte)$got;
     }
@@ -134,7 +134,7 @@ package SPVM::JSON {
     my $has_sign = 0;
     my $decimal_stat = 0; # 0: '.' hasn't appeared yet. 1: '.' or 'e' has already appeared. 2: value is "0" or next char should be '.'
     if ($s->[$$i] == '-') {
-      $$i++;
+      ++$$i;
       $has_sign = 1;
     }
     if ($s->[$$i] == '0') {
@@ -344,7 +344,7 @@ package SPVM::JSON {
     }
     my $sum_length = $self->{indent_length} * $depth;
     my $indent_bytes = new byte [$sum_length];
-    for (my $i = 0; $i < $sum_length; $i++) {
+    for (my $i = 0; $i < $sum_length; ++$i) {
       $indent_bytes->[$i] = ' ';
     }
     return (string)$indent_bytes;
@@ -352,7 +352,7 @@ package SPVM::JSON {
 
   # TODO: Use separated sort function from this module
   sub _sort_keys : void ($keys : string[]) {
-    for (my $i = 0; $i < @$keys - 1; $i++) {
+    for (my $i = 0; $i < @$keys - 1; ++$i) {
       for (my $j = @$keys - 1; $j > $i; $j--) {
         if ($keys->[$j - 1] gt $keys->[$j]) {
           my $temp = $keys->[$j - 1];
@@ -382,7 +382,7 @@ package SPVM::JSON {
       if ($self->{canonical}) {
         _sort_keys($keys); # TODO: Use separated sort function from this module
       }
-      for (my $i = 0; $i < @$keys; $i++) {
+      for (my $i = 0; $i < @$keys; ++$i) {
         if ($i > 0) {
           $text .= ",";
           if ($self->{indent}) {
@@ -423,7 +423,7 @@ package SPVM::JSON {
       }
       my $list = (SPVM::List)$o;
       my $length = $list->length;
-      for (my $i = 0; $i < $length; $i++) {
+      for (my $i = 0; $i < $length; ++$i) {
         if ($i > 0) {
           $text .= ",";
           if ($self->{indent}) {
