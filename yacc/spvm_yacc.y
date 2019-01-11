@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN
-%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE
+%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN ISWEAK
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -36,7 +36,7 @@
 %type <opval> block eval_block begin_block if_require_statement
 %type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
-%type <opval> array_access field_access weaken_field weaken_array_element convert_type convert array_length
+%type <opval> array_access field_access weaken_field weaken_array_element unweaken_field unweaken_array_element isweak_field isweak_array_element convert_type convert array_length
 %type <opval> deref ref assign inc dec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
@@ -476,6 +476,10 @@ statement
     }
   | weaken_field ';'
   | weaken_array_element ';'
+  | unweaken_field ';'
+  | unweaken_array_element ';'
+  | isweak_field ';'
+  | isweak_array_element ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
@@ -947,6 +951,30 @@ weaken_field
 
 weaken_array_element
   : WEAKEN array_access
+    {
+      $$ = SPVM_OP_build_weaken_array_element(compiler, $1, $2);
+    }
+
+unweaken_field
+  : UNWEAKEN field_access
+    {
+      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+    }
+
+unweaken_array_element
+  : UNWEAKEN array_access
+    {
+      $$ = SPVM_OP_build_weaken_array_element(compiler, $1, $2);
+    }
+
+isweak_field
+  : ISWEAK field_access
+    {
+      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+    }
+
+isweak_array_element
+  : ISWEAK array_access
     {
       $$ = SPVM_OP_build_weaken_array_element(compiler, $1, $2);
     }

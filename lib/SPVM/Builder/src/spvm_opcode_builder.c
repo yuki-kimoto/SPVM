@@ -3598,7 +3598,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_ID_FIELD_ACCESS: {
                     // Weaken field
-                    if (op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
+                    if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -3618,7 +3618,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   case SPVM_OP_C_ID_ARRAY_ACCESS: {
                     // Weaken field
-                    if (op_cur->flag &= SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN) {
+                    if (op_cur->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN) {
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
 

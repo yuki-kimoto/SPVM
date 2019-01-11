@@ -2974,6 +2974,58 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_UNWEAKEN_FIELD: {
+              SPVM_OP* op_field_access = op_cur->first;
+              
+              SPVM_FIELD* field = op_field_access->uv.field_access->field;
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+              
+              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "unweaken is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_UNWEAKEN_ARRAY_ELEMENT: {
+              SPVM_OP* op_array_access = op_cur->first;
+              SPVM_OP* op_term_array = op_array_access->first;
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
+              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "unweaken is only used for object element at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ISWEAK_FIELD: {
+              SPVM_OP* op_field_access = op_cur->first;
+              
+              SPVM_FIELD* field = op_field_access->uv.field_access->field;
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+              
+              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "isweak is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ISWEAK_ARRAY_ELEMENT: {
+              SPVM_OP* op_array_access = op_cur->first;
+              SPVM_OP* op_term_array = op_array_access->first;
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_array_access);
+              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "isweak is only used for object element at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_CONVERT: {
               
               SPVM_OP* op_src = op_cur->first;
@@ -3510,13 +3562,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         break;
                       }
                       case SPVM_OP_C_ID_FIELD_ACCESS: {
-                        if (!(op_cur->flag &= SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN)) {
+                        if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK))) {
                           create_tmp_var = 1;
                         }
                         break;
                       }
                       case SPVM_OP_C_ID_ARRAY_ACCESS:{
-                        if (!(op_cur->flag &= SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN)) {
+                        if (!(op_cur->flag & (SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK))) {
                           create_tmp_var = 1;
                         }
                         break;

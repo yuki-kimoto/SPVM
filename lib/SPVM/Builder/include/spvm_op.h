@@ -136,6 +136,12 @@ enum {
   SPVM_OP_C_ID_WEAKEN,
   SPVM_OP_C_ID_WEAKEN_FIELD,
   SPVM_OP_C_ID_WEAKEN_ARRAY_ELEMENT,
+  SPVM_OP_C_ID_UNWEAKEN,
+  SPVM_OP_C_ID_UNWEAKEN_FIELD,
+  SPVM_OP_C_ID_UNWEAKEN_ARRAY_ELEMENT,
+  SPVM_OP_C_ID_ISWEAK,
+  SPVM_OP_C_ID_ISWEAK_FIELD,
+  SPVM_OP_C_ID_ISWEAK_ARRAY_ELEMENT,
   SPVM_OP_C_ID_SPECIAL_ASSIGN,
   SPVM_OP_C_ID_CONCAT,
   SPVM_OP_C_ID_SET,
@@ -207,12 +213,16 @@ enum {
 
 enum {
   // FIELD_ACCESS flag
-  SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN = 1
+  SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN = 1,
+  SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN = 2,
+  SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK = 4,
 };
 enum {
   // ARRAY_ACCESS flag
   SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN = 1,
   SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST = 2,
+  SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN = 4,
+  SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK = 8,
 };
 
 enum {
@@ -346,6 +356,10 @@ SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SP
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access);
 SPVM_OP* SPVM_OP_build_weaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access);
+SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access);
+SPVM_OP* SPVM_OP_build_unweaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access);
+SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access);
+SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access);
 
 void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 

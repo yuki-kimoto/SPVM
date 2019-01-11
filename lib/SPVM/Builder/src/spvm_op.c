@@ -136,6 +136,12 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "WEAKEN",
   "WEAKEN_FIELD",
   "WEAKEN_ARRAY_ELEMENT",
+  "UNWEAKEN",
+  "UNWEAKEN_FIELD",
+  "UNWEAKEN_ARRAY_ELEMENT",
+  "ISWEAK",
+  "ISWEAK_FIELD",
+  "ISWEAK_ARRAY_ELEMENT",
   "SPECIAL_ASSIGN",
   "CONCAT",
   "SET",
@@ -1400,6 +1406,47 @@ SPVM_OP* SPVM_OP_build_weaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op
   
   return op_weaken_array_element;
 }
+
+SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access) {
+  
+  SPVM_OP* op_unweaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNWEAKEN_FIELD, op_unweaken->file, op_unweaken->line);
+  SPVM_OP_insert_child(compiler, op_unweaken_field, op_unweaken_field->last, op_field_access);
+  
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN;
+  
+  return op_unweaken_field;
+}
+
+SPVM_OP* SPVM_OP_build_unweaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_array_access) {
+  
+  SPVM_OP* op_unweaken_array_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNWEAKEN_ARRAY_ELEMENT, op_unweaken->file, op_unweaken->line);
+  SPVM_OP_insert_child(compiler, op_unweaken_array_element, op_unweaken_array_element->last, op_array_access);
+  
+  op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN;
+  
+  return op_unweaken_array_element;
+}
+
+SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access) {
+  
+  SPVM_OP* op_isweak_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_FIELD, op_isweak->file, op_isweak->line);
+  SPVM_OP_insert_child(compiler, op_isweak_field, op_isweak_field->last, op_field_access);
+  
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK;
+  
+  return op_isweak_field;
+}
+
+SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_array_access) {
+  
+  SPVM_OP* op_isweak_array_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_ARRAY_ELEMENT, op_isweak->file, op_isweak->line);
+  SPVM_OP_insert_child(compiler, op_isweak_array_element, op_isweak_array_element->last, op_array_access);
+  
+  op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK;
+  
+  return op_isweak_array_element;
+}
+
 
 SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
   

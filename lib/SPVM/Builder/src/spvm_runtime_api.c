@@ -2565,28 +2565,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int_vars[opcode->operand0] = *(SPVM_VALUE_int*)((intptr_t)*(void**)&object_vars[opcode->operand1] + (intptr_t)env->object_array_length_offset);
         }
         break;
-      case SPVM_OPCODE_C_ID_WEAKEN_ARRAY_ELEMENT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
-        int32_t index = int_vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_str_raw(env, "Array must not be undef", 0);
-          env->set_exception(env, exception);
-          exception_flag = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_array_length_offset), 0)) {
-            void* exception = env->new_str_raw(env, "Index is out of range", 0);
-            env->set_exception(env, exception);
-            exception_flag = 1;
-          }
-          else {
-            void** elements = (void**)((intptr_t)array + env->object_header_byte_size);
-            void** object_element_address = (void**)&elements[index];
-            env->weaken(env, object_element_address);
-          }
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CONCAT: {
         
         void* string1 = *(void**)&object_vars[opcode->operand1];
@@ -3697,6 +3675,28 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         else {
           void** ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
           env->weaken(env, ofield_address);
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_WEAKEN_ARRAY_ELEMENT: {
+        void* array = *(void**)&object_vars[opcode->operand0];
+        int32_t index = int_vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_str_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_array_length_offset), 0)) {
+            void* exception = env->new_str_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            void** elements = (void**)((intptr_t)array + env->object_header_byte_size);
+            void** object_element_address = (void**)&elements[index];
+            env->weaken(env, object_element_address);
+          }
         }
         break;
       }
