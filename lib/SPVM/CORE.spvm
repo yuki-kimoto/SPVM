@@ -1,6 +1,8 @@
 package SPVM::CORE {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
+  use SPVM::List;
+  use SPVM::Hash;
   
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
@@ -14,6 +16,14 @@ package SPVM::CORE {
   
   native sub signbitf : int ($num : float);
   native sub signbit : int ($num : double);
+  
+  sub new_list : SPVM::List ($objects : object[]) {
+    return SPVM::List->new_with_array($objects);
+  }
+
+  sub new_hash : SPVM::Hash ($objects : object[]) {
+    return SPVM::Hash->new_with_array($objects);
+  }
   
   sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;

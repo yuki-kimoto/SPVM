@@ -3,6 +3,22 @@ package SPVM::List : private {
   has capacity : private int;
   has offset   : private int; # range of offset: [-capacity, -1)
   has length   : private int;
+  
+  sub to_iarray : int[] ($self : self) {
+    my $length = $self->{length};
+    my $nums = new int[$length];
+    for (my $i = 0; $i < $length; $i++) {
+      my $values = $self->{values};
+      my $value = $values->[$i];
+      if ($value isa SPVM::Int) {
+        $nums->[$i] = (int)$value;
+      }
+      else {
+        croak "Can't convert to int type element";
+      }
+    }
+    return $nums;
+  }
 
   sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_values = new object [$new_capacity];
