@@ -22,6 +22,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   # [TODO]Failed tests
   # ok(TestCase::JSON->test_digits_double);
   
+  ok(TestCase::JSON->test_root_is_primitive);
   ok(TestCase::JSON->test_nest_object);
   ok(TestCase::JSON->test_spaces);
   ok(TestCase::JSON->test_format_name_separator);
