@@ -368,10 +368,7 @@ package SPVM::JSON {
     if ($o isa SPVM::Hash) {
       my $text = "";
       if ($self->{indent}) {
-        my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") {
-          $text .= $indent;
-        }
+        $text .= $self->_make_indent($depth);
       }
       $text .= "{";
       if ($self->{indent}) {
@@ -407,10 +404,7 @@ package SPVM::JSON {
       }
       if ($self->{indent}) {
         $text .= "\n";
-        my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") {
-          $text .= $indent;
-        }
+        $text .= $self->_make_indent($depth);
       }
       $text .= "}";
       return $text;
@@ -437,10 +431,7 @@ package SPVM::JSON {
       }
       if ($self->{indent}) {
         $text .= "\n";
-        my $indent = $self->_make_indent($depth);
-        unless ($indent eq "") {
-          $text .= $indent;
-        }
+        $text .= $self->_make_indent($depth);
       }
       $text .= "]";
       return $text;
