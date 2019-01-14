@@ -1917,8 +1917,15 @@ switch (条件) {
 </pre>
                 
       <h3 id="language-expression">式</h3>
+      <ul class="list">
+        <li class="language-expression-summary">式とは</li>
+        <li class="language-expression-current-package">現在のパッケージ名の取得</li>
+        <li class="language-expression-current-file">現在のファイル名の取得</li>
+        <li class="language-expression-current-line">現在の行番号の取得</li>
+      </ul>
+      <h4 id="language-expression">式とは</h4>
       <p>
-        式は次の項目で定義されます。
+        式とは、値の評価が可能な<a href="#language-term">項</a>のことです。
       </p>
       <p>
         <b>式の一覧</b>
@@ -1941,15 +1948,93 @@ switch (条件) {
         <li><a href="#language-operator-array-init">配列の初期化</a></li>
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
-        <li><a href="#language-operator">演算子</a></li>
+        <li><a href="#language-operator-arithmetic">算術演算子</a></li>
+        <li><a href="#language-operator-bit">ビット演算子</a></li>
+        <li><a href="#language-operator-shift">シフト演算子</a></li>
+        <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li>リファレンス演算子</li>
         <li>デリファレンス演算子</li>
         <li>代入演算子</li>
-        <li>__PACKAGE__キーワード</li>
-        <li>__FILE__キーワード</li>
-        <li>__LINE__キーワード</li>
+        <li><a href="#language-expression-current-package">現在のパッケージ名の取得</a></li>
+        <li><a href="#language-expression-current-file">現在のファイル名の取得</a></li>
+        <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
         <li>(式)</li>
       </ul>
+      <h4 id="language-expression-current-package">現在のパッケージ名の取得</h4>
+      <p>
+        現在のパッケージ名の取得を行う「__PACKAGE__」キーワードを使用します。
+      </p>
+<pre>
+__PACKAGE__
+</pre>
+      <p>
+        現在のパッケージ名の取得は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>現在のパッケージ名の取得のサンプル</b>
+      </p>
+<pre>
+package Foo::Bar {
+  sub baz : void () {
+    # Foo::Bar
+    my $package_name == __PACKAGE__;
+  }
+}
+</pre>
+      <h4 id="language-expression-current-package">現在のファイル名の取得</h4>
+      <p>
+        現在のファイル名の取得を行う「__FILE__」キーワードを使用します。
+      </p>
+<pre>
+__FILE__
+</pre>
+      <p>
+        現在のファイル名の取得は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        現在のファイル名とは、モジュールの読み込みパスを基準とした、ファイルの相対パスのことをいいます。たとえば、ファイルの読み込みパスが「/mypath」でモジュール名が「Foo::Bar」であった場合は、絶対パスは「/mypath/Foo/Bar.spvm」で、相対パスは「Foo/Bar.spvm」です。相対パスである「Foo/Bar.spvm」が、現在のファイル名になります。
+      </p>
+      <p>
+        <b>現在のファイル名の取得のサンプル</b>
+      </p>
+<pre>
+# Foo/Bar.spvm
+package Foo::Bar {
+  sub baz : void () {
+    # Foo/Bar.spvm
+    my $file_name == __FILE__;
+  }
+}
+package Foo::Bar2 {
+  sub baz : void () {
+    # Foo/Bar.spvm
+    my $file_name == __FILE__;
+  }
+}
+</pre>
+      <h4 id="language-expression-current-package">現在の行番号の取得</h4>
+      <p>
+        現在の行番号の取得を行う「__LINE__」キーワードを使用します。
+      </p>
+<pre>
+__LINE__
+</pre>
+      <p>
+        現在の行番号の取得は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>現在の行番号の取得のサンプル</b>
+      </p>
+<pre>
+package Foo::Bar {
+  sub baz : void () {
+    # 4
+    my $line == __LINE__;
+  }
+}
+</pre>
+      <h4 id="language-expression-current-file">現在のファイル名の取得</h4>
+      <h4 id="language-expression-current-line">現在の行番号の取得</h4>
 
       <h3 id="language-condition">条件</h3>
       <p>
