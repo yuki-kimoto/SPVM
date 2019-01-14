@@ -3819,7 +3819,8 @@ my $num = 1 + 2;
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
         <li><a href="#language-type-self">self型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
-        <li><a href="#language-type-array-byte">byte配列型</a></li>
+        <li><a href="#language-type-array-numeric">数値の配列型</a></li>
+        <li><a href="#language-type-array-byte">byteの配列型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
         <li><a href="#language-type-string-compatible">文字列互換型</a></li>
         <li><a href="#language-type-value">値型</a></li>
@@ -3936,6 +3937,9 @@ my $num = 1 + 2;
           <th>
             説明
           </th>
+          <th>
+            サイズ
+          </th>
         </tr>
         <tr>
           <td>
@@ -3943,6 +3947,9 @@ my $num = 1 + 2;
           </td>
           <td>
             8bit符号付整数型
+          </td>
+          <td>
+            1バイト
           </td>
         </tr>
         <tr>
@@ -3952,6 +3959,9 @@ my $num = 1 + 2;
           <td>
             16bit符号付整数型
           </td>
+          <td>
+            2バイト
+          </td>
         </tr>
         <tr>
           <td>
@@ -3960,6 +3970,9 @@ my $num = 1 + 2;
           <td>
             32bit符号付整数型
           </td>
+          <td>
+            4バイト
+          </td>
         </tr>
         <tr>
           <td>
@@ -3967,6 +3980,9 @@ my $num = 1 + 2;
           </td>
           <td>
             64bit符号付整数型
+          </td>
+          <td>
+            8バイト
           </td>
         </tr>
       </table>
@@ -3989,6 +4005,9 @@ my $num = 1 + 2;
           <th>
             説明
           </th>
+          <th>
+            サイズ
+          </th>
         </tr>
         <tr>
           <td>
@@ -3997,6 +4016,9 @@ my $num = 1 + 2;
           <td>
             単精度浮動小数点型 - 32bitで浮動小数点を表現します
           </td>
+          <td>
+            4バイト
+          </td>
         </tr>
         <tr>
           <td>
@@ -4004,6 +4026,9 @@ my $num = 1 + 2;
           </td>
           <td>
             倍精度浮動小数点型 - 64bitで浮動小数点を表現します
+          </td>
+          <td>
+            8バイト
           </td>
         </tr>
       </table>
@@ -4061,6 +4086,9 @@ my $object : object = new Foo;
 my $object : object = new Foo[];
 my $object : object = "abc";
 </pre>
+      <p>
+        オブジェクト型のサイズはC99における「sizeof(void*)」の値と一致していなければなりません。
+      </p>
       <h4 id="language-type-undef">未定義型</h4>
       <p>
         未定義型とは、<a href="#language-undef">未定義値</a>が持っている型のことです。明示的に利用することはできません。
@@ -4253,13 +4281,76 @@ my $nums = new int[3];
 <p>
 my $nums = new int[][3];
 </p>
-      <h4 id="language-type-array-byte">byte配列型</h4>
+      <h4 id="language-type-array-numeric">数値の配列型</h4>
       <p>
-        SPVMにおいては、byte配列型は<a href="#language-type-string-compatible">文字列互換型</a>であるという点において特別な型です。
+        数値の配列型とは、<a href="#language-type-numeric">数値型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
+      </p>
+      <p>
+        <b>数値の配列型の一覧</b>
+      </p>
+      <ul class="list">
+        <li>
+          byte[]
+        </li>
+        <li>
+          short[]
+        </li>
+        <li>
+          int[]
+        </li>
+        <li>
+          long[]
+        </li>
+        <li>
+          float[]
+        </li>
+        <li>
+          double[]
+        </li>
+      </ul>
+      <p>
+        数値の配列型によって表現されるデータは、要素が<a href="#language-type-numeric">数値型</a>のサイズで、配列の長さの個数で連続していなければなりません。
+      </p>
+      <p>
+        数値の配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
+      </p>
+      <h4 id="language-type-array-byte">byteの配列型</h4>
+      <p>
+        SPVMにおいては、byteの配列型は<a href="#language-type-string-compatible">文字列互換型</a>であるという点において特別な型です。
       </p>
 <pre>
 byte[]
 </pre>
+      <p>
+        <a href="#language-type-string">文字列型</a>は、コンパイル時には文字列型として扱われますが、実行時にはbyteの配列型になります。
+      </p>
+      <h4 id="language-type-array-object">オブジェクトの配列型</h4>
+      <p>
+        オブジェクトの配列型とは、<a href="#language-type-object">オブジェクト型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
+      </p>
+      <p>
+        <b>オブジェクトの配列型のサンプル</b>
+      </p>
+      <ul class="list">
+        <li>
+          Foo[]
+        </li>
+        <li>
+          Foo[][]
+        </li>
+        <li>
+          Comparable[]
+        </li>
+        <li>
+          object[]
+        </li>
+      </ul>
+      <p>
+        オブジェクトの配列型によって表現されるデータは、要素が<a href="#language-type-object">オブジェクト型</a>のサイズで、配列の長さの個数で連続していなければなりません。
+      </p>
+      <p>
+        オブジェクトの配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
+      </p>
       
       <h4 id="language-type-string">文字列型</h4>
       <p>
@@ -4318,7 +4409,7 @@ $bytes->[1] = 'd';
 
       <h4 id="language-type-string-compatible">文字列互換型</h4>
       <p>
-        文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byte配列型</a>のことを言います。
+        文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byteの配列型</a>のことを言います。
       </p>
       <h4 id="language-type-value">値型</h4>
       <p>
