@@ -1,0 +1,3 @@
+package TestCase::SPVM::IO {
+  use SPVM::IO;
+}
