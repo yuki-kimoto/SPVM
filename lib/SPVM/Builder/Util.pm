@@ -121,10 +121,10 @@ sub create_package_make_rule {
 
   my $output_dir = 'blib/lib';
   
-  my $package_path = convert_package_name_to_rel_file($package_name, $category);
-  my $input_src_dir = "$input_dir/$package_path";
+  my $package_rel_file = convert_package_name_to_rel_file($package_name, $category);
+  my $input_src_dir = "$input_dir/$package_rel_file";
   
-  my $spvm_file = $package_path;
+  my $spvm_file = $package_rel_file;
   $spvm_file =~ s/\.[^\.]+$//;
   $spvm_file .= '.spvm';
   $spvm_file = "$input_dir/$spvm_file";
