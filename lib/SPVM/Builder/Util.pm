@@ -81,6 +81,41 @@ sub convert_package_name_to_dll_rel_file {
   return $dll_rel_file;
 }
 
+sub convert_package_name_to_rel_file {
+  my ($package_name) = @_;
+  
+  my $package_rel_file = $package_name;
+  $package_rel_file =~ s/::/\//;
+  $package_rel_file .= '.spvm';
+  
+  return $package_rel_file;
+}
+
+sub convert_package_name_to_rel_dir {
+  my ($package_name) = @_;
+  
+  my $package_rel_dir;
+  if ($package_name =~ /::/) {
+    my $package_rel_file = $package_name;
+    $package_rel_file =~ s/::/\//;
+    $package_rel_dir = dirname $package_rel_file;
+  }
+  else {
+    $package_rel_dir = '';
+  }
+  
+  return $package_rel_dir;
+}
+
+sub convert_package_name_to_rel_file_without_ext {
+  my ($package_name) = @_;
+  
+  my $package_rel_file = $package_name;
+  $package_rel_file =~ s/::/\//;
+  
+  return $package_rel_file;
+}
+
 sub remove_package_part_from_file {
   my ($file, $package_name) = @_;
   
@@ -162,25 +197,6 @@ sub create_package_make_rule {
     .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_dll_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
-}
-
-sub convert_package_name_to_rel_file {
-  my ($package_name) = @_;
-  
-  my $package_rel_file = $package_name;
-  $package_rel_file =~ s/::/\//;
-  $package_rel_file .= '.spvm';
-  
-  return $package_rel_file;
-}
-
-sub convert_package_name_to_rel_file_without_ext {
-  my ($package_name) = @_;
-  
-  my $package_rel_file = $package_name;
-  $package_rel_file =~ s/::/\//;
-  
-  return $package_rel_file;
 }
 
 sub new_default_build_config {
