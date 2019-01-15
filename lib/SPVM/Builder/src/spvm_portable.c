@@ -224,7 +224,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_sub->package_id = sub->package->id;
     }
     
-    portable_sub->file_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->package->load_rel_path, strlen(sub->package->load_rel_path) + 1);
+    portable_sub->file_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub->package->module_rel_file, strlen(sub->package->module_rel_file) + 1);
     assert(portable_sub->file_id);
     portable_sub->line = sub->line;
     portable_sub->args_alloc_length = sub->args_alloc_length;

@@ -4697,10 +4697,10 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     const char* package_name = package->op_name->uv.name;
     
     // Add package load relative path to string pool
-    int32_t found_load_rel_path_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->load_rel_path, strlen(package->load_rel_path) + 1);
-    if (found_load_rel_path_string_pool_id == 0) {
-      int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package->load_rel_path, strlen(package->load_rel_path) + 1);
-      SPVM_HASH_insert(compiler->string_symtable, package->load_rel_path, strlen(package->load_rel_path) + 1, (void*)(intptr_t)string_pool_id);
+    int32_t found_module_rel_file_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package->module_rel_file, strlen(package->module_rel_file) + 1);
+    if (found_module_rel_file_string_pool_id == 0) {
+      int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package->module_rel_file, strlen(package->module_rel_file) + 1);
+      SPVM_HASH_insert(compiler->string_symtable, package->module_rel_file, strlen(package->module_rel_file) + 1, (void*)(intptr_t)string_pool_id);
     }
     
     // value_t package limitation

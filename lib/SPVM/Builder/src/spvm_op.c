@@ -1472,8 +1472,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
-  package->load_path = compiler->cur_file;
-  package->load_rel_path = compiler->cur_rel_file;
+  package->module_abs_file = compiler->cur_file;
+  package->module_rel_file = compiler->cur_rel_file;
   
   int32_t is_anon;
   if (op_type) {

@@ -356,9 +356,9 @@ sub get_shared_object_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = $self->builder->get_module_abs_file($package_name);
+  my $module_module_abs_file = $self->builder->get_module_abs_file($package_name);
   
-  my $shared_object_path = SPVM::Builder::Util::convert_module_path_to_shared_object_path($module_load_path, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_module_path_to_shared_object_path($module_module_abs_file, $self->category);
   
   return $shared_object_path;
 }
