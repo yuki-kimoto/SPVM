@@ -140,13 +140,13 @@ sub create_package_make_rule {
   
   # Shared library file
   my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name, $category);
-  my $dll_abs_file = "blib/lib/$dll_rel_file";
+  my $dll_file = "blib/lib/$dll_rel_file";
   
   # Get source files
   $make_rule
-    .= "$target_name :: $dll_abs_file\n\n";
+    .= "$target_name :: $dll_file\n\n";
   $make_rule
-    .= "$dll_abs_file :: @deps\n\n";
+    .= "$dll_file :: @deps\n\n";
   $make_rule
     .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_dll_${category}_dist('$package_name')\"\n\n";
   

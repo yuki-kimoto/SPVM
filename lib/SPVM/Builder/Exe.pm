@@ -113,11 +113,11 @@ sub build_exe_file {
   );
   my $native_package_names = $builder->get_native_package_names;
   for my $native_package_name (@$native_package_names) {
-    my $native_module_abs_file = $builder->get_module_abs_file($native_package_name);
-    my $native_dir = $native_module_abs_file;
+    my $native_module_file = $builder->get_module_file($native_package_name);
+    my $native_dir = $native_module_file;
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_abs_file, $native_package_name);
+    my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $native_package_name);
     $builder_c_native->compile(
       $native_package_name,
       {
@@ -137,13 +137,13 @@ sub build_exe_file {
   );
   my $precompile_package_names = $builder->get_precompile_package_names;
   for my $precompile_package_name (@$precompile_package_names) {
-    my $precompile_module_abs_file = $builder->get_module_abs_file($precompile_package_name);
-    my $precompile_dir = $precompile_module_abs_file;
+    my $precompile_module_file = $builder->get_module_file($precompile_package_name);
+    my $precompile_dir = $precompile_module_file;
     $precompile_dir =~ s/\.spvm$//;
     $precompile_dir .= 'precompile';
     my $input_dir;
     if (-f $precompile_dir) {
-      $input_dir = SPVM::Builder::Util::remove_package_part_from_file($precompile_module_abs_file, $precompile_package_name);
+      $input_dir = SPVM::Builder::Util::remove_package_part_from_file($precompile_module_file, $precompile_package_name);
     }
     else {
       $input_dir = "$build_dir/work/tmp";

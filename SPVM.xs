@@ -197,8 +197,8 @@ compile_spvm(...)
     for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
       const char* package_name = package->name;
-      const char* module_abs_file = package->module_abs_file;
-      SV* sv_module_abs_file = sv_2mortal(newSVpv(module_abs_file, 0));
+      const char* module_file = package->module_file;
+      SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
 
       SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
       SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
@@ -220,7 +220,7 @@ compile_spvm(...)
       HV* hv_package_info = (HV*)SvRV(sv_package_info);
       
       // Package load path
-      (void)hv_store(hv_package_info, "module_abs_file", strlen("module_abs_file"), SvREFCNT_inc(sv_module_abs_file), 0);
+      (void)hv_store(hv_package_info, "module_file", strlen("module_file"), SvREFCNT_inc(sv_module_file), 0);
 
       // Create subs hash reference if not exists
       {

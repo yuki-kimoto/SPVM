@@ -49,7 +49,7 @@ struct SPVM_package {
   int32_t no_dup_call_sub_sub_ids_constant_pool_id;
   int32_t no_dup_basic_type_ids_constant_pool_id;
   int32_t object_field_indexes_constant_pool_id;
-  const char* module_abs_file;
+  const char* module_file;
   const char* module_rel_file;
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;

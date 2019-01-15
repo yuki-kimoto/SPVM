@@ -129,10 +129,10 @@ sub get_native_package_names {
   return $native_package_names;
 }
 
-sub get_module_abs_file {
+sub get_module_file {
   my ($self, $package_name) = @_;
   
-  return $self->{packages}{$package_name}{module_abs_file};
+  return $self->{packages}{$package_name}{module_file};
 }
 
 sub build_spvm {

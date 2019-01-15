@@ -44,19 +44,19 @@ sub build {
     
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
-      my $dll_abs_file = $self->get_dll_abs_file_dist($package_name);
+      my $dll_file = $self->get_dll_file_dist($package_name);
       
       # Try runtime compile if shared objectrary is not found
-      unless (-f $dll_abs_file) {
+      unless (-f $dll_file) {
         if ($category eq 'native') {
           $self->build_dll_native_runtime($package_name, $sub_names);
         }
         elsif ($category eq 'precompile') {
           $self->build_dll_precompile_runtime($package_name, $sub_names);
         }
-        $dll_abs_file = $self->get_dll_abs_file_runtime($package_name);
+        $dll_file = $self->get_dll_file_runtime($package_name);
       }
-      $self->bind_subs($dll_abs_file, $package_name, $sub_names);
+      $self->bind_subs($dll_file, $package_name, $sub_names);
     }
   }
 }
@@ -64,23 +64,23 @@ sub build {
 sub copy_dll_to_build_dir {
   my ($self, $package_name, $category) = @_;
   
-  my $dll_abs_file = $self->get_dll_abs_file_dist($package_name);
+  my $dll_file = $self->get_dll_file_dist($package_name);
   
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
-  my $dll_build_abs_dir = "$build_dir/work/lib/$dll_rel_file";
+  my $dll_build_dir = "$build_dir/work/lib/$dll_rel_file";
   
-  my $dll_build_abs_dir_dir = dirname $dll_build_abs_dir;
+  my $dll_build_dir_dir = dirname $dll_build_dir;
   
-  mkpath $dll_build_abs_dir_dir;
+  mkpath $dll_build_dir_dir;
   
-  copy $dll_abs_file, $dll_build_abs_dir
-    or croak "Can't copy $dll_abs_file to $dll_build_abs_dir";
+  copy $dll_file, $dll_build_dir
+    or croak "Can't copy $dll_file to $dll_build_dir";
 }
 
-sub get_dll_abs_file_runtime {
+sub get_dll_file_runtime {
   my ($self, $package_name) = @_;
   
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $self->category);
@@ -106,13 +106,13 @@ sub create_cfunc_name {
 }
 
 sub bind_subs {
-  my ($self, $dll_abs_file, $package_name, $sub_names) = @_;
+  my ($self, $dll_file, $package_name, $sub_names) = @_;
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
-    my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_abs_file, $cfunc_name);
+    my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_file, $cfunc_name);
     
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
@@ -352,15 +352,15 @@ sub link {
   return $dll_file;
 }
 
-sub get_dll_abs_file_dist {
+sub get_dll_file_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_module_abs_file = $self->builder->get_module_abs_file($package_name);
+  my $module_module_file = $self->builder->get_module_file($package_name);
   
-  my $dll_abs_file = SPVM::Builder::Util::convert_module_file_to_dll_file($module_module_abs_file, $self->category);
+  my $dll_file = SPVM::Builder::Util::convert_module_file_to_dll_file($module_module_file, $self->category);
   
-  return $dll_abs_file;
+  return $dll_file;
 }
 
 sub build_dll_precompile_runtime {
@@ -403,8 +403,8 @@ sub build_dll_precompile_runtime {
 sub build_dll_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $module_abs_file = $self->builder->get_module_abs_file($package_name);
-  my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($module_abs_file, $package_name);
+  my $module_file = $self->builder->get_module_file($package_name);
+  my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
 
   # Build directory
   my $build_dir = $self->{build_dir};
