@@ -5,6 +5,7 @@
     change Foo/Bar.native/Bar.config to Foo/Bar.native.config
   - add default include path spvm_build/include
   - add default library path spvm_build/lib
+  - rename SPVM::Builder::C to SPVM::Builder::CC
 0.0408 2018-01-11
   - remove list context @ error check becuase SPVM can not define list context correctly
   - fix string comparison operator undef occur exception

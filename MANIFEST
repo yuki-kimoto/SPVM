@@ -2,7 +2,7 @@ Changes
 lib/SPVM.pm
 lib/SPVM/BuildDir.pm
 lib/SPVM/Builder.pm
-lib/SPVM/Builder/C.pm
+lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_array_field_access.h

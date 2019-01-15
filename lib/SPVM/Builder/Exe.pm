@@ -7,7 +7,7 @@ use Pod::Usage 'pod2usage';
 use Config;
 
 use SPVM::Builder;
-use SPVM::Builder::C;
+use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use File::Find 'find';
 
@@ -106,7 +106,7 @@ sub build_exe_file {
   mkpath $tmp_dir;
 
   # Build native packages
-  my $builder_c_native = SPVM::Builder::C->new(
+  my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'native',
     builder => $builder,
@@ -130,7 +130,7 @@ sub build_exe_file {
   }
 
   # Build precompile packages
-  my $builder_c_precompile = SPVM::Builder::C->new(
+  my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'precompile',
     builder => $builder,

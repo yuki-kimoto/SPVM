@@ -329,7 +329,7 @@ DESTROY(...)
   }
 }
 
-MODULE = SPVM::Builder::C		PACKAGE = SPVM::Builder::C
+MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
 
 SV*
 bind_sub_native(...)
