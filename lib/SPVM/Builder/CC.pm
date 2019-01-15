@@ -283,9 +283,9 @@ sub link {
   my $quiet = $self->quiet;
   
   # Create temporary package directory
-  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, $self->category);
-  my $tmp_package_file = "$tmp_dir/$tmp_package_rel_file";
-  my $tmp_package_dir = dirname $tmp_package_file;
+  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $tmp_package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
+  my $tmp_package_dir = "$tmp_dir/$tmp_package_rel_dir";
   mkpath $tmp_package_dir;
   
   # Config file
@@ -510,8 +510,9 @@ sub create_source_precompile {
   my $category = 'precompile';
   
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
   my $source_file = "$tmp_dir/$package_rel_file_without_ext.$category.c";
-  my $source_dir = dirname $source_file;
+  my $source_dir = "$tmp_dir/$package_rel_dir";
   mkpath $source_dir;
   
   # Get old csource source

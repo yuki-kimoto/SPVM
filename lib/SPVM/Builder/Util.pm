@@ -186,7 +186,7 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name);
+  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name, $category);
   my $dll_file = "blib/lib/$dll_rel_file";
   
   # Get source files
