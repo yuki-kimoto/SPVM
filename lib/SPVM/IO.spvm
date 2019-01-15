@@ -17,10 +17,10 @@ package SPVM::IO {
   sub open : SPVM::IO ($file_name : string, $amode : int[]...) {
     return undef;
   }
-  sub read : int ($self :self, $buf : byte[], $buf_offset : int, $n : int) {
+  sub read : int ($self :self, $buf : byte[], $buf_offset : int) {
     return 0;
   }
-  sub write : int ($self : self, $buf : byte[], $buf_offset : int, $n : int) {
+  sub write : int ($self : self, $buf : string) {
     return 0;
   }
   sub lseek : int ($self : self, $offset : long, $origin : int) {

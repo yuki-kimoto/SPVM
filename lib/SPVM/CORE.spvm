@@ -4,6 +4,7 @@ package SPVM::CORE {
   use SPVM::List;
   use SPVM::Hash;
   
+  sub EOF : int () { return -1; }
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
   native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
