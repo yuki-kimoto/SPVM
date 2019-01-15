@@ -377,7 +377,7 @@ sub build_shared_lib_precompile_runtime {
   
   my $work_dir = "$build_dir/work/tmp";
   mkpath $work_dir;
-  my $input_dir = "$build_dir/src";
+  my $input_dir = "$build_dir/work/src";
   mkpath $input_dir;
   my $output_dir = "$build_dir/lib";
   mkpath $output_dir;
