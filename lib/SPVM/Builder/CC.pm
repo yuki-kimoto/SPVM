@@ -184,8 +184,8 @@ sub compile {
   $package_base_name =~ s/^.+:://;
 
   # Config file
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $config_file = "$input_dir/$package_rel_file_without_ext.$category.config";
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_file = "$input_dir/$config_rel_file";
   
   # Config
   my $build_config;
@@ -204,7 +204,8 @@ sub compile {
 
   # Source file
   my $src_ext = $build_config->get_src_ext;
-  my $src_file = "$input_dir/$package_rel_file_without_ext.$category.$src_ext";
+  my $src_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, $src_ext);
+  my $src_file = "$input_dir/$src_rel_file";
   unless (-f $src_file) {
     confess "Can't find source file $src_file: $!";
   }
@@ -223,7 +224,8 @@ sub compile {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Object file
-  my $object_file = "$tmp_dir/$package_rel_file_without_ext.$category.o";
+  my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'o');
+  my $object_file = "$tmp_dir/$object_rel_file";
 
   # Do compile. This is same as make command
   my $do_compile;
@@ -288,10 +290,12 @@ sub link {
   my $tmp_package_dir = "$tmp_dir/$tmp_package_rel_dir";
   mkpath $tmp_package_dir;
   
-  # Config file
+  # Category
   my $category = $self->category;
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $config_file = "$input_dir/$package_rel_file_without_ext.$category.config";
+
+  # Config file
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_file = "$input_dir/$config_rel_file";
   
   # Config
   my $build_config;
@@ -342,6 +346,7 @@ sub link {
   );
 
   # Create shared object blib directory
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $dll_dir = "$output_dir/$package_rel_file_without_ext";
   mkpath $dll_dir;
   
