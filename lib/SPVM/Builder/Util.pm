@@ -139,14 +139,14 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $shared_object_path = convert_package_name_to_shared_object_rel_file($package_name, $category);
-  my $shared_object_file = "blib/lib/$shared_object_path";
+  my $shared_object_rel_file = convert_package_name_to_shared_object_rel_file($package_name, $category);
+  my $shared_object_abs_file = "blib/lib/$shared_object_rel_file";
   
   # Get source files
   $make_rule
-    .= "$target_name :: $shared_object_file\n\n";
+    .= "$target_name :: $shared_object_abs_file\n\n";
   $make_rule
-    .= "$shared_object_file :: @deps\n\n";
+    .= "$shared_object_abs_file :: @deps\n\n";
   $make_rule
     .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_object_${category}_dist('$package_name')\"\n\n";
   
@@ -156,20 +156,20 @@ sub create_package_make_rule {
 sub convert_package_name_to_rel_file {
   my ($package_name, $category) = @_;
   
-  my $package_path = $package_name;
-  $package_path =~ s/::/\//;
-  $package_path .= '.spvm';
+  my $package_rel_file = $package_name;
+  $package_rel_file =~ s/::/\//;
+  $package_rel_file .= '.spvm';
   
-  return $package_path;
+  return $package_rel_file;
 }
 
 sub convert_package_name_to_rel_file_without_ext {
   my ($package_name, $category) = @_;
   
-  my $package_path = $package_name;
-  $package_path =~ s/::/\//;
+  my $package_rel_file = $package_name;
+  $package_rel_file =~ s/::/\//;
   
-  return $package_path;
+  return $package_rel_file;
 }
 
 sub convert_package_name_to_shared_object_rel_file {
