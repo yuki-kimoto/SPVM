@@ -62,59 +62,68 @@ sub get_dll_func_address {
   return $native_address;
 }
 
-sub convert_module_file_to_dll_file {
+sub convert_module_file_to_dll_category_file {
   my ($module_file, $category) = @_;
   
   $module_file =~ s/\.[^.]+$//;
-  my $dll_file .= "$module_file.$category.$Config{dlext}";
+  my $dll_category_file .= "$module_file.$category.$Config{dlext}";
   
-  return $dll_file;
+  return $dll_category_file;
 }
 
-sub convert_package_name_to_dll_rel_file {
+sub convert_package_name_to_dll_category_rel_file {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $dll_rel_file = convert_package_name_to_rel_file($package_name);
-  $dll_rel_file =~ s/\.spvm$//;
-  $dll_rel_file = "$dll_rel_file.$category.$dlext";
+  my $dll_category_rel_file = convert_package_name_to_rel_file_without_ext($package_name);
+  $dll_category_rel_file .= ".$category.$dlext";
   
-  return $dll_rel_file;
+  return $dll_category_rel_file;
 }
 
 sub convert_package_name_to_rel_file {
   my ($package_name) = @_;
   
-  my $package_rel_file = $package_name;
-  $package_rel_file =~ s/::/\//;
-  $package_rel_file .= '.spvm';
+  my $rel_file = $package_name;
+  $rel_file =~ s/::/\//;
+  $rel_file .= '.spvm';
   
-  return $package_rel_file;
+  return $rel_file;
 }
 
 sub convert_package_name_to_rel_dir {
   my ($package_name) = @_;
   
-  my $package_rel_dir;
+  my $rel_dir;
   if ($package_name =~ /::/) {
-    my $package_rel_file = $package_name;
-    $package_rel_file =~ s/::/\//;
-    $package_rel_dir = dirname $package_rel_file;
+    my $rel_file = $package_name;
+    $rel_file =~ s/::/\//;
+    $rel_dir = dirname $rel_file;
   }
   else {
-    $package_rel_dir = '';
+    $rel_dir = '';
   }
   
-  return $package_rel_dir;
+  return $rel_dir;
+}
+
+sub convert_package_name_to_rel_file_with_ext {
+  my ($package_name, $ext) = @_;
+  
+  my $rel_file_with_ext = $package_name;
+  $rel_file_with_ext =~ s/::/\//;
+  $rel_file_with_ext .= ".$ext";
+  
+  return $rel_file_with_ext;
 }
 
 sub convert_package_name_to_rel_file_without_ext {
   my ($package_name) = @_;
   
-  my $package_rel_file = $package_name;
-  $package_rel_file =~ s/::/\//;
+  my $rel_file_without_ext = $package_name;
+  $rel_file_without_ext =~ s/::/\//;
   
-  return $package_rel_file;
+  return $rel_file_without_ext;
 }
 
 sub remove_package_part_from_file {
@@ -186,7 +195,7 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name, $category);
+  my $dll_rel_file = convert_package_name_to_dll_category_rel_file($package_name, $category);
   my $dll_file = "blib/lib/$dll_rel_file";
   
   # Get source files

@@ -66,7 +66,7 @@ sub copy_dll_to_build_dir {
   
   my $dll_file = $self->get_dll_file_dist($package_name);
   
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $category);
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
@@ -83,7 +83,7 @@ sub copy_dll_to_build_dir {
 sub get_dll_file_runtime {
   my ($self, $package_name) = @_;
   
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $self->category);
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/work/lib";
   my $dll_file = "$output_dir/$dll_rel_file";
@@ -276,7 +276,7 @@ sub link {
   }
 
   # shared object file
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $self->category);
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
   my $dll_file = "$output_dir/$dll_rel_file";
 
   # Quiet output
@@ -358,7 +358,7 @@ sub get_dll_file_dist {
   my @package_name_parts = split(/::/, $package_name);
   my $module_module_file = $self->builder->get_module_file($package_name);
   
-  my $dll_file = SPVM::Builder::Util::convert_module_file_to_dll_file($module_module_file, $self->category);
+  my $dll_file = SPVM::Builder::Util::convert_module_file_to_dll_category_file($module_module_file, $self->category);
   
   return $dll_file;
 }
