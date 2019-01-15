@@ -46,7 +46,7 @@ sub new {
   # Build directory
   my $build_dir = $self->{build_dir};
   unless (defined $build_dir) {
-    $self->{build_dir} = 'spvm_build/exe';
+    $self->{build_dir} = 'spvm_build/work/exe';
   }
   
   # Quiet output

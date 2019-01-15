@@ -82,16 +82,16 @@ DEVELOPERS NOTE
     
       perl Makefile.PL
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe
-      env LD_LIBRARY_PATH=spvm_build/exe spvm_build/exe/TestCase__MyExe
+      env LD_LIBRARY_PATH=spvm_build/work/exe spvm_build/work/exe/TestCase__MyExe
  
-      gdb spvm_build/exe/MyExe core.*
+      gdb spvm_build/work/exe/MyExe core.*
     
     Debug mode
     
       perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP && \
-      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvm_build/exe -n MyExe TestCase::MyExe && \
-      gcc -o spvm_build/exe/MyExe spvm_build/exe/libmy_main.so && \
-      spvm_build/exe/MyExe
+      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvm_build/work/exe -n MyExe TestCase::MyExe && \
+      gcc -o spvm_build/work/exe/MyExe spvm_build/work/exe/libmy_main.so && \
+      spvm_build/work/exe/MyExe
   
   EXTERNAL LIBRARY
     
