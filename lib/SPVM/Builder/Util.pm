@@ -70,6 +70,17 @@ sub convert_module_file_to_dll_file {
   return $dll_file;
 }
 
+sub convert_package_name_to_dll_rel_file {
+  my ($package_name, $category) = @_;
+  
+  my $dlext = $Config{dlext};
+  my $dll_rel_file = convert_package_name_to_rel_file($package_name);
+  $dll_rel_file =~ s/\.spvm$//;
+  $dll_rel_file = "$dll_rel_file.$category.$dlext";
+  
+  return $dll_rel_file;
+}
+
 sub remove_package_part_from_file {
   my ($file, $package_name) = @_;
   
@@ -121,7 +132,7 @@ sub create_package_make_rule {
 
   my $output_dir = 'blib/lib';
   
-  my $package_rel_file = convert_package_name_to_rel_file($package_name, $category);
+  my $package_rel_file = convert_package_name_to_rel_file($package_name);
   my $input_src_dir = "$input_dir/$package_rel_file";
   
   my $spvm_file = $package_rel_file;
@@ -139,7 +150,7 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name, $category);
+  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name);
   my $dll_file = "blib/lib/$dll_rel_file";
   
   # Get source files
@@ -154,7 +165,7 @@ sub create_package_make_rule {
 }
 
 sub convert_package_name_to_rel_file {
-  my ($package_name, $category) = @_;
+  my ($package_name) = @_;
   
   my $package_rel_file = $package_name;
   $package_rel_file =~ s/::/\//;
@@ -164,23 +175,12 @@ sub convert_package_name_to_rel_file {
 }
 
 sub convert_package_name_to_rel_file_without_ext {
-  my ($package_name, $category) = @_;
+  my ($package_name) = @_;
   
   my $package_rel_file = $package_name;
   $package_rel_file =~ s/::/\//;
   
   return $package_rel_file;
-}
-
-sub convert_package_name_to_dll_rel_file {
-  my ($package_name, $category) = @_;
-  
-  my $dlext = $Config{dlext};
-  my $dll_rel_file = convert_package_name_to_rel_file($package_name);
-  $dll_rel_file =~ s/\.spvm$//;
-  $dll_rel_file = "$dll_rel_file.$category.$dlext";
-  
-  return $dll_rel_file;
 }
 
 sub new_default_build_config {
