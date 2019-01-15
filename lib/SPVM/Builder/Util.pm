@@ -61,25 +61,25 @@ sub get_shared_object_func_address {
   return $native_address;
 }
 
-sub convert_module_path_to_shared_object_path {
-  my ($module_path, $category) = @_;
+sub convert_module_file_to_shared_object_file {
+  my ($module_file, $category) = @_;
   
-  $module_path =~ s/\.[^.]+$//;
-  my $shared_object_path .= "$module_path.$category.$Config{dlext}";
+  $module_file =~ s/\.[^.]+$//;
+  my $shared_object_file .= "$module_file.$category.$Config{dlext}";
   
-  return $shared_object_path;
+  return $shared_object_file;
 }
 
-sub remove_package_part_from_path {
-  my ($path, $package_name) = @_;
+sub remove_package_part_from_file {
+  my ($file, $package_name) = @_;
   
-  $path =~ s/\.spvm$//;
-  my $package_path = $package_name;
-  $package_path =~ s/::/\//g;
-  $path =~ s/$package_path$//;
-  $path =~ s/[\\\/]$//;
+  $file =~ s/\.spvm$//;
+  my $package_file = $package_name;
+  $package_file =~ s/::/\//g;
+  $file =~ s/$package_file$//;
+  $file =~ s/[\\\/]$//;
   
-  return $path;
+  return $file;
 }
 
 sub create_make_rule_native {

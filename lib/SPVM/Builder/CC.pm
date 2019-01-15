@@ -66,11 +66,11 @@ sub copy_shared_object_to_build_dir {
   
   my $shared_object_path = $self->get_shared_object_path_dist($package_name);
   
-  my $shared_object_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $category);
+  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
-  my $shared_object_build_dir_path = "$build_dir/work/lib/$shared_object_rel_path";
+  my $shared_object_build_dir_path = "$build_dir/work/lib/$shared_object_rel_file";
   
   my $shared_object_build_dir_path_dir = dirname $shared_object_build_dir_path;
   
@@ -83,10 +83,10 @@ sub copy_shared_object_to_build_dir {
 sub get_shared_object_path_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
+  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/work/lib";
-  my $shared_object_file = "$output_dir/$shared_object_path";
+  my $shared_object_file = "$output_dir/$shared_object_rel_file";
   
   return $shared_object_file;
 }
@@ -106,13 +106,13 @@ sub create_cfunc_name {
 }
 
 sub bind_subs {
-  my ($self, $shared_object_path, $package_name, $sub_names) = @_;
+  my ($self, $shared_object_abs_file, $package_name, $sub_names) = @_;
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
-    my $cfunc_address = SPVM::Builder::Util::get_shared_object_func_address($shared_object_path, $cfunc_name);
+    my $cfunc_address = SPVM::Builder::Util::get_shared_object_func_address($shared_object_abs_file, $cfunc_name);
     
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
@@ -174,8 +174,8 @@ sub compile {
   
   my $category = $self->category;
  
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-  my $work_object_file = "$tmp_dir/$package_path";
+  my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $work_object_file = "$tmp_dir/$package_rel_file";
   my $work_object_dir = dirname $work_object_file;
   mkpath $work_object_dir;
   
@@ -184,8 +184,8 @@ sub compile {
   $package_base_name =~ s/^.+:://;
 
   # Config file
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $config_file = "$input_dir/$package_path_without_ext.$category.config";
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $config_file = "$input_dir/$package_rel_file_without_ext.$category.config";
   
   # Config
   my $build_config;
@@ -204,7 +204,7 @@ sub compile {
 
   # Source file
   my $src_ext = $build_config->get_src_ext;
-  my $src_file = "$input_dir/$package_path_without_ext.$category.$src_ext";
+  my $src_file = "$input_dir/$package_rel_file_without_ext.$category.$src_ext";
   unless (-f $src_file) {
     confess "Can't find source file $src_file: $!";
   }
@@ -223,7 +223,7 @@ sub compile {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Object file
-  my $object_file = "$tmp_dir/$package_path_without_ext.$category.o";
+  my $object_file = "$tmp_dir/$package_rel_file_without_ext.$category.o";
 
   # Do compile. This is same as make command
   my $do_compile;
@@ -276,22 +276,22 @@ sub link {
   }
 
   # shared object file
-  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
-  my $shared_object_file = "$output_dir/$shared_object_path";
+  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
+  my $shared_object_file = "$output_dir/$shared_object_rel_file";
 
   # Quiet output
   my $quiet = $self->quiet;
   
   # Create temporary package directory
-  my $tmp_package_path = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, $self->category);
-  my $tmp_package_file = "$tmp_dir/$tmp_package_path";
+  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, $self->category);
+  my $tmp_package_file = "$tmp_dir/$tmp_package_rel_file";
   my $tmp_package_dir = dirname $tmp_package_file;
   mkpath $tmp_package_dir;
   
   # Config file
   my $category = $self->category;
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $config_file = "$input_dir/$package_path_without_ext.$category.config";
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $config_file = "$input_dir/$package_rel_file_without_ext.$category.config";
   
   # Config
   my $build_config;
@@ -342,7 +342,7 @@ sub link {
   );
 
   # Create shared object blib directory
-  my $shared_object_dir = "$output_dir/$package_path_without_ext";
+  my $shared_object_dir = "$output_dir/$package_rel_file_without_ext";
   mkpath $shared_object_dir;
   
   # Move shared objectrary file to blib directory
@@ -358,7 +358,7 @@ sub get_shared_object_path_dist {
   my @package_name_parts = split(/::/, $package_name);
   my $module_module_abs_file = $self->builder->get_module_abs_file($package_name);
   
-  my $shared_object_path = SPVM::Builder::Util::convert_module_path_to_shared_object_path($module_module_abs_file, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_module_file_to_shared_object_file($module_module_abs_file, $self->category);
   
   return $shared_object_path;
 }
@@ -404,7 +404,7 @@ sub build_shared_object_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $module_abs_file = $self->builder->get_module_abs_file($package_name);
-  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($module_abs_file, $package_name);
+  my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($module_abs_file, $package_name);
 
   # Build directory
   my $build_dir = $self->{build_dir};
@@ -509,8 +509,8 @@ sub create_source_precompile {
   
   my $category = 'precompile';
   
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $source_file = "$tmp_dir/$package_path_without_ext.$category.c";
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $source_file = "$tmp_dir/$package_rel_file_without_ext.$category.c";
   my $source_dir = dirname $source_file;
   mkpath $source_dir;
   
@@ -544,9 +544,9 @@ sub copy_source_precompile_dist {
   
   my $category = 'precompile';
   
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $input_src_file = "$input_dir/$package_path_without_ext.$category.c";
-  my $output_src_file = "$output_dir/$package_path_without_ext.$category.c";
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $input_src_file = "$input_dir/$package_rel_file_without_ext.$category.c";
+  my $output_src_file = "$output_dir/$package_rel_file_without_ext.$category.c";
   my $output_src_dir = dirname $output_src_file;
   mkpath $output_src_dir;
   
