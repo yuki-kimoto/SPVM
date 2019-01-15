@@ -66,7 +66,7 @@ sub copy_shared_object_to_build_dir {
   
   my $shared_object_path = $self->get_shared_object_path_dist($package_name);
   
-  my $shared_object_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $category);
+  my $shared_object_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
@@ -83,7 +83,7 @@ sub copy_shared_object_to_build_dir {
 sub get_shared_object_path_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/work/lib";
   my $shared_object_file = "$output_dir/$shared_object_path";
@@ -174,7 +174,7 @@ sub compile {
   
   my $category = $self->category;
  
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name);
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
   my $work_object_file = "$tmp_dir/$package_path";
   my $work_object_dir = dirname $work_object_file;
   mkpath $work_object_dir;
@@ -184,7 +184,7 @@ sub compile {
   $package_base_name =~ s/^.+:://;
 
   # Config file
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $config_file = "$input_dir/$package_path_without_ext.$category.config";
   
   # Config
@@ -276,21 +276,21 @@ sub link {
   }
 
   # shared object file
-  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
   my $shared_object_file = "$output_dir/$shared_object_path";
 
   # Quiet output
   my $quiet = $self->quiet;
   
   # Create temporary package directory
-  my $tmp_package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
+  my $tmp_package_path = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, $self->category);
   my $tmp_package_file = "$tmp_dir/$tmp_package_path";
   my $tmp_package_dir = dirname $tmp_package_file;
   mkpath $tmp_package_dir;
   
   # Config file
   my $category = $self->category;
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $config_file = "$input_dir/$package_path_without_ext.$category.config";
   
   # Config
@@ -509,7 +509,7 @@ sub create_source_precompile {
   
   my $category = 'precompile';
   
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $source_file = "$tmp_dir/$package_path_without_ext.$category.c";
   my $source_dir = dirname $source_file;
   mkpath $source_dir;
@@ -544,7 +544,7 @@ sub copy_source_precompile_dist {
   
   my $category = 'precompile';
   
-  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $input_src_file = "$input_dir/$package_path_without_ext.$category.c";
   my $output_src_file = "$output_dir/$package_path_without_ext.$category.c";
   my $output_src_dir = dirname $output_src_file;

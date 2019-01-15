@@ -121,7 +121,7 @@ sub create_package_make_rule {
 
   my $output_dir = 'blib/lib';
   
-  my $package_path = convert_package_name_to_path($package_name, $category);
+  my $package_path = convert_package_name_to_rel_file($package_name, $category);
   my $input_src_dir = "$input_dir/$package_path";
   
   my $spvm_file = $package_path;
@@ -139,7 +139,7 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $shared_object_path = convert_package_name_to_shared_object_path($package_name, $category);
+  my $shared_object_path = convert_package_name_to_shared_object_rel_file($package_name, $category);
   my $shared_object_file = "blib/lib/$shared_object_path";
   
   # Get source files
@@ -153,7 +153,7 @@ sub create_package_make_rule {
   return $make_rule;
 }
 
-sub convert_package_name_to_path {
+sub convert_package_name_to_rel_file {
   my ($package_name, $category) = @_;
   
   my $package_path = $package_name;
@@ -163,7 +163,7 @@ sub convert_package_name_to_path {
   return $package_path;
 }
 
-sub convert_package_name_to_path_without_ext {
+sub convert_package_name_to_rel_file_without_ext {
   my ($package_name, $category) = @_;
   
   my $package_path = $package_name;
@@ -172,15 +172,15 @@ sub convert_package_name_to_path_without_ext {
   return $package_path;
 }
 
-sub convert_package_name_to_shared_object_path {
+sub convert_package_name_to_shared_object_rel_file {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $shared_object_path = convert_package_name_to_path($package_name);
-  $shared_object_path =~ s/\.spvm$//;
-  $shared_object_path = "$shared_object_path.$category.$dlext";
+  my $shared_object_rel_file = convert_package_name_to_rel_file($package_name);
+  $shared_object_rel_file =~ s/\.spvm$//;
+  $shared_object_rel_file = "$shared_object_rel_file.$category.$dlext";
   
-  return $shared_object_path;
+  return $shared_object_rel_file;
 }
 
 sub new_default_build_config {
