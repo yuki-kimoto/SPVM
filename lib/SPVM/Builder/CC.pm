@@ -356,7 +356,7 @@ sub get_shared_object_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
-  my $module_load_path = $self->builder->get_package_load_path($package_name);
+  my $module_load_path = $self->builder->get_module_abs_file($package_name);
   
   my $shared_object_path = SPVM::Builder::Util::convert_module_path_to_shared_object_path($module_load_path, $self->category);
   
@@ -403,8 +403,8 @@ sub build_shared_object_precompile_runtime {
 sub build_shared_object_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $package_load_path = $self->builder->get_package_load_path($package_name);
-  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($package_load_path, $package_name);
+  my $module_abs_file = $self->builder->get_module_abs_file($package_name);
+  my $input_dir = SPVM::Builder::Util::remove_package_part_from_path($module_abs_file, $package_name);
 
   # Build directory
   my $build_dir = $self->{build_dir};

@@ -129,7 +129,7 @@ sub get_native_package_names {
   return $native_package_names;
 }
 
-sub get_package_load_path {
+sub get_module_abs_file {
   my ($self, $package_name) = @_;
   
   return $self->{packages}{$package_name}{load_path};
