@@ -76,9 +76,19 @@ sub convert_package_name_to_dll_category_rel_file {
   
   my $dlext = $Config{dlext};
   my $dll_category_rel_file = convert_package_name_to_rel_file_without_ext($package_name);
-  $dll_category_rel_file .= ".$category.$dlext";
+  $dll_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dll_category_rel_file;
+}
+
+sub convert_package_name_to_category_rel_file_with_ext {
+  my ($package_name, $category, $ext) = @_;
+  
+  my $rel_file_with_ext = $package_name;
+  $rel_file_with_ext =~ s/::/\//;
+  $rel_file_with_ext .= $category eq 'native' ? ".$ext" : ".$category.$ext";
+  
+  return $rel_file_with_ext;
 }
 
 sub convert_package_name_to_rel_file {
@@ -105,16 +115,6 @@ sub convert_package_name_to_rel_dir {
   }
   
   return $rel_dir;
-}
-
-sub convert_package_name_to_category_rel_file_with_ext {
-  my ($package_name, $category, $ext) = @_;
-  
-  my $rel_file_with_ext = $package_name;
-  $rel_file_with_ext =~ s/::/\//;
-  $rel_file_with_ext .= ".$category.$ext";
-  
-  return $rel_file_with_ext;
 }
 
 sub convert_package_name_to_rel_file_with_ext {

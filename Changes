@@ -1,8 +1,8 @@
 0.0409 2018-01-11
   - remove new Foo[] {x, y, z} syntax. Use [(Foo)x, y, z] instead.
   - Simplify native source file and config path
-    change Foo/Bar.native/Bar.c to Foo/Bar.native.c
-    change Foo/Bar.native/Bar.config to Foo/Bar.native.config
+    change Foo/Bar.native/Bar.c to Foo/Bar.c
+    change Foo/Bar.native/Bar.config to Foo/Bar.config
   - add default include path spvm_build/include
   - add default library path spvm_build/lib
   - rename SPVM::Builder::C to SPVM::Builder::CC

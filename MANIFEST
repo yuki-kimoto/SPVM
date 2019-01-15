@@ -113,7 +113,7 @@ lib/SPVM/Byte.spvm
 lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.spvm
-lib/SPVM/CORE.native.c
+lib/SPVM/CORE.c
 lib/SPVM/CORE.pm
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
@@ -125,7 +125,7 @@ lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
-lib/SPVM/Example.native.c
+lib/SPVM/Example.c
 lib/SPVM/Example.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
@@ -322,10 +322,10 @@ t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
 t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Exception.spvm
-t/default/lib/TestCase/Extension.native.c
+t/default/lib/TestCase/Extension.c
 t/default/lib/TestCase/Extension.spvm
-t/default/lib/TestCase/Extension2.native.c
-t/default/lib/TestCase/Extension2.native.config
+t/default/lib/TestCase/Extension2.c
+t/default/lib/TestCase/Extension2.config
 t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/FatCamma.spvm
 t/default/lib/TestCase/FILE.spvm
@@ -367,7 +367,7 @@ t/default/lib/TestCase/Point_3f.spvm
 t/default/lib/TestCase/Point_3i.spvm
 t/default/lib/TestCase/Point_3l.spvm
 t/default/lib/TestCase/Point_3s.spvm
-t/default/lib/TestCase/Pointer.native.c
+t/default/lib/TestCase/Pointer.c
 t/default/lib/TestCase/Pointer.spvm
 t/default/lib/TestCase/Precedence.spvm
 t/default/lib/TestCase/Private.spvm
