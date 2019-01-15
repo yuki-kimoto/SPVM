@@ -44,51 +44,51 @@ sub build {
     
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
-      my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
+      my $shared_object_path = $self->get_shared_object_path_dist($package_name);
       
-      # Try runtime compile if shared library is not found
-      unless (-f $shared_lib_path) {
+      # Try runtime compile if shared objectrary is not found
+      unless (-f $shared_object_path) {
         if ($category eq 'native') {
-          $self->build_shared_lib_native_runtime($package_name, $sub_names);
+          $self->build_shared_object_native_runtime($package_name, $sub_names);
         }
         elsif ($category eq 'precompile') {
-          $self->build_shared_lib_precompile_runtime($package_name, $sub_names);
+          $self->build_shared_object_precompile_runtime($package_name, $sub_names);
         }
-        $shared_lib_path = $self->get_shared_lib_path_runtime($package_name);
+        $shared_object_path = $self->get_shared_object_path_runtime($package_name);
       }
-      $self->bind_subs($shared_lib_path, $package_name, $sub_names);
+      $self->bind_subs($shared_object_path, $package_name, $sub_names);
     }
   }
 }
 
-sub copy_shared_lib_to_build_dir {
+sub copy_shared_object_to_build_dir {
   my ($self, $package_name, $category) = @_;
   
-  my $shared_lib_path = $self->get_shared_lib_path_dist($package_name);
+  my $shared_object_path = $self->get_shared_object_path_dist($package_name);
   
-  my $shared_lib_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $category);
+  my $shared_object_rel_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
-  my $shared_lib_build_dir_path = "$build_dir/work/lib/$shared_lib_rel_path";
+  my $shared_object_build_dir_path = "$build_dir/work/lib/$shared_object_rel_path";
   
-  my $shared_lib_build_dir_path_dir = dirname $shared_lib_build_dir_path;
+  my $shared_object_build_dir_path_dir = dirname $shared_object_build_dir_path;
   
-  mkpath $shared_lib_build_dir_path_dir;
+  mkpath $shared_object_build_dir_path_dir;
   
-  copy $shared_lib_path, $shared_lib_build_dir_path
-    or croak "Can't copy $shared_lib_path to $shared_lib_build_dir_path";
+  copy $shared_object_path, $shared_object_build_dir_path
+    or croak "Can't copy $shared_object_path to $shared_object_build_dir_path";
 }
 
-sub get_shared_lib_path_runtime {
+sub get_shared_object_path_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/work/lib";
-  my $shared_lib_path = "$output_dir/$shared_lib_rel_file";
+  my $shared_object_file = "$output_dir/$shared_object_path";
   
-  return $shared_lib_path;
+  return $shared_object_file;
 }
 
 sub create_cfunc_name {
@@ -106,13 +106,13 @@ sub create_cfunc_name {
 }
 
 sub bind_subs {
-  my ($self, $shared_lib_path, $package_name, $sub_names) = @_;
+  my ($self, $shared_object_path, $package_name, $sub_names) = @_;
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
-    my $cfunc_address = SPVM::Builder::Util::get_shared_lib_func_address($shared_lib_path, $cfunc_name);
+    my $cfunc_address = SPVM::Builder::Util::get_shared_object_func_address($shared_object_path, $cfunc_name);
     
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
@@ -130,17 +130,17 @@ sub bind_subs {
   }
 }
 
-sub build_shared_lib {
+sub build_shared_object {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
   my $object_file = $self->compile($package_name, $opt);
   
-  # Link object files and create shared library
+  # Link object files and create shared objectrary
   $self->link(
     $package_name,
     $sub_names,
-    [$object_file],
+    $object_file,
     $opt
   );
 }
@@ -153,12 +153,14 @@ sub compile {
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
+  
+  # Input directory
+  my $input_dir = $opt->{input_dir};
 
-  # Build directory
-  my $work_dir = $opt->{work_dir};
-
-  unless (defined $work_dir && -d $work_dir) {
-    confess "Work directory must be specified for " . $self->category . " build";
+  # Temporary directory
+  my $tmp_dir = $opt->{tmp_dir};
+  unless (defined $tmp_dir && -d $tmp_dir) {
+    confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
   # Output directory
@@ -167,27 +169,23 @@ sub compile {
     confess "Output directory must be specified for " . $self->category . " build";
   }
 
-  # shared lib file
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
-  
   # Quiet output
   my $quiet = $self->quiet;
- 
-  my $input_dir = $opt->{input_dir};
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
-  my $input_src_dir = "$input_dir/$package_path";
   
-  my $work_object_dir = "$work_dir/$package_path";
+  my $category = $self->category;
+ 
+  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name);
+  my $work_object_file = "$tmp_dir/$package_path";
+  my $work_object_dir = dirname $work_object_file;
   mkpath $work_object_dir;
   
   # Package base name
   my $package_base_name = $package_name;
   $package_base_name =~ s/^.+:://;
-  
+
   # Config file
-  my $input_config_dir = $input_src_dir;
-  my $config_file = "$input_config_dir/$package_base_name.config";
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $config_file = "$input_dir/$package_path_without_ext.$category.config";
   
   # Config
   my $build_config;
@@ -205,9 +203,8 @@ sub compile {
   }
 
   # Source file
-  my $src_exe = $build_config->get_src_ext;
-  my $src_file = "$input_config_dir/$package_base_name.$src_exe";
-  
+  my $src_ext = $build_config->get_src_ext;
+  my $src_file = "$input_dir/$package_path_without_ext.$category.$src_ext";
   unless (-f $src_file) {
     confess "Can't find source file $src_file: $!";
   }
@@ -224,10 +221,9 @@ sub compile {
 
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $object_files = [];
   
   # Object file
-  my $object_file = "$work_object_dir/$package_base_name.o";
+  my $object_file = "$tmp_dir/$package_path_without_ext.$category.o";
 
   # Do compile. This is same as make command
   my $do_compile;
@@ -256,18 +252,21 @@ sub compile {
 }
 
 sub link {
-  my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
+  my ($self, $package_name, $sub_names, $object_file, $opt) = @_;
 
   # Build directory
   my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
+  
+  # Input directory
+  my $input_dir = $opt->{input_dir};
 
-  # Build directory
-  my $work_dir = $opt->{work_dir};
-  unless (defined $work_dir && -d $work_dir) {
-    confess "Work directory must be specified for " . $self->category . " build";
+  # Work temporary directory
+  my $tmp_dir = $opt->{tmp_dir};
+  unless (defined $tmp_dir && -d $tmp_dir) {
+    confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
   # Output directory
@@ -276,25 +275,23 @@ sub link {
     confess "Output directory must be specified for " . $self->category . " build";
   }
 
-  # shared lib file
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $shared_lib_file = "$output_dir/$shared_lib_rel_file";
+  # shared object file
+  my $shared_object_path = SPVM::Builder::Util::convert_package_name_to_shared_object_path($package_name, $self->category);
+  my $shared_object_file = "$output_dir/$shared_object_path";
 
   # Quiet output
   my $quiet = $self->quiet;
- 
-  my $input_dir = $opt->{input_dir};
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
-  my $input_src_dir = "$input_dir/$package_path";
   
-  my $work_object_dir = "$work_dir/$package_path";
-  mkpath $work_object_dir;
+  # Create temporary package directory
+  my $tmp_package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
+  my $tmp_package_file = "$tmp_dir/$tmp_package_path";
+  my $tmp_package_dir = dirname $tmp_package_file;
+  mkpath $tmp_package_dir;
   
   # Config file
-  my $package_base_name = $package_name;
-  $package_base_name =~ s/^.+:://;
-  my $input_config_dir = $input_src_dir;
-  my $config_file = "$input_config_dir/$package_base_name.config";
+  my $category = $self->category;
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $config_file = "$input_dir/$package_path_without_ext.$category.config";
   
   # Config
   my $build_config;
@@ -337,36 +334,36 @@ sub link {
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_lib_file = $cbuilder->link(
-    objects => $object_files,
+  my $tmp_shared_object_file = $cbuilder->link(
+    objects => [$object_file],
     module_name => $package_name,
     dl_func_list => $cfunc_names,
     extra_linker_flags => $build_config->get_extra_linker_flags,
   );
 
-  # Create shared lib blib directory
-  my $shared_lib_dir = "$output_dir/$package_path";
-  mkpath $shared_lib_dir;
+  # Create shared object blib directory
+  my $shared_object_dir = "$output_dir/$package_path_without_ext";
+  mkpath $shared_object_dir;
   
-  # Move shared library file to blib directory
-  move($tmp_shared_lib_file, $shared_lib_file)
-    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
+  # Move shared objectrary file to blib directory
+  move($tmp_shared_object_file, $shared_object_file)
+    or die "Can't move $tmp_shared_object_file to $shared_object_file";
   
-  return $shared_lib_file;
+  return $shared_object_file;
 }
 
-sub get_shared_lib_path_dist {
+sub get_shared_object_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
   my $module_load_path = $self->builder->get_package_load_path($package_name);
   
-  my $shared_lib_path = SPVM::Builder::Util::convert_module_path_to_shared_lib_path($module_load_path, $self->category);
+  my $shared_object_path = SPVM::Builder::Util::convert_module_path_to_shared_object_path($module_load_path, $self->category);
   
-  return $shared_lib_path;
+  return $shared_object_path;
 }
 
-sub build_shared_lib_precompile_runtime {
+sub build_shared_object_precompile_runtime {
   my ($self, $package_name, $sub_names) = @_;
 
   # Output directory
@@ -375,8 +372,8 @@ sub build_shared_lib_precompile_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
-  my $work_dir = "$build_dir/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "$build_dir/work/tmp";
+  mkpath $tmp_dir;
   my $input_dir = "$build_dir/work/src";
   mkpath $input_dir;
   my $output_dir = "$build_dir/work/lib";
@@ -387,23 +384,23 @@ sub build_shared_lib_precompile_runtime {
     $sub_names,
     {
       input_dir => $input_dir,
-      work_dir => $work_dir,
-      output_dir => $work_dir,
+      tmp_dir => $tmp_dir,
+      output_dir => $tmp_dir,
     }
   );
   
-  $self->build_shared_lib(
+  $self->build_shared_object(
     $package_name,
     $sub_names,
     {
-      input_dir => $work_dir,
-      work_dir => $work_dir,
+      input_dir => $tmp_dir,
+      tmp_dir => $tmp_dir,
       output_dir => $output_dir,
     }
   );
 }
 
-sub build_shared_lib_native_runtime {
+sub build_shared_object_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $package_load_path = $self->builder->get_package_load_path($package_name);
@@ -415,30 +412,30 @@ sub build_shared_lib_native_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
-  my $work_dir = "$build_dir/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "$build_dir/work/tmp";
+  mkpath $tmp_dir;
   
   my $output_dir = "$build_dir/work/lib";
   mkpath $output_dir;
   
-  $self->build_shared_lib(
+  $self->build_shared_object(
     $package_name,
     $sub_names,
     {
       input_dir => $input_dir,
-      work_dir => $work_dir,
+      tmp_dir => $tmp_dir,
       output_dir => $output_dir,
     }
   );
 }
 
-sub build_shared_lib_precompile_dist {
+sub build_shared_object_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "spvm_build/work/tmp";
+  mkpath $tmp_dir;
 
   my $output_dir = 'blib/lib';
   
@@ -453,8 +450,8 @@ sub build_shared_lib_precompile_dist {
     $sub_names,
     {
       input_dir => $input_dir,
-      work_dir => $work_dir,
-      output_dir => $work_dir,
+      tmp_dir => $tmp_dir,
+      output_dir => $tmp_dir,
     }
   );
   
@@ -462,41 +459,41 @@ sub build_shared_lib_precompile_dist {
     $package_name,
     $sub_names,
     {
-      input_dir => $work_dir,
+      input_dir => $tmp_dir,
       output_dir => $output_dir,
     }
   );
   
-  $self->build_shared_lib(
+  $self->build_shared_object(
     $package_name,
     $sub_names,
     {
-      input_dir => $work_dir,
-      work_dir => $work_dir,
+      input_dir => $tmp_dir,
+      tmp_dir => $tmp_dir,
       output_dir => $output_dir,
     }
   );
 }
 
-sub build_shared_lib_native_dist {
+sub build_shared_object_native_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "spvm_build/work/tmp";
+  mkpath $tmp_dir;
 
   my $output_dir = 'blib/lib';
 
   my $category = $self->category;
   
-  # Build shared library
-  $self->build_shared_lib(
+  # Build shared object
+  $self->build_shared_object(
     $package_name,
     $sub_names,
     {
       input_dir => $input_dir,
-      work_dir => $work_dir,
+      tmp_dir => $tmp_dir,
       output_dir => $output_dir,
     }
   );
@@ -505,20 +502,18 @@ sub build_shared_lib_native_dist {
 sub create_source_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
-  my $work_dir = $opt->{work_dir};
-  mkpath $work_dir;
+  my $tmp_dir = $opt->{tmp_dir};
+  mkpath $tmp_dir;
   
   my $output_dir = $opt->{output_dir};
   
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
-  my $work_src_dir = "$work_dir/$package_path";
-  mkpath $work_src_dir;
+  my $category = 'precompile';
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $source_file = "$tmp_dir/$package_path_without_ext.$category.c";
+  my $source_dir = dirname $source_file;
+  mkpath $source_dir;
   
-  my $source_file = "$work_src_dir/$module_base_name.c";
-
   # Get old csource source
   my $old_package_csource;
   if (-f $source_file) {
@@ -547,20 +542,16 @@ sub copy_source_precompile_dist {
 
   my $output_dir = $opt->{output_dir};
   
-  my $package_path = SPVM::Builder::Util::convert_package_name_to_path($package_name, $self->category);
-  my $input_src_dir = "$input_dir/$package_path";
-  my $output_src_dir = "$output_dir/$package_path";
-
+  my $category = 'precompile';
+  
+  my $package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($package_name);
+  my $input_src_file = "$input_dir/$package_path_without_ext.$category.c";
+  my $output_src_file = "$output_dir/$package_path_without_ext.$category.c";
+  my $output_src_dir = dirname $output_src_file;
   mkpath $output_src_dir;
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $input_source_file = "$input_src_dir/$module_base_name.c";
-  my $output_source_file = "$output_src_dir/$module_base_name.c";
-  
-  copy $input_source_file, $output_source_file
-    or confess "Can't copy $input_source_file to $output_source_file: $!";
+  copy $input_src_file, $output_src_file
+    or confess "Can't copy $input_src_file to $output_src_file: $!";
 }
 
 1;

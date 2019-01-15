@@ -102,8 +102,8 @@ sub build_exe_file {
   my $quiet = $self->{quiet};
   
   # Create workd dir
-  my $work_dir = "$build_dir/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "$build_dir/work/tmp";
+  mkpath $tmp_dir;
 
   # Build native packages
   my $builder_c_native = SPVM::Builder::C->new(
@@ -123,7 +123,7 @@ sub build_exe_file {
       $native_package_name,
       {
         input_dir => $input_dir,
-        work_dir => "$build_dir/work/tmp",
+        tmp_dir => "$build_dir/work/tmp",
         output_dir => "$build_dir/work/tmp",
       }
     );
@@ -152,7 +152,7 @@ sub build_exe_file {
         $precompile_package_name,
         [],
         {
-          work_dir => $input_dir,
+          tmp_dir => $input_dir,
         }
       );
     }
@@ -160,7 +160,7 @@ sub build_exe_file {
       $precompile_package_name,
       {
         input_dir => $input_dir,
-        work_dir => "$build_dir/work/tmp",
+        tmp_dir => "$build_dir/work/tmp",
         output_dir => "$build_dir/work/tmp",
       }
     );
@@ -279,10 +279,9 @@ sub link_executable {
   my $native_package_names = $builder->get_native_package_names;
   my $core_native_object_file;
   for my $native_package_name (@$native_package_names) {
-    my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
-    my $native_package_base_name = $native_package_name;
-    $native_package_base_name =~ s/^.+:://;
-    my $native_object_file = "$build_dir/work/tmp/$native_package_path/$native_package_base_name.o";
+    my $category = 'native';
+    my $native_package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($native_package_name);
+    my $native_object_file = "$build_dir/work/tmp/$native_package_path_without_ext.$category.o";
     if ($native_package_name eq 'SPVM::CORE') {
       $core_native_object_file = $native_object_file;
     }
@@ -296,10 +295,9 @@ sub link_executable {
   my $precompile_object_files = [];
   my $precompile_package_names = $builder->get_precompile_package_names;
   for my $precompile_package_name (@$precompile_package_names) {
-    my $precompile_package_path = SPVM::Builder::Util::convert_package_name_to_path($precompile_package_name, 'precompile');
-    my $precompile_package_base_name = $precompile_package_name;
-    $precompile_package_base_name =~ s/^.+:://;
-    my $precompile_object_file = "$build_dir/work/tmp/$precompile_package_path/$precompile_package_base_name.o";
+    my $category = 'precompile';
+    my $precompile_package_path_without_ext = SPVM::Builder::Util::convert_package_name_to_path_without_ext($precompile_package_name);
+    my $precompile_object_file = "$build_dir/work/tmp/$precompile_package_path_without_ext.$category.o";
     push @$precompile_object_files, $precompile_object_file;
   }
   push @$object_files, @$precompile_object_files;
@@ -323,7 +321,7 @@ sub link_executable {
   
   my $exe_file = "$build_dir/$exe_name";
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_lib_file = $cbuilder->link_executable(
+  my $tmp_shared_object_file = $cbuilder->link_executable(
     objects => $object_files,
     module_name => $package_name,
     exe_file => $exe_file,

@@ -1,5 +1,10 @@
 0.0409 2018-01-11
   - remove new Foo[] {x, y, z} syntax. Use [(Foo)x, y, z] instead.
+  - Simplify native source file and config path
+    change Foo/Bar.native/Bar.c to Foo/Bar.native.c
+    change Foo/Bar.native/Bar.config to Foo/Bar.native.config
+  - add default include path spvm_build/include
+  - add default library path spvm_build/lib
 0.0408 2018-01-11
   - remove list context @ error check becuase SPVM can not define list context correctly
   - fix string comparison operator undef occur exception

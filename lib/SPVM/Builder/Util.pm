@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Carp 'croak';
 use Config;
-use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
@@ -41,15 +40,15 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub get_shared_lib_func_address {
-  my ($shared_lib_file, $shared_lib_func_name) = @_;
+sub get_shared_object_func_address {
+  my ($shared_object_file, $shared_object_func_name) = @_;
   
   my $native_address;
   
-  if ($shared_lib_file) {
-    my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
+  if ($shared_object_file) {
+    my $dll_libref = DynaLoader::dl_load_file($shared_object_file);
     if ($dll_libref) {
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_lib_func_name);
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_object_func_name);
     }
     else {
       return;
@@ -62,16 +61,13 @@ sub get_shared_lib_func_address {
   return $native_address;
 }
 
-sub convert_module_path_to_shared_lib_path {
+sub convert_module_path_to_shared_object_path {
   my ($module_path, $category) = @_;
   
-  my $module_dir = dirname $module_path;
-  my $base_name = basename $module_path;
-  $base_name =~ s/\.[^.]+$//;
+  $module_path =~ s/\.[^.]+$//;
+  my $shared_object_path .= "$module_path.$category.$Config{dlext}";
   
-  my $shared_lib_path .= "$module_dir/$base_name.$category/$base_name.$Config{dlext}";
-  
-  return $shared_lib_path;
+  return $shared_object_path;
 }
 
 sub remove_package_part_from_path {
@@ -120,8 +116,8 @@ sub create_package_make_rule {
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work/tmp";
-  mkpath $work_dir;
+  my $tmp_dir = "spvm_build/work/tmp";
+  mkpath $tmp_dir;
 
   my $output_dir = 'blib/lib';
   
@@ -143,16 +139,16 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
-  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
+  my $shared_object_path = convert_package_name_to_shared_object_path($package_name, $category);
+  my $shared_object_file = "blib/lib/$shared_object_path";
   
   # Get source files
   $make_rule
-    .= "$target_name :: $shared_lib_file\n\n";
+    .= "$target_name :: $shared_object_file\n\n";
   $make_rule
-    .= "$shared_lib_file :: @deps\n\n";
+    .= "$shared_object_file :: @deps\n\n";
   $make_rule
-    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_object_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }
@@ -160,38 +156,31 @@ sub create_package_make_rule {
 sub convert_package_name_to_path {
   my ($package_name, $category) = @_;
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
+  my $package_path = $package_name;
+  $package_path =~ s/::/\//;
+  $package_path .= '.spvm';
   
-  my $shared_lib_rel_dir = $package_name;
-  $shared_lib_rel_dir =~ s/::/\//g;
-  $shared_lib_rel_dir = "$shared_lib_rel_dir.$category";
-  
-  return $shared_lib_rel_dir;
+  return $package_path;
 }
 
-sub convert_package_name_to_shared_lib_rel_file {
+sub convert_package_name_to_path_without_ext {
+  my ($package_name, $category) = @_;
+  
+  my $package_path = $package_name;
+  $package_path =~ s/::/\//;
+  
+  return $package_path;
+}
+
+sub convert_package_name_to_shared_object_path {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
+  my $shared_object_path = convert_package_name_to_path($package_name);
+  $shared_object_path =~ s/\.spvm$//;
+  $shared_object_path = "$shared_object_path.$category.$dlext";
   
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $package_path = convert_package_name_to_path($package_name, $category);
-  my $shared_lib_rel_file = "$package_path/$module_base_name.$dlext";
-  
-  return $shared_lib_rel_file;
-}
-
-sub convert_package_name_to_shared_lib_dir {
-  my ($lib_dir, $package_name, $category) = @_;
-  
-  # Shared library file
-  my $shared_lib_rel_dir = convert_package_name_to_path($package_name, $category);
-  my $shared_lib_dir = "$lib_dir/$shared_lib_rel_dir";
-  
-  return $shared_lib_dir;
+  return $shared_object_path;
 }
 
 sub new_default_build_config {
@@ -248,7 +237,7 @@ B<Create defaulgt build config>
   $build_config->set_optimize('-O3');
   
 
-B<Add Build shared library make rule in Makefile.PL>
+B<Add Build shared object make rule in Makefile.PL>
 
   sub MY::postamble {
 
