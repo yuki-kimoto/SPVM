@@ -102,7 +102,7 @@ sub build_exe_file {
   my $quiet = $self->{quiet};
   
   # Create workd dir
-  my $work_dir = "$build_dir/work";
+  my $work_dir = "$build_dir/work/tmp";
   mkpath $work_dir;
 
   # Build native packages
@@ -123,8 +123,8 @@ sub build_exe_file {
       $native_package_name,
       {
         input_dir => $input_dir,
-        work_dir => "$build_dir/work",
-        output_dir => "$build_dir/work",
+        work_dir => "$build_dir/work/tmp",
+        output_dir => "$build_dir/work/tmp",
       }
     );
   }
@@ -147,7 +147,7 @@ sub build_exe_file {
       $input_dir = SPVM::Builder::Util::remove_package_part_from_path($precompile_package_load_path, $precompile_package_name);
     }
     else {
-      $input_dir = "$build_dir/work";
+      $input_dir = "$build_dir/work/tmp";
       $builder_c_precompile->create_source_precompile(
         $precompile_package_name,
         [],
@@ -160,8 +160,8 @@ sub build_exe_file {
       $precompile_package_name,
       {
         input_dir => $input_dir,
-        work_dir => "$build_dir/work",
-        output_dir => "$build_dir/work",
+        work_dir => "$build_dir/work/tmp",
+        output_dir => "$build_dir/work/tmp",
       }
     );
   }
@@ -282,7 +282,7 @@ sub link_executable {
     my $native_package_path = SPVM::Builder::Util::convert_package_name_to_path($native_package_name, 'native');
     my $native_package_base_name = $native_package_name;
     $native_package_base_name =~ s/^.+:://;
-    my $native_object_file = "$build_dir/work/$native_package_path/$native_package_base_name.o";
+    my $native_object_file = "$build_dir/work/tmp/$native_package_path/$native_package_base_name.o";
     if ($native_package_name eq 'SPVM::CORE') {
       $core_native_object_file = $native_object_file;
     }
@@ -299,7 +299,7 @@ sub link_executable {
     my $precompile_package_path = SPVM::Builder::Util::convert_package_name_to_path($precompile_package_name, 'precompile');
     my $precompile_package_base_name = $precompile_package_name;
     $precompile_package_base_name =~ s/^.+:://;
-    my $precompile_object_file = "$build_dir/work/$precompile_package_path/$precompile_package_base_name.o";
+    my $precompile_object_file = "$build_dir/work/tmp/$precompile_package_path/$precompile_package_base_name.o";
     push @$precompile_object_files, $precompile_object_file;
   }
   push @$object_files, @$precompile_object_files;

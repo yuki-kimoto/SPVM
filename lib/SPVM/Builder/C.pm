@@ -375,7 +375,7 @@ sub build_shared_lib_precompile_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
-  my $work_dir = "$build_dir/work";
+  my $work_dir = "$build_dir/work/tmp";
   mkpath $work_dir;
   my $input_dir = "$build_dir/src";
   mkpath $input_dir;
@@ -415,7 +415,7 @@ sub build_shared_lib_native_runtime {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
-  my $work_dir = "$build_dir/work";
+  my $work_dir = "$build_dir/work/tmp";
   mkpath $work_dir;
   
   my $output_dir = "$build_dir/lib";
@@ -437,7 +437,7 @@ sub build_shared_lib_precompile_dist {
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work";
+  my $work_dir = "spvm_build/work/tmp";
   mkpath $work_dir;
 
   my $output_dir = 'blib/lib';
@@ -483,7 +483,7 @@ sub build_shared_lib_native_dist {
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work";
+  my $work_dir = "spvm_build/work/tmp";
   mkpath $work_dir;
 
   my $output_dir = 'blib/lib';

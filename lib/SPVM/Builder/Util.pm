@@ -120,7 +120,7 @@ sub create_package_make_rule {
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work";
+  my $work_dir = "spvm_build/work/tmp";
   mkpath $work_dir;
 
   my $output_dir = 'blib/lib';
