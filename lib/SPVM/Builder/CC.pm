@@ -175,8 +175,8 @@ sub compile {
   my $category = $self->category;
  
   my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-  my $work_object_file = "$tmp_dir/$package_rel_file";
-  my $work_object_dir = dirname $work_object_file;
+  my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
+  my $work_object_dir = "$tmp_dir/$package_rel_dir";
   mkpath $work_object_dir;
   
   # Package base name

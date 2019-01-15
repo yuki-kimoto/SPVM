@@ -8,6 +8,7 @@ use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
+use File::Basename 'dirname';
 
 use SPVM::Builder::Config;
 
