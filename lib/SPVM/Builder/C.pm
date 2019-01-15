@@ -149,6 +149,12 @@ sub compile {
   my ($self, $package_name, $opt) = @_;
 
   # Build directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
+
+  # Build directory
   my $work_dir = $opt->{work_dir};
 
   unless (defined $work_dir && -d $work_dir) {
@@ -210,7 +216,7 @@ sub compile {
   my $ccflags = $build_config->get_ccflags;
   
   # Default include path
-  $build_config->add_ccflags("-I$input_src_dir");
+  $build_config->add_ccflags("-I$build_dir/inlcude");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
@@ -251,6 +257,12 @@ sub compile {
 
 sub link {
   my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
+
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  unless (defined $build_dir && -d $build_dir) {
+    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  }
 
   # Build directory
   my $work_dir = $opt->{work_dir};
@@ -301,6 +313,9 @@ sub link {
   
   # CBuilder configs
   my $lddlflags = $build_config->get_lddlflags;
+
+  # Default library path
+  $build_config->add_lddlflags("-L$build_dir/lib");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs

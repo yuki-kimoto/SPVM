@@ -277,7 +277,7 @@ Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
 This function is used in native config file.
 
-  # Foo.native/Foo.config
+  # Foo.spvm.bconf
   use strict;
   use warnings;
 
