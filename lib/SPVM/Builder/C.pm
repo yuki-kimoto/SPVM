@@ -70,7 +70,7 @@ sub copy_shared_lib_to_build_dir {
   
   my $build_dir = $self->builder->{build_dir};
   
-  my $shared_lib_build_dir_path = "$build_dir/lib/$shared_lib_rel_path";
+  my $shared_lib_build_dir_path = "$build_dir/work/lib/$shared_lib_rel_path";
   
   my $shared_lib_build_dir_path_dir = dirname $shared_lib_build_dir_path;
   
@@ -85,7 +85,7 @@ sub get_shared_lib_path_runtime {
   
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
-  my $output_dir = "$build_dir/lib";
+  my $output_dir = "$build_dir/work/lib";
   my $shared_lib_path = "$output_dir/$shared_lib_rel_file";
   
   return $shared_lib_path;
@@ -379,7 +379,7 @@ sub build_shared_lib_precompile_runtime {
   mkpath $work_dir;
   my $input_dir = "$build_dir/work/src";
   mkpath $input_dir;
-  my $output_dir = "$build_dir/lib";
+  my $output_dir = "$build_dir/work/lib";
   mkpath $output_dir;
   
   $self->create_source_precompile(
@@ -418,7 +418,7 @@ sub build_shared_lib_native_runtime {
   my $work_dir = "$build_dir/work/tmp";
   mkpath $work_dir;
   
-  my $output_dir = "$build_dir/lib";
+  my $output_dir = "$build_dir/work/lib";
   mkpath $output_dir;
   
   $self->build_shared_lib(
