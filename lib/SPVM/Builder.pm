@@ -169,7 +169,7 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub build_shared_object_native_dist {
+sub build_dll_native_dist {
   my ($self, $package_name) = @_;
   
   $self->use($package_name);
@@ -185,10 +185,10 @@ sub build_shared_object_native_dist {
     quiet => 0,
   );
   
-  $builder_c_native->build_shared_object_native_dist($package_name, $sub_names);
+  $builder_c_native->build_dll_native_dist($package_name, $sub_names);
 }
 
-sub build_shared_object_precompile_dist {
+sub build_dll_precompile_dist {
   my ($self, $package_name) = @_;
   
   $self->use($package_name);
@@ -207,7 +207,7 @@ sub build_shared_object_precompile_dist {
     quiet => 0,
   );
   
-  $builder_c_precompile->build_shared_object_precompile_dist($package_name, $sub_names);
+  $builder_c_precompile->build_dll_precompile_dist($package_name, $sub_names);
 }
 
 sub build_precompile {

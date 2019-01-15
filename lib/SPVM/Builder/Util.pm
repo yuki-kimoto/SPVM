@@ -40,15 +40,15 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub get_shared_object_func_address {
-  my ($shared_object_file, $shared_object_func_name) = @_;
+sub get_dll_func_address {
+  my ($dll_file, $dll_func_name) = @_;
   
   my $native_address;
   
-  if ($shared_object_file) {
-    my $dll_libref = DynaLoader::dl_load_file($shared_object_file);
+  if ($dll_file) {
+    my $dll_libref = DynaLoader::dl_load_file($dll_file);
     if ($dll_libref) {
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_object_func_name);
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
     }
     else {
       return;
@@ -61,13 +61,13 @@ sub get_shared_object_func_address {
   return $native_address;
 }
 
-sub convert_module_file_to_shared_object_file {
+sub convert_module_file_to_dll_file {
   my ($module_file, $category) = @_;
   
   $module_file =~ s/\.[^.]+$//;
-  my $shared_object_file .= "$module_file.$category.$Config{dlext}";
+  my $dll_file .= "$module_file.$category.$Config{dlext}";
   
-  return $shared_object_file;
+  return $dll_file;
 }
 
 sub remove_package_part_from_file {
@@ -139,16 +139,16 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $shared_object_rel_file = convert_package_name_to_shared_object_rel_file($package_name, $category);
-  my $shared_object_abs_file = "blib/lib/$shared_object_rel_file";
+  my $dll_rel_file = convert_package_name_to_dll_rel_file($package_name, $category);
+  my $dll_abs_file = "blib/lib/$dll_rel_file";
   
   # Get source files
   $make_rule
-    .= "$target_name :: $shared_object_abs_file\n\n";
+    .= "$target_name :: $dll_abs_file\n\n";
   $make_rule
-    .= "$shared_object_abs_file :: @deps\n\n";
+    .= "$dll_abs_file :: @deps\n\n";
   $make_rule
-    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_object_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_dll_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
 }
@@ -172,15 +172,15 @@ sub convert_package_name_to_rel_file_without_ext {
   return $package_rel_file;
 }
 
-sub convert_package_name_to_shared_object_rel_file {
+sub convert_package_name_to_dll_rel_file {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $shared_object_rel_file = convert_package_name_to_rel_file($package_name);
-  $shared_object_rel_file =~ s/\.spvm$//;
-  $shared_object_rel_file = "$shared_object_rel_file.$category.$dlext";
+  my $dll_rel_file = convert_package_name_to_rel_file($package_name);
+  $dll_rel_file =~ s/\.spvm$//;
+  $dll_rel_file = "$dll_rel_file.$category.$dlext";
   
-  return $shared_object_rel_file;
+  return $dll_rel_file;
 }
 
 sub new_default_build_config {

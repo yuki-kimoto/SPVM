@@ -320,7 +320,7 @@ sub link_executable {
   
   my $exe_file = "$build_dir/$exe_name";
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_object_file = $cbuilder->link_executable(
+  my $tmp_dll_file = $cbuilder->link_executable(
     objects => $object_files,
     module_name => $package_name,
     exe_file => $exe_file,

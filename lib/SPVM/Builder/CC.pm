@@ -44,51 +44,51 @@ sub build {
     
     if (@$sub_names) {
       # Shared library is already installed in distribution directory
-      my $shared_object_path = $self->get_shared_object_path_dist($package_name);
+      my $dll_path = $self->get_dll_path_dist($package_name);
       
       # Try runtime compile if shared objectrary is not found
-      unless (-f $shared_object_path) {
+      unless (-f $dll_path) {
         if ($category eq 'native') {
-          $self->build_shared_object_native_runtime($package_name, $sub_names);
+          $self->build_dll_native_runtime($package_name, $sub_names);
         }
         elsif ($category eq 'precompile') {
-          $self->build_shared_object_precompile_runtime($package_name, $sub_names);
+          $self->build_dll_precompile_runtime($package_name, $sub_names);
         }
-        $shared_object_path = $self->get_shared_object_path_runtime($package_name);
+        $dll_path = $self->get_dll_path_runtime($package_name);
       }
-      $self->bind_subs($shared_object_path, $package_name, $sub_names);
+      $self->bind_subs($dll_path, $package_name, $sub_names);
     }
   }
 }
 
-sub copy_shared_object_to_build_dir {
+sub copy_dll_to_build_dir {
   my ($self, $package_name, $category) = @_;
   
-  my $shared_object_path = $self->get_shared_object_path_dist($package_name);
+  my $dll_path = $self->get_dll_path_dist($package_name);
   
-  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $category);
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $category);
   
   my $build_dir = $self->builder->{build_dir};
   
-  my $shared_object_build_dir_path = "$build_dir/work/lib/$shared_object_rel_file";
+  my $dll_build_dir_path = "$build_dir/work/lib/$dll_rel_file";
   
-  my $shared_object_build_dir_path_dir = dirname $shared_object_build_dir_path;
+  my $dll_build_dir_path_dir = dirname $dll_build_dir_path;
   
-  mkpath $shared_object_build_dir_path_dir;
+  mkpath $dll_build_dir_path_dir;
   
-  copy $shared_object_path, $shared_object_build_dir_path
-    or croak "Can't copy $shared_object_path to $shared_object_build_dir_path";
+  copy $dll_path, $dll_build_dir_path
+    or croak "Can't copy $dll_path to $dll_build_dir_path";
 }
 
-sub get_shared_object_path_runtime {
+sub get_dll_path_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   my $output_dir = "$build_dir/work/lib";
-  my $shared_object_file = "$output_dir/$shared_object_rel_file";
+  my $dll_file = "$output_dir/$dll_rel_file";
   
-  return $shared_object_file;
+  return $dll_file;
 }
 
 sub create_cfunc_name {
@@ -106,13 +106,13 @@ sub create_cfunc_name {
 }
 
 sub bind_subs {
-  my ($self, $shared_object_abs_file, $package_name, $sub_names) = @_;
+  my ($self, $dll_abs_file, $package_name, $sub_names) = @_;
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
-    my $cfunc_address = SPVM::Builder::Util::get_shared_object_func_address($shared_object_abs_file, $cfunc_name);
+    my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_abs_file, $cfunc_name);
     
     unless ($cfunc_address) {
       my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
@@ -130,7 +130,7 @@ sub bind_subs {
   }
 }
 
-sub build_shared_object {
+sub build_dll {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
@@ -276,8 +276,8 @@ sub link {
   }
 
   # shared object file
-  my $shared_object_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_object_rel_file($package_name, $self->category);
-  my $shared_object_file = "$output_dir/$shared_object_rel_file";
+  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_rel_file($package_name, $self->category);
+  my $dll_file = "$output_dir/$dll_rel_file";
 
   # Quiet output
   my $quiet = $self->quiet;
@@ -334,7 +334,7 @@ sub link {
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_object_file = $cbuilder->link(
+  my $tmp_dll_file = $cbuilder->link(
     objects => [$object_file],
     module_name => $package_name,
     dl_func_list => $cfunc_names,
@@ -342,28 +342,28 @@ sub link {
   );
 
   # Create shared object blib directory
-  my $shared_object_dir = "$output_dir/$package_rel_file_without_ext";
-  mkpath $shared_object_dir;
+  my $dll_dir = "$output_dir/$package_rel_file_without_ext";
+  mkpath $dll_dir;
   
   # Move shared objectrary file to blib directory
-  move($tmp_shared_object_file, $shared_object_file)
-    or die "Can't move $tmp_shared_object_file to $shared_object_file";
+  move($tmp_dll_file, $dll_file)
+    or die "Can't move $tmp_dll_file to $dll_file";
   
-  return $shared_object_file;
+  return $dll_file;
 }
 
-sub get_shared_object_path_dist {
+sub get_dll_path_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
   my $module_module_abs_file = $self->builder->get_module_abs_file($package_name);
   
-  my $shared_object_path = SPVM::Builder::Util::convert_module_file_to_shared_object_file($module_module_abs_file, $self->category);
+  my $dll_path = SPVM::Builder::Util::convert_module_file_to_dll_file($module_module_abs_file, $self->category);
   
-  return $shared_object_path;
+  return $dll_path;
 }
 
-sub build_shared_object_precompile_runtime {
+sub build_dll_precompile_runtime {
   my ($self, $package_name, $sub_names) = @_;
 
   # Output directory
@@ -389,7 +389,7 @@ sub build_shared_object_precompile_runtime {
     }
   );
   
-  $self->build_shared_object(
+  $self->build_dll(
     $package_name,
     $sub_names,
     {
@@ -400,7 +400,7 @@ sub build_shared_object_precompile_runtime {
   );
 }
 
-sub build_shared_object_native_runtime {
+sub build_dll_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $module_abs_file = $self->builder->get_module_abs_file($package_name);
@@ -418,7 +418,7 @@ sub build_shared_object_native_runtime {
   my $output_dir = "$build_dir/work/lib";
   mkpath $output_dir;
   
-  $self->build_shared_object(
+  $self->build_dll(
     $package_name,
     $sub_names,
     {
@@ -429,7 +429,7 @@ sub build_shared_object_native_runtime {
   );
 }
 
-sub build_shared_object_precompile_dist {
+sub build_dll_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
@@ -464,7 +464,7 @@ sub build_shared_object_precompile_dist {
     }
   );
   
-  $self->build_shared_object(
+  $self->build_dll(
     $package_name,
     $sub_names,
     {
@@ -475,7 +475,7 @@ sub build_shared_object_precompile_dist {
   );
 }
 
-sub build_shared_object_native_dist {
+sub build_dll_native_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $input_dir = 'lib';
@@ -488,7 +488,7 @@ sub build_shared_object_native_dist {
   my $category = $self->category;
   
   # Build shared object
-  $self->build_shared_object(
+  $self->build_dll(
     $package_name,
     $sub_names,
     {
