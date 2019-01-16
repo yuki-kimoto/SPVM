@@ -1,5 +1,141 @@
 package TestCase::CoreFunc::Basic {
   use TestCase::Minimal;
+
+=pod
+  sub test_sorti : int () {
+    my $nums = [(byte)5, -7, 9, -128, 127, 15, 19];
+    sortb($nums, 0, AUTO_LEN);
+    
+    return 1;
+  }
+=cut
+
+  sub test_equals_barray : int () {
+    my $nums1 = [(byte)0, 1, INT8_MIN()];
+    my $nums2 = [(byte)0, 1, INT8_MIN()];
+    my $nums3 = [(byte)0, 1];
+    {
+      my $is_equals = equals_barray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_barray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_equals_sarray : int () {
+    my $nums1 = [(short)0, 1, INT16_MIN()];
+    my $nums2 = [(short)0, 1, INT16_MIN()];
+    my $nums3 = [(short)0, 1];
+    
+    {
+      my $is_equals = equals_sarray($nums1, $nums2);
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_sarray($nums1, $nums3);
+      
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_equals_iarray : int () {
+    my $nums1 = [(int)0, 1, INT32_MIN()];
+    my $nums2 = [(int)0, 1, INT32_MIN()];
+    my $nums3 = [(int)0, 1];
+    
+    {
+      my $is_equals = equals_iarray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_iarray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_equals_larray : int () {
+    my $nums1 = [(long)0, 1, INT64_MIN()];
+    my $nums2 = [(long)0, 1, INT64_MIN()];
+    my $nums3 = [(long)0, 1];
+    
+    {
+      my $is_equals = equals_larray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_larray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_equals_farray : int () {
+    my $nums1 = [0.0f, 1.5f, FLT_MIN()];
+    my $nums2 = [0.0f, 1.5f, FLT_MIN()];
+    my $nums3 = [0.0f, 1.5f];
+    
+    {
+      my $is_equals = equals_farray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_farray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_equals_darray : int () {
+    my $nums1 = [0.0, 1.5, DBL_MIN()];
+    my $nums2 = [0.0, 1.5, DBL_MIN()];
+    my $nums3 = [0.0, 1.5];
+    
+    {
+      my $is_equals = equals_darray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_darray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   sub test_type_name : int () {
     my $minimal = TestCase::Minimal->new;

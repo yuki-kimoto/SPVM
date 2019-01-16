@@ -7,7 +7,105 @@ package SPVM::CORE {
   native sub sortb : void ($nums : byte[], $offset : int, $length : int);
   native sub sorti : void ($nums : byte[], $offset : int, $length : int);
   
-  sub LEN_AUTO : int () { return -1; }
+  sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  
+  sub AUTO_LEN : int () { return -1; }
   sub EOF : int () { return -1; }
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);

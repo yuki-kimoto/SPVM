@@ -39,6 +39,23 @@ ok(TestCase::CoreFunc::Math->test_join);
   ok(TestCase::CoreFunc::Basic->test_type_name);
 }
 
+=pod
+# sorti
+{
+  ok(TestCase::CoreFunc::Basic->test_sorti);
+}
+=cut
+
+# equals
+{
+  ok(TestCase::CoreFunc::Basic->test_equals_barray);
+  ok(TestCase::CoreFunc::Basic->test_equals_sarray);
+  ok(TestCase::CoreFunc::Basic->test_equals_iarray);
+  ok(TestCase::CoreFunc::Basic->test_equals_larray);
+  ok(TestCase::CoreFunc::Basic->test_equals_farray);
+  ok(TestCase::CoreFunc::Basic->test_equals_darray);
+}
+
 # Copy
 {
   ok(TestCase::CoreFunc::Basic->test_copy_string);
