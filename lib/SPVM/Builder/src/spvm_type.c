@@ -322,6 +322,16 @@ SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_create_oarray_type(SPVM_COMPILER* compiler) {
+  (void)compiler;
+  
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_OARRAY);
+  type->dimension = 0;
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   

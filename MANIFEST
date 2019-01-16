@@ -259,7 +259,6 @@ t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Add/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Add/RightIsNotNumeric.spvm
-t/default/lib/TestCase/CompileError/ArrayInit/ArrayLength.spvm
 t/default/lib/TestCase/CompileError/Assign/BoxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm
 t/default/lib/TestCase/CompileError/Assign/DifferentObject.spvm
@@ -273,7 +272,6 @@ t/default/lib/TestCase/CompileError/Assign/StringToBytArray.spvm
 t/default/lib/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/TestCase/CompileError/BitNot/NotIntegral.spvm
 t/default/lib/TestCase/CompileError/Bool/NotNumericObject.spvm
-t/default/lib/TestCase/CompileError/CallSub/ArrayLength.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/GeNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/GtNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/LeNotNumeric.spvm

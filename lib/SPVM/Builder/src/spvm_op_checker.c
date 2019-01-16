@@ -4367,7 +4367,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
-
+    
     // Check if type name is package
     if (type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
       
@@ -4384,14 +4384,6 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
         SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or value_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
-        return;
-      }
-    }
-    
-    // Interface array is invalid
-    if (type->basic_type->package && type->basic_type->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-      if (type->dimension > 1) {
-        SPVM_COMPILER_error(compiler, "Array of interface is invalid at %s line %d\n", op_type->file, op_type->line);
         return;
       }
     }
