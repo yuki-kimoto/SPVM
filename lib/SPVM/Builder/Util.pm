@@ -85,7 +85,7 @@ sub convert_package_name_to_category_rel_file_with_ext {
   my ($package_name, $category, $ext) = @_;
   
   my $rel_file_with_ext = $package_name;
-  $rel_file_with_ext =~ s/::/\//;
+  $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= $category eq 'native' ? ".$ext" : ".$category.$ext";
   
   return $rel_file_with_ext;
@@ -95,7 +95,7 @@ sub convert_package_name_to_rel_file {
   my ($package_name) = @_;
   
   my $rel_file = $package_name;
-  $rel_file =~ s/::/\//;
+  $rel_file =~ s/::/\//g;
   $rel_file .= '.spvm';
   
   return $rel_file;
@@ -107,7 +107,7 @@ sub convert_package_name_to_rel_dir {
   my $rel_dir;
   if ($package_name =~ /::/) {
     my $rel_file = $package_name;
-    $rel_file =~ s/::/\//;
+    $rel_file =~ s/::/\//g;
     $rel_dir = dirname $rel_file;
   }
   else {
@@ -121,7 +121,7 @@ sub convert_package_name_to_rel_file_with_ext {
   my ($package_name, $ext) = @_;
   
   my $rel_file_with_ext = $package_name;
-  $rel_file_with_ext =~ s/::/\//;
+  $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= ".$ext";
   
   return $rel_file_with_ext;
@@ -131,7 +131,7 @@ sub convert_package_name_to_rel_file_without_ext {
   my ($package_name) = @_;
   
   my $rel_file_without_ext = $package_name;
-  $rel_file_without_ext =~ s/::/\//;
+  $rel_file_without_ext =~ s/::/\//g;
   
   return $rel_file_without_ext;
 }

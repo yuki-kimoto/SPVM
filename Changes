@@ -1,6 +1,7 @@
 0.0411 2018-01-17
   - remove rest of list context @ error check becuase SPVM can not define list context correctly
   - add oarray type to implement sort algorithm
+  - fix native and precompile file path bug
 0.0410 2018-01-16
   - Fix realese of 0.0409
 0.0409 2018-01-16
