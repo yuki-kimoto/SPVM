@@ -1513,8 +1513,54 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            void* object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
+            void** object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
             SPVM_RUNTIME_API_OBJECT_ASSIGN(object_address, *(void**)&object_vars[opcode->operand2]);
+          }
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE: {
+        
+        void* array = *(void**)&object_vars[opcode->operand0];
+        int32_t index = int_vars[opcode->operand1];
+        if (__builtin_expect(!array, 0)) {
+          void* exception = env->new_str_raw(env, "Array must not be undef", 0);
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          if (__builtin_expect(index < 0 || index >= *(SPVM_VALUE_int*)((intptr_t)array + (intptr_t)env->object_array_length_offset), 0)) {
+            void* exception = env->new_str_raw(env, "Index is out of range", 0);
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            void** object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
+            void* object = *object_address;
+            int32_t is_valid;
+            if (object == NULL) {
+              is_valid = 1;
+            }
+            else {
+              int32_t array_basic_type_id = *(int32_t*)((intptr_t)array + (intptr_t)env->object_basic_type_id_offset);
+              int32_t array_type_dimension = *(uint8_t*)((intptr_t)array + (intptr_t)env->object_type_dimension_offset);
+              int32_t element_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+              int32_t element_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+              if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+                is_valid = 1;
+              }
+              else {
+                is_valid = 0;
+              }
+            }
+            if (is_valid) {
+              SPVM_RUNTIME_API_OBJECT_ASSIGN(object_address, *(void**)&object_vars[opcode->operand2]);
+            }
+            else {
+              void* exception = env->new_str_raw(env, "Element type is invalid", 0);
+              env->set_exception(env, exception);
+              exception_flag = 1;
+            }
           }
         }
         break;
