@@ -61,7 +61,7 @@ static int32_t partition_byte(int8_t* arr, int32_t low, int32_t high, int32_t* l
     *lp = j; // because we cannot return two elements  
              // from a function. 
   
-    return g; 
+    return g;
 }
 static void DualPivotQuickSort_byte(int8_t* arr, int32_t low, int32_t high) 
 { 
@@ -69,9 +69,9 @@ static void DualPivotQuickSort_byte(int8_t* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_byte(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_byte(arr, low, lp - 1); 
+        DualPivotQuickSort_byte(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_byte(arr, rp + 1, high); 
     } 
 }
 static void swap_short(int16_t* a, int16_t* b) 
@@ -128,9 +128,9 @@ static void DualPivotQuickSort_short(int16_t* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_short(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_short(arr, low, lp - 1); 
+        DualPivotQuickSort_short(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_short(arr, rp + 1, high); 
     } 
 }
 static void swap_int(int32_t* a, int32_t* b) 
@@ -187,9 +187,9 @@ static void DualPivotQuickSort_int(int32_t* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_int(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_int(arr, low, lp - 1); 
+        DualPivotQuickSort_int(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_int(arr, rp + 1, high); 
     } 
 }
 static void swap_long(int64_t* a, int64_t* b) 
@@ -246,9 +246,9 @@ static void DualPivotQuickSort_long(int64_t* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_long(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_long(arr, low, lp - 1); 
+        DualPivotQuickSort_long(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_long(arr, rp + 1, high); 
     } 
 }
 static void swap_float(float* a, float* b) 
@@ -305,9 +305,9 @@ static void DualPivotQuickSort_float(float* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_float(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_float(arr, low, lp - 1); 
+        DualPivotQuickSort_float(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_float(arr, rp + 1, high); 
     } 
 }
 static void swap_double(double* a, double* b) 
@@ -364,13 +364,49 @@ static void DualPivotQuickSort_double(double* arr, int32_t low, int32_t high)
         // lp means left pivot, and rp means right pivot. 
         int32_t lp, rp;  
         rp = partition_double(arr, low, high, &lp); 
-        DualPivotQuickSort(arr, low, lp - 1); 
-        DualPivotQuickSort(arr, lp + 1, rp - 1); 
-        DualPivotQuickSort(arr, rp + 1, high); 
+        DualPivotQuickSort_double(arr, low, lp - 1); 
+        DualPivotQuickSort_double(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort_double(arr, rp + 1, high); 
     } 
 }
 
 int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  
+  if (offset < 0 || offset > array_length - 1) {
+    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int32_t max_length = array_length - offset;
+  
+  // Auto length
+  if (length < 0) {
+    length = array_length;
+  }
+  
+  if (length > max_length - 1) {
+    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int8_t* nums = env->belems(env, onums);
+  int32_t low = offset;
+  int32_t high = offset + length - 1;
+  
+  DualPivotQuickSort_byte(nums, low, high);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
 }
