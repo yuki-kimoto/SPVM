@@ -373,35 +373,19 @@ static void DualPivotQuickSort_double(double* arr, int32_t low, int32_t high)
 int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
   
   if (onums == NULL) {
     SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   int8_t* nums = env->belems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_byte(nums, low, high);
+  DualPivotQuickSort_byte(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
@@ -409,70 +393,42 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_NATIVE_SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
   
   if (onums == NULL) {
     SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   int16_t* nums = env->selems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_short(nums, low, high);
+  DualPivotQuickSort_short(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
   
   if (onums == NULL) {
     SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   int32_t* nums = env->ielems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_int(nums, low, high);
+  DualPivotQuickSort_int(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
@@ -480,35 +436,15 @@ int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_NATIVE_SPVM__CORE__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
-  
-  if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
-  }
 
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   int64_t* nums = env->lelems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_long(nums, low, high);
+  DualPivotQuickSort_long(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
@@ -516,35 +452,15 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_NATIVE_SPVM__CORE__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
   
-  if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
-  }
-
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   float* nums = env->felems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_float(nums, low, high);
+  DualPivotQuickSort_float(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
@@ -552,35 +468,15 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_NATIVE_SPVM__CORE__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
-  
-  if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
-  }
 
   int32_t array_length = env->len(env, onums);
-  
-  if (offset < 0 || offset > array_length - 1) {
-    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
-  }
-  
-  int32_t max_length = array_length - offset;
-  
-  // Auto length
-  if (length < 0) {
-    length = max_length;
-  }
-  
-  if (length > max_length) {
-    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
   }
   
   double* nums = env->delems(env, onums);
-  int32_t low = offset;
-  int32_t high = offset + length - 1;
   
-  DualPivotQuickSort_double(nums, low, high);
+  DualPivotQuickSort_double(nums, 0, array_length - 1);
   
   return SPVM_SUCCESS;
 }
