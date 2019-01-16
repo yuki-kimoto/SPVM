@@ -4387,6 +4387,12 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
         return;
       }
     }
+    
+    // array of oarray is invalid
+    if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && type->dimension > 0) {
+      SPVM_COMPILER_error(compiler, "Array of oarray type is invalid type at %s line %d\n", op_type->file, op_type->line);
+      return;
+    }
   }
 }
 
