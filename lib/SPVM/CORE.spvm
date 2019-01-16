@@ -5,7 +5,7 @@ package SPVM::CORE {
   use SPVM::Hash;
   
   native sub sortb : void ($nums : byte[], $offset : int, $length : int);
-  native sub sorti : void ($nums : byte[], $offset : int, $length : int);
+  native sub sorti : void ($nums : int[], $offset : int, $length : int);
   
   sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
     my $is_equals = 1;

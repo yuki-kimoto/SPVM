@@ -407,6 +407,36 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* onums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  
+  if (offset < 0 || offset > array_length - 1) {
+    SPVM_CROAK("Invalid offset", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int32_t max_length = array_length - offset;
+  
+  // Auto length
+  if (length < 0) {
+    length = array_length;
+  }
+  
+  if (length > max_length) {
+    SPVM_CROAK("Too big length", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int32_t* nums = env->ielems(env, onums);
+  int32_t low = offset;
+  int32_t high = offset + length - 1;
+  
+  DualPivotQuickSort_int(nums, low, high);
   
   return SPVM_SUCCESS;
 }

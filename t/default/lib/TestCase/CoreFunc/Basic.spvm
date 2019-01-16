@@ -1,14 +1,18 @@
 package TestCase::CoreFunc::Basic {
   use TestCase::Minimal;
 
-=pod
   sub test_sorti : int () {
-    my $nums = [(byte)5, -7, 9, -128, 127, 15, 19];
-    sortb($nums, 0, AUTO_LEN);
+    {
+      my $nums = [(int)5, -7, 9, -128, 127, 15, 19];
+      sorti($nums, 0, AUTO_LEN());
+      warn($nums->[0]);
+      unless (equals_iarray($nums, [-128, -7, 5, 9, 15, 19, 127])) {
+        return 0;
+      }
+    }
     
     return 1;
   }
-=cut
 
   sub test_equals_barray : int () {
     my $nums1 = [(byte)0, 1, INT8_MIN()];

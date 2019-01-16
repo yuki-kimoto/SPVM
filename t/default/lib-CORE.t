@@ -32,6 +32,13 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# sort
+{
+  # sorti
+  ok(TestCase::CoreFunc::Basic->test_sorti);
+}
+
+
 ok(TestCase::CoreFunc::Math->test_join);
 
 # type_name
@@ -39,20 +46,24 @@ ok(TestCase::CoreFunc::Math->test_join);
   ok(TestCase::CoreFunc::Basic->test_type_name);
 }
 
-=pod
-# sorti
-{
-  ok(TestCase::CoreFunc::Basic->test_sorti);
-}
-=cut
-
 # equals
 {
+  # equals_barray
   ok(TestCase::CoreFunc::Basic->test_equals_barray);
+  
+  # equals_sarray
   ok(TestCase::CoreFunc::Basic->test_equals_sarray);
+  
+  # equals_iarray
   ok(TestCase::CoreFunc::Basic->test_equals_iarray);
+  
+  # equeals_larray
   ok(TestCase::CoreFunc::Basic->test_equals_larray);
+  
+  # equals_farray
   ok(TestCase::CoreFunc::Basic->test_equals_farray);
+  
+  # equals_darray
   ok(TestCase::CoreFunc::Basic->test_equals_darray);
 }
 

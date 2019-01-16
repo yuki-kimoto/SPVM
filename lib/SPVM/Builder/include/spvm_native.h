@@ -35,12 +35,12 @@ typedef void* SPVM_VALUE_object;
 #define SPVM_SUCCESS 0
 #define SPVM_EXCEPTION 1
 
+#define SPVM_LINE_STRINGIFY(n) #n
 #define SPVM_CROAK(message, file, line) do {\
-  void* exception = env->new_str_raw(env, message " at " file " line " #line, 0);\
+  void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line), 0);\
   env->set_exception(env, exception);\
   return SPVM_EXCEPTION;\
 } while (0)\
-
 
 struct SPVM_env {
   void* exception_object;
