@@ -40,7 +40,7 @@ my $ldcmd = "cc ";
 
 my @shared_libs;
 unless (grep { $_ eq '-DSPVM_DONT_USE_CORE_LIB' } @defines) {
-  @shared_libs = ('blib/lib/SPVM/CORE.native/CORE.so')
+  @shared_libs = ('blib/lib/SPVM/CORE.so')
 }
 
 my $makefile = <<"EOS";

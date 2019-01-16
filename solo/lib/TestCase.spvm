@@ -639,14 +639,14 @@ SPVM::Test - SPVM test module
       my $num2 = ~$num;
     }
     {
-      my $values = new int[] {1, 2, 3};
+      my $values = [1, 2, 3];
       
       print($values->[0] . "\n");
     }
 
     {
       my $values : int[];
-      $values = new int[] {1, 2, 3};
+      $values = [1, 2, 3];
     }
 
     {
@@ -789,11 +789,11 @@ SPVM::Test - SPVM test module
        $result->[64] = 0;
     }
     
-    my $ppp = new int[] {
+    my $ppp = [
       1,
       2,
       3
-    };
+    ];
     
     # Logical or
     {
@@ -1537,7 +1537,7 @@ SPVM::Test - SPVM test module
     $nums->[0] = 5;
   }
   sub call_void : int () {
-    my $nums = new int[] {1};
+    my $nums = [1];
     
     call_void_sub($nums);
     
