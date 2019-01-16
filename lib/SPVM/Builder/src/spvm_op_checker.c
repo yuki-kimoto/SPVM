@@ -3060,8 +3060,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               // Dist type is object type
               else if (SPVM_TYPE_is_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                // Dist type is oarray type
+                if (SPVM_TYPE_is_oarray_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  if (SPVM_TYPE_is_object_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                    is_valid = 1;
+                  }
+                  else {
+                    is_valid = 0;
+                  }
+                }
                 // Dist type is string type
-                if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                else if (SPVM_TYPE_is_string_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                   if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                     is_valid = 1;
                   }
@@ -3145,7 +3154,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (!is_valid) {
                 const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
                 const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-                SPVM_COMPILER_error(compiler, "Can't convert %s to %s at %s line %d\n", src_type_name, dist_type_name, op_src->file, op_src->line);
+                SPVM_COMPILER_error(compiler, "Can't convert %s to %s by cast at %s line %d\n", src_type_name, dist_type_name, op_src->file, op_src->line);
                 return;
               }
               
@@ -4381,7 +4390,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     const char* basic_type_name = type->basic_type->name;
     
     // Check if type name is package
-    if (type->basic_type->id > SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
+    if (type->basic_type->id >= SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT) {
       
       // Unknonw package
       SPVM_HASH* package_symtable = compiler->package_symtable;

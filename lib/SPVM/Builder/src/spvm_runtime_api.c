@@ -1513,8 +1513,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            void** object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
-            SPVM_RUNTIME_API_OBJECT_ASSIGN(object_address, *(void**)&object_vars[opcode->operand2]);
+            void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
+            SPVM_RUNTIME_API_OBJECT_ASSIGN(element_address, *(void**)&object_vars[opcode->operand2]);
           }
         }
         break;
@@ -1535,8 +1535,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
             exception_flag = 1;
           }
           else {
-            void** object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
-            void* object = *object_address;
+            void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];
+            void* object = *(void**)&object_vars[opcode->operand2];
             int32_t is_valid;
             if (object == NULL) {
               is_valid = 1;
@@ -1554,7 +1554,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
               }
             }
             if (is_valid) {
-              SPVM_RUNTIME_API_OBJECT_ASSIGN(object_address, *(void**)&object_vars[opcode->operand2]);
+              SPVM_RUNTIME_API_OBJECT_ASSIGN(element_address, object);
             }
             else {
               void* exception = env->new_str_raw(env, "Element type is invalid", 0);

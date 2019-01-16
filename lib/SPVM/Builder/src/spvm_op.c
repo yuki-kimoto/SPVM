@@ -1145,6 +1145,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
         type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "byte", strlen("byte"));
         type->dimension = 0;
       }
+      else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
+        type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "object", strlen("object"));
+        type->dimension = 0;
+      }
       else {
         type->basic_type = basic_type;
         assert(first_type->dimension > 0);

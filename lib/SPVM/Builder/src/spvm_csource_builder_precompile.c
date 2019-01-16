@@ -2274,9 +2274,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_API_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "          object_address, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "          element_address, ");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -2306,8 +2306,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void** object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = *object_address;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = );\n");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        int32_t is_valid;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        if (object == NULL) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          is_valid = 1;\n");
@@ -2325,12 +2327,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        if (is_valid) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_RUNTIME_API_OBJECT_ASSIGN(\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "            object_address, ");
-        SPVM_STRING_BUFFER_add(string_buffer, "            ");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, "\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        );\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_RUNTIME_API_OBJECT_ASSIGN(element_address, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          void* exception = env->new_str_raw(env, \"Element type is invalid\", 0);\n");

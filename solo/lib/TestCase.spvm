@@ -73,6 +73,28 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $minimals = new TestCase::Minimal[3];
+      $minimals->[0] = TestCase::Minimal->new;
+      $minimals->[0]{x} = 1;
+      my $nums : oarray = $minimals;
+      my $nums2 : oarray = $nums;
+      my $len = @$nums;
+      warn("$len");
+      # my $nums3 : TestCase::Minimal[] = $nums;
+      my $nums4 = (TestCase::Minimal[])$nums;
+      warn($nums4->[0]{x});
+      
+      my $elem = $nums->[0];
+      my $minimal = (TestCase::Minimal)$elem;
+      warn($minimal->{x});
+      
+      $nums->[1] = TestCase::Minimal->new;
+      # $nums->[1] = TestCase::Simple->new;
+      
+      $nums->[1] = $nums->[0];
+    }
+    
+    {
       my $object = (object)"aaaa";
       my $str2 = (string)$object;
       warn("AAAAAAAAA $str2");
