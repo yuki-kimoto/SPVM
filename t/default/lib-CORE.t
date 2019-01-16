@@ -34,8 +34,23 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # sort
 {
+  # sortb
+  ok(TestCase::CoreFunc::Basic->test_sortb);
+
+  # sorts
+  ok(TestCase::CoreFunc::Basic->test_sorts);
+
   # sorti
   ok(TestCase::CoreFunc::Basic->test_sorti);
+
+  # sortl
+  ok(TestCase::CoreFunc::Basic->test_sortl);
+
+  # sortf
+  ok(TestCase::CoreFunc::Basic->test_sortf);
+
+  # sortd
+  ok(TestCase::CoreFunc::Basic->test_sortd);
 }
 
 
