@@ -11,6 +11,74 @@
 #include <complex.h>
 #include <memory.h>
 
+// Dual pivot Quicksort
+
+// https://www.geeksforgeeks.org/dual-pivot-quicksort/
+static void swap_byte(int8_t* a, int8_t* b) 
+{ 
+    int8_t temp = *a; 
+    *a = *b; 
+    *b = temp; 
+}
+static int32_t partition_byte(int8_t* arr, int32_t low, int32_t high, int32_t* lp) 
+{ 
+    if (arr[low] > arr[high]) 
+        swap_byte(&arr[low], &arr[high]); 
+    // p is the left pivot, and q is the right pivot. 
+    int32_t j = low + 1; 
+    int32_t g = high - 1, k = low + 1, p = arr[low], q = arr[high]; 
+    while (k <= g) { 
+  
+        // if elements are less than the left pivot 
+        if (arr[k] < p) { 
+            swap_byte(&arr[k], &arr[j]); 
+            j++; 
+        } 
+  
+        // if elements are greater than or equal  
+        // to the right pivot 
+        else if (arr[k] >= q) { 
+            while (arr[g] > q && k < g) 
+                g--; 
+            swap_byte(&arr[k], &arr[g]); 
+            g--; 
+            if (arr[k] < p) { 
+                swap_byte(&arr[k], &arr[j]); 
+                j++; 
+            } 
+        } 
+        k++; 
+    } 
+    j--; 
+    g++; 
+  
+    // bring pivots to their appropriate positions. 
+    swap_byte(&arr[low], &arr[j]); 
+    swap_byte(&arr[high], &arr[g]); 
+  
+    // returning the indeces of the pivots. 
+    *lp = j; // because we cannot return two elements  
+             // from a function. 
+  
+    return g; 
+}
+static void DualPivotQuickSort_byte(int8_t* arr, int32_t low, int32_t high) 
+{ 
+    if (low < high) { 
+        // lp means left pivot, and rp means right pivot. 
+        int32_t lp, rp;  
+        rp = partition_byte(arr, low, high, &lp); 
+        DualPivotQuickSort(arr, low, lp - 1); 
+        DualPivotQuickSort(arr, lp + 1, rp - 1); 
+        DualPivotQuickSort(arr, rp + 1, high); 
+    } 
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   

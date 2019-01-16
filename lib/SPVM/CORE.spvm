@@ -4,6 +4,13 @@ package SPVM::CORE {
   use SPVM::List;
   use SPVM::Hash;
   
+  enum {
+    SORT_DESC = 1,
+  }
+  
+  native sub sortb : void ($nums : byte[], $offset : int, $length : int, $options : int);
+  
+  sub LEN_AUTO : int () { return -1; }
   sub EOF : int () { return -1; }
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
