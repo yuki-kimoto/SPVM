@@ -72,6 +72,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
   # reversed
   ok(TestCase::CoreFunc::Basic->test_reversed);
+
+  # reversed
+  ok(TestCase::CoreFunc::Basic->test_reverseo);
 }
 
 # sort
@@ -121,6 +124,9 @@ ok(TestCase::CoreFunc::Math->test_join);
   ok(TestCase::CoreFunc::Basic->test_equals_farray);
   
   # equals_darray
+  ok(TestCase::CoreFunc::Basic->test_equals_darray);
+
+  # equals_oarray
   ok(TestCase::CoreFunc::Basic->test_equals_darray);
 }
 

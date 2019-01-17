@@ -118,6 +118,13 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $nums = [(byte)1, 3, 5, INT8_MAX()];
+      reverseb($nums);
+      unless (equals_barray($nums, [(byte)INT8_MAX(), 5, 3, 1])) {
+        return 0;
+      }
+    }
 
     return 1;
   }
@@ -126,6 +133,13 @@ package TestCase::CoreFunc::Basic {
       my $nums = [(short)1, 3, INT16_MAX()];
       reverses($nums);
       unless (equals_sarray($nums, [(short)INT16_MAX(), 3, 1])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(short)1, 3, 5, INT16_MAX()];
+      reverses($nums);
+      unless (equals_sarray($nums, [(short)INT16_MAX(), 5, 3, 1])) {
         return 0;
       }
     }
@@ -140,6 +154,13 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $nums = [(int)1, 3, 5, INT32_MAX()];
+      reversei($nums);
+      unless (equals_iarray($nums, [(int)INT32_MAX(), 5, 3, 1])) {
+        return 0;
+      }
+    }
     return 1;
   }
   sub test_reversel : int () {
@@ -150,6 +171,14 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $nums = [(long)1, 3, 5, INT64_MAX()];
+      reversel($nums);
+      unless (equals_larray($nums, [(long)INT64_MAX(), 5, 3, 1])) {
+        return 0;
+      }
+    }
+    
     
     return 1;
   }
@@ -161,6 +190,13 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $nums = [(float)1, 3, 5, FLT_MAX()];
+      reversef($nums);
+      unless (equals_farray($nums, [(float)FLT_MAX(), 5, 3, 1])) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -169,6 +205,28 @@ package TestCase::CoreFunc::Basic {
       my $nums = [(double)1, 3, DBL_MAX()];
       reversed($nums);
       unless (equals_darray($nums, [(double)DBL_MAX(), 3, 1])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(double)1, 3, 5, DBL_MAX()];
+      reversed($nums);
+      unless (equals_darray($nums, [(double)DBL_MAX(), 5, 3, 1])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_reverseo : int () {
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      
+      my $nums = [$minimal1, $minimal2, $minimal3];
+      reverseo($nums);
+      unless (equals_oarray($nums, [$minimal3, $minimal2, $minimal1])) {
         return 0;
       }
     }

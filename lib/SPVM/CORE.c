@@ -155,6 +155,28 @@ int32_t SPVM_NATIVE_SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    void* tmp = env->oelem(env, onums, i);
+    env->set_oelem(env, onums, i, env->oelem(env, onums, array_length - i - 1));
+    env->set_oelem(env, onums, array_length - i - 1, tmp);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 /*
   Dual pivot Quicksort
   https://www.geeksforgeeks.org/dual-pivot-quicksort/
