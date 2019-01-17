@@ -1,6 +1,20 @@
 package TestCase::CoreFunc::Basic {
   use TestCase::Minimal;
 
+  sub test_new_oarray_proto : int () {
+    my $minimals = new TestCase::Minimal[1];
+    
+    my $new_oarray = new_oarray_proto($minimals, 2);
+    unless ($new_oarray isa TestCase::Minimal[]) {
+      return 0;
+    }
+    my $new_minimals = (TestCase::Minimal[])$new_oarray;
+    unless (@$new_minimals == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
   sub test_sliceb : int () {
     {
       my $nums = [(byte)5, -7, 9, INT8_MIN(), 127, 15, 19];

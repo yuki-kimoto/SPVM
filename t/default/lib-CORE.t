@@ -32,6 +32,12 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# new_oarray_proto
+{
+  # sliceb
+  ok(TestCase::CoreFunc::Basic->test_new_oarray_proto);
+}
+
 # slice
 {
   # sliceb
