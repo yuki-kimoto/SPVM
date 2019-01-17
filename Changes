@@ -1,5 +1,4 @@
-0.0411 2018-01-17
-  - remove rest of list context @ error check becuase SPVM can not define list context correctly
+0.0412 2018-01-17
   - add oarray type to implement sort algorithm
   - fix native and precompile file path bug
   - add equals_barray core function
@@ -40,6 +39,8 @@
   - add joinf
   - add joind
   - add joino
+0.0411 2018-01-16
+  - remove rest of list context @ error check becuase SPVM can not define list context correctly
 0.0410 2018-01-16
   - Fix realese of 0.0409
 0.0409 2018-01-16

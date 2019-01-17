@@ -144,6 +144,7 @@ lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/Stringer.spvm
 lib/SPVM/Unicode.spvm
 LICENSE.txt
 Makefile.PL
