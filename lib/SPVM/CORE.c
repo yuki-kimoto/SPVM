@@ -11,6 +11,150 @@
 #include <complex.h>
 #include <memory.h>
 
+int32_t SPVM_NATIVE_SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  int8_t* nums = env->belems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    int8_t tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  int16_t* nums = env->selems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    int16_t tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  int32_t* nums = env->ielems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    int32_t tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  int64_t* nums = env->lelems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    int64_t tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  float* nums = env->felems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    float tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* onums = stack[0].oval;
+  
+  if (onums == NULL) {
+    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+
+  int32_t array_length = env->len(env, onums);
+  if (array_length == 0) {
+    return SPVM_SUCCESS;
+  }
+  
+  double* nums = env->delems(env, onums);
+  
+  for(int32_t i = 0; i < array_length / 2; i++){
+    double tmp = nums[i];
+    nums[i] = nums[array_length - i - 1];
+    nums[array_length - i - 1] = tmp;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 /*
   Dual pivot Quicksort
   https://www.geeksforgeeks.org/dual-pivot-quicksort/

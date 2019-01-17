@@ -32,6 +32,27 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# reverse
+{
+  # reverseb
+  ok(TestCase::CoreFunc::Basic->test_reverseb);
+
+  # reverses
+  ok(TestCase::CoreFunc::Basic->test_reverses);
+
+  # reversei
+  ok(TestCase::CoreFunc::Basic->test_reversei);
+
+  # reversel
+  ok(TestCase::CoreFunc::Basic->test_reversel);
+
+  # reversef
+  ok(TestCase::CoreFunc::Basic->test_reversef);
+
+  # reversed
+  ok(TestCase::CoreFunc::Basic->test_reversed);
+}
+
 # sort
 {
   # sortb
