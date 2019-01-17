@@ -20,6 +20,12 @@
   - add reversel core function
   - add reversef core function
   - add reversed core function
+  - add sliceb core function
+  - add slices core function
+  - add slicei core function
+  - add slicel core function
+  - add slicef core function
+  - add sliced core function
 0.0410 2018-01-16
   - Fix realese of 0.0409
 0.0409 2018-01-16

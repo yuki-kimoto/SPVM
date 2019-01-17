@@ -108,6 +108,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
     
     # Precompile make rule
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Example');
   }
   

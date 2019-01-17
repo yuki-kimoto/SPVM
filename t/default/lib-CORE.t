@@ -32,6 +32,27 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# slice
+{
+  # sliceb
+  ok(TestCase::CoreFunc::Basic->test_sliceb);
+
+  # slices
+  ok(TestCase::CoreFunc::Basic->test_slices);
+
+  # slicei
+  ok(TestCase::CoreFunc::Basic->test_slicei);
+
+  # slicel
+  ok(TestCase::CoreFunc::Basic->test_slicel);
+
+  # slicef
+  ok(TestCase::CoreFunc::Basic->test_slicef);
+
+  # sliced
+  ok(TestCase::CoreFunc::Basic->test_sliced);
+}
+
 # reverse
 {
   # reverseb

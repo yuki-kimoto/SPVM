@@ -1632,13 +1632,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_term = op_cur->first;
               
               // Void type
-              int32_t is_invalid = 0;
               if (SPVM_TYPE_is_void_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term) {
-                  is_invalid = 1;
-                }
-                else {
-                  is_invalid = 0;
+                  SPVM_COMPILER_error(compiler, "void subroutine can't return value at %s line %d\n", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               else {
