@@ -11,6 +11,25 @@
 #include <complex.h>
 #include <memory.h>
 
+int32_t SPVM_NATIVE_SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* oarray = stack[0].oval;
+  int32_t length = stack[1].ival;
+  
+  if (oarray == NULL) {
+    SPVM_CROAK("Prototype array must be defined", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int32_t basic_type_id = env->object_basic_type_id(env, oarray);
+  int32_t element_dimension = env->object_type_dimension(env, oarray) - 1;
+  
+  void* new_oarray = env->new_marray(env, basic_type_id, element_dimension, length);
+  
+  stack[0].oval = new_oarray;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;

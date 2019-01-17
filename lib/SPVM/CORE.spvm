@@ -4,7 +4,7 @@ package SPVM::CORE {
   use SPVM::List;
   use SPVM::Hash;
   
-  # native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
+  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
   precompile sub sliceb : byte[] ($nums : byte[], $offset : int, $length : int) {
     
