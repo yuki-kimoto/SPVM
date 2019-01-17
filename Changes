@@ -15,6 +15,7 @@
   - add sortl core function
   - add sortf core function
   - add sortd core function
+  - add sorto core function
   - add reverseb core function
   - add reverses core function
   - add reversei core function
@@ -31,6 +32,14 @@
   - add sliceo core function
   - add env->object_basic_type_id
   - add env->object_type_dimension
+  - add SPVM::Stringer interface
+  - add joinb
+  - add joins
+  - add joini
+  - add joinl
+  - add joinf
+  - add joind
+  - add joino
 0.0410 2018-01-16
   - Fix realese of 0.0409
 0.0409 2018-01-16

@@ -4,6 +4,7 @@ package SPVM::CORE {
   use SPVM::List;
   use SPVM::Hash;
   use SPVM::Comparator;
+  use SPVM::Stringer;
   
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
@@ -240,92 +241,63 @@ package SPVM::CORE {
   native sub sortd : void ($nums : double[]);
 
 
-=pod
-  /*
-   * マージ
-   * 2つの配列a1[]とa2[]を併合してa[]を作ります。
-   */
-  void merge(int[] a1,int[] a2,int[] a){
-    int i=0,j=0;
-    while(i<a1.length || j<a2.length){
-      if(j>=a2.length || (i<a1.length && a1[i]<a2[j])){
-        a[i+j]=a1[i];
-        i++;
+
+  sub _merge : void($a : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+      my $i = $left;
+      my $j = $mid + 1;
+      my $k = 0;
+      my $b = new_oarray_proto($a, $n);
+      while ($i <= $mid && $j <= $right) {
+          $i = $left;
+          $j = $mid + 1;
+          $k = 0;
+          while ($i <= $mid && $j <= $right) {
+              if ($comparator->compare($a->[$i], $a->[$j]) <= 0) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+              } else {
+                  $b->[$k] = $a->[$j];
+                  $j++;
+              }
+              $k++;
+          }
+          if ($i == $mid + 1) {
+              while ($j <= $right) {
+                  $b->[$k] = $a->[$j]; 
+                  $j++;
+                  $k++;
+              }
+          } else {
+              while($i <= $mid) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+                  $k++;
+              }
+          }
       }
-      else{
-        a[i+j]=a2[j];
-        j++;
+      for ($i = 0; $i < $k; $i++) {
+        $a->[$i + $left] = $b->[$i];
       }
-    }
   }
 
-  /*
-   * マージソート
-   * 既にソート済みの2つの配列を併合して新しい配列を
-   * 生成することで、データのソートを行います。
-   */
-  void mergeSort(int[] a){
-    if(a.length>1){
-      int m=a.length/2;
-      int n=a.length-m;
-      int[] a1=new int[m];
-      int[] a2=new int[n];
-      for(int i=0;i<m;i++) a1[i]=a[i];
-      for(int i=0;i<n;i++) a2[i]=a[m+i];
-      mergeSort(a1);
-      mergeSort(a2);
-      merge(a1,a2,a);
-    }
-  }
-
-  /*
-   * ソート
-   */
-  public void sort(int[] a){
-    mergeSort(a);
-  }
-=cut
-
-  # Merge sort
-  # http://www.ics.kagoshima-u.ac.jp/~fuchida/edu/algorithm/sort-algorithm/merge-sort.html
-  precompile sub _merge : void ($a1 : oarray, $a2 : oarray, $a : oarray, $comparator : SPVM::Comparator) {
-    my $i = 0;
-    my $j = 0;
-    while ($i < @$a1 || $j < @$a2){
-      if ($j >= @$a2 || ($i < @$a1 && $comparator->compare($a1->[$i], $a2->[$j]) < 0)) {
-        $a->[$i + $j] = $a1->[$i];
-        $i++;
+  sub _merge_sort : void($a : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
+      if ($left == $right) {
+        return;
       }
-      else{
-        $a->[$i + $j] = $a2->[$j];
-        $j++;
-      }
-    }
-  }
 
-  precompile sub _mergeSort : void ($a : oarray, $comparator : SPVM::Comparator){
-    if (@$a > 1){
-      my $m = @$a/2;
-      my $n = @$a - $m;
-      my $a1 = new_oarray_proto($a, $m);
-      my $a2 = new_oarray_proto($a, $n);
-      for(my $i = 0 ; $i < $m; $i++) {
-        $a1->[$i] = $a->[$i];
-      }
-      for(my $i = 0;$i < $n; $i++) {
-        $a2->[$i] = $a->[$m + $i];
-      }
-      _mergeSort($a1, $comparator);
-      _mergeSort($a2, $comparator);
-      _merge($a1, $a2, $a, $comparator);
-    }
-  }
+      my $mid = ($left + $right) / 2;
 
+      _merge_sort($a, $left, $mid, $n, $comparator);
+      _merge_sort($a, $mid + 1, $right, $n, $comparator);
+      _merge($a, $left, $mid, $right, $n, $comparator);
+  }
+  
   precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
     if ($objs == undef) {
       croak "Array must be defined";
     }
-    _mergeSort($objs, $comparator);
+    my $length = @$objs;
+    _merge_sort($objs, 0, $length - 1, $length, $comparator);
   }
   
   precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
@@ -593,6 +565,98 @@ package SPVM::CORE {
       my $string = $strings->[$i];
       $join .= $string;
       if ($i != @$strings - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinb : string ($sep : string, $nums : byte[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joins : string ($sep : string, $nums : short[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joini : string ($sep : string, $nums : int[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinl : string ($sep : string, $nums : long[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinf : string ($sep : string, $nums : float[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joind : string ($sep : string, $nums : double[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joino : string ($sep : string, $objects : oarray) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$objects; $i++) {
+      my $stringer = (SPVM::Stringer)$objects->[$i];
+      my $string = $stringer->to_string();
+      $join .= $string;
+      if ($i != @$objects - 1) {
         $join .= $sep;
       }
     }

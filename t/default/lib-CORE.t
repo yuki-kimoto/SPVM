@@ -105,6 +105,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
   # sortd
   ok(TestCase::CoreFunc::Basic->test_sortd);
+
+  # sortd
+  ok(TestCase::CoreFunc::Basic->test_sorto);
 }
 
 

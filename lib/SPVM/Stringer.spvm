@@ -1,0 +1,3 @@
+package SPVM::Stringer : interface_t {
+  sub to_string : string ($self : self);
+}
