@@ -9,4 +9,13 @@ package TestCase::Minimal {
   sub new : TestCase::Minimal () {
     return new TestCase::Minimal;
   }
+  
+  sub newp : TestCase::Minimal ($x : int, $y : int) {
+    
+    my $minimal = new TestCase::Minimal;
+    $minimal->{x} = $x;
+    $minimal->{y} = $y;
+    
+    return $minimal;
+  }
 }

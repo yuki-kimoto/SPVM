@@ -57,6 +57,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
   # sliced
   ok(TestCase::CoreFunc::Basic->test_sliced);
+
+  # sliced
+  ok(TestCase::CoreFunc::Basic->test_sliceo);
 }
 
 # reverse
