@@ -163,6 +163,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_leave_scope,
     SPVM_RUNTIME_API_type_name_raw,
     SPVM_RUNTIME_API_type_name,
+    SPVM_RUNTIME_API_object_basic_type_id,
+    SPVM_RUNTIME_API_object_type_dimension,
   };
   
   int32_t env_length = 255;
@@ -5144,6 +5146,14 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   }
   
   return object;
+}
+
+int32_t SPVM_RUNTIME_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object) {
+  return object->type_dimension;
+}
+
+int32_t SPVM_RUNTIME_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
+  return object->basic_type_id;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_new_str_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
