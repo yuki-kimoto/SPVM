@@ -240,9 +240,7 @@ package SPVM::CORE {
   native sub sortf : void ($nums : float[]);
   native sub sortd : void ($nums : double[]);
 
-
-
-  sub _merge : void($a : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+  precompile sub _merge : void($a : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -280,7 +278,7 @@ package SPVM::CORE {
       }
   }
 
-  sub _merge_sort : void($a : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
+  precompile sub _merge_sort : void($a : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
       if ($left == $right) {
         return;
       }
