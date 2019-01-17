@@ -1120,7 +1120,10 @@ package Foo {
   }
 }
 </pre>
-      <h4 id="language-package-var-access">パッケージ変数へのアクセス</h4>
+      <h4 id="language-package-var-access">パッケージ変数アクセス</h4>
+      <p>
+        パッケージ変数アクセスとは、パッケージ変数にアクセスして、値を取得したり、設定したりする操作のことです。
+      </p>
       <p>
         パッケージ変数の値の取得については、<a href="#language-expression-get-package-var">パッケージ変数の値の取得</a>を見てください。
       </p>
@@ -1253,30 +1256,27 @@ package Foo {
   has num_rw : rw int;
 }
 </pre>
-      <p>
-        不正なフィールドの定義は、コンパイル時エラーが発生します。
-      </p>
       <h4 id="language-field-access">フィールドアクセス</h4>
       <p>
-        フィールドの取得の構文は以下です。
-      </p>
-<pre>
-インボーカー式->{フィールド名}
-</pre>
-      <p>
-        フィールドの設定の構文は以下です。
-      </p>
-<pre>
-インボーカー式->{フィールド名} = 右式;
-</pre>
-      <p>
-        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        フィールドアクセスとは、フィールドにアクセスして、値を取得したり、設定したりする操作のことです。
       </p>
       <p>
-        フィールド名がインボーカー式のパッケージに存在しない場合は、コンパイル時エラーが発生します。
+        クラス型のフィールドの取得については、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>を見てください。
       </p>
       <p>
-        
+        クラス型のフィールドの設定については、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>を見てください。
+      </p>
+      <p>
+        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
+      </p>
+      <p>
+        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
+      </p>
+      <p>
+        値のリファレンス型のフィールドの取得については、<a href="#language-expression-get-field-value-ref">値のリファレンス型のフィールドの値の取得</a>を見てください。
+      </p>
+      <p>
+        値のリファレンス型のフィールドの設定については、<a href="#language-expression-set-field-value-ref">値のリファレンス型フィールドの値の設定</a>を見てください。
       </p>
 
       <h3 id="language-sub">サブルーチン</h3>
@@ -1880,8 +1880,12 @@ switch (条件) {
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li>サブルーチン呼び出し</li>
-        <li>フィールドの設定</li>
-        <li>フィールドの取得</li>
+        <li><a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a></li>
+        <li><a href="#language-expression-get-field-value">値型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
+        <li><a href="#language-expression-get-field-value-ref">値のリファレンス型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-value-ref">値のリファレンス型フィールドの値の設定</a></li>
         <li>配列の要素の設定</li>
         <li>配列の要素の取得</li>
         <li>型変換</li>
@@ -1970,6 +1974,26 @@ package Foo {
   }
 }
 </pre>
+      <h4 id="language-field-access">クラス型のフィールドの取得</h4>
+      <p>
+        フィールドの取得の構文は以下です。
+      </p>
+<pre>
+インボーカー式->{フィールド名}
+</pre>
+      <p>
+        フィールドの設定の構文は以下です。
+      </p>
+<pre>
+インボーカー式->{フィールド名} = 右式;
+</pre>
+      <p>
+        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名がインボーカー式のパッケージに存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+
       <h4 id="language-expression-current-package">現在のパッケージ名の取得</h4>
       <p>
         現在のパッケージ名の取得を行う「__PACKAGE__」キーワードを使用します。
