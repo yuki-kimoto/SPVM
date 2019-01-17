@@ -204,7 +204,7 @@ package SPVM::CORE {
   native sub sortf : void ($nums : float[]);
   native sub sortd : void ($nums : double[]);
   
-  sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
+  precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -221,7 +221,7 @@ package SPVM::CORE {
     return $is_equals;
   }
 
-  sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
+  precompile sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -237,7 +237,7 @@ package SPVM::CORE {
     
     return $is_equals;
   }
-  sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
+  precompile sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -253,7 +253,7 @@ package SPVM::CORE {
     
     return $is_equals;
   }
-  sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
+  precompile sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -269,7 +269,7 @@ package SPVM::CORE {
     
     return $is_equals;
   }
-  sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
+  precompile sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -285,7 +285,7 @@ package SPVM::CORE {
     
     return $is_equals;
   }
-  sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
+  precompile sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
