@@ -1120,75 +1120,13 @@ package Foo {
   }
 }
 </pre>
-      <h4 id="language-package-var-get">パッケージ変数の値の取得</h4>
+      <h4 id="language-package-var-access">パッケージ変数へのアクセス</h4>
       <p>
-        パッケージ変数の値を取得するには以下の構文を使用します。
-      </p>
-<pre>
-$クラス名::パッケージ変数名
-</pre>
-      <p>
-        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
-      </p>
-<pre>
-$パッケージ変数名
-</pre>
-      <p>
-       パッケージ変数の値の取得は、<a href="#language-expression">式</a>を返します。
+        パッケージ変数の値の取得については、<a href="#language-expression-get-package-var">パッケージ変数の値の取得</a>を見てください。
       </p>
       <p>
-        定義されていないパッケージ変数の値を取得しようとした場合は、コンパイル時エラーが発生します。
+        パッケージ変数の値の設定については、<a href="#language-expression-set-package-var">パッケージ変数の値の設定</a>を見てください。
       </p>
-      <p>
-        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <b>パッケージ変数の値の取得のサンプル</b>
-      </p>
-<pre>
-package Foo {
-  our $VAR : int;
-  
-  sub bar : int () {
-    my $var1 = $Foo::VAR;
-    my $var2 = $VAR;
-  }
-}
-</pre>
-      <h4 id="language-package-var-set">パッケージ変数の値の取得</h4>
-      <p>
-        パッケージ変数の値を設定するには以下の構文を使用します。
-      </p>
-<pre>
-$クラス名::パッケージ変数名 = 右式
-</pre>
-        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
-      </p>
-<pre>
-$パッケージ変数名 = 右式
-</pre>
-      <p>
-        パッケージ変数設定は、<a href="#language-expression">式</a>を返します。返される結果は、代入後のパッケージ変数の値です。
-      </p>
-      <p>
-        定義されていないパッケージ変数の値を設定しようとした場合は、コンパイル時エラーが設定します。
-      </p>
-      <p>
-        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <b>パッケージ変数の値の取得のサンプル</b>
-      </p>
-<pre>
-package Foo {
-  our $VAR : int;
-  
-  sub bar : int () {
-    $Foo::VAR = 1;
-    $VAR = 3;
-  }
-}
-</pre>
       
       <h3 id="language-field">フィールド</h3>
       <ul class="list">
@@ -1335,7 +1273,10 @@ package Foo {
         インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        フィールド名がインボーカー式のパッケージに存在しない場合は、
+        フィールド名がインボーカー式のパッケージに存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        
       </p>
 
       <h3 id="language-sub">サブルーチン</h3>
@@ -1934,10 +1875,10 @@ switch (条件) {
         <li><a href="#language-lex-var-initial-value-get">レキシカル変数の値の取得</a></li>
         <li><a href="#language-lex-var-declaration">レキシカル変数変数の宣言</a></li>
         <li>例外変数</li>
-        <li><a href="#language-package-var-set">パッケージ変数の値の設定</a></li>
-        <li><a href="#language-package-var-get">パッケージ変数の値の取得</a></li>
-        <li><a href="language-literal">リテラル</a></li>
-        <li><a href="language-undef">未定義値</a></li>
+        <li><a href="#language-expression-get-package-var">パッケージ変数の値の設定</a></li>
+        <li><a href="#language-expression-set-package-var">パッケージ変数の値の取得</a></li>
+        <li><a href="#language-literal">リテラル</a></li>
+        <li><a href="#language-undef">未定義値</a></li>
         <li>サブルーチン呼び出し</li>
         <li>フィールドの設定</li>
         <li>フィールドの取得</li>
@@ -1960,6 +1901,75 @@ switch (条件) {
         <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
         <li>(式)</li>
       </ul>
+      <h4 id="language-expression-get-package-var">パッケージ変数の値の取得</h4>
+      <p>
+        パッケージ変数の値を取得するには以下の構文を使用します。
+      </p>
+<pre>
+$クラス名::パッケージ変数名
+</pre>
+      <p>
+        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
+      </p>
+<pre>
+$パッケージ変数名
+</pre>
+      <p>
+       パッケージ変数の値の取得は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        定義されていないパッケージ変数の値を取得しようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>パッケージ変数の値の取得のサンプル</b>
+      </p>
+<pre>
+package Foo {
+  our $VAR : int;
+  
+  sub bar : int () {
+    my $var1 = $Foo::VAR;
+    my $var2 = $VAR;
+  }
+}
+</pre>
+      <h4 id="language-expression-set-package-var">パッケージ変数の値の設定</h4>
+      <p>
+        パッケージ変数の値を設定するには以下の構文を使用します。
+      </p>
+<pre>
+$クラス名::パッケージ変数名 = 右式
+</pre>
+        自分自身のパッケージに属するパッケージ変数の場合は「クラス名::」を省略できます。
+      </p>
+<pre>
+$パッケージ変数名 = 右式
+</pre>
+      <p>
+        パッケージ変数設定は、<a href="#language-expression">式</a>を返します。返される結果は、代入後のパッケージ変数の値です。
+      </p>
+      <p>
+        定義されていないパッケージ変数の値を設定しようとした場合は、コンパイル時エラーが設定します。
+      </p>
+      <p>
+        パッケージの外側からプライベートなパッケージ変数にアクセスしようとした場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>パッケージ変数の値の設定のサンプル</b>
+      </p>
+<pre>
+package Foo {
+  our $VAR : int;
+  
+  sub bar : int () {
+    $Foo::VAR = 1;
+    $VAR = 3;
+  }
+}
+</pre>
       <h4 id="language-expression-current-package">現在のパッケージ名の取得</h4>
       <p>
         現在のパッケージ名の取得を行う「__PACKAGE__」キーワードを使用します。
