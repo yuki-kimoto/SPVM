@@ -244,6 +244,7 @@ package TestCase::CoreFunc::Basic {
     my $nums1 = [(byte)0, 1, INT8_MIN()];
     my $nums2 = [(byte)0, 1, INT8_MIN()];
     my $nums3 = [(byte)0, 1];
+    my $nums4 = [(byte)0, 1, 2];
     {
       my $is_equals = equals_barray($nums1, $nums2);
       unless ($is_equals) {
@@ -256,6 +257,12 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $is_equals = equals_barray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -264,6 +271,7 @@ package TestCase::CoreFunc::Basic {
     my $nums1 = [(short)0, 1, INT16_MIN()];
     my $nums2 = [(short)0, 1, INT16_MIN()];
     my $nums3 = [(short)0, 1];
+    my $nums4 = [(short)0, 1, 2];
     
     {
       my $is_equals = equals_sarray($nums1, $nums2);
@@ -279,6 +287,12 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $is_equals = equals_sarray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -287,6 +301,7 @@ package TestCase::CoreFunc::Basic {
     my $nums1 = [(int)0, 1, INT32_MIN()];
     my $nums2 = [(int)0, 1, INT32_MIN()];
     my $nums3 = [(int)0, 1];
+    my $nums4 = [(int)0, 1, 2];
     
     {
       my $is_equals = equals_iarray($nums1, $nums2);
@@ -300,6 +315,12 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $is_equals = equals_iarray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -308,6 +329,7 @@ package TestCase::CoreFunc::Basic {
     my $nums1 = [(long)0, 1, INT64_MIN()];
     my $nums2 = [(long)0, 1, INT64_MIN()];
     my $nums3 = [(long)0, 1];
+    my $nums4 = [(long)0, 1, 2];
     
     {
       my $is_equals = equals_larray($nums1, $nums2);
@@ -321,6 +343,12 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $is_equals = equals_larray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -329,6 +357,7 @@ package TestCase::CoreFunc::Basic {
     my $nums1 = [0.0f, 1.5f, FLT_MIN()];
     my $nums2 = [0.0f, 1.5f, FLT_MIN()];
     my $nums3 = [0.0f, 1.5f];
+    my $nums4 = [(float)0.0f, 1.5f, 0.5f];
     
     {
       my $is_equals = equals_farray($nums1, $nums2);
@@ -342,6 +371,12 @@ package TestCase::CoreFunc::Basic {
         return 0;
       }
     }
+    {
+      my $is_equals = equals_farray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -349,6 +384,37 @@ package TestCase::CoreFunc::Basic {
   sub test_equals_darray : int () {
     my $nums1 = [0.0, 1.5, DBL_MIN()];
     my $nums2 = [0.0, 1.5, DBL_MIN()];
+    my $nums3 = [0.0, 1.5];
+    my $nums4 = [(double)0.0, 1.5, 0.5];
+    
+    {
+      my $is_equals = equals_darray($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_darray($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_darray($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+=pod
+  sub test_equals_oarray : int () {
+    my $minimal1 = TestCase::Minimal->new;
+    my $minimal2 = TestCase::Minimal->new;
+    my $nums1 = [$minimal1, $minimal2];
+    my $nums2 = [$minimal1, $minimal2];
     my $nums3 = [0.0, 1.5];
     
     {
@@ -366,6 +432,7 @@ package TestCase::CoreFunc::Basic {
     
     return 1;
   }
+=cut
   
   sub test_type_name : int () {
     my $minimal = TestCase::Minimal->new;
