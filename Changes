@@ -8,6 +8,7 @@
   - add equals_larray core function
   - add equals_farray core function
   - add equals_darray core function
+  - add equals_oarray core function
   - add sortb core function
   - add sorts core function
   - add sorti core function

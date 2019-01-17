@@ -302,7 +302,7 @@ package SPVM::CORE {
     return $is_equals;
   }
 
-  sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray) {
+  precompile sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
