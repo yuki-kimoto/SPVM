@@ -192,6 +192,37 @@ package SPVM::CORE {
     return $slice;
   }
 
+  precompile sub sliceo : oarray ($elems : oarray, $offset : int, $length : int) {
+    
+    if ($elems == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$elems;
+    
+    if ($offset < 0 || $offset >= $length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new_oarray_proto($elems, $length);
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $elems->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
   native sub reverseb : void ($nums : byte[]);
   native sub reverses : void ($nums : short[]);
   native sub reversei : void ($nums : int[]);

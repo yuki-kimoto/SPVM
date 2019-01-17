@@ -123,6 +123,33 @@ package TestCase::CoreFunc::Basic {
     }
     return 1;
   }
+  sub test_sliceo : int () {
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      
+      my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
+      unless (equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4])) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      
+      my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
+      unless (equals_oarray($slice, [$minimal2, $minimal3])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
 
   sub test_reverseb : int () {
     {
