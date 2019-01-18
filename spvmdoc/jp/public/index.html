@@ -3198,7 +3198,7 @@ x << y;
 
       <h4 id="language-operator-arithmetic-right-shift">算術右シフト演算子</h4>
       <p>
-        算術右シフトは「<<」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+        算術右シフトは「>>」で表現される<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
 左式 >> 右式
@@ -3592,7 +3592,102 @@ my $str = 123 . 456;
       </ul>
       
       <h4 id="language-operator-assign-special">特殊代入演算子</h4>
-      
+      <p>
+        特殊代入演算子とは、<a href="#language-operator-binary">二項演算子</a>と<a href="#language-operator-assign">代入演算子</a>の組み合わせで表現される特殊な代入を行う<a href="#language-operator-binary">二項演算子</a>のことです。
+      </p>
+<pre>
+左式 特殊代入演算子 右式
+</pre>
+      <p>
+        左式と右式が<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>特殊代入演算子の一覧</b>
+      </p>
+      <p>
+        特殊代入演算子の一覧です。
+      </p>
+      <table>
+        <tr>
+          <td>加算代入演算子</td>
+          <td>+=</td>
+        </tr>
+        <tr>
+          <td>減算代入演算子</td>
+          <td>-=</td>
+        </tr>
+        <tr>
+          <td>乗算代入演算子</td>
+          <td>*=</td>
+        </tr>
+        <tr>
+          <td>除算代入演算子</td>
+          <td>/=</td>
+        </tr>
+        <tr>
+          <td>剰余代入演算子</td>
+          <td>%=</td>
+        </tr>
+        <tr>
+          <td>ビットAND代入演算子</td>
+          <td>&=</td>
+        </tr>
+        <tr>
+          <td>ビットOR代入演算子</td>
+          <td>|=</td>
+        </tr>
+        <tr>
+          <td>左シフト代入演算子</td>
+          <td><<=</td>
+        </tr>
+        <tr>
+          <td>算術右シフト代入演算子</td>
+          <td>>>=</td>
+        </tr>
+        <tr>
+          <td>論理右シフト代入演算子</td>
+          <td>>>>=</td>
+        </tr>
+      </table>
+      <p>
+        特殊代入演算子は、次のように展開されます。
+      </p>
+<pre>
+# 展開前
+左式 特殊代入演算子 右式
+
+# 展開後
+左式 代入演算子 (左式の型によるキャスト)(左式 指定された演算子 右式)
+</pre>
+      <p>
+        たとえば、加算代入演算子の場合は、次のように展開されます。
+      </p>
+<pre>
+# 展開前 xはbyte型
+$x += 1;
+
+# 展開後
+$x = (byte)($x + 1)
+</pre>
+      <p>
+        <b>特殊代入演算子のサンプル</b>
+      </p>
+      <p>
+        特殊代入演算子のサンプルです。
+      </p>
+<pre>
+$x += 1;
+$x -= 1;
+$x *= 1;
+$x /= 1;
+$x &= 1;
+$x |= 1;
+$x ^= 1;
+$x %= 1;
+$x <<= 1;
+$x >>= 1;
+$x >>>= 1;
+</pre>
       <h4 id="language-operator-ref">リファレンス生成演算子</h4>
       <p>
         リファレンス生成演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数に対してリファレンスを生成する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
@@ -3731,8 +3826,8 @@ $$z_ref = $z2;
             ビットOR代入演算子「|=」<br>
             ビット排他OR代入演算子「^=」<br>
             左シフト代入演算子「<<=」<br>
-            符号付右シフト代入演算子「>>=」<br>
-            符号なし右シフト演算子「>>>=」<br>
+            算術右シフト代入演算子「>>=」<br>
+            論理右シフト演算子「>>>=」<br>
             文字列結合代入演算子「.=」
           </td>
         </tr>
