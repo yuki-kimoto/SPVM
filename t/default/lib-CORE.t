@@ -140,18 +140,39 @@ ok(TestCase::CoreFunc::Math->test_join);
 
   # equals_oarray
   ok(TestCase::CoreFunc::Basic->test_equals_darray);
+
+  # equals_strarray
+  ok(TestCase::CoreFunc::Basic->test_equals_strarray);
 }
 
 # Copy
 {
+  # copy_str
   ok(TestCase::CoreFunc::Basic->test_copy_str);
+  
+  # copy_barray
   ok(TestCase::CoreFunc::Basic->test_copy_barray);
+  
+  # copy_sarray
   ok(TestCase::CoreFunc::Basic->test_copy_sarray);
+  
+  # copy_iarray
   ok(TestCase::CoreFunc::Basic->test_copy_iarray);
+  
+  # copy_larray
   ok(TestCase::CoreFunc::Basic->test_copy_larray);
+  
+  # copy_farray
   ok(TestCase::CoreFunc::Basic->test_copy_farray);
-  ok(TestCase::CoreFunc::Basic->test_copy_farray);
+  
+  # copy_darray
+  ok(TestCase::CoreFunc::Basic->test_copy_darray);
+  
+  # copy_oarray
   ok(TestCase::CoreFunc::Basic->test_copy_oarray);
+  
+  # copy_strarray
+  ok(TestCase::CoreFunc::Basic->test_copy_strarray);
 }
 
 # Constant integral functions

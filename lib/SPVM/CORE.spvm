@@ -437,6 +437,23 @@ package SPVM::CORE {
     
     return $is_equals;
   }
+
+  precompile sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
+    my $is_equals = 1;
+    if (@$strings1 == @$strings2) {
+      for (my $i = 0; $i < @$strings1; $i++) {
+        if ($strings1->[$i] ne $strings2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
   
   sub AUTO_LEN : int () { return -1; }
   sub EOF : int () { return -1; }
