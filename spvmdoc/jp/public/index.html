@@ -408,18 +408,18 @@ my $total = MyMath->sum($sp_nums);
         SPVMの言語仕様の詳細です。
       </p>
       <ul class="toc">
-        <li><a href="#language-c99">C99準拠</a>
-        <li><a href="#language-parser">構文解析</a>
-        <li><a href="#language-comment">コメント</a>
-        <li><a href="#language-pod">POD</a>
-        <li><a href="#language-package">パッケージ</a>
-        <li><a href="#language-module">モジュール</a>
-        <li><a href="#language-package-var">パッケージ変数</a>
-        <li><a href="#language-field">フィールド</a>
-        <li><a href="#language-sub">サブルーチン</a>
-        <li><a href="#language-enum">列挙</a>
-        <li><a href="#language-begin-block">BEGINブロック</a>
-        <li><a href="#language-lex-var">レキシカル変数</a>
+        <li><a href="#language-c99">C99準拠</a></li>
+        <li><a href="#language-parser">構文解析</a></li>
+        <li><a href="#language-comment">コメント</a></li>
+        <li><a href="#language-pod">POD</a></li>
+        <li><a href="#language-package">パッケージ</a></li>
+        <li><a href="#language-module">モジュール</a></li>
+        <li><a href="#language-package-var">パッケージ変数</a></li>
+        <li><a href="#language-field">フィールド</a></li>
+        <li><a href="#language-sub">サブルーチン</a></li>
+        <li><a href="#language-enum">列挙</a></li>
+        <li><a href="#language-begin-block">BEGINブロック</a></li>
+        <li><a href="#language-lex-var">レキシカル変数</a></li>
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-term">項</a></li>
@@ -873,7 +873,7 @@ package Foo {
         <li>モジュールの概要</li>
         <li>モジュールの読み込み</li>
       </ul>
-      <h3 class="language-module-summary">モジュールの概要</h3>
+      <h4 class="language-module-summary">モジュールの概要</h4>
       <p>
         モジュールとは、SPVMのソースコードとして読み込むことができるひとつのファイルのことをいいます。
       </p>
@@ -896,7 +896,7 @@ package Foo::Bar::Baz {
 
 }
 </pre>
-      <h3 class="language-module-path">モジュールのファイル名</h3>
+      <h4 class="language-module-path">モジュールのファイル名</h4>
       <p>
         モジュールは、モジュールの読み込みパスに、以下のファイル名で配置される必要があります。
       </p>
@@ -908,7 +908,7 @@ Foo.spvm
 Foo/Bar.spvm
 Foo/Bar/Baz.spvm
 </pre>
-      <h3 class="language-module-load">モジュールの読み込み</h3>
+      <h4 class="language-module-load">モジュールの読み込み</h4>
       <p>
         モジュールを読み込むには、useキーワードを使用します。
       </p>
@@ -930,7 +930,7 @@ package Foo {
   use Foo;
 }
 </pre>
-      <h3 class="language-module-load-if-require">選択的なモジュールの読み込み</h3>
+      <h4 class="language-module-load-if-require">選択的なモジュールの読み込み</h4>
       <p>
         SPVMでは、モジュールが、検索パスに存在する場合だけ読み込み、そうでない場合は、ブロックの内部が存在しないことにできるif require文があります。これはC言語の「#ifdef」の一部の機能を実現するために設計されました。
       </p>
@@ -1105,7 +1105,7 @@ package Foo {
 </pre>
       <h4 id="language-package-var-initial-value">パッケージ変数の初期値</h4>
       <p>
-        パッケージ変数は、コンパイルが終了して、実行時に入る前に、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+        パッケージ変数は、コンパイルが終了して、実行時に入る前に、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
       </p>
       <p>
         この初期値は、<a href="#language-begin-block">BEGINブロック</a>を使うことで、変更することができます。
@@ -1266,12 +1266,25 @@ package Foo {
 インボカント->{フィールド名}
 </pre>
       <p>
-        1. <a href="#language-type-class">クラス型</a>を元に<a href="#language-operator-new-object">オブジェクトの生成</a>が行われた場合は、オブジェクトからフィールドにアクセスすることができます。
+        <b>1. クラス型のフィールドへのアクセス</b>
+      </p>
+      <p>
+        <a href="#language-type-class">クラス型</a>を元に<a href="#language-operator-new-object">オブジェクトの生成</a>が行われた場合は、オブジェクトからフィールドにアクセスすることができます。
       </p>
 <pre>
 my $point = new Point;
 $point->{x} = 1;
 </pre>
+
+      <p>
+        クラス型のフィールドの取得については、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>を見てください。
+      </p>
+      <p>
+        クラス型のフィールドの設定については、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>を見てください。
+      </p>
+      <p>
+        <b>2. 値型のフィールドへのアクセス</b>
+      </p>
       <p>
         2. <a href="#language-type-value">値型</a>におけるフィールドは、値型の変数の宣言をすれば、その変数からフィールドにアクセスできます。これは、レキシカル変数領域におけるアクセスです。
       </p>
@@ -1281,7 +1294,16 @@ $z->{re} = 1;
 $z->{im} = 3;
 </pre>
       <p>
-        3. 値型の変数に対するリファレンス型から、デリファレンスを行って直接に値型のフィールドにアクセスできます。
+        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
+      </p>
+      <p>
+        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
+      </p>
+      <p>
+        <b>3. デリファレンスによる値型のフィールドのアクセス</b>
+      </p>
+      <p>
+        値型の変数に対するリファレンス型から、デリファレンスを行って直接に値型のフィールドにアクセスできます。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
@@ -1290,22 +1312,10 @@ $z_ref->{re} = 1;
 $z_ref->{im} = 3;
 </pre>
       <p>
-        クラス型のフィールドの取得については、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>を見てください。
+        デリファレンスによる値型のフィールドの取得については、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>を見てください。
       </p>
       <p>
-        クラス型のフィールドの設定については、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>を見てください。
-      </p>
-      <p>
-        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
-      </p>
-      <p>
-        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの取得については、<a href="#language-expression-get-field-value-ref">値のリファレンス型のフィールドの値の取得</a>を見てください。
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの設定については、<a href="#language-expression-set-field-value-ref">値のリファレンス型フィールドの値の設定</a>を見てください。
+        デリファレンスによる値型のフィールドの設定については、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>を見てください。
       </p>
 
       <h3 id="language-sub">サブルーチン</h3>
@@ -1636,7 +1646,7 @@ BEGIN {
         BEGINブロックの実行順序は、保証されません。他のパッケージにBEGINブロックが定義されている場合は、そのBEGINブロックが先に実行されることを想定しないでください。
       </p>
       <p>
-        BEGINブロックの一般的な用途は、パッケージ変数を初期化することです。
+        BEGINブロックの一般的な用途は、<a href="#language-package-var">パッケージ変数</a>を初期化することです。
       </p>
 <pre>
 package Foo {
@@ -1653,17 +1663,11 @@ package Foo {
       <ul class="list">
         <li><a href="#language-lex-var-declaration">レキシカル変数の宣言</a></li>
         <li><a href="#language-lex-var-initial-value">レキシカル変数の初期値</a></li>
-        <li><a href="#language-lex-var-value-get">レキシカル変数の値の取得</a></li>
+        <li><a href="#language-lex-var-access">レキシカル変数へのアクセス</a></li>
       </ul>
       <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
       <p>
-        レキシカル変数は「my」キーワードによって宣言します。「:」の後ろに「<a href="#language-type">型</a>」を指定する必要があります。
-      </p>
-<pre>
-my $num : int;
-</pre>
-      <p>
-        レキシカル変数は<a href="#language-scope-block">スコープブロック</a>の中で宣言され、<a href="#language-scope">スコープ</a>を持つ変数のことです。
+        レキシカル変数とは、<a href="#language-scope-block">スコープブロック</a>の中で利用できる、<a href="#language-scope">スコープ</a>を持つ変数のことです。C言語のローカル変数に該当します。
       </p>
 <pre>
 {
@@ -1671,10 +1675,42 @@ my $num : int;
 }
 </pre>
       <p>
+        レキシカル変数は「my」キーワードによって宣言します。「:」の後ろに「<a href="#language-type">型</a>」を指定する必要があります。
+      </p>
+<pre>
+my $num : int;
+</pre>
+      <p>
         レキシカル変数は、<a href="#language-lex-var-initial-value">レキシカル変数の初期値</a>によって初期化されます。
       </p>
+<pre>
+# 0で初期化される
+my $num : int;
+
+# 0で初期化される
+my $num : double;
+
+# undefで初期化される
+my $point : Point;
+
+# reは0, imは0で初期化される
+my $z : SPVM::Complex_2d;
+</pre>
       <p>
-        <a href="#language-type-inference">型推論</a>によって、レキシカル変数を宣言するときに、型の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
+        レキシカル変数の宣言と同時に初期化を行うことができます。
+      </p>
+<pre>
+# 1で初期化される
+my $num : int = 1;
+
+# 2.5で初期化される
+my $num : double = 2.5;
+
+# Pointオブジェクトで初期化される
+my $point : Point = new Point;
+</pre>
+      <p>
+        <a href="#language-type-inference">型推論</a>を使うと、宣言するときに、型の指定を省略することができます。
       </p>
 <pre>
 # int
@@ -1684,7 +1720,7 @@ my $num = 1;
 my $num = 1.0;
 </pre>
       <p>
-        レキシカル変数の宣言は、レキシカル変数自体を表現する式を返します。次のような記述が可能です。
+        レキシカル変数の宣言は、レキシカル変数の値を返します。これは、<a href="#language-expression">式</a>として利用できます。
       </p>
 <pre>
 my $ppp = my $bar = 4;
@@ -1697,36 +1733,20 @@ while (my $bar = 1) {
   
 }
 </pre>
+      <h4 id="language-lex-var-initial-value">レキシカル変数の初期値</h4>
+      <p>
+        レキシカル変数は、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
 
-      <h4 id="language-lex-var-initial-value-get">レキシカル変数の値の取得</h4>
+      <h4 id="language-lex-var-access">レキシカル変数へのアクセス</h4>
       <p>
-        レキシカル変数の値の取得をするには、それ自体を記述します。
-      </p>
-<pre>
-レキシカル変数
-</pre>
-      <p>
-        レキシカル変数の値の取得は、式を返します。
+        レキシカル変数へのアクセスとは、レキシカル変数にアクセスして、値を取得したり、設定したりする操作のことです。
       </p>
       <p>
-        <b>キシカル変数の値の取得のサンプル</b>
+        <b>レキシカル変数の値の取得</b>については、<a href="#language-expression-get-lex-var">レキシカル変数の値の取得</a>を見てください。
       </p>
-<pre>
-$var;
-my $foo = $bar;
-</pre>
-
-      <h4 id="language-lex-var-initial-value-get">レキシカル変数の値の設定</h4>
       <p>
-        レキシカル変数の値の設定については、代入演算子を見てください。
-      </p>
-<pre>
-$var = 式
-</pre>
-      
-      <h4 id="language-lex-var-declaration">レキシカル変数の宣言</h4>
-      <p>
-        
+        <b>レキシカル変数の値の設定</b>については、<a href="#language-expression-set-lex-var">レキシカル変数の値の設定</a>を見てください。
       </p>
       
       <h3 id="language-block">ブロック</h3>
@@ -1901,8 +1921,8 @@ switch (条件) {
         <b>式の一覧</b>
       </p>
       <ul class="list">
-        <li><a href="#language-lex-var-initial-value-get">レキシカル変数の値の取得</a></li>
-        <li><a href="#language-lex-var-declaration">レキシカル変数変数の宣言</a></li>
+        <li><a href="#language-expression-get-lex-var">レキシカル変数の値の取得</a></li>
+        <li><a href="#language-expression-set-lex-var">レキシカル変数の値の設定</a></li>
         <li>例外変数</li>
         <li><a href="#language-expression-get-package-var">パッケージ変数の値の設定</a></li>
         <li><a href="#language-expression-set-package-var">パッケージ変数の値の取得</a></li>
@@ -1934,6 +1954,33 @@ switch (条件) {
         <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
         <li>(式)</li>
       </ul>
+      <h4 id="language-expression-get-lex-var">レキシカル変数の値の取得</h4>
+      <p>
+        レキシカル変数の値の取得をするには、レキシカル変数自体を記述します。
+      </p>
+<pre>
+$var
+</pre>
+      <p>
+        レキシカル変数の値の取得は、<a href="#language-expression">式</a>です。
+      </p>
+
+      <h4 id="language-expression-set-lex-var">レキシカル変数の値の設定</h4>
+      <p>
+        レキシカル変数の値の設定を行うには、<a href="#language-operator-assign">代入演算子</a>を使用します。
+      </p>
+<pre>
+$var = 右式
+</pre>
+      <p>
+        代入が<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        レキシカル変数の値の設定は、設定後の値を返します。
+      </p>
+      <p>
+        レキシカル変数の値の設定は、<a href="#language-expression">式</a>です。
+      </p>
       <h4 id="language-expression-get-package-var">パッケージ変数の値の取得</h4>
       <p>
         パッケージ変数の値を取得するには以下の構文を使用します。
@@ -2875,7 +2922,7 @@ my $num = -10;
 </pre>
       <h4 id="language-operator-add">加算演算子</h4>
       <p>
-        加算演算子は「+」で表現される<a href="#language-operator-binary">二項演算子</a>です。
+        加算演算子は「+」で表現される、加算を行うための<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
 左式 + 右式
@@ -3534,6 +3581,15 @@ my $str = "def" . 34;
 my $str = 123 . 456;
 </pre>
       <h4 id="language-operator-assign">代入演算子</h4>
+      <p>
+        代入演算子は「=」で表現される、代入を行うための<a href="#language-operator-binary">二項演算子</a>です。
+      </p>
+      <p>
+        代入演算子は、右辺と左辺によって、複数の意味を持ちます。各項目を参考にしてください。
+      </p>
+      <ul>
+        <li><a href="#language-expression-set-lex-var">レキシカル変数の値の設定</a></li>
+      </ul>
       
       <h4 id="language-operator-assign-special">特殊代入演算子</h4>
       

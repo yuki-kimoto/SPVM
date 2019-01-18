@@ -16,7 +16,7 @@
   - rename copy_string to copy_str
   - add copy_strarray
   - add equals_strarray
-  - fix bug SPVM::CORE is not 
+  - fix bug SPVM::CORE is not basic type
 0.0412 2018-01-17
   - add oarray type to implement sort algorithm
   - fix native and precompile file path bug
