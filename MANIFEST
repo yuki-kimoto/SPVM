@@ -128,14 +128,14 @@ lib/SPVM/Double.spvm
 lib/SPVM/Example.c
 lib/SPVM/Example.spvm
 lib/SPVM/ExchangeAPI.pm
+lib/SPVM/FileHandle.c
+lib/SPVM/FileHandle.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Hash.spvm
 lib/SPVM/HashEntry.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
-lib/SPVM/IO.spvm
-lib/SPVM/IO/File.spvm
 lib/SPVM/JSON.spvm
 lib/SPVM/JSON/Bool.pm
 lib/SPVM/JSON/Bool.spvm

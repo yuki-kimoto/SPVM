@@ -5,7 +5,63 @@ package SPVM::CORE {
   use SPVM::Hash;
   use SPVM::Comparator;
   use SPVM::Stringer;
+  use SPVM::FileHandle;
+
+  our $O_RDONLY : ro int;
+  our $O_WRONLY : ro int;
+  our $O_RDWR : ro int;
+  our $O_APPEND : ro int;
+  our $O_CREAT : ro int;
+  our $O_TRUNC : ro int;
+  our $SEEK_SET : ro int;
+  our $SEEK_CUR : ro int;
+  our $SEEK_END : ro int;
   
+  BEGIN {
+    init_native_constants();
+  }
+  
+  native sub init_native_constants : void ();
+  
+  sub open : int ($file_name : string, $amode : int[]...) {
+    return 0;
+  }
+  sub read : int ($fd : int, $buf : byte[], $buf_offset : int) {
+    return 0;
+  }
+  sub write : int ($fd : int, $buf : string) {
+    return 0;
+  }
+  sub lseek : int ($fd : int, $offset : long, $origin : int) {
+    return 0;
+  }
+  sub close : int ($fd : int) {
+    return 0;
+  }
+  
+  sub fopen : SPVM::FileHandle ($file_name : string, $mode : string) {
+    return undef;
+  }
+  sub fputc : int ($self : self, $c : int) {
+    return 0;
+  }
+  sub fread : int ($self :self, $buf : byte[], $buf_offset : int, $n : int) {
+    return 0;
+  }
+  sub fwrite : int ($self : self, $buf : byte[], $buf_offset : int, $n : int) {
+    return 0;
+  }
+  sub fseek : int ($self : self, $offset : long, $whence : int) {
+    return 0;
+  }
+  sub fclose : int ($self : self) {
+    return 0;
+  }
+  sub fgets : string ($self : self) {
+    
+    return undef;
+  }
+
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
   precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {

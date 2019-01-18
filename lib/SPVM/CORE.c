@@ -1,4 +1,3 @@
-#include "spvm_base.h"
 #include "spvm_native.h"
 
 #include <stdio.h>
@@ -10,6 +9,75 @@
 #include <time.h>
 #include <complex.h>
 #include <memory.h>
+#include <fcntl.h>
+
+int32_t SPVM_NATIVE_SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // O_RDONLY
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_RDONLY", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_RDONLY);
+  }
+
+  // O_WRONLY
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_WRONLY", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_WRONLY);
+  }
+
+  // O_RDWR
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_RDWR", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_RDWR);
+  }
+
+  // O_APPEND
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_APPEND", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_APPEND);
+  }
+
+  // O_CREAT
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_CREAT", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_CREAT);
+  }
+
+  // O_TRUNC
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$O_TRUNC", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, O_TRUNC);
+  }
+
+  // SEEK_SET
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$SEEK_SET", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, SEEK_SET);
+  }
+
+  // SEEK_CUR
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$SEEK_CUR", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, SEEK_CUR);
+  }
+
+  // SEEK_END
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$SEEK_END", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, SEEK_END);
+  }
+  
+  return SPVM_SUCCESS;
+}
 
 int32_t SPVM_NATIVE_SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
