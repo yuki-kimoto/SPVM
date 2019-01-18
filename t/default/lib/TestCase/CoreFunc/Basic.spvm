@@ -737,9 +737,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_object_array : int () {
+  sub test_copy_oarray : int () {
     my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN())];
-    my $objects_out = copy_object_array($objects);
+    my $objects_out = copy_oarray($objects);
 
     unless ($objects->[0] == $objects_out->[0]) {
       return 0;

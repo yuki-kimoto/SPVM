@@ -335,12 +335,12 @@ B<sub copy_darray : double[] ($nums : double[])>
 
 Copy double array.
 
-=head2 copy_object_array
+=head2 copy_oarray
 
-B<sub copy_object_array : object[] ($objects : object[])>
+B<sub copy_oarray : object[] ($objects : object[])>
 
   my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = copy_object_array($objects);
+  my $objects_copy = copy_oarray($objects);
 
 Copy object array.
 

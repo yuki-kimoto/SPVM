@@ -539,7 +539,7 @@ package SPVM::CORE {
     return $new_nums;
   }
 
-  sub copy_object_array : object[] ($objects : object[]) {
+  sub copy_oarray : object[] ($objects : object[]) {
     my $length = @$objects;
     
     my $new_objects = new object[$length];

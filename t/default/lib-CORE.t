@@ -151,7 +151,7 @@ ok(TestCase::CoreFunc::Math->test_join);
   ok(TestCase::CoreFunc::Basic->test_copy_larray);
   ok(TestCase::CoreFunc::Basic->test_copy_farray);
   ok(TestCase::CoreFunc::Basic->test_copy_farray);
-  ok(TestCase::CoreFunc::Basic->test_copy_object_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_oarray);
 }
 
 # Constant integral functions
