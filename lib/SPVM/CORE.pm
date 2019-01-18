@@ -18,52 +18,6 @@ Print string with file name and line number to stderr. line break is added to en
 
   sub warn : void ($string : string);
 
-=head2 time
-
-Get epoch time.
-
-  sub time : long ();
-
-=head2 INFINITYF
-
-  sub INFINITYF : float ()
-
-=head2 NANF
-
-  sub NANF : float ()
-  
-=head2 isinff
-
-  sub isinff : int($x : float)
-
-=head2 isfinitef
-
-  sub isfinitef : int($x : float)
-
-=head2 isnanf
-
-  sub isnanf : int ($x : float)
-  
-=head2 INFINITY
-
-  sub INFINITY : double ()
-
-=head2 NAN
-
-  sub NAN : double ()
-  
-=head2 isinf
-
-  sub isinf : int ($x : double)
-
-=head2 isfinite
-
-  sub isfinite : int ($x : double)
-
-=head2 isnan
-
-  sub isnan : int ($x : double)
-
 =head2 E
 
 B<sub E : double ()>
@@ -76,201 +30,193 @@ B<sub PI : double ()>
 
 The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
 
+=head2 time
+
+Get epoch time.
+
+  sub time : long ();
+
+Wapper of time of C99 time library.
+
+=head2 INFINITYF
+
+  sub INFINITYF : float ()
+
+Wapper of INFINITY of C99 math library.
+
+=head2 NANF
+
+  sub NANF : float ()
+
+Wapper of NAN of C99 math library.
+  
+=head2 isinff
+
+  sub isinff : int($x : float)
+
+Wapper of isinf of C99 math library.
+
+=head2 isfinitef
+
+  sub isfinitef : int($x : float)
+
+Wapper of isfinite of C99 math library.
+
+=head2 isnanf
+
+  sub isnanf : int ($x : float)
+
+Wapper of isnan of C99 math library.
+  
+=head2 INFINITY
+
+  sub INFINITY : double ()
+
+Wapper of INFINITY of C99 math library.
+
+=head2 NAN
+
+  sub NAN : double ()
+
+Wapper of NAN of C99 math library.
+  
+=head2 isinf
+
+  sub isinf : int ($x : double)
+
+Wapper of isinf of C99 math library.
+
+=head2 isfinite
+
+  sub isfinite : int ($x : double)
+
+Wapper of isfinite of C99 math library.
+
+=head2 isnan
+
+  sub isnan : int ($x : double)
+
+Wapper of isnan of C99 math library.
+
 =head2 sin
 
 B<sub sin : double ($x : double)>
 
-Returns the trigonometric sine of an angle. Special cases:
-
-=over 2
-
-=item* If the argument is NaN or an infinity, then the result is NaN.
-
-=item* If the argument is zero, then the result is a zero with the same sign as the argument.
-
-=back
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - an angle, in radians.
-
-B<Returns:>
-
-the sine of the argument.
+Wapper of sin of C99 math library.
 
 =head2 cos
 
 B<sub cos : double ($x : double)>
 
-Returns the trigonometric cosine of an angle. Special cases:
-
-=over 2
-
-=item* If the argument is NaN or an infinity, then the result is NaN.
-
-=back
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - an angle, in radians.
-
-B<Returns:>
-
-the cosine of the argument.
+Wapper of cos of C99 math library.
 
 =head2 tan
 
 B<sub tan : double ($x : double)>
 
-Returns the trigonometric tangent of an angle. Special cases:
-
-=over 2
-
-=item* If the argument is NaN or an infinity, then the result is NaN.
-
-=item* If the argument is zero, then the result is a zero with the same sign as the argument.
-
-=back
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - an angle, in radians.
-
-B<Returns:>
-
-the tangent of the argument.
+Wapper of tan of C99 math library.
 
 =head2 asin
 
 B<sub asin : double ($x : double)>
 
-Returns the arc sine of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
-
-=over 2
-
-=item * If the argument is NaN or its absolute value is greater than 1, then the result is NaN.
-
-=item * If the argument is zero, then the result is a zero with the same sign as the argument.
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - the value whose arc sine is to be returned.
-
-B<Returns:>
-
-the arc sine of the argument.
-
-=back
+Wapper of asin of C99 math library.
 
 =head2 acos
 
 B<sub acos : double ($x : double)>
 
-Returns the arc cosine of a value; the returned angle is in the range 0.0 through pi. Special case:
-
-=over 2
-
-=item * If the argument is NaN or its absolute value is greater than 1, then the result is NaN.
-
-=back
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - the value whose arc cosine is to be returned.
-
-B<Returns:>
-
-the arc cosine of the argument.
+Wapper of acos of C99 math library.
 
 =head2 atan
 
 B<sub atan : double ($x : double)>
 
-Returns the arc tangent of a value; the returned angle is in the range -pi/2 through pi/2. Special cases:
-
-=over 2
-
-=item * If the argument is NaN, then the result is NaN.
-
-=item * If the argument is zero, then the result is a zero with the same sign as the argument.
-
-=back
-
-The computed result must be within 1 ulp of the exact result. Results must be semi-monotonic.
-
-B<Parameters:>
-
-$x - the value whose arc tangent is to be returned.
-
-B<Returns:>
-
-the arc tangent of the argument.
+Wapper of atan of C99 math library.
 
 =head2 erf
 
   sub erf : double ($x : double);
 
+Wapper of erf of C99 math library.
+
 =head2 erfc
 
   sub erfc : double ($x : double);
+
+Wapper of erf of C99 math library.
 
 =head2 INT8_MIN
 
 B<sub INT8_MIN : byte ()>
 
+Wapper of INT8_MIN of C99 cstdint library.
+
 =head2 INT8_MAX
 
 B<INT8_MAX : byte ()>
+
+Wapper of INT8_MAX of C99 cstdint library.
 
 =head2 INT16_MIN
 
 B<sub INT16_MIN : short ()>
 
+Wapper of INT16_MIN of C99 cstdint library.
+
 =head2 INT16_MAX
 
 B<sub INT16_MAX : short ()>
+
+Wapper of INT16_MAX of C99 cstdint library.
 
 =head2 INT32_MIN
 
 B<sub INT32_MIN : int ()>
 
+Wapper of INT32_MIN of C99 cstdint library.
+
 =head2 INT32_MAX
 
 B<sub INT32_MAX : int ()>
+
+Wapper of INT32_MAX of C99 cstdint library.
 
 =head2 INT64_MIN
 
 B<sub INT64_MIN : long ()>
 
+Wapper of INT64_MIN of C99 cstdint library.
+
 =head2 INT64_MAX
 
 B<sub INT64_MAX : long ()>
+
+Wapper of INT64_MAX of C99 cstdint library.
 
 =head2 FLT_MIN
 
 B<sub FLT_MIN : float ()>
 
+Wapper of FLT_MIN of C99 float library.
+
 =head2 FLT_MAX
 
 B<sub FLT_MAX : float ()>
+
+Wapper of FLT_MAX of C99 float library.
 
 =head2 DBL_MIN
 
 B<sub DBL_MIN : double ()>
 
+Wapper of DBL_MIN of C99 float library.
+
 =head2 DBL_MAX
 
 B<sub DBL_MAX : double ()>
+
+Wapper of DBL_MAX of C99 float library.
 
 =head2 copy_string
 
