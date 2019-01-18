@@ -461,7 +461,7 @@ package SPVM::CORE {
     return SPVM::Hash->new_with_array($objects);
   }
   
-  sub copy_string : string ($string : string) {
+  sub copy_str : string ($string : string) {
     my $bytes = (byte[])$string;
     
     return (string)$bytes;

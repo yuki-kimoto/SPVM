@@ -200,7 +200,7 @@ package SPVM::Hash {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = copy_string($ref->{key});
+        $retval->[$count++] = copy_str($ref->{key});
         $ref = $ref->{next_entry};
 
       }

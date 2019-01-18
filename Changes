@@ -13,6 +13,7 @@
   - rename copy_float_array to copy_farray
   - rename copy_double_array to copy_darray
   - rename copy_object_array to copy_oarray
+  - rename copy_string to copy_str
 0.0412 2018-01-17
   - add oarray type to implement sort algorithm
   - fix native and precompile file path bug

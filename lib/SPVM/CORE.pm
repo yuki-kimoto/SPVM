@@ -218,12 +218,12 @@ B<sub DBL_MAX : double ()>
 
 Wapper of DBL_MAX of C99 float library.
 
-=head2 copy_string
+=head2 copy_str
 
-B<sub copy_string : string ($string : string)>
+B<sub copy_str : string ($string : string)>
   
   my $string = "abced";
-  my $string_copy = copy_string($string);
+  my $string_copy = copy_str($string);
 
 Copy string.
 

@@ -588,9 +588,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
   
-  sub test_copy_string : int () {
+  sub test_copy_str : int () {
     my $string = "abc";
-    my $string_out = copy_string($string);
+    my $string_out = copy_str($string);
     
     unless ($string_out eq "abc") {
       return 0;
