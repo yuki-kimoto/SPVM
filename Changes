@@ -39,6 +39,22 @@
   - add joinf
   - add joind
   - add joino
+  - add replaceb
+  - add replaces
+  - add replacei
+  - add replacel
+  - add replacef
+  - add replaced
+  - add replaceo
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  - rename copy_byte_array to copy_barray
+  
+  
 0.0411 2018-01-16
   - remove rest of list context @ error check becuase SPVM can not define list context correctly
 0.0410 2018-01-16
