@@ -47,14 +47,12 @@
   - add replaced
   - add replaceo
   - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  - rename copy_byte_array to copy_barray
-  
-  
+  - rename copy_short_array to copy_sarray
+  - rename copy_int_array to copy_iarray
+  - rename copy_long_array to copy_larray
+  - rename copy_float_array to copy_farray
+  - rename copy_double_array to copy_darray
+  - rename copy_oarray to copy_oarray
 0.0411 2018-01-16
   - remove rest of list context @ error check becuase SPVM can not define list context correctly
 0.0410 2018-01-16
