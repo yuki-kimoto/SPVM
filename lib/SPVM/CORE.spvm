@@ -265,11 +265,10 @@ package SPVM::CORE {
   native sub sortf : void ($nums : float[]);
   native sub sortd : void ($nums : double[]);
 
-  precompile sub _merge : void($a : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+  precompile sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
-      my $b = new_oarray_proto($a, $n);
       while ($i <= $mid && $j <= $right) {
           $i = $left;
           $j = $mid + 1;
@@ -303,16 +302,16 @@ package SPVM::CORE {
       }
   }
 
-  precompile sub _merge_sort : void($a : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
+  precompile sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
       if ($left == $right) {
         return;
       }
 
       my $mid = ($left + $right) / 2;
 
-      _merge_sort($a, $left, $mid, $n, $comparator);
-      _merge_sort($a, $mid + 1, $right, $n, $comparator);
-      _merge($a, $left, $mid, $right, $n, $comparator);
+      _merge_sort($a, $b, $left, $mid, $n, $comparator);
+      _merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+      _merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
   precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
@@ -320,7 +319,8 @@ package SPVM::CORE {
       croak "Array must be defined";
     }
     my $length = @$objs;
-    _merge_sort($objs, 0, $length - 1, $length, $comparator);
+    my $b = new_oarray_proto($objs, $length);
+    _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
   }
   
   precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
