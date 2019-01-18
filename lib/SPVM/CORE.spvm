@@ -8,6 +8,31 @@ package SPVM::CORE {
   
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
+  precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    my $length = @$replaces;
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $nums->[$pos] = $replaces->[$pos];
+      $pos++;
+    }
+  }
+
   precompile sub sliceb : byte[] ($nums : byte[], $offset : int, $length : int) {
     
     if ($nums == undef) {
