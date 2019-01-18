@@ -281,12 +281,12 @@ B<sub copy_string : string ($string : string)>
 
 Copy string.
 
-=head2 copy_byte_array
+=head2 copy_barray
 
-B<sub copy_byte_array : byte[] ($nums : byte[])>
+B<sub copy_barray : byte[] ($nums : byte[])>
 
   my $nums = [(byte)1, 2, 3];
-  my $nums_copy = copy_byte_array($nums);
+  my $nums_copy = copy_barray($nums);
   
 Copy byte array.
 

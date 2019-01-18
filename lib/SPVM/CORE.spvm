@@ -467,7 +467,7 @@ package SPVM::CORE {
     return (string)$bytes;
   }
   
-  sub copy_byte_array : byte[] ($nums : byte[]) {
+  sub copy_barray : byte[] ($nums : byte[]) {
     my $length = @$nums;
     
     my $new_nums = new byte[$length];

@@ -145,7 +145,7 @@ ok(TestCase::CoreFunc::Math->test_join);
 # Copy
 {
   ok(TestCase::CoreFunc::Basic->test_copy_string);
-  ok(TestCase::CoreFunc::Basic->test_copy_byte_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_barray);
   ok(TestCase::CoreFunc::Basic->test_copy_short_array);
   ok(TestCase::CoreFunc::Basic->test_copy_int_array);
   ok(TestCase::CoreFunc::Basic->test_copy_long_array);
