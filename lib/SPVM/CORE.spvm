@@ -551,6 +551,18 @@ package SPVM::CORE {
     return $new_objects;
   }
 
+  sub copy_strarray : string[] ($strings : string[]) {
+    my $length = @$strings;
+    
+    my $new_strings = new string[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_strings->[$i] = copy_str($strings->[$i]);
+    }
+    
+    return $new_strings;
+  }
+
   sub new_fcomplex_array : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
     if (@$re_values != @$im_values) {
       croak "Real values length is different from imaginary values";

@@ -615,7 +615,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -638,7 +638,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -661,7 +661,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -684,7 +684,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -707,7 +707,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -730,7 +730,7 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$nums == 3) {
+    unless (@$nums_out == 3) {
       return 0;
     }
     
@@ -765,11 +765,34 @@ package TestCase::CoreFunc::Basic {
       return 0;
     }
     
-    unless (@$objects == 3) {
+    unless (@$objects_out == 3) {
       return 0;
     }
     
     unless ($objects != $objects_out) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_strarray : int () {
+    my $strings = ["abc", "def", "hij"];
+    my $strings_out = copy_strarray($strings);
+    
+    unless ($strings->[0] eq $strings_out->[0]) {
+      return 0;
+    }
+    
+    unless ($strings->[1] == $strings_out->[1]) {
+      return 0;
+    }
+    
+    unless ($strings->[2] == $strings_out->[2]) {
+      return 0;
+    }
+    
+    unless (@$strings_out == 3) {
       return 0;
     }
     
