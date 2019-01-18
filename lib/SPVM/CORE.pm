@@ -277,7 +277,7 @@ B<sub DBL_MAX : double ()>
 B<sub copy_string : string ($string : string)>
   
   my $string = "abced";
-  my $string_copy = copy_string $string;
+  my $string_copy = copy_string($string);
 
 Copy string.
 
@@ -286,7 +286,7 @@ Copy string.
 B<sub copy_byte_array : byte[] ($nums : byte[])>
 
   my $nums = [(byte)1, 2, 3];
-  my $nums_copy = copy_byte_array $nums;
+  my $nums_copy = copy_byte_array($nums);
   
 Copy byte array.
 
@@ -295,7 +295,7 @@ Copy byte array.
 B<sub copy_short_array : short[] ($nums : short[])>
 
   my $nums = [(short)1, 2, 3];
-  my $nums_copy = copy_short_array $nums;
+  my $nums_copy = copy_short_array($nums);
 
 Copy short array.
 
@@ -304,7 +304,7 @@ Copy short array.
 B<sub copy_int_array : int[] ($nums : int[])>
 
   my $nums = [1, 2, 3];
-  my $nums_copy = copy_int_array $nums;
+  my $nums_copy = copy_int_array($nums);
 
 Copy int array.
 
@@ -313,7 +313,7 @@ Copy int array.
 B<sub copy_long_array : long[] ($nums : long[])>
 
   my $nums = [(long)1, 2, 3];
-  my $nums_copy = copy_long_array $nums;
+  my $nums_copy = copy_long_array($nums);
 
 Copy long array.
   
@@ -322,7 +322,7 @@ Copy long array.
 B<sub copy_float_array : float[] ($nums : float[])>
 
   my $nums = [0.5f, 0.25f, 0.3f];
-  my $nums_copy = copy_float_array $nums;
+  my $nums_copy = copy_float_array($nums);
 
 Copy float array.
 
@@ -331,7 +331,7 @@ Copy float array.
 B<sub copy_double_array : double[] ($nums : double[])>
 
   my $nums = [0.5, 0.25, 0.3];
-  my $nums_copy = copy_double_array $nums;
+  my $nums_copy = copy_double_array($nums);
 
 Copy double array.
 
@@ -340,7 +340,7 @@ Copy double array.
 B<sub copy_object_array : object[] ($objects : object[])>
 
   my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = copy_object_array $objects;
+  my $objects_copy = copy_object_array($objects);
 
 Copy object array.
 
