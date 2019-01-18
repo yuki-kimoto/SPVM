@@ -290,48 +290,48 @@ B<sub copy_barray : byte[] ($nums : byte[])>
   
 Copy byte array.
 
-=head2 copy_short_array
+=head2 copy_sarray
 
-B<sub copy_short_array : short[] ($nums : short[])>
+B<sub copy_sarray : short[] ($nums : short[])>
 
   my $nums = [(short)1, 2, 3];
-  my $nums_copy = copy_short_array($nums);
+  my $nums_copy = copy_sarray($nums);
 
 Copy short array.
 
-=head2 copy_int_array
+=head2 copy_iarray
 
-B<sub copy_int_array : int[] ($nums : int[])>
+B<sub copy_iarray : int[] ($nums : int[])>
 
   my $nums = [1, 2, 3];
-  my $nums_copy = copy_int_array($nums);
+  my $nums_copy = copy_iarray($nums);
 
 Copy int array.
 
-=head2 copy_long_array
+=head2 copy_larray
 
-B<sub copy_long_array : long[] ($nums : long[])>
+B<sub copy_larray : long[] ($nums : long[])>
 
   my $nums = [(long)1, 2, 3];
-  my $nums_copy = copy_long_array($nums);
+  my $nums_copy = copy_larray($nums);
 
 Copy long array.
   
-=head2 copy_float_array
+=head2 copy_farray
 
-B<sub copy_float_array : float[] ($nums : float[])>
+B<sub copy_farray : float[] ($nums : float[])>
 
   my $nums = [0.5f, 0.25f, 0.3f];
-  my $nums_copy = copy_float_array($nums);
+  my $nums_copy = copy_farray($nums);
 
 Copy float array.
 
-=head2 copy_double_array
+=head2 copy_darray
 
-B<sub copy_double_array : double[] ($nums : double[])>
+B<sub copy_darray : double[] ($nums : double[])>
 
   my $nums = [0.5, 0.25, 0.3];
-  my $nums_copy = copy_double_array($nums);
+  my $nums_copy = copy_darray($nums);
 
 Copy double array.
 

@@ -146,11 +146,11 @@ ok(TestCase::CoreFunc::Math->test_join);
 {
   ok(TestCase::CoreFunc::Basic->test_copy_string);
   ok(TestCase::CoreFunc::Basic->test_copy_barray);
-  ok(TestCase::CoreFunc::Basic->test_copy_short_array);
-  ok(TestCase::CoreFunc::Basic->test_copy_int_array);
-  ok(TestCase::CoreFunc::Basic->test_copy_long_array);
-  ok(TestCase::CoreFunc::Basic->test_copy_float_array);
-  ok(TestCase::CoreFunc::Basic->test_copy_float_array);
+  ok(TestCase::CoreFunc::Basic->test_copy_sarray);
+  ok(TestCase::CoreFunc::Basic->test_copy_iarray);
+  ok(TestCase::CoreFunc::Basic->test_copy_larray);
+  ok(TestCase::CoreFunc::Basic->test_copy_farray);
+  ok(TestCase::CoreFunc::Basic->test_copy_farray);
   ok(TestCase::CoreFunc::Basic->test_copy_object_array);
 }
 

@@ -479,7 +479,7 @@ package SPVM::CORE {
     return $new_nums;
   }
 
-  sub copy_short_array : short[] ($nums : short[]) {
+  sub copy_sarray : short[] ($nums : short[]) {
     my $length = @$nums;
     
     my $new_nums = new short[$length];
@@ -491,7 +491,7 @@ package SPVM::CORE {
     return $new_nums;
   }
   
-  sub copy_int_array : int[] ($nums : int[]) {
+  sub copy_iarray : int[] ($nums : int[]) {
     my $length = @$nums;
     
     my $new_nums = new int[$length];
@@ -503,7 +503,7 @@ package SPVM::CORE {
     return $new_nums;
   }
 
-  sub copy_long_array : long[] ($nums : long[]) {
+  sub copy_larray : long[] ($nums : long[]) {
     my $length = @$nums;
     
     my $new_nums = new long[$length];
@@ -515,7 +515,7 @@ package SPVM::CORE {
     return $new_nums;
   }
 
-  sub copy_float_array : float[] ($nums : float[]) {
+  sub copy_farray : float[] ($nums : float[]) {
     my $length = @$nums;
     
     my $new_nums = new float[$length];
@@ -527,7 +527,7 @@ package SPVM::CORE {
     return $new_nums;
   }
 
-  sub copy_double_array : double[] ($nums : double[]) {
+  sub copy_darray : double[] ($nums : double[]) {
     my $length = @$nums;
     
     my $new_nums = new double[$length];

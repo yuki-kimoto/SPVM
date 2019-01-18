@@ -622,9 +622,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_short_array : int () {
+  sub test_copy_sarray : int () {
     my $nums = [(short)1, 2, INT16_MIN()];
-    my $nums_out = copy_short_array($nums);
+    my $nums_out = copy_sarray($nums);
     
     unless ($nums->[0] == 1) {
       return 0;
@@ -645,9 +645,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_int_array : int () {
+  sub test_copy_iarray : int () {
     my $nums = [(int)1, 2, INT32_MIN()];
-    my $nums_out = copy_int_array($nums);
+    my $nums_out = copy_iarray($nums);
     
     unless ($nums->[0] == 1) {
       return 0;
@@ -668,9 +668,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_long_array : int () {
+  sub test_copy_larray : int () {
     my $nums = [(long)1, 2, INT64_MIN()];
-    my $nums_out = copy_long_array($nums);
+    my $nums_out = copy_larray($nums);
     
     unless ($nums->[0] == 1) {
       return 0;
@@ -691,9 +691,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_float_array : int () {
+  sub test_copy_farray : int () {
     my $nums = [(float)0.5f, 0.25f, FLT_MIN()];
-    my $nums_out = copy_float_array($nums);
+    my $nums_out = copy_farray($nums);
     
     unless ($nums->[0] == 0.5) {
       return 0;
@@ -714,9 +714,9 @@ package TestCase::CoreFunc::Basic {
     return 1;
   }
 
-  sub test_copy_double_array : int () {
+  sub test_copy_darray : int () {
     my $nums = [(double)0.5, 0.25, DBL_MIN()];
-    my $nums_out = copy_double_array($nums);
+    my $nums_out = copy_darray($nums);
     
     unless ($nums->[0] == 0.5) {
       return 0;
