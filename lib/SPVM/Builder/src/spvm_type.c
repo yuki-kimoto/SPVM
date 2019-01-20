@@ -322,6 +322,16 @@ SPVM_TYPE* SPVM_TYPE_create_void_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_create_oarray_type(SPVM_COMPILER* compiler) {
+  (void)compiler;
+  
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+  type->basic_type = SPVM_LIST_fetch(compiler->basic_types, SPVM_BASIC_TYPE_C_ID_OARRAY);
+  type->dimension = 0;
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_create_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
@@ -796,6 +806,46 @@ int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   }
 }
 
+int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+  
+  if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
+    if (SPVM_TYPE_is_oarray_type(compiler, basic_type_id, dimension, flag)) {
+      return 1;
+    }
+    else {
+      int32_t element_dimension = dimension - 1;
+      if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 0;
+      }
+      else if (SPVM_TYPE_is_value_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 0;
+      }
+      else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, element_dimension, flag)) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
@@ -894,7 +944,23 @@ int32_t SPVM_TYPE_is_byte_array_type(SPVM_COMPILER* compiler, int32_t basic_type
 int32_t SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  if (SPVM_TYPE_is_oarray_type(compiler, basic_type_id, dimension, flag)) {
+    return 1;
+  }
+  else {
+    return dimension > 0 && !(flag & SPVM_TYPE_C_FLAG_REF);
+  }
+}
+
+int32_t SPVM_TYPE_is_oarray_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+  
+  if (basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY && dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {

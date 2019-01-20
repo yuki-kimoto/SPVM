@@ -1,3 +1,65 @@
+0.0412 2018-01-17
+  - add oarray type to implement sort algorithm
+  - fix native and precompile file path bug
+  - add equals_barray core function
+  - add equals_sarray core function
+  - add equals_iarray core function
+  - add equals_larray core function
+  - add equals_farray core function
+  - add equals_darray core function
+  - add equals_oarray core function
+  - add sortb core function
+  - add sorts core function
+  - add sorti core function
+  - add sortl core function
+  - add sortf core function
+  - add sortd core function
+  - add sorto core function
+  - add reverseb core function
+  - add reverses core function
+  - add reversei core function
+  - add reversel core function
+  - add reversef core function
+  - add reversed core function
+  - add reverseo core function
+  - add sliceb core function
+  - add slices core function
+  - add slicei core function
+  - add slicel core function
+  - add slicef core function
+  - add sliced core function
+  - add sliceo core function
+  - add env->object_basic_type_id
+  - add env->object_type_dimension
+  - add SPVM::Stringer interface
+  - add joinb
+  - add joins
+  - add joini
+  - add joinl
+  - add joinf
+  - add joind
+  - add joino
+0.0411 2018-01-16
+  - remove rest of list context @ error check becuase SPVM can not define list context correctly
+0.0410 2018-01-16
+  - Fix realese of 0.0409
+0.0409 2018-01-16
+  - remove new Foo[] {x, y, z} syntax. Use [(Foo)x, y, z] instead.
+  - Simplify native source file and config path
+    change Foo/Bar.native/Bar.c to Foo/Bar.native.c
+    change Foo/Bar.native/Bar.config to Foo/Bar.native.config
+  - add default include path spvm_build/include
+  - add default library path spvm_build/lib
+  - rename SPVM::Builder::C to SPVM::Builder::CC
+0.0408 2018-01-11
+  - remove list context @ error check becuase SPVM can not define list context correctly
+  - fix string comparison operator undef occur exception
+  - add new_list core func
+  - add new_hash core func
+  - add to_iarray to SPVM::List
+  - add unweaken and isweak statement
+  - fat camma left name become string literal
+    x => 1, y => 2
 0.0407 2018-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t

@@ -5,7 +5,7 @@ package TestCase::Interface {
   use TestCase::Interface::ImplementInterface2;
   use SPVM::Comparator;
 
-  sub sort_obj : void ($values : object[], $comparator : SPVM::Comparator) {
+  sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -49,10 +49,7 @@ package TestCase::Interface {
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      my $objects = new object[scalar @$minimals];
-      for (my $i = 0; $i < @$objects; $i++) { $objects->[$i] = $minimals->[$i]; }
-      sort_obj($objects, $comparator);
-      for (my $i = 0; $i < @$objects; $i++) { $minimals->[$i] = (TestCase::Minimal)$objects->[$i]; }
+      sort_obj($minimals, $comparator);
       
       if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
         return 1;

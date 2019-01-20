@@ -136,6 +136,12 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "WEAKEN",
   "WEAKEN_FIELD",
   "WEAKEN_ARRAY_ELEMENT",
+  "UNWEAKEN",
+  "UNWEAKEN_FIELD",
+  "UNWEAKEN_ARRAY_ELEMENT",
+  "ISWEAK",
+  "ISWEAK_FIELD",
+  "ISWEAK_ARRAY_ELEMENT",
   "SPECIAL_ASSIGN",
   "CONCAT",
   "SET",
@@ -1109,7 +1115,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_ISA: {
+    case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_IF:
+    {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
       break;
@@ -1135,6 +1143,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, first_type->basic_type->name, strlen(first_type->basic_type->name));
       if (basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING && first_type->dimension == 0) {
         type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "byte", strlen("byte"));
+        type->dimension = 0;
+      }
+      else if (basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY && first_type->dimension == 0) {
+        type->basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, "object", strlen("object"));
         type->dimension = 0;
       }
       else {
@@ -1399,6 +1411,47 @@ SPVM_OP* SPVM_OP_build_weaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op
   return op_weaken_array_element;
 }
 
+SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access) {
+  
+  SPVM_OP* op_unweaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNWEAKEN_FIELD, op_unweaken->file, op_unweaken->line);
+  SPVM_OP_insert_child(compiler, op_unweaken_field, op_unweaken_field->last, op_field_access);
+  
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN;
+  
+  return op_unweaken_field;
+}
+
+SPVM_OP* SPVM_OP_build_unweaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_array_access) {
+  
+  SPVM_OP* op_unweaken_array_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_UNWEAKEN_ARRAY_ELEMENT, op_unweaken->file, op_unweaken->line);
+  SPVM_OP_insert_child(compiler, op_unweaken_array_element, op_unweaken_array_element->last, op_array_access);
+  
+  op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN;
+  
+  return op_unweaken_array_element;
+}
+
+SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access) {
+  
+  SPVM_OP* op_isweak_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_FIELD, op_isweak->file, op_isweak->line);
+  SPVM_OP_insert_child(compiler, op_isweak_field, op_isweak_field->last, op_field_access);
+  
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK;
+  
+  return op_isweak_field;
+}
+
+SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_array_access) {
+  
+  SPVM_OP* op_isweak_array_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_ARRAY_ELEMENT, op_isweak->file, op_isweak->line);
+  SPVM_OP_insert_child(compiler, op_isweak_array_element, op_isweak_array_element->last, op_array_access);
+  
+  op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK;
+  
+  return op_isweak_array_element;
+}
+
+
 SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
   
   SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_term);
@@ -1423,8 +1476,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package
   SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
   
-  package->load_path = compiler->cur_file;
-  package->load_rel_path = compiler->cur_rel_file;
+  package->module_file = compiler->cur_file;
+  package->module_rel_file = compiler->cur_rel_file;
   
   int32_t is_anon;
   if (op_type) {
@@ -2511,13 +2564,6 @@ SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat, SPVM_
   SPVM_OP_insert_child(compiler, op_cancat, op_cancat->last, op_last);
   
   return op_cancat;
-}
-
-SPVM_OP* SPVM_OP_build_single_parenthes_term(SPVM_COMPILER* compiler, SPVM_OP* op_term) {
-  if (op_term->id == SPVM_OP_C_ID_ARRAY_LENGTH) {
-    SPVM_COMPILER_error(compiler, "Can't use @ in single parenthes at %s line %d\n", op_term->file, op_term->line);
-  }
-  return op_term;
 }
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {

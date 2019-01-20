@@ -4,11 +4,11 @@ use strict;
 use warnings;
 use Carp 'croak';
 use Config;
-use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
+use File::Basename 'dirname';
 
 use SPVM::Builder::Config;
 
@@ -41,15 +41,15 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub get_shared_lib_func_address {
-  my ($shared_lib_file, $shared_lib_func_name) = @_;
+sub get_dll_func_address {
+  my ($dll_file, $dll_func_name) = @_;
   
   my $native_address;
   
-  if ($shared_lib_file) {
-    my $dll_libref = DynaLoader::dl_load_file($shared_lib_file);
+  if ($dll_file) {
+    my $dll_libref = DynaLoader::dl_load_file($dll_file);
     if ($dll_libref) {
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $shared_lib_func_name);
+      $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
     }
     else {
       return;
@@ -62,28 +62,90 @@ sub get_shared_lib_func_address {
   return $native_address;
 }
 
-sub convert_module_path_to_shared_lib_path {
-  my ($module_path, $category) = @_;
+sub convert_module_file_to_dll_category_file {
+  my ($module_file, $category) = @_;
   
-  my $module_dir = dirname $module_path;
-  my $base_name = basename $module_path;
-  $base_name =~ s/\.[^.]+$//;
+  $module_file =~ s/\.[^.]+$//;
+  my $dll_category_file .= "$module_file.$category.$Config{dlext}";
   
-  my $shared_lib_path .= "$module_dir/$base_name.$category/$base_name.$Config{dlext}";
-  
-  return $shared_lib_path;
+  return $dll_category_file;
 }
 
-sub remove_package_part_from_path {
-  my ($path, $package_name) = @_;
+sub convert_package_name_to_dll_category_rel_file {
+  my ($package_name, $category) = @_;
   
-  $path =~ s/\.spvm$//;
-  my $package_path = $package_name;
-  $package_path =~ s/::/\//g;
-  $path =~ s/$package_path$//;
-  $path =~ s/[\\\/]$//;
+  my $dlext = $Config{dlext};
+  my $dll_category_rel_file = convert_package_name_to_rel_file_without_ext($package_name);
+  $dll_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
-  return $path;
+  return $dll_category_rel_file;
+}
+
+sub convert_package_name_to_category_rel_file_with_ext {
+  my ($package_name, $category, $ext) = @_;
+  
+  my $rel_file_with_ext = $package_name;
+  $rel_file_with_ext =~ s/::/\//g;
+  $rel_file_with_ext .= $category eq 'native' ? ".$ext" : ".$category.$ext";
+  
+  return $rel_file_with_ext;
+}
+
+sub convert_package_name_to_rel_file {
+  my ($package_name) = @_;
+  
+  my $rel_file = $package_name;
+  $rel_file =~ s/::/\//g;
+  $rel_file .= '.spvm';
+  
+  return $rel_file;
+}
+
+sub convert_package_name_to_rel_dir {
+  my ($package_name) = @_;
+  
+  my $rel_dir;
+  if ($package_name =~ /::/) {
+    my $rel_file = $package_name;
+    $rel_file =~ s/::/\//g;
+    $rel_dir = dirname $rel_file;
+  }
+  else {
+    $rel_dir = '';
+  }
+  
+  return $rel_dir;
+}
+
+sub convert_package_name_to_rel_file_with_ext {
+  my ($package_name, $ext) = @_;
+  
+  my $rel_file_with_ext = $package_name;
+  $rel_file_with_ext =~ s/::/\//g;
+  $rel_file_with_ext .= ".$ext";
+  
+  return $rel_file_with_ext;
+}
+
+sub convert_package_name_to_rel_file_without_ext {
+  my ($package_name) = @_;
+  
+  my $rel_file_without_ext = $package_name;
+  $rel_file_without_ext =~ s/::/\//g;
+  
+  return $rel_file_without_ext;
+}
+
+sub remove_package_part_from_file {
+  my ($file, $package_name) = @_;
+  
+  $file =~ s/\.spvm$//;
+  my $package_file = $package_name;
+  $package_file =~ s/::/\//g;
+  $file =~ s/$package_file$//;
+  $file =~ s/[\\\/]$//;
+  
+  return $file;
 }
 
 sub create_make_rule_native {
@@ -120,15 +182,15 @@ sub create_package_make_rule {
   
   my $input_dir = 'lib';
 
-  my $work_dir = "spvm_build/work";
-  mkpath $work_dir;
+  my $tmp_dir = "spvm_build/work/tmp";
+  mkpath $tmp_dir;
 
   my $output_dir = 'blib/lib';
   
-  my $package_path = convert_package_name_to_path($package_name, $category);
-  my $input_src_dir = "$input_dir/$package_path";
+  my $package_rel_file = convert_package_name_to_rel_file($package_name);
+  my $input_src_dir = "$input_dir/$package_rel_file";
   
-  my $spvm_file = $package_path;
+  my $spvm_file = $package_rel_file;
   $spvm_file =~ s/\.[^\.]+$//;
   $spvm_file .= '.spvm';
   $spvm_file = "$input_dir/$spvm_file";
@@ -143,55 +205,18 @@ sub create_package_make_rule {
   push @deps, $spvm_file;
   
   # Shared library file
-  my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
-  my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
+  my $dll_rel_file = convert_package_name_to_dll_category_rel_file($package_name, $category);
+  my $dll_file = "blib/lib/$dll_rel_file";
   
   # Get source files
   $make_rule
-    .= "$target_name :: $shared_lib_file\n\n";
+    .= "$target_name :: $dll_file\n\n";
   $make_rule
-    .= "$shared_lib_file :: @deps\n\n";
+    .= "$dll_file :: @deps\n\n";
   $make_rule
-    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => 'spvm_build')->build_dll_${category}_dist('$package_name')\"\n\n";
   
   return $make_rule;
-}
-
-sub convert_package_name_to_path {
-  my ($package_name, $category) = @_;
-  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $shared_lib_rel_dir = $package_name;
-  $shared_lib_rel_dir =~ s/::/\//g;
-  $shared_lib_rel_dir = "$shared_lib_rel_dir.$category";
-  
-  return $shared_lib_rel_dir;
-}
-
-sub convert_package_name_to_shared_lib_rel_file {
-  my ($package_name, $category) = @_;
-  
-  my $dlext = $Config{dlext};
-  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  
-  my $package_path = convert_package_name_to_path($package_name, $category);
-  my $shared_lib_rel_file = "$package_path/$module_base_name.$dlext";
-  
-  return $shared_lib_rel_file;
-}
-
-sub convert_package_name_to_shared_lib_dir {
-  my ($lib_dir, $package_name, $category) = @_;
-  
-  # Shared library file
-  my $shared_lib_rel_dir = convert_package_name_to_path($package_name, $category);
-  my $shared_lib_dir = "$lib_dir/$shared_lib_rel_dir";
-  
-  return $shared_lib_dir;
 }
 
 sub new_default_build_config {
@@ -248,7 +273,7 @@ B<Create defaulgt build config>
   $build_config->set_optimize('-O3');
   
 
-B<Add Build shared library make rule in Makefile.PL>
+B<Add Build shared object make rule in Makefile.PL>
 
   sub MY::postamble {
 
@@ -277,7 +302,7 @@ Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
 This function is used in native config file.
 
-  # Foo.native/Foo.config
+  # Foo.spvm.bconf
   use strict;
   use warnings;
 

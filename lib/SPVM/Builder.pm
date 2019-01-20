@@ -8,7 +8,7 @@ use Carp 'confess';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
-use SPVM::Builder::C;
+use SPVM::Builder::CC;
 
 use Scalar::Util 'weaken';
 
@@ -28,7 +28,7 @@ sub new {
   
   bless $self, $class;
   
-  my $builder_c_precompile = SPVM::Builder::C->new(
+  my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self
@@ -129,10 +129,10 @@ sub get_native_package_names {
   return $native_package_names;
 }
 
-sub get_package_load_path {
+sub get_module_file {
   my ($self, $package_name) = @_;
   
-  return $self->{packages}{$package_name}{load_path};
+  return $self->{packages}{$package_name}{module_file};
 }
 
 sub build_spvm {
@@ -169,7 +169,7 @@ sub use {
   push @{$self->{package_infos}}, $package_info;
 }
 
-sub build_shared_lib_native_dist {
+sub build_dll_native_dist {
   my ($self, $package_name) = @_;
   
   $self->use($package_name);
@@ -178,17 +178,17 @@ sub build_shared_lib_native_dist {
 
   my $sub_names = $self->get_native_sub_names($package_name);
 
-  my $builder_c_native = SPVM::Builder::C->new(
+  my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'native',
     builder => $self,
     quiet => 0,
   );
   
-  $builder_c_native->build_shared_lib_native_dist($package_name, $sub_names);
+  $builder_c_native->build_dll_native_dist($package_name, $sub_names);
 }
 
-sub build_shared_lib_precompile_dist {
+sub build_dll_precompile_dist {
   my ($self, $package_name) = @_;
   
   $self->use($package_name);
@@ -200,20 +200,20 @@ sub build_shared_lib_precompile_dist {
   
   my $sub_names = $self->get_precompile_sub_names($package_name);
 
-  my $builder_c_precompile = SPVM::Builder::C->new(
+  my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self,
     quiet => 0,
   );
   
-  $builder_c_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
+  $builder_c_precompile->build_dll_precompile_dist($package_name, $sub_names);
 }
 
 sub build_precompile {
   my $self = shift;
 
-  my $builder_c_precompile = SPVM::Builder::C->new(
+  my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self,
@@ -226,7 +226,7 @@ sub build_precompile {
 sub build_native {
   my $self = shift;
 
-  my $builder_c_native = SPVM::Builder::C->new(
+  my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'native',
     builder => $self,

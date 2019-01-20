@@ -1,7 +1,420 @@
 package SPVM::CORE {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
+  use SPVM::List;
+  use SPVM::Hash;
+  use SPVM::Comparator;
+  use SPVM::Stringer;
   
+  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
+
+  precompile sub sliceb : byte[] ($nums : byte[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new byte[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub slices : short[] ($nums : short[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new short[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub slicei : int[] ($nums : int[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new int[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub slicel : long[] ($nums : long[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new long[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub slicef : float[] ($nums : float[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new float[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub sliced : double[] ($nums : double[], $offset : int, $length : int) {
+    
+    if ($nums == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$nums;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new double[$length];
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  precompile sub sliceo : oarray ($elems : oarray, $offset : int, $length : int) {
+    
+    if ($elems == undef) {
+      croak "Array must be defined";
+    }
+    
+    my $array_length = @$elems;
+    
+    if ($offset < 0 || $offset > $array_length - 1) {
+      croak "Invalid offset";
+    }
+    
+    if ($length < 0) {
+      croak "Length must be non-zero value";
+    }
+    
+    if ($offset + $length > $array_length) {
+      croak "Offset + length must not be over array length";
+    }
+    
+    my $slice = new_oarray_proto($elems, $length);
+    
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $elems->[$i];
+      $pos++;
+    }
+    
+    return $slice;
+  }
+
+  native sub reverseb : void ($nums : byte[]);
+  native sub reverses : void ($nums : short[]);
+  native sub reversei : void ($nums : int[]);
+  native sub reversel : void ($nums : long[]);
+  native sub reversef : void ($nums : float[]);
+  native sub reversed : void ($nums : double[]);
+  native sub reverseo : void ($nums : oarray);
+  
+  native sub sortb : void ($nums : byte[]);
+  native sub sorts : void ($nums : short[]);
+  native sub sorti : void ($nums : int[]);
+  native sub sortl : void ($nums : long[]);
+  native sub sortf : void ($nums : float[]);
+  native sub sortd : void ($nums : double[]);
+
+  precompile sub _merge : void($a : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+      my $i = $left;
+      my $j = $mid + 1;
+      my $k = 0;
+      my $b = new_oarray_proto($a, $n);
+      while ($i <= $mid && $j <= $right) {
+          $i = $left;
+          $j = $mid + 1;
+          $k = 0;
+          while ($i <= $mid && $j <= $right) {
+              if ($comparator->compare($a->[$i], $a->[$j]) <= 0) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+              } else {
+                  $b->[$k] = $a->[$j];
+                  $j++;
+              }
+              $k++;
+          }
+          if ($i == $mid + 1) {
+              while ($j <= $right) {
+                  $b->[$k] = $a->[$j]; 
+                  $j++;
+                  $k++;
+              }
+          } else {
+              while($i <= $mid) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+                  $k++;
+              }
+          }
+      }
+      for ($i = 0; $i < $k; $i++) {
+        $a->[$i + $left] = $b->[$i];
+      }
+  }
+
+  precompile sub _merge_sort : void($a : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
+      if ($left == $right) {
+        return;
+      }
+
+      my $mid = ($left + $right) / 2;
+
+      _merge_sort($a, $left, $mid, $n, $comparator);
+      _merge_sort($a, $mid + 1, $right, $n, $comparator);
+      _merge($a, $left, $mid, $right, $n, $comparator);
+  }
+  
+  precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
+    if ($objs == undef) {
+      croak "Array must be defined";
+    }
+    my $length = @$objs;
+    _merge_sort($objs, 0, $length - 1, $length, $comparator);
+  }
+  
+  precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  precompile sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  precompile sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  
+  sub AUTO_LEN : int () { return -1; }
+  sub EOF : int () { return -1; }
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
   native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
@@ -14,6 +427,14 @@ package SPVM::CORE {
   
   native sub signbitf : int ($num : float);
   native sub signbit : int ($num : double);
+  
+  sub new_list : SPVM::List ($objects : object[]) {
+    return SPVM::List->new_with_array($objects);
+  }
+
+  sub new_hash : SPVM::Hash ($objects : object[]) {
+    return SPVM::Hash->new_with_array($objects);
+  }
   
   sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;
@@ -142,6 +563,98 @@ package SPVM::CORE {
       my $string = $strings->[$i];
       $join .= $string;
       if ($i != @$strings - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinb : string ($sep : string, $nums : byte[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joins : string ($sep : string, $nums : short[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joini : string ($sep : string, $nums : int[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinl : string ($sep : string, $nums : long[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joinf : string ($sep : string, $nums : float[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joind : string ($sep : string, $nums : double[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  sub joino : string ($sep : string, $objects : oarray) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$objects; $i++) {
+      my $stringer = (SPVM::Stringer)$objects->[$i];
+      my $string = $stringer->to_string();
+      $join .= $string;
+      if ($i != @$objects - 1) {
         $join .= $sep;
       }
     }

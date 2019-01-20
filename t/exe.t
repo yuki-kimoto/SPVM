@@ -21,7 +21,7 @@ use lib "$FindBin::Bin/default/lib";
   system($spvmcc_cmd) == 0
     or die "Can't execute command $spvmcc_cmd:$!";
 
-  my $execute_cmd = 'spvm_build/exe/TestCase__MyExe';
+  my $execute_cmd = 'spvm_build/work/exe/TestCase__MyExe';
   system($execute_cmd) == 0
     or die "Can't execute command $spvmcc_cmd:$!";
 }

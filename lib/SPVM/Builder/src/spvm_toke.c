@@ -35,6 +35,17 @@ SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   return op;
 }
 
+int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (ch == 0x20 || ch == 0x0D || ch == 0x0A || ch == 0x09 || ch == 0x0C) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
@@ -479,7 +490,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (
               *compiler->bufptr == '='
               && strncmp(compiler->bufptr + 1, "cut", 3) == 0
-              && (*(compiler->bufptr + 4) == '\0' || isspace((int)*(compiler->bufptr + 4)))
+              && (*(compiler->bufptr + 4) == '\0' || SPVM_TOKE_is_white_space(compiler, *(compiler->bufptr + 4)))
             )
             {
               compiler->bufptr += 4;
@@ -1320,20 +1331,41 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           
-          
+          // Keyword string
           char* keyword;
-          int32_t str_len = (compiler->bufptr - cur_token_ptr);
-          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, str_len);
+          int32_t keyword_length = (compiler->bufptr - cur_token_ptr);
+          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, keyword_length);
           if (found_name) {
             keyword = found_name;
           }
           else {
-            keyword = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_len + 1);
-            memcpy(keyword, cur_token_ptr, str_len);
-            keyword[str_len] = '\0';
-            SPVM_HASH_insert(compiler->name_symtable, keyword, str_len, keyword);
+            keyword = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, keyword_length + 1);
+            memcpy(keyword, cur_token_ptr, keyword_length);
+            keyword[keyword_length] = '\0';
+            SPVM_HASH_insert(compiler->name_symtable, keyword, keyword_length, keyword);
+          }
+
+          // If following token is fat comma, keyword is manipulated as string literal
+          int32_t next_is_fat_camma = 0;
+          char* fat_camma_check_ptr = compiler->bufptr;
+          while (SPVM_TOKE_is_white_space(compiler, *fat_camma_check_ptr)) {
+            fat_camma_check_ptr++;
+          }
+          if (*fat_camma_check_ptr == '=' && *(fat_camma_check_ptr + 1) == '>') {
+            next_is_fat_camma = 1;
+          }
+          else {
+            next_is_fat_camma = 0;
+          }
+          if (next_is_fat_camma) {
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, keyword, keyword_length, compiler->cur_file, compiler->cur_line);
+            
+            yylvalp->opval = op_constant;
+            
+            return CONSTANT;
           }
           
+          // Keyword
           if (expect_sub_name) {
             // None
           }
@@ -1438,6 +1470,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
                   return ISA;
+                }
+                else if (strcmp(keyword, "isweak") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
+                  return ISWEAK;
                 }
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
@@ -1598,6 +1634,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "unless") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_UNLESS);
                   return UNLESS;
+                }
+                else if (strcmp(keyword, "unweaken") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_UNLESS);
+                  return UNWEAKEN;
                 }
                 else if (strcmp(keyword, "use") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_USE);

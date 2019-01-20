@@ -22,6 +22,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Subtract->subtract_byte_int);
     ok(TestCase::Subtract->subtract_short_int);
     ok(TestCase::Subtract->subtract_int_int);
+    ok(TestCase::Subtract->subtract_long_long);
     ok(TestCase::Subtract->subtract_int_float);
     ok(TestCase::Subtract->subtract_int_double);
     ok(TestCase::Subtract->subtract_minus);
@@ -29,7 +30,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Subtract->subtract_float_float);
     ok(TestCase::Subtract->subtract_double_double);
     ok(TestCase::Subtract->subtract_double_double_big);
-
   }
 
   # Subtract - Compile Error

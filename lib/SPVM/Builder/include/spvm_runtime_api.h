@@ -205,4 +205,7 @@ void SPVM_RUNTIME_API_set_opkgvar(SPVM_ENV* env, int32_t pkgvar_id, SPVM_OBJECT*
 SPVM_OBJECT* SPVM_RUNTIME_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_RUNTIME_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 
+int32_t SPVM_RUNTIME_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
+
 #endif

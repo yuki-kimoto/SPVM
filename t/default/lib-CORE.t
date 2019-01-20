@@ -32,11 +32,114 @@ use SPVM 'TestCase::CoreFunc::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# new_oarray_proto
+{
+  # sliceb
+  ok(TestCase::CoreFunc::Basic->test_new_oarray_proto);
+}
+
+# slice
+{
+  # sliceb
+  ok(TestCase::CoreFunc::Basic->test_sliceb);
+
+  # slices
+  ok(TestCase::CoreFunc::Basic->test_slices);
+
+  # slicei
+  ok(TestCase::CoreFunc::Basic->test_slicei);
+
+  # slicel
+  ok(TestCase::CoreFunc::Basic->test_slicel);
+
+  # slicef
+  ok(TestCase::CoreFunc::Basic->test_slicef);
+
+  # sliced
+  ok(TestCase::CoreFunc::Basic->test_sliced);
+
+  # sliced
+  ok(TestCase::CoreFunc::Basic->test_sliceo);
+}
+
+# reverse
+{
+  # reverseb
+  ok(TestCase::CoreFunc::Basic->test_reverseb);
+
+  # reverses
+  ok(TestCase::CoreFunc::Basic->test_reverses);
+
+  # reversei
+  ok(TestCase::CoreFunc::Basic->test_reversei);
+
+  # reversel
+  ok(TestCase::CoreFunc::Basic->test_reversel);
+
+  # reversef
+  ok(TestCase::CoreFunc::Basic->test_reversef);
+
+  # reversed
+  ok(TestCase::CoreFunc::Basic->test_reversed);
+
+  # reversed
+  ok(TestCase::CoreFunc::Basic->test_reverseo);
+}
+
+# sort
+{
+  # sortb
+  ok(TestCase::CoreFunc::Basic->test_sortb);
+
+  # sorts
+  ok(TestCase::CoreFunc::Basic->test_sorts);
+
+  # sorti
+  ok(TestCase::CoreFunc::Basic->test_sorti);
+
+  # sortl
+  ok(TestCase::CoreFunc::Basic->test_sortl);
+
+  # sortf
+  ok(TestCase::CoreFunc::Basic->test_sortf);
+
+  # sortd
+  ok(TestCase::CoreFunc::Basic->test_sortd);
+
+  # sortd
+  ok(TestCase::CoreFunc::Basic->test_sorto);
+}
+
+
 ok(TestCase::CoreFunc::Math->test_join);
 
 # type_name
 {
   ok(TestCase::CoreFunc::Basic->test_type_name);
+}
+
+# equals
+{
+  # equals_barray
+  ok(TestCase::CoreFunc::Basic->test_equals_barray);
+  
+  # equals_sarray
+  ok(TestCase::CoreFunc::Basic->test_equals_sarray);
+  
+  # equals_iarray
+  ok(TestCase::CoreFunc::Basic->test_equals_iarray);
+  
+  # equeals_larray
+  ok(TestCase::CoreFunc::Basic->test_equals_larray);
+  
+  # equals_farray
+  ok(TestCase::CoreFunc::Basic->test_equals_farray);
+  
+  # equals_darray
+  ok(TestCase::CoreFunc::Basic->test_equals_darray);
+
+  # equals_oarray
+  ok(TestCase::CoreFunc::Basic->test_equals_darray);
 }
 
 # Copy

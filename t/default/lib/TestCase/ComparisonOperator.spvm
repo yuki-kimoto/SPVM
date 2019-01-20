@@ -1,7 +1,7 @@
 package TestCase::ComparisonOperator {
   use TestCase;
   
-  sub string_comparison_operator : int () {
+  sub string_eq : int () {
     my $string = "abc";
     my $string_same = "abc";
     my $string_short = "ab";
@@ -9,112 +9,381 @@ package TestCase::ComparisonOperator {
     my $string_different_short= "ad";
     my $string_different_long= "adcd";
     my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
     
     # eq
-    my $eq_ok = 0;
-    if ($string eq $string_same) {
-      if (!($string eq $string_short)) {
-        if (!($string eq $string_long)) {
-          if (!($string eq $string_different_short)) {
-            if (!($string eq $string_different_long)) {
-              if (!($string eq $string_empty)) {
-                $eq_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    my $ok = 0;
+    unless ($string eq $string_same) {
+      return 0;
     }
-
-    # ne
-    my $ne_ok = 0;
-    if (!($string ne $string_same)) {
-      if (($string ne $string_short)) {
-        if (($string ne $string_long)) {
-          if (($string ne $string_different_short)) {
-            if (($string ne $string_different_long)) {
-              if (($string ne $string_empty)) {
-                $ne_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless (!($string eq $string_short)) {
+      return 0;
     }
-
-    # gt
-    my $gt_ok = 0;
-    if (!($string gt $string_same)) {
-      if ($string gt $string_short) {
-        if (!($string gt $string_long)) {
-          if (!($string gt $string_different_short)) {
-            if (!($string gt $string_different_long)) {
-              if ($string gt $string_empty) {
-                $gt_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless (!($string eq $string_long)) {
+      return 0;
     }
-
-    # ge
-    my $ge_ok = 0;
-    if ($string ge $string_same) {
-      if ($string ge $string_short) {
-        if (!($string ge $string_long)) {
-          if (!($string ge $string_different_short)) {
-            if (!($string ge $string_different_long)) {
-              if ($string ge $string_empty) {
-                $ge_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless (!($string eq $string_different_short)) {
+      return 0;
     }
-
-    # lt
-    my $lt_ok = 0;
-    if ($string lt $string_same) {
-      if (!($string lt $string_short)) {
-        if ($string lt $string_long) {
-          if ($string lt $string_different_short) {
-            if ($string lt $string_different_long) {
-              if (!($string lt $string_empty)) {
-                $lt_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless (!($string eq $string_different_long)) {
+      return 0;
     }
-
-    # le
-    my $le_ok = 0;
-    if ($string le $string_same) {
-      if (!($string le $string_short)) {
-        if ($string le $string_long) {
-          if ($string le $string_different_short) {
-            if ($string le $string_different_long) {
-              if (!($string le $string_empty)) {
-                $le_ok = 1;
-              }
-            }
-          }
-        }
-      }
+    unless (!($string eq $string_empty)) {
+      return 0;
+    }
+    unless ($string eq $bytes) {
+      return 0;
+    }
+    unless ($bytes eq $string) {
+      return 0;
     }
     
-    if ($eq_ok && $ne_ok && $gt_ok && $ge_ok && $lt_ok && $le_ok) {
-      return 1;
+    {
+      eval {
+        if ($string_undef eq $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string eq $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
     }
     
-    return 0;
+    return 1;
   }
 
-  # If
-  sub if_true_byte : int () {
+  sub string_ne : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
+    
+    # ne
+    unless (!($string ne $string_same)) {
+      return 0;
+    }
+    unless (($string ne $string_short)) {
+      return 0;
+    }
+    unless (($string ne $string_long)) {
+      return 0;
+    }
+    unless (($string ne $string_different_short)) {
+      return 0;
+    }
+    unless (($string ne $string_different_long)) {
+      return 0;
+    }
+    unless (($string ne $string_empty)) {
+      return 0;
+    }
+    unless (!($string ne $bytes)) {
+      return 0;
+    }
+    unless (!($bytes ne $string)) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef ne $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string ne $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub string_gt : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
+    
+    # gt
+    unless (!($string gt $string_same)) {
+      return 0;
+    }
+    unless ($string gt $string_short) {
+      return 0;
+    }
+    unless (!($string gt $string_long)) {
+      return 0;
+    }
+    unless (!($string gt $string_different_short)) {
+      return 0;
+    }
+    unless (!($string gt $string_different_long)) {
+      return 0;
+    }
+    unless ($string gt $string_empty) {
+      return 0;
+    }
+    unless (!($string gt $bytes)) {
+      return 0;
+    }
+    unless (!($bytes gt $string)) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef gt $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string gt $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub string_ge : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
+    
+    # ge
+    unless ($string ge $string_same) {
+      return 0;
+    }
+    unless ($string ge $string_short) {
+      return 0;
+    }
+    unless (!($string ge $string_long)) {
+      return 0;
+    }
+    unless (!($string ge $string_different_short)) {
+      return 0;
+    }
+    unless (!($string ge $string_different_long)) {
+      return 0;
+    }
+    unless ($string ge $string_empty) {
+      return 0;
+    }
+    unless ($string ge $bytes) {
+      return 0;
+    }
+    unless ($bytes ge $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef ge $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string ge $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub string_lt : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
+    
+    # lt
+    unless ($string lt $string_same) {
+      return 0;
+    }
+    unless (!($string lt $string_short)) {
+      return 0;
+    }
+    unless ($string lt $string_long) {
+      return 0;
+    }
+    unless ($string lt $string_different_short) {
+      return 0;
+    }
+    unless ($string lt $string_different_long) {
+      return 0;
+    }
+    unless (!($string lt $string_empty)) {
+      return 0;
+    }
+    unless ($string lt $bytes) {
+      return 0;
+    }
+    unless ($bytes lt $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef lt $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string lt $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub string_le : int () {
+    my $string = "abc";
+    my $string_same = "abc";
+    my $string_short = "ab";
+    my $string_long = "abcd";
+    my $string_different_short= "ad";
+    my $string_different_long= "adcd";
+    my $string_empty = "";
+    my $string_undef : string;
+    my $bytes = (byte[])"abc";
+    
+    # le
+    my $ok = 0;
+    unless ($string le $string_same) {
+      return 0;
+    }
+    unless (!($string le $string_short)) {
+      return 0;
+    }
+    unless ($string le $string_long) {
+      return 0;
+    }
+    unless ($string le $string_different_short) {
+      return 0;
+    }
+    unless ($string le $string_different_long) {
+      return 0;
+    }
+    unless (!($string le $string_empty)) {
+      return 0;
+    }
+    unless ($string le $bytes) {
+      return 0;
+    }
+    unless ($bytes le $string) {
+      return 0;
+    }
+    
+    {
+      eval {
+        if ($string_undef le $string) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    {
+      eval {
+        if ($string le $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  # Bool
+  sub bool_true_byte : int () {
     if ((int)(byte)1) {
       return 1;
     }
@@ -122,7 +391,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
   
-  sub if_true_short : int () {
+  sub bool_true_short : int () {
     if ((int)(short)1) {
       return 1;
     }
@@ -130,7 +399,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_true_int : int () {
+  sub bool_true_int : int () {
     if (1) {
       return 1;
     }
@@ -138,7 +407,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
   
-  sub if_true_long : int () {
+  sub bool_true_long : int () {
     if (1L) {
       return 1;
     }
@@ -146,7 +415,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
   
-  sub if_true_float : int () {
+  sub bool_true_float : int () {
     if (1.0f) {
       return 1;
     }
@@ -154,7 +423,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
   
-  sub if_true_double : int () {
+  sub bool_true_double : int () {
     if (1.0) {
       return 1;
     }
@@ -162,7 +431,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_true_object : int () {
+  sub bool_true_object : int () {
     if (TestCase->new) {
       return 1;
     }
@@ -170,7 +439,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_false_byte : int () {
+  sub bool_false_byte : int () {
     if ((int)(byte)0) {
       return 0;
     }
@@ -178,7 +447,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_short : int () {
+  sub bool_false_short : int () {
     if ((int)(short)0) {
       return 0;
     }
@@ -186,7 +455,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_int : int () {
+  sub bool_false_int : int () {
     if (0) {
       return 0;
     }
@@ -194,7 +463,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_long : int () {
+  sub bool_false_long : int () {
     if (0L) {
       return 0;
     }
@@ -202,7 +471,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_float : int () {
+  sub bool_false_float : int () {
     if (0.0f) {
       return 0;
     }
@@ -210,7 +479,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_double : int () {
+  sub bool_false_double : int () {
     if (0.0) {
       return 0;
     }
@@ -218,7 +487,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_false_object : int () {
+  sub bool_false_object : int () {
     if (undef) {
       return 0;
     }
@@ -226,7 +495,7 @@ package TestCase::ComparisonOperator {
     return 1;
   }
   
-  sub if_else : int () {
+  sub bool_else : int () {
     if (0) {
       return 0;
     }
@@ -237,7 +506,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_elsif : int () {
+  sub bool_elsif : int () {
     if (0) {
       return 0;
     }
@@ -251,7 +520,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_elsif_2 : int () {
+  sub bool_elsbool_2 : int () {
     if (0) {
       return 0;
     }
@@ -268,7 +537,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
   
-  sub if_duplicate : int () {
+  sub bool_duplicate : int () {
     
     if (1) {
       if (0) {
@@ -287,7 +556,7 @@ package TestCase::ComparisonOperator {
   }
   
   # eq 
-  sub if_eq_undef  : int () {
+  sub numeric_eq_undef  : int () {
     my $test_case : TestCase = undef;
     
     if (undef == undef) {
@@ -301,7 +570,7 @@ package TestCase::ComparisonOperator {
     return 0;
   }
 
-  sub if_eq_byte_same  : int () {
+  sub numeric_eq_byte_same  : int () {
     
     if ((byte)3 == (byte)3) {
       return 1;
@@ -311,7 +580,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_byte_different  : int () {
+  sub numeric_eq_byte_different  : int () {
     
     if ((byte)3 == (byte)2) {
       return 0;
@@ -321,7 +590,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_short_same  : int () {
+  sub numeric_eq_short_same  : int () {
     
     if ((short)3 == (short)3) {
       return 1;
@@ -331,7 +600,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_short_different  : int () {
+  sub numeric_eq_short_different  : int () {
     
     if ((short)3 == (short)2) {
       return 0;
@@ -341,7 +610,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_int_same  : int () {
+  sub numeric_eq_int_same  : int () {
     
     if (3 == 3) {
       return 1;
@@ -351,7 +620,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_int_different  : int () {
+  sub numeric_eq_int_different  : int () {
     
     if (3 == 2) {
       return 0;
@@ -361,7 +630,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_long_same  : int () {
+  sub numeric_eq_long_same  : int () {
     
     if ((long)3 == (long)3) {
       return 1;
@@ -371,7 +640,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_long_different  : int () {
+  sub numeric_eq_long_different  : int () {
     
     if ((long)3 == (long)2) {
       return 0;
@@ -381,7 +650,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_float_same  : int () {
+  sub numeric_eq_float_same  : int () {
     
     if (0.5f == 0.5f) {
       return 1;
@@ -391,7 +660,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_float_different  : int () {
+  sub numeric_eq_float_different  : int () {
     
     if (0.5f == 0.25f) {
       return 0;
@@ -401,7 +670,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_double_same  : int () {
+  sub numeric_eq_double_same  : int () {
     
     if (0.5 == 0.5) {
       return 1;
@@ -411,7 +680,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_double_different  : int () {
+  sub numeric_eq_double_different  : int () {
     
     if (0.5 == 0.25) {
       return 0;
@@ -421,7 +690,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_eq_object_same  : int () {
+  sub numeric_eq_object_same  : int () {
     
     my $obj1 = TestCase->new;
     
@@ -433,7 +702,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_eq_object_different  : int () {
+  sub numeric_eq_object_different  : int () {
     my $obj1 = TestCase->new;
     my $obj2 = TestCase->new;
     
@@ -446,7 +715,7 @@ package TestCase::ComparisonOperator {
   }
 
   # If a != b
-  sub if_ne_undef  : int () {
+  sub numeric_ne_undef  : int () {
     my $test_case : TestCase = TestCase->new;
     
     if (undef != undef) {
@@ -462,7 +731,7 @@ package TestCase::ComparisonOperator {
     
     return 0;
   }
-  sub if_ne_byte_same  : int () {
+  sub numeric_ne_byte_same  : int () {
     
     if ((byte)3 != (byte)3) {
       return 0;
@@ -472,7 +741,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_byte_different  : int () {
+  sub numeric_ne_byte_different  : int () {
     
     if ((byte)3 != (byte)2) {
       return 1;
@@ -482,7 +751,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_short_same  : int () {
+  sub numeric_ne_short_same  : int () {
     
     if ((int)(short)3 != (int)(short)3) {
       return 0;
@@ -492,7 +761,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_short_different  : int () {
+  sub numeric_ne_short_different  : int () {
     
     if ((int)(short)3 != (int)(short)2) {
       return 1;
@@ -502,7 +771,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_int_same  : int () {
+  sub numeric_ne_int_same  : int () {
     
     if ((int)3 != (int)3) {
       return 0;
@@ -512,7 +781,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_int_different  : int () {
+  sub numeric_ne_int_different  : int () {
     
     if ((int)3 != (int)2) {
       return 1;
@@ -522,7 +791,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_long_same  : int () {
+  sub numeric_ne_long_same  : int () {
     
     if ((long)3 != (long)3) {
       return 0;
@@ -532,7 +801,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_long_different  : int () {
+  sub numeric_ne_long_different  : int () {
     
     if ((long)3 != (long)2) {
       return 1;
@@ -542,7 +811,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_float_same  : int () {
+  sub numeric_ne_float_same  : int () {
     
     if (0.5f != 0.5f) {
       return 0;
@@ -552,7 +821,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_float_different  : int () {
+  sub numeric_ne_float_different  : int () {
     
     if (0.5f != 0.25f) {
       return 1;
@@ -562,7 +831,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_double_same  : int () {
+  sub numeric_ne_double_same  : int () {
     
     if (0.5 != 0.5) {
       return 0;
@@ -572,7 +841,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_double_different  : int () {
+  sub numeric_ne_double_different  : int () {
     
     if (0.5 != 0.25) {
       return 1;
@@ -582,7 +851,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ne_object_same  : int () {
+  sub numeric_ne_object_same  : int () {
     
     my $obj1 = TestCase->new;
     
@@ -594,7 +863,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ne_object_different  : int () {
+  sub numeric_ne_object_different  : int () {
     my $obj1 = TestCase->new;
     my $obj2 = TestCase->new;
     
@@ -607,7 +876,7 @@ package TestCase::ComparisonOperator {
   }
 
   # If a > b
-  sub if_gt_byte_left_big  : int () {
+  sub numeric_gt_byte_left_big  : int () {
     
     if ((byte)3 > (byte)1) {
       return 1;
@@ -617,7 +886,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_byte_same  : int () {
+  sub numeric_gt_byte_same  : int () {
     
     if ((byte)3 > (byte)3) {
       return 0;
@@ -627,7 +896,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_byte_right_big  : int () {
+  sub numeric_gt_byte_right_big  : int () {
     
     if ((byte)3 > (byte)4) {
       return 0;
@@ -637,7 +906,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_short_left_big  : int () {
+  sub numeric_gt_short_left_big  : int () {
     
     if ((int)(short)3 > (int)(short)1) {
       return 1;
@@ -647,7 +916,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_short_same  : int () {
+  sub numeric_gt_short_same  : int () {
     
     if ((int)(short)3 > (int)(short)3) {
       return 0;
@@ -657,7 +926,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_short_right_big  : int () {
+  sub numeric_gt_short_right_big  : int () {
     
     if ((int)(short)3 > (int)(short)4) {
       return 0;
@@ -667,7 +936,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_gt_int_left_big  : int () {
+  sub numeric_gt_int_left_big  : int () {
     
     if (3 > 1) {
       return 1;
@@ -677,7 +946,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_int_same  : int () {
+  sub numeric_gt_int_same  : int () {
     
     if (3 > 3) {
       return 0;
@@ -687,7 +956,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_int_right_big  : int () {
+  sub numeric_gt_int_right_big  : int () {
     
     if (3 > 4) {
       return 0;
@@ -697,7 +966,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_long_left_big  : int () {
+  sub numeric_gt_long_left_big  : int () {
     
     if ((long)3 > (long)1) {
       return 1;
@@ -707,7 +976,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_long_same  : int () {
+  sub numeric_gt_long_same  : int () {
     
     if ((long)3 > (long)3) {
       return 0;
@@ -717,7 +986,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_long_right_big  : int () {
+  sub numeric_gt_long_right_big  : int () {
     
     if ((long)3 > (long)4) {
       return 0;
@@ -727,7 +996,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_float_left_big  : int () {
+  sub numeric_gt_float_left_big  : int () {
     
     if ((float)3 > (float)1) {
       return 1;
@@ -737,7 +1006,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_float_same  : int () {
+  sub numeric_gt_float_same  : int () {
     
     if ((float)3 > (float)3) {
       return 0;
@@ -747,7 +1016,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_float_right_big  : int () {
+  sub numeric_gt_float_right_big  : int () {
     
     if ((float)3 > (float)4) {
       return 0;
@@ -757,7 +1026,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_double_left_big  : int () {
+  sub numeric_gt_double_left_big  : int () {
     
     if ((double)3 > (double)1) {
       return 1;
@@ -767,7 +1036,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_double_same  : int () {
+  sub numeric_gt_double_same  : int () {
     
     if ((double)3 > (double)3) {
       return 0;
@@ -777,7 +1046,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_gt_double_right_big  : int () {
+  sub numeric_gt_double_right_big  : int () {
     
     if ((double)3 > (double)4) {
       return 0;
@@ -788,7 +1057,7 @@ package TestCase::ComparisonOperator {
   }
 
   # If a >= b
-  sub if_ge_byte_left_big  : int () {
+  sub numeric_ge_byte_left_big  : int () {
     
     if ((byte)3 >= (byte)1) {
       return 1;
@@ -798,7 +1067,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_byte_same  : int () {
+  sub numeric_ge_byte_same  : int () {
     
     if ((byte)3 >= (byte)3) {
       return 1;
@@ -808,7 +1077,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_byte_right_big  : int () {
+  sub numeric_ge_byte_right_big  : int () {
     
     if ((byte)3 >= (byte)4) {
       return 0;
@@ -818,7 +1087,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_short_left_big  : int () {
+  sub numeric_ge_short_left_big  : int () {
     
     if ((int)(short)3 >= (int)(short)1) {
       return 1;
@@ -828,7 +1097,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_short_same  : int () {
+  sub numeric_ge_short_same  : int () {
     
     if ((int)(short)3 >= (int)(short)3) {
       return 1;
@@ -838,7 +1107,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_short_right_big  : int () {
+  sub numeric_ge_short_right_big  : int () {
     
     if ((int)(short)3 >= (int)(short)4) {
       return 0;
@@ -848,7 +1117,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_ge_int_left_big  : int () {
+  sub numeric_ge_int_left_big  : int () {
     
     if (3 >= 1) {
       return 1;
@@ -858,7 +1127,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_int_same  : int () {
+  sub numeric_ge_int_same  : int () {
     
     if (3 >= 3) {
       return 1;
@@ -868,7 +1137,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_int_right_big  : int () {
+  sub numeric_ge_int_right_big  : int () {
     
     if (3 >= 4) {
       return 0;
@@ -878,7 +1147,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_long_left_big  : int () {
+  sub numeric_ge_long_left_big  : int () {
     
     if ((long)3 >= (long)1) {
       return 1;
@@ -888,7 +1157,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_long_same  : int () {
+  sub numeric_ge_long_same  : int () {
     
     if ((long)3 >= (long)3) {
       return 1;
@@ -898,7 +1167,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_long_right_big  : int () {
+  sub numeric_ge_long_right_big  : int () {
     
     if ((long)3 >= (long)4) {
       return 0;
@@ -908,7 +1177,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_float_left_big  : int () {
+  sub numeric_ge_float_left_big  : int () {
     
     if ((float)3 >= (float)1) {
       return 1;
@@ -918,7 +1187,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_float_same  : int () {
+  sub numeric_ge_float_same  : int () {
     
     if ((float)3 >= (float)3) {
       return 1;
@@ -928,7 +1197,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_float_right_big  : int () {
+  sub numeric_ge_float_right_big  : int () {
     
     if ((float)3 >= (float)4) {
       return 0;
@@ -938,7 +1207,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_double_left_big  : int () {
+  sub numeric_ge_double_left_big  : int () {
     
     if ((double)3 >= (double)1) {
       return 1;
@@ -948,7 +1217,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_double_same  : int () {
+  sub numeric_ge_double_same  : int () {
     
     if ((double)3 >= (double)3) {
       return 1;
@@ -958,7 +1227,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_ge_double_right_big  : int () {
+  sub numeric_ge_double_right_big  : int () {
     
     if ((double)3 >= (double)4) {
       return 0;
@@ -969,7 +1238,7 @@ package TestCase::ComparisonOperator {
   }
 
   # If a < b
-  sub if_lt_byte_left_big  : int () {
+  sub numeric_lt_byte_left_big  : int () {
     
     if ((byte)3 < (byte)1) {
       return 0;
@@ -979,7 +1248,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_byte_same  : int () {
+  sub numeric_lt_byte_same  : int () {
     
     if ((byte)3 < (byte)3) {
       return 0;
@@ -989,7 +1258,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_byte_right_big  : int () {
+  sub numeric_lt_byte_right_big  : int () {
     
     if ((byte)3 < (byte)4) {
       return 1;
@@ -999,7 +1268,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_short_left_big  : int () {
+  sub numeric_lt_short_left_big  : int () {
     
     if ((int)(short)3 < (int)(short)1) {
       return 0;
@@ -1009,7 +1278,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_short_same  : int () {
+  sub numeric_lt_short_same  : int () {
     
     if ((int)(short)3 < (int)(short)3) {
       return 0;
@@ -1019,7 +1288,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_short_right_big  : int () {
+  sub numeric_lt_short_right_big  : int () {
     
     if ((int)(short)3 < (int)(short)4) {
       return 1;
@@ -1029,7 +1298,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_lt_int_left_big  : int () {
+  sub numeric_lt_int_left_big  : int () {
     
     if (3 < 1) {
       return 0;
@@ -1039,7 +1308,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_int_same  : int () {
+  sub numeric_lt_int_same  : int () {
     
     if (3 < 3) {
       return 0;
@@ -1049,7 +1318,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_int_right_big  : int () {
+  sub numeric_lt_int_right_big  : int () {
     
     if (3 < 4) {
       return 1;
@@ -1059,7 +1328,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_long_left_big  : int () {
+  sub numeric_lt_long_left_big  : int () {
     
     if ((long)3 < (long)1) {
       return 0;
@@ -1069,7 +1338,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_long_same  : int () {
+  sub numeric_lt_long_same  : int () {
     
     if ((long)3 < (long)3) {
       return 0;
@@ -1079,7 +1348,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_long_right_big  : int () {
+  sub numeric_lt_long_right_big  : int () {
     
     if ((long)3 < (long)4) {
       return 1;
@@ -1089,7 +1358,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_float_left_big  : int () {
+  sub numeric_lt_float_left_big  : int () {
     
     if ((float)3 < (float)1) {
       return 0;
@@ -1099,7 +1368,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_float_same  : int () {
+  sub numeric_lt_float_same  : int () {
     
     if ((float)3 < (float)3) {
       return 0;
@@ -1109,7 +1378,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_float_right_big  : int () {
+  sub numeric_lt_float_right_big  : int () {
     
     if ((float)3 < (float)4) {
       return 1;
@@ -1119,7 +1388,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_double_left_big  : int () {
+  sub numeric_lt_double_left_big  : int () {
     
     if ((double)3 < (double)1) {
       return 0;
@@ -1129,7 +1398,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_double_same  : int () {
+  sub numeric_lt_double_same  : int () {
     
     if ((double)3 < (double)3) {
       return 0;
@@ -1139,7 +1408,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_lt_double_right_big  : int () {
+  sub numeric_lt_double_right_big  : int () {
     
     if ((double)3 < (double)4) {
       return 1;
@@ -1150,7 +1419,7 @@ package TestCase::ComparisonOperator {
   }
 
   # If a <= b
-  sub if_le_byte_left_big  : int () {
+  sub numeric_le_byte_left_big  : int () {
     
     if ((byte)3 <= (byte)1) {
       return 0;
@@ -1160,7 +1429,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_byte_same  : int () {
+  sub numeric_le_byte_same  : int () {
     
     if ((byte)3 <= (byte)3) {
       return 1;
@@ -1170,7 +1439,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_byte_right_big  : int () {
+  sub numeric_le_byte_right_big  : int () {
     
     if ((byte)3 <= (byte)4) {
       return 1;
@@ -1180,7 +1449,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_short_left_big  : int () {
+  sub numeric_le_short_left_big  : int () {
     
     if ((int)(short)3 <= (int)(short)1) {
       return 0;
@@ -1190,7 +1459,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_short_same  : int () {
+  sub numeric_le_short_same  : int () {
     
     if ((int)(short)3 <= (int)(short)3) {
       return 1;
@@ -1200,7 +1469,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_short_right_big  : int () {
+  sub numeric_le_short_right_big  : int () {
     
     if ((int)(short)3 <= (int)(short)4) {
       return 1;
@@ -1210,7 +1479,7 @@ package TestCase::ComparisonOperator {
     }
   }
   
-  sub if_le_int_left_big  : int () {
+  sub numeric_le_int_left_big  : int () {
     
     if (3 <= 1) {
       return 0;
@@ -1220,7 +1489,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_int_same  : int () {
+  sub numeric_le_int_same  : int () {
     
     if (3 <= 3) {
       return 1;
@@ -1230,7 +1499,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_int_right_big  : int () {
+  sub numeric_le_int_right_big  : int () {
     
     if (3 <= 4) {
       return 1;
@@ -1240,7 +1509,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_long_left_big  : int () {
+  sub numeric_le_long_left_big  : int () {
     
     if ((long)3 <= (long)1) {
       return 0;
@@ -1250,7 +1519,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_long_same  : int () {
+  sub numeric_le_long_same  : int () {
     
     if ((long)3 <= (long)3) {
       return 1;
@@ -1260,7 +1529,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_long_right_big  : int () {
+  sub numeric_le_long_right_big  : int () {
     
     if ((long)3 <= (long)4) {
       return 1;
@@ -1270,7 +1539,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_float_left_big  : int () {
+  sub numeric_le_float_left_big  : int () {
     
     if ((float)3 <= (float)1) {
       return 0;
@@ -1280,7 +1549,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_float_same  : int () {
+  sub numeric_le_float_same  : int () {
     
     if ((float)3 <= (float)3) {
       return 1;
@@ -1290,7 +1559,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_float_right_big  : int () {
+  sub numeric_le_float_right_big  : int () {
     
     if ((float)3 <= (float)4) {
       return 1;
@@ -1300,7 +1569,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_double_left_big  : int () {
+  sub numeric_le_double_left_big  : int () {
     
     if ((double)3 <= (double)1) {
       return 0;
@@ -1310,7 +1579,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_double_same  : int () {
+  sub numeric_le_double_same  : int () {
     
     if ((double)3 <= (double)3) {
       return 1;
@@ -1320,7 +1589,7 @@ package TestCase::ComparisonOperator {
     }
   }
 
-  sub if_le_double_right_big  : int () {
+  sub numeric_le_double_right_big  : int () {
     
     if ((double)3 <= (double)4) {
       return 1;

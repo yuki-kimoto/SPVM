@@ -155,7 +155,7 @@ package TestCase::Array {
   }
 
   sub array_init_byte : int () {
-    my $nums = new byte[] {(byte)1, (byte)2, INT8_MAX()};
+    my $nums = [(byte)1, (byte)2, INT8_MAX()];
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -167,7 +167,7 @@ package TestCase::Array {
     return 0;
   }
   sub array_init_short : int () {
-    my $nums = new short[] {(short)1, (short)2, (short)3};
+    my $nums = [(short)1, (short)2, (short)3];
     
     if ((int)$nums->[0] == (int)(short)1) {
       if ((int)$nums->[1] == (int)(short)2) {
@@ -179,9 +179,9 @@ package TestCase::Array {
     return 0;
   }
   sub array_init_int  : int () {
-    my $nums = new int[] {1, 2, 3};
+    my $nums = [1, 2, 3];
     my $nums2 : int[];
-    $nums2 = new int[] {4, 5, 6};
+    $nums2 = [4, 5, 6];
 
     my $num3 = [
       [1, 2, 3],
@@ -207,7 +207,7 @@ package TestCase::Array {
     return 0;
   }
   sub array_init_long : int () {
-    my $nums = new long[] {1L, 2L, 3L};
+    my $nums = [1L, 2L, 3L];
     
     if ($nums->[0] == 1L) {
       if ($nums->[1] == 2L) {
@@ -219,7 +219,7 @@ package TestCase::Array {
     return 0;
   }
   sub array_init_float : int () {
-    my $nums = new float[] {1f, 2f, 3f};
+    my $nums = [1f, 2f, 3f];
     
     if ($nums->[0] == 1f) {
       if ($nums->[1] == 2f) {
@@ -231,7 +231,7 @@ package TestCase::Array {
     return 0;
   }
   sub array_init_double : int () {
-    my $nums = new double[] {1d, 2d, 3d};
+    my $nums = [1d, 2d, 3d];
     
     if ($nums->[0] == 1d) {
       if ($nums->[1] == 2d) {
@@ -318,7 +318,7 @@ package TestCase::Array {
   }
 
   sub array_init_object : int () {
-    my $objects = new object[] {TestCase::Minimal->new, TestCase::Minimal->new};
+    my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
     
     if ($objects isa object[]) {
       return 1;

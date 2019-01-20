@@ -18,7 +18,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0407';
+our $VERSION = '0.0412';
 
 my $SPVM_ENV;
 my $BUILDER;
@@ -857,7 +857,7 @@ SPVM Module:
 
 C Source File;
 
-  // lib/MyMathNative.native/MyMathNative.c
+  // lib/MyMathNative.native.c
   #include <spvm_native.h>
 
   int32_t SPVM_NATIVE_MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* stack) {

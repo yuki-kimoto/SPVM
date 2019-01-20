@@ -124,36 +124,6 @@ use lib "$FindBin::Bin/lib";
     ok($success == 0);
   }
 }
-# Term
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Term::SingleParenthesArrayLength');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
-# Array init
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::ArrayInit::ArrayLength');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
-# Call sub
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::CallSub::ArrayLength');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
 # Weaken
 {
   {

@@ -77,7 +77,7 @@ WriteMakefile(
     C => [@csource_files],
     OBJECT            => '$(O_FILES)', # link all the C files too
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "spvm_build/src spvm_build/work spvm_build/lib spvm_build/exe t/spvm_build/src t/spvm_build/work t/spvm_build/lib @object_files"},
+    clean => {FILES => "spvm_build/work t/spvm_build/work @object_files"},
     DEFINE => "@defines -o \$@",
     EXE_FILES => ['script/spvmcc'],
     META_MERGE => {
@@ -108,6 +108,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
     
     # Precompile make rule
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Example');
   }
   
