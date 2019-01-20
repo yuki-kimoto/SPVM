@@ -1,0 +1,31 @@
+package SPVM::Math::BigInteger {
+  has val : private ro string;
+
+  sub _validate : void ($val : string) {
+    my $length = length $val;
+    unless ($length > 0) {
+      croak "value is empty";
+    }
+    if ($length > 1 && $val->[0] == '0') {
+      croak "leading 0 is not allowed";
+    }
+    for (my $i = 0; $i < $length; ++$i) {
+      unless ('0' <= $val->[$i] && $val->[$i] <= '9') {
+        croak "value has not digit";
+      }
+    }
+  }
+
+  sub new : SPVM::Math::BigInteger ($val : string) {
+    my $self = new SPVM::Math::BigInteger;
+    _validate($val);
+    $self->{val} = $value;
+    return $self;
+  }
+
+  sub to_string : string ($self : self) {
+    return $self->{val};
+  }
+
+  # TODO: numeric operators: add, minus, mul, divide, mod
+}

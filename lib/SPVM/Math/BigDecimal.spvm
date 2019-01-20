@@ -1,0 +1,44 @@
+package SPVM::Math::BigDecimal {
+  has val : private ro string;
+
+  sub _validate : void ($val : string) {
+    my $length = length $val;
+    unless ($length > 0) {
+      croak "value is empty";
+    }
+    if ($val->[0] == '.') {
+      croak "decimal cannot start with '.'";
+    }
+    if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
+      croak "'.' should exist just after the first digit '0'";
+    }
+    if ($val->[$length - 1] == '.') {
+      croak "'.' cannot exist at the end of digits";
+    }
+    my $found_dot = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      unless (('0' <= $val->[$i] && $val->[$i] <= '9') || $val->[$i] == '.') {
+        croak "decimal cannot contain digit or '.'";
+      }
+      if ($val->[$i] == '.') {
+        if ($found_dot) {
+          croak "decimal cannot contain multiple '.'"
+        }
+        $found_dot = 1;
+      }
+    }
+  }
+
+  sub new : SPVM::Math::BigDecimal ($val : string) {
+    my $self = new SPVM::Math::BigInteger;
+    _validate($val);
+    $self->{val} = $value;
+    return $self;
+  }
+
+  sub to_string : string ($self : self) {
+    return $self->{val};
+  }
+
+  # TODO: numeric operators: add, minus, mul, divide, mod
+}
