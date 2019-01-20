@@ -13,8 +13,8 @@ package SPVM::JSON {
   has canonical : public int;
   has relaxed : public int;
 
-  sub _croak_with_dump_remain : void ($croak_message : string, $s : string, $i : int&, $end : int) {
-    croak $croak_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $$i, $end)) . "'";
+  sub _croak_with_dump_remain : void ($croak_message : string, $s : string, $start : int, $end : int) {
+    croak $croak_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $start, $end)) . "'";
   }
 
   sub _skip_comment : void ($s : string, $i : int&, $end : int) {
@@ -41,7 +41,7 @@ package SPVM::JSON {
       elsif ($s->[$$i] == '/') {
         ++$$i;
         unless ($$i < $end) {
-          _croak_with_dump_remain("Unexpected token '/'", $s, $i, $end);
+          _croak_with_dump_remain("Unexpected token '/'", $s, $$i, $end);
         }
         if ($s->[$$i] == '/') {
           $comment = 1;
@@ -50,7 +50,7 @@ package SPVM::JSON {
           $comment = 2;
         }
         else {
-          _croak_with_dump_remain("Unexpected token '/'", $s, $i, $end);
+          _croak_with_dump_remain("Unexpected token '/'", $s, $$i, $end);
         }
       }
       elsif ($comment == 0) {
@@ -76,19 +76,19 @@ package SPVM::JSON {
   sub _skip_spaces_at_not_end : void ($self : self, $s : string, $i : int&, $end : int) {
     $self->_skip_spaces($s, $i, $end);
     if ($$i == $end) {
-      _croak_with_dump_remain("Incomplete JSON", $s, $i, $end);
+      _croak_with_dump_remain("Incomplete JSON", $s, $$i, $end);
     }
   }
 
   sub _expect_token : void ($s : string, $i : int&, $end : int, $expected : string) {
     my $length = length $expected;
     unless ($$i + $length <= $end) {
-      _croak_with_dump_remain("Expected token: $expected doesn't exist", $s, $i, $end);
+      _croak_with_dump_remain("Expected token: $expected doesn't exist", $s, $$i, $end);
     }
     my $begin = $$i;
     while (1) {
       unless ($s->[$$i] == $expected->[$$i - $begin]) {
-        _croak_with_dump_remain("Expected token: $expected doesn't exist", $s, $i, $end);
+        _croak_with_dump_remain("Expected token: $expected doesn't exist", $s, $$i, $end);
       }
       ++$$i;
       if ($$i - $begin == $length) {
@@ -100,18 +100,45 @@ package SPVM::JSON {
   sub _decode_string : string ($self : self, $s : string, $i : int&, $end : int) {
     my $chars = SPVM::List->new;
     _expect_token($s, $i, $end, "\"");
-    while (1) { 
-      if ($$i >= $end || $s->[$$i] == '"') {
+    my $special_char_expected = 0;
+    while (1) {
+      if ($$i >= $end || (!$special_char_expected && $s->[$$i] == '"')) {
         last;
       }
-      if (!$self->{relaxed} && $s->[$$i] == '\t') {
-        _croak_with_dump_remain("Literal ASCII tab characters are not allowed in string", $s, $i, $end);
+      my $got_char = $s->[$$i];
+      if ($special_char_expected) {
+        switch ((int)$got_char) {
+          case 34: # '"'
+          case 92: # '\\'
+            $chars->push(SPVM::Int->new($got_char));
+            last;
+          case 116: # 't'
+          $chars->push(SPVM::Int->new('\t'));
+            last;
+          case 110: # 'n'
+            $chars->push(SPVM::Int->new('\n'));
+            last;
+          case 114: # 'r'
+            $chars->push(SPVM::Int->new('\r'));
+            last;
+          default:
+            _croak_with_dump_remain("Undefined special char", $s, $$i, $end);
+        }
+        $special_char_expected = 0;
       }
-      $chars->push(SPVM::Int->new($s->[$$i]));
+      elsif ($got_char == '\\') {
+        $special_char_expected = 1;
+      }
+      else {
+        if (!$self->{relaxed} && $got_char == '\t') {
+          _croak_with_dump_remain("Literal ASCII tab characters are not allowed in string", $s, $$i, $end);
+        }
+        $chars->push(SPVM::Int->new($got_char));
+      }
       ++$$i;
     }
     if ($$i == $end) {
-      _croak_with_dump_remain("Invalid string. end-quote doesn't exist", $s, $i, $end);
+      _croak_with_dump_remain("Invalid string. end-quote doesn't exist", $s, $$i, $end);
     }
     _expect_token($s, $i, $end, "\"");
     my $chars_length = $chars->length;
@@ -141,15 +168,15 @@ package SPVM::JSON {
     while ($$i < $end) {
       if ($s->[$$i] == '.') {
         if ($decimal_stat == 1) {
-          _croak_with_dump_remain("Invalid digits: Dot should appear at most once", $s, $i, $end);
+          _croak_with_dump_remain("Invalid digits: Dot should appear at most once", $s, $$i, $end);
         }
         unless ($has_digit) {
-          _croak_with_dump_remain("Invalid digits: Not found digits before dot", $s, $i, $end);
+          _croak_with_dump_remain("Invalid digits: Not found digits before dot", $s, $$i, $end);
         }
         $decimal_stat = 1;
         ++$$i;
         unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _croak_with_dump_remain("Invalid digits: Not found digits after dot", $s, $i, $end);
+          _croak_with_dump_remain("Invalid digits: Not found digits after dot", $s, $$i, $end);
         }
         $digits *= 10;
         $digits += $s->[$$i++] - '0';
@@ -175,7 +202,7 @@ package SPVM::JSON {
         ++$$i;
         $decimal_stat = 1;
         unless ($$i < $end && ($s->[$$i] == '+') || ($s->[$$i] == '-')) {
-          _croak_with_dump_remain("Invalid digits: '+' or '-' is expected after 'e'", $s, $i, $end);
+          _croak_with_dump_remain("Invalid digits: '+' or '-' is expected after 'e'", $s, $$i, $end);
         }
         my $side : int; # -1: "e+XX", +1: "e-XX"
         if ($s->[$$i++] == '+') {
@@ -185,7 +212,7 @@ package SPVM::JSON {
           $side = +1;
         }
         unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _croak_with_dump_remain("Invalid digits: digits should exist after 'e'", $s, $i, $end);
+          _croak_with_dump_remain("Invalid digits: digits should exist after 'e'", $s, $$i, $end);
         }
         my $exp = $s->[$$i++] - '0';
         while ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
@@ -201,7 +228,7 @@ package SPVM::JSON {
     }
 
     unless ($has_digit) {
-      _croak_with_dump_remain("Invalid digits: Not found digits after '-'", $s, $i, $end);
+      _croak_with_dump_remain("Invalid digits: Not found digits after '-'", $s, $$i, $end);
     }
     if ($decimal_stat == 1) {
       my $value = (double) $digits / pow(10, $offset);
@@ -330,7 +357,7 @@ package SPVM::JSON {
 
     # unknown token
     else {
-      _croak_with_dump_remain("Unexpected token. ", $s, $i, $end);
+      _croak_with_dump_remain("Unexpected token. ", $s, $$i, $end);
     }
   }
 
@@ -357,6 +384,48 @@ package SPVM::JSON {
         }
       }
     }
+  }
+
+  sub _escape_string : string ($string : string) {
+    my $length = length $string;
+    my $chars = SPVM::List->new;
+    for (my $i = 0; $i < $length; ++$i) {
+      my $got_char = (int)($string->[$i]);
+      my $special = -1;
+      switch ($got_char) {
+        case 9: # '\t'
+          # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
+          $special = 't';
+          last;
+        case 10: # '\n'
+          $special = 'n';
+          last;
+        case 13: # '\r'
+          $special = 'r';
+          last;
+        case 34: # '"'
+          $special = '"';
+          last;
+        case 92: # '\\'
+          $special = '\\';
+          last;
+        default: # FIXME: segmentation fault
+      }
+      if ($special == -1) {
+        $chars->push(SPVM::Int->new($got_char));
+      }
+      else {
+        $chars->push(SPVM::Int->new('\\'));
+        $chars->push(SPVM::Int->new($special));
+      }
+    }
+    my $chars_length = $chars->length;
+    my $escaped = new byte [$chars_length];
+    for (my $k = 0; $k < $chars_length; ++$k) {
+      my $got = ((SPVM::Int)$chars->shift)->val;
+      $escaped->[$k] = (byte)$got;
+    }
+    return (string)$escaped;
   }
 
   sub _encode_value : string ($self : self, $o : object, $depth : int) {
@@ -434,7 +503,8 @@ package SPVM::JSON {
     }
     # primitives
     elsif ($o isa string) {
-      return "\"" . (string)$o . "\"";
+      my $escaped = _escape_string((string)$o);
+      return "\"" . $escaped . "\"";
     }
     elsif ($o isa SPVM::Int) {
       return (string)(((SPVM::Int)$o)->val);
@@ -485,7 +555,7 @@ package SPVM::JSON {
     my $ret = $self->_decode_value($json_text, \$iter, $length);
     $self->_skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
-      croak "Not all json_text is decoded yet. Remains at $iter";
+      _croak_with_dump_remain("Not all json_text is decoded yet", $json_text, $iter, $length - $iter);
     }
     return $ret;
   }

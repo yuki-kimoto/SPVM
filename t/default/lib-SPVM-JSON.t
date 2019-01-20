@@ -29,6 +29,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->test_format_indent);
   ok(TestCase::JSON->test_format_pretty);
   ok(TestCase::JSON->test_relaxed);
+  ok(TestCase::JSON->test_special_chars);
 }
 
 

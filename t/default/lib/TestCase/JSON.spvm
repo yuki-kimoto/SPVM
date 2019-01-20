@@ -155,7 +155,7 @@ package TestCase::JSON {
 
   sub test_relaxed : int () {
     my $inputs  = ["{\"k\":1,}","[1,]","{\"a\":1# comment\n,\"b\":2, ##\n\"c\":3,//xyz\n\"d\" /*multiple\ncomments//x#y*\nz*/:4}","\"\t\""];
-    my $outputs = ["{\"k\":1}","[1]","{\"a\":1,\"b\":2,\"c\":3,\"d\":4}","\"\t\""];
+    my $outputs = ["{\"k\":1}","[1]","{\"a\":1,\"b\":2,\"c\":3,\"d\":4}","\"\\t\""];
     my $json = SPVM::JSON->new;
     $json->{relaxed} = 1;
     unless (_validate($DEFAULT_JSON, $inputs, $outputs)) {
@@ -170,6 +170,14 @@ package TestCase::JSON {
         return 0;
       }
       $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_special_chars : int () {
+    my $json_texts = ["\"\\\"\\\\\\t\\n\\r\""];
+    unless (_validate($DEFAULT_JSON, $json_texts, $json_texts)) {
+      return 0;
     }
     return 1;
   }
