@@ -14,11 +14,7 @@ package SPVM::JSON {
   has relaxed : public int;
 
   sub _croak_with_dump_remain : void ($croak_message : string, $s : string, $i : int&, $end : int) {
-    my $remain = new byte [$end - $$i];
-    for (my $k = 0; $k < $end - $$i; ++$k) {
-      $remain->[$k] = $s->[$$i + $k];
-    }
-    croak $croak_message . "\nRemains... '" . (string)$remain . "'";
+    croak $croak_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $$i, $end)) . "'";
   }
 
   sub _skip_comment : void ($s : string, $i : int&, $end : int) {
