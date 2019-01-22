@@ -1,4 +1,7 @@
 0.0414 2018-01-22
+  - add sequencial operator
+    # $z is 3
+    my $z = (1, 2, 3);
 0.0413 2018-01-22
   - add replaceb
   - add replaces

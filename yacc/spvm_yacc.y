@@ -622,9 +622,21 @@ expression
   | assign
   | inc
   | dec
-  | '(' expression ')'
+  | '(' expressions ')'
     {
-      $$ = $2;
+      if ($2->id == SPVM_OP_C_ID_LIST) {
+			  SPVM_OP* op_term = $2->first;
+	      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->cur_file, compiler->cur_line);
+			  while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
+			    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term);
+  	      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_term);
+  	      op_term = op_stab;
+			  }
+			  $$ = op_sequence;
+      }
+      else {
+        $$ = $2;
+      }
     }
   | CURRENT_PACKAGE
 
