@@ -16,6 +16,7 @@ package SPVM::CORE {
   our $SEEK_SET : ro int;
   our $SEEK_CUR : ro int;
   our $SEEK_END : ro int;
+  our $EOF : ro int;
   
   BEGIN {
     init_native_constants();
@@ -40,8 +41,8 @@ package SPVM::CORE {
   }
   
   native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
-  native sub fputc : int ($fh : SPVM::FileHandle, $c : byte);
-  native sub fread : int ($fh : SPVM::FileHandle, $buf : byte[]);
+  native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
+  native sub fread : int ($buf : byte[], $fh : SPVM::FileHandle);
   native sub fwrite : int ($fh : SPVM::FileHandle, $buf : string);
   native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
   native sub fclose : int ($fh : SPVM::FileHandle);
@@ -497,8 +498,6 @@ package SPVM::CORE {
     return $is_equals;
   }
   
-  sub AUTO_LEN : int () { return -1; }
-  sub EOF : int () { return -1; }
   native sub type_name : string ($object : object);
   native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
   native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
