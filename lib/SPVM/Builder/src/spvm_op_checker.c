@@ -1615,7 +1615,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check if source can be assigned to dist
               // If needed, numeric convertion op is added
               dist_type = SPVM_OP_get_type(compiler, op_term_dist);
-              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_term_src);
+              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_term_src, "assign operator");
               if (compiler->error_count > 0) {
                 return;
               }
@@ -1640,7 +1640,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               else {
                 // Automatical numeric convertion
-                SPVM_OP_CHECKER_check_assign(compiler, sub->return_type, op_term);
+                SPVM_OP_CHECKER_check_assign(compiler, sub->return_type, op_term, "return statement");
                 if (compiler->error_count > 0) {
                   return;
                 }
@@ -2353,7 +2353,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric convertion op is added
-                  op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my_type, op_term);
+                  op_term = SPVM_OP_CHECKER_check_assign(compiler, sub_arg_my_type, op_term, "sub arguments");
                   if (compiler->error_count > 0) {
                     return;
                   }
@@ -4059,7 +4059,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src) {
+SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
   // Dist type is numeric type
@@ -4338,19 +4338,19 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     }
   }
   else {
-    SPVM_COMPILER_error(compiler, "Can't assign to empty type at %s line %d\n", op_src->file, op_src->line);
+    SPVM_COMPILER_error(compiler, "Can't assign to empty type in %s, at %s line %d\n", place, op_src->file, op_src->line);
     return NULL;
   }
     
   if (!can_assign) {
     if (narrowing_convertion_error) {
-      SPVM_COMPILER_error(compiler, "Can't apply narrowing convertion at %s line %d\n", op_src->file, op_src->line);
+      SPVM_COMPILER_error(compiler, "Can't apply narrowing convertion in %s at %s line %d\n", place, op_src->file, op_src->line);
       return NULL;
     }
     else {
       const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
       const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag);
-      SPVM_COMPILER_error(compiler, "Can't convert %s to %s by implicite type convertion at %s line %d\n", src_type_name, dist_type_name, op_src->file, op_src->line);
+      SPVM_COMPILER_error(compiler, "Can't convert %s to %s by implicite type convertion in %s at %s line %d\n", src_type_name, dist_type_name, place, op_src->file, op_src->line);
       return NULL;
     }
   }
