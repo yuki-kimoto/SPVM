@@ -2620,9 +2620,9 @@ yyreduce:
   case 66:
 #line 456 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_expression_statement = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXPRESSION_STATEMENT, compiler->cur_file, compiler->cur_line);
-      SPVM_OP_insert_child(compiler, op_expression_statement, op_expression_statement->last, (yyvsp[(1) - (2)].opval));
-      (yyval.opval) = op_expression_statement;
+      SPVM_OP* op_statement = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_STATEMENT, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_statement, op_statement->last, (yyvsp[(1) - (2)].opval));
+      (yyval.opval) = op_statement;
     ;}
     break;
 
