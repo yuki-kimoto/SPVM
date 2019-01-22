@@ -11,6 +11,66 @@
 #include <memory.h>
 #include <fcntl.h>
 
+int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* ofile_name = stack[0].oval;
+  if (ofile_name == NULL) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
+  
+  void* omode = stack[0].oval;
+  if (omode == NULL) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
+  
+  const char* file_name = (const char*)env->belems(env, ofile_name);
+  const char* mode = (const char*)env->belems(env, omode);
+  
+  FILE* fh = fopen(file_name, mode);
+  
+  int32_t FileHandle_id = env->basic_type_id(env, "SPVM::File::Handle");
+  if (FileHandle_id < 0) {
+    abort();
+  }
+  void* ofh = env->new_pointer(env, FileHandle_id, fh);
+  
+  stack[0].oval = ofh;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fputc(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fwrite(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fseek(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // O_RDONLY
