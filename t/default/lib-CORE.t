@@ -26,8 +26,8 @@ my $NaN = 9**9**9 / 9**9**9;
 
 my $nan_re = qr/(nan|ind)/i;
 
-use SPVM 'TestCase::CoreFunc::Basic';
-use SPVM 'TestCase::CoreFunc::Math';
+use SPVM 'TestCase::Lib::CORE';
+use SPVM 'TestCase::Lib::CORE';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
@@ -35,144 +35,144 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # new_oarray_proto
 {
   # sliceb
-  ok(TestCase::CoreFunc::Basic->test_new_oarray_proto);
+  ok(TestCase::Lib::CORE->test_new_oarray_proto);
 }
 
 # slice
 {
   # sliceb
-  ok(TestCase::CoreFunc::Basic->test_sliceb);
+  ok(TestCase::Lib::CORE->test_sliceb);
 
   # slices
-  ok(TestCase::CoreFunc::Basic->test_slices);
+  ok(TestCase::Lib::CORE->test_slices);
 
   # slicei
-  ok(TestCase::CoreFunc::Basic->test_slicei);
+  ok(TestCase::Lib::CORE->test_slicei);
 
   # slicel
-  ok(TestCase::CoreFunc::Basic->test_slicel);
+  ok(TestCase::Lib::CORE->test_slicel);
 
   # slicef
-  ok(TestCase::CoreFunc::Basic->test_slicef);
+  ok(TestCase::Lib::CORE->test_slicef);
 
   # sliced
-  ok(TestCase::CoreFunc::Basic->test_sliced);
+  ok(TestCase::Lib::CORE->test_sliced);
 
   # sliced
-  ok(TestCase::CoreFunc::Basic->test_sliceo);
+  ok(TestCase::Lib::CORE->test_sliceo);
 }
 
 # reverse
 {
   # reverseb
-  ok(TestCase::CoreFunc::Basic->test_reverseb);
+  ok(TestCase::Lib::CORE->test_reverseb);
 
   # reverses
-  ok(TestCase::CoreFunc::Basic->test_reverses);
+  ok(TestCase::Lib::CORE->test_reverses);
 
   # reversei
-  ok(TestCase::CoreFunc::Basic->test_reversei);
+  ok(TestCase::Lib::CORE->test_reversei);
 
   # reversel
-  ok(TestCase::CoreFunc::Basic->test_reversel);
+  ok(TestCase::Lib::CORE->test_reversel);
 
   # reversef
-  ok(TestCase::CoreFunc::Basic->test_reversef);
+  ok(TestCase::Lib::CORE->test_reversef);
 
   # reversed
-  ok(TestCase::CoreFunc::Basic->test_reversed);
+  ok(TestCase::Lib::CORE->test_reversed);
 
   # reversed
-  ok(TestCase::CoreFunc::Basic->test_reverseo);
+  ok(TestCase::Lib::CORE->test_reverseo);
 }
 
 # sort
 {
   # sortb
-  ok(TestCase::CoreFunc::Basic->test_sortb);
+  ok(TestCase::Lib::CORE->test_sortb);
 
   # sorts
-  ok(TestCase::CoreFunc::Basic->test_sorts);
+  ok(TestCase::Lib::CORE->test_sorts);
 
   # sorti
-  ok(TestCase::CoreFunc::Basic->test_sorti);
+  ok(TestCase::Lib::CORE->test_sorti);
 
   # sortl
-  ok(TestCase::CoreFunc::Basic->test_sortl);
+  ok(TestCase::Lib::CORE->test_sortl);
 
   # sortf
-  ok(TestCase::CoreFunc::Basic->test_sortf);
+  ok(TestCase::Lib::CORE->test_sortf);
 
   # sortd
-  ok(TestCase::CoreFunc::Basic->test_sortd);
+  ok(TestCase::Lib::CORE->test_sortd);
 
   # sortd
-  ok(TestCase::CoreFunc::Basic->test_sorto);
+  ok(TestCase::Lib::CORE->test_sorto);
 }
 
 
-ok(TestCase::CoreFunc::Math->test_join);
+ok(TestCase::Lib::CORE->test_join);
 
 # type_name
 {
-  ok(TestCase::CoreFunc::Basic->test_type_name);
+  ok(TestCase::Lib::CORE->test_type_name);
 }
 
 # equals
 {
   # equals_barray
-  ok(TestCase::CoreFunc::Basic->test_equals_barray);
+  ok(TestCase::Lib::CORE->test_equals_barray);
   
   # equals_sarray
-  ok(TestCase::CoreFunc::Basic->test_equals_sarray);
+  ok(TestCase::Lib::CORE->test_equals_sarray);
   
   # equals_iarray
-  ok(TestCase::CoreFunc::Basic->test_equals_iarray);
+  ok(TestCase::Lib::CORE->test_equals_iarray);
   
   # equeals_larray
-  ok(TestCase::CoreFunc::Basic->test_equals_larray);
+  ok(TestCase::Lib::CORE->test_equals_larray);
   
   # equals_farray
-  ok(TestCase::CoreFunc::Basic->test_equals_farray);
+  ok(TestCase::Lib::CORE->test_equals_farray);
   
   # equals_darray
-  ok(TestCase::CoreFunc::Basic->test_equals_darray);
+  ok(TestCase::Lib::CORE->test_equals_darray);
 
   # equals_oarray
-  ok(TestCase::CoreFunc::Basic->test_equals_darray);
+  ok(TestCase::Lib::CORE->test_equals_darray);
 
   # equals_strarray
-  ok(TestCase::CoreFunc::Basic->test_equals_strarray);
+  ok(TestCase::Lib::CORE->test_equals_strarray);
 }
 
 # Copy
 {
   # copy_str
-  ok(TestCase::CoreFunc::Basic->test_copy_str);
+  ok(TestCase::Lib::CORE->test_copy_str);
   
   # copy_barray
-  ok(TestCase::CoreFunc::Basic->test_copy_barray);
+  ok(TestCase::Lib::CORE->test_copy_barray);
   
   # copy_sarray
-  ok(TestCase::CoreFunc::Basic->test_copy_sarray);
+  ok(TestCase::Lib::CORE->test_copy_sarray);
   
   # copy_iarray
-  ok(TestCase::CoreFunc::Basic->test_copy_iarray);
+  ok(TestCase::Lib::CORE->test_copy_iarray);
   
   # copy_larray
-  ok(TestCase::CoreFunc::Basic->test_copy_larray);
+  ok(TestCase::Lib::CORE->test_copy_larray);
   
   # copy_farray
-  ok(TestCase::CoreFunc::Basic->test_copy_farray);
+  ok(TestCase::Lib::CORE->test_copy_farray);
   
   # copy_darray
-  ok(TestCase::CoreFunc::Basic->test_copy_darray);
+  ok(TestCase::Lib::CORE->test_copy_darray);
   
   # copy_oarray
-  ok(TestCase::CoreFunc::Basic->test_copy_oarray);
+  ok(TestCase::Lib::CORE->test_copy_oarray);
   
   # copy_strarray
-  ok(TestCase::CoreFunc::Basic->test_copy_strarray);
+  ok(TestCase::Lib::CORE->test_copy_strarray);
 }
 
 # Constant integral functions
@@ -197,19 +197,19 @@ ok(TestCase::CoreFunc::Math->test_join);
 
 # Call subroutine
 {
-  ok(TestCase::CoreFunc::Math->test_sin);
-  ok(TestCase::CoreFunc::Math->test_cos);
-  ok(TestCase::CoreFunc::Math->test_tan);
+  ok(TestCase::Lib::CORE->test_sin);
+  ok(TestCase::Lib::CORE->test_cos);
+  ok(TestCase::Lib::CORE->test_tan);
 }
 
 # float
 {
-  ok(TestCase::CoreFunc::Math->test_float_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(TestCase::CoreFunc::Math->test_float_pass_nan($NaN));
+  ok(TestCase::Lib::CORE->test_float_pass_positive_infinity($POSITIVE_INFINITY));
+  ok(TestCase::Lib::CORE->test_float_pass_nan($NaN));
   
-  ok(TestCase::CoreFunc::Math->test_isinff);
-  ok(TestCase::CoreFunc::Math->test_isfinitef);
-  ok(TestCase::CoreFunc::Math->test_isnanf);
+  ok(TestCase::Lib::CORE->test_isinff);
+  ok(TestCase::Lib::CORE->test_isfinitef);
+  ok(TestCase::Lib::CORE->test_isnanf);
   
   is(SPVM::CORE->INFINITYF(), $POSITIVE_INFINITY);
   
@@ -218,12 +218,12 @@ ok(TestCase::CoreFunc::Math->test_join);
 
 # SPVM::Double
 {
-  ok(TestCase::CoreFunc::Math->test_double_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(TestCase::CoreFunc::Math->test_double_pass_nan($NaN));
+  ok(TestCase::Lib::CORE->test_double_pass_positive_infinity($POSITIVE_INFINITY));
+  ok(TestCase::Lib::CORE->test_double_pass_nan($NaN));
   
-  ok(TestCase::CoreFunc::Math->test_isinf);
-  ok(TestCase::CoreFunc::Math->test_isfinite);
-  ok(TestCase::CoreFunc::Math->test_isnan);
+  ok(TestCase::Lib::CORE->test_isinf);
+  ok(TestCase::Lib::CORE->test_isfinite);
+  ok(TestCase::Lib::CORE->test_isnan);
   
   is(SPVM::CORE->INFINITY(), $POSITIVE_INFINITY);
   
@@ -231,9 +231,9 @@ ok(TestCase::CoreFunc::Math->test_join);
 }
 
 {
-  ok(TestCase::CoreFunc::Math->test_byte_constant);
-  ok(TestCase::CoreFunc::Math->test_short_constant);
-  ok(TestCase::CoreFunc::Math->test_int_constant);
+  ok(TestCase::Lib::CORE->test_byte_constant);
+  ok(TestCase::Lib::CORE->test_short_constant);
+  ok(TestCase::Lib::CORE->test_int_constant);
 }
 
 {
