@@ -1,0 +1,4 @@
+package TestCase::Lib::SPVM::FileHandle {
+  use SPVM::FileHandle;
+}
+

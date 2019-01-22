@@ -1,4 +1,4 @@
-package TestCase::Long {
+package TestCase::Lib::SPVM::Long {
   sub basic : int () {
     my $oval = SPVM::Long->new(INT64_MIN());
     my $value1 = $oval->val;

@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Int';
+use SPVM 'TestCase::Lib::SPVM::Int';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # SPVM::Int
 {
-  ok(TestCase::Int->basic());
+  ok(TestCase::Lib::SPVM::Int->basic());
 }
 
 

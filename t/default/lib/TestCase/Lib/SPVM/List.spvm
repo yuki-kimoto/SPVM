@@ -1,4 +1,4 @@
-package TestCase::List {
+package TestCase::Lib::SPVM::List {
   use SPVM::Int;
   use SPVM::List;
   

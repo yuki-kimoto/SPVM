@@ -1,4 +1,4 @@
-package TestCase::Lib::CORE {
+package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
 
   sub test_join : int () {

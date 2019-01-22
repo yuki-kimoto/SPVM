@@ -6,32 +6,32 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Hash';
+use SPVM 'TestCase::Lib::SPVM::Hash';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # SPVM::Hash
 {
-  ok(TestCase::Hash->test_murmur_hash);
-  ok(TestCase::Hash->test_new_with_capacity);
-  ok(TestCase::Hash->test_new_with_array);
-  ok(TestCase::Hash->test_new_with_array_allocated_capacity_should_power_of_2);
-  ok(TestCase::Hash->test_new_with_array_croak_when_odd_number_array);
-  ok(TestCase::Hash->test_new_with_array_do_not_refer_caller_key);
-  ok(TestCase::Hash->test_set);
-  ok(TestCase::Hash->test_set_do_not_refer_caller_key);
-  ok(TestCase::Hash->test_get);
-  ok(TestCase::Hash->test_exists);
-  ok(TestCase::Hash->test_delete_with_no_hash_collision);
-  ok(TestCase::Hash->test_delete_with_hash_collision);
-  ok(TestCase::Hash->test_load_factor);
-  ok(TestCase::Hash->test_rehash);
-  ok(TestCase::Hash->test_rehash_with_max_load_factor_0_5);
-  ok(TestCase::Hash->test_set_rehash_when_max_load_factor_changes);
-  ok(TestCase::Hash->test_keys);
-  ok(TestCase::Hash->test_values);
-  ok(TestCase::Hash->test_many_hash_collisions);
+  ok(TestCase::Lib::SPVM::Hash->test_murmur_hash);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_capacity);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_array);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_array_allocated_capacity_should_power_of_2);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_array_croak_when_odd_number_array);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_array_do_not_refer_caller_key);
+  ok(TestCase::Lib::SPVM::Hash->test_set);
+  ok(TestCase::Lib::SPVM::Hash->test_set_do_not_refer_caller_key);
+  ok(TestCase::Lib::SPVM::Hash->test_get);
+  ok(TestCase::Lib::SPVM::Hash->test_exists);
+  ok(TestCase::Lib::SPVM::Hash->test_delete_with_no_hash_collision);
+  ok(TestCase::Lib::SPVM::Hash->test_delete_with_hash_collision);
+  ok(TestCase::Lib::SPVM::Hash->test_load_factor);
+  ok(TestCase::Lib::SPVM::Hash->test_rehash);
+  ok(TestCase::Lib::SPVM::Hash->test_rehash_with_max_load_factor_0_5);
+  ok(TestCase::Lib::SPVM::Hash->test_set_rehash_when_max_load_factor_changes);
+  ok(TestCase::Lib::SPVM::Hash->test_keys);
+  ok(TestCase::Lib::SPVM::Hash->test_values);
+  ok(TestCase::Lib::SPVM::Hash->test_many_hash_collisions);
 }
 
 # All object is freed

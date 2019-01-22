@@ -1,4 +1,4 @@
-package TestCase::Byte {
+package TestCase::Lib::SPVM::Byte {
   sub basic : int () {
     my $oval = SPVM::Byte->new(INT8_MIN());
     my $value1 = $oval->val;

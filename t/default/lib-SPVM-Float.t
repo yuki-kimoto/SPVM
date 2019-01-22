@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Float';
+use SPVM 'TestCase::Lib::SPVM::Float';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # SPVM::Float
 {
-  ok(TestCase::Float->basic());
+  ok(TestCase::Lib::SPVM::Float->basic());
 }
 
 # All object is freed

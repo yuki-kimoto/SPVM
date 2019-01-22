@@ -1,4 +1,4 @@
-package TestCase::Float {
+package TestCase::Lib::SPVM::Float {
   sub basic : int () {
     my $oval = SPVM::Float->new(FLT_MIN());
     my $value1 = $oval->val;

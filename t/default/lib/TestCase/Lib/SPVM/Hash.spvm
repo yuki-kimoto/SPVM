@@ -1,4 +1,4 @@
-package TestCase::Hash {
+package TestCase::Lib::SPVM::Hash {
   use SPVM::Int;
   use SPVM::Hash;
   use SPVM::Comparator;

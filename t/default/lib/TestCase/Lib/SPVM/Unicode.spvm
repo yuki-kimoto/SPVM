@@ -1,0 +1,4 @@
+package TestCase::Lib::SPVM::Unicode {
+  use SPVM::Unicode;
+}
+
