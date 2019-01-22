@@ -1623,6 +1623,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // If dist is string access and const, it is invalid
               if (op_term_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_term_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST) {
                 SPVM_COMPILER_error(compiler, "Can't change each character of string at %s line %d\n", op_term_dist->file, op_term_dist->line);
+                return;
               }
               
               break;
