@@ -1,6 +1,4 @@
 package SPVM::FileHandle : pointer_t {
   
-  native sub new : SPVM::FileHandle ();
-  
   native sub DESTROY : void ($self : self);
 }

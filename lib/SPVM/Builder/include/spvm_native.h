@@ -42,6 +42,10 @@ typedef void* SPVM_VALUE_object;
   return SPVM_EXCEPTION;\
 } while (0)\
 
+#define SPVM_CARP(message, file, line) do {\
+  fprintf(stderr, "%s at " file " line " SPVM_LINE_STRINGIFY(line), message);\
+} while (0)\
+
 struct SPVM_env {
   void* exception_object;
   void* native_mortal_stack;

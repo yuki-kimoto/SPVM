@@ -139,11 +139,17 @@ int32_t SPVM_NATIVE_SPVM__CORE__fseek(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
+  // File handle
+  void* ofh = stack[0].oval;
+  if (ofh == NULL) {
+    stack[0].ival = EOF;
+    return SPVM_SUCCESS;
+  }
+  FILE* fh = (FILE*)env->pointer(env, ofh);
+  
+  int32_t ret = fclose(fh);
+  
+  stack[0].ival = ret;
 
   return SPVM_SUCCESS;
 }

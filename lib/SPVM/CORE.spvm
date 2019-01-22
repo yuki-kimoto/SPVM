@@ -46,7 +46,6 @@ package SPVM::CORE {
   native sub fwrite : int ($fh : SPVM::FileHandle, $buf : string);
   native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
   native sub fclose : int ($fh : SPVM::FileHandle);
-  native sub fgets : string ($fh : SPVM::FileHandle);
   
 
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
