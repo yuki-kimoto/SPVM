@@ -741,8 +741,8 @@ static const char *const yytname[] =
   "opt_expressions", "term", "opt_expression", "expression", "expressions",
   "unary_op", "inc", "dec", "binary_op", "condition", "comparison_op",
   "num_comparison_op", "str_comparison_op", "isa", "logical_op", "assign",
-  "new", "array_init", "convert_type", "array_access", "call_sub",
-  "field_access", "weaken_field", "weaken_array_element", "unweaken_field",
+  "new", "array_init", "cast", "array_access", "call_sub", "field_access",
+  "weaken_field", "weaken_array_element", "unweaken_field",
   "unweaken_array_element", "isweak_field", "isweak_array_element",
   "array_length", "string_length", "deref", "ref", "my_var", "var",
   "package_var_access", "type", "basic_type", "ref_type", "array_type",
@@ -3225,8 +3225,8 @@ yyreduce:
   case 170:
 #line 884 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, (yyvsp[(2) - (4)].opval)->file, (yyvsp[(2) - (4)].opval)->line);
-      (yyval.opval) = SPVM_OP_build_convert(compiler, op_convert, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
+      SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, (yyvsp[(2) - (4)].opval)->file, (yyvsp[(2) - (4)].opval)->line);
+      (yyval.opval) = SPVM_OP_build_cast(compiler, op_cast, (yyvsp[(2) - (4)].opval), (yyvsp[(4) - (4)].opval));
     ;}
     break;
 

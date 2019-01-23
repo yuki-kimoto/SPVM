@@ -1452,15 +1452,15 @@ SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op
 }
 
 
-SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_cast(SPVM_COMPILER* compiler, SPVM_OP* op_cast, SPVM_OP* op_type, SPVM_OP* op_term) {
   
-  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_term);
-  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_type);
+  SPVM_OP_insert_child(compiler, op_cast, op_cast->last, op_term);
+  SPVM_OP_insert_child(compiler, op_cast, op_cast->last, op_type);
   
-  op_convert->file = op_type->file;
-  op_convert->line = op_type->line;
+  op_cast->file = op_type->file;
+  op_cast->line = op_type->line;
   
-  return op_convert;
+  return op_cast;
 }
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {

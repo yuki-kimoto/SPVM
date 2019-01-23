@@ -36,7 +36,7 @@
 %type <opval> block eval_block begin_block if_require_statement
 %type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
-%type <opval> array_access field_access weaken_field weaken_array_element unweaken_field unweaken_array_element isweak_field isweak_array_element convert_type array_length
+%type <opval> array_access field_access weaken_field weaken_array_element unweaken_field unweaken_array_element isweak_field isweak_array_element cast array_length
 %type <opval> deref ref assign inc dec
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
@@ -606,7 +606,7 @@ expression
   | call_sub
   | field_access
   | array_access
-  | convert_type
+  | cast
   | new
   | array_init
   | array_length
@@ -879,11 +879,11 @@ array_init
       $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2);
     }
 
-convert_type
+cast
   : '(' type ')' expression %prec CAST
     {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, $2->file, $2->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
+      SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, $2->file, $2->line);
+      $$ = SPVM_OP_build_cast(compiler, op_cast, $2, $4);
     }
 
 array_access
