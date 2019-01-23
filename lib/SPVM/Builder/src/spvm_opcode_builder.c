@@ -2028,7 +2028,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                       }
-                      else if (op_assign_src->id == SPVM_OP_C_ID_CONVERT) {
+                      else if (op_assign_src->id == SPVM_OP_C_ID_CAST) {
                         
                         SPVM_OP* op_dist_term = op_assign_dist;
                         SPVM_OP* op_src_term = op_assign_src->first;

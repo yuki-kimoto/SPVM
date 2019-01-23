@@ -1198,7 +1198,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_ID_CONVERT: {
+    case SPVM_OP_C_ID_CAST: {
       SPVM_OP* op_type = op->last;
       type = SPVM_OP_get_type(compiler, op_type);
       break;

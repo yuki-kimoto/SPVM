@@ -882,7 +882,7 @@ array_init
 convert_type
   : '(' type ')' expression %prec CAST
     {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, $2->file, $2->line);
+      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, $2->file, $2->line);
       $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4);
     }
 
