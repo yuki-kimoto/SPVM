@@ -22,8 +22,8 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> DOT3 FATCAMMA RW RO WO BEGIN
-%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN ISWEAK
+%token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
+%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN ISWEAK '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -51,15 +51,12 @@
 %left <opval> '&'
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA
-%nonassoc <opval> SCALAR LENGTH REQUIRE
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CAST SCALAR LENGTH REQUIRE
 %nonassoc <opval> INC DEC
-%right <opval> NEW
 %left <opval> ARROW
-%left <opval> '[' '{' '('
 
 %%
 
