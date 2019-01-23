@@ -29,6 +29,61 @@ int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   const char* mode = (const char*)env->belems(env, omode);
   
+  // Check mode
+  int32_t valid_mode;
+  if (strcmp(mode, "r") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "w") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "a") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "rb") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "wb") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "ab") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "r+") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "w+") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "a+") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "r+b") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "rb+") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "w+b") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "wb+") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "a+b") == 0) {
+    valid_mode = 1;
+  }
+  else if (strcmp(mode, "ab+") == 0) {
+    valid_mode = 1;
+  }
+  else {
+    valid_mode = 0;
+  }
+  if (!valid_mode) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
+  
   FILE* fh = fopen(file_name, mode);
   
   int32_t SPVM__FileHandle_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");

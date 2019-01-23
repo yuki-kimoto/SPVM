@@ -27,10 +27,15 @@ my $NaN = 9**9**9 / 9**9**9;
 my $nan_re = qr/(nan|ind)/i;
 
 use SPVM 'TestCase::Lib::SPVM::CORE';
-use SPVM 'TestCase::Lib::SPVM::CORE';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
+
+# File input and output
+{
+  my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+  ok(TestCase::Lib::SPVM::CORE->test_fopen($sp_file));
+}
 
 # new_oarray_proto
 {

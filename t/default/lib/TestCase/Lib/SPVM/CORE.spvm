@@ -1,5 +1,23 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
+  
+  sub test_fopen : int ($file : string) {
+    {
+      my $fh = fopen($file, "r");
+      unless ($fh) {
+        return 0;
+      }
+    }
+    
+    {
+      my $fh = fopen($file, "ppp");
+      if ($fh) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
