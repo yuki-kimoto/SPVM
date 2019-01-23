@@ -1261,7 +1261,7 @@ package Foo {
         フィールドへのアクセスとは、フィールドにアクセスして、値を取得したり、設定したりする操作のことです。
       </p>
       <p>
-        フィールドアクセスは、一種類の構文で、三つの異なる意味を持ちます。
+        フィールドへのアクセスは、一種類の構文で、三つの異なる意味を持ちます。
       </p>
 <pre>
 インボカント->{フィールド名}
@@ -1882,7 +1882,7 @@ switch (条件) {
       <h3 id="language-array">配列</h3>
       <ul class="list">
         <li><a href="#language-array-summary">配列の概要</a></li>
-        <li><a href="#language-array-new">配列への生成</a></li>
+        <li><a href="#language-array-new">配列の生成</a></li>
         <li><a href="#language-array-access">配列へのアクセス</a></li>
       </ul>
       <h4 id="language-array-summary">配列の概要</h4>
@@ -1912,6 +1912,26 @@ switch (条件) {
       <p>
         値型の配列とは、<a href="#language-type-value">値型</a>の値が連続に並んだ配列のことです。
       </p>
+      <h4 id="language-array-summary">配列の生成</h4>
+      <p>
+        配列を生成については、<a href="#language-operator-new-array">配列の生成</a>を見てください。
+      </p>
+      <h4 id="language-array-access">配列へのアクセス</h4>
+      <p>
+        配列へのアクセスとは、配列にアクセスして、値を取得したり、設定したりする操作のことです。
+      </p>
+<pre>
+配列->[添え字]
+</pre>
+
+      <p>
+        配列の取得については、<a href="#language-expression-get-array">配列の値の取得</a>を見てください。
+      </p>
+      <p>
+        配列の設定については、<a href="#language-expression-set-set-array">配列の値の設定</a>を見てください。
+      </p>
+
+      <h4 id="language-array-summary">配列の生成</h4>
       
       <h3 id="language-term">項</h3>
       <p>
@@ -1970,8 +1990,8 @@ switch (条件) {
         <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
         <li><a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a></li>
         <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
-        <li>配列の要素の設定</li>
-        <li>配列の要素の取得</li>
+        <li>配列の要素の値の設定</li>
+        <li>配列の要素の値の取得</li>
         <li>型変換</li>
         <li><a href="#language-operator-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-operator-new-array">配列の生成</a></li>
