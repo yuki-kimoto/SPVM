@@ -19,6 +19,28 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
+  sub test_fclose : int ($file : string) {
+    {
+      my $fh = fopen($file, "r");
+      unless ($fh) {
+        return 0;
+      }
+      my $ret = fclose($fh);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = fclose(undef);
+      unless ($ret == SPVM::CORE->EOF()) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
     
