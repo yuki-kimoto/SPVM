@@ -152,6 +152,7 @@ struct SPVM_env {
   void (*set_dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, double value);
   void (*set_opkgvar)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
   void* (*pointer)(SPVM_ENV*, void*);
+  void (*set_pointer)(SPVM_ENV*, void*, void*);
   void (*weaken)(SPVM_ENV* env, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, void** object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);

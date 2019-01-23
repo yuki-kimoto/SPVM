@@ -86,13 +86,18 @@ int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   FILE* fh = fopen(file_name, mode);
   
-  int32_t SPVM__FileHandle_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
-  if (SPVM__FileHandle_basic_type_id < 0) {
-    abort();
+  if (fh) {
+    int32_t SPVM__FileHandle_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
+    if (SPVM__FileHandle_basic_type_id < 0) {
+      abort();
+    }
+    void* ofh = env->new_pointer(env, SPVM__FileHandle_basic_type_id, fh);
+
+    stack[0].oval = ofh;
   }
-  void* ofh = env->new_pointer(env, SPVM__FileHandle_basic_type_id, fh);
-  
-  stack[0].oval = ofh;
+  else {
+    stack[0].oval = NULL;
+  }
   
   return SPVM_SUCCESS;
 }
@@ -127,7 +132,11 @@ int32_t SPVM_NATIVE_SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   char* buffer = (char*)env->belems(env, obuffer);
-  int32_t length = env->len(env, obuffer);
+  int32_t buffer_length = env->len(env, obuffer);
+  if (buffer_length == 0) {
+    stack[0].ival = 0;
+    return SPVM_SUCCESS;
+  }
   
   // File handle
   void* ofh = stack[1].oval;
@@ -137,10 +146,10 @@ int32_t SPVM_NATIVE_SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   FILE* fh = (FILE*)env->pointer(env, ofh);
   
-  int32_t read_length = fread(buffer, 1, length, fh);
+  int32_t read_length = fread(buffer, 1, buffer_length, fh);
   
   stack[0].ival = read_length;
-
+  
   return SPVM_SUCCESS;
 }
 
@@ -202,9 +211,16 @@ int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   FILE* fh = (FILE*)env->pointer(env, ofh);
   
-  int32_t ret = fclose(fh);
-  
-  stack[0].ival = ret;
+  if (fh) {
+    int32_t ret = fclose(fh);
+    
+    env->set_pointer(env, ofh, NULL);
+    
+    stack[0].ival = ret;
+  }
+  else {
+    stack[0].ival = EOF;
+  }
 
   return SPVM_SUCCESS;
 }

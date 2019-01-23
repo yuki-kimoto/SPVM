@@ -41,6 +41,47 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
+  sub test_fread : int ($file : string) {
+    {
+      my $fh = fopen($file, "rb");
+      unless ($fh) {
+        croak "Can't open file $file";
+      }
+      
+      my $buffer = new byte[5];
+      {
+        my $read_length = fread($buffer, $fh);
+        unless ($buffer eq "abcd\n") {
+          return 0;
+        }
+        unless ($read_length == 5) {
+          return 0;
+        }
+      }
+      
+      {
+        my $read_length = fread($buffer, $fh);
+        unless ($buffer eq "fghi\n") {
+          return 0;
+        }
+        unless ($read_length == 5) {
+          return 0;
+        }
+      }
+      {
+        my $read_length = fread($buffer, $fh);
+        unless (sliceb($buffer, 0, 4) eq "klm\n") {
+          return 0;
+        }
+        unless ($read_length == 4) {
+          return 0;
+        }
+      }
+    }
+
+    return 1;
+  }
+
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
     

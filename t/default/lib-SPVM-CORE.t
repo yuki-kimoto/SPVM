@@ -33,8 +33,22 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # File input and output
 {
-  my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
-  ok(TestCase::Lib::SPVM::CORE->test_fopen($sp_file));
+  {
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    ok(TestCase::Lib::SPVM::CORE->test_fopen($sp_file));
+  }
+  
+  # fclose
+  {
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    ok(TestCase::Lib::SPVM::CORE->test_fclose($sp_file));
+  }
+
+  # fread
+  {
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    ok(TestCase::Lib::SPVM::CORE->test_fread($sp_file));
+  }
 }
 
 # new_oarray_proto

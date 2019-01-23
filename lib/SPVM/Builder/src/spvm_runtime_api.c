@@ -152,6 +152,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_set_dpkgvar,
     SPVM_RUNTIME_API_set_opkgvar,
     SPVM_RUNTIME_API_pointer,
+    SPVM_RUNTIME_API_set_pointer,
     SPVM_RUNTIME_API_weaken,
     SPVM_RUNTIME_API_isweak,
     SPVM_RUNTIME_API_unweaken,
@@ -5230,6 +5231,12 @@ void* SPVM_RUNTIME_API_pointer(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size);
+}
+
+void SPVM_RUNTIME_API_set_pointer(SPVM_ENV* env, SPVM_OBJECT* object, void* ptr) {
+  (void)env;
+  
+  *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size) = ptr;
 }
 
 void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
