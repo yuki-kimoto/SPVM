@@ -34,3 +34,4 @@ SPVM-.*
 ^t/precompile
 ^spvmcc_build/[^\.]
 .idea/.*
+^t/test_files_tmp
