@@ -1285,10 +1285,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
                 || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
               {
-                SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
-                SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_cast(compiler, op_convert, op_convert_type, op_subtract);
-                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_convert);
+                SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
+                SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                SPVM_OP_build_cast(compiler, op_cast, op_dist_type, op_subtract);
+                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_cast);
               }
               else {
                 SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_subtract);
@@ -1358,10 +1358,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
                 || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
               {
-                SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
-                SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_cast(compiler, op_convert, op_convert_type, op_add);
-                SPVM_OP_build_assign(compiler, op_assign_add, op_term_mutable_clone, op_convert);
+                SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
+                SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                SPVM_OP_build_cast(compiler, op_cast, op_dist_type, op_add);
+                SPVM_OP_build_assign(compiler, op_assign_add, op_term_mutable_clone, op_cast);
               }
               else {
                 SPVM_OP_build_assign(compiler, op_assign_add, op_term_mutable_clone, op_add);
@@ -1438,10 +1438,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
                 || SPVM_TYPE_is_short_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag))
               {
-                SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
-                SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_cast(compiler, op_convert, op_convert_type, op_subtract);
-                SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_convert);
+                SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
+                SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                SPVM_OP_build_cast(compiler, op_cast, op_dist_type, op_subtract);
+                SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_cast);
               }
               else {
                 SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_subtract);
@@ -1573,10 +1573,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (need_conversion) {
-                SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
-                SPVM_OP* op_convert_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_cast(compiler, op_convert, op_convert_type, op_culc);
-                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_convert);
+                SPVM_OP* op_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CAST, op_cur->file, op_cur->line);
+                SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
+                SPVM_OP_build_cast(compiler, op_cast, op_dist_type, op_culc);
+                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_cast);
               }
               else {
                 SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_culc);
