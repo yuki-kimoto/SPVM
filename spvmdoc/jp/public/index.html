@@ -2786,6 +2786,7 @@ undef
         <li><a href="#language-operator-summary">演算子の概要</a></li>
         <li><a href="#language-operator-unary">単項演算子</a></li>
         <li><a href="#language-operator-binary">二項演算子</a></li>
+        <li><a href="#language-operator-sequential">順次演算子</a></li>
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
         <li><a href="#language-operator-unary-plus">単項プラス演算子</a></li>
         <li><a href="#language-operator-unary-minus">単項マイナス演算子</a></li>
@@ -2849,6 +2850,37 @@ undef
       <p>
         二項演算子には、<a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、<a href="#language-operator-multiply">乗算演算子</a>、<a href="#language-operator-divide">除算演算子</a>、<a href="#language-operator-remainder">剰余演算子</a>、<a href="#language-operator-bit-and">ビットAND演算子</a>、<a href="#language-operator-bit-or">ビットOR演算子</a>、<a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-shift">シフト演算子</a>、<a href="#language-operator-concat">文字列連結演算子</a>があります。
       </p>
+ 
+      <h4 id="language-operator-sequential">順次演算子</h4>
+      <p>
+        順次演算子とは、複数の<a href="#language-expression">式</a>を並べて記述でき、最後の値を返す演算子のことです。
+      </p>
+<pre>
+(式1, 式2, 式3)
+</pre>
+      <p>
+        式は左から実行されます。最後の値が返されます。
+      <p>
+      <p>
+        順次演算子は<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>順次演算子のサンプル</b>
+      </p>
+      <p>
+        順次演算子のサンプルです。
+      </p>
+<pre>
+# $fooには3が代入される。
+my $foo = (1, 2, 3);
+
+# $xは3、$retは5になる
+my $x = 1;
+my $y = 2;
+my $ret = ($x += 2, $x + $y);
+</pre>
+
+      <li><a href="#language-operator-sequential">順次演算子</a></li>
 
       <h4 id="language-operator-arithmetic">算術演算子</h4>
       <p>
