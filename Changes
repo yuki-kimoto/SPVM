@@ -3,6 +3,9 @@
     # $z is 3
     my $z = (1, 2, 3);
   - add env->set_pointer
+  - add fopen
+  - add fclose
+  - add fread
 0.0413 2018-01-22
   - add replaceb
   - add replaces
