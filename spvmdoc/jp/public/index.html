@@ -422,6 +422,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-lex-var">レキシカル変数</a></li>
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
+        <li><a href="#language-array">配列</a></li>
         <li><a href="#language-term">項</a></li>
         <li><a href="#language-expression">式</a></li>
         <li><a href="#language-condition">条件</a></li>
@@ -1878,6 +1879,40 @@ switch (条件) {
 
 }
 </pre>
+      <h3 id="language-array">配列</h3>
+      <ul class="list">
+        <li><a href="#language-array-summary">配列の概要</a></li>
+        <li><a href="#language-array-new">配列への生成</a></li>
+        <li><a href="#language-array-access">配列へのアクセス</a></li>
+      </ul>
+      <h4 id="language-array-summary">配列の概要</h4>
+      <p>
+        配列とは、複数の値の連続領域を表現するためのデータ構造です。
+      </p>
+      <p>
+        配列には次の種類があります。
+      </p>
+      <ul class="list">
+        <li>
+          数値型の配列
+        </li>
+        <li>
+          オブジェクト型の配列
+        </li>
+        <li>
+          値型の配列
+        </li>
+      </ul>
+      <p>
+        数値型の配列とは、<a href="#language-type-numeric">数値型</a>の値が連続に並んだ配列のことです。
+      </p>
+      <p>
+        オブジェクト型の配列とは、<a href="#language-type-object">オブジェクト型</a>の値が連続に並んだ配列のことです。
+      </p>
+      <p>
+        値型の配列とは、<a href="#language-type-value">値型</a>の値が連続に並んだ配列のことです。
+      </p>
+      
       <h3 id="language-term">項</h3>
       <p>
         算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
@@ -1939,6 +1974,7 @@ switch (条件) {
         <li>配列の要素の取得</li>
         <li>型変換</li>
         <li><a href="#language-operator-new-object">オブジェクトの生成</a></li>
+        <li><a href="#language-operator-new-array">配列の生成</a></li>
         <li><a href="#language-operator-array-init">配列の初期化</a></li>
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
@@ -1946,9 +1982,9 @@ switch (条件) {
         <li><a href="#language-operator-bit">ビット演算子</a></li>
         <li><a href="#language-operator-shift">シフト演算子</a></li>
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
-        <li>リファレンス演算子</li>
-        <li>デリファレンス演算子</li>
-        <li>代入演算子</li>
+        <li><a href="#language-operator-ref">リファレンス演算子</a></li>
+        <li><a href="#language-operator-deref">リファレンス演算子</a></li>
+        <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-expression-current-package">現在のパッケージ名の取得</a></li>
         <li><a href="#language-expression-current-file">現在のファイル名の取得</a></li>
         <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
@@ -2816,7 +2852,7 @@ undef
         <li><a href="#language-operator-concat">文字列連結演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-operator-assign-special">特殊代入演算子</a></li>
-        <li><a href="#language-operator-ref">リファレンス生成演算子</a></li>
+        <li><a href="#language-operator-ref">リファレンス演算子</a></li>
         <li><a href="#language-operator-deref">デリファレンス演算子</a></li>
       </ul>
       
@@ -3096,6 +3132,68 @@ x % y;
       <p>
         剰余演算子は、右辺が0であった場合に、例外が発生します。
       </p>
+
+      <h4 id="language-operator-inc">インクリメント演算子</h4>
+      <p>
+        インクリメント演算子は、値を1増加させる演算子です。インクリメント演算子が前置されるか、後置されるかで、意味が変わります。
+      </p>
+      <p>
+        インクリメント演算子の対象の型は、数値型である必要があります。そうでない場合は、コンパイルエラーが発生します。
+      </p>
+      <p>
+        インクリメント演算子の対象は、変数、フィールドへのアクセス、配列へのアクセス、デリファレンスである必要があります。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 前置のインクリメント
+++変数
+++フィールドへのアクセス
+++配列へのアクセス
+++デリファレンス
+
+# 後置のインクリメント
+変数++
+フィールドへのアクセス++
+配列へのアクセス++
+デリファレンス++
+</pre>
+      <p>
+        <b>前置のインクリメント演算子</b>
+      </p>
+      <p>
+        前置のインクリメント演算子は、インクリメントを行った後に、インクリメントされた値を返します。
+      </p>
+      <p>
+        前置のインクリメント演算子は、次の式と等価です。対象に1が足された後に、元の型で型キャストが行われ、対象に代入されます。
+      </p>
+<pre>
+(対象 = (型キャスト)(対象 + 1))
+</pre>
+      <p>
+        たとえば、byte型の値の前置のインクリメントは、次の式と等価です。
+      </p>
+
+<pre>
+($num = (byte)($num + 1))
+</pre>
+      <p>
+        <b>後置のインクリメント演算子</b>
+      </p>
+      <p>
+        後置のインクリメント演算子は、インクリメントを行った後に、インクリメントする前の値を返します。
+      </p>
+      <p>
+        後置のインクリメント演算子は、順次演算子を使った、次の式と等価です。対象が一時変数に保存され、対象に1が足された後に、元の型で型キャストが行われ、対象に代入されます。その後、一時変数が返されます。
+      </p>
+<pre>
+(my 一時変数 = 対象, 対象 = (型キャスト)(対象 + 1), 一時変数)
+</pre>
+      <p>
+        たとえば、byte型の値の後置のインクリメントは、次の式と等価です。
+      </p>
+
+<pre>
+(my $tmp = $num, $num = (byte)($num + 1), $tmp)
+</pre>
 
       <h4 id="language-operator-bit">ビット演算子</h4>
       <p>
@@ -3720,9 +3818,9 @@ $x <<= 1;
 $x >>= 1;
 $x >>>= 1;
 </pre>
-      <h4 id="language-operator-ref">リファレンス生成演算子</h4>
+      <h4 id="language-operator-ref">リファレンス演算子</h4>
       <p>
-        リファレンス生成演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数に対してリファレンスを生成する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
+        リファレンス演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数に対してリファレンスを生成する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
       </p>
 <pre>
 \変数
@@ -3731,13 +3829,13 @@ $x >>>= 1;
         変数が数値型または値型でなかった場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        リファレンス生成演算子は式を返します。
+        リファレンス演算子は式を返します。
       </p>
       <p>
-        リファレンス生成演算子で返された結果は、対応する<a href="#language-type-ref">リファレンス型</a>に代入できます。
+        リファレンス演算子で返された結果は、対応する<a href="#language-type-ref">リファレンス型</a>に代入できます。
       </p>
       <pre>
-        <b>リファレンス生成演算子のサンプル</b>
+        <b>リファレンス演算子のサンプル</b>
       </pre>
 <pre>
 my $num : int;
@@ -3830,7 +3928,7 @@ $$z_ref = $z2;
       
         <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-operator-assign-special">特殊代入演算子</a></li>
-        <li><a href="#language-operator-ref">リファレンス生成演算子</a></li>
+        <li><a href="#language-operator-ref">リファレンス演算子</a></li>
         <li><a href="#language-operator-deref">デリファレンス演算子</a></li>
         
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
@@ -4048,6 +4146,7 @@ my $object = new パッケージ名;
 <pre>
 my $object = new Foo;
 </pre>
+      <h3 id="language-operator-new-array">配列の生成</h3>
       <p>
         配列を作成するには、newキーワードと以下の構文をを使用します。
       </p>
