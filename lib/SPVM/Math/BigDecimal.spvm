@@ -1,7 +1,8 @@
 package SPVM::Math::BigDecimal {
-  has val : private ro string;
+  has digits : private ro string;
+  has exp : private ro int; # 0 or negative
 
-  sub _validate : void ($val : string) {
+  sub _validate_and_set : void ($self : self, $val : string) {
     my $length = length $val;
     unless ($length > 0) {
       croak "value is empty";
@@ -10,34 +11,71 @@ package SPVM::Math::BigDecimal {
       croak "decimal cannot start with '.'";
     }
     if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
-      croak "'.' should exist just after the first digit '0'";
+      croak "'.' must exist just after the first digit '0'. val: '$val'"; # TODO: Proper english
     }
     if ($val->[$length - 1] == '.') {
       croak "'.' cannot exist at the end of digits";
     }
-    my $found_dot = 0;
+    my $dot_pos = -1;
     for (my $i = 0; $i < $length; ++$i) {
       unless (('0' <= $val->[$i] && $val->[$i] <= '9') || $val->[$i] == '.') {
-        croak "decimal cannot contain digit or '.'";
+        croak "decimal cannot contain not digit or '.' character";
       }
       if ($val->[$i] == '.') {
-        if ($found_dot) {
-          croak "decimal cannot contain multiple '.'"
+        if ($dot_pos != -1) {
+          croak "decimal cannot contain multiple '.'";
         }
-        $found_dot = 1;
+        $dot_pos = $i;
       }
+    }
+    # not support 'e' and 'E' for now
+    if ($dot_pos == -1) {
+      $self->{digits} = $val;
+      $self->{exp} = 0;
+    }
+    else {
+      $self->{digits} = sliceb((byte [])$val, 0, $dot_pos - 1)
+          . sliceb((byte [])$val, $dot_pos + 1, $length - 1);
+      $self->{exp} = $length - 1 - $dot_pos;
     }
   }
 
   sub new : SPVM::Math::BigDecimal ($val : string) {
-    my $self = new SPVM::Math::BigInteger;
-    _validate($val);
-    $self->{val} = $value;
+    my $self = new SPVM::Math::BigDecimal;
+    $self->_validate_and_set($val);
+    return $self;
+  }
+
+  sub new_with_exp : SPVM::Math::BigDecimal ($digits : string, $exp : int) {
+    my $self = new SPVM::Math::BigDecimal;
+    my $length = length($digits);
+    for (my $i = 0; $i < $length; ++$i) {
+      unless ('0' <= $digits->[$i] && $digits->[$i] <= '9') {
+        croak "Argument digits has non numeric value";
+      }
+    }
+    if ($exp > 0) {
+      my $last_zeros = new byte [$exp];
+      for (my $i = 0; $i < $exp; ++$i) {
+        $last_zeros->[$i] = '0';
+      }
+      $digits .= $last_zeros;
+      $exp = 0;
+    }
+    $self->{digits} = $digits;
+    $self->{exp} = $exp;
     return $self;
   }
 
   sub to_string : string ($self : self) {
-    return $self->{val};
+    my $length = length($self->{digits});
+    if ($self->{exp} == 0) {
+      return $self->{digits};
+    }
+    else {
+      return sliceb((byte [])$self->{digits}, 0, $length - 1 + $self->{exp})
+          . "." . sliceb((byte [])$self->{digits}, $length + $self->{exp}, $length - 1);
+    }
   }
 
   # TODO: numeric operators: add, minus, mul, divide, mod

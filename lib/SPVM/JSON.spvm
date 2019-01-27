@@ -5,6 +5,9 @@ package SPVM::JSON {
   use SPVM::Long;
   use SPVM::Double;
   use SPVM::JSON::Bool;
+  use SPVM::Math::BigDecimal;
+  use SPVM::Math::BigInteger;
+  use SPVM::Math::StringToNumber;
 
   has indent : public int;
   has indent_length : public int;
@@ -12,9 +15,16 @@ package SPVM::JSON {
   has space_after : public int;
   has canonical : public int;
   has relaxed : public int;
+  has num_policy : public int;
+
+  enum {
+    DEFAULT,
+    ALLOW_LONG,
+    ALLOW_BIGNUM,
+  }
 
   sub _croak_with_dump_remain : void ($croak_message : string, $s : string, $start : int, $end : int) {
-    croak $croak_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $start, $end)) . "'";
+    croak $croak_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $start, $end - $start)) . "'";
   }
 
   sub _skip_comment : void ($s : string, $i : int&, $end : int) {
@@ -150,106 +160,144 @@ package SPVM::JSON {
     return (string)$value;
   }
 
+  # _decode_digits.which_part
+  enum {
+    _INT_PART,
+    _DECIMAL_PART,
+    _EXP_PART,
+  }
+
+  # _decode_digits.constraint
+  enum {
+    _ANYTHING_OK,
+    _DIGIT_EXPECTED,
+    _MINUS_OR_DIGIT_EXPECTED,
+  }
+
   sub _decode_digits : object ($self : self, $s : string, $i : int&, $end : int) {
-    my $digits : long = 0;
-    my $offset = 0;
-    my $has_digit = 0;
-    my $has_sign = 0;
-    my $decimal_stat = 0; # 0: '.' hasn't appeared yet. 1: '.' or 'e' has already appeared. 2: value is "0" or next char should be '.'
-    if ($s->[$$i] == '-') {
-      ++$$i;
-      $has_sign = 1;
-    }
-    if ($s->[$$i] == '0') {
-      ++$$i;
-      $has_digit = 1;
-      $decimal_stat = 2;
+    my $begin = $$i;
+    my $rng_int = [$begin, -1];
+    my $rng_decimal = [-1, -1];
+    my $rng_exp = [-1, -1];
+    my $end_of_digits = -1;
+    my $which_part = _INT_PART();
+    my $constraint = _MINUS_OR_DIGIT_EXPECTED();
+    if ($begin + 1 < $end && $s->[$begin] == '0' && $s->[$begin + 1] == '0') {
+      _croak_with_dump_remain("Invalid number. Leading 0 is not allowed.", $s, $begin, $end);
     }
     while ($$i < $end) {
-      if ($s->[$$i] == '.') {
-        if ($decimal_stat == 1) {
-          _croak_with_dump_remain("Invalid digits: Dot should appear at most once", $s, $$i, $end);
-        }
-        unless ($has_digit) {
-          _croak_with_dump_remain("Invalid digits: Not found digits before dot", $s, $$i, $end);
-        }
-        $decimal_stat = 1;
+      if ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
         ++$$i;
-        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _croak_with_dump_remain("Invalid digits: Not found digits after dot", $s, $$i, $end);
+        $constraint = _ANYTHING_OK();
+      }
+      elsif ($s->[$$i] == '-') {
+        ++$$i;
+        unless ($constraint == _MINUS_OR_DIGIT_EXPECTED()) {
+          _croak_with_dump_remain("Invalid number: Constraint mismatches.", $s, $$i, $end);
         }
-        $digits *= 10;
-        $digits += $s->[$$i++] - '0';
-        ++$offset;
+        $constraint = _DIGIT_EXPECTED();
       }
-      elsif ($decimal_stat == 2) {
-        # value is "0"
-        last;
-      }
-      elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
-        $has_digit = 1;
-        if ($decimal_stat == 1) {
-          $digits *= 10;
-          $digits += $s->[$$i++] - '0';
-          ++$offset;
+      elsif ($s->[$$i] == '.') {
+        unless ($constraint == _ANYTHING_OK()) {
+          _croak_with_dump_remain("Invalid number: Constraint mismatches.", $s, $$i, $end);
+        }
+        $constraint = _DIGIT_EXPECTED();
+        if ($which_part == _INT_PART()) {
+          $which_part = _DECIMAL_PART();
+          $rng_int->[1] = $$i;
+          $rng_decimal->[0] = $$i + 1;
         }
         else {
-          $digits *= 10;
-          $digits += $s->[$$i++] - '0';
+          _croak_with_dump_remain("Invalid number.", $s, $$i, $end);
         }
-      }
-      elsif ($s->[$$i] == 'e') {
         ++$$i;
-        $decimal_stat = 1;
-        unless ($$i < $end && ($s->[$$i] == '+') || ($s->[$$i] == '-')) {
-          _croak_with_dump_remain("Invalid digits: '+' or '-' is expected after 'e'", $s, $$i, $end);
+      }
+      elsif ($s->[$$i] == 'e' || $s->[$$i] == 'E') {
+        unless ($constraint == _ANYTHING_OK()) {
+          _croak_with_dump_remain("Invalid number: Constraint mismatches.", $s, $$i, $end);
         }
-        my $side : int; # -1: "e+XX", +1: "e-XX"
-        if ($s->[$$i++] == '+') {
-          $side = -1;
+        $constraint = _MINUS_OR_DIGIT_EXPECTED();
+        if ($which_part == _INT_PART()) {
+          $which_part = _EXP_PART();
+          $rng_int->[1] = $$i;
+          $rng_exp->[0] = $$i + 1;
+        }
+        elsif ($which_part == _DECIMAL_PART()) {
+          $which_part = _EXP_PART();
+          $rng_decimal->[1] = $$i;
+          $rng_exp->[0] = $$i + 1;
         }
         else {
-          $side = +1;
+          _croak_with_dump_remain("Invalid number.", $s, $$i, $end);
         }
-        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _croak_with_dump_remain("Invalid digits: digits should exist after 'e'", $s, $$i, $end);
+        ++$$i;
+        if ($$i < $end && $s->[$$i] == '+') {
+          $constraint = _DIGIT_EXPECTED();
+          ++$$i;
+          ++$rng_exp->[0];
         }
-        my $exp = $s->[$$i++] - '0';
-        while ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          $exp *= 10;
-          $exp += $s->[$$i++] - '0';
-        }
-        $offset += $side * $exp;
       }
       else {
-        # digits has decoded.
+        $end_of_digits = $$i;
         last;
       }
     }
+    unless ($constraint == _ANYTHING_OK()) {
+      _croak_with_dump_remain("Invalid number: Constraint mismatches.", $s, $$i, $end);
+    }
+    if ($end_of_digits == -1) {
+      $end_of_digits = $end;
+    }
 
-    unless ($has_digit) {
-      _croak_with_dump_remain("Invalid digits: Not found digits after '-'", $s, $$i, $end);
-    }
-    if ($decimal_stat == 1) {
-      my $value = (double) $digits / pow(10, $offset);
-      if ($has_sign) {
-        $value *= -1;
+    if ($which_part == _INT_PART()) {
+      $rng_int->[1] = $end_of_digits;
+      my $int_part_str = sliceb((byte [])$s, $rng_int->[0], $rng_int->[1] - $rng_int->[0]);
+      if ($self->{num_policy} == DEFAULT()) {
+        return SPVM::Int->new(SPVM::Math::StringToNumber->from($int_part_str)->to_int);
       }
-      return SPVM::Double->new($value);
-    }
-    elsif ($digits > INT32_MAX()) {
-      my $value = $digits;
-      if ($has_sign) {
-        $value *= -1;
+      elsif ($self->{num_policy} == ALLOW_LONG()) {
+        return SPVM::Long->new(SPVM::Math::StringToNumber->from($int_part_str)->to_long);
       }
-      return SPVM::Long->new($value);
-    }
-    else {
-      my $value = (int)$digits;
-      if ($has_sign) {
-        $value *= -1;
+      else {
+        return SPVM::Math::BigInteger->new($int_part_str);
       }
-      return SPVM::Int->new($value);
+    }
+    elsif ($which_part == _DECIMAL_PART()) {
+      $rng_decimal->[1] = $end_of_digits;
+      if ($self->{num_policy} == DEFAULT() || $self->{num_policy} == ALLOW_LONG()) {
+        # TODO: Extract double decoding to StringToNumber
+        my $int_part_str = sliceb((byte [])$s, $rng_int->[0], $rng_int->[1] - $rng_int->[0]);
+        my $decimal_part_str = sliceb((byte [])$s, $rng_decimal->[0], $rng_decimal->[1] - $rng_decimal->[0]);
+        my $int_part = SPVM::Math::StringToNumber->from($int_part_str)->to_int;
+        my $decimal_part = SPVM::Math::StringToNumber->from($decimal_part_str)->to_int;
+        return SPVM::Double->new($int_part + $decimal_part / pow(10.0, @$decimal_part_str));
+      }
+      else {
+        return SPVM::Math::BigDecimal->new(
+            sliceb((byte [])$s, $rng_int->[0], $rng_decimal->[1] - $rng_int->[0]));
+      }
+    }
+    elsif ($which_part == _EXP_PART()) {
+      $rng_exp->[1] = $end_of_digits;
+      my $int_part_str = sliceb((byte [])$s, $rng_int->[0], $rng_int->[1] - $rng_int->[0]);
+      my $decimal_part_str = "";
+      if ($rng_decimal->[0] >= 0) {
+        $decimal_part_str = sliceb((byte [])$s, $rng_decimal->[0], $rng_decimal->[1] - $rng_decimal->[0]);
+      }
+      my $exp_part_str = sliceb((byte [])$s, $rng_exp->[0], $rng_exp->[1] - $rng_exp->[0]);
+      if ($self->{num_policy} == DEFAULT() || $self->{num_policy} == ALLOW_LONG()) {
+        my $int_part = SPVM::Math::StringToNumber->from($int_part_str)->to_int;
+        my $decimal_part = SPVM::Math::StringToNumber->from($decimal_part_str)->to_int;
+        my $exp_part = SPVM::Math::StringToNumber->from($exp_part_str)->to_int;
+        return SPVM::Double->new(
+              $int_part     * pow(10.0, $exp_part)
+            + $decimal_part * pow(10.0, $exp_part - length($decimal_part_str)));
+      }
+      else {
+        my $exp = SPVM::Math::StringToNumber->from($exp_part_str)->to_int;
+        $exp -= length($decimal_part_str);
+        return SPVM::Math::BigDecimal->new_with_exp($int_part_str . $decimal_part_str, $exp);
+      }
     }
   }
 
@@ -512,6 +560,15 @@ package SPVM::JSON {
     elsif ($o isa SPVM::Long) {
       return (string)(((SPVM::Long)$o)->val);
     }
+    elsif ($o isa SPVM::Double) {
+      return (string)(((SPVM::Double)$o)->val);
+    }
+    elsif ($o isa SPVM::Math::BigInteger) {
+      return ((SPVM::Math::BigInteger)$o)->to_string;
+    }
+    elsif ($o isa SPVM::Math::BigDecimal) {
+      return ((SPVM::Math::BigDecimal)$o)->to_string;
+    }
     elsif ($o isa SPVM::JSON::Bool) {
       if (((SPVM::JSON::Bool)$o)->val) {
         return "true";
@@ -520,11 +577,16 @@ package SPVM::JSON {
         return "false";
       }
     }
-    elsif ($o isa SPVM::Double) {
-      return (string)(((SPVM::Double)$o)->val);
-    }
     else {
       croak "Unknown object type";
+    }
+  }
+
+  sub _field_check : void ($self : self) {
+    unless ($self->{num_policy} == DEFAULT() ||
+        $self->{num_policy} == ALLOW_LONG() ||
+        $self->{num_policy} == ALLOW_BIGNUM()) {
+      croak "Not allowed value is set to num_policy field";
     }
   }
 
@@ -539,6 +601,7 @@ package SPVM::JSON {
   }
 
   sub encode : string ($self : self, $object : object) {
+    $self->_field_check;
     unless ($object) {
       return "";
     }
@@ -546,6 +609,7 @@ package SPVM::JSON {
   }
 
   sub decode : object ($self : self, $json_text : string) {
+    $self->_field_check;
     my $length = length $json_text;
     my $iter = 0;
     $self->_skip_spaces($json_text, \$iter, $length);
@@ -555,7 +619,7 @@ package SPVM::JSON {
     my $ret = $self->_decode_value($json_text, \$iter, $length);
     $self->_skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
-      _croak_with_dump_remain("Not all json_text is decoded yet", $json_text, $iter, $length - $iter);
+      _croak_with_dump_remain("Not all json_text is decoded yet", $json_text, $iter, $length);
     }
     return $ret;
   }

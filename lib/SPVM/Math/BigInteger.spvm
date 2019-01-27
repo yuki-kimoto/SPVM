@@ -19,7 +19,7 @@ package SPVM::Math::BigInteger {
   sub new : SPVM::Math::BigInteger ($val : string) {
     my $self = new SPVM::Math::BigInteger;
     _validate($val);
-    $self->{val} = $value;
+    $self->{val} = $val;
     return $self;
   }
 
