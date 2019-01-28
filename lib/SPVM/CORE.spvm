@@ -43,10 +43,9 @@ package SPVM::CORE {
   native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
   native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
   native sub fread : int ($buf : byte[], $fh : SPVM::FileHandle);
-  native sub fwrite : int ($fh : SPVM::FileHandle, $buf : string);
+  native sub fwrite : int ($buf : string, $fh : SPVM::FileHandle);
   native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
   native sub fclose : int ($fh : SPVM::FileHandle);
-  
   
   sub slurp_file : string ($file : string) {
     my $fh = fopen($file, "rb");

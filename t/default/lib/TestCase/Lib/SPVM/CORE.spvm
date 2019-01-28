@@ -94,7 +94,6 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-=pod
   sub test_fwrite : int ($file : string) {
     {
       my $fh = fopen($file, "wb");
@@ -108,16 +107,20 @@ package TestCase::Lib::SPVM::CORE {
         }
       }
       {
-        my $write_length = fread("fg", $fh);
-        unless ($read_length == 2) {
+        my $write_length = fwrite("fg", $fh);
+        unless ($write_length == 2) {
           return 0;
         }
       }
     }
+    
+    my $content = slurp_file($file);
+    unless ($content eq "abcd\nfg") {
+      return 0;
+    }
 
     return 1;
   }
-=cut
 
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];

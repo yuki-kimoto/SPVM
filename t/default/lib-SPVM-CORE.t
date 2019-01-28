@@ -56,14 +56,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Lib::SPVM::CORE->test_slurp_file($sp_file));
   }
 
-=pod
   # fwrite
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../tmp_test_files/fread.txt");
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fwrite.txt");
     ok(TestCase::Lib::SPVM::CORE->test_fwrite($sp_file));
   }
-=cut
-
 }
 
 # new_oarray_proto

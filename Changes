@@ -12,6 +12,7 @@
   - add chacaters position in compiler error message
     Unexpected token "byte" at /home/kimoto/labo/SPVM/t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm line 5:30
   - add slurp_file
+  - add fwrite
 0.0413 2018-01-22
   - add replaceb
   - add replaces
