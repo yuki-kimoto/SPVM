@@ -8,6 +8,7 @@
   - add fread
   - improve error message
   - precompile anon sub is always compiled
+  - eval{ } need semicolon. Must be eval { };
 0.0413 2018-01-22
   - add replaceb
   - add replaces

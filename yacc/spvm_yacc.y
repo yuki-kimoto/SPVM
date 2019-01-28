@@ -564,7 +564,7 @@ block
     }
 
 eval_block
-  : EVAL block
+  : EVAL block ';'
     {
       $$ = SPVM_OP_build_eval(compiler, $1, $2);
     }

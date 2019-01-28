@@ -1355,7 +1355,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
         サブルーチンの定義には「戻り値の型名」と「0個以上の引数の定義」が必要です。「引数の定義」は「引数名」と「引数の型名」からなります。
       </p>
       <p>
-        引数名は、変数名である必要があります。
+        引数名は、変数名でなければなりません。
       </p>
       <p>
         引数の型名には、「数値型」「オブジェクト型」「リファレンス型」を指定することができます。
@@ -1460,7 +1460,7 @@ my $anon_sub = sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
 };
 </pre>
       <p>
-        無名サブルーチンは、<a href="#language-sub-method">メソッド</a>である必要があります。
+        無名サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
       </p>
       <p>
         <b>無名サブルーチンのサンプル</b>
@@ -1760,6 +1760,7 @@ while (my $bar = 1) {
   
 }
 </pre>
+
       <h4 id="language-lex-var-initial-value">レキシカル変数の初期値</h4>
       <p>
         レキシカル変数は、<a href="#language-type-initial-value">型の初期値</a>で初期化されます。
@@ -1789,11 +1790,13 @@ while (my $bar = 1) {
       <p>
         ブロックの中には、スコープを作る<a href="#language-scope-block">スコープブロック</a>があります。
       </p>
+
       <h3 id="language-scope">スコープ</h3>
       <ul class="list">
         <li><a href="#language-scope-role">スコープの役割</a>
         <li><a href="#language-scope-block">スコープブロック</a>
       </ul>
+
       <h4 id="language-scope-role">スコープの役割</h4>
       <p>
         スコープとは<a href="#language-scope-block">スコープブロック</a>に囲まれた範囲のことをいいます。
@@ -1835,6 +1838,7 @@ while (my $bar = 1) {
       <p>
         
       </p>
+
       <h5 id="language-block-statement-simple">単純なブロック</h5>
 <pre>
 # 単純なブロック
@@ -1905,6 +1909,51 @@ switch (条件) {
 
 }
 </pre>
+
+      <h3 id="language-exception">例外処理</h3>
+      <ul class="list">
+        <li><a href="#language-exception-summary">例外処理の概要</a></li>
+        <li><a href="#language-exception-throw">配列の生成</a></li>
+        <li><a href="#language-exception-catch">配列へのアクセス</a></li>
+      </ul>
+      
+      <h4 id="language-exception-summary">例外処理の概要</h4>
+      <p>
+        SPVMは例外処理の仕組みを持っています。例外処理は、例外のスローと例外のキャッチからなります。
+      </p>
+
+      <h4 id="language-exception-throw">例外のスロー</h4>
+      <p>
+        例外のスローを行うには、croak文を使用します。
+      </p>
+<pre>
+croak 式;
+</pre>
+      <p>
+        式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
+      </p>
+      <p>
+        croak文が実行されると、スタックトレースと式で指定された文字列を表示して、プログラムは終了します。スタックトレースは、パッケージ名、サブルーチン名、ファイル名、行番号を含みます。ファイル名は、モジュールをロードしたパスからの相対ファイル名です。
+      </p>
+<pre>
+Error
+  from TestCase::Minimal->sum2 at TestCase/Minimal.spvm line 1640
+  from TestCase->main at TestCase.spvm line 1198
+</pre>
+
+      <h4 id="language-exception-throw">例外のキャッチ</h4>
+      <p>
+        例外のキャッチとは、例外がスローされた場合に、プログラムの終了を止め、エラーメッセージを取得できる機能のことです。
+      </p>
+      <p>
+        例外のキャッチは、evalブロックを使って行います。
+      </p>
+<pre>
+eval {
+  # 例外を投げる可能性のある処理
+};
+</pre>
+
       <h3 id="language-array">配列</h3>
       <ul class="list">
         <li><a href="#language-array-summary">配列の概要</a></li>
@@ -2175,7 +2224,7 @@ if (my $message = $@) {
 $@ = 右式
 </pre>
       <p>
-        右式は<a href="#language-type-string-compatible">文字列互換型</a>である必要があります。
+        右式は<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
       </p>
       <p>
        例外変数の値の設定は、<a href="#language-expression">式</a>を返します。
@@ -2207,7 +2256,7 @@ $@ = "Error";
 インボーカー式->{フィールド名} = 右式;
 </pre>
       <p>
-        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名がインボーカー式のパッケージに存在しない場合は、コンパイル時エラーが発生します。
@@ -2363,7 +2412,7 @@ while (条件部) {
         条件部に式が書かれた場合は、結果の型はint型です。
       </p>
       <p>
-        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         条件部に式が書かれた場合は、型に応じた結果を返します。
@@ -3038,7 +3087,7 @@ my $ret = ($x += 2, $x + $y);
 +式
 </pre>
       <p>
-        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式は<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
@@ -3069,7 +3118,7 @@ my $num = +10;
 -式
 </pre>
       <p>
-        式は<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式は<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
@@ -3103,7 +3152,7 @@ my $num = -10;
 左式 + 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3131,7 +3180,7 @@ x + y;
 左式 - 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3159,7 +3208,7 @@ x - y;
 左式 * 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3187,7 +3236,7 @@ x * y;
 左式 / 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3219,7 +3268,7 @@ x / y;
 左式 % 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3260,10 +3309,10 @@ x % y;
 デリファレンス++
 </pre>
       <p>
-        インクリメント演算子の対象は、<a href="#language-lex-var">レキシカル変数</a>、<a href="#language-package-var">パッケージ変数</a>、<a href="#language-field-access">フィールドへのアクセス</a>、<a href="#language-array-access">配列へのアクセス</a>、<a href="#language-deref">デリファレンス</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        インクリメント演算子の対象は、<a href="#language-lex-var">レキシカル変数</a>、<a href="#language-package-var">パッケージ変数</a>、<a href="#language-field-access">フィールドへのアクセス</a>、<a href="#language-array-access">配列へのアクセス</a>、<a href="#language-deref">デリファレンス</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        インクリメント演算子の対象の型は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイルエラーが発生します。
+        インクリメント演算子の対象の型は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイルエラーが発生します。
       </p>
       <p>
         <b>前置のインクリメント演算子</b>
@@ -3324,10 +3373,10 @@ x % y;
 デリファレンス--
 </pre>
       <p>
-        デクリメント演算子の対象は、<a href="#language-lex-var">レキシカル変数</a>、<a href="#language-package-var">パッケージ変数</a>、<a href="#language-field-access">フィールドへのアクセス</a>、<a href="#language-array-access">配列へのアクセス</a>、<a href="#language-deref">デリファレンス</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        デクリメント演算子の対象は、<a href="#language-lex-var">レキシカル変数</a>、<a href="#language-package-var">パッケージ変数</a>、<a href="#language-field-access">フィールドへのアクセス</a>、<a href="#language-array-access">配列へのアクセス</a>、<a href="#language-deref">デリファレンス</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        デクリメント演算子の対象の型は、<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイルエラーが発生します。
+        デクリメント演算子の対象の型は、<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイルエラーが発生します。
       </p>
       <p>
         <b>前置のデクリメント演算子</b>
@@ -3381,7 +3430,7 @@ x % y;
 左式 & 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3410,7 +3459,7 @@ x & y;
 左式 | 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式と右式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3439,7 +3488,7 @@ x | y;
 ~式
 </pre>
       <p>
-        式は<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        式は<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         <a href="#language-expression">式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
@@ -3478,13 +3527,13 @@ my $num = ~0xFF0A;
 左式 << 右式
 </pre>
       <p>
-        左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        右式は、int型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         左シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -3507,13 +3556,13 @@ x << y;
 左式 >> 右式
 </pre>
       <p>
-        左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        右式は、int型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         算術右シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -3536,13 +3585,13 @@ x >> y;
 左式 >>> 右式
 </pre>
       <p>
-        左式は、<a href="#language-type-integral">整数型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左式は、<a href="#language-type-integral">整数型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         最初に<a href="#language-expression">左式</a>に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        右式は、int型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        右式は、int型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       <p>
       <p>
         論理右シフト演算子の演算結果は、C99における以下の演算と完全に一致する演算を行います。xに対して、<a href="#language-c99-type">C99との型の対応</a>に応じた、int型、long型における演算が定義されます。
@@ -3652,7 +3701,7 @@ x >> y;
         </tr>
       </table>
       <p>
-        左辺と右辺の型は、比較可能な型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        左辺と右辺の型は、比較可能な型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         数値型の比較の場合は、左式と右式に対して、<a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a>が行われます。
@@ -3686,7 +3735,7 @@ x <= y;
 左式 文字列比較演算子 右式
 </pre>
       <p>
-        左式と右式は、<a href="#language-type-string-compatible">文字列互換型</a>である必要があります。
+        左式と右式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
       </p>
       <p>
         文字列比較演算子の一覧です。
@@ -3765,10 +3814,10 @@ x <= y;
         1. 右型が、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-value">値型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-ref">リファレンス型</a>の場合は、コンパイル時に左式の型が右型と同一のものであるかをチェックします。同一であった場合は真を、そうでない場合は偽を返します。
       </p>
       <p>
-        2. 右型が、<a href="#language-type-class">クラス型</a>であった場合は、実行時に左式の型が、クラス型と一致するかをチェックします。一致した場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        2. 右型が、<a href="#language-type-class">クラス型</a>であった場合は、実行時に左式の型が、クラス型と一致するかをチェックします。一致した場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        3. 右型が、<a href="#language-type-interface">インターフェース型</a>であった場合は、実行時に左式の型がクラス型であり、そのクラスがインターフェースを満たすかどうかをチェックします。満たした場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        3. 右型が、<a href="#language-type-interface">インターフェース型</a>であった場合は、実行時に左式の型がクラス型であり、そのクラスがインターフェースを満たすかどうかをチェックします。満たした場合は真を、そうでない場合は偽を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       
       <h4 id="language-operator-logical">論理演算子</h4>
@@ -4025,7 +4074,7 @@ my $z_ref : SPVM::Complex_2d& = \$z;
 $変数
 </pre>
       <p>
-        変数の型は、リファレンス型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         デリファレンスによる値の取得は、<a href="#language-expression">式</a>を返します。
@@ -4050,7 +4099,7 @@ my $z_deref : SPVM::Complex_2d = $$z_ref;
 $変数
 </pre>
       <p>
-        変数の型は、リファレンス型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         デリファレンスによる値の取得は、<a href="#language-expression">式</a>を返します。
@@ -4075,7 +4124,7 @@ my $z_deref : SPVM::Complex_2d = $$z_ref;
 $変数 = 式
 </pre>
       <p>
-        変数の型は、リファレンス型である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         式の型は、デリファレンスされた場合の変数の型に一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
@@ -4305,7 +4354,7 @@ my $object = new 型[要素数式];
         型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>である必要があります。そうでない場合は、コンパイル時エラーが発生します。
+        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
@@ -4854,7 +4903,7 @@ package SPVM::Comparator : interface_t {
         インターフェスは、C言語における関数ポインタに該当する機能を提供するために設計されました。
       </p>
       <p>
-        インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドである必要があります。
+        インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドでなければなりません。
       </p>
       <p>
         インターフェース型は「フィールドの定義」「パッケージ変数の定義」を持つことはできません。
@@ -5154,7 +5203,7 @@ package Point_3i : value_t {
         値型のフィールドの個数の最大値は16個に制限されています。
       </p>
       <p>
-        すべてのフィールドのデータ型は、同一の型である必要があります。
+        すべてのフィールドのデータ型は、同一の型でなければなりません。
       </p>
       <p>
         利用する場合は、変数の宣言を行ってください。すべての領域が、0で初期化されます。
