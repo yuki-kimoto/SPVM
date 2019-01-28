@@ -1,5 +1,17 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
+
+  sub test_slurp_file : int ($file : string) {
+    {
+      my $string = slurp_file($file);
+      
+      unless ($string eq "abcd\nfghi\nklm\n") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   sub test_fopen : int ($file : string) {
     {
@@ -81,6 +93,31 @@ package TestCase::Lib::SPVM::CORE {
 
     return 1;
   }
+
+=pod
+  sub test_fwrite : int ($file : string) {
+    {
+      my $fh = fopen($file, "wb");
+      unless ($fh) {
+        croak "Can't open file $file";
+      }
+      {
+        my $write_length = fwrite("abcd\n", $fh);
+        unless ($write_length == 5) {
+          return 0;
+        }
+      }
+      {
+        my $write_length = fread("fg", $fh);
+        unless ($read_length == 2) {
+          return 0;
+        }
+      }
+    }
+
+    return 1;
+  }
+=cut
 
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];

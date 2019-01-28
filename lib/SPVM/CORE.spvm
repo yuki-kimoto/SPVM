@@ -47,7 +47,30 @@ package SPVM::CORE {
   native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
   native sub fclose : int ($fh : SPVM::FileHandle);
   
-
+  
+  sub slurp_file : string ($file : string) {
+    my $fh = fopen($file, "rb");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    my $buffer_length = 4096;
+    my $buffer = new byte[$buffer_length];
+    my $string = "";
+    while (1) {
+      my $read_length = fread($buffer, $fh);
+      
+      if ($read_length < $buffer_length) {
+        $string .= sliceb((byte[])$buffer, 0, $read_length);
+        last;
+      }
+      else {
+        $string .= $buffer;
+      }
+    }
+    return $string;
+  }
+  
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
   precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {
