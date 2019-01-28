@@ -8,40 +8,40 @@ package TestCase::Exception {
     
     eval {
       $test_case->{x_byte};
-    }
+    };
     if ($@) {
       return 1;
       
       eval {
         $test_case->{x_short};
-      }
+      };
       
       if ($@) {
         return 1;
 
         eval {
           $test_case->{x_int};
-        }
+        };
         
         if ($@) {
           eval {
             $test_case->{x_long};
-          }
+          };
           
           if ($@) {
             eval {
               $test_case->{x_float};
-            }
+            };
             
             if ($@) {
               eval {
                 $test_case->{x_double};
-              }
+              };
               
               if ($@) {
                 eval {
                   $test_case->{x_test_case};
-                }
+                };
                 
                 if ($@) {
 
@@ -65,40 +65,40 @@ package TestCase::Exception {
     
     eval {
       $test_case->{x_byte} = (byte)1;
-    }
+    };
     if ($@) {
       return 1;
       
       eval {
         $test_case->{x_short} = (short)1;
-      }
+      };
       
       if ($@) {
         return 1;
 
         eval {
           $test_case->{x_int} = 1;
-        }
+        };
         
         if ($@) {
           eval {
             $test_case->{x_long} = 1L;
-          }
+          };
           
           if ($@) {
             eval {
               $test_case->{x_float} = 1f;
-            }
+            };
             
             if ($@) {
               eval {
                 $test_case->{x_double} = 1d;
-              }
+              };
               
               if ($@) {
                 eval {
                   $test_case->{x_test_case} = undef;
-                }
+                };
                 
                 if ($@) {
 

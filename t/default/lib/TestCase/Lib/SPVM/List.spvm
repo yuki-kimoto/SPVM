@@ -107,14 +107,14 @@ package TestCase::Lib::SPVM::List {
     }
     eval {
       SPVM::List->new_with_capacity(0);
-    }
+    };
     unless ($@) {
       return 0;
     }
     $@ = undef;
     eval {
       SPVM::List->new_with_capacity(-1);
-    }
+    };
     unless ($@) {
       return 0;
     }
