@@ -73,6 +73,13 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $cb = sub : int ($self : self) {
+        return 386;
+      };
+      
+      warn($cb->());
+    }
+    {
       my $z = (1, 2, 3);
     }
     {
