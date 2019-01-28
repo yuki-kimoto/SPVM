@@ -390,6 +390,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
 
     // Call native subrotuine
     int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
+    assert(native_address != NULL);
     int32_t exception_flag = (*native_address)(env, stack);
     
     // Increment ref count of return value
