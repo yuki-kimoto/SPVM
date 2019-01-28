@@ -1418,6 +1418,9 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
   
 }
 </pre>
+      <p>
+        定義されたサブルーチンは、呼び出すことができます。サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+      </p>
 
       <h4 id="language-sub-constant">定数サブルーチン</h4>
       <p>
@@ -1462,20 +1465,34 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
-
+      <p>
+        無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+      <p>
+      
       <h4 id="language-sub-method">メソッド</h4>
       <p>
         メソッドとは、第一引数に<a href="#language-type-self">self型</a>を持つサブルーチンのことです。
       </p>
 <pre>
-sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+sub サブルーチン名 : 型名 ($self : self, 引数1 : 型1, 引数2 : 型2, ..., 引数n : 型n) {
   
 }
 </pre>
+      <p>
+        メソッドは、<a href="#language-operator-new-object">オブジェクトの生成</a>によって生成されたオブジェクトから呼び出すことができます。メソッドの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+      </p>
 
       <h4 id="language-sub-invocant">インボカント</h4>
       <p>
-        インボカントとは、self型が指定された引数のことをいいます。
+        インボカントとは、self型が指定された第一引数のことをいいます。
+      </p>
+<pre>
+sub サブルーチン名 : 型名 ($self : self, 引数1 : 型1, 引数2 : 型2, ..., 引数n : 型n) {
+  
+}
+</pre>
+      <p>
+        上記の例では$selfは、インボカントと呼ばれます。
       </p>
 
       <h4 id="language-sub-anon">シグネチャ</h4>
@@ -1510,7 +1527,9 @@ sub foo : void ()
 # シグネチャ
 void()
 </pre>
-      
+      <p>
+        シグネチャは、SPVMを記述しているときには、意識する必要はありません。ネイティブからSPVMのサブルーチンを呼び出すときに使用します。
+      </p>
       <h3 id="language-enum">列挙</h3>
       <ul class="list">
         <li>
