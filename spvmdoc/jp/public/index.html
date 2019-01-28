@@ -2006,12 +2006,13 @@ switch (条件) {
       <ul class="list">
         <li><a href="#language-expression-get-lex-var">レキシカル変数の値の取得</a></li>
         <li><a href="#language-expression-set-lex-var">レキシカル変数の値の設定</a></li>
-        <li>例外変数</li>
         <li><a href="#language-expression-get-package-var">パッケージ変数の値の設定</a></li>
         <li><a href="#language-expression-set-package-var">パッケージ変数の値の取得</a></li>
+        <li><a href="#language-expression-get-exception-var">例外変数の値の設定</a></li>
+        <li><a href="#language-expression-set-exception-var">例外変数の値の取得</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-undef">未定義値</a></li>
-        <li>サブルーチン呼び出し</li>
+        <li><a href="#language-expression-callsub">サブルーチンの呼び出し</a></li>
         <li><a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a></li>
         <li><a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a></li>
         <li><a href="#language-expression-get-field-value">値型のフィールドの値の取得</a></li>
@@ -2065,6 +2066,7 @@ $var = 右式
       <p>
         レキシカル変数の値の設定は、<a href="#language-expression">式</a>です。
       </p>
+      
       <h4 id="language-expression-get-package-var">パッケージ変数の値の取得</h4>
       <p>
         パッケージ変数の値を取得するには以下の構文を使用します。
@@ -2100,6 +2102,7 @@ package Foo {
   }
 }
 </pre>
+
       <h4 id="language-expression-set-package-var">パッケージ変数の値の設定</h4>
       <p>
         パッケージ変数の値を設定するには以下の構文を使用します。
@@ -2134,6 +2137,62 @@ package Foo {
   }
 }
 </pre>
+
+      <h4 id="language-expression-get-exception-var">例外変数の値の取得</h4>
+      <p>
+        例外変数の値を取得するには以下の構文を使用します。
+      </p>
+<pre>
+$@
+</pre>
+      <p>
+       例外変数の値の取得は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+       例外変数の値の取得は、<a href="#language-type-string">文字列型</a>の値を返します。
+      </p>
+      <p>
+        <b>例外変数の値の取得のサンプル</b>
+      </p>
+      <p>
+        例外変数の値の取得のサンプルです。
+      </p>
+<pre>
+eval {
+  foo();
+};
+
+if (my $message = $@) {
+  
+}
+</pre>
+
+      <h4 id="language-expression-get-exception-var">例外変数の値の設定</h4>
+      <p>
+        例外変数の値を設定するには以下の構文を使用します。
+      </p>
+<pre>
+$@ = 右式
+</pre>
+      <p>
+        右式は<a href="#language-type-string-compatible">文字列互換型</a>である必要があります。
+      </p>
+      <p>
+       例外変数の値の設定は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+       例外変数の値の設定は、設定後の例外変数の値を返します。これは、<a href="#language-type-string">文字列型</a>です。
+      </p>
+      <p>
+        <b>例外変数の値の設定のサンプル</b>
+      </p>
+      <p>
+        例外変数の値の設定のサンプルです。
+      </p>
+<pre>
+$@ = "Error";
+</pre>
+
       <h4 id="language-field-access">クラス型のフィールドの取得</h4>
       <p>
         フィールドの取得の構文は以下です。
