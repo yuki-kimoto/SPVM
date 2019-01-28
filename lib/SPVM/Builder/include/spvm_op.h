@@ -109,7 +109,7 @@ enum {
   SPVM_OP_C_ID_NEXT,
   SPVM_OP_C_ID_LOOP,
   SPVM_OP_C_ID_VAR,
-  SPVM_OP_C_ID_CAST,
+  SPVM_OP_C_ID_CONVERT,
   SPVM_OP_C_ID_UNDEF,
   SPVM_OP_C_ID_ARRAY_LENGTH,
   SPVM_OP_C_ID_CONDITION,
@@ -152,7 +152,7 @@ enum {
   SPVM_OP_C_ID_BOOL,
   SPVM_OP_C_ID_LOOP_INCREMENT,
   SPVM_OP_C_ID_SELF,
-  SPVM_OP_C_ID_CHECK_CAST,
+  SPVM_OP_C_ID_CHECK_CONVERT,
   SPVM_OP_C_ID_STRING_EQ,
   SPVM_OP_C_ID_STRING_NE,
   SPVM_OP_C_ID_STRING_GT,
@@ -349,7 +349,7 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages);
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_package, SPVM_OP* sub_names, int32_t is_require);
 SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_subname, SPVM_OP* op_terms);
-SPVM_OP* SPVM_OP_build_cast(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term);
+SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block);
 SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first);
 SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term);

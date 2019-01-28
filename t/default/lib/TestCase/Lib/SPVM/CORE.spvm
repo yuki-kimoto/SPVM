@@ -1,5 +1,32 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
+  
+  sub test_init_native_constants : int () {
+    {
+      my $int_constants = [
+        O_RDONLY(),
+        O_WRONLY(),
+        O_RDWR(),
+        O_APPEND(),
+        O_CREAT(),
+        O_TRUNC(),
+        SEEK_SET(),
+        SEEK_CUR(),
+        SEEK_END(),
+        EOF(),
+      ];
+      
+      my $ret = test_init_native_constants_native($int_constants);
+      
+      unless ($ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  native sub test_init_native_constants_native : int ($int_constants : int[]);
 
   sub test_slurp_file : int ($file : string) {
     {

@@ -114,7 +114,7 @@
      REQUIRE = 330,
      LENGTH = 331,
      SCALAR = 332,
-     CAST = 333,
+     CONVERT = 333,
      MINUS = 334,
      PLUS = 335,
      DEREF = 336,
@@ -202,7 +202,7 @@
 #define REQUIRE 330
 #define LENGTH 331
 #define SCALAR 332
-#define CAST 333
+#define CONVERT 333
 #define MINUS 334
 #define PLUS 335
 #define DEREF 336

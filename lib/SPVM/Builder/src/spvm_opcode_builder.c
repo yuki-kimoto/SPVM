@@ -2028,7 +2028,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                       }
-                      else if (op_assign_src->id == SPVM_OP_C_ID_CAST) {
+                      else if (op_assign_src->id == SPVM_OP_C_ID_CONVERT) {
                         
                         SPVM_OP* op_dist_term = op_assign_dist;
                         SPVM_OP* op_src_term = op_assign_src->first;
@@ -2481,10 +2481,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
-                        // Check cast
+                        // Check convert
                         else if (SPVM_TYPE_is_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                           
-                          // Object cast
+                          // Object convert
                           {
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));

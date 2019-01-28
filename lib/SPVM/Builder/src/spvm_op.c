@@ -152,7 +152,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "BOOL",
   "LOOP_INCREMENT",
   "SELF",
-  "CHECK_CAST",
+  "CHECK_CONVERT",
   "STRING_EQ",
   "STRING_NE",
   "STRING_GT",
@@ -1178,7 +1178,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PLUS:
     case SPVM_OP_C_ID_MINUS:
     case SPVM_OP_C_ID_NEW:
-    case SPVM_OP_C_ID_CHECK_CAST:
+    case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
@@ -1198,7 +1198,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_ID_CAST: {
+    case SPVM_OP_C_ID_CONVERT: {
       SPVM_OP* op_type = op->last;
       type = SPVM_OP_get_type(compiler, op_type);
       break;
@@ -1452,15 +1452,15 @@ SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op
 }
 
 
-SPVM_OP* SPVM_OP_build_cast(SPVM_COMPILER* compiler, SPVM_OP* op_cast, SPVM_OP* op_type, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_term) {
   
-  SPVM_OP_insert_child(compiler, op_cast, op_cast->last, op_term);
-  SPVM_OP_insert_child(compiler, op_cast, op_cast->last, op_type);
+  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_term);
+  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_type);
   
-  op_cast->file = op_type->file;
-  op_cast->line = op_type->line;
+  op_convert->file = op_type->file;
+  op_convert->line = op_type->line;
   
-  return op_cast;
+  return op_convert;
 }
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
