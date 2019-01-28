@@ -1913,8 +1913,9 @@ switch (条件) {
       <h3 id="language-exception">例外処理</h3>
       <ul class="list">
         <li><a href="#language-exception-summary">例外処理の概要</a></li>
-        <li><a href="#language-exception-throw">配列の生成</a></li>
-        <li><a href="#language-exception-catch">配列へのアクセス</a></li>
+        <li><a href="#language-exception-throw">例外のスロー</a></li>
+        <li><a href="#language-exception-catch">例外変数のキャッチ</a></li>
+        <li><a href="#language-exception-var">例外変数</a></li>
       </ul>
       
       <h4 id="language-exception-summary">例外処理の概要</h4>
@@ -1943,17 +1944,37 @@ Error
 
       <h4 id="language-exception-throw">例外のキャッチ</h4>
       <p>
-        例外のキャッチとは、例外がスローされた場合に、プログラムの終了を止め、エラーメッセージを取得できる機能のことです。
+        例外のキャッチとは、例外がスローされた場合に、プログラムが終了するのを止め、エラーメッセージを取得できる機能のことです。
       </p>
       <p>
-        例外のキャッチは、evalブロックを使って行います。
+        例外のキャッチは、evalブロック文を使って行います。evalブロック文は、末尾にセミコロンが必要なので気をつけてください。
       </p>
 <pre>
 eval {
   # 例外を投げる可能性のある処理
 };
 </pre>
-
+      <p>
+        evalブロックで例外をキャッチした場合は、プログラムの終了は止められ、<a href="#language-exception-var">例外変数</a>に<a href="#language-exception-throw">例外のスロー</a>で指定したメッセージが代入されます。
+      </p>
+      
+      <h4 id="language-exception-var">例外変数</h4>
+      <p>
+        例外変数は「$@」で表現されるグローバル変数のことです。
+      </p>
+<pre>
+$@
+</pre>
+      <p>
+        例外変数は、本当の意味では、グローバル変数ではありません。例外変数は、実は、スレッド変数です。SPVMはシングルスレッド設計なので、例外変数は、グローバル変数として振舞うように見えます。ネイティブにおいてスレッドを利用する場合に、違いがあります。
+      </p>
+      <p>
+        例外変数の値の取得については、<a href="#language-expression-get-exception-var">例外変数の値の取得</a>を見てください。
+      </p>
+      <p>
+        例外変数の値の設定については、<a href="#language-expression-set-exception-var">例外変数の値の設定</a>を見てください。
+      </p>
+      
       <h3 id="language-array">配列</h3>
       <ul class="list">
         <li><a href="#language-array-summary">配列の概要</a></li>
@@ -2216,7 +2237,7 @@ if (my $message = $@) {
 }
 </pre>
 
-      <h4 id="language-expression-get-exception-var">例外変数の値の設定</h4>
+      <h4 id="language-expression-set-exception-var">例外変数の値の設定</h4>
       <p>
         例外変数の値を設定するには以下の構文を使用します。
       </p>

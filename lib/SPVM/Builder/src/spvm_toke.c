@@ -93,6 +93,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->cur_src = NULL;
         compiler->bufptr = NULL;
         compiler->befbufptr = NULL;
+        compiler->line_start_ptr = NULL;
         
         // If there are more module, load it
         SPVM_LIST* op_use_stack = compiler->op_use_stack;
@@ -207,6 +208,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;
               compiler->befbufptr = cur_src;
+              compiler->line_start_ptr = cur_src;
               compiler->cur_line = 1;
               break;
             }
@@ -237,10 +239,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           compiler->cur_line++;
         }
+        
+        compiler->line_start_ptr = compiler->bufptr;
         continue;
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
+        
+        compiler->line_start_ptr = compiler->bufptr;
         continue;
       // Cancat
       case '.': {

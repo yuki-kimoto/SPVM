@@ -16,8 +16,7 @@
 #include "spvm_basic_type.h"
 
 // Print error
-void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message)
-{
+void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
   compiler->error_count++;
   
   // Current token
@@ -38,7 +37,9 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message)
   memcpy(token, compiler->befbufptr + empty_count, length);
   token[length] = '\0';
   
-  fprintf(stderr, "Unexpected token \"%s\" at %s line %d\n", token, compiler->cur_file, compiler->cur_line);
+  int32_t char_pos = (int32_t)(compiler->befbufptr + empty_count + 1 - compiler->line_start_ptr);
+  
+  fprintf(stderr, "Unexpected token \"%s\" at %s line %d:%d\n", token, compiler->cur_file, compiler->cur_line, char_pos);
   free(token);
 }
 
