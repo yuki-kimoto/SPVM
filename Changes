@@ -6,6 +6,7 @@
   - add fopen
   - add fclose
   - add fread
+  - improve error message
 0.0413 2018-01-22
   - add replaceb
   - add replaces
