@@ -229,15 +229,20 @@ sub compile {
 
   # Do compile. This is same as make command
   my $do_compile;
-  if (!-f $object_file) {
+  if ($package_name =~ /^anon/) {
     $do_compile = 1;
   }
   else {
-    my $mod_time_src = (stat($src_file))[9];
-    my $mod_time_object = (stat($object_file))[9];
-    
-    if ($mod_time_src > $mod_time_object) {
+    if (!-f $object_file) {
       $do_compile = 1;
+    }
+    else {
+      my $mod_time_src = (stat($src_file))[9];
+      my $mod_time_object = (stat($object_file))[9];
+      
+      if ($mod_time_src > $mod_time_object) {
+        $do_compile = 1;
+      }
     }
   }
   
@@ -519,21 +524,37 @@ sub create_source_precompile {
   my $source_file = "$tmp_dir/$package_rel_file_without_ext.$category.c";
   my $source_dir = "$tmp_dir/$package_rel_dir";
   mkpath $source_dir;
-  
-  # Get old csource source
-  my $old_package_csource;
-  if (-f $source_file) {
-    open my $fh, '<', $source_file
-      or die "Can't open $source_file";
-    $old_package_csource = do { local $/; <$fh> };
-  }
-  else {
-    $old_package_csource = '';
-  }
-  
-  # Create c source file
+
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
-  if ($package_csource ne $old_package_csource) {
+  
+  my $is_create_source_file;
+  # Anon sub
+  if ($package_name =~ /^anon/) {
+    $is_create_source_file = 1;
+  }
+  # Normal sub
+  else {
+    # Get old csource source
+    my $old_package_csource;
+    if (-f $source_file) {
+      open my $fh, '<', $source_file
+        or die "Can't open $source_file";
+      $old_package_csource = do { local $/; <$fh> };
+    }
+    else {
+      $old_package_csource = '';
+    }
+    
+    if ($package_csource ne $old_package_csource) {
+      $is_create_source_file = 1;
+    }
+    else {
+      $is_create_source_file = 0;
+    }
+  }
+  
+  # Create source fil
+  if ($is_create_source_file) {
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
     print $fh $package_csource;

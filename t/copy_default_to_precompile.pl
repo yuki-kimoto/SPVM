@@ -51,7 +51,7 @@ find(
           
           # TODO
           # anon sub precompile have some bugs, so I suppress it for a while
-          $content =~ s/precompile sub :/sub :/g;
+          # $content =~ s/precompile sub :/sub :/g;
         }
         
         mkpath $to_dir;
