@@ -10,7 +10,7 @@ use SPVM::Builder::Util;
 SPVM::Builder::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'n|name=s'        => \my $name,
+  'o|output=s'        => \my $output,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'q|quiet'   => \my $quiet,
@@ -24,7 +24,7 @@ unshift @INC, @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
-  exe_name => $name,
+  exe_name => $output,
   package_name => $package_name,
   quiet => $quiet,
   library_path => \@library_paths,
@@ -42,12 +42,12 @@ spvmcc - SPVM compiler to create exe file
 
   Usage: spvmcc [OPTIONS] [PACKAGE]
 
-    spvmcc -Ilib -Bspvmcc_build -o my_app My::App
+    spvmcc -Ilib -Bspvm_build -o my_app My::App
 
   Options:
     -h, --help                     Show this message
     -v, --version                  Version
-    -n, --name                     Excutable file name
+    -o, --output                   Excutable file name
     -I, --include-dir <directory>  Add package search path
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
