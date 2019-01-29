@@ -4740,6 +4740,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
         <li><a href="#language-type-package">パッケージ型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
+        <li><a href="#language-type-numeric-object">数値オブジェクト型</a></li>
         <li><a href="#language-type-undef">未定義型</a></li>
         <li><a href="#language-type-class">クラス型</a></li>
         <li><a href="#language-type-interface">インターフェース型</a></li>
@@ -5016,6 +5017,70 @@ my $object : object = "abc";
       <p>
         オブジェクト型のサイズはC99における「sizeof(void*)」の値と一致していなければなりません。
       </p>
+
+      <h4 id="language-type-numeric-object">数値オブジェクト型</h4>
+      <p>
+        SPVMには、数値オブジェクト型として以下の型があります。
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>数値型</b>
+          </th>
+          <th>
+            対応する数値オブジェクト型
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            SPVM::Byte
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            SPVM::Short
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            SPVM::Int
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            SPVM::Long
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            SPVM::Float
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            SPVM::Double
+          </td>
+        </tr>
+      </table>
+
       <h4 id="language-type-undef">未定義型</h4>
       <p>
         未定義型とは、<a href="#language-undef">未定義値</a>が持っている型のことです。明示的に利用することはできません。
@@ -5631,8 +5696,8 @@ my $objets : object[] = new int[3];
       
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="list">
+        <li><a href="#language-type-convertion-typecast">型キャスト</a></li>
         <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
-        <li><a href="#language-type-convertion-explicite">明示的な型変換</a></li>
         <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
         <li><a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a></li>
         <li><a href="#language-type-convertion-binary-numeric-widening">二項数値拡大型変換</a></li>
@@ -5641,87 +5706,24 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a></li>
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
-        <li><a href="#language-type-convertion-numeric-object">数値を表現するオブジェクト型</a></li>
       </ul>
-      <h4 id="language-type-convertion-implicite">暗黙的な型変換</h4>
+      <h4 id="language-type-convertion-typecast">型キャスト</h4>
       <p>
-        暗黙的な型変換とは、SPVMによって行われる自動的な型変換のことです。次の箇所が、暗黙的な型変換が行われる可能性のある個所です。
-      </p>
-      <ul class="list">
-        <li>異なる型に代入する場合</li>
-        <li>異なる型のサブルーチンの引数に渡す場合</li>
-        <li>戻り値とは異なる型を返却する場合</li>
-      </ul>
-      <p>
-        次の場合に暗黙的な型変換が行われます。
-      </p>
-      <p>
-        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われます。
+        型キャストとは、明示的に記述して行う型変換のことを言います。
       </p>
 <pre>
-# 暗黙の拡大型変換
-my $num : long = 123;
-my $num : double = 12.5f;
+# 型キャスト
+(型)式
 </pre>
       <p>
-        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>が行われます。
+        int型の値をlong型に変換するサンプルは以下のようになります。
       </p>
-<pre>
-# 暗黙の縮小型変換
-my $num : byte = 123;
-my $num : short = 134;
-</pre>
-      <p>
-        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値を表現するオブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
-      </p>
-<pre>
-# object型への暗黙のボクシング変換
-my $num = 123;
-my $object : object = $num;
-</pre>
-      <p>
-        移動元の型が数値型で、移動先の型が対応する数値を表現するオブジェクト型の場合は、対応する数値を表現するオブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
-      </p>
-<pre>
-# object型への暗黙のボクシング変換
-my $num = 123;
-my $object : SPVM::Int = $num;
-</pre>
-      <p>
-        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
-      </p>
-<pre>
-# object型からの暗黙のアンボクシング変換 - 
-my $object : object;
-my $num : int = $object;
-</pre>
-      <p>
-        移動元の型が数値を表現するオブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
-      </p>
-<pre>
-# 数値を表現するオブジェクト型からの暗黙のアンボクシング変換
-my $num_obj = SPVM::Int->new(3);
-my $num : int = $num_obj;
-</pre>
-        移動元の型が数値型で、移動先の型が、文字列型の場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>が行われます。以下の場合の例では、数値の「123」が文字列「"123"」に変換されたものが代入されます。
-      </p>
-<pre>
-# 文字列型への暗黙のボクシング変換
-my $num = 123;
-my $str : string = $num;
-</pre>
-
-      <h4 id="language-type-convertion-explicite">明示的な型変換</h4>
-      <p>
-        明示的な型変換とは、型変換を明示的に記述して行う型変換のことを言います。「(」「型名」「)」と記述します。
-      </p>
-<pre>
-(long)
-</pre>
-      int型の値をlong型に変換するサンプルは以下のようになります。
 <pre>
 my $num = (long)3;
 </pre>
+      <p>
+        型キャストは、<a href="#language-expression">式</a>を返します。
+      </p>
       <p>
         移動元の型と指定した型が同一の場合は、単に値のコピーになります。
       </p>
@@ -5781,7 +5783,7 @@ my $num : int = (int)4;
         </tr>
         <tr>
           <td>
-            <b>対応する数値を表現するオブジェクト型</b>
+            <b>対応する数値オブジェクト型</b>
           </td>
           <td>
             <b>数値型</b>
@@ -5806,7 +5808,7 @@ my $num : int = (int)4;
             <b>数値型</b>
           </td>
           <td>
-            <b>対応する数値を表現するオブジェクト型</b>
+            <b>対応する数値オブジェクト型</b>
           </td>
           <td>
             <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
@@ -5835,6 +5837,74 @@ my $num : int = (int)4;
           </td>
         </tr>
       </table>
+      
+      <h4 id="language-type-convertion-implicite">暗黙的な型変換</h4>
+      <p>
+        暗黙的な型変換とは、SPVMによって行われる自動的な型変換のことです。次の箇所が、暗黙的な型変換が行われる可能性のある個所です。
+      </p>
+      <ul class="list">
+        <li>異なる型に代入する場合</li>
+        <li>異なる型のサブルーチンの引数に渡す場合</li>
+        <li>戻り値とは異なる型を返却する場合</li>
+      </ul>
+      <p>
+        次の場合に暗黙的な型変換が行われます。
+      </p>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が大きい場合は、<a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の拡大型変換
+my $num : long = 123;
+my $num : double = 12.5f;
+</pre>
+      <p>
+        移動元と移動先の型がどちらも数値型で、移動元の型よりも移動先の型が小さい場合で、移動元の値が、整数リテラルかつ移動先の型の値の範囲で表現できる場合は、<a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>が行われます。
+      </p>
+<pre>
+# 暗黙の縮小型変換
+my $num : byte = 123;
+my $num : short = 134;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が汎用オブジェクト型の場合は、対応する数値オブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトに変換されたものが、汎用オブジェクトに代入されます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : object = $num;
+</pre>
+      <p>
+        移動元の型が数値型で、移動先の型が対応する数値オブジェクト型の場合は、対応する数値オブジェクト型への<a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
+      </p>
+<pre>
+# object型への暗黙のボクシング変換
+my $num = 123;
+my $object : SPVM::Int = $num;
+</pre>
+      <p>
+        移動元の型が汎用オブジェクト型で、移動先の型が数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。以下の場合の例では、SPVM::Int型のオブジェクトからint型への変換が試みられます。
+      </p>
+<pre>
+# object型からの暗黙のアンボクシング変換 - 
+my $object : object;
+my $num : int = $object;
+</pre>
+      <p>
+        移動元の型が数値オブジェクト型で、移動先の型が対応する数値型の場合は、対応する数値型における<a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+      </p>
+<pre>
+# 数値オブジェクト型からの暗黙のアンボクシング変換
+my $num_obj = SPVM::Int->new(3);
+my $num : int = $num_obj;
+</pre>
+        移動元の型が数値型で、移動先の型が、文字列型の場合は、<a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>が行われます。以下の場合の例では、数値の「123」が文字列「"123"」に変換されたものが代入されます。
+      </p>
+<pre>
+# 文字列型への暗黙のボクシング変換
+my $num = 123;
+my $str : string = $num;
+</pre>
       
       <h4 id="language-type-convertion-numeric-type-order">数値型の順序</h4>
       <p>
@@ -5897,74 +5967,12 @@ my $num : int = (int)4;
       </p>
       <h4 id="language-type-convertion-boxing">ボクシング変換</h4>
       <p>
-        ボクシング変換とは、数値型の値を、数値を表現するオブジェクト型に変換する操作のことをいいます。
+        ボクシング変換とは、数値型の値を、数値オブジェクト型に変換する操作のことをいいます。
       </p>
       <h4 id="language-type-convertion-unboxing">アンボクシング変換</h4>
       <p>
-        アンボクシング変換とは、数値を表現するオブジェクト型の値を、対応する数値型の値に変換する操作のことをいいます。
+        アンボクシング変換とは、数値オブジェクト型の値を、対応する数値型の値に変換する操作のことをいいます。
       </p>
-      <h4 id="language-type-numeric-object">数値を表現するオブジェクト型</h4>
-      <p>
-        SPVMには、数値を表現するオブジェクト型として以下の型があります。
-      </p>
-      <table>
-        <tr>
-          <th>
-            <b>数値型</b>
-          </th>
-          <th>
-            対応するオブジェクト型
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>byte</b>
-          </td>
-          <td>
-            SPVM::Byte
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>short</b>
-          </td>
-          <td>
-            SPVM::Short
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>int</b>
-          </td>
-          <td>
-            SPVM::Int
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>long</b>
-          </td>
-          <td>
-            SPVM::Long
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>float</b>
-          </td>
-          <td>
-            SPVM::Float
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>double</b>
-          </td>
-          <td>
-            SPVM::Double
-          </td>
-        </tr>
-      </table>
       <h4 id="language-type-convertion-numeric-to-string">数値から文字列への型変換</h4>
       <p>
         数値から文字列への型変換とは、<a href="#language-type-numeric">数値型</a>が<a href="#language-type-string">文字列型</a>に変換される場合に適用される変換規則のことです。
