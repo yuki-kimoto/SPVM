@@ -22,6 +22,10 @@ die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
 
 unshift @INC, @include_dirs;
 
+unless (defined $build_dir) {
+  $build_dir = 'spvm_build';
+}
+
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
   exe_name => $output,
