@@ -40,4 +40,8 @@ spvmcc_build/*
 !spvmcc_build/.gitkeep
 t/test_files_tmp/*
 !t/test_files_tmp/.gitkeep
+t/default/spvm_build/*
+!t/default/spvm_build/.gitkeep
+t/precompile/spvm_build/*
+!t/precompile/spvm_build/.gitkeep
 

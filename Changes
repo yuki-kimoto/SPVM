@@ -14,6 +14,7 @@
     Unexpected token "byte" at /home/kimoto/labo/SPVM/t/default/lib/TestCase/CompileError/Assign/ConstToNoConst.spvm line 5:30
   - add slurp_file
   - fix package var inline expansion bug
+  - remove SPVM::BuildDir module, and document SPVM_BUILD_DIR environment variable and default build directory become script diretory/spvm_build
 0.0413 2018-01-22
   - add replaceb
   - add replaces

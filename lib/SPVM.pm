@@ -10,6 +10,7 @@ use File::Basename 'basename', 'dirname';
 use SPVM::Data;
 use SPVM::Data::Array;
 use SPVM::Data::Package;
+use FindBin;
 
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
@@ -30,10 +31,12 @@ sub import {
   my ($class, $package_name) = @_;
   
   unless ($BUILDER) {
-    my $build_dir = $ENV{SPVM_BUILD_DIR};
-    if (defined $build_dir) {
-      # Remove traling slash
-      $build_dir = File::Spec->catdir(File::Spec->splitdir($build_dir));
+    my $build_dir;
+    if (defined $ENV{SPVM_BUILD_DIR}) {
+      $build_dir = $ENV{SPVM_BUILD_DIR};
+    }
+    else {
+      $build_dir = "$FindBin::Bin/spvm_build";
     }
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
@@ -904,6 +907,16 @@ Use Extension Module from Perl:
   print $total . "\n";
 
 See also L<SPVM::Document::Extension>, L<SPVM::Document::NativeAPI>.
+
+=head1 ENVIRONMENT VARIABLE
+
+=head2 SPVM_BUILD_DIR
+
+SPVM build directory for precompile and native subroutine.
+
+If SPVM_BUILD_DIR environment variable is not specified, spvm_build directory of script directory is set to build directory.
+
+For exmple, If your script is placed at "/path/app.pl", build directory is "/path/spvm_build".
 
 =head1 NOTE
 
