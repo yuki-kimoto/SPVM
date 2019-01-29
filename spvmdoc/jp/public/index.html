@@ -2442,6 +2442,64 @@ my $anon_sub = sub : int ($self: self, $num1 : int, $num2 : int) {
 my $ret = $anon_sub->(1, 2);
 </pre>
 
+      <h4 id="language-operator-deref-get">デリファレンスによる値の取得</h4>
+      <p>
+        デリファレンスによる値の取得とは、リファレンスから実際の値を取得するための操作のことです。C言語の関節演算子「*」を実現するために設計されました。
+      </p>
+<pre>
+$変数
+</pre>
+      <p>
+        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値の取得は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <pre>
+        <b>デリファレンスによる値の取得のサンプル</b>
+      </pre>
+<pre>
+my $num : int;
+my $num_ref : int& = \$num;
+my $num_deref : int = $$num_ref;
+
+my $z : SPVM::Complex_2d;
+my $z_ref : SPVM::Complex_2d& = \$z;
+my $z_deref : SPVM::Complex_2d = $$z_ref;
+</pre>
+
+      <h4 id="language-operator-deref-set">デリファレンスによる値の設定</h4>
+      <p>
+        デリファレンスによる値の設定とは、リファレンスから実際の値を設定するための操作のことです。C言語の関節演算子「*」を実現するために設計されました。
+      </p>
+<pre>
+$変数 = 式
+</pre>
+      <p>
+        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        式の型は、デリファレンスされた場合の変数の型に一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値の設定は、設定された値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <pre>
+        <b>デリファレンスによる値の設定のサンプル</b>
+      </pre>
+<pre>
+my $num : int;
+my $num_ref : int& = \$num;
+$$num_ref = 1;
+
+my $z : SPVM::Complex_2d;
+my $z_ref : SPVM::Complex_2d& = \$z;
+
+my $z2 : SPVM::Complex_2d;
+
+$$z_ref = $z2;
+</pre>
+
       <h4 id="language-expression-current-package">現在のパッケージ名の取得</h4>
       <p>
         現在のパッケージ名の取得を行う「__PACKAGE__」キーワードを使用します。
@@ -3189,7 +3247,7 @@ undef
         <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-operator-assign-special">特殊代入演算子</a></li>
         <li><a href="#language-operator-ref">リファレンス演算子</a></li>
-        <li><a href="#language-operator-deref">デリファレンス演算子</a></li>
+        <li><a href="#language-operator-scalar">スカラ演算子</a></li>
       </ul>
       
       <h4 id="language-operator-summary">演算子の概要</h4>
@@ -4246,93 +4304,7 @@ my $num_ref : int& = \$num;
 my $z : SPVM::Complex_2d;
 my $z_ref : SPVM::Complex_2d& = \$z;
 </pre>
-      <h4 id="language-operator-deref-get">デリファレンスによる値の取得</h4>
-      <p>
-        デリファレンスによる値の取得とは、リファレンスから実際の値を取得するための操作のことです。C言語の関節演算子「*」を実現するために設計されました。
-      </p>
-<pre>
-$変数
-</pre>
-      <p>
-        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        デリファレンスによる値の取得は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <pre>
-        <b>デリファレンスによる値の取得のサンプル</b>
-      </pre>
-<pre>
-my $num : int;
-my $num_ref : int& = \$num;
-my $num_deref : int = $$num_ref;
 
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
-my $z_deref : SPVM::Complex_2d = $$z_ref;
-</pre>
-      <h4 id="language-operator-deref-get">デリファレンスによる値の取得</h4>
-      <p>
-        デリファレンスによる値の取得とは、リファレンスから実際の値を取得するための操作のことです。C言語の関節演算子「*」を実現するために設計されました。
-      </p>
-<pre>
-$変数
-</pre>
-      <p>
-        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        デリファレンスによる値の取得は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <pre>
-        <b>デリファレンスによる値の取得のサンプル</b>
-      </pre>
-<pre>
-my $num : int;
-my $num_ref : int& = \$num;
-my $num_deref : int = $$num_ref;
-
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
-my $z_deref : SPVM::Complex_2d = $$z_ref;
-</pre>
-      <h4 id="language-operator-deref-set">デリファレンスによる値の設定</h4>
-      <p>
-        デリファレンスによる値の設定とは、リファレンスから実際の値を設定するための操作のことです。C言語の関節演算子「*」を実現するために設計されました。
-      </p>
-<pre>
-$変数 = 式
-</pre>
-      <p>
-        変数の型は、リファレンス型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        式の型は、デリファレンスされた場合の変数の型に一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        デリファレンスによる値の設定は、設定された値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <pre>
-        <b>デリファレンスによる値の設定のサンプル</b>
-      </pre>
-<pre>
-my $num : int;
-my $num_ref : int& = \$num;
-$$num_ref = 1;
-
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
-
-my $z2 : SPVM::Complex_2d;
-
-$$z_ref = $z2;
-</pre>
-      
-        <li><a href="#language-operator-assign">代入演算子</a></li>
-        <li><a href="#language-operator-assign-special">特殊代入演算子</a></li>
-        <li><a href="#language-operator-ref">リファレンス演算子</a></li>
-        <li><a href="#language-operator-deref">デリファレンス演算子</a></li>
-        
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
