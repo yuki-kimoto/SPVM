@@ -410,6 +410,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-exception">例外処理</a></li>
+        <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-array">配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
         <li><a href="#language-deref">デリファレンス</a></li>
@@ -1962,6 +1963,72 @@ $@
       <p>
         例外変数の値の設定については、<a href="#language-expression-set-exception-var">例外変数の値の設定</a>を見てください。
       </p>
+
+      <h3 id="language-interface">インターフェース</h3>
+      <p>
+        SPVMにおけるインターフェースとは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてinterface_tデスクリプタを指定すると、インターフェースになります。
+      </p>
+      <p>
+        インターフェースは、<a href="#language-type-interface">インターフェース型</a>と同じ意味です。
+      </p>
+      <p>
+        インターフェース型の目的は、異なるオブジェクトが、同じメソッド定義を持つときに、どちらも代入できる型を提供することにあります。C言語の関数ポインタに該当する機能をSPVMにおいて実現するものと考えてください。
+      </p>
+<pre>
+package Foo1 : public {
+  sub bar : int ($self : self, $num : int) {
+    return $num * 2;
+  }
+  
+  sub xxx : int () {
+    
+  }
+}
+
+package Foo2 : public {
+  sub bar : int ($self : self, $num : int) {
+    return $num * 3;
+  }
+  sub yyy : int () {
+    
+  }
+}
+
+package FooInterface : interface_t {
+  sub bar : int ($self : self, $num : int);
+}
+</pre>
+      
+      <p>
+        Foo1とFoo2は同じメソッド定義「sub bar : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
+      </p>
+      <p>
+        この場合に、同じメソッド定義を持つインターフェース型FooInterfaceを定義すると、この型にどちらのオブジェクトも代入できます。そして、このオブジェクトから、メソッドを呼び出すことができます。
+      </p>
+<pre>
+my $foo1 = new Foo1;
+my $foo2 = new Foo2;
+
+my $foo : FooInterface;
+
+my $flag = 1;
+if ($flag) {
+  $foo = $foo1;
+}
+else {
+  $foo = $foo2;
+}
+
+my $ret = $foo->bar(2);
+</pre>
+      <p>
+        $flagが1の場合は、Foo1のbarが、そうでない場合はFoo2のbarが呼び出されます。
+      </p>
+      <p>
+        インターフェース型の詳細については、<a href="#language-type-interface">インターフェース型</a>を見てください。
+      </p>
+      
+      <h4 id="language-exception-summary">例外処理の概要</h4>
       
       <h3 id="language-array">配列</h3>
       <ul class="list">
@@ -2292,7 +2359,6 @@ $@ = "Error";
       <p>
         関数の呼び出しでは、パッケージ名を省略することもできます。
       </p>
-
 <pre>
 サブルーチン名(引数1, 引数2, 引数3, ..., 引数n);
 </pre>
