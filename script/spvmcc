@@ -16,6 +16,8 @@ SPVM::Builder::Util::getopt
   'q|quiet'   => \my $quiet,
   'L|library-path=s' => \my @library_paths,
   'l|library=s' => \my @library,
+  'D|define=s' => \my @defines,
+  'O|optimize=s' => \my $optimize,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
@@ -33,6 +35,8 @@ my $build_exe = SPVM::Builder::Exe->new(
   quiet => $quiet,
   library_path => \@library_paths,
   library => \@library,
+  define => \@defines,
+  optimize => $optimize,
 );
 $build_exe->build_exe_file;
 

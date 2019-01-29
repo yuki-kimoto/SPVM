@@ -48,6 +48,12 @@ DEVELOPERS NOTE
        # Debug run - Print yacc result
        yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_CORE_LIB && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_CORE_LIB && make -f solo/Makefile && ./solo/main foo bar
 
+    EXE TESTS
+
+      yacc/bison.sh && perl Makefile.PL && make && perl -Mblib blib/script/spvmcc -I solo/lib -o solo/main TestCase;
+
+      solo/main
+
     See batcktrace of core dump
 
       gdb solo/main core.*
