@@ -2150,8 +2150,8 @@ my $ret = $foo->bar(2);
         <li><a href="#language-expression-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-expression-new-array">配列の生成</a></li>
         <li><a href="#language-expression-array-init">配列の初期化</a></li>
-        <li>配列の長さ</li>
-        <li>文字列の長さ</li>
+        <li><a href="#language-operator-array-length">配列長演算子</a></li>
+        <li><a href="#language-operator-string-length">文字列長演算子</a></li>
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
         <li><a href="#language-operator-bit">ビット演算子</a></li>
         <li><a href="#language-operator-shift">シフト演算子</a></li>
@@ -3247,6 +3247,8 @@ undef
         <li><a href="#language-operator-assign">代入演算子</a></li>
         <li><a href="#language-operator-assign-special">特殊代入演算子</a></li>
         <li><a href="#language-operator-ref">リファレンス演算子</a></li>
+        <li><a href="#language-operator-array-length">配列長演算子</a></li>
+        <li><a href="#language-operator-string-length">文字列長演算子</a></li>
         <li><a href="#language-operator-scalar">スカラ演算子</a></li>
       </ul>
       
@@ -3263,7 +3265,7 @@ undef
 単項演算子 項
 </pre>
       <p>
-        単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>があります。
+        単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>、<a href="#language-operator-array-legnth">配列長演算子</a>、<a href="#language-operator-string-legnth">文字列長演算子</a>があります。
       </p>
       <p>
         インクリメント演算子とデクリメント演算子は、単項演算子には含まれません。
@@ -4304,6 +4306,61 @@ my $num_ref : int& = \$num;
 my $z : SPVM::Complex_2d;
 my $z_ref : SPVM::Complex_2d& = \$z;
 </pre>
+
+      <h4 id="language-operator-array-length">配列長演算子</h4>
+      <p>
+        配列長演算子は、<a href="#language-array">配列</a>の長さを取得するための「@」で表現される<a href="#language-operator-binary">単項演算子</a>です。
+      </p>
+<pre>
+@右式
+</pre>
+      <p>
+        右式は、配列型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        配列長演算子は、配列の長さをint型の値で返します。
+      </p>
+      <p>
+        配列長演算子は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>配列長演算子のサンプル</b>
+      </p>
+<pre>
+my $nums = new byte[10];
+my $length = @$nums;
+</pre>
+      <p>
+        SPVMにはPerlにおけるコンテキストという考え方はなく、配列長演算子は、常に配列の長さを返すことに注意してください。
+      </p>
+
+      <h4 id="language-operator-string-length">文字列長演算子</h4>
+      <p>
+        文字列長演算子は、<a href="#language-string">文字列</a>の長さを取得するための「length」で表現される<a href="#language-operator-binary">単項演算子</a>です。
+      </p>
+<pre>
+length 右式
+</pre>
+      <p>
+        右式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        文字列長演算子は、文字列の長さをint型の値で返します。文字列長演算子が返す文字列の長さは、バイト列としてみたときの長さでです。
+      </p>
+      <p>
+        文字列長演算子は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>文字列長演算子のサンプル</b>
+      </p>
+<pre>
+my $nums = "abcde";
+my $length = length $nums;
+</pre>
+
+      <p>
+        SPVMにはPerlにおけるコンテキストという考え方はなく、文字列長演算子は、常に文字列の長さを返すことに注意してください。
+      </p>
 
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
