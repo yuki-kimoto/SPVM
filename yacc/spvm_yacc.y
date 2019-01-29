@@ -17,7 +17,7 @@
   #include "spvm_package.h"
 %}
 
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE 
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
@@ -54,7 +54,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH REQUIRE
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -1005,6 +1005,7 @@ string_length
     {
       $$ = SPVM_OP_build_string_length(compiler, $1, $2);
     }
+    
 deref
   : DEREF var
     {
@@ -1016,11 +1017,6 @@ ref
     {
       SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
       $$ = SPVM_OP_build_ref(compiler, op_ref, $2);
-    }
-  | REF '{' var '}'
-    {
-      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
-      $$ = SPVM_OP_build_ref(compiler, op_ref, $3);
     }
 
 my_var
