@@ -2159,6 +2159,9 @@ my $ret = $foo->bar(2);
         <li><a href="#language-operator-ref">リファレンス演算子</a></li>
         <li><a href="#language-operator-deref">リファレンス演算子</a></li>
         <li><a href="#language-operator-assign">代入演算子</a></li>
+        <li><a href="#language-operator-array-length">配列長演算子</a></li>
+        <li><a href="#language-operator-string-length">文字列長演算子</a></li>
+        <li><a href="#language-operator-scalar">スカラ演算子</a></li>
         <li><a href="#language-expression-current-package">現在のパッケージ名の取得</a></li>
         <li><a href="#language-expression-current-file">現在のファイル名の取得</a></li>
         <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
@@ -4326,6 +4329,9 @@ my $z_ref : SPVM::Complex_2d& = \$z;
       <p>
         <b>配列長演算子のサンプル</b>
       </p>
+      <p>
+        配列長演算子のサンプルです。
+      </p>
 <pre>
 my $nums = new byte[10];
 my $length = @$nums;
@@ -4353,14 +4359,37 @@ length 右式
       <p>
         <b>文字列長演算子のサンプル</b>
       </p>
+      <p>
+        文字列長演算子のサンプルです。
+      </p>
 <pre>
 my $nums = "abcde";
 my $length = length $nums;
 </pre>
 
+      <h4 id="language-operator-scalar">スカラ演算子</h4>
       <p>
-        SPVMにはPerlにおけるコンテキストという考え方はなく、文字列長演算子は、常に文字列の長さを返すことに注意してください。
+        スカラ演算子は、何もしないで、与えられた値そのものを返す演算子です。<a href="language-operator-array-length">配列長演算子</a>の意味を分かりやすくするためだけに用意されています。
       </p>
+<pre>
+scalar 右式
+</pre>
+      <p>
+        右式は<a href="language-operator-array-length">配列長演算子</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        スカラ演算子は、式を返します。
+      </p>
+      <p>
+        <b>スカラ演算子のサンプル</b>
+      </p>
+      <p>
+        スカラ演算子のサンプルです。
+      </p>
+<pre>
+my $nums = new int[3];
+foo(scalar @$nums);
+</pre>
 
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
