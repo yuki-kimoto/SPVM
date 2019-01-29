@@ -226,6 +226,26 @@ int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM_NATIVE_SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // STDIN
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$STDIN", "SPVM::FileHandle");
+    if (pkgvar_id < 0) { abort(); }
+    int32_t fh_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
+    if (fh_basic_type_id < 0) { abort(); }
+    void* ostdin = env->new_pointer(env, fh_basic_type_id, stdin);
+    env->set_opkgvar(env, pkgvar_id, ostdin);
+  }
+
+  // STDOUT
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$STDOUT", "SPVM::FileHandle");
+    if (pkgvar_id < 0) { abort(); }
+    int32_t fh_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
+    if (fh_basic_type_id < 0) { abort(); }
+    void* ostdout = env->new_pointer(env, fh_basic_type_id, stdout);
+    env->set_opkgvar(env, pkgvar_id, ostdout);
+  }
   
   // O_RDONLY
   {

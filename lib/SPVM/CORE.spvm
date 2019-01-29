@@ -17,6 +17,8 @@ package SPVM::CORE {
   our $SEEK_CUR : ro int;
   our $SEEK_END : ro int;
   our $EOF : ro int;
+  our $STDIN : ro SPVM::FileHandle;
+  our $STDOUT : ro SPVM::FileHandle;
   
   BEGIN {
     init_native_constants();
