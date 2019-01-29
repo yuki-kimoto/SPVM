@@ -24,21 +24,11 @@ package SPVM::CORE {
   
   native sub init_native_constants : void ();
   
-  sub open : int ($file_name : string, $amode : int[]...) {
-    return 0;
-  }
-  sub read : int ($fd : int, $buf : byte[]) {
-    return 0;
-  }
-  sub write : int ($fd : int, $buf : string) {
-    return 0;
-  }
-  sub lseek : int ($fd : int, $offset : long, $origin : int) {
-    return 0;
-  }
-  sub close : int ($fd : int) {
-    return 0;
-  }
+  native sub open : int ($file_name : string, $amode : int[]...);
+  native sub read : int ($fd : int, $buf : byte[]);
+  native sub write : int ($fd : int, $buf : string);
+  native sub lseek : int ($fd : int, $offset : long, $origin : int);
+  native sub close : int ($fd : int);
   
   native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
   native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
