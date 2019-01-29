@@ -318,7 +318,7 @@ sub link_executable {
   
   my $quiet = $self->{quiet};
   
-  my $exe_file = "$build_dir/$exe_name";
+  my $exe_file = $exe_name;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_dll_file = $cbuilder->link_executable(
     objects => $object_files,
