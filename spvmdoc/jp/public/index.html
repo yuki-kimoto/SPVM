@@ -1261,7 +1261,7 @@ package Foo {
         <b>1. クラス型のフィールドへのアクセス</b>
       </p>
       <p>
-        <a href="#language-type-class">クラス型</a>を元に<a href="#language-operator-new-object">オブジェクトの生成</a>が行われた場合は、オブジェクトからフィールドにアクセスすることができます。
+        <a href="#language-type-class">クラス型</a>を元に<a href="#language-expression-new-object">オブジェクトの生成</a>が行われた場合は、オブジェクトからフィールドにアクセスすることができます。
       </p>
 <pre>
 my $point = new Point;
@@ -1473,7 +1473,7 @@ sub サブルーチン名 : 型名 ($self : self, 引数1 : 型1, 引数2 : 型2
 }
 </pre>
       <p>
-        メソッドは、<a href="#language-operator-new-object">オブジェクトの生成</a>によって生成されたオブジェクトから呼び出すことができます。メソッドの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+        メソッドは、<a href="#language-expression-new-object">オブジェクトの生成</a>によって生成されたオブジェクトから呼び出すことができます。メソッドの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
       </p>
 
       <h4 id="language-sub-invocant">インボカント</h4>
@@ -2066,7 +2066,7 @@ my $ret = $foo->bar(2);
       
       <h4 id="language-array-summary">配列の生成</h4>
       <p>
-        配列を生成については、<a href="#language-operator-new-array">配列の生成</a>を見てください。
+        配列を生成については、<a href="#language-expression-new-array">配列の生成</a>を見てください。
       </p>
       
       <h4 id="language-array-access">配列へのアクセス</h4>
@@ -2146,10 +2146,10 @@ my $ret = $foo->bar(2);
         <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
         <li>配列の要素の値の設定</li>
         <li>配列の要素の値の取得</li>
-        <li>型変換</li>
-        <li><a href="#language-operator-new-object">オブジェクトの生成</a></li>
-        <li><a href="#language-operator-new-array">配列の生成</a></li>
-        <li><a href="#language-operator-array-init">配列の初期化</a></li>
+        <li><a href="#language-expression-typecast">型キャスト</a></li>
+        <li><a href="#language-expression-new-object">オブジェクトの生成</a></li>
+        <li><a href="#language-expression-new-array">配列の生成</a></li>
+        <li><a href="#language-expression-array-init">配列の初期化</a></li>
         <li>配列の長さ</li>
         <li>文字列の長さ</li>
         <li><a href="#language-operator-arithmetic">算術演算子</a></li>
@@ -2397,7 +2397,7 @@ my $ret = bar(1, 2, 3);
         メソッドの呼び出しとは、<a href="#language-sub-method">メソッド</a>であるサブルーチンを呼び出す方法のことをいいます。メソッドかどうかの判断は、<a href="#language-sub-definition">サブルーチンの定義</a>において、第一引数に<a href="#language-type-self">self型</a>の引数が指定されていた場合が、メソッドになります。
       </p>
       <p>
-        メソッドの呼び出しは、<a href="#language-operator-new-object">オブジェクトの生成</a>によって生成されたオブジェクトを使って以下の構文で行うことができます。
+        メソッドの呼び出しは、<a href="#language-expression-new-object">オブジェクトの生成</a>によって生成されたオブジェクトを使って以下の構文で行うことができます。
       </p>
 <pre>
 オブジェクト->サブルーチン名(引数1, 引数2, 引数3, ..., 引数n);
@@ -4501,7 +4501,7 @@ a * b + c
 # b + c が先
 a * (b + c)
 </pre>
-      <h3 id="language-operator-new-object">オブジェクトの生成</h3>
+      <h3 id="language-expression-new-object">オブジェクトの生成</h3>
       <p>
         オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
       </p>
@@ -4523,7 +4523,7 @@ my $object = new パッケージ名;
 <pre>
 my $object = new Foo;
 </pre>
-      <h3 id="language-operator-new-array">配列の生成</h3>
+      <h3 id="language-expression-new-array">配列の生成</h3>
       <p>
         配列を作成するには、newキーワードと以下の構文をを使用します。
       </p>
@@ -4568,7 +4568,7 @@ my $nums = new int[][3];
 my $nums = new int[][][3];
 </pre>
       
-      <h3 id="language-operator-array-init">配列の初期化</h3>
+      <h3 id="language-expression-array-init">配列の初期化</h3>
       <p>
         SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
       </p>
