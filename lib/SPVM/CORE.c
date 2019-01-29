@@ -11,31 +11,6 @@
 #include <memory.h>
 #include <fcntl.h>
 
-int32_t SPVM_NATIVE_SPVM__CORE__open(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPVM_NATIVE_SPVM__CORE__read(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPVM_NATIVE_SPVM__CORE__write(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPVM_NATIVE_SPVM__CORE__lseek(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPVM_NATIVE_SPVM__CORE__close(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_SUCCESS;
-}
-
 int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // File name

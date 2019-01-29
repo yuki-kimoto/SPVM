@@ -24,12 +24,6 @@ package SPVM::CORE {
   
   native sub init_native_constants : void ();
   
-  native sub open : int ($file_name : string, $amode : int[]...);
-  native sub read : int ($fd : int, $buf : byte[]);
-  native sub write : int ($fd : int, $buf : string);
-  native sub lseek : int ($fd : int, $offset : long, $origin : int);
-  native sub close : int ($fd : int);
-  
   native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
   native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
   native sub fread : int ($buf : byte[], $fh : SPVM::FileHandle);
