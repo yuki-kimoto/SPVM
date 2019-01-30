@@ -13,8 +13,10 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # while
 {
-  ok(TestCase::While->basic());
-  ok(TestCase::While->condition_my());
+  ok(TestCase::While->basic);
+  ok(TestCase::While->next);
+  ok(TestCase::While->last);
+  ok(TestCase::While->condition_my);
 }
 
 

@@ -23,6 +23,51 @@ package TestCase::While {
     
     return 1;
   }
+  
+  sub next : int () {
+    
+    my $i = 0;
+    my $total = 0;
+    while ($i < 5) {
+      
+      if ($i == 3) {
+        $i++;
+        next;
+      }
+      
+      $total += $i;
+      
+      $i++;
+    }
+    
+    unless ($total == 7) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub last : int () {
+    
+    my $i = 0;
+    my $total = 0;
+    while ($i < 5) {
+      
+      if ($i == 3) {
+        last;
+      }
+      
+      $total += $i;
+      
+      $i++;
+    }
+    
+    unless ($total == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   sub condition_my : int () {
     

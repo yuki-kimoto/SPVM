@@ -4850,11 +4850,11 @@ while (1) {
 </pre>
 
       <p>
-        whileブロックの内部では、<a href="#language-statement-next">next文</a>を使って、whileブロックの先頭に移動することができます。
+        whileブロックの内部では、<a href="#language-statement-next">next文</a>を使って、次に実行される条件項の直前に移動することができます。
       </p>
 <pre>
 my $i = 0;
-while ($i < 5;) {
+while ($i < 5) {
   
   if ($i == 3) {
     $i++;
@@ -4915,7 +4915,50 @@ for (初期化式; 条件項; インクリメント式) {
       <p>
         インクリメント式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数のインクリメントの式を記述します。インクリメント式は省略することが可能です。
       </p>
+      <p>
+        for文は以下のwhile文と同じ意味を持ちます。インクリメント式は、ブロックの最後に実行されます。
+      </p>
+<pre>
+初期化式;
+while (条件項) {
+  
+  
+  
+  インクリメント式;
+}
+</pre>
+      <p>
+        <b>for文のサンプル</b>
+      </p>
+      <p>
+        for文のサンプルです。
+      </p>
+<pre>
+for (my $i = 0; $i < 5; $i++) {
+  
+  print("$i\n");
+}
+</pre>
+      <p>
+        forブロックの内部では、<a href="#language-statement-last">last文</a>を使って、forブロックを抜けることができます。
+      </p>
+<pre>
+for (my $i = 0; $i < 5; $i++) {
+  last;
+}
+</pre>
       
+      <p>
+        forブロックの内部では、<a href="#language-statement-next">next文</a>を使って、次に実行されるインクリメント式の直前に移動することができます。
+      </p>
+<pre>
+for (my $i = 0; $i < 5; $i++) {
+  
+  if ($i == 3) {
+    next;
+  }
+}
+</pre>
 
       <h4 id="language-statement-return">return文</h3>
       <p>
