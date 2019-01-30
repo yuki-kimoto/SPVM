@@ -308,14 +308,6 @@ SPVM::Test - SPVM test module
       warn($var2);
     }
     {
-      my $objects1 = new object[1];
-      
-      $objects1->[0] = $objects1;
-      
-      weaken $objects1->[0];
-      
-    }
-    {
       my $num : string = 1;
     }
     

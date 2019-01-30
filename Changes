@@ -1,5 +1,5 @@
 0.0415 2018-01-30
-
+  - remove weken array, unweaken array, isweak array because of array elements move operation performance
 0.0414 2018-01-29
   - add sequencial operator
     # $z is 3
