@@ -55,17 +55,67 @@ package TestCase::If {
   }
 
   sub condition_my : int () {
-    
-    my $num = 5;
-    if (my $num = 3) {
-      if ($num == 3) {
-        return 1;
+    # Check my declaration in if condition part - if condition part is true
+    {
+      my $check1 = 0;
+      my $check2 = 0;
+      
+      my $num = 1;
+      if (my $num = 2) {
+        if ($num == 2) {
+          $check1 = 1;
+        }
+      }
+      elsif (my $num = 3) {
+        
       }
       else {
+        
+      }
+      if ($num == 1) {
+        $check2 = 1;
+      }
+      
+      unless ($check1 && $check2) {
         return 0;
       }
     }
+
+    # Check my declaration in if condition part - elsif condition part is true
+    {
+      my $check1 = 0;
+      my $check2 = 0;
+      
+      my $num = 1;
+      if (my $num = 0) {
+      }
+      elsif (my $num = 3) {
+        if ($num == 3) {
+          $check1 = 1;
+        }
+      }
+      else {
+        
+      }
+      if ($num == 1) {
+        $check2 = 1;
+      }
+      
+      unless ($check1 && $check2) {
+        return 0;
+      }
+    }
+
+    # Optional tests
+    {
+      my $num = 5;
+      if (my $num = 3) {
+        unless ($num == 3) {
+          return 0;
+        }
+      }
+    }
     
-    return 0;
+    return 1;
   }
 }

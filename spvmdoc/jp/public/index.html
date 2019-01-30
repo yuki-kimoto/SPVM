@@ -4713,7 +4713,117 @@ else {
   
 }
 </pre>
+      <p>
+        <b>if文のサンプル</b>
+      </p>
+      <p>
+        if文のサンプルです。
+      </p>
+<pre>
+my $flag = 1;
+
+if ($flag == 1) {
+  print("One\n");
+}
+elsif ($flag == 2) {
+  print("Tow\n");
+}
+else {
+  print("Other");
+}
+</pre>
+      <p>
+        if文は、内部的には、目には見えない単純なブロックで囲まれています。
+      </p>
+<pre>
+{
+  if (項) {
+    
+  }
+}
+</pre>
+      <p>
+        elsifは、内部的には、if文とelse文に展開されます。
+      </p>
+<pre>
+# 展開前
+if (項1) {
+
+}
+elsif (項2) {
+
+}
+else {
+
+}
+
+# 展開後
+if (項1) {
+}
+else {
+  if (項2) {
+  
+  }
+  else {
+  
+  }
+}
+</pre>
+      <p>
+        if文の条件部で、変数宣言を行うときは、目には見えない単純なブロックで囲まれていることと、elsifは、内部的には、if文とelse文に展開されるということを、意識してください。
+      </p>
+<pre>
+# 展開前
+my $num = 1;
+if (my $num = 2) {
+  
+}
+elsif (my $num = 3) {
+  
+}
+else {
+  
+}
+
+# 展開後
+my $num = 1;
+{
+  if (my $num = 2) {
+    
+  }
+  else {
+    {
+      if (my $num = 3) {
+        
+      }
+      else {
+        
+      }
+    }
+  }
+}
+</pre>
+
+      <h4 id="language-statement-for">for文</h3>
+      <p>
+        for文は、繰り返しを行うための文です。
+      </p>
+<pre>
+for (初期化式; 条件項; インクリメント式) {
+  
+}
+</pre>
+      <p>
+        初期化式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数の初期化などの式を記述します。初期化式は省略することが可能です。
+      </p>
+      <p>
+        条件項、<a href="#language-term">項</a>を記述できます。条件項が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
+      </p>
+      <p>
+        インクリメント式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数のインクリメントの式を記述します。インクリメント式は省略することが可能です。
+      </p>
       
+
       <h4 id="language-statement-return">return文</h3>
       <p>
         return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
