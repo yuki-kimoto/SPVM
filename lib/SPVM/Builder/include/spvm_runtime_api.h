@@ -35,7 +35,7 @@ do {\
     SPVM_RUNTIME_API_INC_REF_COUNT_ONLY(tmp_object);\
   }\
   if (*(void**)(dist_address) != NULL) {\
-    if (SPVM_RUNTIME_API_ISWEAK(dist_address)) { env->unweaken(env, (void**)dist_address); }\
+    if (__builtin_expect(SPVM_RUNTIME_API_ISWEAK(dist_address), 0)) { env->unweaken(env, (void**)dist_address); }\
     if (SPVM_RUNTIME_API_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_RUNTIME_API_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\
     else { env->dec_ref_count(env, *(void**)(dist_address)); }\
   }\

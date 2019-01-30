@@ -1193,7 +1193,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_API_INC_REF_COUNT_ONLY(tmp_object);\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (*(void**)(dist_address) != NULL) {\\\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_RUNTIME_API_ISWEAK(dist_address)) { env->unweaken(env, dist_address); }\\\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(SPVM_RUNTIME_API_ISWEAK(dist_address), 0)) { env->unweaken(env, dist_address); }\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (SPVM_RUNTIME_API_GET_REF_COUNT(*(void**)(dist_address)) > 1) { SPVM_RUNTIME_API_DEC_REF_COUNT_ONLY(*(void**)(dist_address)); }\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    else { env->dec_ref_count(env, *(void**)(dist_address)); }\\\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\\\n");
