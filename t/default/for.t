@@ -19,6 +19,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::For->nested_next);
   ok(TestCase::For->nested_last_with_switch);
   ok(TestCase::For->omit_init_inc);
+  ok(TestCase::For->condition_my);
 }
 
 # All object is freed

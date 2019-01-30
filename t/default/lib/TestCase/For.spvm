@@ -212,5 +212,18 @@ package TestCase::For {
     return 0;
   }
   
+  sub condition_my : int () {
+    
+    my $num = 5;
+    for (;my $num = 3;) {
+      if ($num == 3) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    return 0;
+  }
 
 }
