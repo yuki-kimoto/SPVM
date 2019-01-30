@@ -4073,27 +4073,28 @@ x <= y;
       <p>
         論理演算子は、<a href="#language-condition">条件</a>を返します。
       </p>
+      
       <h4 id="language-operator-logical-and">論理AND演算子</h4>
       <p>
-        論理AND演算子とは、論理AND演算を行うために、左項と右項の間に置かれる演算子で、「&&」で表現される<a href="#language-condition">条件</a>を返す二項演算子です。項については、<a href="#language-term">項</a>を参考にしてください。
+        論理AND演算子とは、論理AND演算を行うために、「&&」で表現される、<a href="#language-term">項</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
 左項 && 右項
 </pre>
       <p>
-        左項と右項は<a href="#language-condition-part">条件部</a>です。
-      </p>
-      <p>
         論理AND演算子は次のように動作します。
       </p>
       <p>
-        1. 左項の評価が真であれば、右項を実行し、右項の評価が、真であれば、全体として真を返し、右項の評価が偽であれば、全体として偽を返します。
+        1. 左項の評価が真であれば、右項を実行し、右項の評価が、真であれば、真を返し、右項の評価が偽であれば、偽を返します。
       </p>
       <p>
-        2. 左項の評価が偽であれば、全体として偽を返します。右項は実行されません。
+        2. 左項の評価が偽であれば、偽を返します。右項は実行されません。
       </p>
       <p>
         論理AND演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理AND演算子は<a href="#language-condition">条件</a>を返します。
       </p>
       <p>
         論理AND演算子は、例外を発生させません。
@@ -4101,25 +4102,25 @@ x <= y;
       
       <h4 id="language-operator-logical-and">論理OR演算子</h4>
       <p>
-        論理OR演算子とは、論理OR演算を行うために、左項と右項の間に置かれる演算子で、「||」で表現される<a href="#language-condition">条件</a>を返す<a href="#language-operator-binary">二項演算子</a>です。項については、<a href="#language-term">項</a>を参考にしてください。
+        論理OR演算子とは、論理OR演算を行うために、「||」で表現される、<a href="#language-term">項</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
 左項 || 右項
 </pre>
       <p>
-        左項と右項は<a href="#language-condition-part">条件部</a>です。
-      </p>
-      <p>
         論理OR演算子は次のように動作します。
       </p>
       <p>
-        1. 左項の評価が真であれば、全体として、真を返します。右項は実行されません。
+        1. 左項の評価が真であれば、真を返します。右項は実行されません。
       </p>
       <p>
-        2. 左項の評価が偽であれば、右項を実行し、右項の評価が、真であれば、全体として真を返し、右項の評価が偽であれば、全体として偽を返します。
+        2. 左項の評価が偽であれば、右項を実行し、右項の評価が、真であれば、真を返し、右項の評価が偽であれば、偽を返します。
       </p>
       <p>
         論理OR演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理OR演算子は<a href="#language-condition">条件</a>を返します。
       </p>
       <p>
         論理OR演算子は、例外を発生させません。
@@ -4133,13 +4134,13 @@ x <= y;
 !項
 </pre>
       <p>
-        項は<a href="#language-condition-part">条件部</a>です。
-      </p>
-      <p>
         論理NOT演算子は、項が真であれば、偽を返します。項が偽であれば、真を返します。
       </p>
       <p>
         論理NOT演算子の結果の型は、int型です。
+      </p>
+      <p>
+        論理NOT演算子は<a href="#language-condition">条件</a>を返します。
       </p>
       <p>
         論理NOT演算子は、例外を発生させません。
@@ -4649,7 +4650,10 @@ my $nums = new int[][][3];
       
       <h3 id="language-statement">文</h3>
       <p>
-        文とは、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に記述することができます。
+        文は、ひとつの処理のことで「<a href="#language-scope-block">スコープブロック</a>」の中に複数記述することができます。<a href="#language-expression">式</a>のように値として評価されることはありません。
+      </p>
+      <p>
+        <b>文の一覧</b>
       </p>
       <p>
         文の一覧です。
@@ -4672,7 +4676,19 @@ my $nums = new int[][][3];
         <li><a href="#language-statement-expression">式文</a></li>
         <li><a href="#language-statement-empty">空文</a></li>
       </ul>
-
+      <h4 id="language-statement-if">if文</h3>
+      <p>
+        if文は、条件分岐を行うための文です。
+      </p>
+<pre>
+if (条件部) {
+  
+}
+</pre>
+      <p>
+        ifの条件部には、項を記述することができます。項とは、式と条件のことです。
+      </p>
+      
       <h4 id="language-statement-return">return文</h3>
       <p>
         return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
