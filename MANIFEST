@@ -1,6 +1,5 @@
 Changes
 lib/SPVM.pm
-lib/SPVM/BuildDir.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
@@ -336,6 +335,7 @@ t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/JSON.spvm
 t/default/lib/TestCase/JSON/Bool.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
+t/default/lib/TestCase/Lib/SPVM/CORE.c
 t/default/lib/TestCase/Lib/SPVM/CORE.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/FileHandle.spvm
@@ -409,6 +409,14 @@ t/default/remainder.t
 t/default/return.t
 t/default/seqop.t
 t/default/special-assign.t
+t/default/spvm_build/.gitkeep
+t/default/spvm_build/work/lib/SPVM/CORE.so
+t/default/spvm_build/work/lib/SPVM/Example.so
+t/default/spvm_build/work/lib/SPVM/FileHandle.so
+t/default/spvm_build/work/lib/TestCase/Extension.so
+t/default/spvm_build/work/lib/TestCase/Extension2.so
+t/default/spvm_build/work/lib/TestCase/Lib/SPVM/CORE.so
+t/default/spvm_build/work/lib/TestCase/Pointer.so
 t/default/string.t
 t/default/sub.t
 t/default/subtract.t
@@ -423,7 +431,6 @@ t/default/weaken.t
 t/default/while.t
 t/exe.t
 t/lib/TestAuto.pm
-t/spvm_build/.gitkeep
 t/test_files/fread.txt
 yacc/bison.sh
 yacc/spvm_yacc.y

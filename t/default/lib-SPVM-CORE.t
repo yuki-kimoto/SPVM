@@ -7,6 +7,7 @@ use warnings;
 use Test::More 'no_plan';
 
 use SPVM;
+use POSIX();
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
