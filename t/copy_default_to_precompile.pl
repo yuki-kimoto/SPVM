@@ -64,3 +64,6 @@ find(
   },
   $test_default_dir
 );
+
+# Add spvm_build directory
+mkdir 't/precompile/spvm_build';
