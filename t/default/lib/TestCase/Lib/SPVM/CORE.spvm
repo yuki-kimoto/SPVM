@@ -1,35 +1,35 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
 
-  sub test_fgets : int ($file : string) {
+  sub test_fgets_chomp : int ($file : string) {
     my $fh = fopen($file, "r");
     unless ($fh) {
       croak "Can't open file $file";
     }
     
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "abcd") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "fghi") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line == undef) {
         return 0;
       }
@@ -37,35 +37,61 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_fgets_eof : int ($file : string) {
+  sub test_fgets_chomp_while : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    my $lstrings = new_list([]);
+    while (my $line = fgets_chomp($fh)) {
+      $lstrings->push($line);
+    }
+    my $strings = $lstrings->to_strarray;
+    
+    unless (equals_strarray($strings, ["abcd", "fghi", "klm"])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_fgets_chomp_eof : int ($file : string) {
     my $fh = fopen($file, "r");
     unless ($fh) {
       croak "Can't open file $file";
     }
     
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "abcd") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+    
+    {
+      my $line = fgets_chomp($fh);
+      unless ($line eq "") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line == undef) {
         return 0;
       }
@@ -73,35 +99,35 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_fgets_long_line : int ($file : string) {
+  sub test_fgets_chomp_long_line : int ($file : string) {
     my $fh = fopen($file, "r");
     unless ($fh) {
       croak "Can't open file $file";
     }
     
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "fghi") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = fgets($fh);
+      my $line = fgets_chomp($fh);
       unless ($line == undef) {
         return 0;
       }

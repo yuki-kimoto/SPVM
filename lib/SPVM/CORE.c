@@ -11,7 +11,7 @@
 #include <memory.h>
 #include <fcntl.h>
 
-int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM_NATIVE_SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
   if (ofh == NULL) {
@@ -32,9 +32,11 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
   int8_t* buffer = env->belems(env, obuffer);
   
   int32_t pos = 0;
+  int32_t end_is_eof = 0;
   while (1) {
     int32_t ch = getc(fh);
     if (ch == EOF) {
+      end_is_eof = 1;
       break;
     }
     else {
@@ -62,10 +64,16 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
   }
   
-  if (pos > 0) {
-    void* oline = env->new_barray_raw(env, pos);
-    int8_t* line = env->belems(env, oline);
-    memcpy(line, buffer, pos);
+  if (pos > 0 || !end_is_eof) {
+    void* oline;
+    if (pos == 0) {
+      oline = env->new_barray_raw(env, 0);
+    }
+    else {
+      oline = env->new_barray_raw(env, pos);
+      int8_t* line = env->belems(env, oline);
+      memcpy(line, buffer, pos);
+    }
     
     env->dec_ref_count(env, obuffer);
     stack[0].oval = oline;
