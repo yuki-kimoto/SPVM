@@ -1,5 +1,41 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
+
+  sub test_fgets : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "abcd") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
   
   sub test_init_native_constants : int () {
     {
@@ -82,7 +118,7 @@ package TestCase::Lib::SPVM::CORE {
 
   sub test_fread : int ($file : string) {
     {
-      my $fh = fopen($file, "rb");
+      my $fh = fopen($file, "r");
       unless ($fh) {
         croak "Can't open file $file";
       }
@@ -123,7 +159,7 @@ package TestCase::Lib::SPVM::CORE {
 
   sub test_fwrite : int ($file : string) {
     {
-      my $fh = fopen($file, "wb");
+      my $fh = fopen($file, "w");
       unless ($fh) {
         croak "Can't open file $file";
       }

@@ -39,10 +39,12 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     else {
       if (pos < capacity) {
-        buffer[pos] = ch;
-        pos++;
         if (ch == '\n') {
           break;
+        }
+        else {
+          buffer[pos] = ch;
+          pos++;
         }
       }
       else {
