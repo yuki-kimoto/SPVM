@@ -4685,6 +4685,7 @@ my $nums = new int[][][3];
         <li><a href="#language-statement-expression">式文</a></li>
         <li><a href="#language-statement-empty">空文</a></li>
       </ul>
+      
       <h4 id="language-statement-if">if文</h3>
       <p>
         if文は、条件分岐を行うための文です。
@@ -4813,7 +4814,7 @@ my $num = 1;
 }
 </pre>
 
-      <h4 id="language-statement-while">while文</h3>
+      <h4 id="language-statement-while">while文</h4>
       <p>
         while文は、繰り返しを行うための文です。
       </p>
@@ -4897,7 +4898,7 @@ my $num = 5;
 }
 </pre>
 
-      <h4 id="language-statement-for">for文</h3>
+      <h4 id="language-statement-for">for文</h4>
       <p>
         for文は、繰り返しを行うための文です。
       </p>
@@ -4963,7 +4964,7 @@ for (my $i = 0; $i < 5; $i++) {
 }
 </pre>
 
-      <h4 id="language-statement-return">return文</h3>
+      <h4 id="language-statement-return">return文</h4>
       <p>
         return文を使うと、サブルーチンから脱出します。モータル変数に代入されているオブジェクトは、自動的に解放されます。
       </p>
@@ -4983,38 +4984,23 @@ return 式;
         <a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
 
-      <h4 id="language-statement-next">next文</h3>
+      <h4 id="language-statement-next">next文</h4>
       <p>
-        「next文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」を脱出して、次のループの先頭に移動することができます。
+        「next文」は、次のループの先頭に移動するための文です。<a href="#language-block-statement-while">whileブロック</a>、<a href="#language-block-statement-for">forブロック</a>の中で使うことができます。
       </p>
 <pre>
 next;
 </pre>
       <p>
-        <b>next文のサンプル</b>
+        実際の動作については<a href="#language-statement-while">while文</a>、<a href="#language-statement-for">for文</a>の解説を見てください。
       </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    next;
-  }
-}
 
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-</pre>
-
-      <h4 id="language-statement-last">last文</h3>
+      <h4 id="language-statement-last">last文</h4>
       <p>
-        「last文」によって「<a href="#language-block-statement-for">forブロック</a>」または「<a href="#language-block-statement-while">whileブロック</a>」または「<a href="#language-block-statement-switch">switchブロック</a>」を脱出することができます。
+        「last文」は、ループあるいはswitchブロックを脱出するための文です。<a href="#language-block-statement-while">whileブロック</a>、<a href="#language-block-statement-for">forブロック</a>、<a href="#language-block-statement-switch">switchブロック</a>の中で使うことができます。
+      </p>
+      <p>
+        実際の動作については<a href="#language-statement-while">while文</a>、<a href="#language-statement-for">for文</a>、<a href="#language-statement-switch">switch文</a>の解説を見てください。
       </p>
 <pre>
 last;
