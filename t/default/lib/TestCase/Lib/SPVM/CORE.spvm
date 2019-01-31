@@ -1,6 +1,140 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
 
+  sub test_fgets : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "abcd\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "klm\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_fgets_while : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    my $lstrings = new_list([]);
+    while (my $line = fgets($fh)) {
+      $lstrings->push($line);
+    }
+    my $strings = $lstrings->to_strarray;
+    
+    unless (equals_strarray($strings, ["abcd\n", "fghi\n", "klm\n"])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_fgets_eof : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "abcd\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_fgets_long_line : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "klm\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   sub test_fgets_chomp : int ($file : string) {
     my $fh = fopen($file, "r");
     unless ($fh) {

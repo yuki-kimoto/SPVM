@@ -86,6 +86,83 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
+  // File handle
+  void* ofh = stack[0].oval;
+  if (ofh == NULL) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
+  
+  void* fh = (FILE*)env->pointer(env, ofh);
+
+  if (fh == NULL) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
+  
+  int32_t capacity = 80;
+  void* obuffer = env->new_barray_raw(env, capacity);
+  env->inc_ref_count(env, obuffer);
+  int8_t* buffer = env->belems(env, obuffer);
+  
+  int32_t pos = 0;
+  int32_t end_is_eof = 0;
+  while (1) {
+    int32_t ch = getc(fh);
+    if (ch == EOF) {
+      end_is_eof = 1;
+      break;
+    }
+    else {
+      if (pos >= capacity) {
+        // Extend buffer capacity
+        int32_t new_capacity = capacity * 2;
+        void* new_obuffer = env->new_barray_raw(env, new_capacity);
+        env->inc_ref_count(env, new_obuffer);
+        int8_t* new_buffer = env->belems(env, new_obuffer);
+        memcpy(new_buffer, buffer, capacity);
+        env->dec_ref_count(env, obuffer);
+        
+        capacity = new_capacity;
+        obuffer = new_obuffer;
+        buffer = new_buffer;
+      }
+      
+      if (ch == '\n') {
+        buffer[pos] = ch;
+        pos++;
+        break;
+      }
+      else {
+        buffer[pos] = ch;
+        pos++;
+      }
+    }
+  }
+  
+  if (pos > 0 || !end_is_eof) {
+    void* oline;
+    if (pos == 0) {
+      oline = env->new_barray_raw(env, 0);
+    }
+    else {
+      oline = env->new_barray_raw(env, pos);
+      int8_t* line = env->belems(env, oline);
+      memcpy(line, buffer, pos);
+    }
+    
+    env->dec_ref_count(env, obuffer);
+    stack[0].oval = oline;
+  }
+  else {
+    env->dec_ref_count(env, obuffer);
+    stack[0].oval = NULL;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // File name

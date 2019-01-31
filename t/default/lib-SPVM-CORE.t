@@ -72,7 +72,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     ok(TestCase::Lib::SPVM::CORE->test_fwrite($sp_file));
   }
 
-  # fgets
+  # fgets_chomp
   {
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
@@ -89,6 +89,26 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
       ok(TestCase::Lib::SPVM::CORE->test_fgets_chomp_long_line($sp_file));
+    }
+  }
+
+  # fgets
+  {
+    {
+      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      ok(TestCase::Lib::SPVM::CORE->test_fgets($sp_file));
+    }
+    {
+      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      ok(TestCase::Lib::SPVM::CORE->test_fgets_while($sp_file));
+    }
+    {
+      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
+      ok(TestCase::Lib::SPVM::CORE->test_fgets_eof($sp_file));
+    }
+    {
+      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
+      ok(TestCase::Lib::SPVM::CORE->test_fgets_long_line($sp_file));
     }
   }
 }
