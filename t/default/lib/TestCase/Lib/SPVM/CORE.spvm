@@ -72,6 +72,42 @@ package TestCase::Lib::SPVM::CORE {
     }
     return 1;
   }
+
+  sub test_fgets_long_line : int ($file : string) {
+    my $fh = fopen($file, "r");
+    unless ($fh) {
+      croak "Can't open file $file";
+    }
+    
+    {
+      my $line = fgets($fh);
+      unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = fgets($fh);
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
   
   sub test_init_native_constants : int () {
     {

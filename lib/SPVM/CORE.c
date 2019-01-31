@@ -38,16 +38,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
       break;
     }
     else {
-      if (pos < capacity) {
-        if (ch == '\n') {
-          break;
-        }
-        else {
-          buffer[pos] = ch;
-          pos++;
-        }
-      }
-      else {
+      if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
         void* new_obuffer = env->new_barray_raw(env, new_capacity);
@@ -59,6 +50,14 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
         capacity = new_capacity;
         obuffer = new_obuffer;
         buffer = new_buffer;
+      }
+      
+      if (ch == '\n') {
+        break;
+      }
+      else {
+        buffer[pos] = ch;
+        pos++;
       }
     }
   }

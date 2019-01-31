@@ -82,12 +82,10 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
       ok(TestCase::Lib::SPVM::CORE->test_fgets_eof($sp_file));
     }
-=pod
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
       ok(TestCase::Lib::SPVM::CORE->test_fgets_long_line($sp_file));
     }
-=cut
   }
 }
 
