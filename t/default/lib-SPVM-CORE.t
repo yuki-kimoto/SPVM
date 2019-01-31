@@ -8,6 +8,7 @@ use Test::More 'no_plan';
 
 use SPVM;
 use POSIX();
+use TestFile;
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -19,6 +20,9 @@ my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
+
+# Copy test_files to test_files_tmp with replacing os newline
+TestFile::copy_test_files_tmp_replace_newline();
 
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = 9**9**9;
@@ -40,25 +44,25 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # File input and output
 {
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::CORE->test_fopen($sp_file));
   }
   
   # fclose
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::CORE->test_fclose($sp_file));
   }
 
   # fread
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::CORE->test_fread($sp_file));
   }
 
   # slurp_file
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files/fread.txt");
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::CORE->test_slurp_file($sp_file));
   }
 
