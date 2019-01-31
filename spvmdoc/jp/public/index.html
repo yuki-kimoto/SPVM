@@ -5005,42 +5005,7 @@ next;
 <pre>
 last;
 </pre>
-      <p>
-        <b>last文のサンプル</b>
-      </p>
-<pre>
-# for
-for (my $i = 0; $i < 3; $i++) {
-  if ($i == 1) {
-    last;
-  }
-}
 
-# while
-my $i = 0;
-while ($i < 3;) {
-  if ($i == 1) {
-    next;
-  }
-  $i++;
-}
-
-# switch
-my $num = 3;
-switch ($num) {
-  case 1 :
-    # 処理1
-    last;
-  case 2 :
-    # 処理2
-    last;
-  case 3 :
-    # 処理3
-    last;
-  default:
-    # デフォルト
-}
-</pre>
       <h4 id="language-statement-expression">式文</h4>
       <p>
         式文は「<a href="#language-expression">式</a>」と「;」で構成される文のことです。
