@@ -36,7 +36,7 @@
     
     <div class="container">
       <div>
-        最終更新日 2019年1月29日
+        最終更新日 2019年1月31日
       </div>
       <h2>目次</h2>
       <ul class="toc">
@@ -4669,10 +4669,10 @@ my $nums = new int[][][3];
       </p>
       <ul class="list">
         <li><a href="#language-statement-if">if文</a></li>
-        <li><a href="#language-statement-while">while文</a></li>
-        <li><a href="#language-statement-for">for文</a></li>
         <li><a href="#language-statement-switch">switch文</a></li>
         <li><a href="#language-statement-case">case文</a></li>
+        <li><a href="#language-statement-while">while文</a></li>
+        <li><a href="#language-statement-for">for文</a></li>
         <li><a href="#language-statement-default">default文</a></li>
         <li><a href="#language-statement-block-simple">単純ブロック</a></li>
         <li><a href="#language-statement-eval">eval文</a></li>
@@ -4813,6 +4813,106 @@ my $num = 1;
   }
 }
 </pre>
+
+      <h4 id="language-statement-switch">switch文</h4>
+      <p>
+        switch文は、int型の整数を条件にして、条件分岐を行うための文です。条件がint型の整数で、たくさんの分岐がある場合は、if文よりも高速です。
+      </p>
+<pre>
+switch (条件式) {
+  case 定数1:
+  
+  case 定数2:
+  
+  case 定数n:
+  
+  default:
+}
+</pre>
+      <p>
+        条件式は、<a href="#language-expression">式</a>を指定できます。式の型は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        case文で指定される定数は、int型の定数でなければなりません。enum型の値や、int型の定数サブルーチンは、int型の定数として、構文解析時に展開されるので、利用することができます。
+      </p>
+      <p>
+        case文に指定される定数は、重複してはいけません。重複している場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        条件式で指定された値が、case文で指定された値にマッチした場合は、そのcase文の位置にジャンプします。
+      </p>
+      <p>
+        マッチしなかった場合でdefault文が指定されている場合は、default文の位置にジャンプします。default文が指定されていなかった場合は、switchブロックは実行されません。
+      </p>
+      <p>
+        switchブロックの中で、last文を使用した場合は、switchブロックから抜けることができます。
+      </p>
+
+<pre>
+switch (条件式) {
+  case 定数1:
+    last;
+  case 定数2:
+    last;
+  case 定数n:
+    last;
+  default:
+}
+</pre>
+
+      <p>
+        <b>switch文のサンプル</b>
+      </p>
+      <p>
+        switch文のサンプルです。
+      </p>
+<pre>
+my $code = 2;
+switch ($code) {
+  case 1:
+    print("1\n");
+    last;
+  case 2:
+    print("2\n");
+    last;
+  case 3:
+    print("3\n");
+    last;
+  default:
+    print("Other\n");
+}
+</pre>
+      <p>
+        last文を書かない場合は、下にあるcase文やdefault文も実行されてしまうので注意してください。以下のように書いてしまうと「2」「3」「Other」と表示されます。
+      </p>
+<pre>
+my $code = 2;
+switch ($code) {
+  case 1:
+    print("1\n");
+  case 2:
+    print("2\n");
+  case 3:
+    print("3\n");
+  default:
+    print("Other\n");
+}
+</pre>
+
+      <h4 id="language-statement-switch">case文</h4>
+      <p>
+        case文は、switchブロックの中で使うことができる、条件を指定するための文です。case文についての詳細は、<a href="#language-statement-switch">switch文</a>の解説を見てください。
+      </p>
+
+      <h4 id="language-statement-switch">default文</h4>
+      <p>
+        default文は、switchブロックの中で使うことができる、デフォルトの条件を指定するための文です。default文についての詳細は、<a href="#language-statement-switch">switch文</a>の解説を見てください。
+      </p>
+
+      <h4 id="language-statement-switch">switch文</h4>
+      <p>
+        for文は、繰り返しを行うための文です。
+      </p>
 
       <h4 id="language-statement-while">while文</h4>
       <p>
