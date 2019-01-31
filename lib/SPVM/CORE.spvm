@@ -25,6 +25,8 @@ package SPVM::CORE {
   }
   
   native sub init_native_constants : void ();
+
+  native sub fgets : string ($fh : SPVM::FileHandle);
   
   native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
   native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
