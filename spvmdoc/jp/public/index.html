@@ -5221,7 +5221,13 @@ my $num = 1 + 2;
         <li><a href="#language-type-initial-value">型の初期値</a></li>
         <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integral">整数型</a></li>
+        <li><a href="#language-type-byte">byte型</a></li>
+        <li><a href="#language-type-short">short型</a></li>
+        <li><a href="#language-type-int">int型</a></li>
+        <li><a href="#language-type-long">long型</a></li>
         <li><a href="#language-type-floating-point">浮動小数点型</a></li>
+        <li><a href="#language-type-float">float型</a></li>
+        <li><a href="#language-type-double">double型</a></li>
         <li><a href="#language-type-package">パッケージ型</a></li>
         <li><a href="#language-type-object">オブジェクト型</a></li>
         <li><a href="#language-type-numeric-object">数値オブジェクト型</a></li>
@@ -5232,7 +5238,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-self">self型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
         <li><a href="#language-type-array-numeric">数値の配列型</a></li>
-        <li><a href="#language-type-array-byte">byteの配列型</a></li>
+        <li><a href="#language-type-array-byte">byte[]型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
         <li><a href="#language-type-string-compatible">文字列互換型</a></li>
         <li><a href="#language-type-value">値型</a></li>
@@ -5337,6 +5343,7 @@ my $num = 1 + 2;
       <p>
         数値型は「<a href="#language-type-integral">整数型</a>」と「<a href="#language-type-floating-point">浮動小数点型</a>」からなります。
       </p>
+      
       <h4 id="language-type-integral">整数型</h3>
       <p>
         SPVMの整数型は以下の4つです。
@@ -5404,6 +5411,22 @@ my $num = 1 + 2;
       <p>
         整数の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
       </p>
+      <h4 id="language-type-byte">byte型</h3>
+      <p>
+        byte型は、符号付8bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint8_t型と同じ型です。
+      </p>
+      <h4 id="language-type-short">short型</h3>
+      <p>
+        byte型は、符号付16bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint16_t型と同じ型です。
+      </p>
+      <h4 id="language-type-int">int型</h3>
+      <p>
+        int型は、符号付32bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint32_t型と同じ型です。
+      </p>
+      <h4 id="language-type-int">long型</h3>
+      <p>
+        long型は、符号付64bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint64_t型と同じ型です。
+      </p>
       
       <h4 id="language-type-floating-point">浮動小数点型</h3>
       <p>
@@ -5446,6 +5469,16 @@ my $num = 1 + 2;
       </table>
       <p>
         浮動小数点の計算規則については、<a href="#language-operator-arithmetic">算術演算子</a>を参考にしてください。
+      </p>
+      
+      <h4 id="language-type-float">float型</h3>
+      <p>
+        float型は、単精度浮動小数点(32bit)を表現する<a href="#language-type-floating-point">浮動小数点型</a>です。C99のfloat型と同じ型です。
+      </p>
+      
+      <h4 id="language-type-float">double型</h3>
+      <p>
+        double型は、倍精度浮動小数点(64bit)を表現する<a href="#language-type-floating-point">浮動小数点型</a>です。C99のdouble型と同じ型です。
       </p>
       
       <h4 id="language-type-package">パッケージ型</h4>
@@ -5790,15 +5823,15 @@ my $nums = new int[][3];
       <p>
         数値の配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
       </p>
-      <h4 id="language-type-array-byte">byteの配列型</h4>
+      <h4 id="language-type-array-byte">byte[]型</h4>
       <p>
-        SPVMにおいては、byteの配列型は<a href="#language-type-string-compatible">文字列互換型</a>であるという点において特別な型です。
+        SPVMにおいては、byte[]型は<a href="#language-type-string-compatible">文字列互換型</a>であるという点において特別な型です。
       </p>
 <pre>
 byte[]
 </pre>
       <p>
-        <a href="#language-type-string">文字列型</a>は、コンパイル時には文字列型として扱われますが、実行時にはbyteの配列型になります。
+        <a href="#language-type-string">文字列型</a>は、コンパイル時には文字列型として扱われますが、実行時にはbyte[]型になります。
       </p>
       <h4 id="language-type-array-object">オブジェクトの配列型</h4>
       <p>
@@ -5906,7 +5939,7 @@ $bytes->[1] = 'd';
 
       <h4 id="language-type-string-compatible">文字列互換型</h4>
       <p>
-        文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byteの配列型</a>のことを言います。
+        文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byte[]型</a>のことを言います。
       </p>
       <h4 id="language-type-value">値型</h4>
       <p>
@@ -6130,13 +6163,16 @@ my $foo = new Foo;
 </pre>
       <h3 id="language-type-compatible">型の互換性</h3>
       <p>
-        型に互換性があるというのは、型変換なしで、値の移動ができる型のことです。
+        型に互換性があるというのは、<a href="#language-expression-typecast">型キャスト</a>を行わないで、値が移動ができる型のことです。
       </p>
       <p>
         型に互換性があるのは次の場合です。
       </p>
       <p>
-        <b>移動元と移動先の型が同名の場合</b>
+        <b>移動元と移動先の型が同一の場合</b>
+      </p>
+      <p>
+        移動元と移動先の型が同一の場合は、型の互換性があります。
       </p>
 <pre>
 my $num1 : int;
@@ -6145,6 +6181,9 @@ $num1 = $num2;
 </pre>
       <p>
         <b>移動元の型がbyte[]型で、移動先の型が文字列型の場合</b>
+      </p>
+      <p>
+        移動元の型がbyte[]型で、移動先の型が文字列型の場合は、型の互換性があります。
       </p>
 <pre>
 my $bytes = new byte[3];
