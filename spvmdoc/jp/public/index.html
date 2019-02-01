@@ -6181,6 +6181,7 @@ my $objets : object[] = new int[3];
       <h3 id="language-type-convertion">型変換</h3>
       <ul class="list">
         <li><a href="#language-type-convertion-typecast">型キャスト</a></li>
+        <li><a href="#language-type-convertion-typecast">数値型の型変換</a></li>
         <li><a href="#language-type-convertion-implicite">暗黙的な型変換</a></li>
         <li><a href="#language-type-convertion-numeric-type-order">数値型の順序</a></li>
         <li><a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a></li>
@@ -6191,6 +6192,7 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
       </ul>
+      
       <h4 id="language-type-convertion-typecast">型キャスト</h4>
       <p>
         型キャストとは、明示的に記述して行う型変換のことを言います。
@@ -6215,10 +6217,10 @@ my $num = (long)3;
 my $num : int = (int)4;
 </pre>
       <p>
-        明示的な型変換の一覧です。
+        <b>型キャストにおける型変換の一覧</b>
       </p>
       <p>
-        移動元の型と指定した型における変換の内容の一覧です。移動元の型と指定した型において<a href="#language-type-compatible">型の互換性</a>がなく、この一覧にない場合は、コンパイルエラーになります。
+        型キャストにおける型変換の一覧です。この表にない型キャストが行われた場合は、コンパイル時エラーが発生します。
       </p>
       <table>
         <tr>
@@ -6240,40 +6242,40 @@ my $num : int = (int)4;
             <b>string</b>
           </td>
           <td>
-            オブジェクトがコピーされます。
+            アドレス値がコピーされます。
           </td>
         </tr>
         <tr>
           <td>
-            <b>大きな数値型</b>
+            <b>string</b>
           </td>
           <td>
-            <b>小さな数値型</b>
+            <b>byte[]</b>
           </td>
           <td>
-            <a href="#language-type-convertion-numeric-widening">数値拡大型変換</a>が行われます。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>小さな数値型</b>
-          </td>
-          <td>
-            <b>大きな数値型</b>
-          </td>
-          <td>
-            <a href="#language-type-convertion-numeric-narrowing">数値縮小型変換</a>が行われます。
+            アドレス値がコピーされます。
           </td>
         </tr>
         <tr>
           <td>
-            <b>対応する数値オブジェクト型</b>
+            <b>数値型</b>
           </td>
           <td>
             <b>数値型</b>
           </td>
           <td>
-            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。
+            <a href="#language-type-convertion-numeric-widening">数値型の型変換</a>が行われます。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>数値オブジェクト型</b>
+          </td>
+          <td>
+            <b>数値型</b>
+          </td>
+          <td>
+            <a href="#language-type-convertion-boxing">ボクシング変換</a>が行われます。数値型と数値オブジェクト型が表現する数値型は、同じでなければなりません。たとえば、数値型がintの場合は、数値オブジェクト型はSPVM::Int型でなければなりません。
           </td>
         </tr>
         <tr>
@@ -6292,10 +6294,10 @@ my $num : int = (int)4;
             <b>数値型</b>
           </td>
           <td>
-            <b>対応する数値オブジェクト型</b>
+            <b>数値オブジェクト型</b>
           </td>
           <td>
-            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。
+            <a href="#language-type-convertion-unboxing">アンボクシング変換</a>が行われます。数値型と数値オブジェクト型が表現する数値型は、同じでなければなりません。たとえば、数値型がintの場合は、数値オブジェクト型はSPVM::Int型でなければなりません。
           </td>
         </tr>
         <tr>
@@ -6321,6 +6323,29 @@ my $num : int = (int)4;
           </td>
         </tr>
       </table>
+
+      <h4 id="language-type-convertion-numeric">数値型の型変換</h4>
+      <p>
+        数値型の型変換とは、<a href="#language-type-numeric">数値型</a>から<a href="#language-type-numeric">数値型</a>への変換のことです。
+      </p>
+      <p>
+        数値型の型変換は、対応するC言語における数値型による型変換と全く同じ処理を行います。例えば、SPVMにおけるintからlongへの型変換は、C言語のint32_t型からint64_t型への型変換と同じ処理を行います。
+      </p>
+<pre>
+# SPVMの変換
+my $src : int = 5;
+my $dist = (long)$src;
+
+# C言語における対応
+int32_t src = 5;
+int64_t dist = (int64_t)src;
+</pre>
+      <p>
+        型の対応については、<a href="#language-c99-type">C99との型の対応</a>を見てください。
+      </p>
+      <p>
+        大きな型から小さな型に変換した場合や、浮動小数点から整数型に変換した場合は、正しい情報が保持されない場合があります。SPVMでは、C99に対応する型変換をそのまま行っているので、正しい情報が保持されない場合に、どの値に変換されるかは、C99の仕様と同じです。
+      </p>
       
       <h4 id="language-type-convertion-implicite">暗黙的な型変換</h4>
       <p>
