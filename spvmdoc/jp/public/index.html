@@ -36,7 +36,7 @@
     
     <div class="container">
       <div>
-        最終更新日 2019年1月31日
+        最終更新日 2019年2月1日
       </div>
       <h2>目次</h2>
       <ul class="toc">
@@ -2090,10 +2090,10 @@ my $ret = $foo->bar(2);
 </pre>
 
       <p>
-        配列の取得については、<a href="#language-expression-get-array">配列の値の取得</a>を見てください。
+        配列の取得については、<a href="#language-expression-get-array-element">配列の要素の値の取得</a>を見てください。
       </p>
       <p>
-        配列の設定については、<a href="#language-expression-set-set-array">配列の値の設定</a>を見てください。
+        配列の設定については、<a href="#language-expression-set-set-array-element">配列の要素の値の設定</a>を見てください。
       </p>
 
       <h4 id="language-array-summary">配列の生成</h4>
@@ -2156,8 +2156,8 @@ my $ret = $foo->bar(2);
         <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
         <li><a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a></li>
         <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
-        <li>配列の要素の値の設定</li>
-        <li>配列の要素の値の取得</li>
+        <li><a href="#language-expression-get-array-element">配列の要素の値の取得</a></li>
+        <li><a href="#language-expression-set-array-element">配列の要素の値の設定</a></li>
         <li><a href="#language-expression-typecast">型キャスト</a></li>
         <li><a href="#language-expression-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-expression-new-array">配列の生成</a></li>
@@ -4404,6 +4404,172 @@ my $nums = new int[3];
 foo(scalar @$nums);
 </pre>
 
+      <h3 id="language-expression-new-object">配列の要素の値の取得</h3>
+      <p>
+        配列の要素の値を取得するには、次のように記述します。
+      </p>
+<p>
+配列式->[インデックス式]
+</p>
+      <p>
+        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        配列の要素の値を取得は、指定したインデックスの要素の値を返します。これは、式です。
+      </p>
+      <p>
+        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
+      </p>
+      <p>
+        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
+      </p>
+      <p>
+        <b>配列の要素の値の取得のサンプル</b>
+      </p>
+      <p>
+        配列の要素の値の取得のサンプルです。
+      </p>
+<pre>
+my $nums = new int[3];
+my $num = $nums->[1];
+
+my $points = new Point[3];
+my $point = $points->[1];
+
+my $objects : oarray = $points;
+my $object = (Point)$objects->[1];
+</pre>
+      
+      <h3 id="language-expression-new-object">配列の要素の値の設定</h3>
+      <p>
+        配列の要素の値を設定するには、次のように記述します。
+      </p>
+<p>
+配列式->[インデックス式] = 右式
+</p>
+      <p>
+        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、配列の要素の型と<a href="#language-type-compatible">型の互換性</a>がなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        配列の要素の値を設定は、設定後の値を返します。これは、式です。
+      </p>
+      <p>
+        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
+      </p>
+      <p>
+        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
+      </p>
+      <p>
+        <b>配列の要素の値の設定のサンプル</b>
+      </p>
+      <p>
+        配列の要素の値の設定のサンプルです。
+      </p>
+<pre>
+my $nums = new int[3];
+$nums->[1] = 3;
+
+my $points = new Point[3];
+$points->[1] = Point->new(1, 2);
+
+my $objects : oarray = $points;
+$objects->[2] = Point->new(3, 5);;
+</pre>
+
+      <h3 id="language-expression-new-object">オブジェクトの生成</h3>
+      <p>
+        オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new パッケージ名;
+</pre>
+      <p>
+        指定されたパッケージは、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールドは、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        オブジェクトの生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>オブジェクトの生成のサンプル</b>
+      </p>
+<pre>
+my $object = new Foo;
+</pre>
+      <h3 id="language-expression-new-array">配列の生成</h3>
+      <p>
+        配列を作成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new 型[要素数式];
+</pre>
+      <p>
+        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        要素数式で指定された長さの配列が生成されます。
+      </p>
+      <p>
+        配列の要素は、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        配列において、要素は、メモリ上に連続していることが保証されます。
+      </p>
+      <p>
+        配列の生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        <b>配列の生成のサンプル</b>
+      </p>
+<pre>
+my $nums = new int[3];
+my $objects = new Foo[3];
+my $objects = new object[3];
+my $values = new Complex_2d[3]
+</pre>
+      <p>
+        配列型自体も、オブジェクト型ですので、上記の構文を使用して、多次元配列を作成することができます。
+      </p>
+<pre>
+my $nums = new int[][3];
+my $nums = new int[][][3];
+</pre>
+      
+      <h3 id="language-expression-array-init">配列の初期化</h3>
+      <p>
+        SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
+      </p>
+<pre>
+[]
+[式1, 式2, 式3]
+</pre>
+      <p>
+        配列の初期化は、式の要素数の長さを持った配列を返します。
+      </p>
+      <p>
+        配列の型は、式1の型を配列型にしたものです。要素が指定されない場合は、<a href="#language-type-any-object">汎用オブジェクト型</a>を配列型にしたものになります。
+      </p>
+      <p>
+        式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
+      </p>
+
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
@@ -4572,90 +4738,6 @@ a * b + c
 # b + c が先
 a * (b + c)
 </pre>
-      <h3 id="language-expression-new-object">オブジェクトの生成</h3>
-      <p>
-        オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
-      </p>
-<pre>
-my $object = new パッケージ名;
-</pre>
-      <p>
-        指定されたパッケージは、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールドは、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
-      </p>
-      <p>
-        オブジェクトの生成は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <p>
-        <b>オブジェクトの生成のサンプル</b>
-      </p>
-<pre>
-my $object = new Foo;
-</pre>
-      <h3 id="language-expression-new-array">配列の生成</h3>
-      <p>
-        配列を作成するには、newキーワードと以下の構文をを使用します。
-      </p>
-<pre>
-my $object = new 型[要素数式];
-</pre>
-      <p>
-        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
-      </p>
-      <p>
-        要素数式で指定された長さの配列が生成されます。
-      </p>
-      <p>
-        配列の要素は、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
-      </p>
-      <p>
-        配列において、要素は、メモリ上に連続していることが保証されます。
-      </p>
-      <p>
-        配列の生成は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <p>
-        <b>配列の生成のサンプル</b>
-      </p>
-<pre>
-my $nums = new int[3];
-my $objects = new Foo[3];
-my $objects = new object[3];
-my $values = new Complex_2d[3]
-</pre>
-      <p>
-        配列型自体も、オブジェクト型ですので、上記の構文を使用して、多次元配列を作成することができます。
-      </p>
-<pre>
-my $nums = new int[][3];
-my $nums = new int[][][3];
-</pre>
-      
-      <h3 id="language-expression-array-init">配列の初期化</h3>
-      <p>
-        SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
-      </p>
-<pre>
-[]
-[式1, 式2, 式3]
-</pre>
-      <p>
-        配列の初期化は、式の要素数の長さを持った配列を返します。
-      </p>
-      <p>
-        配列の型は、式1の型を配列型にしたものです。要素が指定されない場合は、<a href="#language-type-any-object">汎用オブジェクト型</a>を配列型にしたものになります。
-      </p>
-      <p>
-        式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
-      </p>
       
       <h3 id="language-statement">文</h3>
       <p>
