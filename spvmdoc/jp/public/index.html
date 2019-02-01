@@ -632,18 +632,22 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-parser-separator">区切り文字</a>
         <li><a href="#language-parser-operator">演算子</a>
       </ul>
+      
       <h4 id="language-parser-encoding">ソースコードの文字コード</h4>
       <p>
         SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されます。
       </p>
+      
       <h4 id="language-parser-lalr">LALR(1)法</h4>
       <p>
         SPVMのソースコードは、LALR(1)法によって解析できます。yacc/bisonで生成されたパーサージェネレータによって解析することができます。
       </p>
+      
       <h4 id="language-parser-component">構成要素</h4>
       <p>
         SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
       </p>
+      
       <h4 id="language-parser-line-terminater">行終端</h4>
       <p>
         SPVMのソースコードの行終端は、ASCIIコードの「LF」「CR」「CR LF」です。
@@ -651,6 +655,7 @@ my $total = MyMath->sum($sp_nums);
       <p>
         行終端が現れたときは、適切に行番号がインクリメントされます。
       </p>
+      
       <h4 id="language-parser-space-character">空白文字</h4>
       <p>
         SPVMにおける空白文字はASCIIコードの「SP」「HT」「FF」と「<a href="#language-parser-line-terminater">行終端</a>」です。
@@ -658,6 +663,7 @@ my $total = MyMath->sum($sp_nums);
       <p>
         空白文字はソースコード上では意味を持ちません。
       </p>
+      
       <h4 id="language-parser-keyword">キーワード</h4>
       <p>
         SPVMにおけるキーワードは以下です。
@@ -693,7 +699,435 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 +=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
 \   $   @   .   .=
 </pre>
-      
+      <h4 id="language-parser-table">構文解析表</h4>
+      <p>
+        yacc/bisonにおける、構文解析表です。トークンを小文字にしたものが、キーワードになります。
+      </p>
+<pre>
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
+%token <opval> DESCRIPTOR
+%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
+%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
+%token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
+%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN ISWEAK '[' '{' '('
+
+%type <opval> grammar
+%type <opval> opt_packages packages package package_block
+%type <opval> opt_declarations declarations declaration
+%type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
+%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
+%type <opval> opt_descriptors descriptors sub_names opt_sub_names
+%type <opval> opt_statements statements statement if_statement else_statement 
+%type <opval> for_statement while_statement switch_statement case_statement default_statement
+%type <opval> block eval_block begin_block if_require_statement
+%type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
+%type <opval> call_sub opt_vaarg
+%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
+%type <opval> deref ref assign inc dec
+%type <opval> new array_init
+%type <opval> my_var var package_var_access
+%type <opval> term opt_expressions expressions expression condition opt_expression
+%type <opval> field_name sub_name
+%type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
+
+%right <opval> ASSIGN SPECIAL_ASSIGN
+%left <opval> LOGICAL_OR
+%left <opval> LOGICAL_AND
+%left <opval> BIT_OR BIT_XOR
+%left <opval> '&'
+%nonassoc <opval> NUMEQ NUMNE STREQ STRNE
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA
+%left <opval> SHIFT
+%left <opval> '+' '-' '.'
+%left <opval> MULTIPLY DIVIDE REMAINDER
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH
+%nonassoc <opval> INC DEC
+%left <opval> ARROW
+
+%%
+
+grammar
+  : opt_packages
+
+opt_packages
+  :	/* Empty */
+  |	packages
+  
+packages
+  : packages package
+  | package
+
+package
+  : PACKAGE basic_type package_block
+  | PACKAGE basic_type ':' opt_descriptors package_block
+
+package_block
+  : '{' opt_declarations '}'
+
+opt_declarations
+  :	/* Empty */
+  |	declarations
+
+declarations
+  : declarations declaration
+  | declaration
+
+declaration
+  : has
+  | sub
+  | enumeration
+  | our ';'
+  | use
+  | begin_block
+
+begin_block
+  : BEGIN block
+    
+use
+  : USE basic_type ';'
+  | USE basic_type '(' opt_sub_names ')' ';'
+
+require
+  : REQUIRE basic_type
+
+enumeration
+  : ENUM enumeration_block
+
+enumeration_block 
+  : '{' opt_enumeration_values '}'
+
+opt_enumeration_values
+  :	/* Empty */
+  |	enumeration_values
+    
+enumeration_values
+  : enumeration_values ',' enumeration_value 
+  | enumeration_values ','
+  | enumeration_value
+  
+enumeration_value
+  : sub_name
+  | sub_name ASSIGN CONSTANT
+
+our
+  : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
+has
+  : HAS field_name ':' opt_descriptors type ';'
+
+sub
+  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
+
+anon_sub
+  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+
+opt_args
+  :	/* Empty */
+  |	args
+  | invocant
+  | invocant ',' args
+
+args
+  : args ',' arg
+  | arg
+
+arg
+  : var ':' type
+
+opt_vaarg
+  : /* Empty */
+  | DOT3
+
+invocant
+  : var ':' SELF
+
+opt_descriptors
+  :	/* Empty */
+  |	descriptors
+    
+descriptors
+  : descriptors DESCRIPTOR
+  | DESCRIPTOR
+
+opt_statements
+  :	/* Empty */
+  |	statements
+    
+statements
+  : statements statement 
+  | statement
+
+statement
+  : if_statement
+  | for_statement
+  | while_statement
+  | block
+  | switch_statement
+  | case_statement
+  | default_statement
+  | eval_block
+  | if_require_statement
+  | expression ';'
+  | LAST ';'
+  | NEXT ';'
+  | RETURN ';'
+  | RETURN expression ';'
+  | CROAK ';'
+  | CROAK expression ';'
+  | weaken_field ';'
+  | unweaken_field ';'
+  | isweak_field ';'
+  | ';'
+
+for_statement
+  : FOR '(' opt_expression ';' term ';' opt_expression ')' block
+
+while_statement
+  : WHILE '(' term ')' block
+
+switch_statement
+  : SWITCH '(' expression ')' block
+
+case_statement
+  : CASE expression ':'
+
+default_statement
+  : DEFAULT ':'
+
+if_require_statement
+  : IF '(' require ')' block
+
+if_statement
+  : IF '(' term ')' block else_statement
+  | UNLESS '(' term ')' block else_statement
+
+else_statement
+  : /* NULL */
+  | ELSE block
+  | ELSIF '(' term ')' block else_statement
+
+block 
+  : '{' opt_statements '}'
+
+eval_block
+  : EVAL block ';'
+
+opt_expressions
+  :	/* Empty */
+  |	expressions
+term
+  : expression
+  | condition
+
+opt_expression
+  : /* Empty */
+  | expression
+
+expression
+  : var
+  | EXCEPTION_VAR
+  | package_var_access
+  | CONSTANT
+  | UNDEF
+  | call_sub
+  | field_access
+  | array_access
+  | convert
+  | new
+  | array_init
+  | array_length
+  | string_length
+  | my_var
+  | binary_op
+  | unary_op
+  | ref
+  | deref
+  | assign
+  | inc
+  | dec
+  | '(' expressions ')'
+  | CURRENT_PACKAGE
+
+expressions
+  : expressions ',' expression
+  | expressions ','
+  | expression
+
+unary_op
+  : '+' expression %prec PLUS
+  | '-' expression %prec MINUS
+  | BIT_NOT expression
+
+inc
+  : INC expression
+  | expression INC
+
+dec
+  : DEC expression
+  | expression DEC
+
+binary_op
+  : expression '+' expression
+  | expression '-' expression
+  | expression MULTIPLY expression
+  | expression DIVIDE expression
+  | expression REMAINDER expression
+  | expression BIT_XOR expression
+  | expression '&' expression
+  | expression BIT_OR expression
+  | expression SHIFT expression
+  | expression '.' expression
+
+condition
+  : comparison_op
+  | logical_op
+  | '(' condition ')'
+
+comparison_op
+  : num_comparison_op
+  | str_comparison_op
+  | isa
+
+num_comparison_op
+  : expression NUMEQ expression
+  | expression NUMNE expression
+  | expression NUMGT expression
+  | expression NUMGE expression
+  | expression NUMLT expression
+  | expression NUMLE expression
+
+str_comparison_op
+  : expression STREQ expression
+  | expression STRNE expression
+  | expression STRGT expression
+  | expression STRGE expression
+  | expression STRLT expression
+  | expression STRLE expression
+    
+isa
+  : expression ISA type
+
+logical_op
+  : term LOGICAL_OR term
+  | term LOGICAL_AND term
+  | LOGICAL_NOT term
+
+assign
+  : expression ASSIGN expression
+  | expression SPECIAL_ASSIGN expression
+
+new
+  : NEW basic_type
+  | NEW array_type_with_length
+  | anon_sub
+
+array_init
+  : '[' opt_expressions ']'
+
+convert
+  : '(' type ')' expression %prec CONVERT
+
+array_access
+  : expression ARROW '[' expression ']'
+  | array_access '[' expression ']'
+  | field_access '[' expression ']'
+
+call_sub
+  : NAME '(' opt_expressions  ')'
+  | basic_type ARROW sub_name '(' opt_expressions  ')'
+  | basic_type ARROW sub_name
+  | expression ARROW sub_name '(' opt_expressions ')'
+  | expression ARROW sub_name
+  | expression ARROW '(' opt_expressions ')'
+
+field_access
+  : expression ARROW '{' field_name '}'
+  | field_access '{' field_name '}'
+  | array_access '{' field_name '}'
+
+weaken_field
+  : WEAKEN field_access
+
+unweaken_field
+  : UNWEAKEN field_access
+
+isweak_field
+  : ISWEAK field_access
+
+array_length
+  : '@' expression
+  | '@' '{' expression '}'
+  | SCALAR '@' expression
+  | SCALAR '@' '{' expression '}'
+
+string_length
+  : LENGTH expression
+    
+deref
+  : DEREF var
+
+ref
+  : REF var
+
+my_var
+  : MY var ':' type
+  | MY var
+
+var
+  : VAR_NAME
+
+package_var_access
+  : PACKAGE_VAR_NAME
+
+type
+  : basic_type
+  | array_type
+  | ref_type
+
+basic_type
+  : NAME
+  | BYTE
+  | SHORT
+  | INT
+  | LONG
+  | FLOAT
+  | DOUBLE
+  | OBJECT
+  | STRING
+
+ref_type
+  : basic_type '&'
+
+array_type
+  : basic_type '[' ']'
+  | array_type '[' ']'
+
+array_type_with_length
+  : basic_type '[' expression ']'
+  | array_type '[' expression ']'
+
+type_or_void
+  : type
+  | VOID
+
+field_name
+  : NAME
+
+sub_name
+  : NAME
+
+opt_sub_names
+  :	/* Empty */
+  |	sub_names
+
+sub_names
+  : sub_names ',' sub_name
+  | sub_name
+
+%%
+</pre>
       <h3 id="language-comment">コメント</h3>
       <p>
         コメントは「#」で始まり改行で終わります。
