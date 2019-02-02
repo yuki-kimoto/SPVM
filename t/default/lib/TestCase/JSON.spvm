@@ -4,6 +4,8 @@ package TestCase::JSON {
   use SPVM::Int;
   use SPVM::Double;
   use SPVM::JSON::Bool;
+  use SPVM::Math::BigInteger;
+  use SPVM::Math::BigDecimal;
 
   our $DEFAULT_JSON : SPVM::JSON;
 
@@ -38,43 +40,113 @@ package TestCase::JSON {
   }
 
   sub test_flat_hash : int () {
-    my $json_texts = ["{}", "{\"digit\":42}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"A\":0.1,\"ABC\":false,\"a\":1,\"qwerty\":\"asdfg\"}"];
-    return _validate($DEFAULT_JSON, $json_texts, $json_texts);
+    my $tests = ["{}", "{\"digit\":42}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"A\":0.1,\"ABC\":false,\"a\":1,\"qwerty\":\"asdfg\"}"];
+    return _validate($DEFAULT_JSON, $tests, $tests);
   }
 
   sub test_flat_list : int () {
-    my $json_texts = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",3.1415]"];
-    return _validate($DEFAULT_JSON, $json_texts, $json_texts);
+    my $tests = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",3.1415]"];
+    return _validate($DEFAULT_JSON, $tests, $tests);
   }
 
   sub test_digits_int : int () {
-    my $json_texts = ["[0,1,-1]"];
-    return _validate($DEFAULT_JSON, $json_texts, $json_texts);
+    my $tests = ["[0,1,-1]"];
+    return _validate($DEFAULT_JSON, $tests, $tests);
   }
 
   sub test_digits_long : int () {
-    my $json_texts = ["[100000000000,-100000000000]"];
+    my $tests = ["[100000000000,-100000000000]"];
     my $json = SPVM::JSON->new;
     $json->{canonical} = 1;
-    $json->{num_policy} = SPVM::JSON->ALLOW_LONG;
-    return _validate($json, $json_texts, $json_texts);
+    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_LONG;
+    return _validate($json, $tests, $tests);
   }
 
   sub test_digits_double : int () {
-    my $json_texts = ["[0.123,-0.123,3.14,-3.14,123.987,-123.987,1.23456e+1,1.23456e-1,1.23456e+08,1.23456e-08,1.23456e+008,1.23456e-008,1.23456e+018,1.23456e-018,9.9e-100,9.9e+300,-1.23e+123]"];
-    return _validate($DEFAULT_JSON, $json_texts, $json_texts);
+    my $input = [
+      "0.123", "-0.123", "3.14", "-3.14", "123.987", "-123.987",
+      "1.23456e+1", "1.23456e-1", "1.23456e+08", "1.23456e-08", "1.23456e+008", "1.23456e-008",
+      "1.23456e+018", "1.23456e-018", "9.9e-100", "9.9e+300", "-1.23e+123"
+    ];
+    my $expected = [
+      0.123, -0.123, 3.14, -3.14, 123.987, -123.987,
+      1.23456e+1, 1.23456e-1, 1.23456e+08, 1.23456e-08, 1.23456e+008, 1.23456e-008,
+      1.23456e+018, 1.23456e-018, 9.9e-100, 9.9e+300, -1.23e+123
+    ];
+    for (my $i = 0; $i < @$input; $i++) {
+      my $got = (SPVM::Double)($DEFAULT_JSON->decode($input->[$i]));
+      unless ($got->val == $expected->[$i]) {
+        return 0;
+      }
+      my $re_got = (SPVM::Double)($DEFAULT_JSON->decode($DEFAULT_JSON->encode($got)));
+      unless ($re_got->val == $expected->[$i]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_digits_big_integer : int () {
+    my $json = SPVM::JSON->new;
+    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_BIGNUM;
+    my $test = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+    my $val = $json->decode($test);
+    unless ($val isa SPVM::Math::BigInteger) {
+      return 0;
+    }
+    my $got = (SPVM::Math::BigInteger)$val;
+    unless ($got->to_string eq $test) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_digits_big_decimal : int () {
+    my $json = SPVM::JSON->new;
+    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_BIGNUM;
+    my $inputs = [
+      "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679",
+      "123.45",
+      "0.0123",
+      "123.45e10",
+      "123.45e-10",
+      "0.0001e+10",
+      "0.00010100000e-10",
+    ];
+    my $expected = [
+      "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679",
+      "1.2345e2",
+      "1.23e-2",
+      "1.2345e12",
+      "1.2345e-8",
+      "1e6",
+      "1.01e-14",
+    ];
+    for (my $i = 0; $i < @$inputs; ++$i) {
+      my $val = $json->decode($inputs->[$i]);
+      unless ($val isa SPVM::Math::BigDecimal) {
+        return 0;
+      }
+      my $got = (SPVM::Math::BigDecimal)
+      $val;
+      unless ($got->to_string eq $expected->[$i]) {
+        warn("got: " . $got->to_string . "\nexpected: " . $expected->[$i]);
+        return 0;
+      }
+    }
+    return 1;
   }
 
   sub test_root_is_primitive : int () {
-    my $json_texts = ["\"abc\"", "123", "true"];
-    return _validate($DEFAULT_JSON, $json_texts, $json_texts);
+    my $tests = ["\"abc\"", "123", "true"];
+    return _validate($DEFAULT_JSON, $tests, $tests);
   }
 
   sub test_nest_object : int () {
-    my $json_texts = [
+    my $tests = [
       "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"end\":\"eof\"}"
     ];
-    unless (_validate($DEFAULT_JSON, $json_texts, $json_texts)) {
+    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
       return 0;
     }
     return 1;
@@ -178,8 +250,8 @@ package TestCase::JSON {
   }
 
   sub test_special_chars : int () {
-    my $json_texts = ["\"\\\"\\\\\\t\\n\\r\""];
-    unless (_validate($DEFAULT_JSON, $json_texts, $json_texts)) {
+    my $tests = ["\"\\\"\\\\\\t\\n\\r\""];
+    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
       return 0;
     }
     return 1;

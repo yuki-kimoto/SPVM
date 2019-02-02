@@ -1,43 +1,103 @@
 package SPVM::Math::BigDecimal {
-  has digits : private ro string;
-  has exp : private ro int; # 0 or negative
+  use SPVM::List; # TODO: Replace SPVM::Text
+  use SPVM::Byte;
+  use SPVM::Math::StringToNumber;
+
+  # { digits: "12345", exp: 3 } => "1.2345e3"
+  has digits : private ro string; # leading & trailing 0 are not included.
+  has exp : private ro int;
 
   sub _validate_and_set : void ($self : self, $val : string) {
     my $length = length $val;
     unless ($length > 0) {
-      croak "value is empty";
+      croak "val must not be empty";
     }
     if ($val->[0] == '.') {
-      croak "decimal cannot start with '.'";
+      croak "Cannot start with '.'";
     }
     if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
-      croak "'.' must exist just after the first digit '0'. val: '$val'"; # TODO: Proper english
+      croak "If the first character is '0', the next character must be '.'";
     }
     if ($val->[$length - 1] == '.') {
       croak "'.' cannot exist at the end of digits";
     }
+
+    my $digits = SPVM::List->new;
     my $dot_pos = -1;
+    my $exp_pos = -1;
     for (my $i = 0; $i < $length; ++$i) {
-      unless (('0' <= $val->[$i] && $val->[$i] <= '9') || $val->[$i] == '.') {
-        croak "decimal cannot contain not digit or '.' character";
+      if ('0' <= $val->[$i] && $val->[$i] <= '9') {
+        $digits->push(SPVM::Byte->new($val->[$i]));
       }
-      if ($val->[$i] == '.') {
-        if ($dot_pos != -1) {
-          croak "decimal cannot contain multiple '.'";
-        }
+      elsif ($val->[$i] == '.' && $dot_pos == -1) {
         $dot_pos = $i;
       }
+      elsif (($val->[$i] == 'e' || $val->[$i] == 'E') && $exp_pos == -1) {
+        ++$i;
+        $exp_pos = $i;
+        unless ($i < $length) {
+          croak "digits must exist after e/E";
+        }
+        if ($val->[$i] == '+') {
+          ++$i;
+          $exp_pos = $i;
+        }
+        elsif ($val->[$i] == '-') {
+          ++$i;
+        }
+        unless ($i < $length) {
+          croak "digits must exist after e/E";
+        }
+        while ($i < $length) {
+          unless ('0' <= $val->[$i] && $val->[$i] <= '9') {
+            croak "Not digit or '+'/'-' characters are allowed after 'e'/'E'";
+          }
+          ++$i;
+        }
+        last;
+      }
+      else {
+        croak "Invalid decimal: '$val'";
+      }
     }
-    # not support 'e' and 'E' for now
-    if ($dot_pos == -1) {
-      $self->{digits} = $val;
-      $self->{exp} = 0;
+    $self->{exp} = 0;
+    if ($dot_pos >= 0) {
+      $self->{exp} += $dot_pos - 1;
     }
-    else {
-      $self->{digits} = sliceb((byte [])$val, 0, $dot_pos - 1)
-          . sliceb((byte [])$val, $dot_pos + 1, $length - 1);
-      $self->{exp} = $length - 1 - $dot_pos;
+    if ($exp_pos >= 0) {
+      my $exp_str = sliceb((byte [])$val, $exp_pos, $length - $exp_pos);
+      $self->{exp} += SPVM::Math::StringToNumber->from($exp_str)->to_int;
     }
+
+    my $digits_length = $digits->length;
+
+    # remove leading 0
+    for (my $i = 0; $i < $digits_length; ++$i) {
+      if (((SPVM::Byte)($digits->get(0)))->val == '0') {
+        --$self->{exp};
+        $digits->shift;
+      }
+      else {
+        last;
+      }
+    }
+
+    # remove trailing 0
+    $digits_length = $digits->length;
+    for (my $i = 0; $i < $digits_length; ++$i) {
+      if (((SPVM::Byte)($digits->get($digits->length - 1)))->val == '0') {
+        $digits->pop;
+      }
+      else {
+        last;
+      }
+    }
+
+    my $byte_digits = new byte [$digits->length];
+    for (my $i = 0; $i < @$byte_digits; ++$i) {
+      $byte_digits->[$i] = $digits->shift;
+    }
+    $self->{digits} = (string)$byte_digits;
   }
 
   sub new : SPVM::Math::BigDecimal ($val : string) {
@@ -46,35 +106,43 @@ package SPVM::Math::BigDecimal {
     return $self;
   }
 
-  sub new_with_exp : SPVM::Math::BigDecimal ($digits : string, $exp : int) {
-    my $self = new SPVM::Math::BigDecimal;
-    my $length = length($digits);
-    for (my $i = 0; $i < $length; ++$i) {
-      unless ('0' <= $digits->[$i] && $digits->[$i] <= '9') {
-        croak "Argument digits has non numeric value";
-      }
-    }
-    if ($exp > 0) {
-      my $last_zeros = new byte [$exp];
-      for (my $i = 0; $i < $exp; ++$i) {
-        $last_zeros->[$i] = '0';
-      }
-      $digits .= $last_zeros;
-      $exp = 0;
-    }
-    $self->{digits} = $digits;
-    $self->{exp} = $exp;
-    return $self;
-  }
-
   sub to_string : string ($self : self) {
-    my $length = length($self->{digits});
     if ($self->{exp} == 0) {
-      return $self->{digits};
+      my $digits_length = length($self->{digits});
+      my $ret = new byte [$digits_length + 1];
+      $ret->[0] = $self->{digits}->[0];
+      $ret->[1] = '.';
+      for (my $i = 0; $i < $digits_length - 1; ++$i) {
+        $ret->[$i + 2] = $self->{digits}->[$i + 1];
+      }
+      return $ret;
     }
     else {
-      return sliceb((byte [])$self->{digits}, 0, $length - 1 + $self->{exp})
-          . "." . sliceb((byte [])$self->{digits}, $length + $self->{exp}, $length - 1);
+      my $exp_str = "" . $self->{exp};
+      my $digits_length = length($self->{digits});
+      my $exp_length = length($exp_str);
+      if ($digits_length == 1) {
+        my $ret = new byte [$exp_length + 2];
+        $ret->[0] = $self->{digits}->[0];
+        $ret->[1] = 'e';
+        for (my $i = 0; $i < $exp_length; ++$i) {
+          $ret->[$i + 2] = $exp_str->[$i];
+        }
+        return $ret;
+      }
+      else {
+        my $ret = new byte [$digits_length + $exp_length + 2];
+        $ret->[0] = $self->{digits}->[0];
+        $ret->[1] = '.';
+        for (my $i = 0; $i < $digits_length - 1; ++$i) {
+          $ret->[$i + 2] = $self->{digits}->[$i + 1];
+        }
+        $ret->[$digits_length + 1] = 'e';
+        for (my $i = 0; $i < $exp_length; ++$i) {
+          $ret->[$i + $digits_length + 2] = $exp_str->[$i];
+        }
+        return $ret;
+      }
     }
   }
 

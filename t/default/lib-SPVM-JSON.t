@@ -18,10 +18,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->test_flat_list);
   ok(TestCase::JSON->test_digits_int);
   ok(TestCase::JSON->test_digits_long);
-  
-  # [TODO]Failed tests
   ok(TestCase::JSON->test_digits_double);
-  
+  ok(TestCase::JSON->test_digits_big_integer);
+  ok(TestCase::JSON->test_digits_big_decimal);
   ok(TestCase::JSON->test_root_is_primitive);
   ok(TestCase::JSON->test_nest_object);
   ok(TestCase::JSON->test_spaces);
