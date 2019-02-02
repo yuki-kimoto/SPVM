@@ -375,9 +375,29 @@ package SPVM::JSON {
   }
 
   sub _decode_value : object ($self : self, $s : string, $i : int&, $end : int) {
-    # objects
     $self->_skip_spaces_at_not_end($s, $i, $end);
-    if ($s->[$$i] == '{') {
+    # undef mapped values (prefix match)
+    if ($s->[$$i] == 'n') {
+      if ($$i + 2 < $end && $s->[$$i + 1] == 'a' && $s->[$$i + 2] == 'n') {
+        $$i += 3;
+        return undef;
+      }
+      elsif ($$i + 3 < $end && $s->[$$i + 1] == 'u' && $s->[$$i + 2] == 'l' && $s->[$$i + 3] == 'l') {
+        $$i += 4;
+        return undef;
+      }
+    }
+    elsif ($$i + 2 < $end && $s->[$$i] == 'i' && $s->[$$i + 1] == 'n' && $s->[$$i + 2] == 'f') {
+      $$i += 3;
+      return undef;
+    }
+    elsif ($$i + 3 < $end && $s->[$$i] == '-' && $s->[$$i + 1] == 'i' && $s->[$$i + 2] == 'n' && $s->[$$i + 3] == 'f') {
+      $$i += 4;
+      return undef;
+    }
+
+    # objects
+    elsif ($s->[$$i] == '{') {
       return $self->_decode_hash($s, $i, $end);
     }
     elsif ($s->[$$i] == '[') {
@@ -400,7 +420,7 @@ package SPVM::JSON {
 
     # unknown token
     else {
-      _croak_with_dump_remain("Unexpected token. ", $s, $$i, $end);
+      _croak_with_dump_remain("Unexpected token.", $s, $$i, $end);
     }
   }
 
@@ -472,8 +492,12 @@ package SPVM::JSON {
   }
 
   sub _encode_value : string ($self : self, $o : object, $depth : int) {
+    if ($o == undef) {
+      # null/inf/-inf/nan
+      return "null";
+    }
     # objects
-    if ($o isa SPVM::Hash) {
+    elsif ($o isa SPVM::Hash) {
       my $text = "";
       if ($self->{indent}) {
         $text .= $self->_make_indent($depth);

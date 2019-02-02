@@ -256,4 +256,30 @@ package TestCase::JSON {
     }
     return 1;
   }
+
+  sub test_null : int () {
+    unless ($DEFAULT_JSON->decode("null") == undef) {
+      warn("decoded value must be undef if root value is null");
+      return 0;
+    }
+    unless ($DEFAULT_JSON->encode(undef) eq "") {
+      warn("encoded value must be empty is root value is undef");
+      return 0;
+    }
+    unless ($DEFAULT_JSON->encode($DEFAULT_JSON->decode("{\"a\":null}")) eq "{\"a\":null}") {
+      warn("value must remain null if it is not root");
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_map_inf_nan_to_undef : int () {
+    my $inputs = ["inf", "-inf", "nan"];
+    for (my $i = 0; $i < @$inputs; ++$i) {
+      unless ($DEFAULT_JSON->decode($inputs->[$i]) == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
 }
