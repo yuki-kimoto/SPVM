@@ -878,7 +878,6 @@ statement
   | CROAK expression ';'
   | weaken_field ';'
   | unweaken_field ';'
-  | isweak_field ';'
   | ';'
 
 for_statement
@@ -983,6 +982,7 @@ binary_op
 condition
   : comparison_op
   | logical_op
+  | isweak_field ';'
   | '(' condition ')'
 
 comparison_op
@@ -5011,6 +5011,17 @@ my $nums = new int[][][3];
         式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
       </p>
 
+      <h3 id="language-statement-isweak">isweak演算子</h3>
+      <p>
+        isweak文は、フィールドが、ウィークリファレンスかを確認する演算子です。
+      </p>
+<pre>
+isweak フィールドアクセス;
+</pre>
+      <p>
+        フィールドアクセス式で表現されるフィールドは、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
       <p>
         演算子の優先順位は、以下の通りです。下にいくほど、優先順位が高くなります。
@@ -5205,6 +5216,8 @@ a * (b + c)
         <li><a href="#language-statement-return">return文</a></li>
         <li><a href="#language-statement-croak">croak文</a></li>
         <li><a href="#language-statement-weaken">weaken文</a></li>
+        <li><a href="#language-statement-unweaken">unweaken文</a></li>
+        <li><a href="#language-statement-isweak">isweak文</a></li>
         <li><a href="#language-statement-expression">式文</a></li>
         <li><a href="#language-statement-empty">空文</a></li>
       </ul>
@@ -5606,6 +5619,55 @@ return 式;
       <p>
         <a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
+
+      <h4 id="language-statement-croak">croak文</h4>
+      <p>
+        croak文は、例外を発生させるための文です。
+      </p>
+<pre>
+croak 式;
+</pre>
+      <p>
+        式は、文字列互換型でなければなりません。
+      </p>
+      <p>
+        croak文の詳しい解説については、<a href="#language-exception">例外処理</a>を見てください。
+      </p>
+      
+      <h4 id="language-statement-weaken">weaken文</h4>
+      <p>
+        weaken文は、フィールドに対して、ウィークリファレンスを設定する文です。
+      </p>
+<pre>
+weaken フィールドアクセス式;
+</pre>
+      <p>
+        フィールドアクセス式で表現されるフィールドは、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        <b>weaken文のサンプル</b>
+      </p>
+      <p>
+        weaken文のサンプルです。
+      </p>
+<pre>
+weaken $obj->{foo};
+</pre>
+      <p>
+        ウィークリファレンスについては、<a href="#language-weak-reference">ウィークリファレンス</a>を見てください。
+      </p>
+
+      <h4 id="language-statement-unweaken">unweaken文</h4>
+      <p>
+        unweaken文は、フィールドに対して、ウィークリファレンスを解除する文です。
+      </p>
+      <p>
+        フィールドアクセス式で表現されるフィールドは、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+weaken フィールドアクセス;
+</pre>
+
 
       <h4 id="language-statement-next">next文</h4>
       <p>

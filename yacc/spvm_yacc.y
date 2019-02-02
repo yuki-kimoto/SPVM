@@ -473,7 +473,6 @@ statement
     }
   | weaken_field ';'
   | unweaken_field ';'
-  | isweak_field ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
@@ -746,6 +745,7 @@ binary_op
 condition
   : comparison_op
   | logical_op
+  | isweak_field ';'
   | '(' condition ')'
     {
       $$ = $2;
