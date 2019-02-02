@@ -413,6 +413,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
         <li><a href="#language-exception">例外処理</a></li>
+        <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-array">配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
@@ -2410,6 +2411,35 @@ $@
         例外変数の値の設定については、<a href="#language-expression-set-exception-var">例外変数の値の設定</a>を見てください。
       </p>
 
+      <h3 id="language-weak-ref">ウィークリファレンス</h3>
+      <p>
+        ウィークリファレンスを解説するまえに、まずオブジェクトの循環参照について、書きます。
+      </p>
+      <p>
+        SPVMは、リファレンスカウント型のGCを持ちます。リファレンスカウント型のGCにおいては、リファレンスカウントが0になった場合に、オブジェクトは自動的に開放されますが、循環参照が発生した場合は、自動的に解放されません。
+      </p>
+      <p>
+        オブジェクトのフィールドが、循環参照している場合のサンプルです。
+      </p>
+<pre>
+{
+  my $foo = new Foo;
+  my $bar = new Bar;
+
+  $foo->{bar} = $bar;
+  $bar->{foo} = $foo;
+}
+</pre>
+      <p>
+        この場合は、スコープが終了しても、
+      </p>
+      <p>
+        ウィークリファレンスは、リファレンスカウントGCを持つプログラミング言語において、循環参照が発生した場合に、オブジェクトの破棄を正しく行うための機能です。
+      </p>
+      <p>
+        
+      </p>
+      
       <h3 id="language-interface">インターフェース</h3>
       <p>
         SPVMにおけるインターフェースとは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてinterface_tデスクリプタを指定すると、インターフェースになります。
@@ -4583,7 +4613,7 @@ x <= y;
         論理NOT演算子の結果の型は、int型です。
       </p>
       <p>
-        論理NOT演算子は<a href="#language-condition">条件</a>を返します。
+        論理NOT演算子は<a href="#language-condition">条件</a>うぃを返します。
       </p>
       <p>
         論理NOT演算子は、例外を発生させません。
@@ -5020,6 +5050,12 @@ isweak フィールドアクセス;
 </pre>
       <p>
         フィールドアクセス式で表現されるフィールドは、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        isweak演算子は、フィールドがウィークリファレンスの場合は、真を、そうでない場合は偽を返します。これは、<a href="#language-condition">条件</a>です。
+      </p>
+      <p>
+        ウィークリファレンスについては、<a href="#language-weak-ref">ウィークリファレンス</a>を見てください。
       </p>
 
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
@@ -5654,7 +5690,7 @@ weaken フィールドアクセス式;
 weaken $obj->{foo};
 </pre>
       <p>
-        ウィークリファレンスについては、<a href="#language-weak-reference">ウィークリファレンス</a>を見てください。
+        ウィークリファレンスについては、<a href="#language-weak-ref">ウィークリファレンス</a>を見てください。
       </p>
 
       <h4 id="language-statement-unweaken">unweaken文</h4>
