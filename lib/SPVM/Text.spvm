@@ -1,0 +1,235 @@
+package SPVM::Text {
+  has string      : private byte [];
+  has capacity    : private int;
+  has length      : private int;
+  has decode_type : private int;
+
+  enum {
+    DECODE_BYTE,
+    DECODE_UTF8,
+  }
+
+  sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_string = new byte [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_string->[$i] = $self->{string}[$i];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{string} = $new_string;
+  }
+
+  sub _reallocate : void ($self : self) {
+    my $new_capacity : int;
+    if ($self->{capacity} > INT32_MAX() / 2) {
+      $new_capacity = INT32_MAX();
+    }
+    else {
+      $new_capacity = $self->{capacity} * 2;
+    }
+    unless ($new_capacity) {
+      $new_capacity = 1;
+    }
+    $self->_reallocate_with_capacity($new_capacity);
+  }
+
+  sub to_string : string ($self : self) {
+    return (string)sliceb($self->{string}, 0, $self->{length});
+  }
+
+  sub _capacity : int ($self : self) {
+    return $self->{capacity};
+  }
+
+  sub _string : byte[] ($self : self) {
+    return $self->{string};
+  }
+
+  sub new : SPVM::Text () {
+    my $self = new SPVM::Text;
+    my $default_capacity = 16;
+    $self->{capacity} = $default_capacity;
+    $self->{string} = new byte [$default_capacity];
+    return $self;
+  }
+
+  sub new_with_capacity : SPVM::Text ($capacity : int) {
+    my $self = new SPVM::Text;
+    unless ($capacity > 0) {
+      croak "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{string} = new byte [$capacity];
+    return $self;
+  }
+
+  sub new_with_string : SPVM::Text ($string : string) {
+    my $self = new SPVM::Text;
+    $self->{capacity} = length($string);
+    $self->{string} = (byte [])$string;
+    $self->{length} = $self->{capacity};
+    return $self;
+  }
+
+  sub length : int ($self : self) {
+    return $self->{length};
+  }
+
+  sub push : void ($self : self, $byte : byte) {
+    if ($self->{length} + 1 > $self->{capacity}) {
+      $self->_reallocate;
+    }
+    $self->{string}[$self->{length}++] = $byte;
+  }
+
+  sub pop : byte ($self : self) {
+    if ($self->{length} - 1 < 0) {
+      return 0;
+    }
+    my $ret = $self->{string}[--$self->{length}];
+    return $ret;
+  }
+
+  sub unshift : void ($self : self, $byte : byte) {
+    my $new_capacity = $self->{capacity};
+    if ($self->{length} + 1 > $self->{capacity}) {
+      $new_capacity *= 2;
+    }
+    my $new_bytes = new byte [$new_capacity];
+    $new_bytes->[0] = $byte;
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_bytes->[$i + 1] = $self->{string}->[$i];
+    }
+    $self->{string} = $new_bytes;
+    $self->{capacity} = $new_capacity;
+    ++$self->{length};
+  }
+
+  sub shift : byte ($self : self) {
+    if ($self->{length} - 1 < 0) {
+      return 0;
+    }
+    my $ret = $self->{string}->[0];
+    for (my $i = 0; $i < $self->{length} - 1; ++$i) {
+      $self->{string}->[$i] = $self->{string}->[$i + 1];
+    }
+    $self->{string}->[--$self->{length}];
+    return $ret;
+  }
+
+  sub set : void ($self : self, $index : int, $byte : byte) {
+    $self->{string}[$index] = $byte;
+  }
+
+  sub get : byte ($self : self, $index : int) {
+    return $self->{string}[$index];
+  }
+
+  sub append_string : void ($self : self, $string : string) {
+    my $string_length = length($string);
+    my $new_cand_capacity = $self->{length} + $string_length;
+    if ($new_cand_capacity > $self->{capacity}) {
+      if ($new_cand_capacity > $self->{capacity} * 2) {
+        $self->_reallocate_with_capacity($new_cand_capacity);
+      }
+      else {
+        $self->_reallocate;
+      }
+    }
+    for (my $i = 0; $i < $string_length; ++$i) {
+      $self->{string}[$i + $self->{length}] = $string->[$i];
+    }
+    $self->{length} += $string_length;
+  }
+
+  sub append_text : void ($self : self, $text : SPVM::Text) {
+    my $new_cand_capacity = $self->{length} + $text->length;
+    if ($new_cand_capacity > $self->{capacity}) {
+      if ($new_cand_capacity > $self->{capacity} * 2) {
+        $self->_reallocate_with_capacity($new_cand_capacity);
+      }
+      else {
+        $self->_reallocate;
+      }
+    }
+    for (my $i = 0; $i < $text->length; ++$i) {
+      $self->{string}[$i + $self->{length}] = $text->get($i);
+    }
+    $self->{length} += $text->length;
+  }
+
+  # range of $cut_offset: [0, $cut_length]
+  # O($self->{capacity})
+  sub splice : string ($self : self, $cut_offset : int, $cut_length : int, $replace : string) {
+    if ($cut_offset > $self->{length}) {
+      warn("splice_with_list() offset past end of array");
+      $cut_offset = $self->{length};
+      $cut_length = 0;
+    }
+
+    # fit cut_length to the end.
+    if ($cut_length > $self->{length}) {
+      $cut_length = $self->{length};
+    }
+    if ($cut_offset > $self->{length} - $cut_length) { # always $self->{length} - $cut_length >= 0
+      $cut_length = $self->{length} - $cut_offset;
+    }
+
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = length($replace);
+    }
+
+    if ($self->{length} - $cut_length + $replace_length > $self->{capacity}) {
+      # O($new_string_length)
+      $self->_reallocate_with_capacity($self->{length} - $cut_length + $replace_length);
+    }
+
+    # extract elements
+    # O($cut_length)
+    my $extracted = new byte [$cut_length];
+    for (my $i = 0; $i < $cut_length; ++$i) {
+      $extracted->[$i] = $self->{string}[$i + $cut_offset];
+    }
+
+    my $last_sequence_length = $self->{length} - $cut_offset - $cut_length;
+    # move last sequence to forward
+    if ($cut_length > $replace_length) {
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $cut_offset + $cut_length + $i;
+        my $target = $cut_offset + $replace_length + $i;
+        $self->{string}[$target] = $self->{string}[$origin];
+      }
+    }
+    else {
+      # move last sequence to backward
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $self->{length} - 1 - $i;
+        my $target = $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
+        $self->{string}[$target] = $self->{string}[$origin];
+      }
+    }
+
+    # replace with new array
+    for (my $i = 0; $i < $replace_length; ++$i) {
+      my $target = $cut_offset + $i;
+      $self->{string}[$target] = $replace->[$i];
+    }
+
+    # update fields
+    $self->{length} += $replace_length - $cut_length;
+
+    return (string)$extracted;
+  }
+
+  sub equals : int ($self : self, $text : SPVM::Text) {
+    unless ($self->{length} == $text->length) {
+      return 0;
+    }
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      unless ($self->{string}[$i] == $text->_string->[$i]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}
