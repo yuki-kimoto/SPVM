@@ -5187,11 +5187,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     abort();
   }
   
-  // Decrement reference count
-  object->ref_count--;
-  
   // If reference count is zero, free address.
-  if (object->ref_count == 0) {
+  if (object->ref_count == 1) {
     SPVM_RUNTIME* runtime = env->runtime;
     
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
@@ -5222,21 +5219,14 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     else if (object->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE) {
       
       if (object->has_destructor) {
-        if (object->in_destroy) {
-          return;
-        }
-        else {
-          // Call destructor
-          SPVM_VALUE args[1];
-          args[0].oval = object;
-          object->in_destroy = 1;
-          SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
-          object->in_destroy = 0;
-          
-          if (object->ref_count < 0) {
-            printf("object reference count become minus in DESTROY()\n");
-            abort();
-          }
+        // Call destructor
+        SPVM_VALUE args[1];
+        args[0].oval = object;
+        SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
+        
+        if (object->ref_count < 1) {
+          printf("Invalid reference count in DESTROY()\n");
+          abort();
         }
       }
       
@@ -5262,8 +5252,15 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       object->weaken_backref_head = NULL;
     }
     
+    // Decrement reference count
+    object->ref_count--;
+  
     // Free object
     SPVM_RUNTIME_API_free_memory_block(env, object);
+  }
+  else {
+    // Decrement reference count
+    object->ref_count--;
   }
 }
 
