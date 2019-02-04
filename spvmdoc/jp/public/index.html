@@ -1162,6 +1162,7 @@ sub_names
       <h3 id="language-package">パッケージ</h3>
       <ul class="list">
         <li><a href="#language-package-definition">パッケージの定義</a></li>
+        <li><a href="#language-package-destructor">デストラクタ</a></li>
       </ul>
       
       <h4 id="language-package-definition">パッケージの定義</h4>
@@ -1297,6 +1298,33 @@ package Foo {
   }
 }
 </pre>
+
+      <h4 id="language-package-destructor">デストラクタ</h4>
+      <p>
+        パッケージがクラス型である場合は、デストラクタを定義することができます。
+      </p>
+      <p>
+        デストラクタとは、オブジェクトが解放されるときに実行される特別な<a href="#language-sub">サブルーチン</a>のことです。
+      </p>
+      <p>
+        デストラクタの名前は「DESTROY」でなければなりません。
+      </p>
+      <p>
+        デストラクタの戻り値の型は、<a href="#language-type-void">void型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デストラクタの引数は、ひとつで、<a href="#language-type-self">self型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+
+<pre>
+sub DESTROY : void ($self : self) {
+  
+}
+</pre>
+      <p>
+        デストラクタの中で<a href="#language-exception-occur">例外の発生</a>が起こった場合は、プログラムは終了せず、例外メッセージが、標準エラーに出力されます。
+      </p>
+      
       <h3 id="language-module">モジュール</h3>
       <ul>
         <li>モジュールの概要</li>
@@ -2368,19 +2396,19 @@ switch (条件) {
       <h3 id="language-exception">例外処理</h3>
       <ul class="list">
         <li><a href="#language-exception-summary">例外処理の概要</a></li>
-        <li><a href="#language-exception-throw">例外のスロー</a></li>
+        <li><a href="#language-exception-occur">例外の発生</a></li>
         <li><a href="#language-exception-catch">例外変数のキャッチ</a></li>
         <li><a href="#language-exception-var">例外変数</a></li>
       </ul>
       
       <h4 id="language-exception-summary">例外処理の概要</h4>
       <p>
-        SPVMは例外処理の仕組みを持っています。例外処理は、例外のスローと例外のキャッチからなります。
+        SPVMは例外処理の仕組みを持っています。例外処理は、例外の発生と例外のキャッチからなります。
       </p>
 
-      <h4 id="language-exception-throw">例外のスロー</h4>
+      <h4 id="language-exception-occur">例外の発生</h4>
       <p>
-        例外のスローを行うには、croak文を使用します。
+        例外の発生を行うには、croak文を使用します。
       </p>
 <pre>
 croak 式;
@@ -2397,7 +2425,7 @@ Error
   from TestCase->main at TestCase.spvm line 1198
 </pre>
 
-      <h4 id="language-exception-throw">例外のキャッチ</h4>
+      <h4 id="language-exception-occur">例外のキャッチ</h4>
       <p>
         例外のキャッチとは、例外がスローされた場合に、プログラムが終了するのを止め、エラーメッセージを取得できる機能のことです。
       </p>
@@ -2410,7 +2438,7 @@ eval {
 };
 </pre>
       <p>
-        evalブロックで例外をキャッチした場合は、プログラムの終了は止められ、<a href="#language-exception-var">例外変数</a>に<a href="#language-exception-throw">例外のスロー</a>で指定したメッセージが代入されます。
+        evalブロックで例外をキャッチした場合は、プログラムの終了は止められ、<a href="#language-exception-var">例外変数</a>に<a href="#language-exception-occur">例外の発生</a>で指定したメッセージが代入されます。
       </p>
       
       <h4 id="language-exception-var">例外変数</h4>
@@ -6084,6 +6112,7 @@ my $num = 1 + 2;
       <ul class="list">
         <li><a href="#language-type-summary">型の概要</a></li>
         <li><a href="#language-type-initial-value">型の初期値</a></li>
+        <li><a href="#language-type-void">void型</a></li>
         <li><a href="#language-type-numeric">数値型</a></li>
         <li><a href="#language-type-integral">整数型</a></li>
         <li><a href="#language-type-byte">byte型</a></li>
