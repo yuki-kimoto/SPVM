@@ -5220,7 +5220,14 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       if (object->has_destructor) {
         SPVM_VALUE args[1];
         args[0].oval = object;
-        SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
+        int32_t exception_flag = SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
+        
+        // Exception in destructor is changed to warning
+        if (exception_flag) {
+          void* exception = env->exception(env);
+          char* exception_str = env->belems(env, exception);
+          printf(stderr, exception_str);
+        }
         
         if (object->ref_count < 1) {
           printf("Invalid reference count in DESTROY()\n");
