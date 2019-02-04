@@ -5182,30 +5182,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   // Not weakened
   assert((((intptr_t)object) & 1) == 0);
   
-  if (object->ref_count < 1) {
-    fprintf(stderr, "Found invalid reference count object(SPVM_RUNTIME_API_dec_ref_count())");
-    abort();
-  }
-  
   // If reference count is zero, free address.
   if (object->ref_count == 1) {
-    SPVM_RUNTIME* runtime = env->runtime;
-    
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
-    SPVM_RUNTIME_PACKAGE* package;
-    if (basic_type->package_id < 0) {
-      package = NULL;
-    }
-    else {
-      package = &runtime->packages[basic_type->package_id];
-    }
-    int32_t is_pointer = 0;
-    if (package) {
-      if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
-        is_pointer = 1;
-      }
-    }
-
+    // Free elements of object array
     if (object->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       int32_t length = object->array_length;
       for (int32_t index = 0; index < length; index++) {
@@ -5216,10 +5195,29 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
+    // Free package object
     else if (object->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE) {
+
+      // Package
+      SPVM_RUNTIME* runtime = env->runtime;
+      SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[object->basic_type_id];
+      SPVM_RUNTIME_PACKAGE* package;
+      if (basic_type->package_id < 0) {
+        package = NULL;
+      }
+      else {
+        package = &runtime->packages[basic_type->package_id];
+      }
       
+      int32_t is_pointer = 0;
+      if (package) {
+        if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
+          is_pointer = 1;
+        }
+      }
+      
+      // Call destructor
       if (object->has_destructor) {
-        // Call destructor
         SPVM_VALUE args[1];
         args[0].oval = object;
         SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
@@ -5230,9 +5228,9 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
       
+      // Free object fields
       int32_t object_fields_offset = package->object_fields_offset;
       int32_t object_fields_length = package->object_fields_length;
-      
       for (int32_t index = 0; index < object_fields_length; index++) {
         SPVM_OBJECT** ofield_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
         if (*ofield_address != NULL) {
@@ -5247,6 +5245,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
+    
+    // Free weak back refenreces
     if (object->weaken_backref_head != NULL) {
       SPVM_RUNTIME_API_free_weaken_back_refs(env, object->weaken_backref_head);
       object->weaken_backref_head = NULL;
