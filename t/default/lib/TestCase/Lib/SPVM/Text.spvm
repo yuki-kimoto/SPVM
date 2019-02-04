@@ -19,27 +19,26 @@ package TestCase::Lib::SPVM::Text {
     }
     for (my $i = 0; $i < $expected->length; $i++) {
       unless ($got->_string->[$i] == $expected->_string->[$i]) {
-        warn("String mismatch.");
-        print("\tgot:      ");
+        my $warn_message = "String mismatch.";
+        $warn_message .= "\tgot:      ";
         for (my $j = 0; $j < $got->length; $j++) {
-          if ($got->get($j) == 0) {
-            print("(none)");
+          if ($got->_string->[$j] == 0) {
+            $warn_message .= "(none)";
           }
           else {
-            print($got->get($j));
+            $warn_message .= $got->_string->[$j];
           }
         }
-        print("\n");
-        print("\texpected: ");
+        $warn_message .= "\n\texpected: ";
         for (my $j = 0; $j < $expected->length; $j++) {
-          if ($expected->get($j) == 0) {
-            print("(none) ");
+          if ($expected->_string->[$j] == 0) {
+            $warn_message .= "(none) ";
           }
           else {
-            print($expected->get($j) . " ");
+            $warn_message .= $expected->_string->[$j] . " ";
           }
         }
-        print("\n");
+        warn ($warn_message);
         return 0;
       }
     }
@@ -122,370 +121,49 @@ package TestCase::Lib::SPVM::Text {
     return 1;
   }
 
-  sub test_push : int () {
-    my $text = SPVM::Text->new_with_capacity(1);
-
-    $text->push('a');
-    unless (check_fields($text, 1, 1)) {
+  sub test_substr : int () {
+    unless (SPVM::Text->new_with_string("abcd")->substr(1, 2)->to_string eq "bc") {
       return 0;
     }
-    unless (check_string($text, [(byte) 'a'])) {
+    unless (SPVM::Text->new_with_string("a")->substr(1, 1)->to_string eq "") {
       return 0;
     }
-
-    $text->push('b');
-    unless (check_fields($text, 2, 2)) {
-      return 0;
-    }
-    unless (check_string($text, [(byte) 'a', 'b'])) {
-      return 0;
-    }
-
-    $text->push('c');
-    unless (check_fields($text, 4, 3)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abc"))) {
-      return 0;
-    }
-
-    # no reallocation
-    $text->push('d');
-    unless (check_fields($text, 4, 4)) {
-      return 0;
-    }
-    unless (check_string($text, [(byte) 'a', 'b', 'c', 'd'])) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_pop : int () {
-    my $text = SPVM::Text->new_with_string([(byte) 'a', 0, 'b']);
-    unless ($text->pop == 'b') {
-      return 0;
-    }
-    unless ($text->pop == 0) {
-      return 0;
-    }
-    unless ($text->pop == 'a') {
-      return 0;
-    }
-    unless (check_fields($text, 3, 0)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new)) {
-      return 0;
-    }
-    unless ($text->pop == 0) { # empty list returns 0
+    unless (SPVM::Text->new_with_string("a")->substr(0, 2)->to_string eq "a") {
       return 0;
     }
     return 1;
   }
 
-  sub test_unshift : int () {
-    my $text = SPVM::Text->new_with_capacity(1);
-
-    $text->unshift('a');
-    unless (check_fields($text, 1, 1)) {
-      return 0;
-    }
-
-    $text->unshift('b');
-    unless (check_fields($text, 2, 2)) {
-      return 0;
-    }
-
-    $text->unshift('c');
-    unless (check_fields($text, 4, 3)) {
-      return 0;
-    }
-
-    $text->unshift('d');
-    unless (check_fields($text, 4, 4)) {
-      return 0;
-    }
-
-    $text->unshift('e');
-    unless (check_fields($text, 8, 5)) {
-      return 0;
-    }
-
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("edcba"))) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_shift : int () {
-    my $text = SPVM::Text->new_with_string([(byte) 'a', 0, 'b']);
-    unless ($text->shift == 'a') {
-      return 0;
-    }
-    unless ($text->shift == 0) {
-      return 0;
-    }
-    unless ($text->shift == 'b') {
-      return 0;
-    }
-    unless (check_fields($text, 3, 0)) {
-      return 0;
-    }
-    unless ($text->shift == 0) { # empty list returns 0
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string(""))) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_set : int () {
-    my $text = SPVM::Text->new_with_string([(byte) 'a', 0]);
-    $text->set(0, 0);
-    $text->set(1, 'b');
-    unless (check_fields($text, 2, 2)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string([(byte) 0, 'b']))) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_get : int () {
-    my $text = SPVM::Text->new_with_string([(byte) 'a', 0]);
-    unless ($text->get(0) == 'a') {
-      return 0;
-    }
-    unless ($text->get(1) == 0) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_append_string : int () {
-    my $text = SPVM::Text->new_with_string("");
-    $text->append_string("abc");
-    unless (check_fields($text, 3, 3)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abc"))) {
-      return 0;
-    }
-    $text->append_string("d");
-    unless (check_fields($text, 6, 4)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abcd"))) {
-      return 0;
-    }
-    $text->append_string("efghijkl");
-    unless (check_fields($text, 12, 12)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abcdefghijkl"))) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_append_text : int () {
-    my $text = SPVM::Text->new_with_string("");
-    $text->append_text(SPVM::Text->new_with_string("abc"));
-    unless (check_fields($text, 3, 3)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abc"))) {
-      return 0;
-    }
-    $text->append_text(SPVM::Text->new_with_string("d"));
-    unless (check_fields($text, 6, 4)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abcd"))) {
-      return 0;
-    }
-    $text->append_text(SPVM::Text->new_with_string("efghijkl"));
-    unless (check_fields($text, 12, 12)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("abcdefghijkl"))) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_splice : int () {
-    # extract left-inside
+  sub test_replace : int () {
     {
-      my $text = SPVM::Text->new_with_string("abcde");
-      my $extracted = $text->splice(1, 2, undef);
-      unless ($extracted eq "bc") {
-        return 0;
-      }
-      unless (check_fields($text, 5, 3)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("ade"))) {
-        return 0;
-      }
-    }
-    # extract right-inside
-    {
-      my $text = SPVM::Text->new_with_string("abcde");
-      my $extracted = $text->splice(2, 2, undef);
-      unless ($extracted eq "cd") {
-        return 0;
-      }
-      unless (check_fields($text, 5, 3)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("abe"))) {
-        return 0;
-      }
-    }
-    # replace list at left corner
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(0, 1, "xy");
-      unless ($extracted eq "a") {
-        return 0;
-      }
-      unless (check_fields($text, 3, 3)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("xyb"))) {
-        return 0;
-      }
-    }
-    # replace list at right corner
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(1, 1, "xy");
-      unless ($extracted eq "b") {
-        return 0;
-      }
-      unless (check_fields($text, 3, 3)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("axy"))) {
-        return 0;
-      }
-    }
-    # replace list at center
-    {
-      my $text = SPVM::Text->new_with_string("abcde");
-      my $extracted = $text->splice(1, 3, "xy");
-      unless ($extracted eq "bcd") {
-        return 0;
-      }
-      unless (check_fields($text, 5, 4)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("axye"))) {
-        return 0;
-      }
-    }
-    # insert list back with cut_length = 0
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(2, 0, "xy");
-      unless ($extracted eq "") {
-        return 0;
-      }
-      unless (check_fields($text, 4, 4)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("abxy"))) {
-        return 0;
-      }
-    }
-    # insert list back with cut_length > 0
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(2, 10, "xy");
-      unless ($extracted eq "") {
-        return 0;
-      }
-      unless (check_fields($text, 4, 4)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("abxy"))) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  sub test_splice_no_reallocation : int () {
-    # extract left corner
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(0, 1, undef);
-      unless ($extracted eq "a") {
-        return 0;
-      }
-      unless (check_fields($text, 2, 1)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("b"))) {
+      my $target = SPVM::Text->new_with_string("abcd");
+      $target->replace(1, 2, "xyz");
+      unless ($target->to_string eq "axyzd") {
         return 0;
       }
     }
     {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(0, 1, "x");
-      unless ($extracted eq "a") {
-        return 0;
-      }
-      unless (check_fields($text, 2, 2)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("xb"))) {
+      my $target = SPVM::Text->new_with_string("abcd");
+      $target->replace(0, 2, "xyz");
+      unless ($target->to_string eq "xyzcd") {
         return 0;
       }
     }
-    # extract right corner
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(1, 1, undef);
-      unless ($extracted eq "b") {
-        return 0;
-      }
-      unless (check_fields($text, 2, 1)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("a"))) {
+    my $overwrite_tests = [[2, 2], [2, 3]];
+    for (my $i = 0; $i < @$overwrite_tests; ++$i) {
+      my $target = SPVM::Text->new_with_string("abcd");
+      $target->replace($overwrite_tests->[$i]->[0], $overwrite_tests->[$i]->[1], "xyz");
+      unless ($target->to_string eq "abxyz") {
         return 0;
       }
     }
-    {
-      my $text = SPVM::Text->new_with_string("ab");
-      my $extracted = $text->splice(1, 1, "x");
-      unless ($extracted eq "b") {
+    my $append_tests = [[1, 0], [2, 0], [1, 2], [2, 2]];
+    for (my $i = 0; $i < @$append_tests; ++$i) {
+      my $target = SPVM::Text->new_with_string("a");
+      $target->replace($append_tests->[$i]->[0], $append_tests->[$i]->[1], "xy");
+      unless ($target->to_string eq "axy") {
         return 0;
       }
-      unless (check_fields($text, 2, 2)) {
-        return 0;
-      }
-      unless (equals_text_deeply($text, SPVM::Text->new_with_string("ax"))) {
-        return 0;
-      }
-    }
-    # cut_length = replace_length = 0
-    my $text = SPVM::Text->new_with_string("ab");
-    my $extracted = $text->splice(2, 0, undef);
-    unless ($extracted eq "") {
-      return 0;
-    }
-    unless (check_fields($text, 2, 2)) {
-      return 0;
-    }
-    unless (equals_text_deeply($text, SPVM::Text->new_with_string("ab"))) {
-      return 0;
     }
     return 1;
   }
@@ -495,7 +173,7 @@ package TestCase::Lib::SPVM::Text {
       return 0;
     }
     my $text = SPVM::Text->new_with_capacity(100);
-    $text->push('a');
+    $text->replace(0, 1, "a");
     unless ($text->to_string eq "a") {
       return 0;
     }
@@ -505,9 +183,7 @@ package TestCase::Lib::SPVM::Text {
   sub test_equals : int () {
     my $lhs = SPVM::Text->new_with_string("abc");
     my $rhs = SPVM::Text->new_with_capacity(100);
-    $rhs->push('a');
-    $rhs->push('b');
-    $rhs->push('c');
+    $rhs->replace(0, 0, "abc");
     unless ($lhs->equals($rhs) && $rhs->equals($lhs)) {
       return 0;
     }

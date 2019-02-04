@@ -74,104 +74,29 @@ package SPVM::Text {
     return $self->{length};
   }
 
-  sub push : void ($self : self, $byte : byte) {
-    if ($self->{length} + 1 > $self->{capacity}) {
-      $self->_reallocate;
+  sub substr : SPVM::Text ($self : self, $offset : int, $length : int) {
+    if ($offset >= $self->{length}) {
+      warn("substr offset is greater or equal than string length");
+      return SPVM::Text->new;
     }
-    $self->{string}[$self->{length}++] = $byte;
+
+    if ($offset > $self->{length} - $length) { # always $self->{length} - $length >= 0
+      $length = $self->{length} - $offset;
+    }
+    return SPVM::Text->new_with_string(sliceb($self->{string}, $offset, $length));
   }
 
-  sub pop : byte ($self : self) {
-    if ($self->{length} - 1 < 0) {
-      return 0;
-    }
-    my $ret = $self->{string}[--$self->{length}];
-    return $ret;
-  }
-
-  sub unshift : void ($self : self, $byte : byte) {
-    my $new_capacity = $self->{capacity};
-    if ($self->{length} + 1 > $self->{capacity}) {
-      $new_capacity *= 2;
-    }
-    my $new_bytes = new byte [$new_capacity];
-    $new_bytes->[0] = $byte;
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_bytes->[$i + 1] = $self->{string}->[$i];
-    }
-    $self->{string} = $new_bytes;
-    $self->{capacity} = $new_capacity;
-    ++$self->{length};
-  }
-
-  sub shift : byte ($self : self) {
-    if ($self->{length} - 1 < 0) {
-      return 0;
-    }
-    my $ret = $self->{string}->[0];
-    for (my $i = 0; $i < $self->{length} - 1; ++$i) {
-      $self->{string}->[$i] = $self->{string}->[$i + 1];
-    }
-    $self->{string}->[--$self->{length}];
-    return $ret;
-  }
-
-  sub set : void ($self : self, $index : int, $byte : byte) {
-    $self->{string}[$index] = $byte;
-  }
-
-  sub get : byte ($self : self, $index : int) {
-    return $self->{string}[$index];
-  }
-
-  sub append_string : void ($self : self, $string : string) {
-    my $string_length = length($string);
-    my $new_cand_capacity = $self->{length} + $string_length;
-    if ($new_cand_capacity > $self->{capacity}) {
-      if ($new_cand_capacity > $self->{capacity} * 2) {
-        $self->_reallocate_with_capacity($new_cand_capacity);
-      }
-      else {
-        $self->_reallocate;
-      }
-    }
-    for (my $i = 0; $i < $string_length; ++$i) {
-      $self->{string}[$i + $self->{length}] = $string->[$i];
-    }
-    $self->{length} += $string_length;
-  }
-
-  sub append_text : void ($self : self, $text : SPVM::Text) {
-    my $new_cand_capacity = $self->{length} + $text->length;
-    if ($new_cand_capacity > $self->{capacity}) {
-      if ($new_cand_capacity > $self->{capacity} * 2) {
-        $self->_reallocate_with_capacity($new_cand_capacity);
-      }
-      else {
-        $self->_reallocate;
-      }
-    }
-    for (my $i = 0; $i < $text->length; ++$i) {
-      $self->{string}[$i + $self->{length}] = $text->get($i);
-    }
-    $self->{length} += $text->length;
-  }
-
-  # range of $cut_offset: [0, $cut_length]
+  # range of $offset: [0, $length]
   # O($self->{capacity})
-  sub splice : string ($self : self, $cut_offset : int, $cut_length : int, $replace : string) {
-    if ($cut_offset > $self->{length}) {
-      warn("splice_with_list() offset past end of array");
-      $cut_offset = $self->{length};
-      $cut_length = 0;
+  sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
+    if ($offset > $self->{length}) {
+      warn("replace offset past end of string");
+      $offset = $self->{length};
+      $length = 0;
     }
 
-    # fit cut_length to the end.
-    if ($cut_length > $self->{length}) {
-      $cut_length = $self->{length};
-    }
-    if ($cut_offset > $self->{length} - $cut_length) { # always $self->{length} - $cut_length >= 0
-      $cut_length = $self->{length} - $cut_offset;
+    if ($offset > $self->{length} - $length) {
+      $length = $self->{length} - $offset;
     }
 
     my $replace_length = 0;
@@ -179,24 +104,17 @@ package SPVM::Text {
       $replace_length = length($replace);
     }
 
-    if ($self->{length} - $cut_length + $replace_length > $self->{capacity}) {
+    if ($self->{length} - $length + $replace_length > $self->{capacity}) {
       # O($new_string_length)
-      $self->_reallocate_with_capacity($self->{length} - $cut_length + $replace_length);
+      $self->_reallocate_with_capacity($self->{length} - $length + $replace_length);
     }
 
-    # extract elements
-    # O($cut_length)
-    my $extracted = new byte [$cut_length];
-    for (my $i = 0; $i < $cut_length; ++$i) {
-      $extracted->[$i] = $self->{string}[$i + $cut_offset];
-    }
-
-    my $last_sequence_length = $self->{length} - $cut_offset - $cut_length;
-    # move last sequence to forward
-    if ($cut_length > $replace_length) {
+    my $last_sequence_length = $self->{length} - $offset - $length;
+    if ($length > $replace_length) {
+      # move last sequence to forward
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $cut_offset + $cut_length + $i;
-        my $target = $cut_offset + $replace_length + $i;
+        my $origin = $offset + $length + $i;
+        my $target = $offset + $replace_length + $i;
         $self->{string}[$target] = $self->{string}[$origin];
       }
     }
@@ -204,21 +122,18 @@ package SPVM::Text {
       # move last sequence to backward
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
         my $origin = $self->{length} - 1 - $i;
-        my $target = $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
+        my $target = $offset + $replace_length + $last_sequence_length - 1 - $i;
         $self->{string}[$target] = $self->{string}[$origin];
       }
     }
 
     # replace with new array
     for (my $i = 0; $i < $replace_length; ++$i) {
-      my $target = $cut_offset + $i;
+      my $target = $offset + $i;
       $self->{string}[$target] = $replace->[$i];
     }
 
-    # update fields
-    $self->{length} += $replace_length - $cut_length;
-
-    return (string)$extracted;
+    $self->{length} += $replace_length - $length;
   }
 
   sub equals : int ($self : self, $text : SPVM::Text) {
