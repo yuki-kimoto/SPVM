@@ -427,7 +427,6 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
         <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
-        <li><a href="#language-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-statement">文</a></li>
         <li><a href="#language-type">型</a></li>
         <li><a href="#language-type-inference">型推論</a></li>
@@ -5168,17 +5167,7 @@ my $z_ref = \$z;
 $z_ref->{re} = 2.5;
 </pre>
       
-      <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
-      <h3 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</h3>
-      <h3 id="language-expression-set-field-value">デリファレンスによる値型のフィールドの設定</h3>
-        <li><a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a></li>
-        <li><a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a></li>
-        <li><a href="#language-expression-get-field-value">値型のフィールドの値の取得</a></li>
-        <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
-        <li><a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a></li>
-        <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
-
-      <h3 id="language-expression-new-object">配列の要素の値の取得</h3>
+      <h3 id="language-expression-get-array-element">配列の要素の値の取得</h3>
       <p>
         配列の要素の値を取得するには、次のように記述します。
       </p>
@@ -5217,7 +5206,7 @@ my $objects : oarray = $points;
 my $object = (Point)$objects->[1];
 </pre>
       
-      <h3 id="language-expression-new-object">配列の要素の値の設定</h3>
+      <h3 id="language-expression-set-array-element">配列の要素の値の設定</h3>
       <p>
         配列の要素の値を設定するには、次のように記述します。
       </p>
@@ -5290,6 +5279,16 @@ my $object = new パッケージ名;
 <pre>
 my $object = new Foo;
 </pre>
+      <p>
+        生成されたオブジェクトは内部的に次の情報を持っています。
+      </p>
+      <ul class="list">
+        <li>リファレンスカウント</li>
+        <li>ウィークリファレンスのバックリファレンス</li>
+        <li>基本型のID</li>
+        <li>型の次元(常に0)</li>
+      </ul>
+      
       <h3 id="language-expression-new-array">配列の生成</h3>
       <p>
         配列を作成するには、newキーワードと以下の構文をを使用します。
@@ -5319,6 +5318,9 @@ my $object = new 型[要素数式];
         配列の生成は、<a href="#language-expression">式</a>を返します。
       </p>
       <p>
+        配列は、<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
         <b>配列の生成のサンプル</b>
       </p>
 <pre>
@@ -5328,12 +5330,24 @@ my $objects = new object[3];
 my $values = new Complex_2d[3]
 </pre>
       <p>
-        配列型自体も、オブジェクト型ですので、上記の構文を使用して、多次元配列を作成することができます。
+        生成された配列は、内部的に次の情報を持っています。
+      </p>
+      <ul class="list">
+        <li>リファレンスカウント</li>
+        <li>基本型のID</li>
+        <li>型の次元(1以上の値)</li>
+        <li>配列の長さ</li>
+      </ul>
+      <p>
+        多次元配列は、上記の構文を使用して、作成できます。要素は、<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
       </p>
 <pre>
 my $nums = new int[][3];
 my $nums = new int[][][3];
 </pre>
+      <p>
+        多次元配列の次元数の最大は、255です。
+      </p>
       
       <h3 id="language-expression-array-init">配列の初期化</h3>
       <p>
