@@ -1301,7 +1301,7 @@ package Foo {
 
       <h4 id="language-package-destructor">デストラクタ</h4>
       <p>
-        パッケージがクラス型である場合は、デストラクタを定義することができます。
+        パッケージが<a href="#language-type-class">クラス型</a>である場合は、デストラクタを定義することができます。
       </p>
       <p>
         デストラクタとは、オブジェクトが解放されるときに実行される特別な<a href="#language-sub">サブルーチン</a>のことです。
@@ -1315,7 +1315,6 @@ package Foo {
       <p>
         デストラクタの引数は、ひとつで、<a href="#language-type-self">self型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
-
 <pre>
 sub DESTROY : void ($self : self) {
   
@@ -1324,6 +1323,23 @@ sub DESTROY : void ($self : self) {
       <p>
         デストラクタの中で<a href="#language-exception-occur">例外の発生</a>が起こった場合は、プログラムは終了せず、例外メッセージが、標準エラーに出力されます。
       </p>
+      <p>
+        <b>デストラクタのサンプル</b>
+      </p>
+      <p>
+        デストラクタのサンプルです。
+      </p>
+<pre>
+package Foo {
+  sub new : Foo {
+    return new Foo;
+  }
+  
+  sub DESTROY : void ($self : self) {
+    print("DESTROY");
+  }
+}
+</pre>
       
       <h3 id="language-module">モジュール</h3>
       <ul>
