@@ -5225,8 +5225,8 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         // Exception in destructor is changed to warning
         if (exception_flag) {
           void* exception = env->exception(env);
-          char* exception_str = env->belems(env, exception);
-          printf(stderr, exception_str);
+          char* exception_str = (char*)env->belems(env, exception);
+          fprintf(stderr, exception_str);
         }
         
         if (object->ref_count < 1) {
