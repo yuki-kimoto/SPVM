@@ -5062,10 +5062,13 @@ my $re = $z->{re};
 インボカント式->{フィールド名} = 右式
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
@@ -5082,6 +5085,71 @@ my $re = $z->{re};
 <pre>
 my $z : SPVM::Complex_2d;
 $z->{re} = 2.5;
+</pre>
+
+      <h3 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの値の取得</h3>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>デリファレンスによる値型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $z_ref = \$z;
+my $re = $z_ref->{re};
+</pre>
+
+      <h3 id="language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの値の設定</h3>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>デリファレンスによる値型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $z_ref = \$z;
+$z_ref->{re} = 2.5;
 </pre>
       
       <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
