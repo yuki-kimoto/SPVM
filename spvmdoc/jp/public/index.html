@@ -1756,6 +1756,7 @@ $z_ref->{im} = 3;
         <li><a href="#language-sub-method">メソッド</a></li>
         <li><a href="#language-sub-signature">シグネチャ</a></li>
         <li><a href="#language-sub-invocant">インボカント</a></li>
+        <li><a href="#language-sub-stack">サブルーチンのスタック</a></li>
       </ul>
       <h4 id="language-sub-definition">サブルーチンの定義</h4>
       <p>
@@ -1962,6 +1963,21 @@ void()
       <p>
         シグネチャは、SPVMを記述しているときには、意識する必要はありません。ネイティブからSPVMのサブルーチンを呼び出すときに使用します。
       </p>
+      
+      <h4 id="language-sub-stack">サブルーチンのスタック</h4>
+      <p>
+        サブルーチンのスタックとは、<a href="#language-expression-callsub">サブルーチンの呼び出し</a>が行われるときに、確保されるメモリ領域のことを指します。
+      </p>
+      <p>
+        サブルーチンのスタックには、以下の情報が保存されます。
+      </p>
+      <p>
+        1. <a href="#language-lex-var">レキシカル変数</a>のためのメモリ領域
+      </p>
+      <p>
+        2. モータル変数のインデックス
+      </p>
+
       <h3 id="language-enum">列挙</h3>
       <ul class="list">
         <li>
@@ -2886,26 +2902,6 @@ $@ = 右式
 <pre>
 $@ = "Error";
 </pre>
-
-      <h4 id="language-field-access">クラス型のフィールドの取得</h4>
-      <p>
-        フィールドの取得の構文は以下です。
-      </p>
-<pre>
-インボーカー式->{フィールド名}
-</pre>
-      <p>
-        フィールドの設定の構文は以下です。
-      </p>
-<pre>
-インボーカー式->{フィールド名} = 右式;
-</pre>
-      <p>
-        インボーカー式は、<a href="#language-type-class">クラス型</a>あるいは<a href="#language-type-value">値型</a>あるいは<a href="#language-type-ref-value">値のリファレンス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名がインボーカー式のパッケージに存在しない場合は、コンパイル時エラーが発生します。
-      </p>
 
       <h4 id="language-expression-callsub">サブルーチンの呼び出し</h4>
       <p>
@@ -4964,6 +4960,139 @@ scalar 右式
 my $nums = new int[3];
 foo(scalar @$nums);
 </pre>
+
+      <h3 id="language-expression-get-field-class">クラス型のフィールドの値の取得</h3>
+      <p>
+        クラス型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        クラス型のフィールドの値の取得は、オブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>クラス型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        クラス型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $point = Point->new;
+my $x = $point->{x};
+</pre>
+      
+      <h3 id="language-expression-set-field-class">クラス型のフィールドの値の設定</h3>
+      <p>
+        クラス型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        クラス型のフィールドの値の設定は、設定後のオブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>クラス型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        クラス型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $point = Point->new;
+$point->{x} = 1;
+</pre>
+      
+      <h3 id="language-expression-get-field-value">値型のフィールドの値の取得</h3>
+      <p>
+        値型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>値型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        値型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $re = $z->{re};
+</pre>
+
+      <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
+      <p>
+        値型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>値型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        値型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+$z->{re} = 2.5;
+</pre>
+      
+      <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
+      <h3 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</h3>
+      <h3 id="language-expression-set-field-value">デリファレンスによる値型のフィールドの設定</h3>
+        <li><a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a></li>
+        <li><a href="#language-expression-get-field-value">値型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
+        <li><a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a></li>
+        <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
 
       <h3 id="language-expression-new-object">配列の要素の値の取得</h3>
       <p>
