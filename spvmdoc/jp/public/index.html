@@ -416,6 +416,8 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-array">配列</a></li>
+        <li><a href="#language-value">値</a></li>
+        <li><a href="#language-value-array">値の配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
         <li><a href="#language-deref">デリファレンス</a></li>
         <li><a href="#language-term">項</a></li>
@@ -1799,7 +1801,7 @@ $z_ref->{im} = 3;
         <li><a href="#language-sub-method">メソッド</a></li>
         <li><a href="#language-sub-signature">シグネチャ</a></li>
         <li><a href="#language-sub-invocant">インボカント</a></li>
-        <li><a href="#language-sub-stack">サブルーチンのスタック</a></li>
+        <li><a href="#language-sub-stack">サブルーチンのコールスタック</a></li>
       </ul>
       <h4 id="language-sub-definition">サブルーチンの定義</h4>
       <p>
@@ -2007,12 +2009,12 @@ void()
         シグネチャは、SPVMを記述しているときには、意識する必要はありません。ネイティブからSPVMのサブルーチンを呼び出すときに使用します。
       </p>
       
-      <h4 id="language-sub-stack">サブルーチンのスタック</h4>
+      <h4 id="language-sub-stack">サブルーチンのコールスタック</h4>
       <p>
-        サブルーチンのスタックとは、<a href="#language-expression-callsub">サブルーチンの呼び出し</a>が行われるときに、確保されるメモリ領域のことを指します。
+        サブルーチンのコールスタックとは、<a href="#language-expression-callsub">サブルーチンの呼び出し</a>が行われるときに、確保されるメモリ領域のことを指します。
       </p>
       <p>
-        サブルーチンのスタックには、以下の情報が保存されます。
+        サブルーチンのコールスタックには、以下の情報が保存されます。
       </p>
       <p>
         1. <a href="#language-lex-var">レキシカル変数</a>のためのメモリ領域
@@ -2712,6 +2714,188 @@ my $ret = $foo->bar(2);
       <p>
         配列の設定については、<a href="#language-expression-set-set-array-element">配列の要素の値の設定</a>を見てください。
       </p>
+
+      <h3 id="language-value">値</h3>
+      <ul class="list">
+        <li><a href="#language-value-definition">値型の定義</a></li>
+        <li><a href="#language-value-usage">値型の使用</a></li>
+        <li><a href="#language-value-access">値型のフィールドへのアクセス</a></li>
+      </ul>
+      
+      <h4 id="language-value-definition">値型の定義</h3>
+      <p>
+        SPVMには、他の言語ではあまり見ることのない値というものがあります。
+      </p>
+      <p>
+        値は、連続した数値を表現します。たとえば、連続した32bit符号付整数が3つであるとか、連続した倍精度浮動小数点が2つなどです。3次元の点、複素数、四元数などを表現することが想定されています。
+      </p>
+      <p>
+        値を使用するには、最初に、値型を定義します。値型は、<a href="#language-package-definition">パッケージの定義</a>において、value_tデスクリプタを指定することで定義できます。
+      </p>
+<pre>
+# 連続した32bit符号付整数が3つ
+package Point_3i : value_t {
+  has x : int;
+  has y : int;
+  has z : int;
+}
+
+連続した倍精度浮動小数点が2つ
+package Complex_2d : value_t {
+  re : double;
+  im : double;
+}
+</pre>
+      <p>
+        すべてのフィールドは同じ<a href="#language-type-numeric">数値型</a>でなければなりません。
+      </p>
+      <p>
+        値型の末尾は「_」「フィールドの個数」「値型のサフィックス」でなければなりません。
+      </p>
+      <p>
+        <b>値型のサフィクスの一覧</b>
+      </p>
+      <table>
+        <tr>
+          <th>
+            <b>数値型</b>
+          </th>
+          <th>
+            サフィックス
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>byte</b>
+          </td>
+          <td>
+            b
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>short</b>
+          </td>
+          <td>
+            s
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>int</b>
+          </td>
+          <td>
+            i
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>long</b>
+          </td>
+          <td>
+            l
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>float</b>
+          </td>
+          <td>
+            f
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>double</b>
+          </td>
+          <td>
+            d
+          </td>
+        </tr>
+      </table>
+      <p>
+        サフィックスは、実際に定義されている数値型と対応している必要があります。
+      </p>
+      <p>
+        数値型の定義において、フィールドの個数の最大は16です。
+      </p>
+      <p>
+        不正な値型の定義の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        値型は、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>の型として利用することができます。
+      </p>
+      <p>
+        値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における引数の型として利用することができます。
+      </p>
+      <p>
+        値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における戻り値の型として利用することができます。
+      </p>
+      <p>
+        値型は<a href="#language-type-array">配列型</a>の<a href="#language-type-basic">基本型</a>として利用することができます。
+      </p>
+<pre>
+my $points = new Point_3i[5];
+</pre>
+      <p>
+        値型は、フィールドの型として利用することはできません。
+      </p>
+      <p>
+        値型は、パッケージ変数の型として利用することはできません。
+      </p>
+      <p>
+        値型の値に対しては、リファレンスを生成することができます。
+      </p>
+<pre>
+my $point : Point_3i;
+my $point_ref = \$point;
+</pre>
+
+      <h4 id="language-value-usage">値型の使用</h3>
+      <p>
+        値型を使用するにはuse文を使って、モジュールをロードします。
+      </p>
+<pre>
+use Point_3i;
+use Complex_2d;
+</pre>
+      <p>
+        次に、レキシカル変数の宣言を行います。レキシカル変数の宣言を行うと、連続した領域が、<a href="#language-sub-stack">サブルーチンのコールスタック</a>上に確保されます。フィールドのすべての値は、<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+<pre>
+my $point : Point_3i;
+my $z : Complex_2d;
+</pre>
+      <p>
+        値型の値は、オブジェクトではないので、<a href="#language-expression-new-object">オブジェクトの生成</a>の構文では生成できないことに注意してください。
+      </p>
+
+      <h4 id="language-value-access">値型のフィールドへのアクセス</h3>
+      <p>
+        値型のフィールドへのアクセスとは、値型のフィールドにアクセスして、値を取得したり、設定したりする操作のことです。また、以下の記述そのものを指します。
+      </p>
+<pre>
+インボカント->{フィールド名}
+</pre>
+      <p>
+        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
+      </p>
+      <p>
+        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
+      </p>
+      <p>
+        <b>値型のフィールドの値の取得・設定のサンプル</b>
+      </p>
+      <p>
+        値型のフィールドの値の取得・設定のサンプルです。
+      </p>
+<pre>
+$ival2->{x} = 1;
+my $y = $ival2->{y};
+
+$dval4->{t} = 2.5;
+my $z = $dval4->{z};
+</pre>
 
       <h4 id="language-array-summary">配列の生成</h4>
       
@@ -5098,7 +5282,7 @@ $point->{x} = 1;
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
@@ -5131,7 +5315,7 @@ my $re = $z->{re};
         右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
@@ -5161,7 +5345,7 @@ $z->{re} = 2.5;
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
@@ -5195,7 +5379,7 @@ my $re = $z_ref->{re};
         右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
@@ -6869,12 +7053,13 @@ $bytes->[1] = 'd';
       <p>
         文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byte[]型</a>のことを言います。
       </p>
+      
       <h4 id="language-type-value">値型</h4>
       <p>
-        値型とは、同一の複数の数値型を定義できる型です。連続した数値型のデータ構造を、メモリ節約的で高速に処理するために設計されました。
+        値型とは、連続した数値を表現できる型です。
       </p>
       <p>
-        パッケージの定義において「value_t」デスクリプタを指定することで、値型となります。
+        パッケージの定義において「value_t」デスクリプタを指定することで、値型を定義できます。
       </p>
 <pre>
 package Point_3i : value_t {
@@ -6884,138 +7069,9 @@ package Point_3i : value_t {
 }
 </pre>
       <p>
-        このサンプルでは、3つの連続したint型を「Point_3i」として定義しています。
+        値型の詳しい解説については、<a href="#language-value">値</a>を見てください。
       </p>
-      <p>
-        フィールドに指定できるのは、整数型と浮動小数点型だけです。
-      </p>
-      <p>
-        値型のフィールドの個数の最大値は16個に制限されています。
-      </p>
-      <p>
-        すべてのフィールドのデータ型は、同一の型でなければなりません。
-      </p>
-      <p>
-        利用する場合は、変数の宣言を行ってください。すべての領域が、0で初期化されます。
-      </p>
-<pre>
-my $point : Point_3i;
-</pre>
-      <p>
-        値型のデータは、サブルーチンのスタック領域に確保されます。
-      </p>
-      <p>
-        値型の各フィールドは、連続していなければなりません。
-      </p>
-      <p>
-        値型の名前は、パッケージ名の規則を満たしている必要があります。
-      </p>
-      <p>
-        それに加えて、最後が「_」「フィールドの個数」「サフィックス」で終わる必要があります。
-      </p>
-      <p>
-        フィールドの個数は、実際に定義されているフィールドの個数と一致している必要があります。
-      </p>
-      <p>
-        サフィックスは、実際に定義されている数値型と対応している必要があります。
-      </p>
-      <p>
-        不正な値型の定義の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        <b>値型のサフィクスの一覧</b>
-      </p>
-      <table>
-        <tr>
-          <th>
-            <b>数値型</b>
-          </th>
-          <th>
-            サフィックス
-          </th>
-        </tr>
-        <tr>
-          <td>
-            <b>byte</b>
-          </td>
-          <td>
-            b
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>short</b>
-          </td>
-          <td>
-            s
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>int</b>
-          </td>
-          <td>
-            i
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>long</b>
-          </td>
-          <td>
-            l
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>float</b>
-          </td>
-          <td>
-            f
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>double</b>
-          </td>
-          <td>
-            d
-          </td>
-        </tr>
-      </table>
-      <p>
-        値型のサイズは、値型のフィールドになっている数値型のサイズに、フィールドの個数を書けたものになります。
-      </p>
-      <p>
-        値型のフィールドの設定と取得は、アロー演算子で行うことができます。
-      </p>
-<pre>
-# 値型のフィールドの取得
-my $x = $point->{x};
 
-# 値型のフィールドの設定
-$point->{x} = 1;
-</pre>
-      <p>
-        サブルーチンの引数として値型を渡す場合は、内部的にはフィールドで定義された複数のデータ型に展開されて渡されます。
-      </p>
-<pre>
-# SPVM上
-foo($point);
-
-# 内部
-foo($x, $y, $z);
-</pre>
-      <p>
-        このことはSPVMから値型を利用している場合は、意識する必要がありませんが、エクステンションにおいて、サーブルーチンの引数を受け取るときに、意識する必要があります。
-      </p>
-      <p>
-        値型は配列にすることができます。この場合、配列の領域は、値型として定義されたデータがヒープ領域上で、連続していることが保証されます。
-      </p>
-     
-<pre>
-my $points : Point_3i[] = new Point_3i[];
-</pre>
       <h4 id="language-type-ref">リファレンス型</h4>
       <p>
         リファレンス型とは、変数への参照を表現する型のことです。数値型か値型の名前の後ろに「&」を付けることで定義できます。
