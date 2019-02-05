@@ -2778,6 +2778,7 @@ my $ret = $foo->bar(2);
         <li><a href="#language-expression-typecast">型キャスト</a></li>
         <li><a href="#language-expression-new-object">オブジェクトの生成</a></li>
         <li><a href="#language-expression-new-array">配列の生成</a></li>
+        <li><a href="#language-expression-release-object">オブジェクトの解放</a></li>
         <li><a href="#language-expression-array-init">配列の初期化</a></li>
         <li><a href="#language-operator-array-length">配列長演算子</a></li>
         <li><a href="#language-operator-string-length">文字列長演算子</a></li>
@@ -5409,6 +5410,23 @@ my $nums = new int[][][3];
       </p>
       <p>
         式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
+      </p>
+
+      <h3 id="language-expression-release-object">オブジェクトの解放</h3>
+      <p>
+        オブジェクトは、リファレンスカウントが0になるとメモリから解放されます。
+      </p>
+      <p>
+        オブジェクトが、オブジェクト型の値を要素として持つ配列だった場合は、オブジェクトの解放の前に、すべての配列の要素が解放されます。
+      </p>
+      <p>
+        オブジェクトが、クラス型で、オブジェクト型のフィールドを持つときは、オブジェクトの解放の前に、オブジェクト型のすべてのフィールドが所有するオブジェクトが解放されます。
+      </p>
+      <p>
+        オブジェクトがウィークリファレンスのバックリファレンスを持つときは、バックリファレンスとして登録されているフィールドすべてに、未定義値を代入し、バックリファレンスをすべて削除します。
+      </p>
+      <p>
+        上記の処理は、再帰的に行われます。
       </p>
 
       <h3 id="language-statement-isweak">isweak演算子</h3>
