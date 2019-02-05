@@ -36,6 +36,11 @@ use SPVM 'TestCase::Lib::SPVM::CORE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# ref_count
+{
+  ok(TestCase::Lib::SPVM::CORE->test_ref_count());
+}
+
 # native constant
 {
   ok(TestCase::Lib::SPVM::CORE->test_init_native_constants());

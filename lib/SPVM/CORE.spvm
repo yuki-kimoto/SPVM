@@ -24,6 +24,8 @@ package SPVM::CORE {
     init_native_constants();
   }
   
+  native sub ref_count : int ($object : object);
+  
   native sub init_native_constants : void ();
 
   native sub fgets_chomp : string ($fh : SPVM::FileHandle);

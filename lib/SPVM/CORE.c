@@ -11,6 +11,20 @@
 #include <memory.h>
 #include <fcntl.h>
 
+int32_t SPVM_NATIVE_SPVM__CORE__ref_count(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* obj = stack[0].oval;
+  
+  if (obj == NULL) {
+    SPVM_CROAK("Object must be defined", "SPVM/CORE.c", __LINE__);
+  }
+  
+  int32_t ref_count = env->ref_count(env, obj);
+  
+  stack[0].ival = ref_count;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPVM_NATIVE_SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
