@@ -240,7 +240,7 @@ package TestCase::JSON {
     for (my $i = 0; $i < @$inputs; $i++) {
       eval {
         $json->encode($json->decode($inputs->[$i]));
-      }
+      };
       unless ($@) {
         return 0;
       }
