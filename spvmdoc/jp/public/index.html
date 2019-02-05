@@ -712,7 +712,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
-%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN ISWEAK '[' '{' '('
+%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block
@@ -743,7 +743,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -2502,7 +2502,7 @@ $@
         ウィークリファレンスは、リファレンスカウントGCを持つプログラミング言語において、循環参照が発生した場合に、オブジェクトの破棄を正しく行うための機能です。
       </p>
       <p>
-        このような場合は、ひとつのフィールドを、weaken文を使って、ウィークリファレンスに設定することで、正しく解放することができます。
+        このような場合は、ひとつのフィールドを、<a href="#language-statement-weaken">weaken文</a>を使って、ウィークリファレンスに設定することで、正しく解放することができます。
       </p>
 <pre>
 {
@@ -2515,6 +2515,18 @@ $@
   weaken $foo->{bar};
 }
 </pre>
+      <p>
+        weaken文が実行される前の、$fooのリファレンスカウントは2、$barのリファレンスカウントは2です。
+      </p>
+      <p>
+        もしweaken文がない場合は、スコープが終了したとしても、$fooのリファレンスカウントも、$barのリファレンスカウントも0にならず、解放されません。
+      </p>
+      <p>
+        weaken文が実行されるとは、$fooのリファレンスカウントは2、$barのリファレンスカウントは1になります。
+      </p>
+      <p>
+        スコープが終了すると、$barのリファレンスカウントが1減らされ0になるので、正しく解放されます。
+      </p>
       <p>
         3つの循環参照の場合でも、ひとつのフィールドにウィークリファレンスを設定すれば、正しく解放できます。
       </p>
@@ -2532,7 +2544,7 @@ $@
 }
 </pre>
       <p>
-      
+        ウィークリファレンス関連の文法として、ウィークリファレンスを解除できる<a href="#language-statement-weaken">weaken文</a>と、フィールドがウィークリファレンスかどうかを確認できるisweak演算子があります。
       </p>
       
       <h3 id="language-interface">インターフェース</h3>
@@ -3993,6 +4005,7 @@ undef
         <li><a href="#language-operator-array-length">配列長演算子</a></li>
         <li><a href="#language-operator-string-length">文字列長演算子</a></li>
         <li><a href="#language-operator-scalar">スカラ演算子</a></li>
+        <li><a href="#language-operator-isweak">isweak演算子</a></li>
       </ul>
       
       <h4 id="language-operator-summary">演算子の概要</h4>
@@ -5553,21 +5566,27 @@ my $nums = new int[][][3];
         上記の処理は、再帰的に行われます。
       </p>
 
-      <h3 id="language-statement-isweak">isweak演算子</h3>
+      <h3 id="language-operator-isweak">isweak演算子</h3>
       <p>
-        isweak文は、フィールドが、ウィークリファレンスかを確認する演算子です。
+        isweak演算子は、フィールドが、<a href="#language-weak-ref">ウィークリファレンス</a>かを確認する演算子です。
       </p>
 <pre>
-isweak フィールドアクセス;
+isweak オブジェクト式->{フィールド名};
 </pre>
       <p>
-        フィールドアクセス式で表現されるフィールドは、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+        オブジェクト式の型は、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名は、存在するフィールド名でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールドに保存される値の型は、<a href="#language-type-object">オブジェクト型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        実行時にフィールドに保存されている値が、<a href="#language-undef">未定義値</a>だった場合は、偽を返します。これは、<a href="#language-condition">条件</a>です。
       </p>
       <p>
         isweak演算子は、フィールドがウィークリファレンスの場合は、真を、そうでない場合は偽を返します。これは、<a href="#language-condition">条件</a>です。
-      </p>
-      <p>
-        ウィークリファレンスについては、<a href="#language-weak-ref">ウィークリファレンス</a>を見てください。
       </p>
 
       <h3 id="language-operator-precedence">演算子の優先順位</h3>
@@ -5765,7 +5784,6 @@ a * (b + c)
         <li><a href="#language-statement-croak">croak文</a></li>
         <li><a href="#language-statement-weaken">weaken文</a></li>
         <li><a href="#language-statement-unweaken">unweaken文</a></li>
-        <li><a href="#language-statement-isweak">isweak文</a></li>
         <li><a href="#language-statement-expression">式文</a></li>
         <li><a href="#language-statement-empty">空文</a></li>
       </ul>
@@ -6184,14 +6202,11 @@ croak 式;
       
       <h4 id="language-statement-weaken">weaken文</h4>
       <p>
-        weaken文は、フィールドに対して、ウィークリファレンスを設定する文です。
+        weaken文は、フィールドに対して、<a href="#language-weak-ref">ウィークリファレンス</a>を設定する文です。
       </p>
 <pre>
 weaken オブジェクト式->{フィールド名};
 </pre>
-      <p>
-        weaken文は、フィールドをウィークリファレンスにする文です。
-      </p>
       <p>
         オブジェクト式の型は、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
@@ -6249,7 +6264,7 @@ weaken $baz->{foo};
 
       <h4 id="language-statement-unweaken">unweaken文</h4>
       <p>
-        unweaken文は、フィールドに対して、ウィークリファレンスを解除する文です。
+        unweaken文は、フィールドに対して、<a href="#language-weak-ref">ウィークリファレンス</a>を解除する文です。
       </p>
 <pre>
 unweaken オブジェクト式->{フィールド名};

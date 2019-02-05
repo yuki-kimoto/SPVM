@@ -88,30 +88,30 @@
      CROAK = 304,
      CURRENT_PACKAGE = 305,
      UNWEAKEN = 306,
-     ISWEAK = 307,
-     SPECIAL_ASSIGN = 308,
-     ASSIGN = 309,
-     LOGICAL_OR = 310,
-     LOGICAL_AND = 311,
-     BIT_XOR = 312,
-     BIT_OR = 313,
-     STRNE = 314,
-     STREQ = 315,
-     NUMNE = 316,
-     NUMEQ = 317,
-     ISA = 318,
-     STRLE = 319,
-     STRLT = 320,
-     STRGE = 321,
-     STRGT = 322,
-     NUMLE = 323,
-     NUMLT = 324,
-     NUMGE = 325,
-     NUMGT = 326,
-     SHIFT = 327,
-     REMAINDER = 328,
-     DIVIDE = 329,
-     MULTIPLY = 330,
+     SPECIAL_ASSIGN = 307,
+     ASSIGN = 308,
+     LOGICAL_OR = 309,
+     LOGICAL_AND = 310,
+     BIT_XOR = 311,
+     BIT_OR = 312,
+     STRNE = 313,
+     STREQ = 314,
+     NUMNE = 315,
+     NUMEQ = 316,
+     ISA = 317,
+     STRLE = 318,
+     STRLT = 319,
+     STRGE = 320,
+     STRGT = 321,
+     NUMLE = 322,
+     NUMLT = 323,
+     NUMGE = 324,
+     NUMGT = 325,
+     SHIFT = 326,
+     REMAINDER = 327,
+     DIVIDE = 328,
+     MULTIPLY = 329,
+     ISWEAK = 330,
      LENGTH = 331,
      SCALAR = 332,
      CONVERT = 333,
@@ -176,30 +176,30 @@
 #define CROAK 304
 #define CURRENT_PACKAGE 305
 #define UNWEAKEN 306
-#define ISWEAK 307
-#define SPECIAL_ASSIGN 308
-#define ASSIGN 309
-#define LOGICAL_OR 310
-#define LOGICAL_AND 311
-#define BIT_XOR 312
-#define BIT_OR 313
-#define STRNE 314
-#define STREQ 315
-#define NUMNE 316
-#define NUMEQ 317
-#define ISA 318
-#define STRLE 319
-#define STRLT 320
-#define STRGE 321
-#define STRGT 322
-#define NUMLE 323
-#define NUMLT 324
-#define NUMGE 325
-#define NUMGT 326
-#define SHIFT 327
-#define REMAINDER 328
-#define DIVIDE 329
-#define MULTIPLY 330
+#define SPECIAL_ASSIGN 307
+#define ASSIGN 308
+#define LOGICAL_OR 309
+#define LOGICAL_AND 310
+#define BIT_XOR 311
+#define BIT_OR 312
+#define STRNE 313
+#define STREQ 314
+#define NUMNE 315
+#define NUMEQ 316
+#define ISA 317
+#define STRLE 318
+#define STRLT 319
+#define STRGE 320
+#define STRGT 321
+#define NUMLE 322
+#define NUMLT 323
+#define NUMGE 324
+#define NUMGT 325
+#define SHIFT 326
+#define REMAINDER 327
+#define DIVIDE 328
+#define MULTIPLY 329
+#define ISWEAK 330
 #define LENGTH 331
 #define SCALAR 332
 #define CONVERT 333
