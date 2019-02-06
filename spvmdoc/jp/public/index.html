@@ -1893,7 +1893,7 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
 }
 </pre>
       <p>
-        定義されたサブルーチンは、呼び出すことができます。サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+        定義されたサブルーチンは、呼び出すことができます。サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       </p>
 
       <h4 id="language-sub-constant">定数サブルーチン</h4>
@@ -1945,7 +1945,7 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
 }
 </pre>
       <p>
-        無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+        無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       <p>
       
       <h4 id="language-sub-method">メソッド</h4>
@@ -1958,7 +1958,7 @@ sub サブルーチン名 : 型名 ($self : self, 引数1 : 型1, 引数2 : 型2
 }
 </pre>
       <p>
-        メソッドは、<a href="#language-expression-new-object">オブジェクトの生成</a>によって生成されたオブジェクトから呼び出すことができます。メソッドの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</b>を見てください。
+        メソッドは、<a href="#language-expression-new-object">オブジェクトの生成</a>によって生成されたオブジェクトから呼び出すことができます。メソッドの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       </p>
 
       <h4 id="language-sub-invocant">インボカント</h4>
@@ -2803,6 +2803,54 @@ my $points = new Point_3i[5];
 my $point : Point_3i;
 my $point_ref = \$point;
 </pre>
+      <p>
+        値型の値に、未定義値を代入することはできません。代入しようとした場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h3 id="language-value-array">値の配列</h3>
+      <ul class="list">
+        <li><a href="language-array-summary">値の配列の概要</a></li>
+        <li><a href="language-array-access">値の配列へのアクセス</a></li>
+      </ul>
+      
+      <h4 id="language-array-summary">値の配列の概要</h4>
+      <p>
+        値型の値は、<a href="#language-array">配列</a>にすることができます。
+      </p>
+<pre>
+my $points = new Point_3i[5];
+
+my $zs = new Complex_2d[5];
+</pre>
+      <p>
+        値の配列は、値型の値が、連続したデータ構造をとります。配列の要素は、オブジェクトではなく、数値がメモリ上に一直線に並んで、配置されます。
+      </p>
+      <p>
+        たとえば、Point_3i型の5の長さの配列であれば、Point_3i型は、int型の数値が3つ並んだ型で、長さが5なので、「5 * 3 = 15」個のint型の数値が、メモリ上に一直線に並んだデータになります。
+      </p>
+      <p>
+        値の配列の型は、<a href="#language-type-array">配列型</a>です。
+      </p>
+      <p>
+        値の配列の要素の型は、<a href="#language-type-value">値型</a>です。
+      </p>
+      
+      <h4 id="language-array-access">値の配列へのアクセス</h4>
+      <p>
+        値の配列へのアクセスとは、値の配列にアクセスして、値を取得したり、設定したりする操作のことです。また、以下の記述そのものを指します。
+      </p>
+<pre>
+配列->[添え字]
+</pre>
+      <p>
+        値の配列へのアクセスは、配列のアクセスと同じ構文で行うことができます。
+      </p>
+      <p>
+        配列の取得については、<a href="#language-expression-get-array-element">配列の要素の値の取得</a>を見てください。
+      </p>
+      <p>
+        配列の設定については、<a href="#language-expression-set-set-array-element">配列の要素の値の設定</a>を見てください。
+      </p>
 
       <h4 id="language-value-usage">値型の使用</h3>
       <p>
@@ -2887,6 +2935,7 @@ my $z = $dval4->{z};
         <li class="language-expression-current-file">現在のファイル名の取得</li>
         <li class="language-expression-current-line">現在の行番号の取得</li>
       </ul>
+      
       <h4 id="language-expression">式とは</h4>
       <p>
         式とは、値の評価が可能な<a href="#language-term">項</a>のことです。
@@ -2934,6 +2983,7 @@ my $z = $dval4->{z};
         <li><a href="#language-expression-current-line">現在の行番号の取得</a></li>
         <li>(式)</li>
       </ul>
+      
       <h4 id="language-expression-get-lex-var">レキシカル変数の値の取得</h4>
       <p>
         レキシカル変数の値の取得をするには、レキシカル変数自体を記述します。
@@ -3093,6 +3143,403 @@ $@ = 右式
 <pre>
 $@ = "Error";
 </pre>
+
+      <h4 id="language-expression-get-field-class">クラス型のフィールドの値の取得</h4>
+      <p>
+        クラス型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        クラス型のフィールドの値の取得は、オブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>クラス型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        クラス型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $point = Point->new;
+my $x = $point->{x};
+</pre>
+      
+      <h4 id="language-expression-set-field-class">クラス型のフィールドの値の設定</h4>
+      <p>
+        クラス型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        クラス型のフィールドの値の設定は、設定後のオブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        右式が、オブジェクト型であった場合は、オブジェクトのリファレンスカウントが1増やされます。
+      </p>
+      <p>
+        代入前に、すでにフィールドにオブジェクトが代入されていた場合は、そのオブジェクトのリファレンスカウントが1減らされます。
+      </p>
+      <p>
+        <b>クラス型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        クラス型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $point = Point->new;
+$point->{x} = 1;
+</pre>
+      
+      <h4 id="language-expression-get-field-value">値型のフィールドの値の取得</h4>
+      <p>
+        値型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>値型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        値型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $re = $z->{re};
+</pre>
+
+      <h4 id="language-expression-set-field-value">値型のフィールドの値の設定</h4>
+      <p>
+        値型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>値型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        値型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+$z->{re} = 2.5;
+</pre>
+
+      <h4 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの値の取得</h4>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名}
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>デリファレンスによる値型のフィールドの値の取得のサンプル</b>
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の取得のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $z_ref = \$z;
+my $re = $z_ref->{re};
+</pre>
+
+      <h4 id="language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの値の設定</h4>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定は、次のように記述します。
+      </p>
+<pre>
+インボカント式->{フィールド名} = 右式
+</pre>
+      <p>
+        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+      </p>
+      <p>
+        返される値の型は、フィールドの型です。
+      </p>
+      <p>
+        <b>デリファレンスによる値型のフィールドの値の設定のサンプル</b>
+      </p>
+      <p>
+        デリファレンスによる値型のフィールドの値の設定のサンプルです。
+      </p>
+<pre>
+my $z : SPVM::Complex_2d;
+my $z_ref = \$z;
+$z_ref->{re} = 2.5;
+</pre>
+      
+      <h4 id="language-expression-get-array-element">配列の要素の値の取得</h4>
+      <p>
+        配列の要素の値を取得するには、次のように記述します。
+      </p>
+<p>
+配列式->[インデックス式]
+</p>
+      <p>
+        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        配列の要素の値を取得は、指定したインデックスの要素の値を返します。これは、式です。
+      </p>
+      <p>
+        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
+      </p>
+      <p>
+        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
+      </p>
+      <p>
+        <b>配列の要素の値の取得のサンプル</b>
+      </p>
+      <p>
+        配列の要素の値の取得のサンプルです。
+      </p>
+<pre>
+my $nums = new int[3];
+my $num = $nums->[1];
+
+my $points = new Point[3];
+my $point = $points->[1];
+
+my $objects : oarray = $points;
+my $object = (Point)$objects->[1];
+</pre>
+      
+      <h4 id="language-expression-set-array-element">配列の要素の値の設定</h4>
+      <p>
+        配列の要素の値を設定するには、次のように記述します。
+      </p>
+<p>
+配列式->[インデックス式] = 右式
+</p>
+      <p>
+        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        右式の型は、配列の要素の型と<a href="#language-type-compatible">型の互換性</a>がなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        配列の要素の値を設定は、設定後の値を返します。これは、式です。
+      </p>
+      <p>
+        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
+      </p>
+      <p>
+        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
+      </p>
+      <p>
+        右式が、オブジェクト型であった場合は、オブジェクトのリファレンスカウントが1増やされます。
+      </p>
+      <p>
+        代入前に、すでに配列の要素にオブジェクトが代入されていた場合は、そのオブジェクトのリファレンスカウントが1減らされます。
+      </p>
+      <p>
+        <b>配列の要素の値の設定のサンプル</b>
+      </p>
+      <p>
+        配列の要素の値の設定のサンプルです。
+      </p>
+<pre>
+my $nums = new int[3];
+$nums->[1] = 3;
+
+my $points = new Point[3];
+$points->[1] = Point->new(1, 2);
+
+my $objects : oarray = $points;
+$objects->[2] = Point->new(3, 5);;
+</pre>
+
+      <h4 id="language-expression-new-object">オブジェクトの生成</h4>
+      <p>
+        オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new パッケージ名;
+</pre>
+      <p>
+        指定されたパッケージは、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        フィールドは、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        オブジェクトの生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        生成直後のオブジェクトのリファレンスカウントは、0です。代入が実行されるタイミングで、リファレンスカウントが1増やされます。明示的な代入が行われない場合でも、一時変数が作成され、そこに代入されます。
+      </p>
+      <p>
+        <b>オブジェクトの生成のサンプル</b>
+      </p>
+<pre>
+my $object = new Foo;
+</pre>
+      <p>
+        生成されたオブジェクトは内部的に次の情報を持っています。
+      </p>
+      <ul class="list">
+        <li>リファレンスカウント</li>
+        <li>ウィークリファレンスのバックリファレンス</li>
+        <li>基本型のID</li>
+        <li>型の次元(常に0)</li>
+      </ul>
+      
+      <h4 id="language-expression-new-array">配列の生成</h4>
+      <p>
+        配列を作成するには、newキーワードと以下の構文をを使用します。
+      </p>
+<pre>
+my $object = new 型[要素数式];
+</pre>
+      <p>
+        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        要素数式で指定された長さの配列が生成されます。
+      </p>
+      <p>
+        配列の要素は、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
+      </p>
+      <p>
+        配列において、要素は、メモリ上に連続していることが保証されます。
+      </p>
+      <p>
+        配列の生成は、<a href="#language-expression">式</a>を返します。
+      </p>
+      <p>
+        配列は、<a href="#language-type-object">オブジェクト型</a>です。
+      </p>
+      <p>
+        <b>配列の生成のサンプル</b>
+      </p>
+<pre>
+my $nums = new int[3];
+my $objects = new Foo[3];
+my $objects = new object[3];
+my $values = new Complex_2d[3]
+</pre>
+      <p>
+        生成された配列は、内部的に次の情報を持っています。
+      </p>
+      <ul class="list">
+        <li>リファレンスカウント</li>
+        <li>基本型のID</li>
+        <li>型の次元(1以上の値)</li>
+        <li>配列の長さ</li>
+      </ul>
+      <p>
+        多次元配列は、上記の構文を使用して、作成できます。要素は、<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
+      </p>
+<pre>
+my $nums = new int[][3];
+my $nums = new int[][][3];
+</pre>
+      <p>
+        多次元配列の次元数の最大は、255です。
+      </p>
+      
+      <h4 id="language-expression-array-init">配列の初期化</h4>
+      <p>
+        SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
+      </p>
+<pre>
+[]
+[式1, 式2, 式3]
+</pre>
+      <p>
+        配列の初期化は、式の要素数の長さを持った配列を返します。
+      </p>
+      <p>
+        配列の型は、式1の型を配列型にしたものです。要素が指定されない場合は、<a href="#language-type-any-object">汎用オブジェクト型</a>を配列型にしたものになります。
+      </p>
+      <p>
+        式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
+      </p>
 
       <h4 id="language-expression-callsub">サブルーチンの呼び出し</h4>
       <p>
@@ -3329,6 +3776,24 @@ package Foo::Bar {
   }
 }
 </pre>
+
+      <h3 id="language-expression-release-object">オブジェクトの解放</h3>
+      <p>
+        オブジェクトは、リファレンスカウントが0になるとメモリから解放されます。
+      </p>
+      <p>
+        オブジェクトが、オブジェクト型の値を要素として持つ配列だった場合は、オブジェクトの解放の前に、未定義値ではないすべての配列の要素のリファレンスカウントが1減らされます
+      </p>
+      <p>
+        オブジェクトが、クラス型で、オブジェクト型のフィールドを持つときは、オブジェクトの解放の前に、未定義値ではないすべてのオブジェクト型のフィールドが所有するオブジェクトのリファレンスカウントが1減らされます。フィールドに保存されているオブジェクトにウィークリファレンスが設定されていた場合は、リファレンスカウントが1減らされる前に、ウィークリファレンスが解除されます。
+      </p>
+      <p>
+        オブジェクトがウィークリファレンスのバックリファレンスを持つときは、バックリファレンスとして登録されているフィールドすべてに、未定義値を代入し、バックリファレンスをすべて削除します。
+      </p>
+      <p>
+        上記の処理は、再帰的に行われます。
+      </p>
+
       <h3 id="language-condition">条件</h3>
       <p>
         条件は次の項目で定義されます。
@@ -5153,421 +5618,7 @@ my $nums = new int[3];
 foo(scalar @$nums);
 </pre>
 
-      <h3 id="language-expression-get-field-class">クラス型のフィールドの値の取得</h3>
-      <p>
-        クラス型のフィールドの値の取得は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名}
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        クラス型のフィールドの値の取得は、オブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        <b>クラス型のフィールドの値の取得のサンプル</b>
-      </p>
-      <p>
-        クラス型のフィールドの値の取得のサンプルです。
-      </p>
-<pre>
-my $point = Point->new;
-my $x = $point->{x};
-</pre>
-      
-      <h3 id="language-expression-set-field-class">クラス型のフィールドの値の設定</h3>
-      <p>
-        クラス型のフィールドの値の設定は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名} = 右式
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        クラス型のフィールドの値の設定は、設定後のオブジェクトに保存されているフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        右式が、オブジェクト型であった場合は、オブジェクトのリファレンスカウントが1増やされます。
-      </p>
-      <p>
-        代入前に、すでにフィールドにオブジェクトが代入されていた場合は、そのオブジェクトのリファレンスカウントが1減らされます。
-      </p>
-      <p>
-        <b>クラス型のフィールドの値の設定のサンプル</b>
-      </p>
-      <p>
-        クラス型のフィールドの値の設定のサンプルです。
-      </p>
-<pre>
-my $point = Point->new;
-$point->{x} = 1;
-</pre>
-      
-      <h3 id="language-expression-get-field-value">値型のフィールドの値の取得</h3>
-      <p>
-        値型のフィールドの値の取得は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名}
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        <b>値型のフィールドの値の取得のサンプル</b>
-      </p>
-      <p>
-        値型のフィールドの値の取得のサンプルです。
-      </p>
-<pre>
-my $z : SPVM::Complex_2d;
-my $re = $z->{re};
-</pre>
-
-      <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
-      <p>
-        値型のフィールドの値の設定は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名} = 右式
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        <b>値型のフィールドの値の設定のサンプル</b>
-      </p>
-      <p>
-        値型のフィールドの値の設定のサンプルです。
-      </p>
-<pre>
-my $z : SPVM::Complex_2d;
-$z->{re} = 2.5;
-</pre>
-
-      <h3 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの値の取得</h3>
-      <p>
-        デリファレンスによる値型のフィールドの値の取得は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名}
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        <b>デリファレンスによる値型のフィールドの値の取得のサンプル</b>
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの値の取得のサンプルです。
-      </p>
-<pre>
-my $z : SPVM::Complex_2d;
-my $z_ref = \$z;
-my $re = $z_ref->{re};
-</pre>
-
-      <h3 id="language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの値の設定</h3>
-      <p>
-        デリファレンスによる値型のフィールドの値の設定は、次のように記述します。
-      </p>
-<pre>
-インボカント式->{フィールド名} = 右式
-</pre>
-      <p>
-        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
-      </p>
-      <p>
-        返される値の型は、フィールドの型です。
-      </p>
-      <p>
-        <b>デリファレンスによる値型のフィールドの値の設定のサンプル</b>
-      </p>
-      <p>
-        デリファレンスによる値型のフィールドの値の設定のサンプルです。
-      </p>
-<pre>
-my $z : SPVM::Complex_2d;
-my $z_ref = \$z;
-$z_ref->{re} = 2.5;
-</pre>
-      
-      <h3 id="language-expression-get-array-element">配列の要素の値の取得</h3>
-      <p>
-        配列の要素の値を取得するには、次のように記述します。
-      </p>
-<p>
-配列式->[インデックス式]
-</p>
-      <p>
-        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        配列の要素の値を取得は、指定したインデックスの要素の値を返します。これは、式です。
-      </p>
-      <p>
-        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
-      </p>
-      <p>
-        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
-      </p>
-      <p>
-        <b>配列の要素の値の取得のサンプル</b>
-      </p>
-      <p>
-        配列の要素の値の取得のサンプルです。
-      </p>
-<pre>
-my $nums = new int[3];
-my $num = $nums->[1];
-
-my $points = new Point[3];
-my $point = $points->[1];
-
-my $objects : oarray = $points;
-my $object = (Point)$objects->[1];
-</pre>
-      
-      <h3 id="language-expression-set-array-element">配列の要素の値の設定</h3>
-      <p>
-        配列の要素の値を設定するには、次のように記述します。
-      </p>
-<p>
-配列式->[インデックス式] = 右式
-</p>
-      <p>
-        配列式は、<a href="#language-type-array">配列型</a>の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        インデックス式は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        右式の型は、配列の要素の型と<a href="#language-type-compatible">型の互換性</a>がなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        配列の要素の値を設定は、設定後の値を返します。これは、式です。
-      </p>
-      <p>
-        実行時に、配列式の値が、未定義値である場合は、実行時例外が発生します。
-      </p>
-      <p>
-        実行時に、インデックスの値が、0より小さい場合、あるいは、配列の最大のインデックスを超えている場合は、実行時例外が発生します。
-      </p>
-      <p>
-        右式が、オブジェクト型であった場合は、オブジェクトのリファレンスカウントが1増やされます。
-      </p>
-      <p>
-        代入前に、すでに配列の要素にオブジェクトが代入されていた場合は、そのオブジェクトのリファレンスカウントが1減らされます。
-      </p>
-      <p>
-        <b>配列の要素の値の設定のサンプル</b>
-      </p>
-      <p>
-        配列の要素の値の設定のサンプルです。
-      </p>
-<pre>
-my $nums = new int[3];
-$nums->[1] = 3;
-
-my $points = new Point[3];
-$points->[1] = Point->new(1, 2);
-
-my $objects : oarray = $points;
-$objects->[2] = Point->new(3, 5);;
-</pre>
-
-      <h3 id="language-expression-new-object">オブジェクトの生成</h3>
-      <p>
-        オブジェクトを生成するには、newキーワードと以下の構文をを使用します。
-      </p>
-<pre>
-my $object = new パッケージ名;
-</pre>
-      <p>
-        指定されたパッケージは、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        フィールドは、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
-      </p>
-      <p>
-        オブジェクトの生成は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <p>
-        生成直後のオブジェクトのリファレンスカウントは、0です。代入が実行されるタイミングで、リファレンスカウントが1増やされます。明示的な代入が行われない場合でも、一時変数が作成され、そこに代入されます。
-      </p>
-      <p>
-        <b>オブジェクトの生成のサンプル</b>
-      </p>
-<pre>
-my $object = new Foo;
-</pre>
-      <p>
-        生成されたオブジェクトは内部的に次の情報を持っています。
-      </p>
-      <ul class="list">
-        <li>リファレンスカウント</li>
-        <li>ウィークリファレンスのバックリファレンス</li>
-        <li>基本型のID</li>
-        <li>型の次元(常に0)</li>
-      </ul>
-      
-      <h3 id="language-expression-new-array">配列の生成</h3>
-      <p>
-        配列を作成するには、newキーワードと以下の構文をを使用します。
-      </p>
-<pre>
-my $object = new 型[要素数式];
-</pre>
-      <p>
-        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        要素数式に対して、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
-      </p>
-      <p>
-        要素数式で指定された長さの配列が生成されます。
-      </p>
-      <p>
-        配列の要素は、すべて<a href="language-type-initial-value">型の初期値</a>で初期化されます。
-      </p>
-      <p>
-        配列において、要素は、メモリ上に連続していることが保証されます。
-      </p>
-      <p>
-        配列の生成は、<a href="#language-expression">式</a>を返します。
-      </p>
-      <p>
-        配列は、<a href="#language-type-object">オブジェクト型</a>です。
-      </p>
-      <p>
-        <b>配列の生成のサンプル</b>
-      </p>
-<pre>
-my $nums = new int[3];
-my $objects = new Foo[3];
-my $objects = new object[3];
-my $values = new Complex_2d[3]
-</pre>
-      <p>
-        生成された配列は、内部的に次の情報を持っています。
-      </p>
-      <ul class="list">
-        <li>リファレンスカウント</li>
-        <li>基本型のID</li>
-        <li>型の次元(1以上の値)</li>
-        <li>配列の長さ</li>
-      </ul>
-      <p>
-        多次元配列は、上記の構文を使用して、作成できます。要素は、<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
-      </p>
-<pre>
-my $nums = new int[][3];
-my $nums = new int[][][3];
-</pre>
-      <p>
-        多次元配列の次元数の最大は、255です。
-      </p>
-      
-      <h3 id="language-expression-array-init">配列の初期化</h3>
-      <p>
-        SPVMには、配列の生成を簡単にするための配列の初期化の構文があります。式はなくてもかまいません。
-      </p>
-<pre>
-[]
-[式1, 式2, 式3]
-</pre>
-      <p>
-        配列の初期化は、式の要素数の長さを持った配列を返します。
-      </p>
-      <p>
-        配列の型は、式1の型を配列型にしたものです。要素が指定されない場合は、<a href="#language-type-any-object">汎用オブジェクト型</a>を配列型にしたものになります。
-      </p>
-      <p>
-        式2以降が、<a href="#language-type-compatible">型の互換性</a>を満たさない場合は、コンパイルエラーになります。
-      </p>
-
-      <h3 id="language-expression-release-object">オブジェクトの解放</h3>
-      <p>
-        オブジェクトは、リファレンスカウントが0になるとメモリから解放されます。
-      </p>
-      <p>
-        オブジェクトが、オブジェクト型の値を要素として持つ配列だった場合は、オブジェクトの解放の前に、未定義値ではないすべての配列の要素のリファレンスカウントが1減らされます
-      </p>
-      <p>
-        オブジェクトが、クラス型で、オブジェクト型のフィールドを持つときは、オブジェクトの解放の前に、未定義値ではないすべてのオブジェクト型のフィールドが所有するオブジェクトのリファレンスカウントが1減らされます。フィールドに保存されているオブジェクトにウィークリファレンスが設定されていた場合は、リファレンスカウントが1減らされる前に、ウィークリファレンスが解除されます。
-      </p>
-      <p>
-        オブジェクトがウィークリファレンスのバックリファレンスを持つときは、バックリファレンスとして登録されているフィールドすべてに、未定義値を代入し、バックリファレンスをすべて削除します。
-      </p>
-      <p>
-        上記の処理は、再帰的に行われます。
-      </p>
-
-      <h3 id="language-operator-isweak">isweak演算子</h3>
+      <h4 id="language-operator-isweak">isweak演算子</h3>
       <p>
         isweak演算子は、フィールドが、<a href="#language-weak-ref">ウィークリファレンス</a>かを確認する演算子です。
       </p>
