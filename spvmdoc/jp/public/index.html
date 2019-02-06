@@ -36,7 +36,7 @@
     
     <div class="container">
       <div>
-        最終更新日 2019年2月5日
+        最終更新日 2019年2月6日
       </div>
       <h2>目次</h2>
       <ul class="toc">
@@ -412,14 +412,13 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-lex-var">レキシカル変数</a></li>
         <li><a href="#language-block">ブロック</a></li>
         <li><a href="#language-scope">スコープ</a></li>
-        <li><a href="#language-exception">例外処理</a></li>
-        <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
-        <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-array">配列</a></li>
         <li><a href="#language-value">値</a></li>
         <li><a href="#language-value-array">値の配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
-        <li><a href="#language-deref">デリファレンス</a></li>
+        <li><a href="#language-exception">例外処理</a></li>
+        <li><a href="#language-interface">インターフェース</a></li>
+        <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-term">項</a></li>
         <li><a href="#language-expression">式</a></li>
         <li><a href="#language-condition">条件</a></li>
@@ -2927,7 +2926,95 @@ my $z = $dval4->{z};
   };
 }
 </pre>
-                
+
+      <h3 id="language-ref">リファレンス</h3>
+      <ul>
+        <li><a href="language-ref-summary">リファレンスの概要</a></li>
+        <li><a href="language-ref-deref">デリファレンス</a></li>
+      </ul>
+      
+      <h4 id="language-ref">リファレンスの概要</h4>
+      <p>
+        リファレンスとは、レキシカル変数のアドレスのことをいいます。リファレンスは、C言語のポインタに該当する機能を実現するために、設計されました。
+      </p>
+      <p>
+        レキシカル変数のアドレスは、<a href="#language-operator-ref">リファレンス演算子</a>を使用して取得できます。<a href="#language-type-ref">リファレンス型</a>は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の後ろに「&」を続けたものになります。
+      </p>
+<pre>
+# 数値型の変数のリファレンス
+my $num : int;
+my $num_ref : int& = \$num;
+
+# 値型の変数のリファレンス
+my $point : Point_3d;
+my $point_ref : Point_3d& = \$point;
+</pre>
+      <p>
+        $num_refの値は、レキシカル変数「$num」のアドレスになります。$point_refの値は、レキシカル変数「$point」のアドレスになります。
+      </p>
+      <p>
+        リファレンス演算子の対象は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の値が格納された変数だけです。オブジェクト型の変数や定数に対して、使うことはできません。
+      </p>
+      <p>
+        <a href="#language-type-ref">リファレンス型</a>の値は、サブルーチンの引数として利用することができます。
+      </p>
+<pre>
+# サブルーチンの定義
+sub sum : void ($out_ref : int&, $in1 : int, $in2 : int) {
+  $$out_ref = $in1 + $in2;
+}
+
+# サブルーチンの利用
+my $num1 = 1;
+my $num2 = 2;
+my $out : int;
+my $out_ref = \$out;
+sum($out_ref, $num1, $num2);
+</pre>
+
+      <h4 id="language-ref-deref">デリファレンス</h4>
+      <p>
+        デリファレンスとは、アドレスの場所にあるレキシカル変数の値を取得・設定する操作をいいます。
+      </p>
+      <p>
+        デリファレンスすることで、アドレスを通して値を取得したり、変更することができます。
+      </p>
+<pre>
+# 数値型の値を取得
+my $num2 = $$num_ref;
+
+# 数値型の値を変更
+$$num_ref = 3;
+
+# 値型の値を取得
+my $point2 = $$point_ref;
+
+# 値型の値を設定
+$$point_ref = $point2;
+</pre>
+
+      <p>
+        リファレンス型の対象が値型であった場合に、値型のフィールドの設定と取得は、アロー演算子で行うことができます。
+      </p>
+<pre>
+# リファレンス型の対象が値型であった場合に、値型のフィールドを取得
+my $x = $point_ref->{x};
+
+# リファレンス型の対象が値型であった場合に、値型のフィールドを設定
+$point_ref->{x} = 1;
+</pre>
+
+      <h4 id="language-type-ref-numeric">数値のリファレンス型</h4>
+      <p>
+        数値のリファレンス型とは、<a href="#language-type-numeric">数値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
+      </p>
+      <h4 id="language-type-ref-value">値のリファレンス型</h4>
+      <p>
+        値のリファレンス型とは、<a href="#language-type-value">値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
+      </p>
+      
+      </p>
+      
       <h3 id="language-expression">式</h3>
       <ul class="list">
         <li class="language-expression-summary">式とは</li>
@@ -5512,7 +5599,7 @@ $x >>>= 1;
 </pre>
       <h4 id="language-operator-ref">リファレンス演算子</h4>
       <p>
-        リファレンス演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数に対してリファレンスを生成する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
+        リファレンス演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数のアドレスを取得する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
       </p>
 <pre>
 \変数
@@ -5521,10 +5608,7 @@ $x >>>= 1;
         変数が数値型または値型でなかった場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        リファレンス演算子は式を返します。
-      </p>
-      <p>
-        リファレンス演算子で返された結果は、対応する<a href="#language-type-ref">リファレンス型</a>に代入できます。
+        リファレンス演算子は式を返します。返される型は、<a href="#language-type-ref">リファレンス型</a>です。
       </p>
       <pre>
         <b>リファレンス演算子のサンプル</b>
@@ -5536,6 +5620,9 @@ my $num_ref : int& = \$num;
 my $z : SPVM::Complex_2d;
 my $z_ref : SPVM::Complex_2d& = \$z;
 </pre>
+      <p>
+        リファレンスの詳しい解説については、<a href="#language-ref">リファレンス</a>を見てください。
+      </p>
 
       <h4 id="language-operator-array-length">配列長演算子</h4>
       <p>
@@ -7143,7 +7230,7 @@ package Point_3i : value_t {
 
       <h4 id="language-type-ref">リファレンス型</h4>
       <p>
-        リファレンス型とは、変数への参照を表現する型のことです。数値型か値型の名前の後ろに「&」を付けることで定義できます。
+        リファレンス型とは、変数のアドレスが格納できる型のことです。<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の後ろに「&」を付けることで定義できます。
       </p>
 <pre>
 my $num : int;
@@ -7153,53 +7240,33 @@ my $point : Point_3i;;
 my $point_ref : Point_3i& = \$point;
 </pre>
       <p>
-        リファレンス型は、単独では存在できず、リファレンスが代入される必要があります。
+        リファレンス型の値に代入できるのは、<a href="#language-operator-ref">リファレンス演算子</a>で取得したレキシカル変数のアドレスだけです。
       </p>
       <p>
-        リファレンスにできるのは、数値型と値型のみです。オブジェクト型をリファレンスにすることはできません。
+        リファレンス型のレキシカル変数の宣言だけが行われた場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        リファレンス型は、サブルーチンの引数にすることができます。
+        リファレンス型は、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>の型として利用できます。必ずリファレンス演算子によって、レキシカル変数のアドレスが格納される必要があります。レキシカル変数の宣言だけの場合は、コンパイル時エラーが発生します。
       </p>
-<pre>
-foo($num_ref);
-foo($point_ref);
-</pre>
       <p>
-        デリファレンスすることで、参照先の値を取得したり、変更することができます。
+        リファレンス型は、<a href="#language-sub-definition">サブルーチンの定義</a>における引数の型として利用できます。
       </p>
-<pre>
-# の値を
-my $num2 = $$num_ref;
+      <p>
+        リファレンス型は、<a href="#language-sub-definition">サブルーチンの定義</a>における戻り値の型として利用できません。
+      </p>
+      <p>
+        リファレンス型は、<a href="#language-package-definition">パッケージの定義</a>におけるフィールドの型として利用できません。
+      </p>
+      <p>
+        リファレンス型は、<a href="#language-package-definition">パッケージの定義</a>におけるパッケージ変数の型として利用できません。
+      </p>
+      <p>
+        不正な場所で、リファレンス型が使用された場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        リファレンスの詳しい解説については、<a href="#language-ref">リファレンス</a>を見てください。
+      </p>
 
-# 数値型の値を変更
-$$num_ref = 3;
-
-# 値型の値を取得
-my $point2 = $$point_ref;
-
-# 値型の値を設定
-$$point_ref = $point2;
-</pre>
-
-      <p>
-        リファレンス型の対象が値型であった場合に、値型のフィールドの設定と取得は、アロー演算子で行うことができます。
-      </p>
-<pre>
-# リファレンス型の対象が値型であった場合に、値型のフィールドを取得
-my $x = $point_ref->{x};
-
-# リファレンス型の対象が値型であった場合に、値型のフィールドを設定
-$point_ref->{x} = 1;
-</pre>
-      <h4 id="language-type-ref-numeric">数値のリファレンス型</h4>
-      <p>
-        数値のリファレンス型とは、<a href="#language-type-numeric">数値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
-      </p>
-      <h4 id="language-type-ref-value">値のリファレンス型</h4>
-      <p>
-        値のリファレンス型とは、<a href="#language-type-value">値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
-      </p>
       <h3 id="language-type-inference">型推論</h3>
       <p>
         型推論によって、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>するときに、<a href="#language-type">型</a>の指定を省略することができます。型推論は、常に代入演算子の右辺の型によって、行われます。
