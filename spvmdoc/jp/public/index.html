@@ -6505,8 +6505,11 @@ my $num = 1 + 2;
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
         <li><a href="#language-type-self">self型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
-        <li><a href="#language-type-array-numeric">数値の配列型</a></li>
+        <li><a href="#language-type-array-numeric">数値配列型</a></li>
         <li><a href="#language-type-array-byte">byte[]型</a></li>
+        <li><a href="#language-type-array-object">オブジェクト配列型</a></li>
+        <li><a href="#language-type-array-value">値配列型</a></li>
+        <li><a href="#language-type-any-object-array">汎用オブジェクト配列型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
         <li><a href="#language-type-string-compatible">文字列互換型</a></li>
         <li><a href="#language-type-value">値型</a></li>
@@ -7101,6 +7104,7 @@ byte[]
       <p>
         <a href="#language-type-string">文字列型</a>は、コンパイル時には文字列型として扱われますが、実行時にはbyte[]型になります。
       </p>
+
       <h4 id="language-type-array-object">オブジェクトの配列型</h4>
       <p>
         オブジェクトの配列型とは、<a href="#language-type-object">オブジェクト型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
@@ -7128,6 +7132,7 @@ byte[]
       <p>
         オブジェクトの配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
       </p>
+
       <h4 id="language-type-array-value">値の配列型</h4>
       <p>
         値の配列型とは、<a href="#language-type-value">値型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
@@ -7149,7 +7154,40 @@ byte[]
       <p>
         値の配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
       </p>
-      
+
+      <h4 id="language-type-any-object-array">汎用オブジェクト配列型</h4>
+      <p>
+        汎用オブジェクト配列型とは、oarrayで表現される、<a href="#language-type-object">オブジェクト型</a>の値を要素として持つ任意の<a href="#language-type-array">配列型</a>の値を代入できる型です。C言語のqsort関数の第一引数には、任意の配列型をvoid*型にキャストして渡すことができますが、これに該当する機能を実現するために、汎用オブジェクト配列型は設計されました。
+      </p>
+<pre>
+my $array : oarray = new Point[3];
+my $array : oarray = new object[3];
+</pre>
+      <p>
+        オブジェクト型以外の型を持つ値が代入された場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        「oarray型」は「object[]型」と異なる型であることに注意してください。oarray型は、オブジェクト型の値を要素として持つ任意の配列型の値を代入できる型であるのに対して、「object[]型」は、「object型の値を要素に持つ配列」を表現する型で、任意の配列型の値を代入することはできません。
+      </p>
+      <p>
+        汎用オブジェクト配列型は、<a href="#language-type-array">配列型</a>です。<a href="#language-operator-array-length">配列長演算子</a>によって長さを取得すること、<a href="#language-expression-set-array-element">配列の要素の値の設定</a>、<a href="#language-expression-get-array-element">配列の要素の値の取得</a>ができます。
+      </p>
+<pre>
+my $array : oarray = new SPVM::Int[3];
+
+# 汎用オブジェクト配列型の要素の長さを取得
+my $legnth = @$array;
+
+# 汎用オブジェクト配列型の要素の値の取得
+my $num = (SPVM::Int)$array->[0];
+
+# 汎用オブジェクト配列型の要素の値の設定
+$array->[0] = SPVM::Int->new(5);
+</pre>
+      <p>
+        汎用オブジェクト配列型の要素の値の設定においては、要素の型が、配列の型の次元よりも1だけ小さくなっているかの実行時チェックが入ります。チェックに失敗した場合は、例外が発生します。汎用オブジェクト配列型は、実行時型安全性を保証します。
+      </p>
+
       <h4 id="language-type-string">文字列型</h4>
       <p>
         文字列型は、文字列を表現する型です。stringによって表現します。C言語の「const char*」を表現するために設計されました。
