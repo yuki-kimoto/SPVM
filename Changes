@@ -1,4 +1,4 @@
-0.0415 2018-01-30
+0.0415 2018-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets
   - add fgets_chomp
