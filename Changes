@@ -3,6 +3,8 @@
   - add fgets
   - add fgets_chomp
   - Exception in destructor is changed to warning
+  - add ref_count core function
+  - fix precompile double, float constant precice and sign bug
 0.0414 2018-01-29
   - add sequencial operator
     # $z is 3

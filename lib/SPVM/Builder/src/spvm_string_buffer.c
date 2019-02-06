@@ -255,7 +255,7 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
 }
 
 int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value) {
-  
+
   int32_t id = string_buffer->length;
   
   int32_t max_length = 20 + 1;
@@ -265,15 +265,21 @@ int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float va
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.20ff", value);
+  char* start_ptr = string_buffer->buffer + string_buffer->length;
+  
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.9g", value);
   
   string_buffer->length += write_length;
+  
+  if (!(strchr(start_ptr, '.') || strchr(start_ptr, 'e') || strchr(start_ptr, 'E'))) {
+    SPVM_STRING_BUFFER_add(string_buffer, ".0");
+  }
   
   return id;
 }
 
 int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double value) {
-  
+
   int32_t id = string_buffer->length;
   
   int32_t max_length = 20;
@@ -282,10 +288,16 @@ int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double 
   
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
+
+  char* start_ptr = string_buffer->buffer + string_buffer->length;
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.20f", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%.17g", value);
   
   string_buffer->length += write_length;
+
+  if (!(strchr(start_ptr, '.') || strchr(start_ptr, 'e') || strchr(start_ptr, 'E'))) {
+    SPVM_STRING_BUFFER_add(string_buffer, ".0");
+  }
   
   return id;
 }
