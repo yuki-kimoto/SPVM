@@ -203,12 +203,23 @@ sub compile {
   }
 
   # Source file
-  my $src_ext = $build_config->get_src_ext;
-  my $src_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, $src_ext);
-  my $src_file = "$input_dir/$src_rel_file";
-  unless (-f $src_file) {
-    confess "Can't find source file $src_file: $!";
+  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
+  my $src_file_no_ext = "$input_dir/$src_rel_file_no_ext";
+  my @available_exts = qw(.c .C .cpp .i .s .cxx .cc);
+  my @src_files;
+  for my $ext (@available_exts) {
+    my $src_file = "$src_file_no_ext$ext";
+    if (-f $src_file) {
+      push @src_files, $src_file;
+    }
   }
+  if (@src_files > 1) {
+    confess "Find multiple source file @src_files";
+  }
+  elsif (@src_files == 0) {
+    confess "Can't find source file $src_file_no_ext with extension(@available_exts)";
+  }
+  my $src_file = $src_files[0];
 
   # CBuilder configs
   my $ccflags = $build_config->get_ccflags;

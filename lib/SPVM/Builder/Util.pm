@@ -91,6 +91,16 @@ sub convert_package_name_to_category_rel_file_with_ext {
   return $rel_file_with_ext;
 }
 
+sub convert_package_name_to_category_rel_file_without_ext {
+  my ($package_name, $category, $ext) = @_;
+  
+  my $rel_file_with_ext = $package_name;
+  $rel_file_with_ext =~ s/::/\//g;
+  $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
+  
+  return $rel_file_with_ext;
+}
+
 sub convert_package_name_to_rel_file {
   my ($package_name) = @_;
   
@@ -245,9 +255,6 @@ sub new_default_build_config {
   
   # Optimize
   $build_config->set_optimize('-O3');
-  
-  # Source exetension
-  $build_config->set_src_ext('c');
   
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
