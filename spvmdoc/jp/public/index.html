@@ -431,6 +431,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="#language-condition">条件</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
         <li><a href="#language-literal">リテラル</a></li>
+        <li><a href="#language-fat-comma">ファットカンマ</a></li>
         <li><a href="#language-string">文字列</a></li>
         <li><a href="#language-undef">未定義値</a></li>
         <li><a href="#language-operator">演算子</a></li>
@@ -693,7 +694,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
         SPVMにおける区切り文字は以下です。
       </p>
 <pre>
-( ) { } [ ] ; , ->
+( ) { } [ ] ; , -> =>
 </pre>
 
       <h4 id="language-parser-operator">演算子</h4>
@@ -4514,6 +4515,36 @@ my $string_const = "abc";
 <pre>
 undef
 </pre>
+
+      <h3 id="language-fat-comma">ファットカンマ</h3>
+      <p>
+        ファットカンマは「=>」で表現されます。
+      </p>
+<pre>
+=>
+</pre>
+      <p>
+        ファットカンマは「,」のエイリアスです。「,」が使える場所ではいつでも代わりに、ファットカンマが使えます。
+      </p>
+<pre>
+# カンマ
+["a", "b", "c", "d"]
+
+# カンマの代わりにファットカンマを使う
+["a" => "b", "c" => "d"]
+</pre>
+      <p>
+        ファットカンマの左型に置かれた識別子は、<a href="#language-literal-string">文字列リテラル</a>として扱われます。
+      </p>
+
+<pre>
+# カンマの代わりにファットカンマを使う
+["a" => "b", "c" => "d"]
+
+# ファットカンマの左型に置かれた識別子は、文字列リテラルになる。上記と同じ意味
+[a => "b", c => "d"]
+</pre>
+
       <p>
         未定義値は、任意のオブジェクト型の変数に代入することができます。
       </p>
