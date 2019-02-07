@@ -1,4 +1,4 @@
-0.0415 2018-02-07
+0.0416 2018-02-07
   - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
     // Before
 		int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
