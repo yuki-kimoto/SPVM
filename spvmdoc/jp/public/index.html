@@ -685,10 +685,125 @@ public precompile pointer_t return require rw ro self switch
 sub string short scalar undef unless use void value_t while
 weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 </pre>
+
       <h4 id="language-parser-identifier">識別子</h4>
       <p>
         SPVMにおける識別子は「パッケージ名」「サブルーチン名」「フィールド名」「パッケージ変数名」「レキシカル変数名」です。
       </p>
+      <ul class="list">
+        <li><a href="language-parser-identifier-package-name">パッケージ名</a></li>
+        <li><a href="language-parser-identifier-sub-name">サブルーチン名</a></li>
+        <li><a href="language-parser-identifier-package-var-name">パッケージ変数名</a></li>
+        <li><a href="language-parser-identifier-lex-var-name">レキシカル変数名</a></li>
+      </ul>
+      
+      <h5 id="language-parser-identifier-package-name">パッケージ名</h4>
+      <p>
+        パッケージ名は、ASCIIコードにおけるアルファベットの大文字で始まります。
+      </p>
+      <p>
+        パッケージ名は、「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」と「::」の組み合わせです。
+      </p>
+      <p>
+        最後は「::」で終わってはいけません。
+      </p>
+      <p>
+        アンダーバーは、二つ以上続いてはいけません。
+      </p>
+      <p>
+        パッケージ名が要求される場所で、不正なパッケージ名が現れた場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 正しいパッケージ名
+Foo
+Foo::Bar
+Foo::Bar::Baz
+Foo::bar
+Foo_Bar::Baz_Baz
+
+# 不正なパッケージ名
+foo
+Foo::Bar::
+Foo__Bar
+</pre>
+
+      <h5 id="language-parser-identifier-package-name">サブルーチン名</h4>
+      <p>
+        サブルーチン名は、「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」です。
+      </p>
+      <p>
+        アンダーバーは、二つ以上続いてはいけません。
+      </p>
+      <p>
+        サブルーチン名が要求される場所で、不正なサブルーチン名が現れた場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 正しいサブルーチン名
+FOO
+FOO_BAR
+foo
+foo_bar
+_foo
+_foo_bar_
+
+# 不正なサブルーチン名
+foo__bar
+</pre>
+
+      <h5 id="language-parser-identifier-package-var-name">パッケージ変数名</h4>
+      <p>
+        パッケージ変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」と「::」の組み合わせが続きます。
+      </p>
+      <p>
+        「$」の次に来る文字は、ASCIIコードにおけるアルファベットの大文字でなければなりません。
+      </p>
+      <p>
+        アンダーバーは、二つ以上続いてはいけません。
+      </p>
+      <p>
+        パッケージ変数の定義においては、パッケージ変数名に「::」が含まれてはいけません。
+      </p>
+      <p>
+        パッケージ変数名が要求される場所で、不正なパッケージ変数名が現れた場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 正しいパッケージ変数名
+$FOO::BAR
+$Foo::Bar
+$FOO
+$FOO_BAR
+
+# 不正なパッケージ変数名
+$foo
+$FOO__BAR
+$
+</pre>
+
+      <h5 id="language-parser-identifier-lex-var-name">レキシカル変数名</h4>
+      <p>
+        レキシカル変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」が続きます。
+      </p>
+      <p>
+        「$」の次に来る文字は、ASCIIコードにおけるアルファベットの子文字でなければなりません。
+      </p>
+      <p>
+        アンダーバーは、二つ以上続いてはいけません。
+      </p>
+      <p>
+        レキシカル変数名が要求される場所で、不正なレキシカル変数名が現れた場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 正しいレキシカル変数名
+$foo
+$foo_bar
+$_foo
+
+# 不正なレキシカル変数名
+$Foo
+$foo__bar
+$
+</pre>
+      
       <h4 id="language-parser-separator">区切り文字</h4>
       <p>
         SPVMにおける区切り文字は以下です。
@@ -4534,7 +4649,7 @@ undef
 ["a" => "b", "c" => "d"]
 </pre>
       <p>
-        ファットカンマの左型に置かれた識別子は、<a href="#language-literal-string">文字列リテラル</a>として扱われます。
+        ファットカンマの左型に置かれたパッケージ変数名、レキシカル変数名以外の識別子は、<a href="#language-literal-string">文字列リテラル</a>として扱われます。
       </p>
 
 <pre>
