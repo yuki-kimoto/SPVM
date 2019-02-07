@@ -1,3 +1,14 @@
+0.0415 2018-02-07
+  - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
+    // Before
+		int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+		
+		}
+    // After
+		int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+		
+		}
+    
 0.0415 2018-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets

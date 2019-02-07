@@ -5,7 +5,7 @@
 
 #include <spvm_native.h>
 
-int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -22,7 +22,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -39,7 +39,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -56,7 +56,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -73,7 +73,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -90,7 +90,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -107,7 +107,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -124,7 +124,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__opkgvar_test(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -138,7 +138,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -152,7 +152,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -166,7 +166,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -180,7 +180,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -194,7 +194,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -209,7 +209,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VA
 }
 
 
-int32_t SPVM_NATIVE_TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -231,7 +231,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VA
 }
 
 
-int32_t SPVM_NATIVE_TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -249,7 +249,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -267,7 +267,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SP
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -279,7 +279,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -291,7 +291,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -303,7 +303,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -315,7 +315,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -327,7 +327,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -339,7 +339,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -355,7 +355,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_bfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -371,7 +371,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_sfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -387,7 +387,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_ifield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -403,7 +403,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_lfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -419,7 +419,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_ffield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -435,7 +435,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_dfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_set_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_set_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -463,7 +463,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_set_ofield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -486,7 +486,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_bfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -509,7 +509,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_sfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -532,7 +532,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_ifield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -555,7 +555,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_lfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -578,7 +578,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_ffield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -601,7 +601,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_dfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_get_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_get_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -631,7 +631,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_get_ofield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -646,7 +646,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_bfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -664,7 +664,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_bfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_sfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -682,7 +682,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_sfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_ifield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -700,7 +700,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_ifield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_lfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -718,7 +718,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_lfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_ffield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -736,7 +736,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_ffield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_dfield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -754,7 +754,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_dfield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_env_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_env_ofield(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -772,7 +772,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__native_env_ofield(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -784,7 +784,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPVM_NATIVE_TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -808,63 +808,63 @@ int32_t SPVM_NATIVE_TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
-}
-
-int32_t SPVM_NATIVE_TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-float SPVM_NATIVE_TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+float SPNATIVE__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_CROAK("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+}
+
+int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -954,7 +954,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -989,7 +989,7 @@ int32_t SPVM_NATIVE_TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

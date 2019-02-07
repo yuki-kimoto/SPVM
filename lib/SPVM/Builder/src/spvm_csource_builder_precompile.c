@@ -1221,7 +1221,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(SPVM_ENV* env, SPVM_S
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
         
   // Subroutine name. Replace : to _
-  SPVM_STRING_BUFFER_add(string_buffer, "SPVM_PRECOMPILE_");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPPRECOMPILE__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)package_name);
   SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_name);
@@ -3644,7 +3644,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         // Subroutine inline expantion in same package
         if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVM_PRECOMPILE_");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_name);

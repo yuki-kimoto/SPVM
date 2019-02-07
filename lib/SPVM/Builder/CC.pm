@@ -95,7 +95,7 @@ sub create_cfunc_name {
   my ($self, $package_name, $sub_name) = @_;
   
   my $category = $self->category;
-  my $prefix = 'SPVM_' . uc($category) . '_';
+  my $prefix = 'SP' . uc($category) . '__';
   
   # Precompile Subroutine names
   my $sub_abs_name_under_score = "${package_name}::$sub_name";

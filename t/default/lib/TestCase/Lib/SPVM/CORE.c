@@ -7,7 +7,7 @@
 
 #include <spvm_native.h>
 
-int32_t SPVM_NATIVE_TestCase__Lib__SPVM__CORE__test_init_native_constants_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Lib__SPVM__CORE__test_init_native_constants_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

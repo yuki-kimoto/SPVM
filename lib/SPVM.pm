@@ -863,7 +863,7 @@ C Source File;
   // lib/MyMathNative.native.c
   #include <spvm_native.h>
 
-  int32_t SPVM_NATIVE_MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     // First argument
     void* sp_nums = stack[0].oval;

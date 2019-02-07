@@ -8212,12 +8212,12 @@ package Foo::Bar {
 
 <pre>
 // エクステンションにおける関数名
-SPVM_NATIVE_Foo__Bar__baz(SPVM_ENV* env, SPVM_VALUE* stack) {
+SPNATIVE__Foo__Bar__baz(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 }
 </pre>
       <p>
-        SPVMの「Foo::Barパッケージのbazサブルーチン」はエクステンションの「SPVM_NATIVE_Foo__Bar__baz」に対応します。これは1対1に対応し、相互に名前の変換が可能です。
+        SPVMの「Foo::Barパッケージのbazサブルーチン」はエクステンションの「SPNATIVE__Foo__Bar__baz」に対応します。これは1対1に対応し、相互に名前の変換が可能です。
       </p>
       
       <h3>SPVMからPerlのサブルーチンを呼び出すことはできますか</h3>

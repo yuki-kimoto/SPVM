@@ -11,7 +11,7 @@
 #include <memory.h>
 #include <fcntl.h>
 
-int32_t SPVM_NATIVE_SPVM__CORE__ref_count(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__ref_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj = stack[0].oval;
   
   if (obj == NULL) {
@@ -25,7 +25,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__ref_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
   if (ofh == NULL) {
@@ -100,7 +100,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
   if (ofh == NULL) {
@@ -177,7 +177,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // File name
   void* ofile_name = stack[0].oval;
@@ -268,7 +268,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fopen(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fputc(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fputc(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Char
   int32_t ch = stack[0].ival;
@@ -289,7 +289,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fputc(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Buffer
   void* obuffer = stack[0].oval;
@@ -319,7 +319,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fread(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fwrite(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fwrite(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Buffer
   void* obuffer = stack[0].oval;
@@ -345,7 +345,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fwrite(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fseek(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fseek(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // File handle
   void* ofh = stack[0].oval;
@@ -368,7 +368,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fseek(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
   if (ofh == NULL) {
@@ -391,7 +391,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fclose(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // STDIN
   {
@@ -486,7 +486,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;
   int32_t length = stack[1].ival;
@@ -505,7 +505,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stac
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -529,7 +529,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -553,7 +553,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -577,7 +577,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -601,7 +601,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -625,7 +625,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -649,7 +649,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -1030,7 +1030,7 @@ static void DualPivotQuickSort_double(double* arr, int32_t low, int32_t high)
     } 
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -1050,7 +1050,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -1074,7 +1074,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
@@ -1093,7 +1093,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
 
@@ -1109,7 +1109,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
@@ -1125,7 +1125,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
 
@@ -1141,7 +1141,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   
   if (object == NULL) {
@@ -1155,7 +1155,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
   double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
   
@@ -1167,7 +1167,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cadd(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__csub(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__csub(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
   double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
   
@@ -1179,7 +1179,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__csub(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cmul(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cmul(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
   double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
   
@@ -1191,7 +1191,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cmul(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cdiv(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cdiv(SPVM_ENV* env, SPVM_VALUE* stack) {
   double _Complex x_in1 = stack[0].dval + stack[1].dval * _Complex_I ;
   double _Complex x_in2 = stack[2].dval + stack[3].dval * _Complex_I ;
   
@@ -1203,7 +1203,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cdiv(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__caddf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__caddf(SPVM_ENV* env, SPVM_VALUE* stack) {
   float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
   float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
   
@@ -1215,7 +1215,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__caddf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__csubf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__csubf(SPVM_ENV* env, SPVM_VALUE* stack) {
   float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
   float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
   
@@ -1227,7 +1227,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__csubf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cmulf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cmulf(SPVM_ENV* env, SPVM_VALUE* stack) {
   float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
   float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
   
@@ -1239,7 +1239,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cmulf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cdivf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cdivf(SPVM_ENV* env, SPVM_VALUE* stack) {
   float _Complex x_in1 = stack[0].fval + stack[1].fval * _Complex_I ;
   float _Complex x_in2 = stack[2].fval + stack[3].fval * _Complex_I ;
   
@@ -1251,15 +1251,15 @@ int32_t SPVM_NATIVE_SPVM__CORE__cdivf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+int32_t SPNATIVE__SPVM__CORE__new_icomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
-int32_t SPVM_NATIVE_SPVM__CORE__new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+int32_t SPNATIVE__SPVM__CORE__new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
-int32_t SPVM_NATIVE_SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+int32_t SPNATIVE__SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
-int32_t SPVM_NATIVE_SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
+int32_t SPNATIVE__SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
-int32_t SPVM_NATIVE_SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -1270,7 +1270,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* string = stack[0].oval;
@@ -1288,7 +1288,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* object = stack[0].oval;
@@ -1308,7 +1308,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isinff(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isinff(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1319,7 +1319,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isinff(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isfinitef(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isfinitef(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1330,7 +1330,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isfinitef(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isnanf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isnanf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1341,7 +1341,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isnanf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INFINITYF(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INFINITYF(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1350,7 +1350,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INFINITYF(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__NANF(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__NANF(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1359,7 +1359,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__NANF(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INFINITY(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INFINITY(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1368,7 +1368,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INFINITY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__NAN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__NAN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1377,7 +1377,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__NAN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__signbitf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__signbitf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1388,7 +1388,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__signbitf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__signbit(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__signbit(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1399,7 +1399,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__signbit(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isinf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isinf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1410,7 +1410,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isinf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isnan(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isnan(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1421,7 +1421,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isnan(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__isfinite(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__isfinite(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1432,7 +1432,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__isfinite(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sin(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sin(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = sin(stack[0].dval);
@@ -1442,7 +1442,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sin(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cos(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cos(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = cos(stack[0].dval);
@@ -1452,7 +1452,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cos(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__tan(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__tan(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = tan(stack[0].dval);
@@ -1462,7 +1462,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__tan(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__asin(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__asin(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = asin(stack[0].dval);
@@ -1472,7 +1472,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__asin(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__acosh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__acosh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = acosh(stack[0].dval);
@@ -1482,7 +1482,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__acosh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__atanh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__atanh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = atanh(stack[0].dval);
@@ -1492,7 +1492,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__atanh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__asinh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__asinh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = asinh(stack[0].dval);
@@ -1502,7 +1502,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__asinh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__acos(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__acos(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = acos(stack[0].dval);
@@ -1512,7 +1512,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__acos(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__atan(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__atan(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = atan(stack[0].dval);
@@ -1522,7 +1522,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__atan(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__exp(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__exp(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = exp(stack[0].dval);
@@ -1532,7 +1532,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__exp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__exp2(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__exp2(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = exp2(stack[0].dval);
@@ -1542,7 +1542,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__exp2(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__log(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__log(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = log(stack[0].dval);
@@ -1552,7 +1552,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__log(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__log10(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__log10(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = log10(stack[0].dval);
@@ -1562,7 +1562,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__log10(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = sqrt(stack[0].dval);
@@ -1572,7 +1572,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cbrt(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cbrt(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = cbrt(stack[0].dval);
@@ -1582,7 +1582,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cbrt(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__ceil(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__ceil(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = ceil(stack[0].dval);
@@ -1592,7 +1592,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__ceil(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   // x - Math.Round(x / y) * y
@@ -1603,7 +1603,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__floor(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__floor(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = floor(stack[0].dval);
@@ -1613,7 +1613,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__floor(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__nearbyint(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__nearbyint(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = nearbyint(stack[0].dval);
@@ -1623,7 +1623,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__nearbyint(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__atan2(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__atan2(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = atan2(stack[0].dval, stack[1].dval);
@@ -1633,7 +1633,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__atan2(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__pow(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__pow(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = pow(stack[0].dval, stack[1].dval);
@@ -1643,7 +1643,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__pow(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__round(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__round(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = round(stack[0].dval);
@@ -1653,7 +1653,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__round(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   int32_t value = (int32_t)labs(stack[0].ival);
@@ -1663,7 +1663,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   int64_t value = (int64_t)labs(stack[0].lval);
@@ -1673,7 +1673,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__fabs(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__fabs(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = fabs(stack[0].dval);
@@ -1683,7 +1683,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__fabs(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__erf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__erf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = erf(stack[0].dval);
@@ -1693,7 +1693,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__erf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__erfc(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__erfc(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = erfc(stack[0].dval);
@@ -1703,7 +1703,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__erfc(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__lgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__lgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = lgamma(stack[0].dval);
@@ -1713,7 +1713,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__lgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__tgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__tgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = tgamma(stack[0].dval);
@@ -1723,7 +1723,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__tgamma(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__sinh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__sinh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = sinh(stack[0].dval);
@@ -1733,7 +1733,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__sinh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__cosh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__cosh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = cosh(stack[0].dval);
@@ -1743,7 +1743,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__cosh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__tanh(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__tanh(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = tanh(stack[0].dval);
@@ -1753,7 +1753,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__tanh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__hypot(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__hypot(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = hypot(stack[0].dval, stack[1].dval);
@@ -1763,7 +1763,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__hypot(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__expm1(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__expm1(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = expm1(stack[0].dval);
@@ -1773,7 +1773,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__expm1(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__log1p(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__log1p(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   double value = log1p(stack[0].dval);
@@ -1783,7 +1783,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__log1p(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1792,7 +1792,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1801,7 +1801,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1810,7 +1810,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1819,7 +1819,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1828,7 +1828,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT8_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT8_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1837,7 +1837,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT8_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT16_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT16_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1846,7 +1846,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT16_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT16_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT16_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1855,7 +1855,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT16_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT32_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT32_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1864,7 +1864,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT32_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT32_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT32_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1873,7 +1873,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT32_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT64_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT64_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1882,7 +1882,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT64_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__INT64_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__INT64_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1891,7 +1891,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__INT64_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__PI(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__PI(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1900,7 +1900,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__PI(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
-int32_t SPVM_NATIVE_SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1910,7 +1910,7 @@ int32_t SPVM_NATIVE_SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 // https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
-int32_t SPVM_NATIVE_SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* object = stack[0].oval;
