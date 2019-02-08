@@ -280,24 +280,25 @@
         SPVMにおける識別子は「パッケージ名」「サブルーチン名」「フィールド名」「パッケージ変数名」「レキシカル変数名」です。
       </p>
       <ul class="list">
-        <li><a href="language-parser-identifier-package-name">パッケージ名</a></li>
-        <li><a href="language-parser-identifier-sub-name">サブルーチン名</a></li>
-        <li><a href="language-parser-identifier-package-var-name">パッケージ変数名</a></li>
-        <li><a href="language-parser-identifier-lex-var-name">レキシカル変数名</a></li>
+        <li><a href="#language-parser-identifier-package-name">パッケージ名</a></li>
+        <li><a href="#language-parser-identifier-sub-name">サブルーチン名</a></li>
+        <li><a href="#language-parser-identifier-field-name">フィールド名</a></li>
+        <li><a href="#language-parser-identifier-package-var-name">パッケージ変数名</a></li>
+        <li><a href="#language-parser-identifier-lex-var-name">レキシカル変数名</a></li>
       </ul>
       
       <h4 id="language-parser-identifier-package-name">パッケージ名</h3>
       <p>
-        パッケージ名は、ASCIIコードにおけるアルファベットの大文字で始まります。
+        パッケージ名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」と「::」の組み合わせです。「::」は、含まれていなくてもかまいません。
       </p>
       <p>
-        パッケージ名は、「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」と「::」の組み合わせです。
+        パッケージ名は、ASCIIコードにおけるアルファベットの大文字で始まらなければなりません。
       </p>
       <p>
-        最後は「::」で終わってはいけません。
+        「::」を連続して続けることはできません。最後は「::」で終わってはいけません。
       </p>
       <p>
-        アンダーバーは、二つ以上続いてはいけません。
+        アンダースコアは、二つ以上続いてはいけません。
       </p>
       <p>
         パッケージ名が要求される場所で、不正なパッケージ名が現れた場合は、コンパイル時エラーが発生します。
@@ -316,12 +317,12 @@ Foo::Bar::
 Foo__Bar
 </pre>
 
-      <h4 id="language-parser-identifier-package-name">サブルーチン名</h3>
+      <h4 id="language-parser-identifier-sub-name">サブルーチン名</h3>
       <p>
-        サブルーチン名は、「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」です。
+        サブルーチン名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」です。
       </p>
       <p>
-        アンダーバーは、二つ以上続いてはいけません。
+        アンダースコアは、二つ以上続いてはいけません。
       </p>
       <p>
         サブルーチン名が要求される場所で、不正なサブルーチン名が現れた場合は、コンパイル時エラーが発生します。
@@ -339,15 +340,38 @@ _foo_bar_
 foo__bar
 </pre>
 
+      <h4 id="language-parser-identifier-field-name">フィールド名</h3>
+      <p>
+        フィールド名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」です。
+      </p>
+      <p>
+        アンダースコアは、二つ以上続いてはいけません。
+      </p>
+      <p>
+        フィールド名が要求される場所で、不正なフィールド名が現れた場合は、コンパイル時エラーが発生します。
+      </p>
+<pre>
+# 正しいフィールド名
+FOO
+FOO_BAR
+foo
+foo_bar
+_foo
+_foo_bar_
+
+# 不正なフィールド名
+foo__bar
+</pre>
+
       <h4 id="language-parser-identifier-package-var-name">パッケージ変数名</h3>
       <p>
-        パッケージ変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」と「::」の組み合わせが続きます。
+        パッケージ変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」と「::」の組み合わせが続きます。
       </p>
       <p>
         「$」の次に来る文字は、ASCIIコードにおけるアルファベットの大文字でなければなりません。
       </p>
       <p>
-        アンダーバーは、二つ以上続いてはいけません。
+        アンダースコアは、二つ以上続いてはいけません。
       </p>
       <p>
         パッケージ変数の定義においては、パッケージ変数名に「::」が含まれてはいけません。
@@ -370,13 +394,13 @@ $
 
       <h4 id="language-parser-identifier-lex-var-name">レキシカル変数名</h3>
       <p>
-        レキシカル変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダーバーの一文字以上」が続きます。
+        レキシカル変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」が続きます。
       </p>
       <p>
         「$」の次に来る文字は、ASCIIコードにおけるアルファベットの子文字でなければなりません。
       </p>
       <p>
-        アンダーバーは、二つ以上続いてはいけません。
+        アンダースコアは、二つ以上続いてはいけません。
       </p>
       <p>
         レキシカル変数名が要求される場所で、不正なレキシカル変数名が現れた場合は、コンパイル時エラーが発生します。
