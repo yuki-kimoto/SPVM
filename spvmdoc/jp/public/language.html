@@ -99,21 +99,22 @@
       
       <h2 id="language-c99">C99準拠</h2>
       <ul class="list">
-        <li><a href="#language-c99-source">ソースコード</a>
-        <li><a href="#language-c99-type">型</a>
+        <li><a href="#language-c99-spec">C99準拠のコンパイラとランタイム</a>
+        <li><a href="#language-c99-type">C99との型の対応</a>
       </ul>
-      <h3 id="language-c99-source">C99準拠のソースコード</h2>
+      
+      <h3 id="language-c99-spec">C99準拠のコンパイラとランタイム</h2>
       <p>
-        SPVM自体のソースコードは、C言語で書かれ、C99に準拠します。
+        SPVMコンパイラおよびSPVMランタイムのソースコードは、<b>C言語で書かれ、C99に準拠</b>します。
       </p>
       <p>
-        数値演算における仕様は、C99に準拠します。C99で、未定義・処理系依存のものは、SPVMにおいても未定義・処理系依存です。
+        数値演算における仕様は、C99に準拠します。C99で、未定義・処理系依存のものは、SPVMにおいても未定義・処理系依存です。<a href="#language-operator-arithmetic">算術演算子</a>の仕様では、C99における算術演算との対応が記述されます。
       </p>
       <p>
-        <a href="#language-operator-add">加算演算子</a>、<a href="#language-operator-subtract">減算演算子</a>、乗算演算子、除算演算子、剰余演算子、シフト演算子、ビット演算子においては、C99における演算との対応が仕様化されます。
+        <a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
       </p>
       <p>
-        数値から文字列への型変換における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
+        このことは、ユーザーが、C99以外のCのバージョンや、C++で、ネイティブコードをバインディングできないという意味ではないので注意してください。単に、SPVMのコンパイラとランタイムが、C99に準拠する必要があるという意味です。
       </p>
       <h3 id="language-c99-type">C99との型の対応</h2>
       <p>
@@ -139,7 +140,7 @@
             int8_t
           </td>
           <td>
-            SPVMのbyte型はC99のint8_t型に一致します。
+            SPVMの<a href="#language-type-byte">byte型</a>は、C99のint8_t型に一致します。
           </td>
         </tr>
         <tr>
@@ -150,7 +151,7 @@
             int16_t
           </td>
           <td>
-            SPVMのshort型はC99のint16_t型に一致します。
+            SPVMの<a href="#language-type-short">short型</a>は、C99のint16_t型に一致します。
           </td>
         </tr>
         <tr>
@@ -158,10 +159,10 @@
             <b>int</b>
           </td>
           <td>
-            <b>int32_t</b>
+            int32_t
           </td>
           <td>
-            SPVMのint型はC99のint32_t型に一致します。
+            SPVMの<a href="#language-type-int">int型</a>は、C99のint32_t型に一致します。
           </td>
         </tr>
         <tr>
@@ -169,10 +170,10 @@
             <b>long</b>
           </td>
           <td>
-            <b>int64_t</b>
+            int64_t
           </td>
           <td>
-            SPVMのlong型はC99のint64_t型に一致します。
+            SPVMの<a href="#language-type-long">long型</a>は、C99のint64_t型に一致します。
           </td>
         </tr>
         <tr>
@@ -180,20 +181,20 @@
             <b>float</b>
           </td>
           <td>
-            <b>float</b>
+            float
           </td>
           <td>
-            SPVMのfloat型はC99のfloat型に一致します。
+            SPVMの<a href="#language-type-float">float型</a>は、C99のfloat型に一致します。
           </td>
         <tr>
           <td>
             <b>double</b>
           </td>
           <td>
-            <b>double</b>
+            double
           </td>
           <td>
-            SPVMのdouble型はC99のdouble型に一致します。
+            SPVMの<a href="#language-type-double">double型</a>は、C99のdouble型に一致します。
           </td>
         </tr>
         <tr>
@@ -201,76 +202,10 @@
             <b>オブジェクト型</b>
           </td>
           <td>
-            <b>void*</b>
+            void*
           </td>
           <td>
-            SPVMのオブジェクト型はC99のvoid*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>byte&</b>
-          </td>
-          <td>
-            int8_t*
-          </td>
-          <td>
-            SPVMのbyte&型はC99のint8_t*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>short&</b>
-          </td>
-          <td>
-            int16_t*
-          </td>
-          <td>
-            SPVMのshort&型はC99のint16_t*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>int&</b>
-          </td>
-          <td>
-            <b>int32_t*</b>
-          </td>
-          <td>
-            SPVMのint&型はC99のint32_t*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>long&</b>
-          </td>
-          <td>
-            <b>int64_t*</b>
-          </td>
-          <td>
-            SPVMのlong&型はC99のint64_t*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>float&</b>
-          </td>
-          <td>
-            <b>float*</b>
-          </td>
-          <td>
-            SPVMのfloat&型はC99のfloat*型に一致します。
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>double&</b>
-          </td>
-          <td>
-            <b>double*</b>
-          </td>
-          <td>
-            SPVMのdouble&型はC99のdouble*型に一致します。
+            SPVMの<a href="#language-type-object">オブジェクト型</a>は、C99のvoid*型に一致します。
           </td>
         </tr>
         <tr>
@@ -278,10 +213,21 @@
             <b>値型</b>
           </td>
           <td>
-            <b>値型のフィールドの個数を要素数とし、対応した型を持つ配列型 </b>
+            値型のフィールドの個数と長さが一致する数値の配列型
           </td>
           <td>
-            たとえば「package Point_2i : value_t { has x : int; has y : int; }」で定義されていた場合は、Point_2i型は、int32_t[2]型に一致します。
+            <p>
+              たとえば<a href="#language-type-value">値型</a>が
+            </p>
+            <p>
+              package Point_2i : value_t { has x : int; has y : int; }
+            </p>
+            <p>
+              として定義されていた場合は、フィールドの型がint型で、フィールドの個数が2なので
+            </p>
+            <p>
+              C99のint32_t[2]型に一致します。
+            </p>
           </td>
         </tr>
       </table>
@@ -6531,7 +6477,7 @@ my $num = 1 + 2;
       <p>
         int型は、符号付32bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint32_t型と同じ型です。
       </p>
-      <h3 id="language-type-int">long型</h2>
+      <h3 id="language-type-long">long型</h2>
       <p>
         long型は、符号付64bit整数を表現する<a href="#language-type-integral">整数型</a>です。C99のint64_t型と同じ型です。
       </p>
