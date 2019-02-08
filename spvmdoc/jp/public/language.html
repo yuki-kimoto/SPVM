@@ -246,7 +246,7 @@
       
       <h3 id="language-parser-encoding">ソースコードの文字コード</h3>
       <p>
-        SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されます。
+        SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されているとして解析されます。
       </p>
       
       <h3 id="language-parser-lalr">LALR(1)法</h3>
@@ -256,7 +256,7 @@
       
       <h3 id="language-parser-component">構成要素</h3>
       <p>
-        SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
+        SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-pod">POD</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
       </p>
       
       <h3 id="language-parser-line-terminater">行終端</h3>
@@ -275,19 +275,6 @@
         空白文字はソースコード上では意味を持ちません。
       </p>
       
-      <h3 id="language-parser-keyword">キーワード</h3>
-      <p>
-        SPVMにおけるキーワードは以下です。
-      </p>
-<pre>
-byte BEGIN case croak default double elsif else enum eq
-eval for float gt ge has if interface_t isa int last length
-lt le long my native ne next new our object package private
-public precompile pointer_t return require rw ro self switch
-sub string short scalar undef unless use void value_t while
-weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
-</pre>
-
       <h3 id="language-parser-identifier">識別子</h3>
       <p>
         SPVMにおける識別子は「パッケージ名」「サブルーチン名」「フィールド名」「パッケージ変数名」「レキシカル変数名」です。
@@ -405,7 +392,21 @@ $Foo
 $foo__bar
 $
 </pre>
-      
+
+      <h3 id="language-parser-keyword">キーワード</h3>
+      <p>
+        SPVMにおけるキーワードは以下です。
+      </p>
+<pre>
+byte BEGIN case croak default double elsif else enum eq
+eval for float gt ge has if interface_t isa int last length
+lt le long my native ne next new our object package private
+public precompile pointer_t return require rw ro self switch
+sub string short scalar undef unless use void value_t while
+weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
+</pre>
+
+
       <h3 id="language-parser-separator">区切り文字</h3>
       <p>
         SPVMにおける区切り文字は以下です。
@@ -855,19 +856,33 @@ sub_names
 
 %%
 </pre>
+
       <h2 id="language-comment">コメント</h2>
       <p>
-        コメントは「#」で始まり改行で終わります。
+        コメントは「#」で始まり<a href="#language-parser-line-terminater">行終端</a>で終わります。
       </p>
 <pre>
 # コメント
 </pre>
+      <p>
+        コメントは、プログラムの実行において無視されます。
+      </p>
+      
       <h2 id="language-pod">POD</h2>
       <p>
-        POD(プレーンオールドドキュメント)を記述することができます。PODは行頭が「=」で始まる任意の文字列の行から始まり、行頭から行末まで「=cut」で終わる行までです。
+        POD(プレーンオールドドキュメント)は、簡単なドキュメントを記載するための機能です。
       </p>
       <p>
-        PODの内側に書かれた文字列はソースコードとして解釈されず、コメントとして扱われます。
+        複数行のコメントを記述する方法として利用できます。
+      </p>
+      <p>
+        PODは、行頭が「=」で始まり、その後ろに、0文字以上の任意の文字列が続き<a href="#language-parser-line-terminater">行終端</a>で終わる行から始まります。
+      </p>
+      <p>
+        PODは、行頭が「=cut」で、<a href="#language-parser-line-terminater">行終端</a>で終わる行で終わります。この行が、存在しなかった場合は、ソースコードの終わりまでが、PODになります。
+      </p>
+      <p>
+        <b>PODのサンプル</b>
       </p>
 <pre>
 =pod
@@ -886,6 +901,10 @@ sub_names
 
 =cut
 </pre>
+      <p>
+        PODは、プログラムの実行において無視されます。
+      </p>
+
       <h2 id="language-package">パッケージ</h2>
       <ul class="list">
         <li><a href="#language-package-definition">パッケージの定義</a></li>
@@ -6530,7 +6549,7 @@ my $num = 1 + 2;
         float型は、単精度浮動小数点(32bit)を表現する<a href="#language-type-floating-point">浮動小数点型</a>です。C99のfloat型と同じ型です。
       </p>
       
-      <h3 id="language-type-float">double型</h2>
+      <h3 id="language-type-double">double型</h2>
       <p>
         double型は、倍精度浮動小数点(64bit)を表現する<a href="#language-type-floating-point">浮動小数点型</a>です。C99のdouble型と同じ型です。
       </p>

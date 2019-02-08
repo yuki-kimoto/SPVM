@@ -1,0 +1,14 @@
+package TestCase::Comment {
+
+  sub comment : int () {
+    # コメント
+    my $foo = 1; # コメント
+# コメント
+
+    unless ($foo == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
