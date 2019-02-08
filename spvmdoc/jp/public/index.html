@@ -36,7 +36,7 @@
     
     <div class="container">
       <div>
-        最終更新日 2019年2月6日
+        最終更新日 2019年2月8日
       </div>
       <h2>目次</h2>
       <ul class="toc">
@@ -2015,6 +2015,34 @@ sub サブルーチン名 : 戻り値の型名 (引数名1 : 引数の型名1, �
   
 }
 </pre>
+      <p>
+        <b>可変長引数のサンプル</b>
+      </p>
+      <p>
+        可変長引数のサンプルです。
+      </p>
+<pre>
+# 可変長引数を持つサブルーチンの定義
+sub sprintf : string ($format : string, $values : object[]...) {
+  
+}
+
+# 可変長引数を持つサブルーチンの呼び出し
+foo("aaa %d %f", SPVM::Int->new(1), SPVM::Double->new(2.0));
+</pre>
+      <p>
+        可変長引数を持つサブルーチンに配列を渡すと、配列のまま呼び出す事ができます。
+      </p>
+<pre>
+foo("aaa %d %f", [(object)SPVM::Int->new(1), SPVM::Double->new(2.0)]);
+</pre>
+      <p>
+        もし、配列型の値を、可変長引数の個々の要素として扱いたい場合は、配列型ではない型にキャストしてください。
+      </p>
+<pre>
+foo("aaa %d %f", (object)[(object)SPVM::Int->new(1), SPVM::Double->new(2.0)]);
+</pre>
+      
       <p>
         定義されたサブルーチンは、呼び出すことができます。サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       </p>
