@@ -1,0 +1,19 @@
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - choco install strawberryperl -version 5.20.1.1
+  - SET PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
+
+build: off
+
+test_script:
+  # テストを実行する
+  - perl Makefile.PL
+  - make
+  - make test
+
+cache:
+  - local
+
+shallow_clone: true
