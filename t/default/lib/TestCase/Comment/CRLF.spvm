@@ -9,6 +9,9 @@ package TestCase::Comment::CRLF {
       return 0;
     }
     
+    unless (__LINE__ == 12) {
+      return 0;
+    }
     return 1;
   }
 }

@@ -475,7 +475,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (*compiler->bufptr == '\r' || *compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
             break;
           }
-          compiler->bufptr++;
+          else {
+            compiler->bufptr++;
+          }
         }
         
         continue;
