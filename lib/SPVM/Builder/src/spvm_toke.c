@@ -481,7 +481,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         continue;
       
       case '=':
-        // Pod
+        // POD
         if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n' || *(compiler->bufptr - 1) == '\r') {
           while (1) {
             compiler->bufptr++;

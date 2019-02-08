@@ -26,8 +26,6 @@ int32_t SPNATIVE__SPVM__CORE__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INFINITYF(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INFINITY(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__INT8_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPNATIVE__SPVM__CORE__INT16_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -84,6 +82,7 @@ int32_t main(int32_t argc, const char *argv[]) {
     const char* sub_name = "init_native_constants";
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
     SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
+    
     runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__init_native_constants;
   }
   {
