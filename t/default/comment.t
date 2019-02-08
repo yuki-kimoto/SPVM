@@ -6,13 +6,17 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Comment';
+use SPVM 'TestCase::Comment::LF';
+use SPVM 'TestCase::Comment::CR';
+use SPVM 'TestCase::Comment::CRLF';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 {
-  ok(TestCase::Comment->comment);
+  ok(TestCase::Comment::LF->comment);
+  ok(TestCase::Comment::CR->comment);
+  ok(TestCase::Comment::CRLF->comment);
 }
 
 # All object is freed

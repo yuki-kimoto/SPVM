@@ -1,9 +1,9 @@
-package TestCase::Comment {
+package TestCase::Comment::LF {
 
   sub comment : int () {
-    # コメント
-    my $foo = 1; # コメント
-# コメント
+    # Comment
+    my $foo = 1; # Comment
+# Comment
 
     unless ($foo == 1) {
       return 0;
@@ -12,3 +12,5 @@ package TestCase::Comment {
     return 1;
   }
 }
+
+# Comment
