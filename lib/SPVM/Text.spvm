@@ -13,8 +13,9 @@ package SPVM::Text {
   sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$i] = $self->{string}[$i];
+      $new_string->[$i] = $self->{string}[$self->{offset} + $i];
     }
+    $self->{offset} = 0;
     $self->{capacity} = $new_capacity;
     $self->{string} = $new_string;
   }
@@ -34,11 +35,15 @@ package SPVM::Text {
   }
 
   sub to_string : string ($self : self) {
-    return (string)sliceb($self->{string}, 0, $self->{length});
+    return (string)sliceb($self->{string}, $self->{offset}, $self->{length});
   }
 
   sub _capacity : int ($self : self) {
     return $self->{capacity};
+  }
+
+  sub _offset : int ($self : self) {
+    return $self->{offset};
   }
 
   sub _string : byte[] ($self : self) {
@@ -152,8 +157,8 @@ package SPVM::Text {
     unless ($self->{length} == $text->length) {
       return 0;
     }
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      unless ($self->{string}[$i] == $text->_string->[$i]) {
+    for (my $i = 0; $i < $self->{length} - $self->{offset}; ++$i) {
+      unless ($self->{string}[$self->{offset} + $i] == $text->_string->[$text->_offset + $i]) {
         return 0;
       }
     }
