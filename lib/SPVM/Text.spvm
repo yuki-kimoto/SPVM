@@ -86,6 +86,16 @@ package SPVM::Text {
     return SPVM::Text->new_with_string(sliceb($self->{string}, $offset, $length));
   }
 
+  sub copy : SPVM::Text ($self : self) {
+    my $ret = SPVM::Text->new;
+    $ret->{string}      = $self->{string};
+    $ret->{capacity}    = $self->{capacity};
+    $ret->{offset}      = $self->{offset};
+    $ret->{length}      = $self->{length};
+    $ret->{decode_type} = $self->{decode_type};
+    return $ret;
+  }
+
   # range of $offset: [0, $length]
   # O($self->{capacity})
   sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
