@@ -112,7 +112,7 @@ package SPVM::Text {
       $length = 0;
     }
 
-    if ($offset > $self->{length} - $length) {
+    if ($length > $self->{length} - $offset) {
       $length = $self->{length} - $offset;
     }
 
