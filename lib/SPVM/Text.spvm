@@ -34,6 +34,19 @@ package SPVM::Text {
     $self->_reallocate_with_capacity($new_capacity);
   }
 
+  sub _copy_string_on_write : void ($self : self) {
+    my $rc = $self->{string};
+    if (ref_count($rc) > 2) {
+      # copy-on-write
+      my $new_string = new byte [$self->{length}];
+      for (my $i = 0; $i < $self->{length}; ++$i) {
+        $new_string->[$i] = $self->{string}[$self->{offset} + $i];
+      }
+      $self->{string} = $new_string;
+      $self->{offset} = 0;
+    }
+  }
+
   sub to_string : string ($self : self) {
     return (string)sliceb($self->{string}, $self->{offset}, $self->{length});
   }
@@ -120,6 +133,8 @@ package SPVM::Text {
     if ($replace) {
       $replace_length = length($replace);
     }
+
+    $self->_copy_string_on_write;
 
     if ($self->{length} - $length + $replace_length > $self->{capacity}) {
       # O($new_string_length)
