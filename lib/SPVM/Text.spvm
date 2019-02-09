@@ -116,6 +116,28 @@ package SPVM::Text {
     return $ret;
   }
 
+  # O($text)
+  sub prepend : void ($self : self, $text : SPVM::Text) {
+    unless ($self->{decode_type} == $text->{decode_type}) {
+      croak "decode_type mismatch";
+    }
+    my $capacity = $self->{capacity}; # capacity is not shrunk. TODO: think best way.
+    if ($capacity < $self->{length} + $text->length) {
+      $capacity = $self->{length} + $text->length;
+    }
+    my $new_string = new byte [$capacity];
+    for (my $i = 0; $i < $text->length; ++$i) {
+      $new_string->[$i] = $text->_string->[$i];
+    }
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_string->[$text->length + $i] = $self->{string}[$i];
+    }
+    $self->{string} = $new_string;
+    $self->{capacity} = $capacity;
+    $self->{offset} = 0;
+    $self->{length} += $text->length;
+  }
+
   # range of $offset: [0, $length]
   # O($self->{capacity})
   sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
