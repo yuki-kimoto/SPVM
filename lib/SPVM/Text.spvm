@@ -1,6 +1,7 @@
 package SPVM::Text {
   has string      : private byte [];
   has capacity    : private int;
+  has offset      : private int;
   has length      : private int;
   has decode_type : private int;
 
@@ -79,11 +80,12 @@ package SPVM::Text {
       warn("substr offset is greater or equal than string length");
       return SPVM::Text->new;
     }
-
-    if ($offset > $self->{length} - $length) { # always $self->{length} - $length >= 0
-      $length = $self->{length} - $offset;
+    my $ret = $self->copy;
+    $ret->{offset} = $offset;
+    if ($offset > $self->{length} - $length) {
+      $self->{length} = $self->{length} - $offset;
     }
-    return SPVM::Text->new_with_string(sliceb($self->{string}, $offset, $length));
+    return $ret;
   }
 
   sub copy : SPVM::Text ($self : self) {
