@@ -98,11 +98,12 @@ package SPVM::Text {
       warn("substr offset is greater or equal than string length");
       return SPVM::Text->new;
     }
-    my $ret = $self->copy;
-    $ret->{offset} = $offset;
-    if ($offset > $self->{length} - $length) {
-      $self->{length} = $self->{length} - $offset;
+    if ($length > $self->{length} - $self->{offset}) {
+      $length = $self->{length} - $self->{offset};
     }
+    my $ret = $self->copy;
+    $ret->{offset} = $self->{offset} + $offset;
+    $ret->{length} = $length;
     return $ret;
   }
 
@@ -116,7 +117,7 @@ package SPVM::Text {
     return $ret;
   }
 
-  # O($text)
+  # O($self->{length} + $text)
   sub prepend : void ($self : self, $text : SPVM::Text) {
     unless ($self->{decode_type} == $text->{decode_type}) {
       croak "decode_type mismatch";
@@ -143,23 +144,25 @@ package SPVM::Text {
       croak "decode_type mismatch";
     }
     if ($self->{length} + $text->length > $self->{capacity}) {
-      my $capacity = $self->{length} + $text->length;
-      my $new_string = new byte [$capacity];
+      # O($new_capacity)
+      my $new_capacity = $self->{length} + $text->length;
+      my $new_string = new byte [$new_capacity];
       for (my $i = 0; $i < $text->length; ++$i) {
-        $new_string->[$i] = $text->_string->[$i];
+        $new_string->[$i] = $self->{string}[$self->{offset} + $i];
       }
       for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$text->length + $i] = $self->{string}[$i];
+        $new_string->[$text->length + $i] = $text->_string->[$i];
       }
       $self->{string} = $new_string;
-      $self->{capacity} = $capacity;
+      $self->{capacity} = $new_capacity;
       $self->{offset} = 0;
       $self->{length} += $text->length;
     }
     else {
-      $self->_copy_string_on_write
+      # O($text)
+      $self->_copy_string_on_write;
       for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$text->length + $i] = $self->{string}[$i];
+        $self->{string}[$text->length + $i] = $text->_string->[$i];
       }
       $self->{length} += $text->length;
     }
@@ -221,7 +224,7 @@ package SPVM::Text {
     unless ($self->{length} == $text->length) {
       return 0;
     }
-    for (my $i = 0; $i < $self->{length} - $self->{offset}; ++$i) {
+    for (my $i = 0; $i < $self->{length}; ++$i) {
       unless ($self->{string}[$self->{offset} + $i] == $text->_string->[$text->_offset + $i]) {
         return 0;
       }
