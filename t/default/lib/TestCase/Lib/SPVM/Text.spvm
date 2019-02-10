@@ -134,6 +134,35 @@ package TestCase::Lib::SPVM::Text {
     return 1;
   }
 
+  sub test_substr_copy_on_write : int () {
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      my $temp = $text->_string;
+      unless (ref_count($temp) == 2) { # referenced by field and temp
+        return 0;
+      }
+    }
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      $text->substr(1, 1);
+      my $temp = $text->_string;
+      unless (ref_count($temp) == 2) {
+        warn("substr is used. string is referenced by text's field and temp, but ref_count: " . ref_count($temp));
+        return 0;
+      }
+    }
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      my $text_sub = $text->substr(1, 1);
+      my $temp = $text_sub->_string;
+      unless (ref_count($temp) == 3) {
+        warn("substr is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but ref_count: " . ref_count($temp));
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   sub test_copy : int () {
     my $text = SPVM::Text->new_with_string("a");
     my $content = $text->_string;
@@ -176,6 +205,35 @@ package TestCase::Lib::SPVM::Text {
       my $target = SPVM::Text->new_with_string("a");
       $target->replace($append_tests->[$i]->[0], $append_tests->[$i]->[1], "xy");
       unless ($target->to_string eq "axy") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_replace_copy_on_write : int () {
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      my $temp = $text->_string;
+      unless (ref_count($temp) == 2) { # referenced by field and temp
+        return 0;
+      }
+    }
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      $text->replace(1, 1, "xyz");
+      my $temp = $text->_string;
+      unless (ref_count($temp) == 2) {
+        warn("replace is used. string is referenced by text's field and temp, but ref_count: " . ref_count($temp));
+        return 0;
+      }
+    }
+    {
+      my $text = SPVM::Text->new_with_string("abc");
+      my $text_sub = $text->substr(1, 1);
+      my $temp = $text_sub->_string;
+      unless (ref_count($temp) == 3) {
+        warn("replace is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but ref_count: " . ref_count($temp));
         return 0;
       }
     }

@@ -18,8 +18,10 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Text->test_ctor_with_string);
   ok(TestCase::Lib::SPVM::Text->test_length);
   ok(TestCase::Lib::SPVM::Text->test_substr);
-  ok(TestCase::Lib::SPVM::Text->test_copy);
+  #ok(TestCase::Lib::SPVM::Text->test_substr_copy_on_write);
+  #ok(TestCase::Lib::SPVM::Text->test_copy);
   ok(TestCase::Lib::SPVM::Text->test_replace);
+  #ok(TestCase::Lib::SPVM::Text->test_replace_copy_on_write);
   ok(TestCase::Lib::SPVM::Text->test_to_string);
   ok(TestCase::Lib::SPVM::Text->test_equals);
 }
