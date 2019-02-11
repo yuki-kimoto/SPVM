@@ -2,8 +2,8 @@ package SPVM::Text {
   has string      : private byte [];
   has capacity    : private int;
   has offset      : private int;
-  has length      : private int;
   has decode_type : private int;
+  has length      : public int;
 
   enum {
     DECODE_BYTE,
@@ -89,10 +89,6 @@ package SPVM::Text {
     return $self;
   }
 
-  sub length : int ($self : self) {
-    return $self->{length};
-  }
-
   sub substr : SPVM::Text ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       warn("substr offset is greater or equal than string length");
@@ -119,52 +115,54 @@ package SPVM::Text {
 
   # O($self->{length} + $text)
   sub prepend : void ($self : self, $text : SPVM::Text) {
+    # TODO: Implement copy-on-write
     unless ($self->{decode_type} == $text->{decode_type}) {
       croak "decode_type mismatch";
     }
-    my $capacity = $self->{capacity}; # capacity is not shrunk. TODO: think best way.
-    if ($capacity < $self->{length} + $text->length) {
-      $capacity = $self->{length} + $text->length;
+    $self->_copy_string_on_write;
+    # TODO: Think how to deal with capacity.
+    my $capacity = $self->{capacity}; # capacity is not shrunk.
+    if ($capacity < $self->{length} + $text->{length}) { # don't consider about x2 allocation.
+      $capacity = $self->{length} + $text->{length};
     }
     my $new_string = new byte [$capacity];
-    for (my $i = 0; $i < $text->length; ++$i) {
+    for (my $i = 0; $i < $text->{length}; ++$i) {
       $new_string->[$i] = $text->_string->[$i];
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$text->length + $i] = $self->{string}[$i];
+      $new_string->[$text->{length} + $i] = $self->{string}[$i];
     }
     $self->{string} = $new_string;
     $self->{capacity} = $capacity;
     $self->{offset} = 0;
-    $self->{length} += $text->length;
+    $self->{length} += $text->{length};
   }
 
   sub append : void ($self : self, $text : SPVM::Text) {
     unless ($self->{decode_type} == $text->{decode_type}) {
       croak "decode_type mismatch";
     }
-    if ($self->{length} + $text->length > $self->{capacity}) {
+    if ($self->{length} + $text->{length} > $self->{capacity}) {
       # O($new_capacity)
-      my $new_capacity = $self->{length} + $text->length;
-      my $new_string = new byte [$new_capacity];
-      for (my $i = 0; $i < $text->length; ++$i) {
-        $new_string->[$i] = $self->{string}[$self->{offset} + $i];
+      my $new_capacity : int;
+      if ($self->{length} + $text->{length} > $self->{capacity} * 2) {
+        $new_capacity = $self->{length} + $text->{length};
+      } else {
+        $new_capacity = $self->{capacity} * 2;
       }
-      for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$text->length + $i] = $text->_string->[$i];
+      $self->_reallocate_with_capacity($new_capacity);
+      for (my $i = 0; $i < $text->{length}; ++$i) {
+        $self->{string}[$self->{length} + $i] = $text->_string->[$text->_offset + $i];
       }
-      $self->{string} = $new_string;
-      $self->{capacity} = $new_capacity;
-      $self->{offset} = 0;
-      $self->{length} += $text->length;
+      $self->{length} += $text->{length};
     }
     else {
       # O($text)
       $self->_copy_string_on_write;
-      for (my $i = 0; $i < $self->{length}; ++$i) {
-        $self->{string}[$text->length + $i] = $text->_string->[$i];
+      for (my $i = 0; $i < $text->{length}; ++$i) {
+        $self->{string}[$self->{length} + $i] = $text->_string->[$i];
       }
-      $self->{length} += $text->length;
+      $self->{length} += $text->{length};
     }
   }
 
@@ -221,7 +219,7 @@ package SPVM::Text {
   }
 
   sub equals : int ($self : self, $text : SPVM::Text) {
-    unless ($self->{length} == $text->length) {
+    unless ($self->{length} == $text->{length}) {
       return 0;
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
