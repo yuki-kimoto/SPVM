@@ -310,13 +310,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
 
-              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+              SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
+              type_var_tmp_new->basic_type =op_type_new->uv.type->basic_type;
+              type_var_tmp_new->dimension = op_type_new->uv.type->dimension;
+              type_var_tmp_new->flag = op_type_new->uv.type->flag;
+              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, type_var_tmp_new, file, line);
               
               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
-
-              op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
 
               if (length > 0) {
                 SPVM_OP* op_term_element = op_list_elements->first;
