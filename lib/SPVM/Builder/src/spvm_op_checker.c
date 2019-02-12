@@ -205,11 +205,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
               op_cur = op_sequence;
               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
-              
-              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
-
-              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
               
               // Resolve array type and element type
               int32_t length = 0;
@@ -314,6 +309,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 type_new->dimension = type_element->dimension + 1;
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
+
+              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+              
+              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
+
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
 
               op_var_tmp_new->uv.var->my->type = op_type_new->uv.type;
 
