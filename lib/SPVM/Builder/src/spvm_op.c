@@ -841,6 +841,9 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   SPVM_OP* op_switch_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SWITCH_CONDITION, op_term_condition->file, op_term_condition->line);
   SPVM_OP_insert_child(compiler, op_switch_condition, op_switch_condition->last, op_term_condition);
   
+  // Free temporary variables
+  op_switch_condition->free_tmp_vars = 1;
+  
   SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_condition);
   SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_block);
   
@@ -898,6 +901,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
+  op_condition->free_tmp_vars = 1;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   
   // Set block flag
@@ -931,6 +935,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, 1);
+  op_condition->free_tmp_vars = 1;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   
   // Set block flag
@@ -979,6 +984,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_term_condition, not_condition);
+  op_condition->free_tmp_vars = 1;
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
 
   // Create true block if needed
@@ -2747,6 +2753,9 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
+  
+  // Free temporary variables
+  op_croak->free_tmp_vars = 1;
   
   return op_croak;
 }
