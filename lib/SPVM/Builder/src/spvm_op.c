@@ -2325,13 +2325,11 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       }
     }
     
-    // Add sequence of temporary variable declarations to first of block
+    // Add list of temporary variable declarations to first of block
     {
-      SPVM_OP* op_sequence_tmp_mys = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, sub->file, sub->line);
-      SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, sub->file, sub->line);
-      SPVM_OP_insert_child(compiler, op_sequence_tmp_mys, op_sequence_tmp_mys->last, op_null);
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_sequence_tmp_mys);
-      sub->op_sequence_tmp_mys = op_sequence_tmp_mys;
+      SPVM_OP* op_list_tmp_mys = SPVM_OP_new_op_list(compiler, sub->file, sub->line);
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_list_tmp_mys);
+      sub->op_list_tmp_mys = op_list_tmp_mys;
     }
     
     // Add return to last of statement
