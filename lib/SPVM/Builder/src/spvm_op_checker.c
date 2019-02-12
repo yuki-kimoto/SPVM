@@ -48,10 +48,9 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
   SPVM_MY* my = SPVM_MY_new(compiler);
   SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
-  SPVM_OP* op_type = NULL;
-  if (type) {
-    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
-  }
+  assert(type);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   return op_var;
