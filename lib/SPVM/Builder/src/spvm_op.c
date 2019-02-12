@@ -174,6 +174,26 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CURRENT_PACKAGE",
 };
 
+SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+
+  // Temparary variable name
+  char* name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("@tmp2147483647") + 1);
+  sprintf(name, "@tmp%d", compiler->tmp_var_length);
+  compiler->tmp_var_length++;
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = name;
+  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+  SPVM_MY* my = SPVM_MY_new(compiler);
+  SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, file, line);
+  SPVM_OP* op_type = NULL;
+  if (type) {
+    op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  }
+  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+  
+  return op_var;
+}
+
 SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line) {
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   op_my->uv.my = my;
