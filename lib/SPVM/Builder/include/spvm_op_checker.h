@@ -19,7 +19,7 @@ void SPVM_OP_CHECKER_apply_binary_numeric_convertion(SPVM_COMPILER* compiler, SP
 
 void SPVM_OP_CHECKER_resolve_my_var_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub);
 
-SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, SPVM_TYPE* type, const char* file, int32_t line);
 
 
 #endif
