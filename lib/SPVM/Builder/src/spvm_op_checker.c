@@ -3326,7 +3326,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             return;
           }
           
-          // Check subroutine - First tree traversal
+          // Check subroutine
           if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
             SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
             SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
@@ -3362,7 +3362,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(check_ast_info->block_my_base_stack);
             SPVM_LIST_free(check_ast_info->op_switch_stack);
 
-            // Second tree traversal
+            // First tree traversal
             // set assign_to_var flag - 
             // Add string to constant pool
             {
@@ -3470,8 +3470,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
             }
-          
-            // Create temporary variables for not assigned values - Third tree traversal
+            
+            // Second tree traversal
+            // Create temporary variables for not assigned values - 
             {
               // Run OPs
               SPVM_OP* op_root = sub->op_block;
@@ -3602,20 +3603,139 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
             }
-          }
-          
-          if (compiler->error_count > 0) {
-            return;
-          }
+            if (compiler->error_count > 0) {
+              return;
+            }
+            assert(sub->file);
+            
+            // Add op my if need
+            if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+              int32_t arg_index;
+              for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+                SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
+                SPVM_LIST_push(sub->mys, arg_my);
+              }
+            }
 
-          assert(sub->file);
-          
-          // Add op my if need
-          if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-            int32_t arg_index;
-            for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
-              SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
-              SPVM_LIST_push(sub->mys, arg_my);
+            // Thrid tree traversal
+            // Add more information for opcode building - 
+            {
+              // Block stack
+              SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+              
+              // Run OPs
+              SPVM_OP* op_root = sub->op_block;
+              SPVM_OP* op_cur = op_root;
+              int32_t finish = 0;
+              while (op_cur) {
+                // [START]Preorder traversal position
+                switch (op_cur->id) {
+                  // Start scope
+                  case SPVM_OP_C_ID_BLOCK: {
+                    // Push block
+                    SPVM_LIST_push(op_block_stack, op_cur);
+                    
+                    break;
+                  }
+                }
+
+                if (op_cur->first) {
+                  op_cur = op_cur->first;
+                }
+                else {
+                  while (1) {
+                    // [START]Postorder traversal position
+                    switch (op_cur->id) {
+                      case SPVM_OP_C_ID_BLOCK: {
+                        SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+
+                        SPVM_LIST_pop(op_block_stack);
+                        
+                        // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+                        if (op_block_stack->length > 0) {
+                          SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                          if (!op_block_parent->uv.block->have_object_var_decl) {
+                            if (op_block_current->uv.block->have_object_var_decl) {
+                              op_block_parent->uv.block->have_object_var_decl = 1;
+                            }
+                          }
+                        }
+                      
+                        break;
+                      }
+                      case SPVM_OP_C_ID_VAR: {
+                        if (op_cur->uv.var->is_declaration) {
+                          SPVM_MY* my = op_cur->uv.var->my;
+                          
+                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                          int32_t type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
+                          
+                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_value_t) {
+                            SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
+                            op_block_current->uv.block->have_object_var_decl = 1;
+                          }
+                        }
+                        
+                        break;
+                      }
+                    }
+
+                    if (op_cur == op_root) {
+
+                      // Finish
+                      finish = 1;
+                      
+                      break;
+                    }
+                    
+                    // Next sibling
+                    if (op_cur->moresib) {
+                      op_cur = SPVM_OP_sibling(compiler, op_cur);
+                      break;
+                    }
+                    // Next is parent
+                    else {
+                      op_cur = op_cur->sibparent;
+                    }
+                  }
+                  if (finish) {
+                    break;
+                  }
+                }
+              }
+              SPVM_LIST_free(op_block_stack);
+            }
+
+            // Add no duplicate package_var access package_var id to constant pool
+            package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->constant_pool->length;
+            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
+            for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
+              int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
+            }
+            
+            // Add no duplicate field access field id to constant pool
+            package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
+            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
+            for (int32_t i = 0; i < package->info_field_ids->length; i++) {
+              int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
+            }
+
+            // Add no duplicate sub access sub id to constant pool
+            package->no_dup_call_sub_sub_ids_constant_pool_id = package->constant_pool->length;
+            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
+            for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
+              int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
+            }
+
+            // Add no duplicate basic type id to constant pool
+            package->no_dup_basic_type_ids_constant_pool_id = package->constant_pool->length;
+            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
+            for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
+              int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
             }
           }
           
@@ -3897,126 +4017,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               my->type_width = type_width;
             }
           }
-
-          // Add more information for opcode building - Fourth tree traversal
-          {
-            // Block stack
-            SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
-            
-            // Run OPs
-            SPVM_OP* op_root = sub->op_block;
-            SPVM_OP* op_cur = op_root;
-            int32_t finish = 0;
-            while (op_cur) {
-              // [START]Preorder traversal position
-              switch (op_cur->id) {
-                // Start scope
-                case SPVM_OP_C_ID_BLOCK: {
-                  // Push block
-                  SPVM_LIST_push(op_block_stack, op_cur);
-                  
-                  break;
-                }
-              }
-
-              if (op_cur->first) {
-                op_cur = op_cur->first;
-              }
-              else {
-                while (1) {
-                  // [START]Postorder traversal position
-                  switch (op_cur->id) {
-                    case SPVM_OP_C_ID_BLOCK: {
-                      SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-
-                      SPVM_LIST_pop(op_block_stack);
-                      
-                      // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
-                      if (op_block_stack->length > 0) {
-                        SPVM_OP* op_block_parent = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                        if (!op_block_parent->uv.block->have_object_var_decl) {
-                          if (op_block_current->uv.block->have_object_var_decl) {
-                            op_block_parent->uv.block->have_object_var_decl = 1;
-                          }
-                        }
-                      }
-                    
-                      break;
-                    }
-                    case SPVM_OP_C_ID_VAR: {
-                      if (op_cur->uv.var->is_declaration) {
-                        SPVM_MY* my = op_cur->uv.var->my;
-                        
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                        int32_t type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
-                        
-                        if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_value_t) {
-                          SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
-                          op_block_current->uv.block->have_object_var_decl = 1;
-                        }
-                      }
-                      
-                      break;
-                    }
-                  }
-
-                  if (op_cur == op_root) {
-
-                    // Finish
-                    finish = 1;
-                    
-                    break;
-                  }
-                  
-                  // Next sibling
-                  if (op_cur->moresib) {
-                    op_cur = SPVM_OP_sibling(compiler, op_cur);
-                    break;
-                  }
-                  // Next is parent
-                  else {
-                    op_cur = op_cur->sibparent;
-                  }
-                }
-                if (finish) {
-                  break;
-                }
-              }
-            }
-            SPVM_LIST_free(op_block_stack);
-          }
-        }
-        
-        // Add no duplicate package_var access package_var id to constant pool
-        package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->constant_pool->length;
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
-        for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
-          int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
-          SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
-        }
-        
-        // Add no duplicate field access field id to constant pool
-        package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
-        for (int32_t i = 0; i < package->info_field_ids->length; i++) {
-          int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
-          SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
-        }
-
-        // Add no duplicate sub access sub id to constant pool
-        package->no_dup_call_sub_sub_ids_constant_pool_id = package->constant_pool->length;
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
-        for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
-          int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
-          SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
-        }
-
-        // Add no duplicate basic type id to constant pool
-        package->no_dup_basic_type_ids_constant_pool_id = package->constant_pool->length;
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
-        for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
-          int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
-          SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
         }
       }
     }
