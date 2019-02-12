@@ -123,7 +123,7 @@ typedef bool spvm_utf8proc_bool;
 #ifdef SPVM_UTF8PROC_STATIC
 #  define SPVM_UTF8PROC_DLLEXPORT
 #else
-#  ifdef _WIN32
+#  ifdef _MSC_VER
 #    ifdef SPVM_UTF8PROC_EXPORTS
 #      define SPVM_UTF8PROC_DLLEXPORT __declspec(dllexport)
 #    else
