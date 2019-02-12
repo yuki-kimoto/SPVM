@@ -17,4 +17,6 @@ void SPVM_OP_CHECKER_apply_numeric_to_string_convertion(SPVM_COMPILER* compiler,
 void SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
 void SPVM_OP_CHECKER_apply_binary_numeric_convertion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
 
+void SPVM_OP_CHECKER_resolve_my_var_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+
 #endif
