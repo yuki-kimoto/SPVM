@@ -265,6 +265,7 @@ struct SPVM_op {
   int8_t is_assigned_to_var;
   int8_t is_passed_to_sub;
   int8_t no_need_check;
+  int8_t free_tmp_vars;
 };
 
 SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block);
