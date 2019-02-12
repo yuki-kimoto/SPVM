@@ -3352,7 +3352,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Switch stack
             check_ast_info->op_switch_stack = SPVM_LIST_new(0);
             
+            // First tree traversal
             SPVM_OP_CHECKER_check_tree(compiler, sub->op_block, check_ast_info);
+            
             if (compiler->error_count > 0) {
               return;
             }
@@ -3362,7 +3364,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(check_ast_info->block_my_base_stack);
             SPVM_LIST_free(check_ast_info->op_switch_stack);
 
-            // First tree traversal
+            // Second tree traversal
             // set assign_to_var flag - 
             // Add string to constant pool
             {
@@ -3471,7 +3473,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
             
-            // Second tree traversal
+            // Third tree traversal
             // Create temporary variables for not assigned values - 
             {
               // Run OPs
@@ -3617,7 +3619,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
 
-            // Thrid tree traversal
+            // Fourth tree traversal
             // Add more information for opcode building - 
             {
               // Block stack
