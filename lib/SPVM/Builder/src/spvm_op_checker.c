@@ -847,7 +847,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, NULL, file, line);
+                    SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
+                    type_var_tmp_new->basic_type = op_type->uv.type->basic_type;
+                    type_var_tmp_new->dimension = op_type->uv.type->dimension;
+                    type_var_tmp_new->flag = op_type->uv.type->flag;
+                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, type_var_tmp_new, file, line);
                     
                     SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -2297,8 +2301,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
                 SPVM_TYPE* type_var_tmp_new = SPVM_TYPE_new(compiler);
                 type_var_tmp_new->basic_type = type_new->basic_type;
-                type_var_tmp_new->dimension = type_new->flag;
-                type_var_tmp_new->flag = type_new->dimension;
+                type_var_tmp_new->dimension = type_new->dimension;
+                type_var_tmp_new->flag = type_new->flag;
                 SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, type_var_tmp_new, file, line);
                 
                 SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
