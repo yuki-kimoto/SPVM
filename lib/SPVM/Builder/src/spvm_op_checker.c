@@ -3361,244 +3361,244 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(check_ast_info->my_stack);
             SPVM_LIST_free(check_ast_info->block_my_base_stack);
             SPVM_LIST_free(check_ast_info->op_switch_stack);
-          }
 
-          // Second tree traversal
-          // set assign_to_var flag - 
-          // Add string to constant pool
-          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
-            // Run OPs
-            SPVM_OP* op_root = sub->op_block;
-            SPVM_OP* op_cur = op_root;
-            int32_t finish = 0;
-            while (op_cur) {
-              // [START]Preorder traversal position
-              if (op_cur->first) {
-                op_cur = op_cur->first;
-              }
-              else {
-                while (1) {
-                  // [START]Postorder traversal position
-                  switch (op_cur->id) {
-                    case SPVM_OP_C_ID_ASSIGN:
-                      if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
-                        op_cur->first->is_assigned_to_var = 1;
-                      }
-                      break;
-                    case SPVM_OP_C_ID_CONSTANT: {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                      
-                      // String
-                      if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        // Add constant string to string pool
-                        char* string_value = op_cur->uv.constant->value.oval;
-                        int32_t string_length = op_cur->uv.constant->string_length;
+            // Second tree traversal
+            // set assign_to_var flag - 
+            // Add string to constant pool
+            {
+              // Run OPs
+              SPVM_OP* op_root = sub->op_block;
+              SPVM_OP* op_cur = op_root;
+              int32_t finish = 0;
+              while (op_cur) {
+                // [START]Preorder traversal position
+                if (op_cur->first) {
+                  op_cur = op_cur->first;
+                }
+                else {
+                  while (1) {
+                    // [START]Postorder traversal position
+                    switch (op_cur->id) {
+                      case SPVM_OP_C_ID_ASSIGN:
+                        if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
+                          op_cur->first->is_assigned_to_var = 1;
+                        }
+                        break;
+                      case SPVM_OP_C_ID_CONSTANT: {
+                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                         
-                        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
-                        int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
-                        if (found_constant_pool_id > 0) {
-                          op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                        }
-                        else {
-                          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, string_value, string_length + 1);
-                          assert(string_pool_id > 0);
-                          SPVM_HASH_insert(compiler->string_symtable, string_value, string_length + 1, (void*)(intptr_t)string_pool_id);
+                        // String
+                        if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          // Add constant string to string pool
+                          char* string_value = op_cur->uv.constant->value.oval;
+                          int32_t string_length = op_cur->uv.constant->string_length;
                           
-                          int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
-                          SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
-                          op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                        }
-                      }
-                      // long or double
-                      else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        switch (type->basic_type->id) {
-                          case SPVM_BASIC_TYPE_C_ID_LONG: {
-                            // Add long constant
-                            char long_value_string[sizeof(int64_t)];
-                            memcpy(long_value_string, (int64_t*)&op_cur->uv.constant->value.lval, sizeof(int64_t));
-                            int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t));
-                            if (found_constant_pool_id > 0) {
-                              op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                            }
-                            else {
-                              int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_long(package->constant_pool, op_cur->uv.constant->value.lval);
-                              op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                              SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
-                            }
+                          int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
+                          int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
+                          if (found_constant_pool_id > 0) {
+                            op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
                           }
-                          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                            // Add double constant
-                            char double_value_string[sizeof(int64_t)];
-                            memcpy(double_value_string, &op_cur->uv.constant->value.dval, sizeof(int64_t));
-                            int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t));
-                            if (found_constant_pool_id > 0) {
-                              op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                            }
-                            else {
-                              int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_double(package->constant_pool, op_cur->uv.constant->value.dval);
-                              op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                              SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
-                            }
+                          else {
+                            int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, string_value, string_length + 1);
+                            assert(string_pool_id > 0);
+                            SPVM_HASH_insert(compiler->string_symtable, string_value, string_length + 1, (void*)(intptr_t)string_pool_id);
+                            
+                            int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
+                            SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
+                            op_cur->uv.constant->constant_pool_id = constant_pool_id;
                           }
                         }
+                        // long or double
+                        else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          switch (type->basic_type->id) {
+                            case SPVM_BASIC_TYPE_C_ID_LONG: {
+                              // Add long constant
+                              char long_value_string[sizeof(int64_t)];
+                              memcpy(long_value_string, (int64_t*)&op_cur->uv.constant->value.lval, sizeof(int64_t));
+                              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t));
+                              if (found_constant_pool_id > 0) {
+                                op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
+                              }
+                              else {
+                                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_long(package->constant_pool, op_cur->uv.constant->value.lval);
+                                op_cur->uv.constant->constant_pool_id = constant_pool_id;
+                                SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
+                              }
+                            }
+                            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                              // Add double constant
+                              char double_value_string[sizeof(int64_t)];
+                              memcpy(double_value_string, &op_cur->uv.constant->value.dval, sizeof(int64_t));
+                              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t));
+                              if (found_constant_pool_id > 0) {
+                                op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
+                              }
+                              else {
+                                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_double(package->constant_pool, op_cur->uv.constant->value.dval);
+                                op_cur->uv.constant->constant_pool_id = constant_pool_id;
+                                SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
+                              }
+                            }
+                          }
+                        }
+                        
+                        break;
                       }
+                    }
+
+                    if (op_cur == op_root) {
+
+                      // Finish
+                      finish = 1;
                       
                       break;
                     }
-                  }
-
-                  if (op_cur == op_root) {
-
-                    // Finish
-                    finish = 1;
                     
+                    // Next sibling
+                    if (op_cur->moresib) {
+                      op_cur = SPVM_OP_sibling(compiler, op_cur);
+                      break;
+                    }
+                    // Next is parent
+                    else {
+                      op_cur = op_cur->sibparent;
+                    }
+                  }
+                  if (finish) {
                     break;
                   }
-                  
-                  // Next sibling
-                  if (op_cur->moresib) {
-                    op_cur = SPVM_OP_sibling(compiler, op_cur);
-                    break;
-                  }
-                  // Next is parent
-                  else {
-                    op_cur = op_cur->sibparent;
-                  }
-                }
-                if (finish) {
-                  break;
                 }
               }
             }
-          }
           
-          // Create temporary variables for not assigned values - Third tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
-            // Run OPs
-            SPVM_OP* op_root = sub->op_block;
-            SPVM_OP* op_cur = op_root;
-            int32_t finish = 0;
-            while (op_cur) {
-              // [START]Preorder traversal position
-              if (op_cur->first) {
-                op_cur = op_cur->first;
-              }
-              else {
-                while (1) {
-                  // Create temporary variable for no is_assigned_to_var term which is not variable
-                  int32_t create_tmp_var = 0;
-                  SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-                  
-                  // [START]Postorder traversal position
-                  if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
-                    switch (op_cur->id) {
-                      case SPVM_OP_C_ID_CONVERT:
-                        create_tmp_var = 1;
-                        break;
-                      case SPVM_OP_C_ID_ADD:
-                      case SPVM_OP_C_ID_SUBTRACT:
-                      case SPVM_OP_C_ID_MULTIPLY:
-                      case SPVM_OP_C_ID_DIVIDE:
-                      case SPVM_OP_C_ID_BIT_AND:
-                      case SPVM_OP_C_ID_BIT_OR:
-                      case SPVM_OP_C_ID_BIT_XOR:
-                      case SPVM_OP_C_ID_BIT_NOT:
-                      case SPVM_OP_C_ID_REMAINDER:
-                      case SPVM_OP_C_ID_LEFT_SHIFT:
-                      case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
-                      case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
-                      case SPVM_OP_C_ID_MINUS:
-                      case SPVM_OP_C_ID_PLUS:
-                      case SPVM_OP_C_ID_ARRAY_LENGTH:
-                      case SPVM_OP_C_ID_STRING_LENGTH:
-                      case SPVM_OP_C_ID_NEW:
-                      case SPVM_OP_C_ID_CONCAT:
-                      case SPVM_OP_C_ID_EXCEPTION_VAR:
-                      case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
-                      case SPVM_OP_C_ID_SWITCH_CONDITION:
-                      case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
-                      case SPVM_OP_C_ID_REF:
-                      case SPVM_OP_C_ID_DEREF:
-                        create_tmp_var = 1;
-                        break;
-                      case SPVM_OP_C_ID_CONSTANT: {
-                        if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                          if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
-                            create_tmp_var = 1;
-                          }
-                          else if (SPVM_TYPE_is_string_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
-                            create_tmp_var = 1;
-                          }
-                        }
-                        break;
-                      }
-                      case SPVM_OP_C_ID_FIELD_ACCESS: {
-                        if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK))) {
-                          create_tmp_var = 1;
-                        }
-                        break;
-                      }
-                      case SPVM_OP_C_ID_ARRAY_ACCESS:{
-                        if (!(op_cur->flag & (SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK))) {
-                          create_tmp_var = 1;
-                        }
-                        break;
-                      }
-                      case SPVM_OP_C_ID_CALL_SUB: {
-                        if (!(tmp_var_type->dimension == 0 && tmp_var_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-                          create_tmp_var = 1;
-                        }
-                        break;
-                      }
-                    }
-                  }
-
-                  // Create temporary variable
-                  if (create_tmp_var) {
-                    SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, tmp_var_type, op_cur->file, op_cur->line);
-                    
-                    SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
-                    
-                    if (op_var_tmp == NULL) {
-                      return;
-                    }
-                    
-                    // Cut new op
-                    SPVM_OP* op_target = op_cur;
-                    
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                    // Assing op
-                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                    
-                    // Convert cur new op to var
-                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                    op_target->uv = op_cur->uv;
-                    
-                    op_cur = op_target;
-                  }
-
-                  if (op_cur == op_root) {
-
-                    // Finish
-                    finish = 1;
-                    
-                    break;
-                  }
-                  
-                  // Next sibling
-                  if (op_cur->moresib) {
-                    op_cur = SPVM_OP_sibling(compiler, op_cur);
-                    break;
-                  }
-                  // Next is parent
-                  else {
-                    op_cur = op_cur->sibparent;
-                  }
+            // Create temporary variables for not assigned values - Third tree traversal
+            {
+              // Run OPs
+              SPVM_OP* op_root = sub->op_block;
+              SPVM_OP* op_cur = op_root;
+              int32_t finish = 0;
+              while (op_cur) {
+                // [START]Preorder traversal position
+                if (op_cur->first) {
+                  op_cur = op_cur->first;
                 }
-                if (finish) {
-                  break;
+                else {
+                  while (1) {
+                    // Create temporary variable for no is_assigned_to_var term which is not variable
+                    int32_t create_tmp_var = 0;
+                    SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+                    
+                    // [START]Postorder traversal position
+                    if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
+                      switch (op_cur->id) {
+                        case SPVM_OP_C_ID_CONVERT:
+                          create_tmp_var = 1;
+                          break;
+                        case SPVM_OP_C_ID_ADD:
+                        case SPVM_OP_C_ID_SUBTRACT:
+                        case SPVM_OP_C_ID_MULTIPLY:
+                        case SPVM_OP_C_ID_DIVIDE:
+                        case SPVM_OP_C_ID_BIT_AND:
+                        case SPVM_OP_C_ID_BIT_OR:
+                        case SPVM_OP_C_ID_BIT_XOR:
+                        case SPVM_OP_C_ID_BIT_NOT:
+                        case SPVM_OP_C_ID_REMAINDER:
+                        case SPVM_OP_C_ID_LEFT_SHIFT:
+                        case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
+                        case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
+                        case SPVM_OP_C_ID_MINUS:
+                        case SPVM_OP_C_ID_PLUS:
+                        case SPVM_OP_C_ID_ARRAY_LENGTH:
+                        case SPVM_OP_C_ID_STRING_LENGTH:
+                        case SPVM_OP_C_ID_NEW:
+                        case SPVM_OP_C_ID_CONCAT:
+                        case SPVM_OP_C_ID_EXCEPTION_VAR:
+                        case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
+                        case SPVM_OP_C_ID_SWITCH_CONDITION:
+                        case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+                        case SPVM_OP_C_ID_REF:
+                        case SPVM_OP_C_ID_DEREF:
+                          create_tmp_var = 1;
+                          break;
+                        case SPVM_OP_C_ID_CONSTANT: {
+                          if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
+                            if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
+                              create_tmp_var = 1;
+                            }
+                            else if (SPVM_TYPE_is_string_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
+                              create_tmp_var = 1;
+                            }
+                          }
+                          break;
+                        }
+                        case SPVM_OP_C_ID_FIELD_ACCESS: {
+                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK))) {
+                            create_tmp_var = 1;
+                          }
+                          break;
+                        }
+                        case SPVM_OP_C_ID_ARRAY_ACCESS:{
+                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK))) {
+                            create_tmp_var = 1;
+                          }
+                          break;
+                        }
+                        case SPVM_OP_C_ID_CALL_SUB: {
+                          if (!(tmp_var_type->dimension == 0 && tmp_var_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
+                            create_tmp_var = 1;
+                          }
+                          break;
+                        }
+                      }
+                    }
+
+                    // Create temporary variable
+                    if (create_tmp_var) {
+                      SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, tmp_var_type, op_cur->file, op_cur->line);
+                      
+                      SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
+                      
+                      if (op_var_tmp == NULL) {
+                        return;
+                      }
+                      
+                      // Cut new op
+                      SPVM_OP* op_target = op_cur;
+                      
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
+
+                      // Assing op
+                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                      
+                      // Convert cur new op to var
+                      SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                      op_target->uv = op_cur->uv;
+                      
+                      op_cur = op_target;
+                    }
+
+                    if (op_cur == op_root) {
+
+                      // Finish
+                      finish = 1;
+                      
+                      break;
+                    }
+                    
+                    // Next sibling
+                    if (op_cur->moresib) {
+                      op_cur = SPVM_OP_sibling(compiler, op_cur);
+                      break;
+                    }
+                    // Next is parent
+                    else {
+                      op_cur = op_cur->sibparent;
+                    }
+                  }
+                  if (finish) {
+                    break;
+                  }
                 }
               }
             }
@@ -3899,7 +3899,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
 
           // Add more information for opcode building - Fourth tree traversal
-          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+          {
             // Block stack
             SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
             
@@ -3986,38 +3986,38 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(op_block_stack);
           }
         }
-      }
+        
+        // Add no duplicate package_var access package_var id to constant pool
+        package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->constant_pool->length;
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
+        for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
+          int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
+          SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
+        }
+        
+        // Add no duplicate field access field id to constant pool
+        package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
+        for (int32_t i = 0; i < package->info_field_ids->length; i++) {
+          int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
+          SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
+        }
 
-      // Add no duplicate package_var access package_var id to constant pool
-      package->no_dup_package_var_access_package_var_ids_constant_pool_id = package->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
-      for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
-        int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
-      }
-      
-      // Add no duplicate field access field id to constant pool
-      package->no_dup_field_access_field_ids_constant_pool_id = package->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
-      for (int32_t i = 0; i < package->info_field_ids->length; i++) {
-        int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
-      }
+        // Add no duplicate sub access sub id to constant pool
+        package->no_dup_call_sub_sub_ids_constant_pool_id = package->constant_pool->length;
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
+        for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
+          int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
+          SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
+        }
 
-      // Add no duplicate sub access sub id to constant pool
-      package->no_dup_call_sub_sub_ids_constant_pool_id = package->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
-      for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
-        int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
-      }
-
-      // Add no duplicate basic type id to constant pool
-      package->no_dup_basic_type_ids_constant_pool_id = package->constant_pool->length;
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
-      for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
-        int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
-        SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
+        // Add no duplicate basic type id to constant pool
+        package->no_dup_basic_type_ids_constant_pool_id = package->constant_pool->length;
+        SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
+        for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
+          int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
+          SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
+        }
       }
     }
   }
