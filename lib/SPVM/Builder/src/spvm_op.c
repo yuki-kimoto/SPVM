@@ -2325,43 +2325,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       }
     }
     
-    // Add return to last of statement if need
-    if (!op_list_statement->last || op_list_statement->last->id != SPVM_OP_C_ID_RETURN) {
-      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->line);
-      SPVM_TYPE* return_type = sub->return_type;
-      
-      SPVM_OP* op_constant;
-      if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID) {
-        // Nothing
-      }
-      else if ((return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE)
-       || (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT)
-       || (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT))
-      {
-        op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_list_statement->file, op_list_statement->line);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-      }
-      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-        op_constant = SPVM_OP_new_op_constant_long(compiler, 0, op_list_statement->file, op_list_statement->line);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-      }
-      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-        op_constant = SPVM_OP_new_op_constant_float(compiler, 0, op_list_statement->file, op_list_statement->line);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-      }
-      else if (return_type->dimension == 0 && return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-        op_constant = SPVM_OP_new_op_constant_double(compiler, 0, op_list_statement->file, op_list_statement->line);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-      }
-      else {
-        // Undef
-        SPVM_OP* op_undef = SPVM_OP_new_op_undef(compiler, op_list_statement->file, op_list_statement->line);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_undef);
-      }
-      
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
-    }
-
+    /*
     // Add sequence of temporary variable declarations to first of block
     {
       SPVM_OP* op_sequence_tmp_mys = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, sub->file, sub->line);
@@ -2369,6 +2333,29 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
       SPVM_OP_insert_child(compiler, op_sequence_tmp_mys, op_sequence_tmp_mys->last, op_null);
       SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_sequence_tmp_mys);
       sub->op_sequence_tmp_mys = op_sequence_tmp_mys;
+    }
+    */
+    
+    // Add return to last of statement
+    {
+      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_TYPE* return_type = sub->return_type;
+      if (SPVM_TYPE_is_void_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+      else {
+        // Temparary variable name
+        char* name = "@return";
+        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
+        op_name->uv.name = name;
+        SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+        SPVM_MY* my = SPVM_MY_new(compiler);
+        SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_type = op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
+        op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
     }
   }
   
