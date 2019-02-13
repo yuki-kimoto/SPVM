@@ -172,6 +172,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "REQUIRE",
   "IF_REQUIRE",
   "CURRENT_PACKAGE",
+  "FREE_TMP_VARS",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
