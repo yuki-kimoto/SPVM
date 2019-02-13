@@ -17,7 +17,7 @@
   #include "spvm_package.h"
 %}
 
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE REFCNT
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
@@ -54,7 +54,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -473,17 +473,11 @@ statement
     }
   | weaken_field ';'
   | unweaken_field ';'
-  | refcnt ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
 
-refcnt
-  : REFCNT expression
-    {
-      $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
-    }
 for_statement
   : FOR '(' opt_expression ';' term ';' opt_expression ')' block
     {
@@ -613,6 +607,7 @@ expression
   | array_init
   | array_length
   | string_length
+  | refcnt
   | my_var
   | binary_op
   | unary_op
@@ -638,6 +633,12 @@ expression
       }
     }
   | CURRENT_PACKAGE
+
+refcnt
+  : REFCNT expression
+    {
+      $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
+    }
 
 expressions
   : expressions ',' expression
