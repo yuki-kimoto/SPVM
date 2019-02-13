@@ -11,8 +11,6 @@ struct SPVM_my {
   int32_t var_id;
   int32_t runtime_type;
   int32_t type_width;
-  int8_t is_tmp;
-  int8_t is_used;
 };
 
 SPVM_MY* SPVM_MY_new();
