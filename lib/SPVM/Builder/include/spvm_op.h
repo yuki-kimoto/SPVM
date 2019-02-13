@@ -135,18 +135,14 @@ enum {
   SPVM_OP_C_ID_OBJECT,
   SPVM_OP_C_ID_WEAKEN,
   SPVM_OP_C_ID_WEAKEN_FIELD,
-  SPVM_OP_C_ID_WEAKEN_ARRAY_ELEMENT,
   SPVM_OP_C_ID_UNWEAKEN,
   SPVM_OP_C_ID_UNWEAKEN_FIELD,
-  SPVM_OP_C_ID_UNWEAKEN_ARRAY_ELEMENT,
   SPVM_OP_C_ID_ISWEAK,
   SPVM_OP_C_ID_ISWEAK_FIELD,
-  SPVM_OP_C_ID_ISWEAK_ARRAY_ELEMENT,
   SPVM_OP_C_ID_SPECIAL_ASSIGN,
   SPVM_OP_C_ID_CONCAT,
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_GET,
-  SPVM_OP_C_ID_PACKAGE_VAR,
   SPVM_OP_C_ID_PACKAGE_VAR_ACCESS,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_BOOL,
@@ -354,11 +350,8 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_term);
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_first, SPVM_OP* op_last);
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access);
-SPVM_OP* SPVM_OP_build_weaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access);
 SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access);
-SPVM_OP* SPVM_OP_build_unweaken_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_unweaken, SPVM_OP* op_field_access);
 SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access);
-SPVM_OP* SPVM_OP_build_isweak_array_element(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access);
 
 void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 
