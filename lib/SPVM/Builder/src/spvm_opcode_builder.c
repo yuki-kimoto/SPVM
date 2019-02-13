@@ -149,6 +149,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Mortal variable base stack
           SPVM_LIST* mortal_top_stack = SPVM_LIST_new(0);
 
+          // Object temporary variable stack
+          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(0);
+
           SPVM_SUB* sub = SPVM_LIST_fetch(subs, sub_index);
           
           // Check sub information
@@ -238,6 +241,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               while (1) {
                 // [START]Postorder traversal position
                 switch (op_cur->id) {
+                  case SPVM_OP_C_ID_FREE_TMP: {
+                    // Free temporary variables
+                    int32_t length = object_op_var_tmp_stack->length;
+                    for (int32_t i = 0; i < length; i++) {
+                      SPVM_OP* op_var_tmp = SPVM_LIST_pop(object_op_var_tmp_stack);
+                      
+                      SPVM_OPCODE opcode;
+                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_UNDEF);
+                      
+                      int32_t var_id_out = SPVM_OP_get_var_id(compiler, op_var_tmp);
+                      opcode.operand0 = var_id_out;
+                      
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
+                    break;
+                  }
                   case SPVM_OP_C_ID_ASSIGN: {
                     SPVM_OP* op_assign_dist = op_cur->last;
                     SPVM_OP* op_assign_src = op_cur->first;
@@ -4685,6 +4705,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(op_block_stack);
           SPVM_LIST_free(mortal_stack);
           SPVM_LIST_free(mortal_top_stack);
+          SPVM_LIST_free(object_op_var_tmp_stack);
 
           SPVM_LIST_free(next_block_base_stack);
           SPVM_LIST_free(last_block_base_stack);
