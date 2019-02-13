@@ -266,6 +266,8 @@ struct SPVM_op {
   int8_t free_tmp_vars;
 };
 
+SPVM_OP* SPVM_OP_new_op_list_free_tmp_vars(SPVM_COMPILER* compiler, SPVM_OP* op);
+
 SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression);
 
 SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block);

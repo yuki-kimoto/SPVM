@@ -2708,6 +2708,15 @@ SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op
   return op_expression;
 }
 
+SPVM_OP* SPVM_OP_new_op_list_free_tmp_vars(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op->file, op->line);
+  SPVM_OP* op_free_tmp_vars = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP_VARS, op->file, op->line);
+  SPVM_OP_insert_child(compiler, op_list, op_list->last, op);
+  SPVM_OP_insert_child(compiler, op_list, op_list->last, op_free_tmp_vars);
+  
+  return op_list;
+}
+
 SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {
   
   if (!op_term) {
