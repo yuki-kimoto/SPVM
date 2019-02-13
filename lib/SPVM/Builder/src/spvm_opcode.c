@@ -454,6 +454,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "WEAKEN_FIELD",
   "UNWEAKEN_FIELD",
   "ISWEAK_FIELD",
+  "REFCNT",
   "END_SUB",
 };
 

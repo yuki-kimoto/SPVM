@@ -480,6 +480,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
                       }
+                      else if (op_assign_src->id == SPVM_OP_C_ID_REFCNT) {
+                        
+                        SPVM_OP* op_term = op_cur->first;
+                        
+                        SPVM_OPCODE opcode;
+                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REFCNT);
+                        int32_t var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
+                        int32_t var_id_in = SPVM_OP_get_var_id(compiler, op_assign_src);
+                        
+                        opcode.operand0 = var_id_out;
+                        opcode.operand1 = var_id_in;
+
+                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        
+                        break;
+                      }
                       else if (op_assign_src->id == SPVM_OP_C_ID_UNDEF) {
 
                         SPVM_OPCODE opcode;

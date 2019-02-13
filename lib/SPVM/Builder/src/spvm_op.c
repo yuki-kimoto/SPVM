@@ -173,6 +173,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF_REQUIRE",
   "CURRENT_PACKAGE",
   "FREE_TMP",
+  "REFCNT",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -1150,12 +1151,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = op_type->uv.type;
       break;
     }
-    case SPVM_OP_C_ID_ARRAY_LENGTH: {
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
-      break;
-    }
-    case SPVM_OP_C_ID_STRING_LENGTH: {
+    case SPVM_OP_C_ID_ARRAY_LENGTH:
+    case SPVM_OP_C_ID_STRING_LENGTH:
+    case SPVM_OP_C_ID_REFCNT:
+    {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
       break;
@@ -2726,6 +2725,13 @@ SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_expression);
   
   return op_free_tmp;
+}
+
+SPVM_OP* SPVM_OP_build_refcnt(SPVM_COMPILER* compiler, SPVM_OP* op_refcnt, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_refcnt, op_refcnt->last, op_term);
+  
+  return op_refcnt;
 }
 
 SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {

@@ -1584,7 +1584,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 'r' :
-                if (strcmp(keyword, "return") == 0) {
+                if (strcmp(keyword, "refcnt") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REFCNT);
+                  return REFCNT;
+                }
+                else if (strcmp(keyword, "return") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_RETURN);
                   return RETURN;
                 }

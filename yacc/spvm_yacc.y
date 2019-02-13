@@ -17,7 +17,7 @@
   #include "spvm_package.h"
 %}
 
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE REFCNT
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
@@ -26,7 +26,7 @@
 %token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block
+%type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
@@ -473,11 +473,17 @@ statement
     }
   | weaken_field ';'
   | unweaken_field ';'
+  | refcnt ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
 
+refcnt
+  : REFCNT expression
+    {
+      $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
+    }
 for_statement
   : FOR '(' opt_expression ';' term ';' opt_expression ')' block
     {

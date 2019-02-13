@@ -395,6 +395,20 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_REFCNT: {
+              
+              SPVM_OP* op_term = op_cur->first;
+              
+              SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+              
+              // Must be object variable
+              if (op_term->id == SPVM_OP_C_ID_VAR && SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
+                SPVM_COMPILER_error(compiler, "refcnt operand must be object type variable at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_SWITCH: {
               
               SPVM_OP* op_switch_condition = op_cur->first;
@@ -3564,6 +3578,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
                         case SPVM_OP_C_ID_REF:
                         case SPVM_OP_C_ID_DEREF:
+                        case SPVM_OP_C_ID_REFCNT:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {
