@@ -143,6 +143,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CONCAT",
   "SET",
   "GET",
+  "PACKAGE_VAR",
   "PACKAGE_VAR_ACCESS",
   "ARRAY_INIT",
   "BOOL",
@@ -2696,6 +2697,14 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
   }
   
   return op_return;
+}
+
+SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression) {
+
+  // Free temporary variables
+  op_expression->free_tmp_vars = 1;
+  
+  return op_expression;
 }
 
 SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {

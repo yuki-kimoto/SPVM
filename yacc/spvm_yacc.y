@@ -451,9 +451,7 @@ statement
   | if_require_statement
   | expression ';'
     {
-      SPVM_OP* op_expression = $1;
-      op_expression->free_tmp_vars = 1;
-      $$ = op_expression;
+      $$ = SPVM_OP_build_expression_statement(compiler, $1);
     }
   | LAST ';'
   | NEXT ';'

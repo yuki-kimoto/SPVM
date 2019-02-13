@@ -74,11 +74,6 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         break;
       }
     }
-    else if (id == SPVM_OP_C_ID_PACKAGE_VAR) {
-      SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
-      printf(" \"%s\"", package_var->name);
-      printf(" (id :%d)", package_var->id);
-    }
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
       printf(" \"%s\"", var->op_name->uv.name);

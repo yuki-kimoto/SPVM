@@ -143,6 +143,7 @@ enum {
   SPVM_OP_C_ID_CONCAT,
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_GET,
+  SPVM_OP_C_ID_PACKAGE_VAR,
   SPVM_OP_C_ID_PACKAGE_VAR_ACCESS,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_BOOL,
@@ -263,6 +264,8 @@ struct SPVM_op {
   int8_t no_need_check;
   int8_t free_tmp_vars;
 };
+
+SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression);
 
 SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block);
 
