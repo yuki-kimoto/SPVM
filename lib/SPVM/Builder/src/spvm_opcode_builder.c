@@ -268,6 +268,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
                       SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
+
+                      // Push object temporary variable stack
+                      if (op_assign_dist->uv.var->is_tmp) {
+                        if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          SPVM_LIST_push(object_op_var_tmp_stack, op_assign_dist);
+                        }
+                      }
                       
                       if (op_assign_src->id == SPVM_OP_C_ID_ASSIGN) {
                         SPVM_OP* op_var_src;

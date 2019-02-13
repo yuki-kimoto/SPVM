@@ -8,6 +8,7 @@ struct SPVM_var {
   SPVM_MY* my;
   int8_t is_declaration;
   int8_t is_outer;
+  int8_t is_tmp;
 };
 
 SPVM_VAR* SPVM_VAR_new(SPVM_COMPILER* compiler);
