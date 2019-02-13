@@ -3753,14 +3753,12 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_REFCNT: {
         void* object = object_vars[opcode->operand1];
-        
         if (object == NULL) {
           int_vars[opcode->operand0] = 0;
         }
         else {
           int_vars[opcode->operand0] = env->ref_count(env, object);
         }
-
         break;
       }
       case SPVM_OPCODE_C_ID_REF_BYTE:

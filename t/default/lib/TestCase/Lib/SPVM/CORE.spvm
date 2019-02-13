@@ -1,20 +1,6 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
 
-  sub test_ref_count : int () {
-    my $min1 = TestCase::Minimal->new;
-    
-    my $min2 = $min1;
-    
-    my $ref_count = ref_count($min1);
-    
-    unless ($ref_count == 2) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
   sub test_fgets : int ($file : string) {
     my $fh = fopen($file, "r");
     unless ($fh) {

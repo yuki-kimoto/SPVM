@@ -1,3 +1,4 @@
+appveyor.yml
 Changes
 lib/SPVM.pm
 lib/SPVM/Builder.pm
@@ -141,6 +142,9 @@ lib/SPVM/JSON/Bool.spvm
 lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
+lib/SPVM/Math/BigDecimal.spvm
+lib/SPVM/Math/BigInteger.spvm
+lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/Stringer.spvm
@@ -218,6 +222,7 @@ spvmdoc/jp/public/js/google-code-prettify/prettify.css
 spvmdoc/jp/public/js/google-code-prettify/prettify.js
 spvmdoc/jp/public/js/google-code-prettify/run_prettify.js
 spvmdoc/jp/public/js/jquery-1.9.0.min.js
+spvmdoc/jp/public/language.html
 spvmdoc/jp/serve.pl
 t/copy_default_to_precompile.pl
 t/default/__FILE__.t
@@ -230,6 +235,7 @@ t/default/begin.t
 t/default/bit-not.t
 t/default/bit-operator.t
 t/default/commaop.t
+t/default/comment.t
 t/default/comparison-operator.t
 t/default/compile-error.t
 t/default/complex.t
@@ -254,6 +260,9 @@ t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
 t/default/lib/TestCase/BitNot.spvm
 t/default/lib/TestCase/BitOperator.spvm
+t/default/lib/TestCase/Comment/CR.spvm
+t/default/lib/TestCase/Comment/CRLF.spvm
+t/default/lib/TestCase/Comment/LF.spvm
 t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Add/LeftIsNotNumeric.spvm
@@ -286,7 +295,6 @@ t/default/lib/TestCase/CompileError/Divide/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
-t/default/lib/TestCase/CompileError/Isa/RightIsAnyObject.spvm
 t/default/lib/TestCase/CompileError/Literal/IntOutOfRange.spvm
 t/default/lib/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
@@ -373,6 +381,7 @@ t/default/lib/TestCase/Pointer.spvm
 t/default/lib/TestCase/Precedence.spvm
 t/default/lib/TestCase/Private.spvm
 t/default/lib/TestCase/Ref.spvm
+t/default/lib/TestCase/Refcnt.spvm
 t/default/lib/TestCase/Remainder.spvm
 t/default/lib/TestCase/Return.spvm
 t/default/lib/TestCase/Seqop.spvm
@@ -405,6 +414,7 @@ t/default/package_var.t
 t/default/perl-api.t
 t/default/precedence.t
 t/default/ref.t
+t/default/refcnt.t
 t/default/remainder.t
 t/default/return.t
 t/default/seqop.t
@@ -431,6 +441,10 @@ t/default/weaken.t
 t/default/while.t
 t/exe.t
 t/lib/TestAuto.pm
+t/lib/TestFile.pm
+t/test_files/file_eof.txt
 t/test_files/fread.txt
+t/test_files/fread_eof.txt
+t/test_files/long_line.txt
 yacc/bison.sh
 yacc/spvm_yacc.y

@@ -8,7 +8,9 @@
 		int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
 		
 		}
-    
+  - add refcnt keyword
+  - remove ref_count function
+  - temporary variable is freed after end of statement or end of condition
 0.0415 2018-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets
