@@ -172,7 +172,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "REQUIRE",
   "IF_REQUIRE",
   "CURRENT_PACKAGE",
-  "FREE_TMP_VARS",
+  "FREE_TMP",
 };
 
 SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
@@ -2701,20 +2701,12 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
 }
 
 SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression) {
-
-  // Free temporary variables
-  op_expression->free_tmp_vars = 1;
   
-  return op_expression;
-}
-
-SPVM_OP* SPVM_OP_new_op_list_free_tmp_vars(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op->file, op->line);
-  SPVM_OP* op_free_tmp_vars = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP_VARS, op->file, op->line);
-  SPVM_OP_insert_child(compiler, op_list, op_list->last, op);
-  SPVM_OP_insert_child(compiler, op_list, op_list->last, op_free_tmp_vars);
+  // Free tmp vars at end of expression statement
+  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_expression->file, op_expression->line);
+  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_expression);
   
-  return op_list;
+  return op_free_tmp;
 }
 
 SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {
@@ -2732,11 +2724,12 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
   SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
+
+  // Free tmp vars at end of croak statement
+  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_croak->file, op_croak->line);
+  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_croak);
   
-  // Free temporary variables
-  op_croak->free_tmp_vars = 1;
-  
-  return op_croak;
+  return op_free_tmp;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

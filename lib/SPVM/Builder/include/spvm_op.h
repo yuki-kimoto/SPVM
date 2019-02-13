@@ -172,7 +172,7 @@ enum {
   SPVM_OP_C_ID_REQUIRE,
   SPVM_OP_C_ID_IF_REQUIRE,
   SPVM_OP_C_ID_CURRENT_PACKAGE,
-  SPVM_OP_C_ID_FREE_TMP_VARS,
+  SPVM_OP_C_ID_FREE_TMP,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];
@@ -265,8 +265,6 @@ struct SPVM_op {
   int8_t no_need_check;
   int8_t free_tmp_vars;
 };
-
-SPVM_OP* SPVM_OP_new_op_list_free_tmp_vars(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression);
 
