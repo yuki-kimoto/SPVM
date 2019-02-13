@@ -914,9 +914,19 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Block for increment
   SPVM_OP* op_loop_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP_INCREMENT, op_for->file, op_for->line);
-  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_term_increment);
+
+  // Free tmp vars at end of initialization statement
+  SPVM_OP* op_term_increment_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_term_increment->file, op_term_increment->line);
+  SPVM_OP_insert_child(compiler, op_term_increment_free_tmp, op_term_increment_free_tmp->last, op_term_increment);
+
+  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_term_increment_free_tmp);
   
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_term_init);
+
+  // Free tmp vars at end of initialization statement
+  SPVM_OP* op_term_init_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_term_init->file, op_term_init->line);
+  SPVM_OP_insert_child(compiler, op_term_init_free_tmp, op_term_init_free_tmp->last, op_term_init);
+
+  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_term_init_free_tmp);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_block_statements);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_loop_increment);
