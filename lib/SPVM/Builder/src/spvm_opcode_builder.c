@@ -3944,7 +3944,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         op_block_current->uv.block->have_object_var_decl = 1;
                       }
                       
-                      
+                      // Initialized not initialized variable
+                      if (!my->is_initialized) {
+                        
+                      }
                     }
                     
                     break;
