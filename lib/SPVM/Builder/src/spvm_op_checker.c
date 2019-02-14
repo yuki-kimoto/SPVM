@@ -3963,21 +3963,12 @@ void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub) 
     my->runtime_type = SPVM_TYPE_get_runtime_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
     
     int32_t type_width;
-    if (SPVM_TYPE_is_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-      type_width = 1;
-    }
-    else if (SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
+    if (SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
       SPVM_PACKAGE* value_package =  my_type->basic_type->package;
       type_width = value_package->fields->length;
     }
-    else if (SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-      type_width = 1;
-    }
-    else if (SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-      type_width = 1;
-    }
     else {
-      assert(0);
+      type_width = 1;
     }
     
     my->type_width = type_width;
