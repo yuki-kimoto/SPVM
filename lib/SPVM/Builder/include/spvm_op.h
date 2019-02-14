@@ -285,7 +285,7 @@ const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);
 
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name);
 
-int32_t SPVM_OP_get_var_id(SPVM_COMPILER* compiler, SPVM_OP* op);
+int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child);
 

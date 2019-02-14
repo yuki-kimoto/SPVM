@@ -279,7 +279,7 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_arg->basic_type_id = runtime_basic_type_id;
       portable_arg->type_dimension = runtime_type_dimension;
       portable_arg->type_flag = arg->type->flag;
-      portable_arg->var_id = arg->var_id;
+      portable_arg->mem_id = arg->mem_id;
       portable_arg->runtime_type = arg->runtime_type;
       portable_arg->type_width = arg->type_width;
     }

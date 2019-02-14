@@ -6,7 +6,7 @@
 // Field information
 struct SPVM_runtime_arg {
   int32_t basic_type_id;
-  uint16_t var_id;
+  uint16_t mem_id;
   uint16_t type_flag;
   uint8_t type_dimension;
   uint8_t runtime_type;

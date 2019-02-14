@@ -1091,12 +1091,12 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op_var;
 }
 
-int32_t SPVM_OP_get_var_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
   
-  return op_var->uv.var->my->var_id;
+  return op_var->uv.var->my->mem_id;
 }
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
