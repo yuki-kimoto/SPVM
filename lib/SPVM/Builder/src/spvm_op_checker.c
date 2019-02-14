@@ -3684,7 +3684,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
 
             // Fourth tree traversal
-            // Add more information for opcode building - 
+            // Fix LEAVE_SCOPE
             {
               // Block stack
               SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
@@ -3805,12 +3805,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          // Resolve my runtime type and width
+          // Resolve my type width
           for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
             SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
             SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
-            
-            my->runtime_type = SPVM_TYPE_get_runtime_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
             
             int32_t type_width;
             if (SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
@@ -3820,8 +3818,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             else {
               type_width = 1;
             }
-            
             my->type_width = type_width;
+          }
+
+          // Resolve my runtime type
+          for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
+            SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
+            SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
+            my->runtime_type = SPVM_TYPE_get_runtime_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
           // Resolve return runtime type
