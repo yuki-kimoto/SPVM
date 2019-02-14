@@ -58,6 +58,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, 
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   op_var->uv.var->is_tmp = 1;
+  op_my->uv.my->is_initialized = 1;
   
   return op_var;
 }
@@ -1669,6 +1670,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_COMPILER_error(compiler, "Type can't be detected at %s line %d\n", my->op_my->file, my->op_my->line);
                   return;
                 }
+                my->is_initialized = 1;
               }
               
               // Check if source can be assigned to dist
