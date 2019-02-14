@@ -2186,6 +2186,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   return;
                 }
                 else {
+                  my->id = sub->mys->length;
                   SPVM_LIST_push(sub->mys, my);
                   SPVM_LIST_push(check_ast_info->my_stack, my);
                 }
@@ -3621,6 +3622,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     if (create_tmp_var) {
                       SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub, tmp_var_type, op_cur->file, op_cur->line);
                       
+                      op_var_tmp->uv.var->my->id = sub->mys->length;
                       SPVM_LIST_push(sub->op_sub->uv.sub->mys, op_var_tmp->uv.var->my);
                       
                       if (op_var_tmp == NULL) {
