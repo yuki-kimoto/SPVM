@@ -5894,7 +5894,7 @@ void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size)
   runtime->memory_blocks_count++;
   
 #ifdef SPVM_DEBUG_OBJECT_COUNT
-  fprintf(stderr, "[INC_MEMORY_BLOCK_CNT] %d\n", runtime->memory_blocks_count);
+  fprintf(stderr, "[ALLOC_MEMORY] %d\n", runtime->memory_blocks_count);
 #endif
   
   return block;
@@ -5909,7 +5909,7 @@ void SPVM_RUNTIME_API_free_memory_block(SPVM_ENV* env, void* block) {
     runtime->memory_blocks_count--;
     
 #ifdef SPVM_DEBUG_OBJECT_COUNT
-    fprintf(stderr, "[INC_MEMORY_BLOCK_CNT] %d\n", runtime->memory_blocks_count);
+    fprintf(stderr, "[FREE_MEMORY] %d\n", runtime->memory_blocks_count);
 #endif
   }
 }

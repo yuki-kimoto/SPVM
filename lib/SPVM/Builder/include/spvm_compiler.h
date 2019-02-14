@@ -55,9 +55,6 @@ struct SPVM_compiler {
   // Current enum value
   int32_t current_enum_value;
   
-  // Temporary variable length
-  int32_t tmp_var_length;
-  
   // AST grammar
   SPVM_OP* op_grammar;
   

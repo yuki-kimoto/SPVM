@@ -66,6 +66,7 @@ struct SPVM_sub {
   int8_t is_begin;
   const char* accessor_original_name;
   SPVM_OP* op_list_tmp_mys;
+  int32_t tmp_vars_length;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
