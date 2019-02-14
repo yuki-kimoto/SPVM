@@ -1193,14 +1193,32 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_UNDEF:
+      case SPVM_OPCODE_C_ID_INIT_CHAR:
+        byte_vars[opcode->operand0] = 0;
+        break;
+      case SPVM_OPCODE_C_ID_INIT_SHORT:
+        short_vars[opcode->operand0] = 0;
+        break;
+      case SPVM_OPCODE_C_ID_INIT_INT:
+        int_vars[opcode->operand0] = 0;
+        break;
+      case SPVM_OPCODE_C_ID_INIT_LONG: {
+        long_vars[opcode->operand0] = 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_FLOAT: {
+        float_vars[opcode->operand0] = 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_DOUBLE: {
+        double_vars[opcode->operand0] = 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_UNDEF:
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_CHAR:
         byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
-        break;
-      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_SHORT:
-        short_vars[opcode->operand0] = (int16_t)(uint16_t)opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT:
         int_vars[opcode->operand0] = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
