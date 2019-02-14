@@ -1196,13 +1196,16 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MOVE_UNDEF:
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR:
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_CHAR:
         byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         break;
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_INT:
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_SHORT:
+        short_vars[opcode->operand0] = (int16_t)(uint16_t)opcode->operand1;
+        break;
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT:
         int_vars[opcode->operand0] = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
         int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
@@ -1210,13 +1213,13 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         long_vars[opcode->operand0] = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
         SPVM_VALUE value;
         value.ival = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
         float_vars[opcode->operand0] = value.fval;
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
         int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];

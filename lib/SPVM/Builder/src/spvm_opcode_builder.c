@@ -2020,30 +2020,30 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t var_id_out;
                           switch (type_dist->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_BYTE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_CHAR);
                               opcode.operand1 = (uint16_t)(uint8_t)constant->value.bval;
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;
                             case SPVM_BASIC_TYPE_C_ID_INT:
                               
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_INT);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT);
                               opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
                               opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;
                             case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_LONG);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG);
                               opcode.operand1 = constant->constant_pool_id;
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;
                             case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT);
                               opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
                               opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE);
                               opcode.operand1 = constant->constant_pool_id;
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;

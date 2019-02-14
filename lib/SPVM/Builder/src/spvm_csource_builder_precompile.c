@@ -2077,7 +2077,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_CHAR: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_CHAR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = '");
@@ -2085,7 +2085,15 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "';\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_INT: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_SHORT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = '");
+        SPVM_STRING_BUFFER_add_hex_char(string_buffer, (int16_t)(uint16_t)opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "';\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -2093,7 +2101,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_LONG: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
         int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
@@ -2107,7 +2115,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_FLOAT: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
         SPVM_VALUE value;
         value.ival = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
         
@@ -2118,7 +2126,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_CONSTANT_DOUBLE: {
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
         int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
