@@ -3427,6 +3427,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Second tree traversal
             // set assign_to_var flag - 
             // Add string to constant pool
+            // Check ref 
             {
               // Run OPs
               SPVM_OP* op_root = sub->op_block;
