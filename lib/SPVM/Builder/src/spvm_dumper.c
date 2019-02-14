@@ -449,6 +449,83 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
     printf("%s", SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag));
     printf("\n");
     printf("          id => %d\n", my->id);
+    printf("          mem_id => ");
+    
+    if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
+      switch(numeric_type->basic_type->id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          printf("byte");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          printf("short");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          printf("int");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          printf("long");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          printf("float");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          printf("double");
+          break;
+        }
+      }
+    }
+    else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      printf("object");
+    }
+    else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      printf("ref");
+    }
+    else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      SPVM_PACKAGE* value_package =  type->basic_type->package;
+      
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+      assert(first_field);
+      
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+      assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+      
+      switch (field_type->basic_type->id) {
+        case SPVM_BASIC_TYPE_C_ID_BYTE: {
+          printf("byte");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_SHORT: {
+          printf("short");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_INT: {
+          printf("int");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_LONG: {
+          printf("long");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+          printf("float");
+          break;
+        }
+        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+          printf("double");
+          break;
+        }
+        default:
+          assert(0);
+      }
+    }
+    
+    printf(" %d\n", my->mem_id);
   }
   else {
     printf("          (Unexpected)\n");
