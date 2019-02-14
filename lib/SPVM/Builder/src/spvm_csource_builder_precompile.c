@@ -1286,7 +1286,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (double_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // float variable declarations
@@ -1294,7 +1294,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (float_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // long variable declarations
@@ -1302,7 +1302,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (long_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // int variable declarations
@@ -1310,7 +1310,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (int_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // Exception
@@ -1331,7 +1331,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (short_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // byte variable declarations
@@ -1339,7 +1339,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   if (byte_vars_alloc_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_alloc_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
 
   // Convert string

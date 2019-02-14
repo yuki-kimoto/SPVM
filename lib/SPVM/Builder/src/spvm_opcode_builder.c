@@ -2025,7 +2025,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               var_id_out = SPVM_OP_get_var_id(compiler, op_assign_dist);
                               break;
                             case SPVM_BASIC_TYPE_C_ID_INT:
-                              
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT);
                               opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
                               opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
@@ -3945,7 +3944,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       // Initialized not initialized variable
-                      if (!my->is_initialized && !op_cur->uv.var->is_arg) {
+                      if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->is_arg) {
                         // Value type
                         if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_PACKAGE* value_package = type->basic_type->package;

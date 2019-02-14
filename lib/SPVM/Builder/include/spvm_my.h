@@ -11,7 +11,6 @@ struct SPVM_my {
   int32_t var_id;
   int32_t runtime_type;
   int32_t type_width;
-  int32_t is_initialized;
 };
 
 SPVM_MY* SPVM_MY_new();
