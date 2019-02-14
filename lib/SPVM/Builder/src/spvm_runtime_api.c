@@ -1217,6 +1217,48 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_INIT_UNDEF:
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
+      case SPVM_OPCODE_C_ID_INIT_VALUE_BYTE: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          byte_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_VALUE_SHORT: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          short_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_VALUE_INT: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          int_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_VALUE_LONG: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          long_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_VALUE_FLOAT: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          float_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_INIT_VALUE_DOUBLE: {
+        int32_t field_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < field_length; field_index++) {
+          double_vars[opcode->operand0 + field_index] = 0;
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE:
         byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         break;
