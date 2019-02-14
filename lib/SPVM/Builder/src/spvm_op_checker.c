@@ -3806,6 +3806,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           // Resolve my var ids
           SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
+
+          sub->return_runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
         }
       }
     }
@@ -3953,8 +3955,6 @@ void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub) 
   sub->object_vars_alloc_length = my_object_mem_id;
   sub->ref_vars_alloc_length = my_ref_mem_id;
   
-  sub->return_runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
-
   // Resolve my runtime type and width
   for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
     SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
@@ -3965,131 +3965,16 @@ void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub) 
     int32_t type_width;
     if (SPVM_TYPE_is_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
       type_width = 1;
-      switch (my_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          break;
-        }
-        default: {
-          assert(0);
-          break;
-        }
-      }
     }
     else if (SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
       SPVM_PACKAGE* value_package =  my_type->basic_type->package;
-      
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
-      assert(first_field);
-      
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-      assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
-
       type_width = value_package->fields->length;
-      switch (field_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          break;
-        }
-        default: {
-          assert(0);
-        }
-      }
     }
     else if (SPVM_TYPE_is_object_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
       type_width = 1;
     }
     else if (SPVM_TYPE_is_ref_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
-      switch (my_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          type_width = 1;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          type_width = 1;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          type_width = 1;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          type_width = 1;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          type_width = 1;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          type_width = 1;
-          break;
-        }
-        default: {
-          SPVM_PACKAGE* value_package =  my_type->basic_type->package;
-          
-          SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
-          assert(first_field);
-          
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-          assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
-
-          type_width = 1;
-
-          switch (field_type->basic_type->id) {
-            case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_INT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_LONG: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              break;
-            }
-            case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              break;
-            }
-            default: {
-              assert(0);
-            }
-          }
-          break;
-        }
-      }
+      type_width = 1;
     }
     else {
       assert(0);
