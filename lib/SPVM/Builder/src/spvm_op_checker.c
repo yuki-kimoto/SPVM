@@ -3839,6 +3839,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Fifth tree traversal
             // Resolve my mem ids
             {
+              SPVM_LIST* byte_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* short_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* int_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* long_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* float_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* double_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* object_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* ref_mem_stack = SPVM_LIST_new(0);
+
               // Run OPs
               SPVM_OP* op_root = sub->op_block;
               SPVM_OP* op_cur = op_root;
@@ -3897,6 +3906,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                 }
               }
+              SPVM_LIST_free(byte_mem_stack);
+              SPVM_LIST_free(short_mem_stack);
+              SPVM_LIST_free(int_mem_stack);
+              SPVM_LIST_free(long_mem_stack);
+              SPVM_LIST_free(float_mem_stack);
+              SPVM_LIST_free(double_mem_stack);
+              SPVM_LIST_free(object_mem_stack);
+              SPVM_LIST_free(ref_mem_stack);
             }
             
             SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
