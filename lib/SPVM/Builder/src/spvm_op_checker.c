@@ -3839,6 +3839,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Fifth tree traversal
             // Resolve my mem ids
             {
+              SPVM_LIST* tmp_my_stack = SPVM_LIST_new(0);
+              SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(0);
+              SPVM_LIST* block_no_tmp_my_base_stack = SPVM_LIST_new(0);
+              
               SPVM_LIST* byte_mem_stack = SPVM_LIST_new(0);
               SPVM_LIST* short_mem_stack = SPVM_LIST_new(0);
               SPVM_LIST* int_mem_stack = SPVM_LIST_new(0);
@@ -3857,6 +3861,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 switch (op_cur->id) {
                   // Start scope
                   case SPVM_OP_C_ID_BLOCK: {
+                    int32_t block_no_tmp_my_base = no_tmp_my_stack->length;
+                    SPVM_LIST_push(block_no_tmp_my_base_stack, (void*)(intptr_t)block_no_tmp_my_base);
+                    
                     break;
                   }
                 }
@@ -3870,9 +3877,24 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     switch (op_cur->id) {
                       case SPVM_OP_C_ID_FREE_TMP: {
                         
+                        // Free temporary variables
+                        int32_t length = tmp_my_stack->length;
+                        for (int32_t i = 0; i < length; i++) {
+                          SPVM_OP* op_var_tmp = SPVM_LIST_pop(tmp_my_stack);
+                        }
                         break;
                       }
                       case SPVM_OP_C_ID_BLOCK: {
+                        // Pop block no tmp my variable base
+                        int32_t block_no_tmp_my_base = (intptr_t)SPVM_LIST_pop(block_no_tmp_my_base_stack);
+                        int32_t no_tmp_my_stack_pop_count = no_tmp_my_stack->length - block_no_tmp_my_base;
+                        
+                        {
+                          int32_t i;
+                          for (i = 0; i < no_tmp_my_stack_pop_count; i++) {
+                            SPVM_LIST_pop(no_tmp_my_stack);
+                          }
+                        }
                         
                         break;
                       }
@@ -3906,6 +3928,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                 }
               }
+              SPVM_LIST_free(tmp_my_stack);
+              SPVM_LIST_free(no_tmp_my_stack);
+              SPVM_LIST_free(block_no_tmp_my_base_stack);
+
               SPVM_LIST_free(byte_mem_stack);
               SPVM_LIST_free(short_mem_stack);
               SPVM_LIST_free(int_mem_stack);
