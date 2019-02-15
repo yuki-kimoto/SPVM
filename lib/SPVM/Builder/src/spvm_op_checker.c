@@ -3830,6 +3830,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
           // Resolve return runtime type
           sub->return_runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
+          
+          // Arg alloc length
+          int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
+          sub->args_alloc_length = args_alloc_length;
 
           // Resolve my var ids
           SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
@@ -3967,9 +3971,6 @@ void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub) 
       assert(0);
     }
   }
-
-  int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
-  sub->args_alloc_length = args_alloc_length;
 
   sub->byte_vars_alloc_length = my_byte_mem_id;
   sub->short_vars_alloc_length = my_short_mem_id;
