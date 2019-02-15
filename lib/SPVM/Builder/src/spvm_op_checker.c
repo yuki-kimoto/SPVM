@@ -3836,7 +3836,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           sub->args_alloc_length = args_alloc_length;
 
           // Resolve my var ids
-          SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
+          if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+            SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
+          }
         }
       }
     }
