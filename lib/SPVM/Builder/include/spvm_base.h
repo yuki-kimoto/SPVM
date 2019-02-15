@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_mem.h
+struct SPVM_mem;
+typedef struct SPVM_mem SPVM_MEM;
+
 // spvm_runtime_weaken_backref.h
 struct SPVM_runtime_weaken_backref;
 typedef struct SPVM_runtime_weaken_backref SPVM_RUNTIME_WEAKEN_BACKREF;

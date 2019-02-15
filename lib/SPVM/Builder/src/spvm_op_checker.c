@@ -3835,8 +3835,70 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
           sub->args_alloc_length = args_alloc_length;
 
-          // Resolve my var ids
           if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+            // Fifth tree traversal
+            // Resolve my mem ids
+            {
+              // Run OPs
+              SPVM_OP* op_root = sub->op_block;
+              SPVM_OP* op_cur = op_root;
+              int32_t finish = 0;
+              while (op_cur) {
+                // [START]Preorder traversal position
+                switch (op_cur->id) {
+                  // Start scope
+                  case SPVM_OP_C_ID_BLOCK: {
+                    break;
+                  }
+                }
+
+                if (op_cur->first) {
+                  op_cur = op_cur->first;
+                }
+                else {
+                  while (1) {
+                    // [START]Postorder traversal position
+                    switch (op_cur->id) {
+                      case SPVM_OP_C_ID_FREE_TMP: {
+                        
+                        break;
+                      }
+                      case SPVM_OP_C_ID_BLOCK: {
+                        
+                        break;
+                      }
+                      case SPVM_OP_C_ID_VAR: {
+                        if (op_cur->uv.var->is_declaration) {
+                          
+                        }
+                        break;
+                      }
+                    }
+
+                    if (op_cur == op_root) {
+                      // Finish
+                      finish = 1;
+                      
+                      break;
+                    }
+                    
+                    // Next sibling
+                    if (op_cur->moresib) {
+                      op_cur = SPVM_OP_sibling(compiler, op_cur);
+                      break;
+                    }
+                    // Next is parent
+                    else {
+                      op_cur = op_cur->sibparent;
+                    }
+                  }
+                  if (finish) {
+                    break;
+                  }
+                }
+              }
+            }
+            
             SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
           }
         }
