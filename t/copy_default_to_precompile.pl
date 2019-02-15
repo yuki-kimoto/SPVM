@@ -45,7 +45,7 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        unless ($content =~ /:\s+interface\s+{/) {
+        unless ($content =~ /:\s+interface_t\s+{/) {
           $content =~ s/\bsub\b/precompile sub/g;
           $content =~ s/\bnative\s+precompile\b/native/g;
         }

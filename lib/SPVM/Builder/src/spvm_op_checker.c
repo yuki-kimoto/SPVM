@@ -4018,11 +4018,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                                 mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, double_mem_stack, my, 1);
                                 break;
                               }
+                              default:
+                                assert(0);
                             }
                           }
                           else {
                             assert(0);
                           }
+                          my->mem_id = mem_id;
                           
                           // Add stack
                           if (my->is_tmp) {
@@ -4058,6 +4061,17 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   }
                 }
               }
+
+              sub->byte_vars_alloc_length = byte_mem_stack->length;
+              sub->short_vars_alloc_length = short_mem_stack->length;
+              sub->int_vars_alloc_length = int_mem_stack->length;
+              sub->long_vars_alloc_length = long_mem_stack->length;
+              sub->float_vars_alloc_length = float_mem_stack->length;
+              sub->double_vars_alloc_length = double_mem_stack->length;
+
+              sub->object_vars_alloc_length = object_mem_stack->length;
+              sub->ref_vars_alloc_length = ref_mem_stack->length;
+
               SPVM_LIST_free(tmp_my_stack);
               SPVM_LIST_free(no_tmp_my_stack);
               SPVM_LIST_free(block_no_tmp_my_base_stack);
@@ -4071,8 +4085,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               SPVM_LIST_free(object_mem_stack);
               SPVM_LIST_free(ref_mem_stack);
             }
-            
-            SPVM_OP_CHECKER_resolve_my_mem_ids(compiler, sub);
           }
         }
       }
@@ -4089,135 +4101,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     SPVM_DUMPER_dump_packages(compiler, compiler->packages);
   }
 #endif
-}
-
-// Resolve my var id
-void SPVM_OP_CHECKER_resolve_my_mem_ids(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
-
-  int32_t my_index;
-  int32_t my_mem_id = 0;
-  int32_t my_byte_mem_id = 0;
-  int32_t my_short_mem_id = 0;
-  int32_t my_int_mem_id = 0;
-  int32_t my_long_mem_id = 0;
-  int32_t my_float_mem_id = 0;
-  int32_t my_double_mem_id = 0;
-  int32_t my_object_mem_id = 0;
-  int32_t my_ref_mem_id = 0;
-  for (my_index = 0; my_index < sub->mys->length; my_index++) {
-    SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
-    assert(my);
-    SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
-    
-    int32_t width = my->type_width;
-    if (my_mem_id + (width - 1) > SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
-      SPVM_COMPILER_error(compiler, "Too many variable declarations at %s line %d\n", my->op_my->file, my->op_my->line);
-      return;
-    }
-    my->mem_id = my_mem_id;
-    my_mem_id += width;
-    
-    if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
-      switch(numeric_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          my->mem_id = my_byte_mem_id;
-          my_byte_mem_id++;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          my->mem_id = my_short_mem_id;
-          my_short_mem_id++;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          my->mem_id = my_int_mem_id;
-          my_int_mem_id++;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          my->mem_id = my_long_mem_id;
-          my_long_mem_id++;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          my->mem_id = my_float_mem_id;
-          my_float_mem_id++;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          my->mem_id = my_double_mem_id;
-          my_double_mem_id++;
-          break;
-        }
-      }
-    }
-    else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      my->mem_id = my_object_mem_id;
-      my_object_mem_id += width;
-    }
-    else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      my->mem_id = my_ref_mem_id;
-      my_ref_mem_id += width;
-    }
-    else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_PACKAGE* value_package =  type->basic_type->package;
-      
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
-      assert(first_field);
-      
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-      assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
-      
-      switch (field_type->basic_type->id) {
-        case SPVM_BASIC_TYPE_C_ID_BYTE: {
-          my->mem_id = my_byte_mem_id;
-          my_byte_mem_id += width;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_SHORT: {
-          my->mem_id = my_short_mem_id;
-          my_short_mem_id += width;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_INT: {
-          my->mem_id = my_int_mem_id;
-          my_int_mem_id += width;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_LONG: {
-          my->mem_id = my_long_mem_id;
-          my_long_mem_id += width;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-          my->mem_id = my_float_mem_id;
-          my_float_mem_id += width;
-          break;
-        }
-        case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-          my->mem_id = my_double_mem_id;
-          my_double_mem_id += width;
-          break;
-        }
-        default:
-          assert(0);
-      }
-    }
-    else {
-      assert(0);
-    }
-  }
-
-  sub->byte_vars_alloc_length = my_byte_mem_id;
-  sub->short_vars_alloc_length = my_short_mem_id;
-  sub->int_vars_alloc_length = my_int_mem_id;
-  sub->long_vars_alloc_length = my_long_mem_id;
-  sub->float_vars_alloc_length = my_float_mem_id;
-  sub->double_vars_alloc_length = my_double_mem_id;
-
-  sub->object_vars_alloc_length = my_object_mem_id;
-  sub->ref_vars_alloc_length = my_ref_mem_id;
 }
 
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
