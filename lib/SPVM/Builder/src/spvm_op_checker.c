@@ -40,7 +40,42 @@
 
 int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my, int32_t width) {
   
-  return 0;
+  int32_t found_mem_id = -1;
+  
+  // Search free memory
+  int32_t found = 0;
+  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
+    if (mem_id + width <= mem_stack->length) {
+      int32_t is_used = 0;
+      for (int32_t i = 0; i < width; i++) {
+        int32_t my_id = (intptr_t)SPVM_LIST_fetch(mem_stack, mem_id + i);
+        if (my_id >= 0) {
+          is_used = 1;
+          break;
+        }
+      }
+      if (!is_used) {
+        found = 1;
+        found_mem_id = mem_id;
+        mem_stack->values[mem_id] = (void*)(intptr_t)my->id;
+        break;
+      }
+    }
+    
+    if (found) {
+      break;
+    }
+  }
+  
+  // Add stack
+  if (!found) {
+    found_mem_id = mem_stack->length;
+    for (int32_t i = 0; i < width; i++) {
+      SPVM_LIST_push(mem_stack, (void*)(intptr_t)my->id);
+    }
+  }
+  
+  return found_mem_id;
 }
 
 SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, SPVM_TYPE* type, const char* file, int32_t line) {
