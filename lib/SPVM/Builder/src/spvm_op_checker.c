@@ -4034,7 +4034,90 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         {
                           int32_t i;
                           for (i = 0; i < no_tmp_my_stack_pop_count; i++) {
-                            SPVM_LIST_pop(no_tmp_my_stack);
+                            SPVM_MY* my = SPVM_LIST_pop(no_tmp_my_stack);
+
+                            SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
+                            
+                            // Free tmp mem id
+                            if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_OP_CHECKER_free_mem_id(compiler, object_mem_stack, my);
+                            }
+                            else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_OP_CHECKER_free_mem_id(compiler, ref_mem_stack, my);
+                            }
+                            else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_PACKAGE* value_package =  type->basic_type->package;
+                              
+                              SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+                              assert(first_field);
+                              
+                              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                              
+                              int32_t width = value_package->fields->length;
+                              
+                              switch (field_type->basic_type->id) {
+                                case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, byte_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, short_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_INT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, int_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_LONG: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, long_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, float_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, double_mem_stack, my);
+                                  break;
+                                }
+                                default:
+                                  assert(0);
+                              }
+                            }
+                            else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
+                              switch(numeric_type->basic_type->id) {
+                                case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, byte_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, short_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_INT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, int_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_LONG: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, long_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, float_mem_stack, my);
+                                  break;
+                                }
+                                case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                                  SPVM_OP_CHECKER_free_mem_id(compiler, double_mem_stack, my);
+                                  break;
+                                }
+                                default:
+                                  assert(0);
+                              }
+                            }
+                            else {
+                              assert(0);
+                            }
                           }
                         }
                         
