@@ -11,6 +11,7 @@ struct SPVM_my {
   int32_t mem_id;
   int32_t runtime_type;
   int32_t type_width;
+  int8_t is_tmp;
 };
 
 SPVM_MY* SPVM_MY_new();

@@ -57,7 +57,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, 
   
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
-  op_var->uv.var->is_tmp = 1;
+  op_my->uv.my->is_tmp = 1;
   op_var->uv.var->is_initialized = 1;
   
   return op_var;
