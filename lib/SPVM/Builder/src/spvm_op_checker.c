@@ -3835,9 +3835,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
           sub->args_alloc_length = args_alloc_length;
 
+          // Fifth tree traversal
+          // Resolve my mem ids
           if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
-            // Fifth tree traversal
-            // Resolve my mem ids
             {
               SPVM_LIST* tmp_my_stack = SPVM_LIST_new(0);
               SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(0);
@@ -3900,7 +3900,83 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_VAR: {
                         if (op_cur->uv.var->is_declaration) {
+                          SPVM_MY* my = op_cur->uv.var->my;
                           
+                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, my->op_my);
+                          
+                          // Resolve mem id
+                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            
+                          }
+                          else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            
+                          }
+                          else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            SPVM_PACKAGE* value_package =  type->basic_type->package;
+                            
+                            SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+                            assert(first_field);
+                            
+                            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                            
+                            switch (field_type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_INT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                                break;
+                              }
+                              default:
+                                assert(0);
+                            }
+                          }
+                          else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, my->op_my);
+                            switch(numeric_type->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_INT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_LONG: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                                break;
+                              }
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                                break;
+                              }
+                            }
+                            
+                          }
+                          else {
+                            assert(0);
+                          }
+                          
+                          // Add stack
+                          if (my->is_tmp) {
+                            SPVM_LIST_push(tmp_my_stack, my);
+                          }
+                          else {
+                            SPVM_LIST_push(no_tmp_my_stack, my);
+                          }
                         }
                         break;
                       }
