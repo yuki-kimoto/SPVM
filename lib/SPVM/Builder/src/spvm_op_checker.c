@@ -3643,6 +3643,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_REF:
                         case SPVM_OP_C_ID_DEREF:
                         case SPVM_OP_C_ID_REFCNT:
+                        case SPVM_OP_C_ID_NUMERIC_GT:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {

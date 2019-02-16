@@ -220,8 +220,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ne(SPVM_ENV* env, SPVM_STRING_BUFFER* s
   SPVM_STRING_BUFFER_add(string_buffer, ");\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = (");
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  condition_flag = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = (");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " > ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
@@ -1605,16 +1607,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ne(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0, opcode->operand1);
         break;
       case SPVM_OPCODE_C_ID_GT_INT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_GT_LONG:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_GT_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_GT_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_gt(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_GE_INT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_ge(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);

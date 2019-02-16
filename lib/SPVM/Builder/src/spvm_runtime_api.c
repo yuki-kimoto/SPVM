@@ -760,16 +760,16 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         condition_flag = *(void**)&object_vars[opcode->operand0] != *(void**)&object_vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_GT_INT:
-        condition_flag = int_vars[opcode->operand0] > int_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = int_vars[opcode->operand1] > int_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_GT_LONG:
-        condition_flag = long_vars[opcode->operand0] > long_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = long_vars[opcode->operand1] > long_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_GT_FLOAT:
-        condition_flag = float_vars[opcode->operand0] > float_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = float_vars[opcode->operand1] > float_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_GT_DOUBLE:
-        condition_flag = double_vars[opcode->operand0] > double_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = double_vars[opcode->operand1] > double_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_GE_INT:
         condition_flag = int_vars[opcode->operand0] >= int_vars[opcode->operand1];
