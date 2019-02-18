@@ -724,40 +724,40 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         condition_flag = !!*(void**)&object_vars[opcode->operand0];
         break;
       case SPVM_OPCODE_C_ID_IS_UNDEF:
-        condition_flag = *(void**)&object_vars[opcode->operand0] == NULL;
+        condition_flag = int_vars[opcode->operand0] = *(void**)&object_vars[opcode->operand1] == NULL;
         break;
       case SPVM_OPCODE_C_ID_IS_NOT_UNDEF:
-        condition_flag = *(void**)&object_vars[opcode->operand0] != NULL;
+        condition_flag = int_vars[opcode->operand0] = *(void**)&object_vars[opcode->operand1] != NULL;
         break;
       case SPVM_OPCODE_C_ID_EQ_INT:
-        condition_flag = int_vars[opcode->operand0] == int_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = int_vars[opcode->operand1] == int_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_EQ_LONG:
-        condition_flag = long_vars[opcode->operand0] == long_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = long_vars[opcode->operand1] == long_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_EQ_FLOAT:
-        condition_flag = float_vars[opcode->operand0] == float_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = float_vars[opcode->operand1] == float_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_EQ_DOUBLE:
-        condition_flag = double_vars[opcode->operand0] == double_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = double_vars[opcode->operand1] == double_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_EQ_OBJECT:
-        condition_flag = *(void**)&object_vars[opcode->operand0] == *(void**)&object_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = *(void**)&object_vars[opcode->operand1] == *(void**)&object_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_NE_INT:
-        condition_flag = int_vars[opcode->operand0] != int_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = int_vars[opcode->operand1] != int_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_NE_LONG:
-        condition_flag = long_vars[opcode->operand0] != long_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = long_vars[opcode->operand1] != long_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_NE_FLOAT:
-        condition_flag = float_vars[opcode->operand0] != float_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = float_vars[opcode->operand1] != float_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_NE_DOUBLE:
-        condition_flag = double_vars[opcode->operand0] != double_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = double_vars[opcode->operand1] != double_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_NE_OBJECT:
-        condition_flag = *(void**)&object_vars[opcode->operand0] != *(void**)&object_vars[opcode->operand1];
+        condition_flag = int_vars[opcode->operand0] = *(void**)&object_vars[opcode->operand1] != *(void**)&object_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_GT_INT:
         condition_flag = int_vars[opcode->operand0] = int_vars[opcode->operand1] > int_vars[opcode->operand2];

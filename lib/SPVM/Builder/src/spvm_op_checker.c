@@ -235,11 +235,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
       while (1) {
         // [START]Postorder traversal position
         if (!op_cur->no_need_check) {
-          // Free temporary variables
-          if (op_cur->free_tmp_vars) {
-            
-          }
-          
           switch (op_cur->id) {
             case SPVM_OP_C_ID_ARRAY_INIT: {
               SPVM_OP* op_array_init = op_cur;
@@ -3643,6 +3638,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_REF:
                         case SPVM_OP_C_ID_DEREF:
                         case SPVM_OP_C_ID_REFCNT:
+                        case SPVM_OP_C_ID_NUMERIC_EQ:
+                        case SPVM_OP_C_ID_NUMERIC_NE:
                         case SPVM_OP_C_ID_NUMERIC_GT:
                         case SPVM_OP_C_ID_NUMERIC_GE:
                         case SPVM_OP_C_ID_NUMERIC_LT:
