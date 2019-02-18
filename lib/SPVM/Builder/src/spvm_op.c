@@ -1126,6 +1126,15 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->id) {
+    case SPVM_OP_C_ID_LAST:
+    case SPVM_OP_C_ID_NEXT:
+    case SPVM_OP_C_ID_CROAK:
+    {
+      // Dummy int variable
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
+      type = op_type->uv.type;
+      break;
+    }
     case SPVM_OP_C_ID_PACKAGE: {
       SPVM_PACKAGE* package = op->uv.package;
       type = package->op_type->uv.type;
