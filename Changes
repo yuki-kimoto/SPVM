@@ -13,6 +13,7 @@
   - temporary variable is freed after end of statement or end of condition
   - reduce lexical variable memory area to minimal size
   - fix isweak and unweaken bugs
+  - syntax tree become more assign statements
 0.0415 2018-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets
