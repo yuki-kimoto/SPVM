@@ -3678,15 +3678,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_ARRAY_ACCESS:{
-                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK))) {
-                            create_tmp_var = 1;
-                          }
+                          create_tmp_var = 1;
                           break;
                         }
                         case SPVM_OP_C_ID_CALL_SUB: {
-                          if (!(tmp_var_type->dimension == 0 && tmp_var_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-                            create_tmp_var = 1;
-                          }
+                          create_tmp_var = 1;
                           break;
                         }
                       }
@@ -4035,6 +4031,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                                 assert(0);
                             }
                           }
+                          else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            
+                          }
                           else {
                             assert(0);
                           }
@@ -4224,6 +4223,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               default:
                                 assert(0);
                             }
+                          }
+                          else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            my->mem_id = -1;
                           }
                           else {
                             assert(0);
