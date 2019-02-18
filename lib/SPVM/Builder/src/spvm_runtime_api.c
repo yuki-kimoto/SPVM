@@ -849,8 +849,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_STRING_LT:
       case SPVM_OPCODE_C_ID_STRING_LE:
       {
-        void* object1 = *(void**)&object_vars[opcode->operand0];
-        void* object2 = *(void**)&object_vars[opcode->operand1];
+        void* object1 = *(void**)&object_vars[opcode->operand1];
+        void* object2 = *(void**)&object_vars[opcode->operand2];
         
         if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {
           condition_flag = 0;
@@ -878,22 +878,22 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           
           switch (opcode_id) {
             case SPVM_OPCODE_C_ID_STRING_EQ:
-              condition_flag = (cmp == 0);
+              condition_flag = int_vars[opcode->operand0] = (cmp == 0);
               break;
             case SPVM_OPCODE_C_ID_STRING_NE:
-              condition_flag = (cmp != 0);
+              condition_flag = int_vars[opcode->operand0] = (cmp != 0);
               break;
             case SPVM_OPCODE_C_ID_STRING_GT:
-              condition_flag = (cmp == 1);
+              condition_flag = int_vars[opcode->operand0] = (cmp == 1);
               break;
             case SPVM_OPCODE_C_ID_STRING_GE:
-              condition_flag = (cmp >= 0);
+              condition_flag = int_vars[opcode->operand0] = (cmp >= 0);
               break;
             case SPVM_OPCODE_C_ID_STRING_LT:
-              condition_flag = (cmp == -1);
+              condition_flag = int_vars[opcode->operand0] = (cmp == -1);
               break;
             case SPVM_OPCODE_C_ID_STRING_LE:
-              condition_flag = (cmp <= 0);
+              condition_flag = int_vars[opcode->operand0] = (cmp <= 0);
               break;
           }
         }

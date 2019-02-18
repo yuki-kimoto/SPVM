@@ -1914,6 +1914,53 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;
                         }
+                        case SPVM_OP_C_ID_STRING_EQ:
+                        case SPVM_OP_C_ID_STRING_NE:
+                        case SPVM_OP_C_ID_STRING_GT:
+                        case SPVM_OP_C_ID_STRING_GE:
+                        case SPVM_OP_C_ID_STRING_LT:
+                        case SPVM_OP_C_ID_STRING_LE:
+                        {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          
+                          switch (op_assign_src->id) {
+                            case SPVM_OP_C_ID_STRING_EQ:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_EQ);
+                              break;
+                            case SPVM_OP_C_ID_STRING_NE:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_NE);
+                              break;
+                            case SPVM_OP_C_ID_STRING_GT:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GT);
+                              break;
+                            case SPVM_OP_C_ID_STRING_GE:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GE);
+                              break;
+                            case SPVM_OP_C_ID_STRING_LT:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
+                              break;
+                            case SPVM_OP_C_ID_STRING_LE:
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
+                              break;
+                            default:
+                              assert(0);
+                          }
+                          
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                          int32_t mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                          
+                          opcode.operand0 = mem_id_out;
+                          opcode.operand1 = mem_id_in1;
+                          opcode.operand2 = mem_id_in2;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_SUBTRACT : {
 
                           SPVM_OPCODE opcode;
@@ -4471,51 +4518,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = op_type->uv.type->constant_pool_id;
                     
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                    
-                    break;
-                  }
-                  case SPVM_OP_C_ID_STRING_EQ:
-                  case SPVM_OP_C_ID_STRING_NE:
-                  case SPVM_OP_C_ID_STRING_GT:
-                  case SPVM_OP_C_ID_STRING_GE:
-                  case SPVM_OP_C_ID_STRING_LT:
-                  case SPVM_OP_C_ID_STRING_LE:
-                  {
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                    
-                    switch (op_cur->id) {
-                      case SPVM_OP_C_ID_STRING_EQ:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_EQ);
-                        break;
-                      case SPVM_OP_C_ID_STRING_NE:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_NE);
-                        break;
-                      case SPVM_OP_C_ID_STRING_GT:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GT);
-                        break;
-                      case SPVM_OP_C_ID_STRING_GE:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GE);
-                        break;
-                      case SPVM_OP_C_ID_STRING_LT:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
-                        break;
-                      case SPVM_OP_C_ID_STRING_LE:
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
-                        break;
-                      default:
-                        assert(0);
-                    }
-                    
-                    int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                    int32_t mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_cur->last);
-                    
-                    opcode.operand0 = mem_id_in1;
-                    opcode.operand1 = mem_id_in2;
-                    
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                    
-                    SPVM_OPCODE_BUILDER_push_if_croak(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_croak_catch_goto_opcode_rel_index_stack, if_croak_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
                     
                     break;
                   }
