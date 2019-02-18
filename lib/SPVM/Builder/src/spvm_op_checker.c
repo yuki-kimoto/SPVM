@@ -3610,6 +3610,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // [START]Postorder traversal position
                     if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
                       switch (op_cur->id) {
+                        case SPVM_OP_C_ID_RETURN:
                         case SPVM_OP_C_ID_LOOP_INCREMENT:
                         case SPVM_OP_C_ID_CONDITION:
                         case SPVM_OP_C_ID_CONDITION_NOT:
@@ -3660,6 +3661,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_REF:
                         case SPVM_OP_C_ID_DEREF:
                         case SPVM_OP_C_ID_REFCNT:
+                        case SPVM_OP_C_ID_FIELD_ACCESS:
+                        case SPVM_OP_C_ID_ARRAY_ACCESS:
+                        case SPVM_OP_C_ID_CALL_SUB:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {
@@ -3671,18 +3675,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               create_tmp_var = 1;
                             }
                           }
-                          break;
-                        }
-                        case SPVM_OP_C_ID_FIELD_ACCESS: {
-                          create_tmp_var = 1;
-                          break;
-                        }
-                        case SPVM_OP_C_ID_ARRAY_ACCESS:{
-                          create_tmp_var = 1;
-                          break;
-                        }
-                        case SPVM_OP_C_ID_CALL_SUB: {
-                          create_tmp_var = 1;
                           break;
                         }
                       }

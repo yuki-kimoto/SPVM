@@ -1126,6 +1126,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->id) {
+    case SPVM_OP_C_ID_RETURN:
     case SPVM_OP_C_ID_LOOP_INCREMENT:
     case SPVM_OP_C_ID_CONDITION:
     case SPVM_OP_C_ID_CONDITION_NOT:
@@ -1234,12 +1235,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     case SPVM_OP_C_ID_ASSIGN: {
       type = SPVM_OP_get_type(compiler, op->last);
-      break;
-    }
-    case SPVM_OP_C_ID_RETURN: {
-      if (op->first) {
-        type = SPVM_OP_get_type(compiler, op->first);
-      }
       break;
     }
     case SPVM_OP_C_ID_CONVERT: {
