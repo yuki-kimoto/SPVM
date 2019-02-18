@@ -3638,20 +3638,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_REF:
                         case SPVM_OP_C_ID_DEREF:
                         case SPVM_OP_C_ID_REFCNT:
-                        case SPVM_OP_C_ID_NUMERIC_EQ:
-                        case SPVM_OP_C_ID_NUMERIC_NE:
-                        case SPVM_OP_C_ID_NUMERIC_GT:
-                        case SPVM_OP_C_ID_NUMERIC_GE:
-                        case SPVM_OP_C_ID_NUMERIC_LT:
-                        case SPVM_OP_C_ID_NUMERIC_LE:
-                        case SPVM_OP_C_ID_STRING_EQ:
-                        case SPVM_OP_C_ID_STRING_NE:
-                        case SPVM_OP_C_ID_STRING_GT:
-                        case SPVM_OP_C_ID_STRING_GE:
-                        case SPVM_OP_C_ID_STRING_LT:
-                        case SPVM_OP_C_ID_STRING_LE:
-                        case SPVM_OP_C_ID_ISA:
-                        case SPVM_OP_C_ID_BOOL:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {
@@ -3666,7 +3652,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_FIELD_ACCESS: {
-                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN))) {
+                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK))) {
                             create_tmp_var = 1;
                           }
                           break;
@@ -4198,6 +4184,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               }
                               case SPVM_BASIC_TYPE_C_ID_INT: {
                                 mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, int_mem_stack, my);
+                                if (strcmp(my->op_name->uv.name, "@condition_flag") == 0) {
+                                  assert(mem_id == 0);
+                                }
                                 break;
                               }
                               case SPVM_BASIC_TYPE_C_ID_LONG: {
