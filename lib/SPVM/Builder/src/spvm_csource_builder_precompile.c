@@ -1790,6 +1790,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {\n");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
         SPVM_STRING_BUFFER_add(string_buffer, "      condition_flag = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_str_raw(env, \"Use of uninitialized value in string comparison operator\", 0)); \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");

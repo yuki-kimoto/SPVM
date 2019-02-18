@@ -853,7 +853,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object2 = *(void**)&object_vars[opcode->operand2];
         
         if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {
-          condition_flag = 0;
+          condition_flag = int_vars[opcode->operand0] = 0;
           void* exception = env->new_str_raw(env, "Use of uninitialized value in string comparison operator", 0);
           env->set_exception(env, exception);
           exception_flag = 1;
