@@ -1,5 +1,6 @@
-package TestCase::Simple {
+package TestCase::Simple : public {
   use TestCase::EnumA;
+  use TestCase::Minimal;
 
   has x : public int;
   has y : public int;
@@ -11,6 +12,8 @@ package TestCase::Simple {
   has private_field : int;
   
   has title : public int;
+  
+  has minimal : public TestCase::Minimal;
   
   sub new : TestCase::Simple () {
     return new TestCase::Simple;

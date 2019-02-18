@@ -955,13 +955,13 @@ weaken_field
 unweaken_field
   : UNWEAKEN field_access
     {
-      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+      $$ = SPVM_OP_build_unweaken_field(compiler, $1, $2);
     }
 
 isweak_field
   : ISWEAK field_access
     {
-      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+      $$ = SPVM_OP_build_isweak_field(compiler, $1, $2);
     }
 
 array_length

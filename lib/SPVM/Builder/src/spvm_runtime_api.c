@@ -3798,11 +3798,11 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t constant_pool_id = opcode->operand1;
+        int32_t constant_pool_id = opcode->operand2;
         int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
           SPVM_OBJECT* exception = env->new_str_raw(env, "Object to isweak an object field must not be undefined.", 0);
           env->set_exception(env, exception);
@@ -3810,7 +3810,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         else {
           void** ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          env->isweak(env, ofield_address);
+          int_vars[opcode->operand0] = condition_flag = env->isweak(env, ofield_address);
         }
         break;
       }

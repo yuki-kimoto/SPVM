@@ -1480,7 +1480,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return ISA;
                 }
                 else if (strcmp(keyword, "isweak") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISWEAK);
                   return ISWEAK;
                 }
                 else if (strcmp(keyword, "int") == 0) {
