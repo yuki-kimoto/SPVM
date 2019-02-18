@@ -3651,6 +3651,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_LT:
                         case SPVM_OP_C_ID_STRING_LE:
                         case SPVM_OP_C_ID_ISA:
+                        case SPVM_OP_C_ID_BOOL:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {

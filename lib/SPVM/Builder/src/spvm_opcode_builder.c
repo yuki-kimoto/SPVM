@@ -1981,6 +1981,59 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
+                        case  SPVM_OP_C_ID_BOOL: {
+                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                          
+                          if (op_assign_src->first->id != SPVM_OP_C_ID_IF) {
+
+                            int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            
+                            int32_t mem_id_in;
+                            if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                                assert(0);
+                              }
+                              else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
+                                assert(0);
+                              }
+                              else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_INT);
+                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              }
+                              else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_LONG);
+                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              }
+                              else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_FLOAT);
+                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              }
+                              else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_DOUBLE);
+                                mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              }
+                              else {
+                                assert(0);
+                              }
+                            }
+                            else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_OBJECT);
+                              mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            }
+                            else {
+                              assert(0);
+                            }
+                            opcode.operand0 = mem_id_out;
+                            opcode.operand1 = mem_id_in;
+
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_ISA: {
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
@@ -4525,56 +4578,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // assert(0);
                         }
                       }
-                    }
-                    
-                    break;
-                  }
-                  case  SPVM_OP_C_ID_BOOL: {
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->first);
-                    
-                    if (op_cur->first->id != SPVM_OP_C_ID_IF) {
-
-                      SPVM_OPCODE opcode;
-                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                      
-                      int32_t mem_id_in;
-                      if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
-                          assert(0);
-                        }
-                        else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_SHORT) {
-                          assert(0);
-                        }
-                        else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_INT);
-                          mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                        }
-                        else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_LONG) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_LONG);
-                          mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                        }
-                        else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_FLOAT) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_FLOAT);
-                          mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                        }
-                        else if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_DOUBLE);
-                          mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                        }
-                        else {
-                          assert(0);
-                        }
-                      }
-                      else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BOOL_OBJECT);
-                        mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                      }
-                      else {
-                        assert(0);
-                      }
-                      opcode.operand0 = mem_id_in;
-
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
                     
                     break;
