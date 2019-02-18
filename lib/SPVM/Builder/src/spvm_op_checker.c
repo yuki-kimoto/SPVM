@@ -3644,6 +3644,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_NUMERIC_GE:
                         case SPVM_OP_C_ID_NUMERIC_LT:
                         case SPVM_OP_C_ID_NUMERIC_LE:
+                        case SPVM_OP_C_ID_STRING_EQ:
+                        case SPVM_OP_C_ID_STRING_NE:
+                        case SPVM_OP_C_ID_STRING_GT:
+                        case SPVM_OP_C_ID_STRING_GE:
+                        case SPVM_OP_C_ID_STRING_LT:
+                        case SPVM_OP_C_ID_STRING_LE:
                           create_tmp_var = 1;
                           break;
                         case SPVM_OP_C_ID_CONSTANT: {
