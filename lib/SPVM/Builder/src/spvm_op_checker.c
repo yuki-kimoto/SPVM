@@ -3610,6 +3610,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // [START]Postorder traversal position
                     if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
                       switch (op_cur->id) {
+                        case SPVM_OP_C_ID_LOOP_INCREMENT:
+                        case SPVM_OP_C_ID_CONDITION:
+                        case SPVM_OP_C_ID_CONDITION_NOT:
                         case SPVM_OP_C_ID_FREE_TMP:
                         case SPVM_OP_C_ID_CONVERT:
                         case SPVM_OP_C_ID_NUMERIC_EQ:

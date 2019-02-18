@@ -1126,6 +1126,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->id) {
+    case SPVM_OP_C_ID_LOOP_INCREMENT:
+    case SPVM_OP_C_ID_CONDITION:
+    case SPVM_OP_C_ID_CONDITION_NOT:
     case SPVM_OP_C_ID_FREE_TMP:
     case SPVM_OP_C_ID_SWITCH:
     case SPVM_OP_C_ID_DEFAULT:

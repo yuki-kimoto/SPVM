@@ -3950,6 +3950,47 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
+                        case SPVM_OP_C_ID_LOOP_INCREMENT: {
+                          // Set loop first GOTO opcode
+                          int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
+                          
+                          SPVM_OPCODE* loop_first_goto = (opcode_array->values + sub_opcodes_base + loop_first_goto_opcode_rel_index);
+                          int32_t loop_first_goto_jump_opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                          loop_first_goto->operand0 = loop_first_goto_jump_opcode_rel_index;
+                          
+                          break;
+                        }
+                        case SPVM_OP_C_ID_CONDITION:
+                        case SPVM_OP_C_ID_CONDITION_NOT:
+                        {
+                          
+                          int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
+
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                          if (op_assign_src->id == SPVM_OP_C_ID_CONDITION) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EQ_ZERO);
+                          }
+                          else {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_NE_ZERO);
+                          }
+                          
+                          if (op_assign_src->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
+                            SPVM_LIST_push(if_eq_or_if_ne_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
+                          }
+                          else if (op_assign_src->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
+                            assert(loop_first_goto_opcode_rel_index_stack->length > 0);
+                            
+                            int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_rel_index_stack);
+                            
+                            opcode.operand0 = loop_first_goto_opcode_rel_index + 1;
+                          }
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          break;
+                        }
                       }
                     }
                     else if (op_assign_dist->id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
@@ -4475,47 +4516,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     else {
                       assert(0);
                     }
-                    
-                    break;
-                  }
-                  case SPVM_OP_C_ID_LOOP_INCREMENT: {
-                    // Set loop first GOTO opcode
-                    int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_fetch(loop_first_goto_opcode_rel_index_stack, loop_first_goto_opcode_rel_index_stack->length - 1);
-                    
-                    SPVM_OPCODE* loop_first_goto = (opcode_array->values + sub_opcodes_base + loop_first_goto_opcode_rel_index);
-                    int32_t loop_first_goto_jump_opcode_rel_index = opcode_array->length - sub_opcodes_base;
-                    loop_first_goto->operand0 = loop_first_goto_jump_opcode_rel_index;
-                    
-                    break;
-                  }
-                  case SPVM_OP_C_ID_CONDITION:
-                  case SPVM_OP_C_ID_CONDITION_NOT:
-                  {
-                    
-                    int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
-
-                    SPVM_OPCODE opcode;
-                    memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                    if (op_cur->id == SPVM_OP_C_ID_CONDITION) {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EQ_ZERO);
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_NE_ZERO);
-                    }
-                    
-                    if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                      SPVM_LIST_push(if_eq_or_if_ne_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
-                    }
-                    else if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_LOOP) {
-                      assert(loop_first_goto_opcode_rel_index_stack->length > 0);
-                      
-                      int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(loop_first_goto_opcode_rel_index_stack);
-                      
-                      opcode.operand0 = loop_first_goto_opcode_rel_index + 1;
-                    }
-                    
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     
                     break;
                   }
