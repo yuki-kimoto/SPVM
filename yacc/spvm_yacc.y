@@ -752,7 +752,6 @@ binary_op
 condition
   : comparison_op
   | logical_op
-  | isweak_field ';'
   | '(' condition ')'
     {
       $$ = $2;
@@ -762,6 +761,7 @@ comparison_op
   : num_comparison_op
   | str_comparison_op
   | isa
+  | isweak_field ';'
 
 num_comparison_op
   : expression NUMEQ expression
