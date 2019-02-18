@@ -2283,9 +2283,25 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     }
   }
   
-  // Add variable declaration to first of block
   if (op_block) {
+
     SPVM_OP* op_list_statement = op_block->first;
+
+    // Add condition_flag variable to first of block
+    {
+      char* name = "@condition_flag";
+      SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
+      op_name->uv.name = name;
+      SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+      SPVM_MY* my = SPVM_MY_new(compiler);
+      SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
+      op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+      sub->op_my_condition_flag = op_my;
+    }
+
+    // Add variable declaration to first of block
     {
       int32_t i;
       for (i = sub->args->length - 1; i >= 0; i--) {
@@ -2316,14 +2332,14 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
       }
       else {
-        // Temparary variable name
+        // Return variable name
         char* name = "@return";
         SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
         op_name->uv.name = name;
         SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
         SPVM_MY* my = SPVM_MY_new(compiler);
         SPVM_OP* op_my = SPVM_OP_new_op_my(compiler, my, op_list_statement->file, op_list_statement->last->line + 1);
-        SPVM_OP* op_type = op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
         op_var = SPVM_OP_build_my(compiler, op_my, op_var, op_type);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
