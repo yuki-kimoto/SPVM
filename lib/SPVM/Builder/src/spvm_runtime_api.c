@@ -808,8 +808,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         condition_flag = int_vars[opcode->operand0] = double_vars[opcode->operand1] <= double_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_IS_TYPE: {
-        void* object = *(void**)&object_vars[opcode->operand0];
-        int32_t constant_pool_id = opcode->operand1;
+        void* object = *(void**)&object_vars[opcode->operand1];
+        int32_t constant_pool_id = opcode->operand2;
         int32_t check_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         int32_t check_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
 
@@ -818,26 +818,26 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);
+          int_vars[opcode->operand0] = condition_flag = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);
         }
         else {
-          condition_flag = 0;
+          int_vars[opcode->operand0] = condition_flag = 0;
         }
         
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
-        void* object = *(void**)&object_vars[opcode->operand0];
-        int32_t constant_pool_id = opcode->operand1;
+        void* object = *(void**)&object_vars[opcode->operand1];
+        int32_t constant_pool_id = opcode->operand2;
         int32_t interface_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          condition_flag = env->has_interface(env, object, interface_basic_type_id);
+          int_vars[opcode->operand0] = condition_flag = env->has_interface(env, object, interface_basic_type_id);
         }
         else {
-          condition_flag = 0;
+          int_vars[opcode->operand0] = condition_flag = 0;
         }
         
         break;
