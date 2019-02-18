@@ -369,23 +369,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     break;
                   }
-                  case SPVM_OP_C_ID_FREE_TMP: {
-                    // Free temporary variables
-                    int32_t length = object_op_var_tmp_stack->length;
-                    for (int32_t i = 0; i < length; i++) {
-                      SPVM_OP* op_var_tmp = SPVM_LIST_pop(object_op_var_tmp_stack);
-                      
-                      SPVM_OPCODE opcode;
-                      memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_UNDEF);
-                      
-                      int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_var_tmp);
-                      opcode.operand0 = mem_id_out;
-                      
-                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                    }
-                    break;
-                  }
                   case SPVM_OP_C_ID_ASSIGN: {
                     SPVM_OP* op_assign_dist = op_cur->last;
                     SPVM_OP* op_assign_src = op_cur->first;
@@ -586,6 +569,23 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             assert(0);
+                          }
+                          break;
+                        }
+                        case SPVM_OP_C_ID_FREE_TMP: {
+                          // Free temporary variables
+                          int32_t length = object_op_var_tmp_stack->length;
+                          for (int32_t i = 0; i < length; i++) {
+                            SPVM_OP* op_var_tmp = SPVM_LIST_pop(object_op_var_tmp_stack);
+                            
+                            SPVM_OPCODE opcode;
+                            memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_UNDEF);
+                            
+                            int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_var_tmp);
+                            opcode.operand0 = mem_id_out;
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           break;
                         }
