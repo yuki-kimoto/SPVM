@@ -1302,9 +1302,15 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_FIELD_ACCESS: {
-      SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
-      SPVM_FIELD* field = field_access->field;
-      type = field->type;
+      if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK)) {
+        SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
+        type = op_type->uv.type;
+      }
+      else {
+        SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
+        SPVM_FIELD* field = field_access->field;
+        type = field->type;
+      }
       break;
     }
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {

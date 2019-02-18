@@ -3066,7 +3066,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
               
-              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+              SPVM_TYPE* type = field->type;
               
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_COMPILER_error(compiler, "weaken is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
@@ -3080,7 +3080,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
               
-              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+              SPVM_TYPE* type = field->type;
               
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_COMPILER_error(compiler, "unweaken is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
@@ -3094,7 +3094,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_FIELD* field = op_field_access->uv.field_access->field;
               
-              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_field_access);
+              SPVM_TYPE* type = field->type;
               
               if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_COMPILER_error(compiler, "isweak is only used for object field \"%s\" \"%s\" at %s line %d\n", field->package->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
@@ -3672,9 +3672,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_FIELD_ACCESS: {
-                          if (!(op_cur->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK))) {
-                            create_tmp_var = 1;
-                          }
+                          create_tmp_var = 1;
                           break;
                         }
                         case SPVM_OP_C_ID_ARRAY_ACCESS:{
