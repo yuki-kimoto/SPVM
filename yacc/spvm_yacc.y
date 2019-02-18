@@ -761,7 +761,7 @@ comparison_op
   : num_comparison_op
   | str_comparison_op
   | isa
-  | isweak_field ';'
+  | isweak_field
 
 num_comparison_op
   : expression NUMEQ expression

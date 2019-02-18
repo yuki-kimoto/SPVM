@@ -11,7 +11,7 @@ use SPVM 'TestCase::Weaken';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Weaken field
+# weaken
 {
   {
     my $start_memory_blocks_count = SPVM::memory_blocks_count();
@@ -111,6 +111,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
 }
+
+=pod
+# isweak
+{
+  ok(TestCase::Weaken->isweak_test);
+}
+=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
