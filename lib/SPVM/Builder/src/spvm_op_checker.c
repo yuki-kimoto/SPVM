@@ -3613,6 +3613,20 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_CONVERT:
                           create_tmp_var = 1;
                           break;
+                        case SPVM_OP_C_ID_NUMERIC_EQ:
+                        case SPVM_OP_C_ID_NUMERIC_NE:
+                        case SPVM_OP_C_ID_NUMERIC_GT:
+                        case SPVM_OP_C_ID_NUMERIC_GE:
+                        case SPVM_OP_C_ID_NUMERIC_LT:
+                        case SPVM_OP_C_ID_NUMERIC_LE:
+                        case SPVM_OP_C_ID_BOOL:
+                        case SPVM_OP_C_ID_STRING_EQ:
+                        case SPVM_OP_C_ID_STRING_NE:
+                        case SPVM_OP_C_ID_STRING_GT:
+                        case SPVM_OP_C_ID_STRING_GE:
+                        case SPVM_OP_C_ID_STRING_LT:
+                        case SPVM_OP_C_ID_STRING_LE:
+                        case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_SWITCH:
                         case SPVM_OP_C_ID_DEFAULT:
                         case SPVM_OP_C_ID_CASE:
