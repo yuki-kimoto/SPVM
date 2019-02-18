@@ -3043,6 +3043,119 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           break;
                         }
+                        case SPVM_OP_C_ID_SWITCH_CONDITION: {
+                          SPVM_SWITCH_INFO* switch_info = op_assign_src->uv.switch_info;
+
+                          SPVM_OPCODE opcode_switch_info;
+                          memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
+                          
+                          if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                            opcode_switch_info.id = SPVM_OPCODE_C_ID_TABLE_SWITCH;
+                          }
+                          else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                            opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
+                          }
+
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                          opcode_switch_info.operand0 = mem_id_in;
+
+                          opcode_switch_info.operand1 = switch_info->constant_pool_id_new;
+                          
+                          opcode_switch_info.operand2 = switch_info->constant_pool_id;
+
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
+                          
+                          // Switch opcode index
+                          SPVM_LIST_push(switch_info_stack, switch_info);
+
+                          break;
+                        }
+                        case SPVM_OP_C_ID_SWITCH: {
+                          
+                          // Pop switch information
+                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
+                          
+                          // Max
+                          SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
+                          int32_t max = case_info_max->constant->value.ival;
+
+                          // Table switch constant pool
+                          if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                            // Default
+                            int32_t default_bracnh = switch_info->default_opcode_rel_index;
+                            
+                            package->constant_pool->values[switch_info->constant_pool_id_new] = default_bracnh;
+                            
+                            // Min
+                            int32_t min = package->constant_pool->values[switch_info->constant_pool_id_new + 1];
+                            
+                            // Max
+                            int32_t max = package->constant_pool->values[switch_info->constant_pool_id_new + 2];
+                            
+                            // Length
+                            int32_t range = max - min + 1;
+                            
+                            // Match values and branchs
+                            for (int32_t i = min; i <= max; i++) {
+                              // Match value
+
+                              SPVM_CASE_INFO* found_case_info = NULL;
+                              for (int32_t case_index = 0; case_index < switch_info->case_infos->length; case_index++) {
+                                SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, case_index);
+                                if (i == case_info->constant->value.ival) {
+                                  found_case_info = case_info;
+                                  break;
+                                }
+                              }
+                              
+                              // Branch
+                              int32_t offset = i - min;
+                              if (found_case_info) {
+                                package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = found_case_info->opcode_rel_index;
+                              }
+                              else {
+                                package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = default_bracnh;
+                              }
+                            }
+                          }
+                          // Lookup switch constant pool
+                          else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
+                            // Default
+                            package->constant_pool->values[switch_info->constant_pool_id_new] = switch_info->default_opcode_rel_index;
+                            
+                            // Case length
+                            
+                            // Match values and branchs
+                            for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                              SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
+                              
+                              // Match value
+                              
+                              // Branch
+                              package->constant_pool->values[(switch_info->constant_pool_id_new + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
+                            }
+                          }
+                          else {
+                            assert(0);
+                          }
+                          
+                          break;
+                        }
+                        case SPVM_OP_C_ID_CASE: {
+                          if (switch_info_stack->length > 0) {
+                            SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                            int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                            op_assign_src->uv.case_info->opcode_rel_index = opcode_rel_index;
+                          }
+                          break;
+                        }
+                        case SPVM_OP_C_ID_DEFAULT: {
+                          if (switch_info_stack->length > 0) {
+                            SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                            switch_info->default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                          }
+                          break;
+                        }
                         case SPVM_OP_C_ID_CROAK: {
                           
                           // SET_CROAK_FLAG_TRUE
@@ -3611,119 +3724,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
-                    break;
-                  }
-                  case SPVM_OP_C_ID_SWITCH_CONDITION: {
-                    SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-
-                    SPVM_OPCODE opcode_switch_info;
-                    memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
-                    
-                    if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
-                      opcode_switch_info.id = SPVM_OPCODE_C_ID_TABLE_SWITCH;
-                    }
-                    else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                      opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
-                    }
-
-                    int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_cur->first);
-                    opcode_switch_info.operand0 = mem_id_in;
-
-                    opcode_switch_info.operand1 = switch_info->constant_pool_id_new;
-                    
-                    opcode_switch_info.operand2 = switch_info->constant_pool_id;
-
-                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
-                    
-                    // Switch opcode index
-                    SPVM_LIST_push(switch_info_stack, switch_info);
-
-                    break;
-                  }
-                  case SPVM_OP_C_ID_SWITCH: {
-                    
-                    // Pop switch information
-                    SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
-                    
-                    // Max
-                    SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
-                    int32_t max = case_info_max->constant->value.ival;
-
-                    // Table switch constant pool
-                    if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
-                      // Default
-                      int32_t default_bracnh = switch_info->default_opcode_rel_index;
-                      
-                      package->constant_pool->values[switch_info->constant_pool_id_new] = default_bracnh;
-                      
-                      // Min
-                      int32_t min = package->constant_pool->values[switch_info->constant_pool_id_new + 1];
-                      
-                      // Max
-                      int32_t max = package->constant_pool->values[switch_info->constant_pool_id_new + 2];
-                      
-                      // Length
-                      int32_t range = max - min + 1;
-                      
-                      // Match values and branchs
-                      for (int32_t i = min; i <= max; i++) {
-                        // Match value
-
-                        SPVM_CASE_INFO* found_case_info = NULL;
-                        for (int32_t case_index = 0; case_index < switch_info->case_infos->length; case_index++) {
-                          SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, case_index);
-                          if (i == case_info->constant->value.ival) {
-                            found_case_info = case_info;
-                            break;
-                          }
-                        }
-                        
-                        // Branch
-                        int32_t offset = i - min;
-                        if (found_case_info) {
-                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = found_case_info->opcode_rel_index;
-                        }
-                        else {
-                          package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = default_bracnh;
-                        }
-                      }
-                    }
-                    // Lookup switch constant pool
-                    else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                      // Default
-                      package->constant_pool->values[switch_info->constant_pool_id_new] = switch_info->default_opcode_rel_index;
-                      
-                      // Case length
-                      
-                      // Match values and branchs
-                      for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                        SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                        
-                        // Match value
-                        
-                        // Branch
-                        package->constant_pool->values[(switch_info->constant_pool_id_new + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
-                      }
-                    }
-                    else {
-                      assert(0);
-                    }
-                    
-                    break;
-                  }
-                  case SPVM_OP_C_ID_CASE: {
-                    if (switch_info_stack->length > 0) {
-                      SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
-                      int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
-                      op_cur->uv.case_info->opcode_rel_index = opcode_rel_index;
-                    }
-                    break;
-                  }
-                  case SPVM_OP_C_ID_DEFAULT: {
-                    if (switch_info_stack->length > 0) {
-                      SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
-                      switch_info->default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
-                    }
                     break;
                   }
                   case SPVM_OP_C_ID_FIELD_ACCESS: {

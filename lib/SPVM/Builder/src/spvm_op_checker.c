@@ -3613,6 +3613,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_CONVERT:
                           create_tmp_var = 1;
                           break;
+                        case SPVM_OP_C_ID_SWITCH:
+                        case SPVM_OP_C_ID_DEFAULT:
+                        case SPVM_OP_C_ID_CASE:
                         case SPVM_OP_C_ID_CROAK:
                         case SPVM_OP_C_ID_LAST:
                         case SPVM_OP_C_ID_NEXT:
