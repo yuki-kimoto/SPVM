@@ -2669,8 +2669,13 @@ SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op
   // Build if tree
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_assign_bool_true, op_assign_bool_false1);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_assign_bool_false2);
+
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_and->file, op_and->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_and->file, op_and->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_if1);
   
-  return op_if1;
+  return op_assign;
 }
 
 SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_first, SPVM_OP* op_last) {
@@ -2714,7 +2719,12 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true2, op_bool_false);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_bool_true1, op_if2);
   
-  return op_if1;
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_or->file, op_or->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_or->file, op_or->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_if1);
+  
+  return op_assign;
 }
 
 SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first) {
@@ -2744,8 +2754,13 @@ SPVM_OP* SPVM_OP_build_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op
   
   // Build if tree
   SPVM_OP_build_if_statement(compiler, op_if, op_first, op_assign_bool_false, op_assign_bool_true);
+
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_not->file, op_not->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_not->file, op_not->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_if);
   
-  return op_if;
+  return op_assign;
 }
 
 SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_term_dist, SPVM_OP* op_term_src) {

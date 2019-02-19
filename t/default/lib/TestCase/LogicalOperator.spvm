@@ -48,7 +48,6 @@ package TestCase::LogicalOperator {
     unless (1 || 1) {
       return 0;
     }
-=pod
     {
       my $ret = 1 || 1;
       unless ($ret == 1) {
@@ -73,7 +72,6 @@ package TestCase::LogicalOperator {
         return 0;
       }
     }
-=cut
     return 1;
   }
   
@@ -107,7 +105,6 @@ package TestCase::LogicalOperator {
       return 0;
     }
     
-=pod
     {
       my $ret = 1 && 1;
       unless ($ret == 1) {
@@ -132,7 +129,6 @@ package TestCase::LogicalOperator {
         return 0;
       }
     }
-=cut
 
     return 1;
   }
