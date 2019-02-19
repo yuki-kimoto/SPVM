@@ -947,15 +947,17 @@ field_access
     }
 
 weaken_field
-  : WEAKEN field_access
+  : WEAKEN var ARROW '{' field_name '}'
     {
-      $$ = SPVM_OP_build_weaken_field(compiler, $1, $2);
+      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      $$ = SPVM_OP_build_weaken_field(compiler, $1, op_field_access);
     }
 
 unweaken_field
-  : UNWEAKEN field_access
+  : UNWEAKEN var ARROW '{' field_name '}'
     {
-      $$ = SPVM_OP_build_unweaken_field(compiler, $1, $2);
+      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      $$ = SPVM_OP_build_unweaken_field(compiler, $1, op_field_access);
     }
 
 isweak_field
