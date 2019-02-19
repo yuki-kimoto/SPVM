@@ -40,6 +40,19 @@ package TestCase::ComparisonOperator {
     }
     
     {
+      my $ret = $string eq $string_same;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $string eq $string_short;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    {
       eval {
         if ($string_undef eq $string) {
           
@@ -612,12 +625,16 @@ package TestCase::ComparisonOperator {
   
   sub numeric_eq_int_same  : int () {
     
-    if (3 == 3) {
-      return 1;
-    }
-    else {
+    unless (3 == 3) {
       return 0;
     }
+
+    my $ret = 3 == 3;
+    unless ($ret isa int && $ret == 1) {
+      return 0;
+    }
+    
+    return 1;
   }
   
   sub numeric_eq_int_different  : int () {
@@ -625,9 +642,8 @@ package TestCase::ComparisonOperator {
     if (3 == 2) {
       return 0;
     }
-    else {
-      return 1;
-    }
+    
+    return 1;
   }
   
   sub numeric_eq_long_same  : int () {

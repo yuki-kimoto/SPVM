@@ -98,7 +98,7 @@ package TestCase::BitOperator {
     my $byte_success = 0;
     {
       my $value1 : int = (byte)0xFF & (byte)0x0F;
-      if ($value1 & 0xFF == 0x0F) {
+      if (($value1 & 0xFF) == 0x0F) {
         $byte_success = 1;
       }
     }
@@ -107,7 +107,7 @@ package TestCase::BitOperator {
     my $short_success = 0;
     {
       my $value1 : int = (short)0xFF00 & (short)0xF0F0;
-      if ($value1 & 0xFFFF == 0xF000) {
+      if (($value1 & 0xFFFF) == 0xF000) {
         $short_success = 1;
       }
     }
@@ -142,7 +142,7 @@ package TestCase::BitOperator {
     my $byte_success = 0;
     {
       my $value1 : int = (byte)0xF0 | (byte)0xFF;
-      if ($value1 & 0xFF == 0xFF) {
+      if (($value1 & 0xFF) == 0xFF) {
         $byte_success = 1;
       }
     }
@@ -151,7 +151,7 @@ package TestCase::BitOperator {
     my $short_success = 0;
     {
       my $value1 : int = (short)0xFF00 | (short)0xF0F0;
-      if ($value1 & 0xFFFF == 0xFFF0) {
+      if (($value1 & 0xFFFF) == 0xFFF0) {
         $short_success = 1;
       }
     }
@@ -186,7 +186,7 @@ package TestCase::BitOperator {
     my $byte_success = 0;
     {
       my $value1 : int = (byte)0xF0 ^ (byte)0x0F;
-      if ($value1 & 0xFF == 0xFF) {
+      if (($value1 & 0xFF) == 0xFF) {
         $byte_success = 1;
       }
     }
@@ -195,7 +195,7 @@ package TestCase::BitOperator {
     my $short_success = 0;
     {
       my $value1 : int = (short)0xFF00 ^ (short)0xF0F0;
-      if ($value1 & 0xFFFF == 0x0FF0) {
+      if (($value1 & 0xFFFF) == 0x0FF0) {
         $short_success = 1;
       }
     }
