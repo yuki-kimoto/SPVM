@@ -881,9 +881,8 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condi
     SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_term_condition);
   }
   else {
-    SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_term_condition->file, op_term_condition->line);
-    SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_term_condition);
-    SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_bool);
+    SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_term_condition, op_term_condition->file, op_term_condition->line);
+    SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_assign_bool);
   }
   
   return op_condition;
