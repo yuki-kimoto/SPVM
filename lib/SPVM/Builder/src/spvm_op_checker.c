@@ -4215,7 +4215,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             }
                           }
                           else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            my->mem_id = -1;
+                            mem_id = -1;
                           }
                           else {
                             assert(0);
