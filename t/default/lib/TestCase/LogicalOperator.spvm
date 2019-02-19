@@ -32,6 +32,13 @@ package TestCase::LogicalOperator {
     if (!1) {
       return 0;
     }
+
+    {
+      my $ret = !0;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
     
     return 1;
   }
