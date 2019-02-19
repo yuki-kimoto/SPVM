@@ -2718,8 +2718,8 @@ SPVM_OP* SPVM_OP_build_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_f
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   // Build if tree
-  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_constant_true2, op_constant_false);
-  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_constant_true1, op_if2);
+  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true2, op_bool_false);
+  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_bool_true1, op_if2);
   
   return op_if1;
 }
