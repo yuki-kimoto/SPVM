@@ -633,6 +633,7 @@ expression
       }
     }
   | CURRENT_PACKAGE
+  | isweak_field
 
 refcnt
   : REFCNT expression
@@ -761,7 +762,6 @@ comparison_op
   : num_comparison_op
   | str_comparison_op
   | isa
-  | isweak_field
 
 num_comparison_op
   : expression NUMEQ expression
@@ -959,9 +959,10 @@ unweaken_field
     }
 
 isweak_field
-  : ISWEAK field_access
+  : ISWEAK var ARROW '{' field_name '}'
     {
-      $$ = SPVM_OP_build_isweak_field(compiler, $1, $2);
+      SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, $2, $5);
+      $$ = SPVM_OP_build_isweak_field(compiler, $1, op_field_access);
     }
 
 array_length
