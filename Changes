@@ -1,4 +1,4 @@
-0.0416 2018-02-07
+0.0416 2018-02-19
   - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
     // Before
 		int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -14,6 +14,7 @@
   - reduce lexical variable memory area to minimal size
   - fix isweak and unweaken bugs
   - syntax tree become more assign statements
+  - comparison operator and logical operator become expression and return value
 0.0415 2018-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets
