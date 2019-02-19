@@ -1,0 +1,232 @@
+package SPVM::Text {
+  has string      : private byte [];
+  has capacity    : private int;
+  has offset      : private int;
+  has decode_type : private int;
+  has length      : public int;
+
+  enum {
+    DECODE_BYTE,
+    DECODE_UTF8,
+  }
+
+  sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_string = new byte [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_string->[$i] = $self->{string}[$self->{offset} + $i];
+    }
+    $self->{offset} = 0;
+    $self->{capacity} = $new_capacity;
+    $self->{string} = $new_string;
+  }
+
+  sub _reallocate : void ($self : self) {
+    my $new_capacity : int;
+    if ($self->{capacity} > INT32_MAX() / 2) {
+      $new_capacity = INT32_MAX();
+    }
+    else {
+      $new_capacity = $self->{capacity} * 2;
+    }
+    unless ($new_capacity) {
+      $new_capacity = 1;
+    }
+    $self->_reallocate_with_capacity($new_capacity);
+  }
+
+  sub _copy_string_on_write : void ($self : self) {
+    my $rc = $self->{string};
+    if (ref_count($rc) > 2) {
+      # copy-on-write
+      my $new_string = new byte [$self->{length}];
+      for (my $i = 0; $i < $self->{length}; ++$i) {
+        $new_string->[$i] = $self->{string}[$self->{offset} + $i];
+      }
+      $self->{string} = $new_string;
+      $self->{offset} = 0;
+    }
+  }
+
+  sub to_string : string ($self : self) {
+    return (string)sliceb($self->{string}, $self->{offset}, $self->{length});
+  }
+
+  sub _capacity : int ($self : self) {
+    return $self->{capacity};
+  }
+
+  sub _offset : int ($self : self) {
+    return $self->{offset};
+  }
+
+  sub _string : byte[] ($self : self) {
+    return $self->{string};
+  }
+
+  sub new : SPVM::Text () {
+    my $self = new SPVM::Text;
+    my $default_capacity = 16;
+    $self->{capacity} = $default_capacity;
+    $self->{string} = new byte [$default_capacity];
+    return $self;
+  }
+
+  sub new_with_capacity : SPVM::Text ($capacity : int) {
+    my $self = new SPVM::Text;
+    unless ($capacity > 0) {
+      croak "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{string} = new byte [$capacity];
+    return $self;
+  }
+
+  sub new_with_string : SPVM::Text ($string : string) {
+    my $self = new SPVM::Text;
+    $self->{capacity} = length($string);
+    $self->{string} = (byte [])$string;
+    $self->{length} = $self->{capacity};
+    return $self;
+  }
+
+  sub substr : SPVM::Text ($self : self, $offset : int, $length : int) {
+    if ($offset >= $self->{length}) {
+      warn("substr offset is greater or equal than string length");
+      return SPVM::Text->new;
+    }
+    if ($length > $self->{length} - $self->{offset}) {
+      $length = $self->{length} - $self->{offset};
+    }
+    my $ret = $self->copy;
+    $ret->{offset} = $self->{offset} + $offset;
+    $ret->{length} = $length;
+    return $ret;
+  }
+
+  sub copy : SPVM::Text ($self : self) {
+    my $ret = SPVM::Text->new;
+    $ret->{string}      = $self->{string};
+    $ret->{capacity}    = $self->{capacity};
+    $ret->{offset}      = $self->{offset};
+    $ret->{length}      = $self->{length};
+    $ret->{decode_type} = $self->{decode_type};
+    return $ret;
+  }
+
+  # O($self->{length} + $text)
+  sub prepend : void ($self : self, $text : SPVM::Text) {
+    # TODO: Implement copy-on-write
+    unless ($self->{decode_type} == $text->{decode_type}) {
+      croak "decode_type mismatch";
+    }
+    $self->_copy_string_on_write;
+    # TODO: Think how to deal with capacity.
+    my $capacity = $self->{capacity}; # capacity is not shrunk.
+    if ($capacity < $self->{length} + $text->{length}) { # don't consider about x2 allocation.
+      $capacity = $self->{length} + $text->{length};
+    }
+    my $new_string = new byte [$capacity];
+    for (my $i = 0; $i < $text->{length}; ++$i) {
+      $new_string->[$i] = $text->_string->[$i];
+    }
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_string->[$text->{length} + $i] = $self->{string}[$i];
+    }
+    $self->{string} = $new_string;
+    $self->{capacity} = $capacity;
+    $self->{offset} = 0;
+    $self->{length} += $text->{length};
+  }
+
+  sub append : void ($self : self, $text : SPVM::Text) {
+    unless ($self->{decode_type} == $text->{decode_type}) {
+      croak "decode_type mismatch";
+    }
+    if ($self->{length} + $text->{length} > $self->{capacity}) {
+      # O($new_capacity)
+      my $new_capacity : int;
+      if ($self->{length} + $text->{length} > $self->{capacity} * 2) {
+        $new_capacity = $self->{length} + $text->{length};
+      } else {
+        $new_capacity = $self->{capacity} * 2;
+      }
+      $self->_reallocate_with_capacity($new_capacity);
+      for (my $i = 0; $i < $text->{length}; ++$i) {
+        $self->{string}[$self->{length} + $i] = $text->_string->[$text->_offset + $i];
+      }
+      $self->{length} += $text->{length};
+    }
+    else {
+      # O($text)
+      $self->_copy_string_on_write;
+      for (my $i = 0; $i < $text->{length}; ++$i) {
+        $self->{string}[$self->{length} + $i] = $text->_string->[$i];
+      }
+      $self->{length} += $text->{length};
+    }
+  }
+
+  # range of $offset: [0, $length]
+  # O($self->{capacity})
+  sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
+    if ($offset > $self->{length}) {
+      warn("replace offset past end of string");
+      $offset = $self->{length};
+      $length = 0;
+    }
+
+    if ($length > $self->{length} - $offset) {
+      $length = $self->{length} - $offset;
+    }
+
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = length($replace);
+    }
+
+    $self->_copy_string_on_write;
+
+    if ($self->{length} - $length + $replace_length > $self->{capacity}) {
+      # O($new_string_length)
+      $self->_reallocate_with_capacity($self->{length} - $length + $replace_length);
+    }
+
+    my $last_sequence_length = $self->{length} - $offset - $length;
+    if ($length > $replace_length) {
+      # move last sequence to forward
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $offset + $length + $i;
+        my $target = $offset + $replace_length + $i;
+        $self->{string}[$target] = $self->{string}[$origin];
+      }
+    }
+    else {
+      # move last sequence to backward
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $self->{length} - 1 - $i;
+        my $target = $offset + $replace_length + $last_sequence_length - 1 - $i;
+        $self->{string}[$target] = $self->{string}[$origin];
+      }
+    }
+
+    # replace with new array
+    for (my $i = 0; $i < $replace_length; ++$i) {
+      my $target = $offset + $i;
+      $self->{string}[$target] = $replace->[$i];
+    }
+
+    $self->{length} += $replace_length - $length;
+  }
+
+  sub equals : int ($self : self, $text : SPVM::Text) {
+    unless ($self->{length} == $text->{length}) {
+      return 0;
+    }
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      unless ($self->{string}[$self->{offset} + $i] == $text->_string->[$text->_offset + $i]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}
