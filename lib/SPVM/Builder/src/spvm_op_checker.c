@@ -1124,26 +1124,24 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (term_type->basic_type->id == check_type->basic_type->id && term_type->dimension == check_type->dimension) {
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_cur->file, op_cur->line);
-                  SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_constant_true);
-                  SPVM_OP_replace_op(compiler, op_stab, op_bool);
-                  SPVM_OP_CHECKER_check_tree(compiler, op_bool, check_ast_info);
+                  SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
                   if (compiler->error_count > 0) {
                     return;
                   }
-                  op_cur = op_bool;
+                  op_cur = op_assign_bool;
                 }
                 else {
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, op_cur->file, op_cur->line);
-                  SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_constant_false);
-                  SPVM_OP_replace_op(compiler, op_stab, op_bool);
-                  SPVM_OP_CHECKER_check_tree(compiler, op_bool, check_ast_info);
+                  SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
+                  SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
                   if (compiler->error_count > 0) {
                     return;
                   }
-                  op_cur = op_bool;
+                  op_cur = op_assign_bool;
                 }
               }
               else {
