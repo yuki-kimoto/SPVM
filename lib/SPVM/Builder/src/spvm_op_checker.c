@@ -3610,26 +3610,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // [START]Postorder traversal position
                     if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
                       switch (op_cur->id) {
+                        case SPVM_OP_C_ID_BOOL:
                         case SPVM_OP_C_ID_RETURN:
                         case SPVM_OP_C_ID_LOOP_INCREMENT:
                         case SPVM_OP_C_ID_CONDITION:
                         case SPVM_OP_C_ID_CONDITION_NOT:
                         case SPVM_OP_C_ID_FREE_TMP:
                         case SPVM_OP_C_ID_CONVERT:
-                        case SPVM_OP_C_ID_NUMERIC_EQ:
-                        case SPVM_OP_C_ID_NUMERIC_NE:
-                        case SPVM_OP_C_ID_NUMERIC_GT:
-                        case SPVM_OP_C_ID_NUMERIC_GE:
-                        case SPVM_OP_C_ID_NUMERIC_LT:
-                        case SPVM_OP_C_ID_NUMERIC_LE:
-                        case SPVM_OP_C_ID_BOOL:
-                        case SPVM_OP_C_ID_STRING_EQ:
-                        case SPVM_OP_C_ID_STRING_NE:
-                        case SPVM_OP_C_ID_STRING_GT:
-                        case SPVM_OP_C_ID_STRING_GE:
-                        case SPVM_OP_C_ID_STRING_LT:
-                        case SPVM_OP_C_ID_STRING_LE:
-                        case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_SWITCH:
                         case SPVM_OP_C_ID_DEFAULT:
                         case SPVM_OP_C_ID_CASE:
@@ -3677,6 +3664,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           }
                           break;
                         }
+                        case SPVM_OP_C_ID_NUMERIC_EQ:
+                        case SPVM_OP_C_ID_NUMERIC_NE:
+                        case SPVM_OP_C_ID_NUMERIC_GT:
+                        case SPVM_OP_C_ID_NUMERIC_GE:
+                        case SPVM_OP_C_ID_NUMERIC_LT:
+                        case SPVM_OP_C_ID_NUMERIC_LE:
+                        case SPVM_OP_C_ID_STRING_EQ:
+                        case SPVM_OP_C_ID_STRING_NE:
+                        case SPVM_OP_C_ID_STRING_GT:
+                        case SPVM_OP_C_ID_STRING_GE:
+                        case SPVM_OP_C_ID_STRING_LT:
+                        case SPVM_OP_C_ID_STRING_LE:
+                        case SPVM_OP_C_ID_ISA:
+                          assert(0);
+                          break;
                       }
                     }
 
