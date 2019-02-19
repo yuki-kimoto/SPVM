@@ -34,7 +34,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
+%type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> deref ref assign inc dec
@@ -634,6 +634,9 @@ expression
     }
   | CURRENT_PACKAGE
   | isweak_field
+  | num_comparison_op
+  | str_comparison_op
+  | isa
 
 refcnt
   : REFCNT expression
@@ -751,17 +754,11 @@ binary_op
     }
 
 condition
-  : comparison_op
-  | logical_op
+  : logical_op
   | '(' condition ')'
     {
       $$ = $2;
     }
-
-comparison_op
-  : num_comparison_op
-  | str_comparison_op
-  | isa
 
 num_comparison_op
   : expression NUMEQ expression

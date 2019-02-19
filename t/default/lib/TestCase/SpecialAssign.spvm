@@ -116,14 +116,14 @@ package TestCase::SpecialAssign {
     my $value_int2 : int = $value_int ^= 3;
     my $value_long2 : long = $value_long ^= 3;
     
-    if ($value_byte == 6 ^ 3) {
-      if ($value_byte2 == 6 ^ 3) {
-        if ($value_short == 6 ^ 3) {
-          if ($value_short2 == 6 ^ 3) {
-            if ($value_int == 6 ^ 3) {
-              if ($value_int2 == 6 ^ 3) {
-                if ($value_long == 6 ^ 3) {
-                  if ($value_long2 == 6 ^ 3) {
+    if ($value_byte == (6 ^ 3)) {
+      if ($value_byte2 == (6 ^ 3)) {
+        if ($value_short == (6 ^ 3)) {
+          if ($value_short2 == (6 ^ 3)) {
+            if ($value_int == (6 ^ 3)) {
+              if ($value_int2 == (6 ^ 3)) {
+                if ($value_long == (6 ^ 3)) {
+                  if ($value_long2 == (6 ^ 3)) {
                     return 1;
                   }
                 }
@@ -146,14 +146,14 @@ package TestCase::SpecialAssign {
     my $value_int2 : int = $value_int |= 3;
     my $value_long2 : long = $value_long |= 3;
     
-    if ($value_byte == 6 | 3) {
-      if ($value_byte2 == 6 | 3) {
-        if ($value_short == 6 | 3) {
-          if ($value_short2 == 6 | 3) {
-            if ($value_int == 6 | 3) {
-              if ($value_int2 == 6 | 3) {
-                if ($value_long == 6 | 3) {
-                  if ($value_long2 == 6 | 3) {
+    if ($value_byte == (6 | 3)) {
+      if ($value_byte2 == (6 | 3)) {
+        if ($value_short == (6 | 3)) {
+          if ($value_short2 == (6 | 3)) {
+            if ($value_int == (6 | 3)) {
+              if ($value_int2 == (6 | 3)) {
+                if ($value_long == (6 | 3)) {
+                  if ($value_long2 == (6 | 3)) {
                     return 1;
                   }
                 }
@@ -176,16 +176,14 @@ package TestCase::SpecialAssign {
     my $value_int2 : int = $value_int &= 3;
     my $value_long2 : long = $value_long &= 3;
     
-    if ($value_byte == 6 & 3) {
-      if ($value_byte2 == 6 & 3) {
-        if ($value_short == 6 & 3) {
-          if ($value_short2 == 6 & 3) {
-            if ($value_int == 6 & 3) {
-              if ($value_int2 == 6 & 3) {
-                if ($value_long == 6 & 3) {
-                  if ($value_long2 == 6 & 3) {
+    if ($value_byte == (6 & 3)) {
+      if ($value_byte2 == (6 & 3)) {
+        if ($value_short == (6 & 3)) {
+          if ($value_short2 == (6 & 3)) {
+            if ($value_int == (6 & 3)) {
+              if ($value_int2 == (6 & 3)) {
+                if ($value_long == (6 & 3)) {
                     return 1;
-                  }
                 }
               }
             }
