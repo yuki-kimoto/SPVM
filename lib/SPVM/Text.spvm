@@ -36,7 +36,7 @@ package SPVM::Text {
 
   sub _copy_string_on_write : void ($self : self) {
     my $rc = $self->{string};
-    if (ref_count($rc) > 2) {
+    if (refcnt $rc > 2) {
       # copy-on-write
       my $new_string = new byte [$self->{length}];
       for (my $i = 0; $i < $self->{length}; ++$i) {

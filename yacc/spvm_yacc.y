@@ -636,7 +636,7 @@ expression
   | logical_op
 
 refcnt
-  : REFCNT expression
+  : REFCNT var
     {
       $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
     }
