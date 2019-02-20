@@ -80,9 +80,8 @@
         <li><a href="#language-exception">例外処理</a></li>
         <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
-        <li><a href="#language-term">項</a></li>
+        <li><a href="#language-expresssion">式</a></li>
         <li><a href="#language-expression">式</a></li>
-        <li><a href="#language-condition">条件</a></li>
         <li><a href="#language-condition-part">条件部</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-fat-comma">ファットカンマ</a></li>
@@ -2163,7 +2162,7 @@ eval {
       <h4 id="language-block-statement-if">ifブロック</h4>
 <pre>
 # ifブロック
-if (条件1) {
+if (式) {
 
 }
 </pre>
@@ -2171,7 +2170,7 @@ if (条件1) {
       <h4 id="language-block-statement-elsif">elsifブロック</h4>
 <pre>
 #elsifブロック
-elsif (条件2) {
+elsif (式) {
 
 }
 </pre>
@@ -2195,14 +2194,14 @@ for (my $i = 0; $i < 3; $i++) {
       <h4 id="language-block-statement-while">whileブロック</h4>
 <pre>
 # whileブロック
-while (条件) {
+while (式) {
 
 }
 </pre>
 
       <h4 id="language-block-statement-switch">switchブロック</h4>
 <pre>
-switch (条件) {
+switch (式) {
 
 }
 </pre>
@@ -2693,36 +2692,6 @@ $dval4->{t} = 2.5;
 my $z = $dval4->{z};
 </pre>
 
-      <h3 id="language-array-summary">配列の生成</h3>
-      
-      <h2 id="language-term">項</h2>
-      <p>
-        算術演算子の両辺、サブルーチンの引数、ifの条件部などになることができる文法の最小の単位を「項」と呼びます。
-      </p>
-      <p>
-        「項」には、「<a href="#language-expression">式</a>」と、<a href="#language-condition-part">条件部</a>のみに記述できる「<a href="#language-condition">条件</a>」があります。
-      </p>
-      <p>
-        式と条件の違いは、条件は、式として利用できないということだけです。
-      </p>
-      <p>
-        項は、代入演算子を除く、ほとんどの場合に、左から右の順番で評価されます。たとえば、以下の例では、3 * 3 が実行され結果は9になります。
-      </p>
-<pre>
-  my $i = 2;
-  my $j = ($i = 3）* $i;
-</pre>
-      <p>
-        exceptionサブルーチンが例外を発生させた場合は、$jの値は、10のままです。
-      </p>
-<pre>
-  my $j = 10;
-  eval {
-    excpetion() / ($j = 3);
-  };
-}
-</pre>
-
       <h2 id="language-ref">リファレンス</h2>
       <ul>
         <li><a href="language-ref-summary">リファレンスの概要</a></li>
@@ -2821,7 +2790,7 @@ $point_ref->{x} = 1;
       
       <h3 id="language-expression">式とは</h3>
       <p>
-        式とは、値の評価が可能な<a href="#language-term">項</a>のことです。
+        式とは、値の評価が可能な<a href="#language-expresssion">式</a>のことです。
       </p>
       <p>
         <b>式の一覧</b>
@@ -3677,28 +3646,9 @@ package Foo::Bar {
         上記の処理は、再帰的に行われます。
       </p>
 
-      <h2 id="language-condition">条件</h2>
-      <p>
-        条件は次の項目で定義されます。
-      </p>
-      <p>
-        <b>条件の一覧</b>
-      </p>
-      <ul class="list">
-        <li><a href="#language-operator-comparison">比較演算子</a></li>
-        <li><a href="#language-operator-logical">論理演算子</a></li>
-        <li>(条件)</li>
-      </ul>
-      <p>
-        条件の結果は、真または偽です。
-      </p>
-      <p>
-        最後の「(条件)」というのは、条件を「()」で囲ったという意味です。
-      </p>
-
       <h2 id="language-condition-part">条件部</h2>
       <p>
-        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-term">項</a>」が記述できます。
+        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-expresssion">式</a>」を記述できます。
       </p>
       <p>
         <b>if文のかっこの中</b>
@@ -3751,29 +3701,26 @@ while (条件部) {
 !条件部
 </pre>
       <p>
-        条件部に式が書かれた場合は、結果の型はint型です。
+        条件部に書かれる式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        条件部に式が書かれた場合は、型に応じた結果を返します。
-      </p>
-      <p>
-        式が<a href="#language-undef">未定義値</a>である場合は、0を返します。
+        式が<a href="#language-undef">未定義値</a>である場合は、偽と判定されます。
       </p>
       <p>
         式が、<a href="#language-type-numeric">数値型</a>の場合は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
       </p>
       <p>
-        型がint型の場合は、その値を返します。
+        式がint型の場合は、0の場合は偽、そうでない場合は、真と判定されます。
       </p>
       <p>
-        型がlong型、float型、double型、オブジェクト型である場合は、C99における以下の演算と完全に一致する演算を行います。
+        式がlong型、float型、double型、オブジェクト型である場合は、C99における以下の演算と完全に一致する演算を行い、結果が0の場合は偽、そうでない場合は、真と判定されます。
       </p>
 <pre>
 !!x
 </pre>
+      <p>
+        式がオブジェクト型の場合は、未定義値の場合は偽、そうでない場合は、真と判定されます。
+      </p>
       
       <h2 id="language-literal">リテラル</h2>
       <ul class="list">
@@ -4394,10 +4341,10 @@ undef
       
       <h3 id="language-operator-unary">単項演算子</h3>
       <p>
-        単項演算子とは、<a href="#language-term">項</a>の前に置かれる演算子のことをいいます。
+        単項演算子とは、<a href="#language-expresssion">式</a>の前に置かれる演算子のことをいいます。
       </p>
 <pre>
-単項演算子 項
+単項演算子 式
 </pre>
       <p>
         単項演算子には、<a href="#language-operator-unary-plus">単項プラス演算子</a>、<a href="#language-operator-unary-minus">単項マイナス演算子</a>、<a href="#language-operator-bit-not">ビット否定演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>、<a href="#language-operator-array-legnth">配列長演算子</a>、<a href="#language-operator-string-legnth">文字列長演算子</a>があります。
@@ -4408,10 +4355,10 @@ undef
 
       <h3 id="language-operator-binary">二項演算子</h3>
       <p>
-        二項演算子とは、左項と右項の間に置かれる演算子のことをいいます。項については、<a href="#language-term">項</a>を参考にしてください。
+        二項演算子とは、左式と右式の間に置かれる演算子のことをいいます。項については、<a href="#language-expresssion">式</a>を参考にしてください。
       </p>
 <pre>
-左項 二項演算子 右項
+左式 二項演算子 右式
 </pre>
 
       <p>
@@ -4983,7 +4930,7 @@ x >> y;
 
       <h3 id="language-operator-comparison">比較演算子</h3>
       <p>
-        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+        比較演算子とは、左式と右式の間に置かれる演算子で、<a href="#language-expression">式</a>を返す演算子のことをいいます。
       </p>
 <pre>
 左式 比較演算子 右式
@@ -4994,7 +4941,7 @@ x >> y;
       
       <h3 id="language-operator-comparison-numeric">数値比較演算子</h3>
       <p>
-        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-expression">式</a>を返す演算子のことをいいます。
       </p>
 <pre>
 左式 数値比較演算子 右式
@@ -5104,7 +5051,7 @@ x <= y;
 
       <h3 id="language-operator-comparison-string">文字列比較演算子</h3>
       <p>
-        文字列比較演算子とは、文字列を比較するために、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+        文字列比較演算子とは、文字列を比較するために、左式と右式の間に置かれる演算子で、<a href="#language-expression">式</a>を返す演算子のことをいいます。
       </p>
 <pre>
 左式 文字列比較演算子 右式
@@ -5174,10 +5121,10 @@ x <= y;
       </p>
       <h3 id="language-operator-isa">isa演算子</h3>
       <p>
-        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-condition">条件</a>を返す演算子のことをいいます。
+        数値比較演算子とは、数値あるいはオブジェクトのアドレスを比較するために、左式と右式の間に置かれる演算子で、<a href="#language-expression">式</a>を返す演算子のことをいいます。
       </p>
       <p>
-        isa演算子とはは、型の適合性をチェックするための演算子で、<a href="#language-condition">条件</a>を返します。
+        isa演算子とはは、型の適合性をチェックするための演算子で、<a href="#language-expression">式</a>を返します。
       </p>
 <pre>
 左式 isa 右型
@@ -5200,30 +5147,30 @@ x <= y;
         論理演算子は、論理演算を行う演算子のことで、><a href="#language-operator-logical-and">論理AND演算子</a>、<a href="#language-operator-logical-or">論理OR演算子</a>、<a href="#language-operator-logical-not">論理否定演算子</a>からなります。
       </p>
       <p>
-        論理演算子は、<a href="#language-condition">条件</a>を返します。
+        論理演算子は、<a href="#language-expression">式</a>を返します。
       </p>
       
       <h3 id="language-operator-logical-and">論理AND演算子</h3>
       <p>
-        論理AND演算子とは、論理AND演算を行うために、「&&」で表現される、<a href="#language-term">項</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
+        論理AND演算子とは、論理AND演算を行うために、「&&」で表現される、<a href="#language-expresssion">式</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
-左項 && 右項
+左式 && 右式
 </pre>
       <p>
         論理AND演算子は次のように動作します。
       </p>
       <p>
-        1. 左項の評価が真であれば、右項を実行し、右項の評価が、真であれば、真を返し、右項の評価が偽であれば、偽を返します。
+        1. 左式の評価が真であれば、右式を実行し、右式の評価が、真であれば、真を返し、右式の評価が偽であれば、偽を返します。
       </p>
       <p>
-        2. 左項の評価が偽であれば、偽を返します。右項は実行されません。
+        2. 左式の評価が偽であれば、偽を返します。右式は実行されません。
       </p>
       <p>
         論理AND演算子の結果の型は、int型です。
       </p>
       <p>
-        論理AND演算子は<a href="#language-condition">条件</a>を返します。
+        論理AND演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
         論理AND演算子は、例外を発生させません。
@@ -5231,25 +5178,25 @@ x <= y;
       
       <h3 id="language-operator-logical-and">論理OR演算子</h3>
       <p>
-        論理OR演算子とは、論理OR演算を行うために、「||」で表現される、<a href="#language-term">項</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
+        論理OR演算子とは、論理OR演算を行うために、「||」で表現される、<a href="#language-expresssion">式</a>をオペランドとする<a href="#language-operator-binary">二項演算子</a>です。
       </p>
 <pre>
-左項 || 右項
+左式 || 右式
 </pre>
       <p>
         論理OR演算子は次のように動作します。
       </p>
       <p>
-        1. 左項の評価が真であれば、真を返します。右項は実行されません。
+        1. 左式の評価が真であれば、真を返します。右式は実行されません。
       </p>
       <p>
-        2. 左項の評価が偽であれば、右項を実行し、右項の評価が、真であれば、真を返し、右項の評価が偽であれば、偽を返します。
+        2. 左式の評価が偽であれば、右式を実行し、右式の評価が、真であれば、真を返し、右式の評価が偽であれば、偽を返します。
       </p>
       <p>
         論理OR演算子の結果の型は、int型です。
       </p>
       <p>
-        論理OR演算子は<a href="#language-condition">条件</a>を返します。
+        論理OR演算子は<a href="#language-expression">式</a>を返します。
       </p>
       <p>
         論理OR演算子は、例外を発生させません。
@@ -5257,19 +5204,19 @@ x <= y;
 
       <h3 id="language-operator-logical-and">論理NOT演算子</h3>
       <p>
-        論理NOT演算子とは、論理NOT演算を行うために、項の左に置かれる演算子で、「!」で表現される<a href="#language-condition">条件</a>を返す<a href="#language-operator-binary">単項演算子</a>です。項については、<a href="#language-term">項</a>を参考にしてください。
+        論理NOT演算子とは、論理NOT演算を行うために、式の左に置かれる演算子で、「!」で表現される<a href="#language-expression">式</a>を返す<a href="#language-operator-binary">単項演算子</a>です。式については、<a href="#language-expresssion">式</a>を参考にしてください。
       </p>
 <pre>
-!項
+!式
 </pre>
       <p>
-        論理NOT演算子は、項が真であれば、偽を返します。項が偽であれば、真を返します。
+        論理NOT演算子は、式が真であれば、偽を返します。式が偽であれば、真を返します。
       </p>
       <p>
         論理NOT演算子の結果の型は、int型です。
       </p>
       <p>
-        論理NOT演算子は<a href="#language-condition">条件</a>うぃを返します。
+        論理NOT演算子は<a href="#language-expression">式</a>うぃを返します。
       </p>
       <p>
         論理NOT演算子は、例外を発生させません。
@@ -5548,10 +5495,10 @@ isweak オブジェクト式->{フィールド名};
         フィールドに保存される値の型は、<a href="#language-type-object">オブジェクト型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        実行時にフィールドに保存されている値が、<a href="#language-undef">未定義値</a>だった場合は、偽を返します。これは、<a href="#language-condition">条件</a>です。
+        実行時にフィールドに保存されている値が、<a href="#language-undef">未定義値</a>だった場合は、偽を返します。これは、<a href="#language-expression">式</a>です。
       </p>
       <p>
-        isweak演算子は、フィールドがウィークリファレンスの場合は、真を、そうでない場合は偽を返します。これは、<a href="#language-condition">条件</a>です。
+        isweak演算子は、フィールドがウィークリファレンスの場合は、真を、そうでない場合は偽を返します。これは、<a href="#language-expression">式</a>です。
       </p>
 
       <h2 id="language-operator-precedence">演算子の優先順位</h2>
@@ -5589,7 +5536,7 @@ isweak オブジェクト式->{フィールド名};
             左結合
           </td>
           <td>
-            条件OR演算子「||」
+            論理OR演算子「||」
           </td>
         </tr>
         <tr>
@@ -5597,7 +5544,7 @@ isweak オブジェクト式->{フィールド名};
             左結合
           </td>
           <td>
-            条件AND演算子 「&&」
+            論理AND演算子 「&&」
           </td>
         </tr>
         <tr>
@@ -5679,7 +5626,7 @@ isweak オブジェクト式->{フィールド名};
             右結合
           </td>
           <td>
-            条件NOT演算子「!」<br>
+            論理NOT演算子「!」<br>
             ビットNOT演算子「~」<br>
             リファレンス演算子「\」<br>
             プラス演算子「+」<br>
@@ -5758,32 +5705,32 @@ a * (b + c)
         if文は、条件分岐を行うための文です。
       </p>
 <pre>
-if (項) {
+if (式) {
   
 }
 </pre>
       <p>
-        項が真の場合に、ブロックが実行されます。SPVMにおける真偽については<a href="#language-condition-part">条件部</a>を見てください。
+        式が真の場合に、ブロックが実行されます。SPVMにおける真偽については<a href="#language-condition-part">条件部</a>を見てください。
       </p>
       <p>
-        条件を複数書きたい場合には「elsif文」を続けることができます。 条件判定は上から実行され、項が真になった場合に対応するブロックが実行されます。
+        条件を複数書きたい場合には「elsif文」を続けることができます。 条件判定は上から実行され、式が真になった場合に対応するブロックが実行されます。
       </p>
 <pre>
-if (項) {
+if (式) {
   
 }
-elsif(項) {
+elsif(式) {
   
 }
 </pre>
       <p>
-        「else文」を使って、項が真ではなかった場合の処理を記述することができます。if文とelsif文の条件判定がすべて偽であった場合にelseのブロックの内部の文が実行されます。elsif文は、なくてもかまいません。
+        「else文」を使って、式が真ではなかった場合の処理を記述することができます。if文とelsif文の条件判定がすべて偽であった場合にelseのブロックの内部の文が実行されます。elsif文は、なくてもかまいません。
       </p>
 <pre>
-if (項) {
+if (式) {
   
 }
-elsif(項) {
+elsif(式) {
   
 }
 else {
@@ -5814,7 +5761,7 @@ else {
       </p>
 <pre>
 {
-  if (項) {
+  if (式) {
     
   }
 }
@@ -5824,10 +5771,10 @@ else {
       </p>
 <pre>
 # 展開前
-if (項1) {
+if (式1) {
 
 }
-elsif (項2) {
+elsif (式2) {
 
 }
 else {
@@ -5835,10 +5782,10 @@ else {
 }
 
 # 展開後
-if (項1) {
+if (式1) {
 }
 else {
-  if (項2) {
+  if (式2) {
   
   }
   else {
@@ -5986,12 +5933,12 @@ switch ($code) {
         while文は、繰り返しを行うための文です。
       </p>
 <pre>
-while (条件項) {
+while (条件式) {
   
 }
 </pre>
       <p>
-        条件項、<a href="#language-term">項</a>を記述できます。条件項が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
+        条件式、<a href="#language-expresssion">式</a>を記述できます。条件式が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
       </p>
       <p>
         <b>while文のサンプル</b>
@@ -6018,7 +5965,7 @@ while (1) {
 </pre>
 
       <p>
-        whileブロックの内部では、<a href="#language-statement-next">next文</a>を使って、次に実行される条件項の直前に移動することができます。
+        whileブロックの内部では、<a href="#language-statement-next">next文</a>を使って、次に実行される条件式の直前に移動することができます。
       </p>
 <pre>
 my $i = 0;
@@ -6039,7 +5986,7 @@ while ($i < 5) {
       </p>
 <pre>
 {
-  while (条件項) {
+  while (条件式) {
     
   }
 }
@@ -6070,7 +6017,7 @@ my $num = 5;
         for文は、繰り返しを行うための文です。
       </p>
 <pre>
-for (初期化式; 条件項; インクリメント式) {
+for (初期化式; 条件式; インクリメント式) {
   
 }
 </pre>
@@ -6078,7 +6025,7 @@ for (初期化式; 条件項; インクリメント式) {
         初期化式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数の初期化などの式を記述します。初期化式は省略することが可能です。
       </p>
       <p>
-        条件項、<a href="#language-term">項</a>を記述できます。条件項が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
+        条件式、<a href="#language-expresssion">式</a>を記述できます。条件式が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
       </p>
       <p>
         インクリメント式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数のインクリメントの式を記述します。インクリメント式は省略することが可能です。
@@ -6089,7 +6036,7 @@ for (初期化式; 条件項; インクリメント式) {
 <pre>
 {
   初期化式;
-  while (条件項) {
+  while (条件式) {
     
     
     
@@ -6114,7 +6061,7 @@ for (my $i = 0; $i < 5; $i++) {
       </p>
 
 <pre>
-for (初期化式; 条件項; インクリメント式) {
+for (初期化式; 条件式; インクリメント式) {
   
 }
 </pre>
