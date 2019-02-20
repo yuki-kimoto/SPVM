@@ -82,7 +82,6 @@
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-expresssion">式</a></li>
         <li><a href="#language-expression">式</a></li>
-        <li><a href="#language-condition-part">条件部</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-fat-comma">ファットカンマ</a></li>
         <li><a href="#language-string">文字列</a></li>
@@ -3646,82 +3645,6 @@ package Foo::Bar {
         上記の処理は、再帰的に行われます。
       </p>
 
-      <h2 id="language-condition-part">条件部</h2>
-      <p>
-        条件部とは、条件判定が行われる部分のことです。条件部には「<a href="#language-expresssion">式</a>」を記述できます。
-      </p>
-      <p>
-        <b>if文のかっこの中</b>
-      </p>
-<pre>
-if (条件部) {
-
-}
-</pre>
-      <p>
-        <b>unless文のかっこの中</b>
-      </p>
-<pre>
-unless (条件部) {
-
-}
-</pre>
-      <p>
-        <b>forのかっこの中の二つ目</b>
-      </p>
-<pre>
-for (初期化;条件部;次の値;) {
-
-}
-</pre>
-      <p>
-        <b>whileのかっこの中</b>
-      </p>
-<pre>
-while (条件部) {
-
-}
-</pre>
-      <p>
-        <b>論理AND演算子の左右</b>
-      </p>
-<pre>
-条件部 && 条件部
-</pre>
-      <p>
-        <b>論理OR演算子の左右</b>
-      </p>
-<pre>
-条件部 || 条件部
-</pre>
-      <p>
-        <b>論理否定演算子の右側</b>
-      </p>
-<pre>
-!条件部
-</pre>
-      <p>
-        条件部に書かれる式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
-      </p>
-      <p>
-        式が<a href="#language-undef">未定義値</a>である場合は、偽と判定されます。
-      </p>
-      <p>
-        式が、<a href="#language-type-numeric">数値型</a>の場合は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
-      </p>
-      <p>
-        式がint型の場合は、0の場合は偽、そうでない場合は、真と判定されます。
-      </p>
-      <p>
-        式がlong型、float型、double型、オブジェクト型である場合は、C99における以下の演算と完全に一致する演算を行い、結果が0の場合は偽、そうでない場合は、真と判定されます。
-      </p>
-<pre>
-!!x
-</pre>
-      <p>
-        式がオブジェクト型の場合は、未定義値の場合は偽、そうでない場合は、真と判定されます。
-      </p>
-      
       <h2 id="language-literal">リテラル</h2>
       <ul class="list">
         <li><a href="#language-literal-integer">整数リテラル</a></li>
@@ -5710,7 +5633,7 @@ if (式) {
 }
 </pre>
       <p>
-        式が真の場合に、ブロックが実行されます。SPVMにおける真偽については<a href="#language-condition-part">条件部</a>を見てください。
+        式が真の場合に、ブロックが実行されます。SPVMにおける真偽については<a href="#language-boolean">真偽</a>を見てください。
       </p>
       <p>
         条件を複数書きたい場合には「elsif文」を続けることができます。 条件判定は上から実行され、式が真になった場合に対応するブロックが実行されます。
@@ -7161,6 +7084,7 @@ my $objets : object[] = new int[3];
         <li><a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a></li>
         <li><a href="#language-type-convertion-boxing">ボクシング変換</a></li>
         <li><a href="#language-type-convertion-unboxing">アンボクシング変換</a></li>
+        <li><a href="#language-type-convertion-bool">ブール変換</a></li>
       </ul>
       
       <h3 id="language-type-convertion-typecast">型キャスト</h3>
@@ -7456,20 +7380,94 @@ my $str : string = $num;
         アンボクシング変換とは、数値オブジェクト型の値を、対応する数値型の値に変換する操作のことをいいます。
       </p>
       
-      <h3 id="language-type-convertion-numeric-to-string">数値から文字列への型変換</h3>
+      <h3 id="language-type-convertion-bool">ブール型変換</h3>
       <p>
-        数値から文字列への型変換とは、<a href="#language-type-numeric">数値型</a>が<a href="#language-type-string">文字列型</a>に変換される場合に適用される変換規則のことです。
+        ブール型変換とは、if文の条件部などで適用される、真偽値判定のために、適用される変換のことです。
       </p>
       <p>
-        数値型の値をC99のsprintfの「%g」フォーマットを使って、SPVMの文字列へ変換します。
+        <b>ブール型変換が行われる場所</b>
       </p>
+      <p>
+        <b>if文のかっこの中</b>
+      </p>
+<pre>
+if (条件部) {
 
+}
+</pre>
+      <p>
+        <b>unless文のかっこの中</b>
+      </p>
+<pre>
+unless (条件部) {
+
+}
+</pre>
+      <p>
+        <b>forのかっこの中の二つ目</b>
+      </p>
+<pre>
+for (初期化;条件部;次の値;) {
+
+}
+</pre>
+      <p>
+        <b>whileのかっこの中</b>
+      </p>
+<pre>
+while (条件部) {
+
+}
+</pre>
+      <p>
+        <b>論理AND演算子の左右</b>
+      </p>
+<pre>
+条件部 && 条件部
+</pre>
+      <p>
+        <b>論理OR演算子の左右</b>
+      </p>
+<pre>
+条件部 || 条件部
+</pre>
+      <p>
+        <b>論理否定演算子の右側</b>
+      </p>
+<pre>
+!条件部
+</pre>
+      <p>
+        ブール型変換で指定される式は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-object">オブジェクト型</a>あるいは<a href="#language-type-undef">未定義型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+      </p>
+      <p>
+        ブール型変換の戻り値は、int型の式です。
+      </p>
+      <p>
+        式が<a href="#language-undef">未定義値</a>である場合は、0が返されます。
+      </p>
+      <p>
+        式が、<a href="#language-type-numeric">数値型</a>の場合は、<a href="#language-type-convertion-unary-numeric-widening">単項数値拡大型変換</a>が行われます。
+      </p>
+      <p>
+        式がint型の場合は、その値が返されます。
+      </p>
+      <p>
+        式がlong型、float型、double型、オブジェクト型である場合は、C99における以下の演算と完全に一致する演算を行い、結果が返されます。
+      </p>
+<pre>
+!!x
+</pre>
+      <p>
+        式がオブジェクト型の場合は、未定義値の場合は0、そうでない場合は1が返されます。
+      </p>
+      
       <h2 id="language-thread-safety">スレッドセーフ</h2>
       <ul class="list">
         <li><a href="#language-thread-safety-summary">スレッドセーフの概要</a></li>
         <li><a href="#language-thread-safety-condition">スレッドセーフの条件</a></li>
       </ul>
-      
+
       <h3 id="language-thread-safety-summary">スレッドセーフの概要</h3>
       <p>
         SPVMの言語仕様はスレッドをサポートしていません。SPVMの言語仕様はスレッドをサポートしていませんが、C/C++をバインディングすることによって、pthreadなどのC/C++のスレッドライブラリを呼び出すことは可能です。
