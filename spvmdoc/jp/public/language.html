@@ -5639,10 +5639,10 @@ if (式) {
 }
 </pre>
       <p>
-        式が真の場合に、ブロックが実行されます。SPVMにおける真偽については<a href="#language-boolean">真偽</a>を見てください。
+        式に<a href="#language-type-convertion-bool">ブール型変換</a>が実行され、値が0以外の場合に、ブロックが実行されます。
       </p>
       <p>
-        条件を複数書きたい場合には「elsif文」を続けることができます。 条件判定は上から実行され、式が真になった場合に対応するブロックが実行されます。
+        条件を複数書きたい場合には「elsif文」を続けることができます。 条件判定は上から実行され、それぞれの式に<a href="#language-type-convertion-bool">ブール型変換</a>が実行され、値が0以外の場合に対応するブロックが実行されます。
       </p>
 <pre>
 if (式) {
@@ -5653,7 +5653,7 @@ elsif(式) {
 }
 </pre>
       <p>
-        「else文」を使って、式が真ではなかった場合の処理を記述することができます。if文とelsif文の条件判定がすべて偽であった場合にelseのブロックの内部の文が実行されます。elsif文は、なくてもかまいません。
+        「else文」を使って、if文あるいは、elsif文が条件を満たさなかった場合の処理を記述することができます。if文とelsif文の条件判定がすべて偽であった場合にelseのブロックの内部の文が実行されます。elsif文は、なくてもかまいません。
       </p>
 <pre>
 if (式) {
@@ -5773,7 +5773,7 @@ switch (条件式) {
 }
 </pre>
       <p>
-        条件式は、<a href="#language-expression">式</a>を指定できます。式の型は、int型の値でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+        条件式は、<a href="#language-expression">式</a>を指定できます。条件式には、<a href="#language-type-convertion-bool">ブール型変換</a>が実行されます。
       </p>
       <p>
         case文で指定される定数は、int型の定数でなければなりません。enum型の値や、int型の定数サブルーチンは、int型の定数として、構文解析時に展開されるので、利用することができます。
@@ -5852,11 +5852,6 @@ switch ($code) {
         default文は、switchブロックの中で使うことができる、デフォルトの条件を指定するための文です。default文についての詳細は、<a href="#language-statement-switch">switch文</a>の解説を見てください。
       </p>
 
-      <h3 id="language-statement-switch">switch文</h3>
-      <p>
-        for文は、繰り返しを行うための文です。
-      </p>
-
       <h3 id="language-statement-while">while文</h3>
       <p>
         while文は、繰り返しを行うための文です。
@@ -5867,7 +5862,7 @@ while (条件式) {
 }
 </pre>
       <p>
-        条件式、<a href="#language-expresssion">式</a>を記述できます。条件式が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
+        条件式に、<a href="#language-expresssion">式</a>を記述できます。条件式に<a href="#language-type-convertion-bool">ブール型変換</a>が実行され、値が0以外の場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
       </p>
       <p>
         <b>while文のサンプル</b>
@@ -5954,7 +5949,7 @@ for (初期化式; 条件式; インクリメント式) {
         初期化式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数の初期化などの式を記述します。初期化式は省略することが可能です。
       </p>
       <p>
-        条件式、<a href="#language-expresssion">式</a>を記述できます。条件式が真であった場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
+        条件式、<a href="#language-expresssion">式</a>を記述できます。条件式に<a href="#language-type-convertion-bool">ブール型変換</a>が実行され、値が0以外の場合に、ブロックが実行されます。そうでない場合は、ブロックを抜けます。
       </p>
       <p>
         インクリメント式には、<a href="#language-expression">式</a>を記述できます。一般的には、ループ変数のインクリメントの式を記述します。インクリメント式は省略することが可能です。
