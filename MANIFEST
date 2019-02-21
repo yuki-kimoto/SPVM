@@ -147,6 +147,7 @@ lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/String.c
 lib/SPVM/String.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/Unicode.spvm
@@ -422,13 +423,6 @@ t/default/return.t
 t/default/seqop.t
 t/default/special-assign.t
 t/default/spvm_build/.gitkeep
-t/default/spvm_build/work/lib/SPVM/CORE.so
-t/default/spvm_build/work/lib/SPVM/Example.so
-t/default/spvm_build/work/lib/SPVM/FileHandle.so
-t/default/spvm_build/work/lib/TestCase/Extension.so
-t/default/spvm_build/work/lib/TestCase/Extension2.so
-t/default/spvm_build/work/lib/TestCase/Lib/SPVM/CORE.so
-t/default/spvm_build/work/lib/TestCase/Pointer.so
 t/default/string.t
 t/default/sub.t
 t/default/subtract.t
