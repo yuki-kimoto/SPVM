@@ -1,8 +1,11 @@
 package SPVM::String {
   has value      : byte[];
-  has capacity    : ro int;
   has length      : ro int;
   has is_utf8     : ro int;
+  
+  sub capacity : int ($self : self) {
+    return @$self->{value};
+  }
   
   sub _copy_value : byte[] ($self : self) {
     return copy_barray($self->{value});
@@ -13,7 +16,6 @@ package SPVM::String {
     for (my $i = 0; $i < $self->{length}; ++$i) {
       $new_string->[$i] = $self->{value}[$i];
     }
-    $self->{capacity} = $new_capacity;
     $self->{value} = $new_string;
   }
 
@@ -24,7 +26,6 @@ package SPVM::String {
   sub new : SPVM::String () {
     my $self = new SPVM::String;
     my $default_capacity = 16;
-    $self->{capacity} = $default_capacity;
     $self->{value} = new byte [$default_capacity];
     return $self;
   }
@@ -34,16 +35,14 @@ package SPVM::String {
     unless ($capacity > 0) {
       croak "capacity must be positive";
     }
-    $self->{capacity} = $capacity;
     $self->{value} = new byte [$capacity];
     return $self;
   }
 
   sub new_with_string : SPVM::String ($string : string) {
     my $self = new SPVM::String;
-    $self->{capacity} = length($string);
     $self->{value} = (byte [])$string;
-    $self->{length} = $self->{capacity};
+    $self->{length} = @$self->{value};
     return $self;
   }
 
@@ -70,7 +69,6 @@ package SPVM::String {
   sub copy : SPVM::String ($self : self) {
     my $ret = SPVM::String->new;
     $ret->{value}      = $self->{value};
-    $ret->{capacity}    = $self->{capacity};
     $ret->{length}      = $self->{length};
     $ret->{is_utf8} = $self->{is_utf8};
     return $ret;
@@ -89,7 +87,7 @@ package SPVM::String {
     }
     
     # TODO: Think how to deal with capacity.
-    my $capacity = $self->{capacity}; # capacity is not shrunk.
+    my $capacity = @$self->{value}; # capacity is not shrunk.
     if ($capacity < $self->{length} + $text->{length}) { # don't consider about x2 allocation.
       $capacity = $self->{length} + $text->{length};
     }
@@ -101,18 +99,18 @@ package SPVM::String {
       $new_string->[$text->{length} + $i] = $self->{value}[$i];
     }
     $self->{value} = $new_string;
-    $self->{capacity} = $capacity;
     $self->{length} += $text->{length};
   }
 
   sub append : void ($self : self, $text : SPVM::String) {
-    if ($self->{length} + $text->{length} > $self->{capacity}) {
+    my $capacity = @$self->{value};
+    if ($self->{length} + $text->{length} > $capacity) {
       # O($new_capacity)
       my $new_capacity : int;
-      if ($self->{length} + $text->{length} > $self->{capacity} * 2) {
+      if ($self->{length} + $text->{length} > $capacity * 2) {
         $new_capacity = $self->{length} + $text->{length};
       } else {
-        $new_capacity = $self->{capacity} * 2;
+        $new_capacity = $capacity * 2;
       }
       $self->_reallocate($new_capacity);
       for (my $i = 0; $i < $text->{length}; ++$i) {
@@ -139,7 +137,6 @@ package SPVM::String {
     }
   }
 
-  # O($self->{capacity})
   sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
     if ($offset > $self->{length}) {
       warn("replace offset past end of string");
@@ -165,8 +162,9 @@ package SPVM::String {
       }
       $self->{value} = $new_string;
     }
-
-    if ($self->{length} - $length + $replace_length > $self->{capacity}) {
+    
+    my $capacity = @$self->{value};
+    if ($self->{length} - $length + $replace_length > $capacity) {
       # O($new_string_length)
       $self->_reallocate($self->{length} - $length + $replace_length);
     }
