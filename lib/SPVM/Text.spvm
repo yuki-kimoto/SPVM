@@ -27,18 +27,6 @@ package SPVM::Text {
     $self->_reallocate_with_capacity($new_capacity);
   }
 
-  sub _copy_string_on_write : void ($self : self) {
-    my $rc = $self->{string};
-    if (refcnt $rc > 2) {
-      # copy-on-write
-      my $new_string = new byte [$self->{length}];
-      for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$i] = $self->{string}[$i];
-      }
-      $self->{string} = $new_string;
-    }
-  }
-
   sub to_string : string ($self : self) {
     return (string)sliceb($self->{string}, 0, $self->{length});
   }
@@ -108,7 +96,16 @@ package SPVM::Text {
 
   # O($self->{length} + $text)
   sub prepend : void ($self : self, $text : SPVM::Text) {
-    $self->_copy_string_on_write;
+    my $rc = $self->{string};
+    if (refcnt $rc > 2) {
+      # copy-on-write
+      my $new_string = new byte [$self->{length}];
+      for (my $i = 0; $i < $self->{length}; ++$i) {
+        $new_string->[$i] = $self->{string}[$i];
+      }
+      $self->{string} = $new_string;
+    }
+    
     # TODO: Think how to deal with capacity.
     my $capacity = $self->{capacity}; # capacity is not shrunk.
     if ($capacity < $self->{length} + $text->{length}) { # don't consider about x2 allocation.
@@ -143,7 +140,16 @@ package SPVM::Text {
     }
     else {
       # O($text)
-      $self->_copy_string_on_write;
+      my $rc = $self->{string};
+      if (refcnt $rc > 2) {
+        # copy-on-write
+        my $new_string = new byte [$self->{length}];
+        for (my $i = 0; $i < $self->{length}; ++$i) {
+          $new_string->[$i] = $self->{string}[$i];
+        }
+        $self->{string} = $new_string;
+      }
+      
       for (my $i = 0; $i < $text->{length}; ++$i) {
         $self->{string}[$self->{length} + $i] = $text->_string->[$i];
       }
@@ -168,7 +174,15 @@ package SPVM::Text {
       $replace_length = length($replace);
     }
 
-    $self->_copy_string_on_write;
+    my $rc = $self->{string};
+    if (refcnt $rc > 2) {
+      # copy-on-write
+      my $new_string = new byte [$self->{length}];
+      for (my $i = 0; $i < $self->{length}; ++$i) {
+        $new_string->[$i] = $self->{string}[$i];
+      }
+      $self->{string} = $new_string;
+    }
 
     if ($self->{length} - $length + $replace_length > $self->{capacity}) {
       # O($new_string_length)
