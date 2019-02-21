@@ -4,7 +4,7 @@ package SPVM::Text {
   has length      : ro int;
   has is_utf8     : int;
   
-  sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+  sub _reallocate : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       $new_string->[$i] = $self->{string}[$i];
@@ -118,7 +118,7 @@ package SPVM::Text {
       } else {
         $new_capacity = $self->{capacity} * 2;
       }
-      $self->_reallocate_with_capacity($new_capacity);
+      $self->_reallocate($new_capacity);
       for (my $i = 0; $i < $text->{length}; ++$i) {
         $self->{string}[$self->{length} + $i] = $text->_string->[$i];
       }
@@ -172,7 +172,7 @@ package SPVM::Text {
 
     if ($self->{length} - $length + $replace_length > $self->{capacity}) {
       # O($new_string_length)
-      $self->_reallocate_with_capacity($self->{length} - $length + $replace_length);
+      $self->_reallocate($self->{length} - $length + $replace_length);
     }
 
     my $last_sequence_length = $self->{length} - $offset - $length;
