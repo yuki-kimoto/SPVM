@@ -5094,7 +5094,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_obj_raw(SPVM_ENV* env, int32_t basic_type_id) 
   
   // Has destructor
   if (package->destructor_sub_id >= 0) {
-    object->has_destructor = 1;
+    object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
   return object;
@@ -5135,7 +5135,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   
   // Has destructor
   if (package->destructor_sub_id >= 0) {
-    object->has_destructor = 1;
+    object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
   return object;
@@ -5287,7 +5287,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
       
       // Call destructor
-      if (object->has_destructor) {
+      if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
         SPVM_VALUE args[1];
         args[0].oval = object;
         int32_t exception_flag = SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
