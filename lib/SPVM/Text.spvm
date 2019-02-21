@@ -2,13 +2,8 @@ package SPVM::Text {
   has string      : private byte [];
   has capacity    : private int;
   has offset      : private int;
-  has decode_type : private int;
+  has is_utf8     : private int;
   has length      : public int;
-
-  enum {
-    DECODE_BYTE,
-    DECODE_UTF8,
-  }
 
   sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
@@ -109,16 +104,12 @@ package SPVM::Text {
     $ret->{capacity}    = $self->{capacity};
     $ret->{offset}      = $self->{offset};
     $ret->{length}      = $self->{length};
-    $ret->{decode_type} = $self->{decode_type};
+    $ret->{is_utf8} = $self->{is_utf8};
     return $ret;
   }
 
   # O($self->{length} + $text)
   sub prepend : void ($self : self, $text : SPVM::Text) {
-    # TODO: Implement copy-on-write
-    unless ($self->{decode_type} == $text->{decode_type}) {
-      croak "decode_type mismatch";
-    }
     $self->_copy_string_on_write;
     # TODO: Think how to deal with capacity.
     my $capacity = $self->{capacity}; # capacity is not shrunk.
@@ -139,9 +130,6 @@ package SPVM::Text {
   }
 
   sub append : void ($self : self, $text : SPVM::Text) {
-    unless ($self->{decode_type} == $text->{decode_type}) {
-      croak "decode_type mismatch";
-    }
     if ($self->{length} + $text->{length} > $self->{capacity}) {
       # O($new_capacity)
       my $new_capacity : int;
