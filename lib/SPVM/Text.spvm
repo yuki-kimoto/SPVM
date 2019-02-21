@@ -1,5 +1,5 @@
 package SPVM::Text {
-  has string      : byte [];
+  has value      : byte[];
   has capacity    : int;
   has length      : ro int;
   has is_utf8     : int;
@@ -7,14 +7,14 @@ package SPVM::Text {
   sub _reallocate : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$i] = $self->{string}[$i];
+      $new_string->[$i] = $self->{value}[$i];
     }
     $self->{capacity} = $new_capacity;
-    $self->{string} = $new_string;
+    $self->{value} = $new_string;
   }
 
   sub to_string : string ($self : self) {
-    return (string)sliceb($self->{string}, 0, $self->{length});
+    return (string)sliceb($self->{value}, 0, $self->{length});
   }
 
   sub _capacity : int ($self : self) {
@@ -22,14 +22,14 @@ package SPVM::Text {
   }
 
   sub _string : byte[] ($self : self) {
-    return $self->{string};
+    return $self->{value};
   }
 
   sub new : SPVM::Text () {
     my $self = new SPVM::Text;
     my $default_capacity = 16;
     $self->{capacity} = $default_capacity;
-    $self->{string} = new byte [$default_capacity];
+    $self->{value} = new byte [$default_capacity];
     return $self;
   }
 
@@ -39,14 +39,14 @@ package SPVM::Text {
       croak "capacity must be positive";
     }
     $self->{capacity} = $capacity;
-    $self->{string} = new byte [$capacity];
+    $self->{value} = new byte [$capacity];
     return $self;
   }
 
   sub new_with_string : SPVM::Text ($string : string) {
     my $self = new SPVM::Text;
     $self->{capacity} = length($string);
-    $self->{string} = (byte [])$string;
+    $self->{value} = (byte [])$string;
     $self->{length} = $self->{capacity};
     return $self;
   }
@@ -57,14 +57,14 @@ package SPVM::Text {
       return SPVM::Text->new;
     }
     
-    my $string = $self->{string};
+    my $string = $self->{value};
     
     my $new_capacity = $length;
     
     my $new_text = SPVM::Text->new_with_capacity($new_capacity);
     
     for (my $i = 0; $i < $length; $i++) {
-      $new_text->{string}[$i] = $self->{string}[$offset + $i];
+      $new_text->{value}[$i] = $self->{value}[$offset + $i];
     }
     $new_text->{length} = $length;
     
@@ -73,7 +73,7 @@ package SPVM::Text {
 
   sub copy : SPVM::Text ($self : self) {
     my $ret = SPVM::Text->new;
-    $ret->{string}      = $self->{string};
+    $ret->{value}      = $self->{value};
     $ret->{capacity}    = $self->{capacity};
     $ret->{length}      = $self->{length};
     $ret->{is_utf8} = $self->{is_utf8};
@@ -82,14 +82,14 @@ package SPVM::Text {
 
   # O($self->{length} + $text)
   sub prepend : void ($self : self, $text : SPVM::Text) {
-    my $rc = $self->{string};
+    my $rc = $self->{value};
     if (refcnt $rc > 2) {
       # copy-on-write
       my $new_string = new byte [$self->{length}];
       for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$i] = $self->{string}[$i];
+        $new_string->[$i] = $self->{value}[$i];
       }
-      $self->{string} = $new_string;
+      $self->{value} = $new_string;
     }
     
     # TODO: Think how to deal with capacity.
@@ -102,9 +102,9 @@ package SPVM::Text {
       $new_string->[$i] = $text->_string->[$i];
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$text->{length} + $i] = $self->{string}[$i];
+      $new_string->[$text->{length} + $i] = $self->{value}[$i];
     }
-    $self->{string} = $new_string;
+    $self->{value} = $new_string;
     $self->{capacity} = $capacity;
     $self->{length} += $text->{length};
   }
@@ -120,24 +120,24 @@ package SPVM::Text {
       }
       $self->_reallocate($new_capacity);
       for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{string}[$self->{length} + $i] = $text->_string->[$i];
+        $self->{value}[$self->{length} + $i] = $text->_string->[$i];
       }
       $self->{length} += $text->{length};
     }
     else {
       # O($text)
-      my $rc = $self->{string};
+      my $rc = $self->{value};
       if (refcnt $rc > 2) {
         # copy-on-write
         my $new_string = new byte [$self->{length}];
         for (my $i = 0; $i < $self->{length}; ++$i) {
-          $new_string->[$i] = $self->{string}[$i];
+          $new_string->[$i] = $self->{value}[$i];
         }
-        $self->{string} = $new_string;
+        $self->{value} = $new_string;
       }
       
       for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{string}[$self->{length} + $i] = $text->_string->[$i];
+        $self->{value}[$self->{length} + $i] = $text->_string->[$i];
       }
       $self->{length} += $text->{length};
     }
@@ -160,14 +160,14 @@ package SPVM::Text {
       $replace_length = length($replace);
     }
 
-    my $rc = $self->{string};
+    my $rc = $self->{value};
     if (refcnt $rc > 2) {
       # copy-on-write
       my $new_string = new byte [$self->{length}];
       for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$i] = $self->{string}[$i];
+        $new_string->[$i] = $self->{value}[$i];
       }
-      $self->{string} = $new_string;
+      $self->{value} = $new_string;
     }
 
     if ($self->{length} - $length + $replace_length > $self->{capacity}) {
@@ -181,7 +181,7 @@ package SPVM::Text {
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
         my $origin = $offset + $length + $i;
         my $target = $offset + $replace_length + $i;
-        $self->{string}[$target] = $self->{string}[$origin];
+        $self->{value}[$target] = $self->{value}[$origin];
       }
     }
     else {
@@ -189,14 +189,14 @@ package SPVM::Text {
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
         my $origin = $self->{length} - 1 - $i;
         my $target = $offset + $replace_length + $last_sequence_length - 1 - $i;
-        $self->{string}[$target] = $self->{string}[$origin];
+        $self->{value}[$target] = $self->{value}[$origin];
       }
     }
 
     # replace with new array
     for (my $i = 0; $i < $replace_length; ++$i) {
       my $target = $offset + $i;
-      $self->{string}[$target] = $replace->[$i];
+      $self->{value}[$target] = $replace->[$i];
     }
 
     $self->{length} += $replace_length - $length;
@@ -207,7 +207,7 @@ package SPVM::Text {
       return 0;
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      unless ($self->{string}[$i] == $text->_string->[$i]) {
+      unless ($self->{value}[$i] == $text->_string->[$i]) {
         return 0;
       }
     }
