@@ -107,6 +107,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::FileHandle');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Example');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::String');
     
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');

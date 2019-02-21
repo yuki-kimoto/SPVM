@@ -166,5 +166,6 @@ struct SPVM_env {
   void* (*type_name)(SPVM_ENV* env, void* object);
   int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);
   int32_t (*object_type_dimension)(SPVM_ENV* env, void* object);
+  int32_t (*is_utf8)(SPVM_ENV* env, void* object);
 };
 #endif

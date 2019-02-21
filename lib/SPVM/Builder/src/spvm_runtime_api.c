@@ -166,6 +166,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_object_basic_type_id,
     SPVM_RUNTIME_API_object_type_dimension,
+    SPVM_RUNTIME_API_is_utf8,
   };
   
   int32_t env_length = 255;
@@ -187,6 +188,16 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+int32_t SPVM_RUNTIME_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  if (object->flag & SPVM_OBJECT_C_FLAG_STRING_IS_UTF8) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str_raw(SPVM_ENV* env, int32_t value) {

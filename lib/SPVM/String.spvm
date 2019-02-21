@@ -1,7 +1,8 @@
 package SPVM::String {
   has value      : byte[];
   has length      : ro int;
-  has is_utf8     : ro int;
+  
+  native sub is_utf8 : int ($self : self);
   
   sub capacity : int ($self : self) {
     return @$self->{value};
@@ -70,7 +71,6 @@ package SPVM::String {
     my $ret = SPVM::String->new;
     $ret->{value}      = $self->{value};
     $ret->{length}      = $self->{length};
-    $ret->{is_utf8} = $self->{is_utf8};
     return $ret;
   }
 

@@ -42,6 +42,8 @@ do {\
   *(void**)(dist_address) = tmp_object;\
 } while (0)\
 
+int32_t SPVM_RUNTIME_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
+
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env);
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime);
 SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable);
