@@ -125,8 +125,6 @@ lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
-lib/SPVM/Example.c
-lib/SPVM/Example.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/FileHandle.c
 lib/SPVM/FileHandle.spvm
@@ -324,7 +322,6 @@ t/default/lib/TestCase/Divide.spvm
 t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
-t/default/lib/TestCase/Example.spvm
 t/default/lib/TestCase/Exception.spvm
 t/default/lib/TestCase/Extension.c
 t/default/lib/TestCase/Extension.spvm
@@ -423,6 +420,13 @@ t/default/return.t
 t/default/seqop.t
 t/default/special-assign.t
 t/default/spvm_build/.gitkeep
+t/default/spvm_build/work/lib/SPVM/CORE.so
+t/default/spvm_build/work/lib/SPVM/FileHandle.so
+t/default/spvm_build/work/lib/SPVM/String.so
+t/default/spvm_build/work/lib/TestCase/Extension.so
+t/default/spvm_build/work/lib/TestCase/Extension2.so
+t/default/spvm_build/work/lib/TestCase/Lib/SPVM/CORE.so
+t/default/spvm_build/work/lib/TestCase/Pointer.so
 t/default/string.t
 t/default/sub.t
 t/default/subtract.t
