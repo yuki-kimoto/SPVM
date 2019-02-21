@@ -3,9 +3,9 @@ package TestCase::Lib::SPVM::String {
 
   sub check_fields : int ($text : SPVM::String, $capacity : int, $length : int) {
     # check_fields fields
-    unless ($text->_capacity == $capacity && $text->length == $length) {
+    unless ($text->capacity == $capacity && $text->length == $length) {
       warn("String fields mismatch.\n\t" .
-          "got:      (capacity: " . $text->_capacity . ", length: " . $text->length . ")\n\t" .
+          "got:      (capacity: " . $text->capacity . ", length: " . $text->length . ")\n\t" .
           "expected: (capacity: " . $capacity . ", length: " . $length . ")");
       return 0;
     }
@@ -17,25 +17,28 @@ package TestCase::Lib::SPVM::String {
       warn("Length mismatch. Try check_fields() first");
       return 0;
     }
+    my $got_value = $got->_copy_value;
+    my $expected_value = $expected->_copy_value;
+    
     for (my $i = 0; $i < $expected->length; $i++) {
-      unless ($got->_string->[$i] == $expected->_string->[$i]) {
+      unless ($got_value->[$i] == $expected_value->[$i]) {
         my $warn_message = "String mismatch.";
         $warn_message .= "\tgot:      ";
         for (my $j = 0; $j < $got->length; $j++) {
-          if ($got->_string->[$j] == 0) {
+          if ($got_value->[$j] == 0) {
             $warn_message .= "(none)";
           }
           else {
-            $warn_message .= $got->_string->[$j];
+            $warn_message .= $got_value->[$j];
           }
         }
         $warn_message .= "\n\texpected: ";
         for (my $j = 0; $j < $expected->length; $j++) {
-          if ($expected->_string->[$j] == 0) {
+          if ($expected_value->[$j] == 0) {
             $warn_message .= "(none) ";
           }
           else {
-            $warn_message .= $expected->_string->[$j] . " ";
+            $warn_message .= $expected_value->[$j] . " ";
           }
         }
         warn ($warn_message);
@@ -46,11 +49,12 @@ package TestCase::Lib::SPVM::String {
   }
 
   sub check_string : int ($target : SPVM::String, $expected : byte []) {
-    unless ($target->_capacity == @$expected) {
+    unless ($target->capacity == @$expected) {
       return 0;
     }
-    for (my $i = 0; $i < $target->_capacity; ++$i) {
-      unless ($target->_string->[$i] == $expected->[$i]) {
+    my $target_value = $target->_copy_value;
+    for (my $i = 0; $i < $target->capacity; ++$i) {
+      unless ($target_value->[$i] == $expected->[$i]) {
         return 0;
       }
     }
@@ -146,7 +150,7 @@ package TestCase::Lib::SPVM::String {
   sub test_substr_copy_on_write : int () {
     {
       my $text = SPVM::String->new_with_string("abc");
-      my $temp = $text->_string;
+      my $temp = $text->_copy_value;
       unless (refcnt $temp == 2) { # referenced by field and temp
         return 0;
       }
@@ -154,7 +158,7 @@ package TestCase::Lib::SPVM::String {
     {
       my $text = SPVM::String->new_with_string("abc");
       $text->substr(1, 1);
-      my $temp = $text->_string;
+      my $temp = $text->_copy_value;
       unless (refcnt $temp == 2) {
         warn("substr is used. string is referenced by text's field and temp, but refcnt: " . refcnt $temp);
         return 0;
@@ -163,7 +167,7 @@ package TestCase::Lib::SPVM::String {
     {
       my $text = SPVM::String->new_with_string("abc");
       my $text_sub = $text->substr(1, 1);
-      my $temp = $text_sub->_string;
+      my $temp = $text_sub->_copy_value;
       unless (refcnt $temp == 3) {
         warn("substr is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but refcnt: " . refcnt $temp);
         return 0;
@@ -174,7 +178,7 @@ package TestCase::Lib::SPVM::String {
 
   sub test_copy : int () {
     my $text = SPVM::String->new_with_string("a");
-    my $content = $text->_string;
+    my $content = $text->_copy_value;
     unless (refcnt $content == 1) {
       return 0;
     }
@@ -207,18 +211,18 @@ package TestCase::Lib::SPVM::String {
   sub test_append : int () {
     my $text = SPVM::String->new_with_capacity(1);
     $text->append(SPVM::String->new_with_string("abc"));
-    unless ($text->to_barray eq "abc" && $text->_capacity == 3) {
-      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abc" && $text->capacity == 3) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->capacity);
       return 0;
     }
     $text->append(SPVM::String->new_with_string("de"));
-    unless ($text->to_barray eq "abcde" && $text->_capacity == 6) {
-      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abcde" && $text->capacity == 6) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->capacity);
       return 0;
     }
     $text->append(SPVM::String->new_with_string("f"));
-    unless ($text->to_barray eq "abcdef" && $text->_capacity == 6) {
-      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abcdef" && $text->capacity == 6) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->capacity);
       return 0;
     }
     return 1;
@@ -266,7 +270,7 @@ package TestCase::Lib::SPVM::String {
   sub test_replace_copy_on_write : int () {
     {
       my $text = SPVM::String->new_with_string("abc");
-      my $temp = $text->_string;
+      my $temp = $text->_copy_value;
       unless (refcnt $temp == 2) { # referenced by field and temp
         return 0;
       }
@@ -274,7 +278,7 @@ package TestCase::Lib::SPVM::String {
     {
       my $text = SPVM::String->new_with_string("abc");
       $text->replace(1, 1, "xyz");
-      my $temp = $text->_string;
+      my $temp = $text->_copy_value;
       unless (refcnt $temp == 2) {
         warn("replace is used. string is referenced by text's field and temp, but refcnt: " . refcnt $temp);
         return 0;
@@ -283,7 +287,7 @@ package TestCase::Lib::SPVM::String {
     {
       my $text = SPVM::String->new_with_string("abc");
       my $text_sub = $text->substr(1, 1);
-      my $temp = $text_sub->_string;
+      my $temp = $text_sub->_copy_value;
       unless (refcnt $temp == 3) {
         warn("replace is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but refcnt: " . refcnt $temp);
         return 0;

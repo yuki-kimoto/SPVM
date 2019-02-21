@@ -1,8 +1,12 @@
 package SPVM::String {
   has value      : byte[];
-  has capacity    : int;
+  has capacity    : ro int;
   has length      : ro int;
-  has is_utf8     : int;
+  has is_utf8     : ro int;
+  
+  sub _copy_value : byte[] ($self : self) {
+    return copy_barray($self->{value});
+  }
   
   sub _reallocate : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
@@ -15,14 +19,6 @@ package SPVM::String {
 
   sub to_barray : byte[] ($self : self) {
     return sliceb($self->{value}, 0, $self->{length});
-  }
-
-  sub _capacity : int ($self : self) {
-    return $self->{capacity};
-  }
-
-  sub _string : byte[] ($self : self) {
-    return $self->{value};
   }
 
   sub new : SPVM::String () {
@@ -99,7 +95,7 @@ package SPVM::String {
     }
     my $new_string = new byte [$capacity];
     for (my $i = 0; $i < $text->{length}; ++$i) {
-      $new_string->[$i] = $text->_string->[$i];
+      $new_string->[$i] = $text->{value}->[$i];
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
       $new_string->[$text->{length} + $i] = $self->{value}[$i];
@@ -120,7 +116,7 @@ package SPVM::String {
       }
       $self->_reallocate($new_capacity);
       for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $text->_string->[$i];
+        $self->{value}[$self->{length} + $i] = $text->{value}->[$i];
       }
       $self->{length} += $text->{length};
     }
@@ -137,7 +133,7 @@ package SPVM::String {
       }
       
       for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $text->_string->[$i];
+        $self->{value}[$self->{length} + $i] = $text->{value}->[$i];
       }
       $self->{length} += $text->{length};
     }
@@ -207,7 +203,7 @@ package SPVM::String {
       return 0;
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      unless ($self->{value}[$i] == $text->_string->[$i]) {
+      unless ($self->{value}[$i] == $text->{value}->[$i]) {
         return 0;
       }
     }
