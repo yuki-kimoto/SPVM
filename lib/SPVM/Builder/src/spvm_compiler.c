@@ -124,6 +124,16 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
     SPVM_LIST_push(compiler->op_use_stack, op_use);
   }
+
+  // use SPVM::String module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::String", "SPVM::String", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+  
 #endif
 
   return compiler;
@@ -291,6 +301,16 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
+
+  // Add SPVM::String basic_type
+  {
+     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_STRING_OBJECT;
+     basic_type->name = SPVM_BASIC_TYPE_C_ID_NAMES[basic_type->id];
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+
   // Add CORE basic_type
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);

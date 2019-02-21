@@ -25,6 +25,7 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "SPVM::Long",
   "SPVM::Float",
   "SPVM::Double",
+  "SPVM::String",
   "CORE",
 };
 
