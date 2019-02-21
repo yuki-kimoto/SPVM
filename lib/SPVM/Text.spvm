@@ -13,20 +13,6 @@ package SPVM::Text {
     $self->{string} = $new_string;
   }
 
-  sub _reallocate : void ($self : self) {
-    my $new_capacity : int;
-    if ($self->{capacity} > INT32_MAX() / 2) {
-      $new_capacity = INT32_MAX();
-    }
-    else {
-      $new_capacity = $self->{capacity} * 2;
-    }
-    unless ($new_capacity) {
-      $new_capacity = 1;
-    }
-    $self->_reallocate_with_capacity($new_capacity);
-  }
-
   sub to_string : string ($self : self) {
     return (string)sliceb($self->{string}, 0, $self->{length});
   }
