@@ -1,7 +1,7 @@
-package TestCase::Lib::SPVM::Text {
-  use SPVM::Text;
+package TestCase::Lib::SPVM::String {
+  use SPVM::String;
 
-  sub check_fields : int ($text : SPVM::Text, $capacity : int, $length : int) {
+  sub check_fields : int ($text : SPVM::String, $capacity : int, $length : int) {
     # check_fields fields
     unless ($text->_capacity == $capacity && $text->length == $length) {
       warn("String fields mismatch.\n\t" .
@@ -12,7 +12,7 @@ package TestCase::Lib::SPVM::Text {
     return 1;
   }
 
-  sub equals_text_deeply : int ($got : SPVM::Text, $expected : SPVM::Text) {
+  sub equals_text_deeply : int ($got : SPVM::String, $expected : SPVM::String) {
     unless ($got->length == $expected->length) {
       warn("Length mismatch. Try check_fields() first");
       return 0;
@@ -45,7 +45,7 @@ package TestCase::Lib::SPVM::Text {
     return 1;
   }
 
-  sub check_string : int ($target : SPVM::Text, $expected : byte []) {
+  sub check_string : int ($target : SPVM::String, $expected : byte []) {
     unless ($target->_capacity == @$expected) {
       return 0;
     }
@@ -58,31 +58,31 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_ctor_default : int () {
-    unless (check_fields(SPVM::Text->new, 16, 0)) {
+    unless (check_fields(SPVM::String->new, 16, 0)) {
       return 0;
     }
-    unless (check_string(SPVM::Text->new, new byte[16])) {
+    unless (check_string(SPVM::String->new, new byte[16])) {
       return 0;
     }
     return 1;
   }
 
   sub test_ctor_with_capacity : int () {
-    unless (check_fields(SPVM::Text->new_with_capacity(20000), 20000, 0)) {
+    unless (check_fields(SPVM::String->new_with_capacity(20000), 20000, 0)) {
       return 0;
     }
-    unless (check_string(SPVM::Text->new_with_capacity(20000), new byte[20000])) {
+    unless (check_string(SPVM::String->new_with_capacity(20000), new byte[20000])) {
       return 0;
     }
     eval {
-      SPVM::Text->new_with_capacity(0);
+      SPVM::String->new_with_capacity(0);
     };
     unless ($@) {
       return 0;
     }
     $@ = undef;
     eval {
-      SPVM::Text->new_with_capacity(-1);
+      SPVM::String->new_with_capacity(-1);
     };
     unless ($@) {
       return 0;
@@ -92,7 +92,7 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_ctor_with_string : int () {
-    my $text = SPVM::Text->new_with_string("");
+    my $text = SPVM::String->new_with_string("");
     unless (check_fields($text, 0, 0)) {
       return 0;
     }
@@ -100,7 +100,7 @@ package TestCase::Lib::SPVM::Text {
       return 0;
     }
 
-    $text = SPVM::Text->new_with_string("abc");
+    $text = SPVM::String->new_with_string("abc");
     unless (check_fields($text, 3, 3)) {
       return 0;
     }
@@ -112,27 +112,27 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_length : int () {
-    unless (SPVM::Text->new->length == 0) {
+    unless (SPVM::String->new->length == 0) {
       return 0;
     }
-    unless (SPVM::Text->new_with_string("a")->length == 1) {
+    unless (SPVM::String->new_with_string("a")->length == 1) {
       return 0;
     }
     return 1;
   }
 
   sub test_substr : int () {
-    unless (SPVM::Text->new_with_string("abcd")->substr(1, 2)->to_string eq "bc") {
+    unless (SPVM::String->new_with_string("abcd")->substr(1, 2)->to_string eq "bc") {
       return 0;
     }
     eval {
-      SPVM::Text->new_with_string("a")->substr(1, 1)->to_string;
+      SPVM::String->new_with_string("a")->substr(1, 1)->to_string;
     };
     unless ($@) {
       return 0;
     }
     eval {
-      SPVM::Text->new_with_string("a")->substr(0, 2)->to_string;
+      SPVM::String->new_with_string("a")->substr(0, 2)->to_string;
     };
     unless ($@) {
       return 0;
@@ -145,14 +145,14 @@ package TestCase::Lib::SPVM::Text {
 
   sub test_substr_copy_on_write : int () {
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       my $temp = $text->_string;
       unless (refcnt $temp == 2) { # referenced by field and temp
         return 0;
       }
     }
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       $text->substr(1, 1);
       my $temp = $text->_string;
       unless (refcnt $temp == 2) {
@@ -161,7 +161,7 @@ package TestCase::Lib::SPVM::Text {
       }
     }
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       my $text_sub = $text->substr(1, 1);
       my $temp = $text_sub->_string;
       unless (refcnt $temp == 3) {
@@ -173,7 +173,7 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_copy : int () {
-    my $text = SPVM::Text->new_with_string("a");
+    my $text = SPVM::String->new_with_string("a");
     my $content = $text->_string;
     unless (refcnt $content == 1) {
       return 0;
@@ -187,12 +187,12 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_prepend : int () {
-    my $text = SPVM::Text->new;
-    $text->prepend(SPVM::Text->new_with_string("abc"));
+    my $text = SPVM::String->new;
+    $text->prepend(SPVM::String->new_with_string("abc"));
     unless ($text->to_string eq "abc") {
       return 0;
     }
-    $text->prepend(SPVM::Text->new_with_string("def"));
+    $text->prepend(SPVM::String->new_with_string("def"));
     unless ($text->to_string eq "defabc") {
       return 0;
     }
@@ -205,18 +205,18 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_append : int () {
-    my $text = SPVM::Text->new_with_capacity(1);
-    $text->append(SPVM::Text->new_with_string("abc"));
+    my $text = SPVM::String->new_with_capacity(1);
+    $text->append(SPVM::String->new_with_string("abc"));
     unless ($text->to_string eq "abc" && $text->_capacity == 3) {
       warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
       return 0;
     }
-    $text->append(SPVM::Text->new_with_string("de"));
+    $text->append(SPVM::String->new_with_string("de"));
     unless ($text->to_string eq "abcde" && $text->_capacity == 6) {
       warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
       return 0;
     }
-    $text->append(SPVM::Text->new_with_string("f"));
+    $text->append(SPVM::String->new_with_string("f"));
     unless ($text->to_string eq "abcdef" && $text->_capacity == 6) {
       warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
       return 0;
@@ -231,14 +231,14 @@ package TestCase::Lib::SPVM::Text {
 
   sub test_replace : int () {
     {
-      my $target = SPVM::Text->new_with_string("abcd");
+      my $target = SPVM::String->new_with_string("abcd");
       $target->replace(1, 2, "xyz");
       unless ($target->to_string eq "axyzd") {
         return 0;
       }
     }
     {
-      my $target = SPVM::Text->new_with_string("abcd");
+      my $target = SPVM::String->new_with_string("abcd");
       $target->replace(0, 2, "xyz");
       unless ($target->to_string eq "xyzcd") {
         return 0;
@@ -246,7 +246,7 @@ package TestCase::Lib::SPVM::Text {
     }
     my $overwrite_tests = [[2, 2], [2, 3]];
     for (my $i = 0; $i < @$overwrite_tests; ++$i) {
-      my $target = SPVM::Text->new_with_string("abcd");
+      my $target = SPVM::String->new_with_string("abcd");
       $target->replace($overwrite_tests->[$i]->[0], $overwrite_tests->[$i]->[1], "xyz");
       unless ($target->to_string eq "abxyz") {
         return 0;
@@ -254,7 +254,7 @@ package TestCase::Lib::SPVM::Text {
     }
     my $append_tests = [[1, 0], [2, 0], [1, 2], [2, 2]];
     for (my $i = 0; $i < @$append_tests; ++$i) {
-      my $target = SPVM::Text->new_with_string("a");
+      my $target = SPVM::String->new_with_string("a");
       $target->replace($append_tests->[$i]->[0], $append_tests->[$i]->[1], "xy");
       unless ($target->to_string eq "axy") {
         return 0;
@@ -265,14 +265,14 @@ package TestCase::Lib::SPVM::Text {
 
   sub test_replace_copy_on_write : int () {
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       my $temp = $text->_string;
       unless (refcnt $temp == 2) { # referenced by field and temp
         return 0;
       }
     }
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       $text->replace(1, 1, "xyz");
       my $temp = $text->_string;
       unless (refcnt $temp == 2) {
@@ -281,7 +281,7 @@ package TestCase::Lib::SPVM::Text {
       }
     }
     {
-      my $text = SPVM::Text->new_with_string("abc");
+      my $text = SPVM::String->new_with_string("abc");
       my $text_sub = $text->substr(1, 1);
       my $temp = $text_sub->_string;
       unless (refcnt $temp == 3) {
@@ -293,10 +293,10 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_to_string : int () {
-    unless (SPVM::Text->new_with_string("abc")->to_string eq "abc") {
+    unless (SPVM::String->new_with_string("abc")->to_string eq "abc") {
       return 0;
     }
-    my $text = SPVM::Text->new_with_capacity(100);
+    my $text = SPVM::String->new_with_capacity(100);
     $text->replace(0, 1, "a");
     unless ($text->to_string eq "a") {
       return 0;
@@ -305,13 +305,13 @@ package TestCase::Lib::SPVM::Text {
   }
 
   sub test_equals : int () {
-    my $lhs = SPVM::Text->new_with_string("abc");
-    my $rhs = SPVM::Text->new_with_capacity(100);
+    my $lhs = SPVM::String->new_with_string("abc");
+    my $rhs = SPVM::String->new_with_capacity(100);
     $rhs->replace(0, 0, "abc");
     unless ($lhs->equals($rhs) && $rhs->equals($lhs)) {
       return 0;
     }
-    unless (!$lhs->equals(SPVM::Text->new_with_string("ab"))) {
+    unless (!$lhs->equals(SPVM::String->new_with_string("ab"))) {
       return 0;
     }
     return 1;

@@ -147,6 +147,7 @@ lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/String.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/Unicode.spvm
 LICENSE.txt
@@ -353,6 +354,7 @@ t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
+t/default/lib/TestCase/Lib/SPVM/String.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm

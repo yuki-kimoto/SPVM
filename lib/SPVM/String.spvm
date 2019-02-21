@@ -1,4 +1,4 @@
-package SPVM::Text {
+package SPVM::String {
   has value      : byte[];
   has capacity    : int;
   has length      : ro int;
@@ -25,16 +25,16 @@ package SPVM::Text {
     return $self->{value};
   }
 
-  sub new : SPVM::Text () {
-    my $self = new SPVM::Text;
+  sub new : SPVM::String () {
+    my $self = new SPVM::String;
     my $default_capacity = 16;
     $self->{capacity} = $default_capacity;
     $self->{value} = new byte [$default_capacity];
     return $self;
   }
 
-  sub new_with_capacity : SPVM::Text ($capacity : int) {
-    my $self = new SPVM::Text;
+  sub new_with_capacity : SPVM::String ($capacity : int) {
+    my $self = new SPVM::String;
     unless ($capacity > 0) {
       croak "capacity must be positive";
     }
@@ -43,25 +43,25 @@ package SPVM::Text {
     return $self;
   }
 
-  sub new_with_string : SPVM::Text ($string : string) {
-    my $self = new SPVM::Text;
+  sub new_with_string : SPVM::String ($string : string) {
+    my $self = new SPVM::String;
     $self->{capacity} = length($string);
     $self->{value} = (byte [])$string;
     $self->{length} = $self->{capacity};
     return $self;
   }
 
-  sub substr : SPVM::Text ($self : self, $offset : int, $length : int) {
+  sub substr : SPVM::String ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       croak("substr offset is greater or equal than string length");
-      return SPVM::Text->new;
+      return SPVM::String->new;
     }
     
     my $string = $self->{value};
     
     my $new_capacity = $length;
     
-    my $new_text = SPVM::Text->new_with_capacity($new_capacity);
+    my $new_text = SPVM::String->new_with_capacity($new_capacity);
     
     for (my $i = 0; $i < $length; $i++) {
       $new_text->{value}[$i] = $self->{value}[$offset + $i];
@@ -71,8 +71,8 @@ package SPVM::Text {
     return $new_text;
   }
 
-  sub copy : SPVM::Text ($self : self) {
-    my $ret = SPVM::Text->new;
+  sub copy : SPVM::String ($self : self) {
+    my $ret = SPVM::String->new;
     $ret->{value}      = $self->{value};
     $ret->{capacity}    = $self->{capacity};
     $ret->{length}      = $self->{length};
@@ -81,7 +81,7 @@ package SPVM::Text {
   }
 
   # O($self->{length} + $text)
-  sub prepend : void ($self : self, $text : SPVM::Text) {
+  sub prepend : void ($self : self, $text : SPVM::String) {
     my $rc = $self->{value};
     if (refcnt $rc > 2) {
       # copy-on-write
@@ -109,7 +109,7 @@ package SPVM::Text {
     $self->{length} += $text->{length};
   }
 
-  sub append : void ($self : self, $text : SPVM::Text) {
+  sub append : void ($self : self, $text : SPVM::String) {
     if ($self->{length} + $text->{length} > $self->{capacity}) {
       # O($new_capacity)
       my $new_capacity : int;
@@ -202,7 +202,7 @@ package SPVM::Text {
     $self->{length} += $replace_length - $length;
   }
 
-  sub equals : int ($self : self, $text : SPVM::Text) {
+  sub equals : int ($self : self, $text : SPVM::String) {
     unless ($self->{length} == $text->{length}) {
       return 0;
     }
