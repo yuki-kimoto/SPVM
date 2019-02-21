@@ -125,12 +125,21 @@ package TestCase::Lib::SPVM::Text {
     unless (SPVM::Text->new_with_string("abcd")->substr(1, 2)->to_string eq "bc") {
       return 0;
     }
-    unless (SPVM::Text->new_with_string("a")->substr(1, 1)->to_string eq "") {
+    eval {
+      SPVM::Text->new_with_string("a")->substr(1, 1)->to_string;
+    };
+    unless ($@) {
       return 0;
     }
-    unless (SPVM::Text->new_with_string("a")->substr(0, 2)->to_string eq "a") {
+    eval {
+      SPVM::Text->new_with_string("a")->substr(0, 2)->to_string;
+    };
+    unless ($@) {
       return 0;
     }
+    
+    $@ = undef;
+    
     return 1;
   }
 
