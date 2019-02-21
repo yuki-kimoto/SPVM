@@ -26,7 +26,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   #ok(TestCase::Lib::SPVM::String->test_append_copy_on_write);
   ok(TestCase::Lib::SPVM::String->test_replace);
   #ok(TestCase::Lib::SPVM::String->test_replace_copy_on_write);
-  ok(TestCase::Lib::SPVM::String->test_to_string);
+  ok(TestCase::Lib::SPVM::String->test_to_barray);
   ok(TestCase::Lib::SPVM::String->test_equals);
 }
 

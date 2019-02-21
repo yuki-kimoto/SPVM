@@ -12,6 +12,7 @@ struct SPVM_object {
   uint8_t type_dimension;
   uint8_t has_destructor;
   uint8_t runtime_type;
+  uint8_t flag;
   int32_t array_length;
 };
 

@@ -122,17 +122,17 @@ package TestCase::Lib::SPVM::String {
   }
 
   sub test_substr : int () {
-    unless (SPVM::String->new_with_string("abcd")->substr(1, 2)->to_string eq "bc") {
+    unless (SPVM::String->new_with_string("abcd")->substr(1, 2)->to_barray eq "bc") {
       return 0;
     }
     eval {
-      SPVM::String->new_with_string("a")->substr(1, 1)->to_string;
+      SPVM::String->new_with_string("a")->substr(1, 1)->to_barray;
     };
     unless ($@) {
       return 0;
     }
     eval {
-      SPVM::String->new_with_string("a")->substr(0, 2)->to_string;
+      SPVM::String->new_with_string("a")->substr(0, 2)->to_barray;
     };
     unless ($@) {
       return 0;
@@ -189,11 +189,11 @@ package TestCase::Lib::SPVM::String {
   sub test_prepend : int () {
     my $text = SPVM::String->new;
     $text->prepend(SPVM::String->new_with_string("abc"));
-    unless ($text->to_string eq "abc") {
+    unless ($text->to_barray eq "abc") {
       return 0;
     }
     $text->prepend(SPVM::String->new_with_string("def"));
-    unless ($text->to_string eq "defabc") {
+    unless ($text->to_barray eq "defabc") {
       return 0;
     }
     return 1;
@@ -207,18 +207,18 @@ package TestCase::Lib::SPVM::String {
   sub test_append : int () {
     my $text = SPVM::String->new_with_capacity(1);
     $text->append(SPVM::String->new_with_string("abc"));
-    unless ($text->to_string eq "abc" && $text->_capacity == 3) {
-      warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abc" && $text->_capacity == 3) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
       return 0;
     }
     $text->append(SPVM::String->new_with_string("de"));
-    unless ($text->to_string eq "abcde" && $text->_capacity == 6) {
-      warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abcde" && $text->_capacity == 6) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
       return 0;
     }
     $text->append(SPVM::String->new_with_string("f"));
-    unless ($text->to_string eq "abcdef" && $text->_capacity == 6) {
-      warn("actual string: " . $text->to_string . ", capacity: " . $text->_capacity);
+    unless ($text->to_barray eq "abcdef" && $text->_capacity == 6) {
+      warn("actual string: " . $text->to_barray . ", capacity: " . $text->_capacity);
       return 0;
     }
     return 1;
@@ -233,14 +233,14 @@ package TestCase::Lib::SPVM::String {
     {
       my $target = SPVM::String->new_with_string("abcd");
       $target->replace(1, 2, "xyz");
-      unless ($target->to_string eq "axyzd") {
+      unless ($target->to_barray eq "axyzd") {
         return 0;
       }
     }
     {
       my $target = SPVM::String->new_with_string("abcd");
       $target->replace(0, 2, "xyz");
-      unless ($target->to_string eq "xyzcd") {
+      unless ($target->to_barray eq "xyzcd") {
         return 0;
       }
     }
@@ -248,7 +248,7 @@ package TestCase::Lib::SPVM::String {
     for (my $i = 0; $i < @$overwrite_tests; ++$i) {
       my $target = SPVM::String->new_with_string("abcd");
       $target->replace($overwrite_tests->[$i]->[0], $overwrite_tests->[$i]->[1], "xyz");
-      unless ($target->to_string eq "abxyz") {
+      unless ($target->to_barray eq "abxyz") {
         return 0;
       }
     }
@@ -256,7 +256,7 @@ package TestCase::Lib::SPVM::String {
     for (my $i = 0; $i < @$append_tests; ++$i) {
       my $target = SPVM::String->new_with_string("a");
       $target->replace($append_tests->[$i]->[0], $append_tests->[$i]->[1], "xy");
-      unless ($target->to_string eq "axy") {
+      unless ($target->to_barray eq "axy") {
         return 0;
       }
     }
@@ -292,13 +292,13 @@ package TestCase::Lib::SPVM::String {
     return 1;
   }
 
-  sub test_to_string : int () {
-    unless (SPVM::String->new_with_string("abc")->to_string eq "abc") {
+  sub test_to_barray : int () {
+    unless (SPVM::String->new_with_string("abc")->to_barray eq "abc") {
       return 0;
     }
     my $text = SPVM::String->new_with_capacity(100);
     $text->replace(0, 1, "a");
-    unless ($text->to_string eq "a") {
+    unless ($text->to_barray eq "a") {
       return 0;
     }
     return 1;

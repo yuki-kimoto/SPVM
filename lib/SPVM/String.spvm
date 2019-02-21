@@ -13,8 +13,8 @@ package SPVM::String {
     $self->{value} = $new_string;
   }
 
-  sub to_string : string ($self : self) {
-    return (string)sliceb($self->{value}, 0, $self->{length});
+  sub to_barray : byte[] ($self : self) {
+    return sliceb($self->{value}, 0, $self->{length});
   }
 
   sub _capacity : int ($self : self) {
