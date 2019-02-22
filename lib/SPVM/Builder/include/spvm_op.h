@@ -249,6 +249,7 @@ struct SPVM_op {
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
     SPVM_USE* use;
+    SPVM_ALLOW* allow;
     SPVM_CALL_SUB* call_sub;
     SPVM_FIELD_ACCESS* field_access;
     SPVM_ARRAY_FIELD_ACCESS* array_field_access;
@@ -267,6 +268,8 @@ struct SPVM_op {
   int8_t no_need_check;
   int8_t free_tmp_vars;
 };
+
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist);
 
 SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line);
 

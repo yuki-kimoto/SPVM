@@ -46,7 +46,6 @@
 
 
 
-
 const char* const SPVM_OP_C_ID_NAMES[] = {
   "IF",
   "UNLESS",
@@ -177,6 +176,27 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "REFCNT",
   "ALLOW",
 };
+
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
+  
+  SPVM_LIST* op_allows = op_package_dist->uv.package->op_allows;
+  
+  const char* dist_package_name = op_package_dist->uv.package->name;
+  
+  int32_t is_allowed = 0;
+  for (int32_t i = 0; i < op_allows->length; i++) {
+    SPVM_OP* op_allow = SPVM_LIST_fetch(op_allows, i);
+    SPVM_ALLOW* allow = op_allow->uv.allow;
+    SPVM_OP* op_type = allow->op_type;
+    const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
+    if (strcmp(dist_package_name, allow_basic_type_name) == 0) {
+      is_allowed = 1;
+      break;
+    }
+  }
+  
+  return is_allowed;
+}
 
 SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {
   SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, file, line);
@@ -2101,6 +2121,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   allow->op_type = op_type;
+  op_allow->uv.allow = allow;
   
   return op_allow;
 }
