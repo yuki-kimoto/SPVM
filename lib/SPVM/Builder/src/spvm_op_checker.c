@@ -1044,19 +1044,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   
+                  // Access control
                   int32_t is_private;
-                  // Private flag
-                  if (package->flag & SPVM_PACKAGE_C_FLAG_PRIVATE) {
-                    is_private = 1;
-                  }
-                  // Public flag
-                  else if (package->flag & SPVM_PACKAGE_C_FLAG_PUBLIC) {
+                  if (package->flag & SPVM_PACKAGE_C_FLAG_PUBLIC) {
                     is_private = 0;
                   }
                   // Default
                   else {
-                    assert(!(package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE));
-                    assert(package->category != SPVM_PACKAGE_C_CATEGORY_VALUE);
                     is_private = 1;
                   }
                   
@@ -2721,12 +2715,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               int32_t is_private;
-              // Private flag
-              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PRIVATE) {
-                is_private = 1;
-              }
               // Public flag
-              else if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PUBLIC) {
+              if (package_var->flag & SPVM_PACKAGE_VAR_C_FLAG_PUBLIC) {
                 is_private = 0;
               }
               // Default is private
@@ -2881,13 +2871,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
 
+              // Access control
               int32_t is_private;
-              // Private flag
-              if (field->flag & SPVM_FIELD_C_FLAG_PRIVATE) {
-                is_private = 1;
-              }
-              // Public flag
-              else if (field->flag & SPVM_FIELD_C_FLAG_PUBLIC) {
+              if (field->flag & SPVM_FIELD_C_FLAG_PUBLIC) {
                 is_private = 0;
               }
               // Default

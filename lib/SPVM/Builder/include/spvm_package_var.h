@@ -4,8 +4,7 @@
 #include "spvm_base.h"
 
 enum {
-  SPVM_PACKAGE_VAR_C_FLAG_PRIVATE = 1,
-  SPVM_PACKAGE_VAR_C_FLAG_PUBLIC = 2,
+  SPVM_PACKAGE_VAR_C_FLAG_PUBLIC = 1,
 };
 
 struct SPVM_package_var {
