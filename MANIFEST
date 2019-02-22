@@ -5,6 +5,7 @@ lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Exe.pm
+lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_base.h
 lib/SPVM/Builder/include/spvm_basic_type.h
@@ -64,6 +65,7 @@ lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
+lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_basic_type.c
 lib/SPVM/Builder/src/spvm_block.c
@@ -156,6 +158,7 @@ ppport.h
 README
 script/spvmcc
 solo/lib/TestCase.spvm
+solo/lib/TestCase/Allow.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/ComparatorAnon.spvm
 solo/lib/TestCase/ComplexCalc.spvm
@@ -229,6 +232,7 @@ t/default/__FILE__.t
 t/default/__LINE__.t
 t/default/__PACKAGE__.t
 t/default/add.t
+t/default/allow.t
 t/default/array.t
 t/default/assign.t
 t/default/begin.t
@@ -255,6 +259,8 @@ t/default/interface.t
 t/default/isa.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Add.spvm
+t/default/lib/TestCase/Allow.spvm
+t/default/lib/TestCase/Allow/PrivateData.spvm
 t/default/lib/TestCase/Array.spvm
 t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
@@ -420,13 +426,6 @@ t/default/return.t
 t/default/seqop.t
 t/default/special-assign.t
 t/default/spvm_build/.gitkeep
-t/default/spvm_build/work/lib/SPVM/CORE.so
-t/default/spvm_build/work/lib/SPVM/FileHandle.so
-t/default/spvm_build/work/lib/SPVM/String.so
-t/default/spvm_build/work/lib/TestCase/Extension.so
-t/default/spvm_build/work/lib/TestCase/Extension2.so
-t/default/spvm_build/work/lib/TestCase/Lib/SPVM/CORE.so
-t/default/spvm_build/work/lib/TestCase/Pointer.so
 t/default/string.t
 t/default/sub.t
 t/default/subtract.t

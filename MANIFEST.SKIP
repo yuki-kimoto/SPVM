@@ -35,3 +35,4 @@ SPVM-.*
 ^spvmcc_build/[^\.]
 .idea/.*
 ^t/test_files_tmp
+\.so$
