@@ -2258,24 +2258,37 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   }
   
   // Descriptors
+  int32_t access_control_descriptors_count = 0;
   if (op_descriptors) {
     SPVM_OP* op_descriptor = op_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
-      if (descriptor->id == SPVM_DESCRIPTOR_C_ID_NATIVE) {
-        sub->flag |= SPVM_SUB_C_FLAG_NATIVE;
-      }
-      else if (descriptor->id == SPVM_DESCRIPTOR_C_ID_PRECOMPILE) {
-        sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+      switch (descriptor->id) {
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+          sub->flag |= SPVM_SUB_C_FLAG_PRIVATE;
+          access_control_descriptors_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+          // Default is public
+          access_control_descriptors_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_NATIVE:
+          sub->flag |= SPVM_SUB_C_FLAG_NATIVE;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
+          sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
+          break;
+        default:
+          SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
     }
-
+    
     if ((sub->flag & SPVM_SUB_C_FLAG_NATIVE) && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
       SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
+    }
+    if (access_control_descriptors_count > 1) {
+      SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d\n", op_sub->file, op_sub->line);
     }
   }
 

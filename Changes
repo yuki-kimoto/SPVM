@@ -1,3 +1,5 @@
+0.0417 2018-02-22
+  - add private and public descriptor to sub declaration
 0.0416 2018-02-19
   - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
     // Before
