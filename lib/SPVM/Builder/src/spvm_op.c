@@ -194,7 +194,7 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current,
       SPVM_ALLOW* allow = op_allow->uv.allow;
       SPVM_OP* op_type = allow->op_type;
       const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
-      if (strcmp(dist_package_name, allow_basic_type_name) == 0) {
+      if (strcmp(current_package_name, allow_basic_type_name) == 0) {
         is_allowed = 1;
         break;
       }

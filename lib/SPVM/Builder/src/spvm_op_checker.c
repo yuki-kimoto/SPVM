@@ -1055,7 +1055,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   
                   if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
+                    if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, new_package->op_package)) {
                       SPVM_COMPILER_error(compiler, "Can't create object of private package at %s line %d\n", op_cur->file, op_cur->line);
                       return;
                     }
