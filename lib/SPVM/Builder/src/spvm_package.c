@@ -43,6 +43,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->info_switch_infos = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->op_uses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->op_allows = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->sub_name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   package->constant_pool = SPVM_COMPILER_ALLOCATOR_alloc_constant_pool(compiler, 0);

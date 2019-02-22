@@ -36,6 +36,7 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 #include "spvm_string_buffer.h"
+#include "spvm_allow.h"
 
 
 
@@ -1598,7 +1599,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_decls = op_block->first;
     SPVM_OP* op_decl = op_decls->first;
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      // Use declarations
+      // use declarations
       if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_LIST_push(package->op_uses, op_decl);
         
@@ -1618,6 +1619,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             }
           }
         }
+      }
+      // allow declarations
+      else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
+        SPVM_LIST_push(package->op_allows, op_decl);
       }
       // Package var declarations
       else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
@@ -2069,13 +2074,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names, int32_t is_require, int32_t is_allow) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names, int32_t is_require) {
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->op_type = op_type;
   use->is_require = is_require;
-  use->is_allow = is_allow;
 
   // Check sub_names
   if (op_sub_names) {
@@ -2091,6 +2095,14 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   
   return op_use;
+}
+
+SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type) {
+  
+  SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
+  allow->op_type = op_type;
+  
+  return op_allow;
 }
 
 SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {

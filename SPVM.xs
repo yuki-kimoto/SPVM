@@ -163,7 +163,7 @@ compile_spvm(...)
       SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name, file, line);
       SPVM_OP* op_type_package = SPVM_OP_build_basic_type(compiler, op_name_package);
       SPVM_OP* op_use_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file, line);
-      SPVM_OP_build_use(compiler, op_use_package, op_type_package, NULL, 0, 0);
+      SPVM_OP_build_use(compiler, op_use_package, op_type_package, NULL, 0);
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
     }
   }

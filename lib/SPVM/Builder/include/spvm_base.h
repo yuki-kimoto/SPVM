@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// spvm_allow.h
+struct SPVM_allow;
+typedef struct SPVM_allow SPVM_ALLOW;
+
 // spvm_mem.h
 struct SPVM_mem;
 typedef struct SPVM_mem SPVM_MEM;

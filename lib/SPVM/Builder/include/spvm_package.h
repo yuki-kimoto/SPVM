@@ -52,6 +52,7 @@ struct SPVM_package {
   const char* module_rel_file;
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;
+  SPVM_LIST* op_allows;
   int32_t id;
   int32_t fields_byte_size;
   int32_t object_fields_offset;
