@@ -181,17 +181,23 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current,
   
   SPVM_LIST* op_allows = op_package_dist->uv.package->op_allows;
   
+  const char* current_package_name = op_package_current->uv.package->name;
   const char* dist_package_name = op_package_dist->uv.package->name;
   
   int32_t is_allowed = 0;
-  for (int32_t i = 0; i < op_allows->length; i++) {
-    SPVM_OP* op_allow = SPVM_LIST_fetch(op_allows, i);
-    SPVM_ALLOW* allow = op_allow->uv.allow;
-    SPVM_OP* op_type = allow->op_type;
-    const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
-    if (strcmp(dist_package_name, allow_basic_type_name) == 0) {
-      is_allowed = 1;
-      break;
+  if (strcmp(current_package_name, dist_package_name) == 0) {
+    is_allowed = 1;
+  }
+  else {
+    for (int32_t i = 0; i < op_allows->length; i++) {
+      SPVM_OP* op_allow = SPVM_LIST_fetch(op_allows, i);
+      SPVM_ALLOW* allow = op_allow->uv.allow;
+      SPVM_OP* op_type = allow->op_type;
+      const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
+      if (strcmp(dist_package_name, allow_basic_type_name) == 0) {
+        is_allowed = 1;
+        break;
+      }
     }
   }
   
