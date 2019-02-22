@@ -2334,7 +2334,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private) {
-                if (strcmp(call_sub->sub->package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
+                if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, call_sub->sub->package->op_package)) {
                   SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", package->name, sub->name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -2742,7 +2742,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               if (is_private && !op_cur->uv.package_var_access->inline_expansion) {
-                if (strcmp(package_var_access_package->name, sub->package->op_name->uv.name) != 0) {
+                if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, package_var_access_package->op_package)) {
                   SPVM_COMPILER_error(compiler, "Can't access to private package variable \"%s\" at %s line %d\n", op_cur->uv.package_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -2910,7 +2910,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private && !op_cur->uv.field_access->inline_expansion) {
-                if (strcmp(invoker_type->basic_type->name, sub->package->op_name->uv.name) != 0) {
+                if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, field->package->op_package)) {
                   SPVM_COMPILER_error(compiler, "Can't access to private field \"%s\" at %s line %d\n", op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
