@@ -174,6 +174,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CURRENT_PACKAGE",
   "FREE_TMP",
   "REFCNT",
+  "ALLOW",
 };
 
 SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {
@@ -2068,12 +2069,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   return op_package;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names, int32_t is_require) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_sub_names, int32_t is_require, int32_t is_allow) {
   
   SPVM_USE* use = SPVM_USE_new(compiler);
   op_use->uv.use = use;
   use->op_type = op_type;
   use->is_require = is_require;
+  use->is_allow = is_allow;
 
   // Check sub_names
   if (op_sub_names) {

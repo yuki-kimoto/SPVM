@@ -48,83 +48,84 @@
      SELF = 264,
      USE = 265,
      REQUIRE = 266,
-     DESCRIPTOR = 267,
-     IF = 268,
-     UNLESS = 269,
-     ELSIF = 270,
-     ELSE = 271,
-     FOR = 272,
-     WHILE = 273,
-     LAST = 274,
-     NEXT = 275,
-     SWITCH = 276,
-     CASE = 277,
-     DEFAULT = 278,
-     EVAL = 279,
-     NAME = 280,
-     VAR_NAME = 281,
-     CONSTANT = 282,
-     PACKAGE_VAR_NAME = 283,
-     EXCEPTION_VAR = 284,
-     UNDEF = 285,
-     VOID = 286,
-     BYTE = 287,
-     SHORT = 288,
-     INT = 289,
-     LONG = 290,
-     FLOAT = 291,
-     DOUBLE = 292,
-     STRING = 293,
-     OBJECT = 294,
-     DOT3 = 295,
-     FATCAMMA = 296,
-     RW = 297,
-     RO = 298,
-     WO = 299,
-     BEGIN = 300,
-     NEW = 301,
-     RETURN = 302,
-     WEAKEN = 303,
-     CROAK = 304,
-     CURRENT_PACKAGE = 305,
-     UNWEAKEN = 306,
-     SPECIAL_ASSIGN = 307,
-     ASSIGN = 308,
-     LOGICAL_OR = 309,
-     LOGICAL_AND = 310,
-     BIT_XOR = 311,
-     BIT_OR = 312,
-     STRNE = 313,
-     STREQ = 314,
-     NUMNE = 315,
-     NUMEQ = 316,
-     ISA = 317,
-     STRLE = 318,
-     STRLT = 319,
-     STRGE = 320,
-     STRGT = 321,
-     NUMLE = 322,
-     NUMLT = 323,
-     NUMGE = 324,
-     NUMGT = 325,
-     SHIFT = 326,
-     REMAINDER = 327,
-     DIVIDE = 328,
-     MULTIPLY = 329,
-     REFCNT = 330,
-     ISWEAK = 331,
-     LENGTH = 332,
-     SCALAR = 333,
-     CONVERT = 334,
-     MINUS = 335,
-     PLUS = 336,
-     DEREF = 337,
-     REF = 338,
-     BIT_NOT = 339,
-     LOGICAL_NOT = 340,
-     DEC = 341,
-     INC = 342,
-     ARROW = 343
+     ALLOW = 267,
+     DESCRIPTOR = 268,
+     IF = 269,
+     UNLESS = 270,
+     ELSIF = 271,
+     ELSE = 272,
+     FOR = 273,
+     WHILE = 274,
+     LAST = 275,
+     NEXT = 276,
+     SWITCH = 277,
+     CASE = 278,
+     DEFAULT = 279,
+     EVAL = 280,
+     NAME = 281,
+     VAR_NAME = 282,
+     CONSTANT = 283,
+     PACKAGE_VAR_NAME = 284,
+     EXCEPTION_VAR = 285,
+     UNDEF = 286,
+     VOID = 287,
+     BYTE = 288,
+     SHORT = 289,
+     INT = 290,
+     LONG = 291,
+     FLOAT = 292,
+     DOUBLE = 293,
+     STRING = 294,
+     OBJECT = 295,
+     DOT3 = 296,
+     FATCAMMA = 297,
+     RW = 298,
+     RO = 299,
+     WO = 300,
+     BEGIN = 301,
+     NEW = 302,
+     RETURN = 303,
+     WEAKEN = 304,
+     CROAK = 305,
+     CURRENT_PACKAGE = 306,
+     UNWEAKEN = 307,
+     SPECIAL_ASSIGN = 308,
+     ASSIGN = 309,
+     LOGICAL_OR = 310,
+     LOGICAL_AND = 311,
+     BIT_XOR = 312,
+     BIT_OR = 313,
+     STRNE = 314,
+     STREQ = 315,
+     NUMNE = 316,
+     NUMEQ = 317,
+     ISA = 318,
+     STRLE = 319,
+     STRLT = 320,
+     STRGE = 321,
+     STRGT = 322,
+     NUMLE = 323,
+     NUMLT = 324,
+     NUMGE = 325,
+     NUMGT = 326,
+     SHIFT = 327,
+     REMAINDER = 328,
+     DIVIDE = 329,
+     MULTIPLY = 330,
+     REFCNT = 331,
+     ISWEAK = 332,
+     LENGTH = 333,
+     SCALAR = 334,
+     CONVERT = 335,
+     MINUS = 336,
+     PLUS = 337,
+     DEREF = 338,
+     REF = 339,
+     BIT_NOT = 340,
+     LOGICAL_NOT = 341,
+     DEC = 342,
+     INC = 343,
+     ARROW = 344
    };
 #endif
 /* Tokens.  */
@@ -137,83 +138,84 @@
 #define SELF 264
 #define USE 265
 #define REQUIRE 266
-#define DESCRIPTOR 267
-#define IF 268
-#define UNLESS 269
-#define ELSIF 270
-#define ELSE 271
-#define FOR 272
-#define WHILE 273
-#define LAST 274
-#define NEXT 275
-#define SWITCH 276
-#define CASE 277
-#define DEFAULT 278
-#define EVAL 279
-#define NAME 280
-#define VAR_NAME 281
-#define CONSTANT 282
-#define PACKAGE_VAR_NAME 283
-#define EXCEPTION_VAR 284
-#define UNDEF 285
-#define VOID 286
-#define BYTE 287
-#define SHORT 288
-#define INT 289
-#define LONG 290
-#define FLOAT 291
-#define DOUBLE 292
-#define STRING 293
-#define OBJECT 294
-#define DOT3 295
-#define FATCAMMA 296
-#define RW 297
-#define RO 298
-#define WO 299
-#define BEGIN 300
-#define NEW 301
-#define RETURN 302
-#define WEAKEN 303
-#define CROAK 304
-#define CURRENT_PACKAGE 305
-#define UNWEAKEN 306
-#define SPECIAL_ASSIGN 307
-#define ASSIGN 308
-#define LOGICAL_OR 309
-#define LOGICAL_AND 310
-#define BIT_XOR 311
-#define BIT_OR 312
-#define STRNE 313
-#define STREQ 314
-#define NUMNE 315
-#define NUMEQ 316
-#define ISA 317
-#define STRLE 318
-#define STRLT 319
-#define STRGE 320
-#define STRGT 321
-#define NUMLE 322
-#define NUMLT 323
-#define NUMGE 324
-#define NUMGT 325
-#define SHIFT 326
-#define REMAINDER 327
-#define DIVIDE 328
-#define MULTIPLY 329
-#define REFCNT 330
-#define ISWEAK 331
-#define LENGTH 332
-#define SCALAR 333
-#define CONVERT 334
-#define MINUS 335
-#define PLUS 336
-#define DEREF 337
-#define REF 338
-#define BIT_NOT 339
-#define LOGICAL_NOT 340
-#define DEC 341
-#define INC 342
-#define ARROW 343
+#define ALLOW 267
+#define DESCRIPTOR 268
+#define IF 269
+#define UNLESS 270
+#define ELSIF 271
+#define ELSE 272
+#define FOR 273
+#define WHILE 274
+#define LAST 275
+#define NEXT 276
+#define SWITCH 277
+#define CASE 278
+#define DEFAULT 279
+#define EVAL 280
+#define NAME 281
+#define VAR_NAME 282
+#define CONSTANT 283
+#define PACKAGE_VAR_NAME 284
+#define EXCEPTION_VAR 285
+#define UNDEF 286
+#define VOID 287
+#define BYTE 288
+#define SHORT 289
+#define INT 290
+#define LONG 291
+#define FLOAT 292
+#define DOUBLE 293
+#define STRING 294
+#define OBJECT 295
+#define DOT3 296
+#define FATCAMMA 297
+#define RW 298
+#define RO 299
+#define WO 300
+#define BEGIN 301
+#define NEW 302
+#define RETURN 303
+#define WEAKEN 304
+#define CROAK 305
+#define CURRENT_PACKAGE 306
+#define UNWEAKEN 307
+#define SPECIAL_ASSIGN 308
+#define ASSIGN 309
+#define LOGICAL_OR 310
+#define LOGICAL_AND 311
+#define BIT_XOR 312
+#define BIT_OR 313
+#define STRNE 314
+#define STREQ 315
+#define NUMNE 316
+#define NUMEQ 317
+#define ISA 318
+#define STRLE 319
+#define STRLT 320
+#define STRGE 321
+#define STRGT 322
+#define NUMLE 323
+#define NUMLT 324
+#define NUMGE 325
+#define NUMGT 326
+#define SHIFT 327
+#define REMAINDER 328
+#define DIVIDE 329
+#define MULTIPLY 330
+#define REFCNT 331
+#define ISWEAK 332
+#define LENGTH 333
+#define SCALAR 334
+#define CONVERT 335
+#define MINUS 336
+#define PLUS 337
+#define DEREF 338
+#define REF 339
+#define BIT_NOT 340
+#define LOGICAL_NOT 341
+#define DEC 342
+#define INC 343
+#define ARROW 344
 
 
 

@@ -1383,6 +1383,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             switch (keyword[0]) {
               // Keyword
+              case 'a' :
+                if (strcmp(keyword, "allow") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ALLOW);
+                  return ALLOW;
+                }
+                break;
               case 'b' :
                 if (strcmp(keyword, "byte") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);

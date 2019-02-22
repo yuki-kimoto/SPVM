@@ -17,7 +17,7 @@
   #include "spvm_package.h"
 %}
 
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
@@ -37,7 +37,7 @@
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> deref ref assign inc dec
+%type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
 %type <opval> expression opt_expressions expressions opt_expression
@@ -158,6 +158,7 @@ declaration
   | enumeration
   | our ';'
   | use
+  | allow
   | begin_block
 
 begin_block
@@ -172,18 +173,24 @@ begin_block
 use
   : USE basic_type ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
+      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0, 0);
     }
   | USE basic_type '(' opt_sub_names ')' ';'
     {
-      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
+      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0, 0);
+    }
+
+allow
+  : ALLOW basic_type ';'
+    {
+      $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0, 1);
     }
 
 require
   : REQUIRE basic_type
     {
       SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
+      $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1, 0);
     }
 
 enumeration
