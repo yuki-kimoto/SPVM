@@ -2325,7 +2325,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Access control
               int32_t is_private;
-              if (sub->flag & SPVM_SUB_C_FLAG_PRIVATE) {
+              if (call_sub->sub->flag & SPVM_SUB_C_FLAG_PRIVATE) {
                 is_private = 1;
               }
               // Default
@@ -2333,9 +2333,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 is_private = 0;
               }
               
-              if (strcmp(package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
-                SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", package->name, sub->name, op_cur->file, op_cur->line);
-                return;
+              if (is_private) {
+                if (strcmp(call_sub->sub->package->op_name->uv.name, sub->package->op_name->uv.name) != 0) {
+                  SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", package->name, sub->name, op_cur->file, op_cur->line);
+                  return;
+                }
               }
               
               const char* sub_name = call_sub->sub->op_name->uv.name;
