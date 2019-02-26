@@ -1,0 +1,42 @@
+package SPVM::HTTP::URL::Encode {
+  use SPVM::HTTP::URL::Escape;
+
+  sub encode : string ($str : string) {
+    my $escaped = SPVM::HTTP::URL::Escape->escape($str);
+    my $result = "";
+    my $length = length($escaped);
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($i + 2 < $length &&
+          $escaped->[$i] == '%' &&
+          $escaped->[$i + 1] == '2' &&
+          $escaped->[$i + 2] == '0') {
+        $result .= "+";
+        $i += 2;
+      } else {
+        $result .= [$escaped->[$i]];
+      }
+    }
+    return $result;
+  }
+
+  sub decode : string ($str : string) {
+    my $escaped = "";
+    my $length = length($str);
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($str->[$i] == '+') {
+        $escaped .= "%20";
+      } else {
+        $escaped .= [$str->[$i]];
+      }
+    }
+    return SPVM::HTTP::URL::Escape->unescape($escaped);
+  }
+}
+
+=pod
+
+=head1 NAME
+
+SPVM::HTTP::URL::Encode - Encoding and decoding of application/x-www-form-urlencoded encoding
+
+=cut

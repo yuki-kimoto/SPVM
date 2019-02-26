@@ -1,0 +1,75 @@
+package TestCase::Lib::SPVM::HTTP::URL::Parameters {
+  use SPVM::HTTP::URL::Parameters;
+
+  sub test_escape : int () {
+    my $params = SPVM::HTTP::URL::Parameters->new;
+    $params->add("foo" => "尾骶骨𠮷🤔");
+    $params->add("hoge" => "fuga");
+    $params->add("foo" => "piyo");
+    my $got = $params->escape();
+    my $expected = "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%F0%9F%A4%94&hoge=fuga";
+    unless ($got eq $expected) {
+      # parameter keys should be sorted and duplicate params are not accepted.
+      warn("failed to escape parameters. got: '$got' expected: '$expected'");
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse : int () {
+    my $params = SPVM::HTTP::URL::Parameters->parse(
+        "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%F0%9F%A4%94&hoge=fuga&foo=piyo");
+    unless ($params->get("foo") eq "尾骶骨𠮷🤔") {
+      return 0;
+    }
+    unless ($params->get("hoge") eq "fuga") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_get : int () {
+    my $params = SPVM::HTTP::URL::Parameters->new;
+    $params->add("hoge", "fuga");
+    unless ($params->get("hoge") eq "fuga") {
+      return 0;
+    }
+    $params->add("hoge", "abc");
+    unless ($params->get("hoge") eq "fuga") {
+      warn("first value is read if duplicate keys are given");
+      return 0;
+    }
+    $params->add("fuga", "xyz");
+    unless ($params->get("fuga") eq "xyz") {
+      return 0;
+    }
+    unless ($params->get("unknown") == undef) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_keys : int () {
+    my $params = SPVM::HTTP::URL::Parameters->new;
+    unless (@{$params->keys} == 0) {
+      return 0;
+    }
+    $params->add("k", "v1");
+    unless (equals_strarray($params->keys, ["k"])) {
+      return 0;
+    }
+    $params->add("k", "v2");
+    unless (equals_strarray($params->keys, ["k"])) {
+      return 0;
+    }
+    $params->add("k2", "v3");
+    {
+      my $keys = $params->keys;
+      unless (equals_strarray($keys, ["k", "k2"]) ||
+          equals_strarray($keys, ["k2", "k"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}

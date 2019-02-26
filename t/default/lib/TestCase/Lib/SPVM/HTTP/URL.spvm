@@ -1,0 +1,136 @@
+package TestCase::Lib::SPVM::HTTP::URL {
+  use SPVM::HTTP::URL;
+
+  sub test_parse_escape_all : int () {
+    my $p_raw = "abc";
+    my $p_escaped = "abc";
+    my $q_raw = "尾骶骨𠮷 🤔";
+    my $q_escaped = "%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94";
+    my $fragment_raw = "🤔 𠮷尾骶骨";
+    my $fragment_escaped = "%F0%9F%A4%94%20%F0%A0%AE%B7%E5%B0%BE%E9%AA%B6%E9%AA%A8";
+    my $url = SPVM::HTTP::URL->parse(
+      "http://www.example.com:8888/blog/posts?q=$q_escaped&p=$p_escaped&p=dummy#$fragment_escaped");
+    {
+      my $got = $url->to_str();
+      my $expected = "http://www.example.com:8888/blog/posts?p=$p_escaped&q=$q_escaped#$fragment_escaped";
+      unless ($url->to_str() eq $expected) {
+        warn("     got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    unless ($url->{scheme} eq "http") {
+      return 0;
+    }
+    unless ($url->{host} eq "www.example.com") {
+      return 0;
+    }
+    unless ($url->{port} == 8888) {
+      return 0;
+    }
+    unless ($url->{path} eq "/blog/posts") {
+      return 0;
+    }
+    unless ((string)($url->{params}->get("p")) eq $p_raw) {
+      return 0;
+    }
+    unless ((string)($url->{params}->get("q")) eq $q_raw) {
+      return 0;
+    }
+    unless ((string)($url->{fragment} eq $fragment_raw)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_host : int () {
+    my $url = SPVM::HTTP::URL->parse("https://host");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "host") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_host_path : int () {
+    my $url = SPVM::HTTP::URL->parse("https://host/path/hoge/fuga//");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "host") {
+      return 0;
+    }
+    unless ($url->{path} eq "/path/hoge/fuga//") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_host_params : int () {
+    my $url = SPVM::HTTP::URL->parse("https://host?abc=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "host") {
+      return 0;
+    }
+    unless ($url->{params}->get("abc") eq "尾骶骨𠮷 🤔") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_host_fragment : int () {
+    my $url = SPVM::HTTP::URL->parse("https://host#%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "host") {
+      return 0;
+    }
+    unless ($url->{fragment} eq "尾骶骨𠮷 🤔") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_host_path_fragment : int () {
+    my $url = SPVM::HTTP::URL->parse("https://host/blog/posts#%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "host") {
+      return 0;
+    }
+    unless ($url->{path} eq "/blog/posts") {
+      return 0;
+    }
+    unless ($url->{fragment} eq "尾骶骨𠮷 🤔") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_not_found_scheme_separator : int () {
+    eval {
+      SPVM::HTTP::URL->parse("http//www.example.com");
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+
+  sub test_host_is_not_for_url : int () {
+    eval {
+      SPVM::HTTP::URL->parse("javascript:alert(\"hello%20world\");");
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+}
