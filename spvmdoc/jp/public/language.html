@@ -82,6 +82,7 @@
         <li><a href="#language-type-inference">型推論</a></li>
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-thread">スレッドセーフ</a></li>
+        <li><a href="#language-auto-loaded-module">自動的に読み込まれるモジュール</a></li>
       </ul>
       
       <h2 id="language-c99">C99準拠</h2>
@@ -1090,11 +1091,14 @@ package Foo {
 </pre>
       
       <h2 id="language-module">モジュール</h2>
-      <ul>
-        <li>モジュールの概要</li>
-        <li>モジュールの読み込み</li>
+      <ul class="list">
+        <li href="#language-module-summary">モジュールの概要</li>
+        <li href="#language-module-file-name">モジュールのファイル名</li>
+        <li href="#language-module-use">モジュールの読み込み</li>
+        <li href="#language-module-if-require">選択的なモジュールの読み込み</li>
       </ul>
-      <h3 class="language-module-summary">モジュールの概要</h3>
+      
+      <h3 id="language-module-summary">モジュールの概要</h3>
       <p>
         モジュールとは、SPVMのソースコードとして読み込むことができるひとつのファイルのことをいいます。
       </p>
@@ -1117,7 +1121,8 @@ package Foo::Bar::Baz {
 
 }
 </pre>
-      <h3 class="language-module-path">モジュールのファイル名</h3>
+
+      <h3 id="language-module-file-name">モジュールのファイル名</h3>
       <p>
         モジュールは、モジュールの読み込みパスに、以下のファイル名で配置される必要があります。
       </p>
@@ -1129,7 +1134,8 @@ Foo.spvm
 Foo/Bar.spvm
 Foo/Bar/Baz.spvm
 </pre>
-      <h3 class="language-module-load">モジュールの読み込み</h3>
+
+      <h3 id="language-module-use">モジュールの読み込み</h3>
       <p>
         モジュールを読み込むには、useキーワードを使用します。
       </p>
@@ -1151,7 +1157,8 @@ package Foo {
   use Foo;
 }
 </pre>
-      <h3 class="language-module-load-if-require">選択的なモジュールの読み込み</h3>
+
+      <h3 id="language-module-if-require">選択的なモジュールの読み込み</h3>
       <p>
         SPVMでは、モジュールが、検索パスに存在する場合だけ読み込み、そうでない場合は、ブロックの内部が存在しないことにできるif require文があります。これはC言語の「#ifdef」の一部の機能を実現するために設計されました。
       </p>
@@ -1201,7 +1208,7 @@ unless ($inteface) {
 my $result = $interface->foo(3);
 </pre>
 
-      <h2 class="language-allow-access">アクセス許可</h2>
+      <h2 id="language-allow-access">アクセス許可</h2>
       <p>
         デフォルトでは、プライベートなサブルーチン、フィールド、パッケージ変数には、パッケージの外部からは、アクセスすることができません。また、プライベートなパッケージは、パッケージの外部から、オブジェクトの生成を行うことができません。
       </p>
@@ -7540,10 +7547,12 @@ sub foo : void ($thread_id : int) {
       
       <h2 id="language-auto-loaded-module">自動的に読み込まれるモジュール</h2>
       <p>
-        自動的に読み込まれるモジュールは以下です。<a href="language-use-module">use</a>キーワードによって読み込まなくても利用することができます。
+        自動的に読み込まれるモジュールです。<a href="#language-module-use">モジュールの読み込み</a>を行わないで利用することができます。
       </p>
       <ul class="list">
         <li>SPVM::CORE</li>
+        <li>SPVM::List</li>
+        <li>SPVM::Hash</li>
         <li>SPVM::Byte</li>
         <li>SPVM::Short</li>
         <li>SPVM::Int</li>
