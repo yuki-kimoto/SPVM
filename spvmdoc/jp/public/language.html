@@ -80,7 +80,7 @@
         <li><a href="#language-auto-loaded-module">自動的に読み込まれるモジュール</a></li>
       </ul>
       
-      <h2 id="language-c99">C99準拠</h2>
+      <h2 id="language-c99">C99準拠</h2><!-- 2019/2/27 almost ok -->
       <ul class="list">
         <li><a href="#language-c99-spec">C99準拠のコンパイラとランタイム</a>
         <li><a href="#language-c99-type">C99との型の対応</a>
@@ -220,17 +220,17 @@
         <li><a href="#language-parser-operator">演算子</a>
       </ul>
       
-      <h3 id="language-parser-lalr">LALR(1)法</h3>
+      <h3 id="language-parser-lalr">LALR(1)法</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMのソースコードは、LALR(1)法によって解析できます。yacc/bisonで生成されたパーサージェネレータによって解析することができます。
       </p>
       
-      <h3 id="language-parser-component">構成要素</h3>
+      <h3 id="language-parser-component">構成要素</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-pod">POD</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
       </p>
       
-      <h3 id="language-parser-line-terminater">行終端</h3>
+      <h3 id="language-parser-line-terminater">行終端</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMのソースコードの行終端は、ASCIIコードの「LF」「CR」「CR LF」です。
       </p>
@@ -238,7 +238,7 @@
         行終端が現れたときは、適切に行番号がインクリメントされます。
       </p>
       
-      <h3 id="language-parser-space-character">空白文字</h3>
+      <h3 id="language-parser-space-character">空白文字</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMにおける空白文字はASCIIコードの「SP」「HT」「FF」と「<a href="#language-parser-line-terminater">行終端</a>」です。
       </p>
@@ -246,7 +246,7 @@
         空白文字はソースコード上では意味を持ちません。
       </p>
       
-      <h3 id="language-parser-identifier">識別子</h3>
+      <h3 id="language-parser-identifier">識別子</h3><!-- 2019/2/27 maybe ok -->
       <p>
         SPVMにおける識別子は「パッケージ名」「サブルーチン名」「フィールド名」「パッケージ変数名」「レキシカル変数名」です。
       </p>
@@ -258,7 +258,7 @@
         <li><a href="#language-parser-identifier-lex-var-name">レキシカル変数名</a></li>
       </ul>
       
-      <h4 id="language-parser-identifier-package-name">パッケージ名</h3>
+      <h4 id="language-parser-identifier-package-name">パッケージ名</h4><!-- 2019/2/27 almost ok -->
       <p>
         パッケージ名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」と「::」の組み合わせです。「::」は、含まれていなくてもかまいません。
       </p>
@@ -270,9 +270,6 @@
       </p>
       <p>
         アンダースコアは、二つ以上続いてはいけません。
-      </p>
-      <p>
-        パッケージ名が要求される場所で、不正なパッケージ名が現れた場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 正しいパッケージ名
@@ -288,15 +285,12 @@ Foo::Bar::
 Foo__Bar
 </pre>
 
-      <h4 id="language-parser-identifier-sub-name">サブルーチン名</h3>
+      <h4 id="language-parser-identifier-sub-name">サブルーチン名</h4><!-- 2019/2/27 almost ok -->
       <p>
         サブルーチン名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」です。
       </p>
       <p>
         アンダースコアは、二つ以上続いてはいけません。
-      </p>
-      <p>
-        サブルーチン名が要求される場所で、不正なサブルーチン名が現れた場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 正しいサブルーチン名
@@ -311,15 +305,12 @@ _foo_bar_
 foo__bar
 </pre>
 
-      <h4 id="language-parser-identifier-field-name">フィールド名</h3>
+      <h4 id="language-parser-identifier-field-name">フィールド名</h4><!-- 2019/2/27 almost ok -->
       <p>
         フィールド名は、「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」です。
       </p>
       <p>
         アンダースコアは、二つ以上続いてはいけません。
-      </p>
-      <p>
-        フィールド名が要求される場所で、不正なフィールド名が現れた場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 正しいフィールド名
@@ -334,21 +325,15 @@ _foo_bar_
 foo__bar
 </pre>
 
-      <h4 id="language-parser-identifier-package-var-name">パッケージ変数名</h3>
+      <h4 id="language-parser-identifier-package-var-name">パッケージ変数名</h4><!-- 2019/2/27 maybe ok -->
       <p>
-        パッケージ変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」と「::」の組み合わせが続きます。
+        パッケージ変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」と「::」の組み合わせが続きます。「::」は含まれていなくてもかまいません。
       </p>
       <p>
         「$」の次に来る文字は、ASCIIコードにおけるアルファベットの大文字でなければなりません。
       </p>
       <p>
         アンダースコアは、二つ以上続いてはいけません。
-      </p>
-      <p>
-        パッケージ変数の定義においては、パッケージ変数名に「::」が含まれてはいけません。
-      </p>
-      <p>
-        パッケージ変数名が要求される場所で、不正なパッケージ変数名が現れた場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 正しいパッケージ変数名
@@ -363,18 +348,15 @@ $FOO__BAR
 $
 </pre>
 
-      <h4 id="language-parser-identifier-lex-var-name">レキシカル変数名</h3>
+      <h4 id="language-parser-identifier-lex-var-name">レキシカル変数名</h4><!-- 2019/2/27 maybe ok -->
       <p>
         レキシカル変数名は、先頭が「$」で始まり、その後「ASCIIコードにおけるアルファベットあるいはアンダースコアの一文字以上」が続きます。
       </p>
       <p>
-        「$」の次に来る文字は、ASCIIコードにおけるアルファベットの子文字でなければなりません。
+        「$」の次に来る文字は、ASCIIコードにおけるアルファベットの子文字あるいは、アンダースコアでなければなりません。
       </p>
       <p>
         アンダースコアは、二つ以上続いてはいけません。
-      </p>
-      <p>
-        レキシカル変数名が要求される場所で、不正なレキシカル変数名が現れた場合は、コンパイル時エラーが発生します。
       </p>
 <pre>
 # 正しいレキシカル変数名
@@ -388,12 +370,12 @@ $foo__bar
 $
 </pre>
 
-      <h3 id="language-parser-keyword">キーワード</h3>
+      <h3 id="language-parser-keyword">キーワード</h3><!-- 2019/2/27 maybe ok -->
       <p>
         SPVMにおけるキーワードは以下です。
       </p>
 <pre>
-byte BEGIN case croak default double elsif else enum eq
+allow byte BEGIN case croak default double elsif else enum eq
 eval for float gt ge has if interface_t isa int last length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
@@ -401,8 +383,7 @@ sub string short scalar undef unless use void value_t while
 weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 </pre>
 
-
-      <h3 id="language-parser-separator">区切り文字</h3>
+      <h3 id="language-parser-separator">区切り文字</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMにおける区切り文字は以下です。
       </p>
@@ -410,7 +391,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 ( ) { } [ ] ; , -> =>
 </pre>
 
-      <h3 id="language-parser-operator">演算子</h3>
+      <h3 id="language-parser-operator">演算子</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMにおける演算子は以下です。
       </p>
@@ -422,10 +403,14 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 \   $   @   .   .=
 </pre>
 
-      <h3 id="language-parser-table">構文解析表</h3>
+      <h3 id="language-parser-table">構文解析表</h3><!-- 2019/2/27 not ok -->
       <p>
-        yacc/bisonにおける、SPVM文法の構文解析表です。
+        SPVMの文法を表現する、yacc/bisonにおけるSPVM文法の構文解析表と、トークンとキーワード・演算子の対応表です。
       </p>
+      <p>
+        <b>yacc/bisonにおけるSPVM文法の構文解析表</b>
+      </p>
+
 <pre>
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
@@ -848,6 +833,272 @@ sub_names
   | sub_name
 %%
 </pre>
+      <p>
+        <b>トークンとキーワード・演算子の対応表</b>
+      </p>
+      <table>
+        <tr>
+          <th>キーワード・演算子</th><th>トークン</th>
+        </tr>
+        <tr>
+          <td>package</td><td>PACKAGE</td>
+        </tr>
+        <tr>
+          <td>sub</td><td>SUB</td>
+        </tr>
+        <tr>
+          <td>our</td><td>OUR</td>
+        </tr>
+        <tr>
+          <td>enum</td><td>ENUM</td>
+        </tr>
+        <tr>
+          <td>my</td><td>MY</td>
+        </tr>
+        <tr>
+          <td>self</td><td>SELF</td>
+        </tr>
+        <tr>
+          <td>use</td><td>USE</td>
+        </tr>
+        <tr>
+          <td>require</td><td>REQUIRE</td>
+        </tr>
+        <tr>
+          <td>allow</td><td>ALLOW</td>
+        </tr>
+        <tr>
+          <td>descriptor</td><td>DESCRIPTOR</td>
+        </tr>
+        <tr>
+          <td>if</td><td>IF</td>
+        </tr>
+        <tr>
+          <td>unless</td><td>UNLESS</td>
+        </tr>
+        <tr>
+          <td>elsif</td><td>ELSIF</td>
+        </tr>
+        <tr>
+          <td>else</td><td>ELSE</td>
+        </tr>
+        <tr>
+          <td>for</td><td>FOR</td>
+        </tr>
+        <tr>
+          <td>while</td><td>WHILE</td>
+        </tr>
+        <tr>
+          <td>last</td><td>LAST</td>
+        </tr>
+        <tr>
+          <td>next</td><td>NEXT</td>
+        </tr>
+        <tr>
+          <td>switch</td><td>SWITCH</td>
+        </tr>
+        <tr>
+          <td>case</td><td>CASE</td>
+        </tr>
+        <tr>
+          <td>default</td><td>DEFAULT</td>
+        </tr>
+        <tr>
+          <td>eval</td><td>EVAL</td>
+        </tr>
+        <tr>
+          <td>name</td><td>NAME</td>
+        </tr>
+        <tr>
+          <td>var</td><td>VAR</td>
+        </tr>
+        <tr>
+          <td>リテラル</td><td>CONSTANT</td>
+        </tr>
+        <tr>
+          <td>パッケージ変数名</td><td>PACKAGE_VAR_NAME</td>
+        </tr>
+        <tr>
+          <td>$@</td><td>EXCEPTION_VAR</td>
+        </tr>
+        <tr>
+          <td>undef</td><td>UNDEF</td>
+        </tr>
+        <tr>
+          <td>void</td><td>VOID</td>
+        </tr>
+        <tr>
+          <td>byte</td><td>BYTE</td>
+        </tr>
+        <tr>
+          <td>short</td><td>SHORT</td>
+        </tr>
+        <tr>
+          <td>int</td><td>INT</td>
+        </tr>
+        <tr>
+          <td>long</td><td>LONG</td>
+        </tr>
+        <tr>
+          <td>float</td><td>FLOAT</td>
+        </tr>
+        <tr>
+          <td>double</td><td>DOUBLE</td>
+        </tr>
+        <tr>
+          <td>string</td><td>STRING</td>
+        </tr>
+        <tr>
+          <td>object</td><td>OBJECT</td>
+        </tr>
+        <tr>
+          <td>...</td><td>DOT3</td>
+        </tr>
+        <tr>
+          <td>=></td><td>FATCAMMA</td>
+        </tr>
+        <tr>
+          <td>rw</td><td>RW</td>
+        </tr>
+        <tr>
+          <td>ro</td><td>RO</td>
+        </tr>
+        <tr>
+          <td>wo</td><td>WO</td>
+        </tr>
+        <tr>
+          <td>BEGIN</td><td>BEGIN</td>
+        </tr>
+        <tr>
+          <td>new</td><td>NEW</td>
+        </tr>
+        <tr>
+          <td>return</td><td>RETURN</td>
+        </tr>
+        <tr>
+          <td>weaken</td><td>WEAKEN</td>
+        </tr>
+        <tr>
+          <td>croak</td><td>CROAK</td>
+        </tr>
+        <tr>
+          <td>__PACKAGE__</td><td>CURRENT_PACKAGE</td>
+        </tr>
+        <tr>
+          <td>unweaken</td><td>UNWEAKEN</td>
+        </tr>
+        <tr>
+          <td>=</td><td>ASSIGN</td>
+        </tr>
+        <tr>
+          <td>+=  -=  *=  /=  &=  |=  ^=  %=  &lt;&lt;=  &gt;&gt;=  &gt;&gt;&gt;= .=</td><td>SPECIAL_ASSIGN</td>
+        </tr>
+        <tr>
+          <td>||</td><td>LOGICAL_OR</td>
+        </tr>
+        <tr>
+          <td>&&</td><td>LOGICAL_AND</td>
+        </tr>
+        <tr>
+          <td>|</td><td>BIT_OR</td>
+        </tr>
+        <tr>
+          <td>&</td><td>BIT_XOR</td>
+        </tr>
+        <tr>
+          <td>==</td><td>NUMEQ</td>
+        </tr>
+        <tr>
+          <td>!=</td><td>NUMNE</td>
+        </tr>
+        <tr>
+          <td>eq</td><td>STREQ</td>
+        </tr>
+        <tr>
+          <td>ne</td><td>STRNE</td>
+        </tr>
+        <tr>
+          <td>&gt;</td><td>NUMGT</td>
+        </tr>
+        <tr>
+          <td>&gt;=</td><td>NUMGE</td>
+        </tr>
+        <tr>
+          <td>&lt;</td><td>NUMLT</td>
+        </tr>
+        <tr>
+          <td>&lt;=</td><td>NUMLE</td>
+        </tr>
+        <tr>
+          <td>gt</td><td>STRGT</td>
+        </tr>
+        <tr>
+          <td>ge</td><td>STRGE</td>
+        </tr>
+        <tr>
+          <td>lt</td><td>STRLT</td>
+        </tr>
+        <tr>
+          <td>le</td><td>STRLE</td>
+        </tr>
+        <tr>
+          <td>isa</td><td>ISA</td>
+        </tr>
+        <tr>
+          <td>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</td><td>SHIFT</td>
+        </tr>
+        <tr>
+          <td>*</td><td>MULTIPLY</td>
+        </tr>
+        <tr>
+          <td>/</td><td>DIVIDE</td>
+        </tr>
+        <tr>
+          <td>%</td><td>REMAINDER</td>
+        </tr>
+        <tr>
+          <td>!</td><td>LOGICAL_NOT</td>
+        </tr>
+        <tr>
+          <td>~</td><td>BIT_NOT</td>
+        </tr>
+        <tr>
+          <td>\</td><td>REF</td>
+        </tr>
+        <tr>
+          <td>$</td><td>DEREF</td>
+        </tr>
+        <tr>
+          <td>+</td><td>PLUS</td>
+        </tr>
+        <tr>
+          <td>-</td><td>MINUS</td>
+        </tr>
+        <tr>
+          <td>(型名)</td><td>CONVERT</td>
+        </tr>
+        <tr>
+          <td>scalar</td><td>SCALAR</td>
+        </tr>
+        <tr>
+          <td>length</td><td>LENGTH</td>
+        </tr>
+        <tr>
+          <td>isweak</td><td>ISWEAK</td>
+        </tr>
+        <tr>
+          <td>refcnt</td><td>REFCNT</td>
+        </tr>
+        <tr>
+          <td>++</td><td>INC</td>
+        </tr>
+        <tr>
+          <td>--</td><td>DEC</td>
+        </tr>
+        <tr>
+          <td>-></td><td>ARROW</td>
+        </tr>
+      </table>
 
       <h2 id="language-comment">コメント</h2>
       <p>
@@ -1242,7 +1493,7 @@ our パッケージ変数名 : 型名;
         パッケージ変数の定義には「<a href="#language-type">型名</a>」が必要です。型名には「数値型」と「オブジェクト型」を指定できます。
       </p>
       <p>
-        パッケージ変数名は「$」で始まり、次に「A-Z」、その後ろに、ひとつ以上の「a～z」「A～Z」「0～9」「_」を続けることができます。Perlと異なり、「$」の後ろには、必ず大文字の英数字が必要であることに注意してください。
+        パッケージ変数名は、<a href="#language-parser-identifier-package-var-name">パッケージ変数名</a>で定義されている名前の規則に従い、かつ「::」が含まれていてはいけません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         パッケージ変数定義には、デスクリプタを合わせて指定することができます。複数のデスクリプタを空白を使って並べることができます。
