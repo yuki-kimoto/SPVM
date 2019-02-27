@@ -218,6 +218,7 @@
         <li><a href="#language-parser-identifier">識別子</a>
         <li><a href="#language-parser-separator">区切り文字</a>
         <li><a href="#language-parser-operator">演算子</a>
+        <li><a href="#language-parser-table">構文解析表</a></li>
       </ul>
       
       <h3 id="language-parser-lalr">LALR(1)法</h3><!-- 2019/2/27 almost ok -->
@@ -405,10 +406,10 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 
       <h3 id="language-parser-table">構文解析表</h3><!-- 2019/2/27 not ok -->
       <p>
-        SPVMの文法を表現する、yacc/bisonにおけるSPVM文法の構文解析表と、トークンとキーワード・演算子の対応表です。
+        SPVMの文法を表現する、yacc/bisonにおける構文解析表と、トークンとキーワード・演算子の対応表です。
       </p>
       <p>
-        <b>yacc/bisonにおけるSPVM文法の構文解析表</b>
+        <b>SPVM文法のyacc/bisonにおける構文解析表</b>
       </p>
 
 <pre>
@@ -838,265 +839,265 @@ sub_names
       </p>
       <table>
         <tr>
-          <th>キーワード・演算子</th><th>トークン</th>
+          <th>トークン</th><th>キーワード・演算子</th>
         </tr>
         <tr>
-          <td>package</td><td>PACKAGE</td>
+          <td>PACKAGE</td><td>package</td>
         </tr>
         <tr>
-          <td>sub</td><td>SUB</td>
+          <td>SUB</td><td>sub</td>
         </tr>
         <tr>
-          <td>our</td><td>OUR</td>
+          <td>OUR</td><td>our</td>
         </tr>
         <tr>
-          <td>enum</td><td>ENUM</td>
+          <td>ENUM</td><td>enum</td>
         </tr>
         <tr>
-          <td>my</td><td>MY</td>
+          <td>MY</td><td>my</td>
         </tr>
         <tr>
-          <td>self</td><td>SELF</td>
+          <td>SELF</td><td>self</td>
         </tr>
         <tr>
-          <td>use</td><td>USE</td>
+          <td>USE</td><td>use</td>
         </tr>
         <tr>
-          <td>require</td><td>REQUIRE</td>
+          <td>REQUIRE</td><td>require</td>
         </tr>
         <tr>
-          <td>allow</td><td>ALLOW</td>
+          <td>ALLOW</td><td>allow</td>
         </tr>
         <tr>
-          <td>descriptor</td><td>DESCRIPTOR</td>
+          <td>DESCRIPTOR</td><td>descriptor</td>
         </tr>
         <tr>
-          <td>if</td><td>IF</td>
+          <td>IF</td><td>if</td>
         </tr>
         <tr>
-          <td>unless</td><td>UNLESS</td>
+          <td>UNLESS</td><td>unless</td>
         </tr>
         <tr>
-          <td>elsif</td><td>ELSIF</td>
+          <td>ELSIF</td><td>elsif</td>
         </tr>
         <tr>
-          <td>else</td><td>ELSE</td>
+          <td>ELSE</td><td>else</td>
         </tr>
         <tr>
-          <td>for</td><td>FOR</td>
+          <td>FOR</td><td>for</td>
         </tr>
         <tr>
-          <td>while</td><td>WHILE</td>
+          <td>WHILE</td><td>while</td>
         </tr>
         <tr>
-          <td>last</td><td>LAST</td>
+          <td>LAST</td><td>last</td>
         </tr>
         <tr>
-          <td>next</td><td>NEXT</td>
+          <td>NEXT</td><td>next</td>
         </tr>
         <tr>
-          <td>switch</td><td>SWITCH</td>
+          <td>SWITCH</td><td>switch</td>
         </tr>
         <tr>
-          <td>case</td><td>CASE</td>
+          <td>CASE</td><td>case</td>
         </tr>
         <tr>
-          <td>default</td><td>DEFAULT</td>
+          <td>DEFAULT</td><td>default</td>
         </tr>
         <tr>
-          <td>eval</td><td>EVAL</td>
+          <td>EVAL</td><td>eval</td>
         </tr>
         <tr>
-          <td>name</td><td>NAME</td>
+          <td>NAME</td><td>name</td>
         </tr>
         <tr>
-          <td>var</td><td>VAR</td>
+          <td>VAR</td><td>var</td>
         </tr>
         <tr>
-          <td>リテラル</td><td>CONSTANT</td>
+          <td>CONSTANT</td><td>リテラル</td>
         </tr>
         <tr>
-          <td>パッケージ変数名</td><td>PACKAGE_VAR_NAME</td>
+          <td>PACKAGE_VAR_NAME</td><td>パッケージ変数名</td>
         </tr>
         <tr>
-          <td>$@</td><td>EXCEPTION_VAR</td>
+          <td>EXCEPTION_VAR</td><td>$@</td>
         </tr>
         <tr>
-          <td>undef</td><td>UNDEF</td>
+          <td>UNDEF</td><td>undef</td>
         </tr>
         <tr>
-          <td>void</td><td>VOID</td>
+          <td>VOID</td><td>void</td>
         </tr>
         <tr>
-          <td>byte</td><td>BYTE</td>
+          <td>BYTE</td><td>byte</td>
         </tr>
         <tr>
-          <td>short</td><td>SHORT</td>
+          <td>SHORT</td><td>short</td>
         </tr>
         <tr>
-          <td>int</td><td>INT</td>
+          <td>INT</td><td>int</td>
         </tr>
         <tr>
-          <td>long</td><td>LONG</td>
+          <td>LONG</td><td>long</td>
         </tr>
         <tr>
-          <td>float</td><td>FLOAT</td>
+          <td>FLOAT</td><td>float</td>
         </tr>
         <tr>
-          <td>double</td><td>DOUBLE</td>
+          <td>DOUBLE</td><td>double</td>
         </tr>
         <tr>
-          <td>string</td><td>STRING</td>
+          <td>STRING</td><td>string</td>
         </tr>
         <tr>
-          <td>object</td><td>OBJECT</td>
+          <td>OBJECT</td><td>object</td>
         </tr>
         <tr>
-          <td>...</td><td>DOT3</td>
+          <td>DOT3</td><td>...</td>
         </tr>
         <tr>
-          <td>=></td><td>FATCAMMA</td>
+          <td>FATCAMMA</td><td>=></td>
         </tr>
         <tr>
-          <td>rw</td><td>RW</td>
+          <td>RW</td><td>rw</td>
         </tr>
         <tr>
-          <td>ro</td><td>RO</td>
+          <td>RO</td><td>ro</td>
         </tr>
         <tr>
-          <td>wo</td><td>WO</td>
+          <td>WO</td><td>wo</td>
         </tr>
         <tr>
           <td>BEGIN</td><td>BEGIN</td>
         </tr>
         <tr>
-          <td>new</td><td>NEW</td>
+          <td>NEW</td><td>new</td>
         </tr>
         <tr>
-          <td>return</td><td>RETURN</td>
+          <td>RETURN</td><td>return</td>
         </tr>
         <tr>
-          <td>weaken</td><td>WEAKEN</td>
+          <td>WEAKEN</td><td>weaken</td>
         </tr>
         <tr>
-          <td>croak</td><td>CROAK</td>
+          <td>CROAK</td><td>croak</td>
         </tr>
         <tr>
-          <td>__PACKAGE__</td><td>CURRENT_PACKAGE</td>
+          <td>CURRENT_PACKAGE</td><td>__PACKAGE__</td>
         </tr>
         <tr>
-          <td>unweaken</td><td>UNWEAKEN</td>
+          <td>UNWEAKEN</td><td>unweaken</td>
         </tr>
         <tr>
-          <td>=</td><td>ASSIGN</td>
+          <td>ASSIGN</td><td>=</td>
         </tr>
         <tr>
-          <td>+=  -=  *=  /=  &=  |=  ^=  %=  &lt;&lt;=  &gt;&gt;=  &gt;&gt;&gt;= .=</td><td>SPECIAL_ASSIGN</td>
+          <td>SPECIAL_ASSIGN</td><td>+=  -=  *=  /=  &=  |=  ^=  %=  &lt;&lt;=  &gt;&gt;=  &gt;&gt;&gt;= .=</td>
         </tr>
         <tr>
-          <td>||</td><td>LOGICAL_OR</td>
+          <td>LOGICAL_OR</td><td>||</td>
         </tr>
         <tr>
-          <td>&&</td><td>LOGICAL_AND</td>
+          <td>LOGICAL_AND</td><td>&&</td>
         </tr>
         <tr>
-          <td>|</td><td>BIT_OR</td>
+          <td>BIT_OR</td><td>|</td>
         </tr>
         <tr>
-          <td>&</td><td>BIT_XOR</td>
+          <td>BIT_XOR</td><td>&</td>
         </tr>
         <tr>
-          <td>==</td><td>NUMEQ</td>
+          <td>NUMEQ</td><td>==</td>
         </tr>
         <tr>
-          <td>!=</td><td>NUMNE</td>
+          <td>NUMNE</td><td>!=</td>
         </tr>
         <tr>
-          <td>eq</td><td>STREQ</td>
+          <td>STREQ</td><td>eq</td>
         </tr>
         <tr>
-          <td>ne</td><td>STRNE</td>
+          <td>STRNE</td><td>ne</td>
         </tr>
         <tr>
-          <td>&gt;</td><td>NUMGT</td>
+          <td>NUMGT</td><td>&gt;</td>
         </tr>
         <tr>
-          <td>&gt;=</td><td>NUMGE</td>
+          <td>NUMGE</td><td>&gt;=</td>
         </tr>
         <tr>
-          <td>&lt;</td><td>NUMLT</td>
+          <td>NUMLT</td><td>&lt;</td>
         </tr>
         <tr>
-          <td>&lt;=</td><td>NUMLE</td>
+          <td>NUMLE</td><td>&lt;=</td>
         </tr>
         <tr>
-          <td>gt</td><td>STRGT</td>
+          <td>STRGT</td><td>gt</td>
         </tr>
         <tr>
-          <td>ge</td><td>STRGE</td>
+          <td>STRGE</td><td>ge</td>
         </tr>
         <tr>
-          <td>lt</td><td>STRLT</td>
+          <td>STRLT</td><td>lt</td>
         </tr>
         <tr>
-          <td>le</td><td>STRLE</td>
+          <td>STRLE</td><td>le</td>
         </tr>
         <tr>
-          <td>isa</td><td>ISA</td>
+          <td>ISA</td><td>isa</td>
         </tr>
         <tr>
-          <td>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</td><td>SHIFT</td>
+          <td>SHIFT</td><td>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</td>
         </tr>
         <tr>
-          <td>*</td><td>MULTIPLY</td>
+          <td>MULTIPLY</td><td>*</td>
         </tr>
         <tr>
-          <td>/</td><td>DIVIDE</td>
+          <td>DIVIDE</td><td>/</td>
         </tr>
         <tr>
-          <td>%</td><td>REMAINDER</td>
+          <td>REMAINDER</td><td>%</td>
         </tr>
         <tr>
-          <td>!</td><td>LOGICAL_NOT</td>
+          <td>LOGICAL_NOT</td><td>!</td>
         </tr>
         <tr>
-          <td>~</td><td>BIT_NOT</td>
+          <td>BIT_NOT</td><td>~</td>
         </tr>
         <tr>
-          <td>\</td><td>REF</td>
+          <td>REF</td><td>\</td>
         </tr>
         <tr>
-          <td>$</td><td>DEREF</td>
+          <td>DEREF</td><td>$</td>
         </tr>
         <tr>
-          <td>+</td><td>PLUS</td>
+          <td>PLUS</td><td>+</td>
         </tr>
         <tr>
-          <td>-</td><td>MINUS</td>
+          <td>MINUS</td><td>-</td>
         </tr>
         <tr>
-          <td>(型名)</td><td>CONVERT</td>
+          <td>CONVERT</td><td>(型名)</td>
         </tr>
         <tr>
-          <td>scalar</td><td>SCALAR</td>
+          <td>SCALAR</td><td>scalar</td>
         </tr>
         <tr>
-          <td>length</td><td>LENGTH</td>
+          <td>LENGTH</td><td>length</td>
         </tr>
         <tr>
-          <td>isweak</td><td>ISWEAK</td>
+          <td>ISWEAK</td><td>isweak</td>
         </tr>
         <tr>
-          <td>refcnt</td><td>REFCNT</td>
+          <td>REFCNT</td><td>refcnt</td>
         </tr>
         <tr>
-          <td>++</td><td>INC</td>
+          <td>INC</td><td>++</td>
         </tr>
         <tr>
-          <td>--</td><td>DEC</td>
+          <td>DEC</td><td>--</td>
         </tr>
         <tr>
-          <td>-></td><td>ARROW</td>
+          <td>ARROW</td><td>-></td>
         </tr>
       </table>
 
