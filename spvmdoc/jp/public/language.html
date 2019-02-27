@@ -28,14 +28,13 @@
     <div class="header">
       <div class="container">
         <h1>
-          <img src="/images/spvm-logo.png">
-          SPVM 1.0 言語仕様
+          <a style="color:#333;text-decoration:none;" href="/language.html"><img src="/images/spvm-logo.png">SPVM 1.0 言語仕様</a>
         </h1>
       </div>
     </div>
     
     <div class="container">
-      <h2 id="language-summary">SPVM言語仕様</h2>
+      <h2 id="language-summary">SPVM言語仕様</a></h2>
       <p>
         <b>SPVM 1.0の言語仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。言語仕様は、警告なく変更されることがあります。
       </p>
@@ -67,7 +66,6 @@
         <li><a href="#language-interface">インターフェース</a></li>
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-expresssion">式</a></li>
-        <li><a href="#language-expression">式</a></li>
         <li><a href="#language-literal">リテラル</a></li>
         <li><a href="#language-fat-comma">ファットカンマ</a></li>
         <li><a href="#language-string">文字列</a></li>
@@ -88,20 +86,14 @@
         <li><a href="#language-c99-type">C99との型の対応</a>
       </ul>
       
-      <h3 id="language-c99-spec">C99準拠のコンパイラとランタイム</h2>
+      <h3 id="language-c99-spec">C99準拠のコンパイラとランタイム</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMコンパイラおよびSPVMランタイムのソースコードは、<b>C言語で書かれ、C99に準拠</b>します。
       </p>
       <p>
-        数値演算における仕様は、C99に準拠します。C99で、未定義・処理系依存のものは、SPVMにおいても未定義・処理系依存です。<a href="#language-operator-arithmetic">算術演算子</a>の仕様では、C99における算術演算との対応が記述されます。
+        このことは、ユーザーが、C99以外のCのバージョンや、C++で書かれたコードをSPVMから呼び出せないという意味ではないので注意してください。SPVMのコンパイラとランタイムが、C99に準拠する必要があるという意味です。
       </p>
-      <p>
-        <a href="#language-type-convertion-numeric-to-string">数値から文字列への型変換</a>における仕様は、C99のsrpintfの「%g」フォーマットが仕様になります。
-      </p>
-      <p>
-        このことは、ユーザーが、C99以外のCのバージョンや、C++で、ネイティブコードをバインディングできないという意味ではないので注意してください。単に、SPVMのコンパイラとランタイムが、C99に準拠する必要があるという意味です。
-      </p>
-      <h3 id="language-c99-type">C99との型の対応</h2>
+      <h3 id="language-c99-type">C99との型の対応</h3><!-- 2019/2/27 almost ok -->
       <p>
         SPVMの型は、C99の次の型と完全に一致します。
       </p>
@@ -211,7 +203,7 @@
               として定義されていた場合は、フィールドの型がint型で、フィールドの個数が2なので
             </p>
             <p>
-              C99のint32_t[2]型に一致します。
+              C99の「int32_t var[2];」で宣言された型に一致します。
             </p>
           </td>
         </tr>
