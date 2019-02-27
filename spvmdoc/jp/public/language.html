@@ -35,27 +35,15 @@
     </div>
     
     <div class="container">
-      <h2 id="language-summary">はじめに</h2>
+      <h2 id="language-summary">SPVM言語仕様</h2>
       <p>
-        SPVMの言語仕様です。SPVMは、静的な型を持ちPerlの文法で記述できるプログラム言語です。
+        <b>SPVMの言語仕様</b>がこのドキュメントには記述されています。
       </p>
       <p>
-        このドキュメントには、<b>SPVM言語仕様のすべて</b>が記載されます。
+        SPVMは、静的な型を持ちPerlに近い文法で記述できるプログラム言語です。
       </p>
       <p>
-        PerlからSPVM言語の利用については「SPVMエクスチェンジAPI仕様」を見てください。
-      </p>
-      <p>
-        SPVMからC/C++などのネイティブコードの利用については、「SPVMネイティブAPI仕様」を見てください。
-      </p>
-      <p>
-        SPVMの標準関数については、「SPVM標準関数仕様」を見てください。
-      </p>
-      <p>
-        SPVMの標準モジュールについては、「SPVM標準モジュール仕様」を見てください。
-      </p>
-      <p>
-        最終更新日 2019年2月8日
+        最終更新日 2019年2月27日
       </p>
       <h2 id="language-toc">目次</h2>
       <ul class="toc">
@@ -65,6 +53,7 @@
         <li><a href="#language-pod">POD</a></li>
         <li><a href="#language-package">パッケージ</a></li>
         <li><a href="#language-module">モジュール</a></li>
+        <li><a href="#language-allow-access">アクセス許可</a></li>
         <li><a href="#language-package-var">パッケージ変数</a></li>
         <li><a href="#language-field">フィールド</a></li>
         <li><a href="#language-sub">サブルーチン</a></li>
@@ -232,7 +221,6 @@
       
       <h2 id="language-parser">構文解析</h2>
       <ul class="list">
-        <li><a href="#language-parser-encoding">ソースコードの文字コード</a>
         <li><a href="#language-parser-lalr">LALR(1)法</a>
         <li><a href="#language-parser-component">構成要素</a>
         <li><a href="#language-parser-line-terminater">行終端</a>
@@ -241,11 +229,6 @@
         <li><a href="#language-parser-separator">区切り文字</a>
         <li><a href="#language-parser-operator">演算子</a>
       </ul>
-      
-      <h3 id="language-parser-encoding">ソースコードの文字コード</h3>
-      <p>
-        SPVMのソースコードの文字コードは、BOMなしのUTF-8で記述されているとして解析されます。
-      </p>
       
       <h3 id="language-parser-lalr">LALR(1)法</h3>
       <p>
@@ -454,7 +437,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
         yacc/bisonにおける、SPVM文法の構文解析表です。
       </p>
 <pre>
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE
+%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
@@ -463,7 +446,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block
+%type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
@@ -471,13 +454,13 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block if_require_statement
-%type <opval> unary_op binary_op comparison_op num_comparison_op str_comparison_op isa logical_op
+%type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> deref ref assign inc dec
+%type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var package_var_access
-%type <opval> term opt_expressions expressions expression condition opt_expression
+%type <opval> expression opt_expressions expressions opt_expression
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
@@ -491,7 +474,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK
+%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -529,6 +512,7 @@ declaration
   | enumeration
   | our ';'
   | use
+  | allow
   | begin_block
 
 begin_block
@@ -540,6 +524,9 @@ use
 
 require
   : REQUIRE basic_type
+
+allow
+  : ALLOW basic_type ';'
 
 enumeration
   : ENUM enumeration_block
@@ -562,6 +549,7 @@ enumeration_value
 
 our
   : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
+
 has
   : HAS field_name ':' opt_descriptors type ';'
 
@@ -631,10 +619,10 @@ statement
   | ';'
 
 for_statement
-  : FOR '(' opt_expression ';' term ';' opt_expression ')' block
+  : FOR '(' opt_expression ';' expression ';' opt_expression ')' block
 
 while_statement
-  : WHILE '(' term ')' block
+  : WHILE '(' expression ')' block
 
 switch_statement
   : SWITCH '(' expression ')' block
@@ -649,13 +637,13 @@ if_require_statement
   : IF '(' require ')' block
 
 if_statement
-  : IF '(' term ')' block else_statement
-  | UNLESS '(' term ')' block else_statement
+  : IF '(' expression ')' block else_statement
+  | UNLESS '(' expression ')' block else_statement
 
 else_statement
   : /* NULL */
   | ELSE block
-  | ELSIF '(' term ')' block else_statement
+  | ELSIF '(' expression ')' block else_statement
 
 block 
   : '{' opt_statements '}'
@@ -666,10 +654,7 @@ eval_block
 opt_expressions
   :	/* Empty */
   |	expressions
-term
-  : expression
-  | condition
-
+    
 opt_expression
   : /* Empty */
   | expression
@@ -688,6 +673,7 @@ expression
   | array_init
   | array_length
   | string_length
+  | refcnt
   | my_var
   | binary_op
   | unary_op
@@ -698,7 +684,14 @@ expression
   | dec
   | '(' expressions ')'
   | CURRENT_PACKAGE
+  | isweak_field
+  | num_comparison_op
+  | str_comparison_op
+  | isa
+  | logical_op
 
+refcnt
+  : REFCNT var
 expressions
   : expressions ',' expression
   | expressions ','
@@ -729,17 +722,6 @@ binary_op
   | expression SHIFT expression
   | expression '.' expression
 
-condition
-  : comparison_op
-  | logical_op
-  | isweak_field ';'
-  | '(' condition ')'
-
-comparison_op
-  : num_comparison_op
-  | str_comparison_op
-  | isa
-
 num_comparison_op
   : expression NUMEQ expression
   | expression NUMNE expression
@@ -760,9 +742,9 @@ isa
   : expression ISA type
 
 logical_op
-  : term LOGICAL_OR term
-  | term LOGICAL_AND term
-  | LOGICAL_NOT term
+  : expression LOGICAL_OR expression
+  | expression LOGICAL_AND expression
+  | LOGICAL_NOT expression
 
 assign
   : expression ASSIGN expression
@@ -798,13 +780,13 @@ field_access
   | array_access '{' field_name '}'
 
 weaken_field
-  : WEAKEN field_access
+  : WEAKEN var ARROW '{' field_name '}'
 
 unweaken_field
-  : UNWEAKEN field_access
+  : UNWEAKEN var ARROW '{' field_name '}'
 
 isweak_field
-  : ISWEAK field_access
+  : ISWEAK var ARROW '{' field_name '}'
 
 array_length
   : '@' expression
@@ -849,7 +831,6 @@ basic_type
 
 ref_type
   : basic_type '&'
-
 array_type
   : basic_type '[' ']'
   | array_type '[' ']'
@@ -875,7 +856,6 @@ opt_sub_names
 sub_names
   : sub_names ',' sub_name
   | sub_name
-
 %%
 </pre>
 
@@ -1220,6 +1200,28 @@ unless ($inteface) {
 
 my $result = $interface->foo(3);
 </pre>
+
+      <h2 class="language-allow-access">アクセス許可</h2>
+      <p>
+        デフォルトでは、プライベートなサブルーチン、フィールド、パッケージ変数には、パッケージの外部からは、アクセスすることができません。また、プライベートなパッケージは、パッケージの外部から、オブジェクトの生成を行うことができません。
+      </p>
+      <p>
+        外部のパッケージに対してアクセス許可を設定すると、外部のパッケージは、プライベートなサブルーチン、フィールド、パッケージ変数にアクセスすることができ、またオブジェクトの生成を行うことができます。
+      </p>
+<pre>
+allow パッケージ名;
+</pre>
+      <p>
+        allowキーワードは、パッケージの定義の直下で定義する必要があります。
+      </p>
+<pre>
+package Foo {
+  allow Bar;
+}
+</pre>
+      <p>
+        この例では、Fooにおいてprivateが指定されているサブルーチン、フィールド、パッケージ変数に、Barからアクセスすることができます。また、BarからFooのオブジェクトの生成を行うことができます。
+      </p>
 
       <h2 id="language-package-var">パッケージ変数</h2>
       <ul class="list">
@@ -7549,6 +7551,23 @@ sub foo : void ($thread_id : int) {
         <li>SPVM::Float</li>
         <li>SPVM::Double</li>
       </ul>
+      
+      <h2 id="language-other">参考情報</h2>
+      <p>
+        SPVMの公式ドキュメントについては、「<a href="/">SPVMドキュメント</a>」を見てください。
+      </p>
+      <p>
+        PerlからSPVM言語の利用については「SPVMエクスチェンジAPI」を見てください。
+      </p>
+      <p>
+        SPVMからC/C++などのネイティブコードの利用については、「SPVMネイティブAPI」を見てください。
+      </p>
+      <p>
+        SPVMの標準関数については、「SPVM標準関数」を見てください。
+      </p>
+      <p>
+        SPVMの標準モジュールについては、「SPVM標準モジュール」を見てください。
+      </p>
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>
