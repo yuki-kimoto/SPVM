@@ -526,8 +526,6 @@ sub create_source_precompile {
   my $object_dir = $opt->{object_dir};
   mkpath $object_dir;
   
-  my $output_dir = $opt->{output_dir};
-  
   my $category = 'precompile';
   
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
