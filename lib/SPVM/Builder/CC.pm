@@ -163,12 +163,6 @@ sub compile {
     confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
-  # Output directory
-  my $lib_dir = $opt->{lib_dir};
-  unless (defined $lib_dir && -d $lib_dir) {
-    confess "Output directory must be specified for " . $self->category . " build";
-  }
-
   # Quiet output
   my $quiet = $self->quiet;
   
