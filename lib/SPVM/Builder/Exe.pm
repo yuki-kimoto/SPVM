@@ -117,11 +117,11 @@ sub build_exe_file {
     my $native_dir = $native_module_file;
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $native_package_name);
+    my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $native_package_name);
     $builder_c_native->compile(
       $native_package_name,
       {
-        input_dir => $input_dir,
+        src_dir => $src_dir,
         object_dir => "$build_dir/work/object",
         lib_dir => "$build_dir/work/object",
       }
@@ -141,24 +141,24 @@ sub build_exe_file {
     my $precompile_dir = $precompile_module_file;
     $precompile_dir =~ s/\.spvm$//;
     $precompile_dir .= 'precompile';
-    my $input_dir;
+    my $src_dir;
     if (-f $precompile_dir) {
-      $input_dir = SPVM::Builder::Util::remove_package_part_from_file($precompile_module_file, $precompile_package_name);
+      $src_dir = SPVM::Builder::Util::remove_package_part_from_file($precompile_module_file, $precompile_package_name);
     }
     else {
-      $input_dir = "$build_dir/work/object";
+      $src_dir = "$build_dir/work/object";
       $builder_c_precompile->create_source_precompile(
         $precompile_package_name,
         [],
         {
-          src_dir => $input_dir,
+          src_dir => $src_dir,
         }
       );
     }
     $builder_c_precompile->compile(
       $precompile_package_name,
       {
-        input_dir => $input_dir,
+        src_dir => $src_dir,
         object_dir => "$build_dir/work/object",
         lib_dir => "$build_dir/work/object",
       }
