@@ -387,16 +387,21 @@ sub get_dll_file_dist {
 sub build_dll_precompile_runtime {
   my ($self, $package_name, $sub_names) = @_;
 
-  # Output directory
+  # Build directory
   my $build_dir = $self->{build_dir};
   unless (defined $build_dir && -d $build_dir) {
     confess "SPVM build directory must be specified for runtime " . $self->category . " build";
   }
   
+  # Object directory
   my $object_dir = "$build_dir/work/object";
   mkpath $object_dir;
-  my $input_dir = "$build_dir/work/src";
-  mkpath $input_dir;
+  
+  # Source directory
+  my $src_dir = "$build_dir/work/src";
+  mkpath $src_dir;
+  
+  # Lib directory
   my $output_dir = "$build_dir/work/lib";
   mkpath $output_dir;
   
@@ -404,9 +409,7 @@ sub build_dll_precompile_runtime {
     $package_name,
     $sub_names,
     {
-      input_dir => $input_dir,
-      object_dir => $object_dir,
-      output_dir => $object_dir,
+      src_dir => $src_dir,
     }
   );
   
@@ -414,7 +417,7 @@ sub build_dll_precompile_runtime {
     $package_name,
     $sub_names,
     {
-      input_dir => $object_dir,
+      input_dir => $src_dir,
       object_dir => $object_dir,
       output_dir => $output_dir,
     }
@@ -457,6 +460,9 @@ sub build_dll_precompile_dist {
 
   my $object_dir = "spvm_build/work/object";
   mkpath $object_dir;
+  
+  my $src_dir = "spvm_build/work/src";
+  mkpath $src_dir;
 
   my $output_dir = 'blib/lib';
   
@@ -470,9 +476,7 @@ sub build_dll_precompile_dist {
     $package_name,
     $sub_names,
     {
-      input_dir => $input_dir,
-      object_dir => $object_dir,
-      output_dir => $object_dir,
+      src_dir => $src_dir,
     }
   );
   
@@ -480,7 +484,7 @@ sub build_dll_precompile_dist {
     $package_name,
     $sub_names,
     {
-      input_dir => $object_dir,
+      input_dir => $src_dir,
       output_dir => $output_dir,
     }
   );
@@ -489,7 +493,7 @@ sub build_dll_precompile_dist {
     $package_name,
     $sub_names,
     {
-      input_dir => $object_dir,
+      input_dir => $src_dir,
       object_dir => $object_dir,
       output_dir => $output_dir,
     }
@@ -523,15 +527,16 @@ sub build_dll_native_dist {
 sub create_source_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
-  my $object_dir = $opt->{object_dir};
-  mkpath $object_dir;
+  my $src_dir = $opt->{src_dir};
+  mkpath $src_dir;
   
   my $category = 'precompile';
   
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
   my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
-  my $source_file = "$object_dir/$package_rel_file_without_ext.$category.c";
-  my $source_dir = "$object_dir/$package_rel_dir";
+  my $source_file = "$src_dir/$package_rel_file_without_ext.$category.c";
+  
+  my $source_dir = "$src_dir/$package_rel_dir";
   mkpath $source_dir;
 
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);

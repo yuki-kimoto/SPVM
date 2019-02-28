@@ -151,7 +151,7 @@ sub build_exe_file {
         $precompile_package_name,
         [],
         {
-          object_dir => $input_dir,
+          src_dir => $input_dir,
         }
       );
     }
