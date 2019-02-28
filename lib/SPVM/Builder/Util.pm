@@ -190,26 +190,20 @@ sub create_package_make_rule {
   my $module_base_name = $package_name;
   $module_base_name =~ s/^.+:://;
   
-  my $input_dir = 'lib';
+  my $src_dir = 'lib';
 
-  my $tmp_dir = "spvm_build/work/tmp";
-  mkpath $tmp_dir;
-
-  my $output_dir = 'blib/lib';
-  
   my $package_rel_file = convert_package_name_to_rel_file($package_name);
-  my $input_src_dir = "$input_dir/$package_rel_file";
   
   my $spvm_file = $package_rel_file;
   $spvm_file =~ s/\.[^\.]+$//;
   $spvm_file .= '.spvm';
-  $spvm_file = "$input_dir/$spvm_file";
+  $spvm_file = "$src_dir/$spvm_file";
   
   # Dependency files
   my @deps;
   
   # Dependency c source files
-  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$input_src_dir/*";
+  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/$package_rel_file/*";
   
   # Dependency module file
   push @deps, $spvm_file;
