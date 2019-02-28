@@ -1,8 +1,6 @@
-package SPVM::String {
+package SPVM::StringBuffer {
   has value      : byte[];
   has length      : ro int;
-  
-  native sub is_utf8 : int ($self : self);
   
   sub capacity : int ($self : self) {
     return @$self->{value};
@@ -24,15 +22,15 @@ package SPVM::String {
     return sliceb($self->{value}, 0, $self->{length});
   }
 
-  sub new : SPVM::String () {
-    my $self = new SPVM::String;
+  sub new : SPVM::StringBuffer () {
+    my $self = new SPVM::StringBuffer;
     my $default_capacity = 16;
     $self->{value} = new byte [$default_capacity];
     return $self;
   }
 
-  sub new_with_capacity : SPVM::String ($capacity : int) {
-    my $self = new SPVM::String;
+  sub new_with_capacity : SPVM::StringBuffer ($capacity : int) {
+    my $self = new SPVM::StringBuffer;
     unless ($capacity > 0) {
       croak "capacity must be positive";
     }
@@ -40,24 +38,24 @@ package SPVM::String {
     return $self;
   }
 
-  sub new_with_string : SPVM::String ($string : string) {
-    my $self = new SPVM::String;
+  sub new_with_string : SPVM::StringBuffer ($string : string) {
+    my $self = new SPVM::StringBuffer;
     $self->{value} = (byte [])$string;
     $self->{length} = @$self->{value};
     return $self;
   }
 
-  sub substr : SPVM::String ($self : self, $offset : int, $length : int) {
+  sub substr : SPVM::StringBuffer ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       croak("substr offset is greater or equal than string length");
-      return SPVM::String->new;
+      return SPVM::StringBuffer->new;
     }
     
     my $string = $self->{value};
     
     my $new_capacity = $length;
     
-    my $new_text = SPVM::String->new_with_capacity($new_capacity);
+    my $new_text = SPVM::StringBuffer->new_with_capacity($new_capacity);
     
     for (my $i = 0; $i < $length; $i++) {
       $new_text->{value}[$i] = $self->{value}[$offset + $i];
@@ -67,73 +65,54 @@ package SPVM::String {
     return $new_text;
   }
 
-  sub copy : SPVM::String ($self : self) {
-    my $ret = SPVM::String->new;
+  sub copy : SPVM::StringBuffer ($self : self) {
+    my $ret = SPVM::StringBuffer->new;
     $ret->{value}      = $self->{value};
     $ret->{length}      = $self->{length};
     return $ret;
   }
 
-  # O($self->{length} + $text)
-  sub prepend : void ($self : self, $text : SPVM::String) {
-    my $rc = $self->{value};
-    if (refcnt $rc > 2) {
-      # copy-on-write
-      my $new_string = new byte [$self->{length}];
-      for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$i] = $self->{value}[$i];
-      }
-      $self->{value} = $new_string;
-    }
+  # O($self->{length} + $buffer)
+  sub prepend : void ($self : self, $buffer : SPVM::StringBuffer) {
     
     # TODO: Think how to deal with capacity.
     my $capacity = @$self->{value}; # capacity is not shrunk.
-    if ($capacity < $self->{length} + $text->{length}) { # don't consider about x2 allocation.
-      $capacity = $self->{length} + $text->{length};
+    if ($capacity < $self->{length} + $buffer->{length}) { # don't consider about x2 allocation.
+      $capacity = $self->{length} + $buffer->{length};
     }
     my $new_string = new byte [$capacity];
-    for (my $i = 0; $i < $text->{length}; ++$i) {
-      $new_string->[$i] = $text->{value}->[$i];
+    for (my $i = 0; $i < $buffer->{length}; ++$i) {
+      $new_string->[$i] = $buffer->{value}->[$i];
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$text->{length} + $i] = $self->{value}[$i];
+      $new_string->[$buffer->{length} + $i] = $self->{value}[$i];
     }
     $self->{value} = $new_string;
-    $self->{length} += $text->{length};
+    $self->{length} += $buffer->{length};
   }
 
-  sub append : void ($self : self, $text : SPVM::String) {
+  sub append : void ($self : self, $buffer : SPVM::StringBuffer) {
     my $capacity = @$self->{value};
-    if ($self->{length} + $text->{length} > $capacity) {
+    if ($self->{length} + $buffer->{length} > $capacity) {
       # O($new_capacity)
       my $new_capacity : int;
-      if ($self->{length} + $text->{length} > $capacity * 2) {
-        $new_capacity = $self->{length} + $text->{length};
+      if ($self->{length} + $buffer->{length} > $capacity * 2) {
+        $new_capacity = $self->{length} + $buffer->{length};
       } else {
         $new_capacity = $capacity * 2;
       }
       $self->_reallocate($new_capacity);
-      for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $text->{value}->[$i];
+      for (my $i = 0; $i < $buffer->{length}; ++$i) {
+        $self->{value}[$self->{length} + $i] = $buffer->{value}->[$i];
       }
-      $self->{length} += $text->{length};
+      $self->{length} += $buffer->{length};
     }
     else {
-      # O($text)
-      my $rc = $self->{value};
-      if (refcnt $rc > 2) {
-        # copy-on-write
-        my $new_string = new byte [$self->{length}];
-        for (my $i = 0; $i < $self->{length}; ++$i) {
-          $new_string->[$i] = $self->{value}[$i];
-        }
-        $self->{value} = $new_string;
-      }
       
-      for (my $i = 0; $i < $text->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $text->{value}->[$i];
+      for (my $i = 0; $i < $buffer->{length}; ++$i) {
+        $self->{value}[$self->{length} + $i] = $buffer->{value}->[$i];
       }
-      $self->{length} += $text->{length};
+      $self->{length} += $buffer->{length};
     }
   }
 
@@ -153,16 +132,6 @@ package SPVM::String {
       $replace_length = length($replace);
     }
 
-    my $rc = $self->{value};
-    if (refcnt $rc > 2) {
-      # copy-on-write
-      my $new_string = new byte [$self->{length}];
-      for (my $i = 0; $i < $self->{length}; ++$i) {
-        $new_string->[$i] = $self->{value}[$i];
-      }
-      $self->{value} = $new_string;
-    }
-    
     my $capacity = @$self->{value};
     if ($self->{length} - $length + $replace_length > $capacity) {
       # O($new_string_length)
@@ -196,12 +165,12 @@ package SPVM::String {
     $self->{length} += $replace_length - $length;
   }
 
-  sub equals : int ($self : self, $text : SPVM::String) {
-    unless ($self->{length} == $text->{length}) {
+  sub equals : int ($self : self, $buffer : SPVM::StringBuffer) {
+    unless ($self->{length} == $buffer->{length}) {
       return 0;
     }
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      unless ($self->{value}[$i] == $text->{value}->[$i]) {
+      unless ($self->{value}[$i] == $buffer->{value}->[$i]) {
         return 0;
       }
     }

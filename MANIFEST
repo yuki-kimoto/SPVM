@@ -147,8 +147,7 @@ lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
-lib/SPVM/String.c
-lib/SPVM/String.spvm
+lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/Unicode.spvm
 LICENSE.txt
@@ -395,7 +394,7 @@ t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/SPVM/IO.spvm
 t/default/lib/TestCase/SPVM/IO/File.spvm
-t/default/lib/TestCase/String.spvm
+t/default/lib/TestCase/StringBuffer.spvm
 t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Subtract.spvm
 t/default/lib/TestCase/Switch.spvm
@@ -442,6 +441,7 @@ t/exe/exe.t
 t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/spvm_build/work/exe/myexe
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
