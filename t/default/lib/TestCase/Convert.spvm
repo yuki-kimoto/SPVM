@@ -476,7 +476,7 @@ package TestCase::Convert {
     
     return 0;
   }
-  sub convert_to_string : int () {
+  sub convert_to_str : int () {
     my $byte_string = (string)(byte)23;
     my $short_string = (string)(short)23;
     my $int_string = (string)23;

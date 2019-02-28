@@ -73,7 +73,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Convert to string
 {
-  ok(TestCase::Convert->convert_to_string());
+  ok(TestCase::Convert->convert_to_str());
 }
 
 {

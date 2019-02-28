@@ -757,7 +757,7 @@ package SPVM::CORE {
     
     for (my $i = 0; $i < @$objects; $i++) {
       my $stringer = (SPVM::Stringer)$objects->[$i];
-      my $string = $stringer->to_string();
+      my $string = $stringer->to_str();
       $join .= $string;
       if ($i != @$objects - 1) {
         $join .= $sep;

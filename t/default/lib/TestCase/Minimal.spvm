@@ -19,7 +19,7 @@ package TestCase::Minimal : public {
     return $minimal;
   }
   
-  sub to_string : string ($self : self) {
+  sub to_str : string ($self : self) {
     my $str = "(" . $self->{x} . "," . $self->{y} . ")";
     
     return $str;

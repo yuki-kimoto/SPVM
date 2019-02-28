@@ -106,7 +106,7 @@ package SPVM::Math::BigDecimal {
     return $self;
   }
 
-  sub to_string : string ($self : self) {
+  sub to_str : string ($self : self) {
     if ($self->{exp} == 0) {
       my $digits_length = length($self->{digits});
       my $ret = new byte [$digits_length + 1];

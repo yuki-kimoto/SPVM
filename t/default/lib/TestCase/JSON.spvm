@@ -95,7 +95,7 @@ package TestCase::JSON {
       return 0;
     }
     my $got = (SPVM::Math::BigInteger)$val;
-    unless ($got->to_string eq $test) {
+    unless ($got->to_str eq $test) {
       return 0;
     }
     return 1;
@@ -129,8 +129,8 @@ package TestCase::JSON {
       }
       my $got = (SPVM::Math::BigDecimal)
       $val;
-      unless ($got->to_string eq $expected->[$i]) {
-        warn("got: " . $got->to_string . "\nexpected: " . $expected->[$i]);
+      unless ($got->to_str eq $expected->[$i]) {
+        warn("got: " . $got->to_str . "\nexpected: " . $expected->[$i]);
         return 0;
       }
     }
