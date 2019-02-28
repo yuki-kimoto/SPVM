@@ -77,7 +77,7 @@ WriteMakefile(
     C => [@csource_files],
     OBJECT            => '$(O_FILES)', # link all the C files too
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "spvm_build/work t/default/spvm_build/work t/precompile/spvm_build/work t/test_files_tmp @object_files"},
+    clean => {FILES => "spvm_build/work t/default/spvm_build/work t/precompile/spvm_build/work t/exe/spvm_build/work t/test_files_tmp @object_files"},
     DEFINE => "@defines -o \$@",
     EXE_FILES => ['script/spvmcc'],
     META_MERGE => {

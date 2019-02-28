@@ -438,7 +438,8 @@ t/default/value_t_array.t
 t/default/var.t
 t/default/weaken.t
 t/default/while.t
-t/exe.t
+t/exe/exe.t
+t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/test_files/file_eof.txt

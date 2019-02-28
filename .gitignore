@@ -42,4 +42,5 @@ t/test_files_tmp/*
 !t/test_files_tmp/.gitkeep
 t/default/spvm_build/*
 !t/default/spvm_build/.gitkeep
-
+t/exe/spvm_build/*
+!t/exe/spvm_build/.gitkeep
