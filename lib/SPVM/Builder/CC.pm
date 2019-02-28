@@ -85,8 +85,8 @@ sub get_dll_file_runtime {
   
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
-  my $output_dir = "$build_dir/work/lib";
-  my $dll_file = "$output_dir/$dll_rel_file";
+  my $lib_dir = "$build_dir/work/lib";
+  my $dll_file = "$lib_dir/$dll_rel_file";
   
   return $dll_file;
 }
@@ -164,8 +164,8 @@ sub compile {
   }
   
   # Output directory
-  my $output_dir = $opt->{output_dir};
-  unless (defined $output_dir && -d $output_dir) {
+  my $lib_dir = $opt->{lib_dir};
+  unless (defined $lib_dir && -d $lib_dir) {
     confess "Output directory must be specified for " . $self->category . " build";
   }
 
@@ -288,14 +288,14 @@ sub link {
   }
   
   # Output directory
-  my $output_dir = $opt->{output_dir};
-  unless (defined $output_dir && -d $output_dir) {
+  my $lib_dir = $opt->{lib_dir};
+  unless (defined $lib_dir && -d $lib_dir) {
     confess "Output directory must be specified for " . $self->category . " build";
   }
 
   # shared object file
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
-  my $dll_file = "$output_dir/$dll_rel_file";
+  my $dll_file = "$lib_dir/$dll_rel_file";
 
   # Quiet output
   my $quiet = $self->quiet;
@@ -363,7 +363,7 @@ sub link {
 
   # Create shared object blib directory
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $dll_dir = "$output_dir/$package_rel_file_without_ext";
+  my $dll_dir = "$lib_dir/$package_rel_file_without_ext";
   mkpath $dll_dir;
   
   # Move shared objectrary file to blib directory
@@ -402,8 +402,8 @@ sub build_dll_precompile_runtime {
   mkpath $src_dir;
   
   # Lib directory
-  my $output_dir = "$build_dir/work/lib";
-  mkpath $output_dir;
+  my $lib_dir = "$build_dir/work/lib";
+  mkpath $lib_dir;
   
   $self->create_source_precompile(
     $package_name,
@@ -419,7 +419,7 @@ sub build_dll_precompile_runtime {
     {
       input_dir => $src_dir,
       object_dir => $object_dir,
-      output_dir => $output_dir,
+      lib_dir => $lib_dir,
     }
   );
 }
@@ -439,8 +439,8 @@ sub build_dll_native_runtime {
   my $object_dir = "$build_dir/work/object";
   mkpath $object_dir;
   
-  my $output_dir = "$build_dir/work/lib";
-  mkpath $output_dir;
+  my $lib_dir = "$build_dir/work/lib";
+  mkpath $lib_dir;
   
   $self->build_dll(
     $package_name,
@@ -448,7 +448,7 @@ sub build_dll_native_runtime {
     {
       input_dir => $input_dir,
       object_dir => $object_dir,
-      output_dir => $output_dir,
+      lib_dir => $lib_dir,
     }
   );
 }
@@ -464,7 +464,7 @@ sub build_dll_precompile_dist {
   my $src_dir = "spvm_build/work/src";
   mkpath $src_dir;
 
-  my $output_dir = 'blib/lib';
+  my $lib_dir = 'blib/lib';
   
   my $category = $self->category;
   
@@ -486,7 +486,7 @@ sub build_dll_precompile_dist {
     {
       input_dir => $src_dir,
       object_dir => $object_dir,
-      output_dir => $output_dir,
+      lib_dir => $lib_dir,
     }
   );
 }
@@ -499,7 +499,7 @@ sub build_dll_native_dist {
   my $object_dir = "spvm_build/work/object";
   mkpath $object_dir;
 
-  my $output_dir = 'blib/lib';
+  my $lib_dir = 'blib/lib';
 
   my $category = $self->category;
   
@@ -510,7 +510,7 @@ sub build_dll_native_dist {
     {
       input_dir => $input_dir,
       object_dir => $object_dir,
-      output_dir => $output_dir,
+      lib_dir => $lib_dir,
     }
   );
 }

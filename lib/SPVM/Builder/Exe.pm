@@ -123,7 +123,7 @@ sub build_exe_file {
       {
         input_dir => $input_dir,
         object_dir => "$build_dir/work/object",
-        output_dir => "$build_dir/work/object",
+        lib_dir => "$build_dir/work/object",
       }
     );
   }
@@ -160,7 +160,7 @@ sub build_exe_file {
       {
         input_dir => $input_dir,
         object_dir => "$build_dir/work/object",
-        output_dir => "$build_dir/work/object",
+        lib_dir => "$build_dir/work/object",
       }
     );
   }
