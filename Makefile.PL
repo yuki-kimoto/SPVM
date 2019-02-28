@@ -77,7 +77,7 @@ WriteMakefile(
     C => [@csource_files],
     OBJECT            => '$(O_FILES)', # link all the C files too
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "spvm_build/work t/default/spvm_build/work t/precompile/spvm_build/work t/exe/spvm_build/work t/test_files_tmp @object_files"},
+    clean => {FILES => "spvm_build/work t/default/spvm_build/work t/default/lib/UseAllModule.spvm t/precompile t/exe/spvm_build/work t/test_files_tmp @object_files"},
     DEFINE => "@defines -o \$@",
     EXE_FILES => ['script/spvmcc'],
     META_MERGE => {
@@ -92,9 +92,14 @@ WriteMakefile(
     },
 );
 
+# Create use all test modules script
+my $create_use_all_modules_cmd = 'perl t/create_use_all_modules.pl';
+system($create_use_all_modules_cmd) == 0
+  or die "Can't execute $create_use_all_modules_cmd: $!";
+
 # Create precompile test
 my $create_precompile_test_cmd = 'perl t/copy_default_to_precompile.pl';
-system('perl t/copy_default_to_precompile.pl') == 0
+system($create_precompile_test_cmd) == 0
   or die "Can't execute $create_precompile_test_cmd: $!";
 
 # Add Build shared library make rule

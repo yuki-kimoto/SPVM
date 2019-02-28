@@ -35,7 +35,7 @@ solo/t/spvm_t_hash
 solo/t/spvm_t_list
 solo/main
 solo/Makefile
-t/precompile
+t/precompile/*
 spvmcc_build/*
 !spvmcc_build/.gitkeep
 t/test_files_tmp/*
@@ -44,3 +44,4 @@ t/default/spvm_build/*
 !t/default/spvm_build/.gitkeep
 t/exe/spvm_build/*
 !t/exe/spvm_build/.gitkeep
+UseAllModule.spvm

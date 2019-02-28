@@ -38,3 +38,4 @@ SPVM-.*
 ^t/default/spvm_build/[^\.]
 ^t/precompile/spvm_build/[^\.]
 ^t/exe/spvm_build/[^\.]
+UseAllModule\.spvm
