@@ -357,7 +357,7 @@ t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
-t/default/lib/TestCase/Lib/SPVM/String.spvm
+t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm
@@ -394,7 +394,7 @@ t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/SPVM/IO.spvm
 t/default/lib/TestCase/SPVM/IO/File.spvm
-t/default/lib/TestCase/StringBuffer.spvm
+t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Subtract.spvm
 t/default/lib/TestCase/Switch.spvm
