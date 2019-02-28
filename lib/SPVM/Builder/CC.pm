@@ -480,15 +480,6 @@ sub build_dll_precompile_dist {
     }
   );
   
-  $self->copy_source_precompile_dist(
-    $package_name,
-    $sub_names,
-    {
-      input_dir => $src_dir,
-      output_dir => $output_dir,
-    }
-  );
-  
   $self->build_dll(
     $package_name,
     $sub_names,
@@ -574,25 +565,6 @@ sub create_source_precompile {
     print $fh $package_csource;
     close $fh;
   }
-}
-
-sub copy_source_precompile_dist {
-  my ($self, $package_name, $sub_names, $opt) = @_;
-  
-  my $input_dir = $opt->{input_dir};
-
-  my $output_dir = $opt->{output_dir};
-  
-  my $category = 'precompile';
-  
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $input_src_file = "$input_dir/$package_rel_file_without_ext.$category.c";
-  my $output_src_file = "$output_dir/$package_rel_file_without_ext.$category.c";
-  my $output_src_dir = dirname $output_src_file;
-  mkpath $output_src_dir;
-  
-  copy $input_src_file, $output_src_file
-    or confess "Can't copy $input_src_file to $output_src_file: $!";
 }
 
 1;
