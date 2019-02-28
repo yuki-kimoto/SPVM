@@ -1,3 +1,0 @@
-package TestCase::SPVM::IO::File {
-  use SPVM::IO::File;
-}

@@ -1,19 +1,6 @@
 package TestCase {
   use TestCase::Minimal;
   use TestCase::Simple;
-  use TestCase::Destructor;
-  use TestCase::Empty;
-  use TestCase::Private;
-  use TestCase::Point_3i;
-  use TestCase::Data::Weaken;
-  use TestCase::Switch;
-
-  use SPVM::Byte;
-  use SPVM::Short;
-  use SPVM::Int;
-  use SPVM::Long;
-  use SPVM::Float;
-  use SPVM::Double;
 
   our $PACKAGE_VAR_INT : int;
   our $PACKAGE_VAR_LONG : long;

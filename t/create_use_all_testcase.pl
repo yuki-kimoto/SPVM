@@ -18,9 +18,12 @@ find(
       my $file = $File::Find::name;
       
       if (-f $file) {
+        
         my $top_dir_re = quotemeta $test_default_dir;
         
         my $module_name = $file;
+        
+        return unless $module_name =~ /\.spvm$/;
         
         $module_name =~ s/^$top_dir_re[\/\\]//;
         
@@ -38,11 +41,17 @@ find(
   $test_default_dir
 );
 
-my $all_module_file = 't/default/lib/UseAllModule.spvm';
+my $all_module_file = 't/default/lib/UseAllTestCase.spvm';
 
 open my $fh, '>', $all_module_file
   or die "Can't write $all_module_file: $!";
 
+my $src = "package UseAllTestCase {\n";
+
 for my $module_name (@module_names) {
-  print $fh "use $module_name;\n";
+  $src .= "  use $module_name;\n";
 }
+
+$src .= "}\n";
+
+print $fh $src;

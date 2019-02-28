@@ -1,4 +1,6 @@
 package TestCase::Object {
+  use TestCase::Destructor;
+  
   has INT32_MAX : int;
   has next : int;
 

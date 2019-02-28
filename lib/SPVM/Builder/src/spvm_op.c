@@ -2050,6 +2050,34 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (strlen(sub_name) == 0 && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
           SPVM_COMPILER_error(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
+
+        // If package is interface, sub must not be native
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have native descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        }
+
+        // If package is interface, sub must not be precompile
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        }
+
+        // If package is interface, sub must not be precompile
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        }
+
+        // If package is interface, sub must not be precompile
+        if (!sub->op_block) {
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+            // OK
+          }
+          else if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
+            // OK
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "Subroutine must have implementation block at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+          }
+        }
         
         SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
         

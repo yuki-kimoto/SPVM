@@ -1,7 +1,6 @@
 package TestCase::MyExe {
-  use TestCase;
-  use TestCase::Minimal;
-  use TestCase::Extension;
+  use UseAllTestCase;
+  
   sub main : int ($argv : string[]) {
     my $test_num = 0;
     
