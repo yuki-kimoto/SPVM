@@ -201,7 +201,7 @@ sub compile_spvm_csources {
   my $build_dir = $self->{build_dir};
   
   # SPVM dir
-  my $build_spvm_dir = "$build_dir/spvm";
+  my $build_spvm_dir = "$build_dir/work/spvm";
   mkpath $build_spvm_dir;
   
   # Compile source files
@@ -227,7 +227,7 @@ sub create_main_csource {
   my ($self, $package_name) = @_;
   
   my $build_dir = $self->{build_dir};
-  my $main_csource_file = "$build_dir/my_main.c";
+  my $main_csource_file = "$build_dir/work/my_main.c";
 
   # Create c source file
   my $main_csource = $self->build_main_csource($package_name);
@@ -250,8 +250,8 @@ sub compile_main {
   # Compile source files
   my $quiet = $self->{quiet};
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $object_file = "$build_dir/my_main.o";
-  my $src_file = "$build_dir/my_main.c";
+  my $object_file = "$build_dir/work/my_main.o";
+  my $src_file = "$build_dir/work/my_main.c";
   
   # Compile source file
   $cbuilder->compile(
@@ -270,7 +270,7 @@ sub link_executable {
   my $build_dir = $self->{build_dir};
   
   my $object_files = [];
-  push @$object_files, glob "$build_dir/spvm/*.o";
+  push @$object_files, glob "$build_dir/work/spvm/*.o";
   
   my $builder = $self->builder;
   
@@ -301,7 +301,7 @@ sub link_executable {
   }
   push @$object_files, @$precompile_object_files;
   
-  push @$object_files, glob "$build_dir/my_main.o";
+  push @$object_files, glob "$build_dir/work/my_main.o";
   
   my $build_config = SPVM::Builder::Util::new_default_build_config();
   
