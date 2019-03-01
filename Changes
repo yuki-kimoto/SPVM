@@ -1,9 +1,10 @@
-0.0417 2018-02-28
+0.0417 2018-03-01
   - add private and public descriptor to sub declaration
   - add allow syntax to allow to accsess to private things.
     
     allow TestCase::Allow;
   - rename SPVM::Stringer::to_string to to_str
+  - fix spvmcc compile bugs
 
 0.0416 2018-02-19
   - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
