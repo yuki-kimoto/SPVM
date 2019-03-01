@@ -43,6 +43,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Array->array_init_object());
 }
 
+# Array default
+{
+  ok(TestCase::Array->array_default_zero_memory_pool());
+  ok(TestCase::Array->array_default_zero_not_memory_pool());
+}
+
 # array - set and get array element, first element
 {
   my $element = TestCase::Array->array_set_and_get_array_element_first();
@@ -59,12 +65,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   my $total = TestCase::Array->array_culcurate_sum_by_for();
   is($total, 6);
-}
-
-# Array default
-{
-  ok(TestCase::Array->array_default_zero_memory_pool());
-  ok(TestCase::Array->array_default_zero_not_memory_pool());
 }
 
 # Clear exception

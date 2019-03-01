@@ -60,7 +60,49 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Sub->push_arg_undef());
 }
 
+# Call subroutine
+{
+  ok(TestCase::Sub->call_sub_last_camma());
+  ok(TestCase::Sub->call_sub_undef(undef));
+}
+
+# Call void subroutine
+{
+  ok(TestCase::Sub->call_void());
+}
+
+# Default return value
+{
+  ok(TestCase::Sub->default_return_value_byte());
+  ok(TestCase::Sub->default_return_value_short());
+  ok(TestCase::Sub->default_return_value_int());
+  ok(TestCase::Sub->default_return_value_long());
+  ok(TestCase::Sub->default_return_value_float());
+  ok(TestCase::Sub->default_return_value_double());
+  ok(TestCase::Sub->default_return_value_object());
+}
+
+{
+  ok(TestCase::Sub->call_sub_nest());
+}
+
+# Argument convetion
+{
+  ok(TestCase::Sub->call_sub_args_convertion());
+}
+
+
 # call_sub array
+{
+  # call_sub
+  {
+    ok(TestCase::Sub->call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
+    ok(TestCase::Sub->call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
+    ok(TestCase::Sub->call_sub_args_int(0, $INT_MAX, $INT_MIN));
+    ok(TestCase::Sub->call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
+  }
+}
+
 {
   # call_sub barray
   {
@@ -97,21 +139,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     my $sp_values = SPVM::new_darray([0.5, 0.5, 1.0]);
     is(TestCase::Sub->call_sub_darray($sp_values), 2.0);
   }
-
-  # call_sub
-  {
-    ok(TestCase::Sub->call_sub_args_byte(0, $BYTE_MAX, $BYTE_MIN));
-    ok(TestCase::Sub->call_sub_args_short(0, $SHORT_MAX, $SHORT_MIN));
-    ok(TestCase::Sub->call_sub_args_int(0, $INT_MAX, $INT_MIN));
-    ok(TestCase::Sub->call_sub_args_long(0, $LONG_MAX, $LONG_MIN));
-  }
 }
 
-# Call subroutine
 {
-  ok(TestCase::Sub->call_sub_last_camma());
-  ok(TestCase::Sub->call_sub_undef(undef));
-  
   {
     my $start_memory_blocks_count = SPVM::memory_blocks_count();
     TestCase::Sub->call_sub_assign();
@@ -119,13 +149,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     is($start_memory_blocks_count, $end_memory_blocks_count);
   }
 }
-
-# Call void subroutine
-{
-  ok(TestCase::Sub->call_void());
-}
-
-
 
 # call_sub return array
 {
@@ -153,26 +176,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     my $sp_values = TestCase::Sub->call_sub_return_darray();
     TestCase::Sub->call_sub_return_darray_check($sp_values);
   }
-}
-
-# Default return value
-{
-  ok(TestCase::Sub->default_return_value_byte());
-  ok(TestCase::Sub->default_return_value_short());
-  ok(TestCase::Sub->default_return_value_int());
-  ok(TestCase::Sub->default_return_value_long());
-  ok(TestCase::Sub->default_return_value_float());
-  ok(TestCase::Sub->default_return_value_double());
-  ok(TestCase::Sub->default_return_value_object());
-}
-
-{
-  ok(TestCase::Sub->call_sub_nest());
-}
-
-# Argument convetion
-{
-  ok(TestCase::Sub->call_sub_args_convertion());
 }
 
 # All object is freed

@@ -3,10 +3,238 @@ package TestCase::MyExe {
   our $TEST_NUM : int;
   
   sub main : int ($argv : string[]) {
-    # Object tests
+    # Exception
     {
-      my $ok = TestCase::Object->object_field_set_and_get;
-      ok($ok);
+      {
+        ok(TestCase::Exception->exception_eval_call_sub());
+      }
+    }
+    # sort
+    {
+      # sortb
+      ok(TestCase::Lib::SPVM::CORE->test_sortb);
+
+      # sorts
+      ok(TestCase::Lib::SPVM::CORE->test_sorts);
+
+      # sorti
+      ok(TestCase::Lib::SPVM::CORE->test_sorti);
+
+      # sortl
+      ok(TestCase::Lib::SPVM::CORE->test_sortl);
+
+      # sortf
+      ok(TestCase::Lib::SPVM::CORE->test_sortf);
+
+      # sortd
+      ok(TestCase::Lib::SPVM::CORE->test_sortd);
+
+      # sortd
+      ok(TestCase::Lib::SPVM::CORE->test_sorto);
+    }
+    
+    # join
+    {
+      ok(TestCase::Lib::SPVM::CORE->test_join);
+    }
+    
+    # Import sub
+    {
+      ok(TestCase::Sub->test_import_sub);
+    }
+
+    # Retrun value automatical numeric convertion
+    {
+      ok(TestCase::Sub->return_value_automatical_numeric_convertion);
+    }
+    # variable length arguments
+    {
+      ok(TestCase::Sub->vaarg_objects_pass_each_values);
+      ok(TestCase::Sub->vaarg_objects_pass_array);
+      ok(TestCase::Sub->vaarg_pass_each_values);
+      ok(TestCase::Sub->vaarg_pass_array);
+    }
+
+    # Anon sub
+    {
+      ok(TestCase::Sub->anon_sub_capture);
+      ok(TestCase::Sub->anon_sub_call_anon_sub);
+      ok(TestCase::Sub->anon_sub_call_anon_sub_from_interface);
+    }
+
+    # Return value
+    {
+      ok(TestCase::Sub->return_value_byte);
+      ok(TestCase::Sub->return_value_short);
+      ok(TestCase::Sub->return_value_int);
+      ok(TestCase::Sub->return_value_long);
+      ok(TestCase::Sub->return_value_float);
+      ok(TestCase::Sub->return_value_double);
+    }
+
+    {
+      ok(TestCase::Sub->push_arg_undef());
+    }
+
+    # Call subroutine
+    {
+      ok(TestCase::Sub->call_sub_last_camma());
+      ok(TestCase::Sub->call_sub_undef(undef));
+    }
+
+    # Call void subroutine
+    {
+      ok(TestCase::Sub->call_void());
+    }
+
+    # Default return value
+    {
+      ok(TestCase::Sub->default_return_value_byte());
+      ok(TestCase::Sub->default_return_value_short());
+      ok(TestCase::Sub->default_return_value_int());
+      ok(TestCase::Sub->default_return_value_long());
+      ok(TestCase::Sub->default_return_value_float());
+      ok(TestCase::Sub->default_return_value_double());
+      ok(TestCase::Sub->default_return_value_object());
+    }
+
+    {
+      ok(TestCase::Sub->call_sub_nest());
+    }
+
+    # Argument convetion
+    {
+      ok(TestCase::Sub->call_sub_args_convertion());
+    }
+
+    # Fat camma
+    {
+      ok(TestCase::Array->array_init_fatcamma);
+    }
+
+    # Array
+    {
+      ok(TestCase::Array->array());
+      ok(TestCase::Array->array_store_undef());
+    }
+
+    # Array length
+    {
+      ok(TestCase::Array->array_length_atmark());
+      ok(TestCase::Array->array_length_atmark_brace());
+      ok(TestCase::Array->array_length_scalar_atmark());
+      ok(TestCase::Array->array_length_scalar_atmark_brace());
+      ok(TestCase::Array->array_length_undef());
+    }
+
+    # Array initialization
+    {
+      ok(TestCase::Array->array_init_empty());
+      ok(TestCase::Array->array_init_byte());
+      ok(TestCase::Array->array_init_short());
+      ok(TestCase::Array->array_init_int());
+      ok(TestCase::Array->array_init_long());
+      ok(TestCase::Array->array_init_float());
+      ok(TestCase::Array->array_init_double());
+      ok(TestCase::Array->array_init_object());
+    }
+
+    # Array default
+    {
+      ok(TestCase::Array->array_default_zero_memory_pool());
+      ok(TestCase::Array->array_default_zero_not_memory_pool());
+    }
+
+    # package variable access
+    {
+      ok(TestCase::Extension->set_bpkgvar);
+      ok(TestCase::Extension->set_spkgvar);
+      ok(TestCase::Extension->set_ipkgvar);
+      ok(TestCase::Extension->set_lpkgvar);
+      ok(TestCase::Extension->set_fpkgvar);
+      ok(TestCase::Extension->set_dpkgvar);
+      ok(TestCase::Extension->set_opkgvar);
+      ok(TestCase::Extension->bpkgvar);
+      ok(TestCase::Extension->spkgvar);
+      ok(TestCase::Extension->ipkgvar);
+      ok(TestCase::Extension->lpkgvar);
+      ok(TestCase::Extension->fpkgvar);
+      ok(TestCase::Extension->dpkgvar);
+      ok(TestCase::Extension->opkgvar);
+    }
+
+    # has_interface
+    {
+      ok(TestCase::Extension->has_interface);
+    }
+
+    # is_type
+    {
+      ok(TestCase::Extension->is_type);
+    }
+
+    # Native Exception
+    {
+      ok(TestCase::Extension->native_use_strlen_test);
+      ok(TestCase::Extension->call_void_sub_exception);
+    }
+
+    # Check mortal API
+    {
+      ok(TestCase::Extension->mortal_api);
+      ok(TestCase::Extension->enter_scope_leave_scope);
+    }
+
+    # env->call_sub
+    {
+      ok(TestCase::Extension->native_call_sub);
+    }
+
+    # Field
+    {
+      ok(TestCase::Extension->bfield());
+      ok(TestCase::Extension->sfield());
+      ok(TestCase::Extension->ifield());
+      ok(TestCase::Extension->lfield());
+      ok(TestCase::Extension->ffield());
+      ok(TestCase::Extension->dfield());
+      ok(TestCase::Extension->ofield());
+
+      ok(TestCase::Extension->set_bfield());
+      ok(TestCase::Extension->set_sfield());
+      ok(TestCase::Extension->set_ifield());
+      ok(TestCase::Extension->set_lfield());
+      ok(TestCase::Extension->set_ffield());
+      ok(TestCase::Extension->set_dfield());
+      ok(TestCase::Extension->set_ofield());
+
+    }
+
+    # Ref
+    {
+      ok(TestCase::Extension->ref_byte());
+      ok(TestCase::Extension->ref_short());
+      ok(TestCase::Extension->ref_int());
+      ok(TestCase::Extension->ref_long());
+      ok(TestCase::Extension->ref_float());
+      ok(TestCase::Extension->ref_double());
+    }
+
+    # Native Exception
+    {
+      ok(TestCase::Extension2->spvm_extension2());
+    }
+
+    # Pointer
+    {
+      ok(TestCase::Pointer->struct_test());
+    }
+
+    # Various Tests
+    {
+      ok(TestCase::Interface->basic());
+      ok(TestCase::Interface->comparator());
+      ok(TestCase::Object->object_field_set_and_get);
     }
     
     # use TestCase::Minimal
