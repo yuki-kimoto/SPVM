@@ -433,7 +433,6 @@ t/default/term.t
 t/default/unary-minus.t
 t/default/unary-plus.t
 t/default/unless.t
-t/default/use_all_testcase.t
 t/default/value_t_array.t
 t/default/var.t
 t/default/weaken.t
