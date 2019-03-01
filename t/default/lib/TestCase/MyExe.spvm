@@ -1,13 +1,12 @@
 package TestCase::MyExe {
   use UseAllTestCase;
+  our $TEST_NUM : int;
   
   sub main : int ($argv : string[]) {
-    my $test_num = 0;
-    
     # Object tests
     {
       my $ok = TestCase::Object->object_field_set_and_get;
-      ok($ok, \$test_num);
+      ok($ok);
     }
     
     # use TestCase::Minimal
@@ -19,7 +18,7 @@ package TestCase::MyExe {
       if ($minimal->{x} == 10) {
         $ok = 1;
       }
-      ok($ok, \$test_num);
+      ok($ok);
     }
     
     # use TestCase
@@ -29,7 +28,7 @@ package TestCase::MyExe {
       if ($ret == 20) {
         $ok = 1;
       }
-      ok($ok, \$test_num);
+      ok($ok);
     }
     
     # precompile sub
@@ -39,24 +38,25 @@ package TestCase::MyExe {
       if ($ret == 9) {
         $ok = 1;
       }
-      ok($ok, \$test_num);
+      ok($ok);
     }
     
     # Finish test
-    print("1.." . (string)$test_num . "\n");
+    print("1.." . (string)$TEST_NUM . "\n");
     
     return 0;
   }
   
-  sub ok : void ($ok : int, $test_num_ref : int&) {
-    $$test_num_ref = $$test_num_ref + 1;
+  sub ok : void ($ok : int) {
+    $TEST_NUM++;
+
     if ($ok) {
       print("ok ");
     }
     else {
       print("not ok ");
     }
-    print((string)$$test_num_ref . "\n");
+    print((string)$TEST_NUM . "\n");
   }
   
   precompile sub precompile_sub : int ($num : int) {
