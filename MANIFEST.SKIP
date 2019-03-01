@@ -29,6 +29,7 @@ SPVM-.*
 ^solo/t/spvm_t_hash
 ^solo/t/spvm_t_list
 ^solo/main
+^solo/myexe
 ^solo/Makefile
 ^t/precompile
 ^spvmcc_build/[^\.]
@@ -39,3 +40,5 @@ SPVM-.*
 ^t/precompile/spvm_build/[^\.]
 ^t/exe/spvm_build/[^\.]
 UseAllModule\.spvm
+^solo/spvm_build/[^\.]
+t/default/lib/UseAllTestCase\.spvm
