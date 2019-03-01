@@ -18,7 +18,7 @@ use lib "$FindBin::Bin/default/lib";
   my $exe_dir = 't/spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $spvmcc_cmd = 'perl -Mblib blib/script/spvmcc -B t/exe/spvm_build -I t/default/lib -o t/spvm_build/work/exe/myexe TestCase::MyExe';
+  my $spvmcc_cmd = "$^X -Mblib blib/script/spvmcc -B t/exe/spvm_build -I t/default/lib -o t/spvm_build/work/exe/myexe TestCase::MyExe";
   system($spvmcc_cmd) == 0
     or die "Can't execute command $spvmcc_cmd:$!";
 
