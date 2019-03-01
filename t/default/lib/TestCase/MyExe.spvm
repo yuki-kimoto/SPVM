@@ -4,6 +4,12 @@ package TestCase::MyExe {
   sub main : int ($argv : string[]) {
     my $test_num = 0;
     
+    # Object tests
+    {
+      my $ok = TestCase::Object->object_field_set_and_get;
+      ok($ok, \$test_num);
+    }
+    
     # use TestCase::Minimal
     {
       my $minimal = TestCase::Minimal->new;
