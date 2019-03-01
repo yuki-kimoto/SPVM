@@ -186,6 +186,7 @@ solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
 solo/lib/TestCase/XGetter.spvm
 solo/solo_Makefile.PL
+solo/spvm_build/.gitkeep
 SPVM.xs
 spvm_build/.gitkeep
 spvmdoc/jp/public/css/common.css
@@ -405,7 +406,6 @@ t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/While.spvm
-t/default/lib/UseAllTestCase.spvm
 t/default/literal-character.t
 t/default/literal-floating-point.t
 t/default/literal-integer.t
