@@ -227,6 +227,7 @@ spvmdoc/jp/public/js/jquery-1.9.0.min.js
 spvmdoc/jp/public/language.html
 spvmdoc/jp/serve.pl
 t/copy_default_to_precompile.pl
+t/create_use_all_testcase.pl
 t/default/__FILE__.t
 t/default/__LINE__.t
 t/default/__PACKAGE__.t
@@ -392,8 +393,6 @@ t/default/lib/TestCase/Return.spvm
 t/default/lib/TestCase/Seqop.spvm
 t/default/lib/TestCase/Simple.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
-t/default/lib/TestCase/SPVM/IO.spvm
-t/default/lib/TestCase/SPVM/IO/File.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Subtract.spvm
@@ -406,6 +405,7 @@ t/default/lib/TestCase/ValueTArray.spvm
 t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/While.spvm
+t/default/lib/UseAllTestCase.spvm
 t/default/literal-character.t
 t/default/literal-floating-point.t
 t/default/literal-integer.t
@@ -433,6 +433,7 @@ t/default/term.t
 t/default/unary-minus.t
 t/default/unary-plus.t
 t/default/unless.t
+t/default/use_all_testcase.t
 t/default/value_t_array.t
 t/default/var.t
 t/default/weaken.t
@@ -441,6 +442,7 @@ t/exe/exe.t
 t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/spvm_build/work/exe/myexe
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
