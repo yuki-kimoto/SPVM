@@ -1,0 +1,4 @@
+package SPVM::in_addr : pointer_t {
+  native sub new : SPVM::in_addr ();
+  native sub DESTROY : void ($self : self);
+}

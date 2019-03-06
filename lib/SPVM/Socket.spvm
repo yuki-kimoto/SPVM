@@ -1,9 +1,10 @@
 package SPVM::Socket {
   use SPVM::SocketHandle;
-  use SPVM::Protoent;
+  use SPVM::protoent;
+  use SPVM::in_addr;
   
-  native sub socket : SPVM::SocketHandle ($domain : int, $type : int, $proto : SPVM::Protoent);
-
+  native sub socket : SPVM::SocketHandle ($domain : int, $type : int, $proto : SPVM::protoent);
+  native sub inet_aton : int ($cp : string, $inp : SPVM::in_addr);
 }
 
 __END__
@@ -17,10 +18,10 @@ socket(SOCK, PF_INET, SOCK_STREAM, $proto)  || die "socket: $!";
 Perl CORE
 
   socket DOMAIN,TYPE,PROTOCOL
+  connect SOCKET,NAME
+  getpeername
   accept
   bind
-  connect
-  getpeername
   getsockname
   getsockopt
   listen
