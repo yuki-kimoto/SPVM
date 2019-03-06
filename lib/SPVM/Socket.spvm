@@ -3,6 +3,15 @@ package SPVM::Socket {
   use SPVM::protoent;
   use SPVM::in_addr;
   
+  our $AF_UNIX : ro int;
+  our $AF_INET : ro int;
+  our $AF_INET6 : ro int;
+  
+  BEGIN {
+    init_native_constants();
+  }
+  
+  native init_native_constants : void();
   native sub socket : SPVM::SocketHandle ($domain : int, $type : int, $proto : SPVM::protoent);
   native sub inet_aton : int ($cp : string, $inp : SPVM::in_addr);
 }

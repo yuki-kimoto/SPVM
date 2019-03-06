@@ -1,5 +1,6 @@
 #include "spvm_native.h"
 
+#include <stdlib.h>
 #include <assert.h>
 
 #include <netinet/in.h>
@@ -29,4 +30,28 @@ int32_t SPNATIVE__SPVM__Socket__inet_aton(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack[0].ival = ret;
   
   return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // AF_UNIX
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Socket", "$AF_UNIX", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, AF_UNIX);
+  }
+
+  // AF_INET
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Socket", "$AF_INET", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, AF_INET);
+  }
+
+  // AF_INET6
+  {
+    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Socket", "$AF_INET6", "int");
+    if (pkgvar_id < 0) { abort(); }
+    env->set_ipkgvar(env, pkgvar_id, AF_INET6);
+  }
 }
