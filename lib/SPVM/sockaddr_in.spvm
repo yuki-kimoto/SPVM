@@ -1,3 +1,4 @@
-package SPVM::Sockaddr_in : pointer_t {
-  
+package SPVM::sockaddr_in : pointer_t {
+  native sub new : SPVM::sockaddr_in ();
+  native sub DESTROY : void ($self : self);
 }

@@ -4,7 +4,6 @@
 
 #include <netinet/in.h>
 
-
 int32_t SPNATIVE__SPVM__Socket__socket(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
