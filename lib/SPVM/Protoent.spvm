@@ -1,0 +1,3 @@
+package SPVM::Protoent : pointer_t {
+  
+}
