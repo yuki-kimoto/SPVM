@@ -12,6 +12,7 @@ package SPVM::Socket {
   }
   
   native init_native_constants : void();
+  
   native sub socket : SPVM::SocketHandle ($domain : int, $type : int, $proto : SPVM::protoent);
   native sub inet_aton : int ($cp : string, $inp : SPVM::in_addr);
 }

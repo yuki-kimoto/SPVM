@@ -1,6 +1,7 @@
 0.0419 2018-03-07
   - add env->alloc_memory_block_zero
   - add env->free_memory_block
+  - add socket modules
 0.0418 2018-03-01
   - fix t/exe/exe.t bug
 0.0417 2018-03-01

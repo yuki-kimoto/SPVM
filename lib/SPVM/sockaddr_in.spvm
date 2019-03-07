@@ -1,4 +1,14 @@
 package SPVM::sockaddr_in : pointer_t {
   native sub new : SPVM::sockaddr_in ();
+  
+  has sin_addr : SPVM::in_addr;
+
+  native sub set_sin_family : void ($sin_family : byte);
+  native sub sin_family : byte ();
+  native sub set_sin_port : void ($sin_port : short);
+  native sub sin_port : short ();
+  native sub set_sin_addr : void ($sin_addr : SPVM::in_addr);
+  native sub sin_addr : SPVM::in_addr ();
+
   native sub DESTROY : void ($self : self);
 }

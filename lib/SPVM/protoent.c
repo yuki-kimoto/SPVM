@@ -23,7 +23,7 @@ int32_t SPNATIVE__SPVM__protoent__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   struct protoent* pent = env->pointer(env, obj_pent);
   
-  free(pent);
+  env->free_memory_block(env, pent);
   
   return SPVM_SUCCESS;
 }

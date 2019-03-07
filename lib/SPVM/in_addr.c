@@ -23,7 +23,7 @@ int32_t SPNATIVE__SPVM__in_addr__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   struct in_addr* ina = env->pointer(env, obj_ina);
   
-  free(ina);
+  env->free_memory_block(env, ina);
   
   return SPVM_SUCCESS;
 }
