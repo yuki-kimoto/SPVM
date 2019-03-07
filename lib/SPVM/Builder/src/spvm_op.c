@@ -1906,12 +1906,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Field declarations
     for (int32_t i = 0; i < package->fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
+
       if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
-        SPVM_COMPILER_error(compiler, "Pointer package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+        SPVM_COMPILER_error(compiler, "package which has pointer_t descriptor can't have fields at %s line %d\n", field->op_field->file, field->op_field->line);
         continue;
       }
 
-      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
       field->index = i;
       const char* field_name = field->op_name->uv.name;
 
