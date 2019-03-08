@@ -1,8 +1,6 @@
 package SPVM::sockaddr_in : pointer_t {
-  native sub new : SPVM::sockaddr_in ();
-  
-  has sin_addr : SPVM::in_addr;
 
+  native sub new : SPVM::sockaddr_in ();
   native sub set_sin_family : void ($sin_family : byte);
   native sub sin_family : byte ();
   native sub set_sin_port : void ($sin_port : short);
