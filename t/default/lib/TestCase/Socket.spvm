@@ -7,10 +7,10 @@ package TestCase::Socket {
     # Socket
     my $sock = SPVM::Socket->socket(SPVM::Socket->AF_INET, SPVM::Socket->SOCK_STREAM, 0);
 
-=pod
     # Connect info
     my $dest = "127.0.0.1";
     my $sockaddr_in = SPVM::sockaddr_in->new;
+=pod
     $sockaddr_in->set_sin_family((byte)SPVM::Socket->AF_INET);
     $sockaddr_in->set_sin_port(SPVM::Socket->htons((short)80));
     my $idest = SPVM::Socket->inet_addr($dest);

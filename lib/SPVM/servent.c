@@ -6,7 +6,7 @@
 
 int32_t SPNATIVE__SPVM__servent__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  struct servent* sent = malloc(sizeof(struct servent));
+  struct servent* sent = env->alloc_memory_block_zero(env, (sizeof(struct servent));
   
   int32_t servent_basic_type_id = env->basic_type_id(env, "SPVM::servent");
   assert(servent_basic_type_id >= 0);
@@ -23,7 +23,7 @@ int32_t SPNATIVE__SPVM__servent__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   struct servent* sent = env->pointer(env, obj_sent);
   
-  free(sent);
+  env->free_memory_block(env, sent);
   
   return SPVM_SUCCESS;
 }

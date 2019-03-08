@@ -6,7 +6,7 @@
 
 int32_t SPNATIVE__SPVM__protoent__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  struct protoent* pent = malloc(sizeof(struct protoent));
+  struct protoent* pent = env->alloc_memory_block_zero(env, sizeof(struct protoent));
   
   int32_t protoent_basic_type_id = env->basic_type_id(env, "SPVM::protoent");
   assert(protoent_basic_type_id >= 0);

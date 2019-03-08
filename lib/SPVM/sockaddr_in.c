@@ -6,7 +6,7 @@
 
 int32_t SPNATIVE__SPVM__sockaddr_in__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  struct sockaddr_in* sin = malloc(sizeof(struct sockaddr_in));
+  struct sockaddr_in* sin = env->alloc_memory_block_zero(env, sizeof(struct sockaddr_in));
   
   int32_t sockaddr_in_basic_type_id = env->basic_type_id(env, "SPVM::sockaddr_in");
   assert(sockaddr_in_basic_type_id >= 0);
