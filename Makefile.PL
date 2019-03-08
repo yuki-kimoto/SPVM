@@ -115,7 +115,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Socket');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::protoent');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::servent');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::in_addr');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::sockaddr_in');
     
     # Precompile make rule

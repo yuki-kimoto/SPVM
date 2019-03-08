@@ -8,8 +8,8 @@ package SPVM::sockaddr_in : pointer_t {
   native sub sin_port : short ($self : self);
   native sub set_sin_port : void ($self : self, $sin_port : short);
 
-  native sub sin_addr : SPVM::in_addr ($self : self);
-  native sub set_sin_addr : void ($self : self, $sin_addr : SPVM::in_addr);
+  native sub sin_addr : int ($self : self);
+  native sub set_sin_addr : void ($self : self, $sin_addr : int);
 
   native sub DESTROY : void ($self : self);
 }

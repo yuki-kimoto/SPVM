@@ -16,9 +16,7 @@ package TestCase::Socket {
     if ($idest == 0xffffffff) {
       croak "Can't exchange correct address";
     }
-=pod
     $sockaddr_in->set_sin_addr($idest);
-=cut
     
     return 1;
   }
