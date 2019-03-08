@@ -904,7 +904,7 @@ int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
   }
   // 7
   {
-    void* sp_values = env->new_str(env, "foo", 0);
+    void* sp_values = env->new_str(env, "foo");
     ref_count += env->ref_count(env, sp_values);
   }
   // 8

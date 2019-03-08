@@ -37,7 +37,7 @@ typedef void* SPVM_VALUE_object;
 
 #define SPVM_LINE_STRINGIFY(n) #n
 #define SPVM_CROAK(message, file, line) do {\
-  void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line), 0);\
+  void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line));\
   env->set_exception(env, exception);\
   return SPVM_EXCEPTION;\
 } while (0)\
@@ -97,8 +97,10 @@ struct SPVM_env {
   void* (*new_marray)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_varray_raw)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_varray)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_str_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
-  void* (*new_str)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_str_raw)(SPVM_ENV* env, const char* bytes);
+  void* (*new_str)(SPVM_ENV* env, const char* bytes);
+  void* (*new_str_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_str_len)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);

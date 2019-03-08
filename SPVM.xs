@@ -563,7 +563,7 @@ new_str_from_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // New array
-  void* string = env->new_str_raw(env, (char*)binary, array_length);
+  void* string = env->new_str_len_raw(env, (char*)binary, array_length);
 
   // Increment reference count
   env->inc_ref_count(env, string);
