@@ -10,13 +10,13 @@ package TestCase::Socket {
     # Connect info
     my $dest = "127.0.0.1";
     my $sockaddr_in = SPVM::sockaddr_in->new;
-=pod
     $sockaddr_in->set_sin_family((byte)SPVM::Socket->AF_INET);
     $sockaddr_in->set_sin_port(SPVM::Socket->htons((short)80));
     my $idest = SPVM::Socket->inet_addr($dest);
     if ($idest == 0xffffffff) {
       croak "Can't exchange correct address";
     }
+=pod
     $sockaddr_in->set_sin_addr($idest);
 =cut
     
