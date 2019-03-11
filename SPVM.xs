@@ -1781,11 +1781,18 @@ call_sub(...)
           else {
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-
               int32_t arg_basic_type_id = arg->basic_type_id;
-              int32_t arg_type_dimension = arg->type_dimension;
-              if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument is invalid object type", arg_index);
+              
+              if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
+                if (object->type_dimension == 0) {
+                  croak("%dth argument is invalid object type", arg_index);
+                }
+              }
+              else {
+                int32_t arg_type_dimension = arg->type_dimension;
+                if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
+                  croak("%dth argument is invalid object type", arg_index);
+                }
               }
               
               stack[arg_var_id].oval = object;
@@ -2240,7 +2247,7 @@ call_sub(...)
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
           
-          if (sub->return_type_dimension > 0) {
+          if (sub->return_type_dimension > 0 || sub->return_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
           }
           else if (sub->return_type_dimension == 0) {

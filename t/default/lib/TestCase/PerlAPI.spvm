@@ -10,6 +10,15 @@ package TestCase::PerlAPI {
   sub FLOAT_PRECICE : float () { return 16384.5f; }
   sub DOUBLE_PRECICE : double () { return 65536.5; }
   
+  sub any_object_array : oarray ($oarray : oarray) {
+    
+    my $bytes = (SPVM::Byte[])$oarray;
+    
+    $bytes->[2] = SPVM::Byte->new(5);
+    
+    return $bytes;
+  }
+  
   sub string_argments_and_return_value : string ($string1 : string, $string2 : string) {
     return $string1 . $string2;
   }

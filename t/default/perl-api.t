@@ -38,6 +38,18 @@ my $DBL_MIN = POSIX::DBL_MIN();
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Any object array
+{
+  # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin
+  {
+    my $bytes = SPVM::new_oarray("SPVM::Byte", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+    my $ret = TestCase::PerlAPI->any_object_array($bytes);
+    
+    isa_ok($ret, 'SPVM::Data::Array');
+    is_deeply([$ret->to_elems->[0]->val, $ret->to_elems->[1]->val, $ret->to_elems->[2]->val], [1, 2, 5]);
+  }
+}
+
 # String arguments and return value
 {
   # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin
@@ -60,7 +72,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     is($string3->to_bin, "abcde");
     is_deeply($string3->to_elems, [ord('a'), ord('b'), ord('c'), ord('d'), ord('e')]);
   }
-
 }
 
 # Argument is value reference and numeric reference mixed
