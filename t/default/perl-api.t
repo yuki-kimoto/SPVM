@@ -42,7 +42,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin
   {
-    my $bytes = SPVM::new_oarray("SPVM::Byte", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+    my $bytes = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
     my $ret = TestCase::PerlAPI->any_object_array($bytes);
     
     isa_ok($ret, 'SPVM::Data::Array');
@@ -227,7 +227,7 @@ is_deeply(
     $object1->set_x_int(1);
     my $object2 = TestCase->new();
     $object2->set_x_int(2);
-    my $sp_oarray = SPVM::new_oarray("TestCase", [$object1, $object2]);
+    my $sp_oarray = SPVM::new_oarray("TestCase[]", [$object1, $object2]);
     
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_oarray($sp_oarray));
     

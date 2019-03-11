@@ -971,7 +971,7 @@ new_darray_from_bin(...)
 }
 
 SV*
-new_oarray(...)
+_new_oarray(...)
   PPCODE:
 {
   (void)RETVAL;
