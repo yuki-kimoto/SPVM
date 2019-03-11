@@ -97,7 +97,6 @@ sub new_str { SPVM::ExchangeAPI::new_str($SPVM_ENV, @_) }
 sub new_str_from_bin { SPVM::ExchangeAPI::new_str_from_bin($SPVM_ENV, @_) }
 
 sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
-sub new_marray { SPVM::ExchangeAPI::new_marray($SPVM_ENV, @_) }
 sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }
 sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) }
 

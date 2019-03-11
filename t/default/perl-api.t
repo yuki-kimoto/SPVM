@@ -240,7 +240,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_barray([1, 2, 3]);
     my $object2 = SPVM::new_barray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("byte", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("byte[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_barray($oarray));
     
@@ -253,7 +253,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_sarray([1, 2, 3]);
     my $object2 = SPVM::new_sarray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("short", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("short[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_sarray($oarray));
     
@@ -267,7 +267,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_iarray([1, 2, 3]);
     my $object2 = SPVM::new_iarray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("int", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_iarray($oarray));
     
@@ -281,7 +281,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_larray([1, 2, 3]);
     my $object2 = SPVM::new_larray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("long", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("long[][]", [$object1, $object2]);
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_larray($oarray));
     
     my $oarray_out = $oarray->to_elems;
@@ -294,7 +294,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_farray([1, 2, 3]);
     my $object2 = SPVM::new_farray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("float", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("float[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_farray($oarray));
     
@@ -308,7 +308,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_darray([1, 2, 3]);
     my $object2 = SPVM::new_darray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("double", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("double[][]", [$object1, $object2]);
     
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_darray($oarray));
     

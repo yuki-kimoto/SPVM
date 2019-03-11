@@ -1039,7 +1039,7 @@ _new_oarray(...)
 }
 
 SV*
-new_marray(...)
+_new_marray(...)
   PPCODE:
 {
   (void)RETVAL;
