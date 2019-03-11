@@ -981,7 +981,7 @@ new_oarray(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Second argument of SPVM::new_oarray must be array reference");
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
