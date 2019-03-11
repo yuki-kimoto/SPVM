@@ -65,6 +65,59 @@ sub new_oarray {
   }
 }
 
+sub new_varray {
+  my ($env, $type_name, $elems) = @_;
+  
+  my $basic_type_name;
+  my $type_dimension = 0;
+  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
+    $basic_type_name = $1;
+    my $type_dimension_part = $2;
+    
+    while ($type_dimension_part =~ /\[/g) {
+      $type_dimension++;
+    }
+  }
+  
+  unless ($type_dimension == 1) {
+    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_varray)";
+  }
+  unless (defined $basic_type_name) {
+    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray)";
+  }
+  
+  # Check second argument
+  unless (ref $elems eq 'ARRAY') {
+    confess "Second argument of SPVM::new_varray must be array reference";
+  }
+  
+  SPVM::ExchangeAPI::_new_varray($env, $basic_type_name, $elems);
+}
+
+sub new_varray_from_bin {
+  my ($env, $type_name, $elems) = @_;
+  
+  my $basic_type_name;
+  my $type_dimension = 0;
+  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
+    $basic_type_name = $1;
+    my $type_dimension_part = $2;
+    
+    while ($type_dimension_part =~ /\[/g) {
+      $type_dimension++;
+    }
+  }
+  
+  unless ($type_dimension == 1) {
+    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_varray_from_bin)";
+  }
+  unless (defined $basic_type_name) {
+    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray_from_bin)";
+  }
+  
+  SPVM::ExchangeAPI::_new_varray_from_bin($env, $basic_type_name, $elems);
+}
+
 # other functions is implemented in SPVM.xs
 
 1;

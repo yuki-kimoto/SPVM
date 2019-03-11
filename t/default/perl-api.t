@@ -327,7 +327,7 @@ is_deeply(
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $sp_values = SPVM::new_varray("TestCase::Point_3i", $values);
+    my $sp_values = SPVM::new_varray("TestCase::Point_3i[]", $values);
     ok(TestCase::PerlAPI->spvm_new_varray_int($sp_values));
     my $out_values = $sp_values->to_elems;
     is_deeply($out_values, $values);
@@ -335,7 +335,7 @@ is_deeply(
 
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i", $binary);
+    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
     ok(TestCase::PerlAPI->spvm_new_varray_binary_int($sp_values));
     my $out_bin = $sp_values->to_bin;
     is_deeply($out_bin, $binary);

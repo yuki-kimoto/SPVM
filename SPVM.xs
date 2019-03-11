@@ -1048,7 +1048,7 @@ _new_marray(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_element_type_dimension = ST(2);
   SV* sv_elems = ST(3);
-
+  
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("Argument must be array reference");
   }
@@ -1109,7 +1109,7 @@ _new_marray(...)
 }
 
 SV*
-new_varray(...)
+_new_varray(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1228,7 +1228,7 @@ new_varray(...)
 }
 
 SV*
-new_varray_from_bin(...)
+_new_varray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;

@@ -1,8 +1,9 @@
 0.0419 2018-03-11
   - support oarray argument from SPVM::call_sub
-  - change SPVM::new_oarray first argument to array type
+  - change SPVM::new_oarray, SPVM::new_varray, SPVM::new_varray_from_bin first argument to array type
     [Before]"Point"
     [After]"Point[]"
+  - SPVM::new_marray is merged to SPVM::new_oarray
     
 0.0418 2018-03-01
   - fix t/exe/exe.t bug
