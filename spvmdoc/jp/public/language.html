@@ -5662,7 +5662,7 @@ foo(scalar @$nums);
         isweak演算子は、フィールドが、<a href="#language-weak-ref">ウィークリファレンス</a>かを確認する演算子です。
       </p>
 <pre>
-isweak オブジェクト式->{フィールド名};
+isweak 変数->{フィールド名};
 </pre>
       <p>
         オブジェクト式の型は、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
@@ -6291,7 +6291,7 @@ croak 式;
         weaken文は、フィールドに対して、<a href="#language-weak-ref">ウィークリファレンス</a>を設定する文です。
       </p>
 <pre>
-weaken オブジェクト式->{フィールド名};
+weaken 変数->{フィールド名};
 </pre>
       <p>
         オブジェクト式の型は、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
@@ -6353,7 +6353,7 @@ weaken $baz->{foo};
         unweaken文は、フィールドに対して、<a href="#language-weak-ref">ウィークリファレンス</a>を解除する文です。
       </p>
 <pre>
-unweaken オブジェクト式->{フィールド名};
+unweaken 変数->{フィールド名};
 </pre>
       <p>
         オブジェクト式の型は、<a href="#language-type-class">クラス型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。

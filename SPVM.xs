@@ -971,7 +971,7 @@ new_darray_from_bin(...)
 }
 
 SV*
-new_oarray(...)
+_new_oarray(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -981,7 +981,7 @@ new_oarray(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Second argument of SPVM::new_oarray must be array reference");
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1039,7 +1039,7 @@ new_oarray(...)
 }
 
 SV*
-new_marray(...)
+_new_marray(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1048,7 +1048,7 @@ new_marray(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_element_type_dimension = ST(2);
   SV* sv_elems = ST(3);
-
+  
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("Argument must be array reference");
   }
@@ -1109,7 +1109,7 @@ new_marray(...)
 }
 
 SV*
-new_varray(...)
+_new_varray(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1228,7 +1228,7 @@ new_varray(...)
 }
 
 SV*
-new_varray_from_bin(...)
+_new_varray_from_bin(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1781,11 +1781,18 @@ call_sub(...)
           else {
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-
               int32_t arg_basic_type_id = arg->basic_type_id;
-              int32_t arg_type_dimension = arg->type_dimension;
-              if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument is invalid object type", arg_index);
+              
+              if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
+                if (object->type_dimension == 0) {
+                  croak("%dth argument is invalid object type", arg_index);
+                }
+              }
+              else {
+                int32_t arg_type_dimension = arg->type_dimension;
+                if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
+                  croak("%dth argument is invalid object type", arg_index);
+                }
               }
               
               stack[arg_var_id].oval = object;
@@ -2240,7 +2247,7 @@ call_sub(...)
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
           
-          if (sub->return_type_dimension > 0) {
+          if (sub->return_type_dimension > 0 || sub->return_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
           }
           else if (sub->return_type_dimension == 0) {

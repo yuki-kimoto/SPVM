@@ -38,6 +38,18 @@ my $DBL_MIN = POSIX::DBL_MIN();
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Any object array
+{
+  # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin
+  {
+    my $bytes = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+    my $ret = TestCase::PerlAPI->any_object_array($bytes);
+    
+    isa_ok($ret, 'SPVM::Data::Array');
+    is_deeply([$ret->to_elems->[0]->val, $ret->to_elems->[1]->val, $ret->to_elems->[2]->val], [1, 2, 5]);
+  }
+}
+
 # String arguments and return value
 {
   # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin
@@ -60,7 +72,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     is($string3->to_bin, "abcde");
     is_deeply($string3->to_elems, [ord('a'), ord('b'), ord('c'), ord('d'), ord('e')]);
   }
-
 }
 
 # Argument is value reference and numeric reference mixed
@@ -216,7 +227,7 @@ is_deeply(
     $object1->set_x_int(1);
     my $object2 = TestCase->new();
     $object2->set_x_int(2);
-    my $sp_oarray = SPVM::new_oarray("TestCase", [$object1, $object2]);
+    my $sp_oarray = SPVM::new_oarray("TestCase[]", [$object1, $object2]);
     
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_oarray($sp_oarray));
     
@@ -229,7 +240,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_barray([1, 2, 3]);
     my $object2 = SPVM::new_barray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("byte", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("byte[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_barray($oarray));
     
@@ -242,7 +253,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_sarray([1, 2, 3]);
     my $object2 = SPVM::new_sarray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("short", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("short[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_sarray($oarray));
     
@@ -256,7 +267,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_iarray([1, 2, 3]);
     my $object2 = SPVM::new_iarray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("int", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_iarray($oarray));
     
@@ -270,7 +281,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_larray([1, 2, 3]);
     my $object2 = SPVM::new_larray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("long", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("long[][]", [$object1, $object2]);
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_larray($oarray));
     
     my $oarray_out = $oarray->to_elems;
@@ -283,7 +294,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_farray([1, 2, 3]);
     my $object2 = SPVM::new_farray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("float", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("float[][]", [$object1, $object2]);
 
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_farray($oarray));
     
@@ -297,7 +308,7 @@ is_deeply(
   {
     my $object1 = SPVM::new_darray([1, 2, 3]);
     my $object2 = SPVM::new_darray([4, 5, 6]);
-    my $oarray = SPVM::new_marray("double", 1, [$object1, $object2]);
+    my $oarray = SPVM::new_oarray("double[][]", [$object1, $object2]);
     
     ok(TestCase::PerlAPI->spvm_new_oarray_len_element_darray($oarray));
     
@@ -316,7 +327,7 @@ is_deeply(
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $sp_values = SPVM::new_varray("TestCase::Point_3i", $values);
+    my $sp_values = SPVM::new_varray("TestCase::Point_3i[]", $values);
     ok(TestCase::PerlAPI->spvm_new_varray_int($sp_values));
     my $out_values = $sp_values->to_elems;
     is_deeply($out_values, $values);
@@ -324,7 +335,7 @@ is_deeply(
 
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i", $binary);
+    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
     ok(TestCase::PerlAPI->spvm_new_varray_binary_int($sp_values));
     my $out_bin = $sp_values->to_bin;
     is_deeply($out_bin, $binary);
