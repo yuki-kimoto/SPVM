@@ -123,6 +123,51 @@ package TestCase::Lib::SPVM::HTTP::URL {
     return 1;
   }
 
+  sub test_amazon_path_escaped : int () {
+    my $url = SPVM::HTTP::URL->parse("https://www.amazon.co.jp/%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%A9%E2%80%95%E5%8E%9F%E7%90%86%E3%83%BB%E6%8A%80%E6%B3%95%E3%83%BB%E3%83%84%E3%83%BC%E3%83%AB%E3%80%882%E3%80%89-Information-Computing-V-%E3%82%A8%E3%82%A4%E3%83%9B/dp/4781905862/ref=sr_1_22?ie=UTF8&qid=1552415136&sr=8-22&keywords=%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%A9#%E5%95%86%E5%93%81%E3%81%AE%E8%AA%AC%E6%98%8E");
+    unless ($url->{scheme} eq "https") {
+      return 0;
+    }
+    unless ($url->{host} eq "www.amazon.co.jp") {
+      return 0;
+    }
+    unless ($url->{path} eq "/コンパイラ―原理・技法・ツール〈2〉-Information-Computing-V-エイホ/dp/4781905862/ref=sr_1_22") {
+      return 0;
+    }
+    my $keys = $url->{params}->keys;
+    unless (@$keys == 4) {
+      return 0;
+    }
+    for (my $i = 0; $i < @$keys; ++$i) {
+      my $key = $keys->[$i];
+      my $val = $url->{params}->get($key);
+      if ($key eq "ie") {
+        unless ($val eq "UTF8") {
+          return 0;
+        }
+      }
+      if ($key eq "keywords") {
+        unless ($val eq "コンパイラ") {
+          return 0;
+        }
+      }
+      if ($key eq "qid") {
+        unless ($val eq "1552415136") {
+          return 0;
+        }
+      }
+      if ($key eq "sr") {
+        unless ($val eq "8-22") {
+          return 0;
+        }
+      }
+    }
+    unless ($url->{fragment} eq "商品の説明") {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_host_is_not_for_url : int () {
     eval {
       SPVM::HTTP::URL->parse("javascript:alert(\"hello%20world\");");

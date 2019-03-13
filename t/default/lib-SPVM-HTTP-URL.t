@@ -20,6 +20,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::HTTP::URL->test_parse_host_fragment);
   ok(TestCase::Lib::SPVM::HTTP::URL->test_parse_host_path_fragment);
   ok(TestCase::Lib::SPVM::HTTP::URL->test_not_found_scheme_separator);
+  ok(TestCase::Lib::SPVM::HTTP::URL->test_amazon_path_escaped);
   ok(TestCase::Lib::SPVM::HTTP::URL->test_host_is_not_for_url);
 }
 

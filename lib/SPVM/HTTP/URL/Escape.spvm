@@ -16,6 +16,13 @@ package SPVM::HTTP::URL::Escape {
       $c == '~';
   }
 
+  private sub is_sub_delim : int ($c : byte) {
+    return $c == '!' || $c == '$' || $c == '&' ||
+      $c == '\'' || $c == '(' || $c == ')' ||
+      $c == '*' || $c == '+' || $c == ',' ||
+      $c == ';' || $c == '=';
+  }
+
   private sub hex_index : int ($c : byte) {
     if ('0' <= $c && $c <= '9') {
       return $c - '0';
@@ -33,7 +40,7 @@ package SPVM::HTTP::URL::Escape {
     my $length = length $str;
     for (my $i = 0; $i < $length; ++$i) {
       my $c : int = $str->[$i] & 0xFF;
-      if (is_unreserved((byte)$c)) {
+      if (is_unreserved((byte)$c) || is_sub_delim((byte)$c)) {
         $res .= [(byte)$c];
       } else {
         $res .= ['%', $HEX_CHARS->[(int)($c / 16)], $HEX_CHARS->[$c % 16]];
@@ -46,7 +53,7 @@ package SPVM::HTTP::URL::Escape {
     my $res = "";
     my $length = length $str;
     for (my $i = 0; $i < $length; ++$i) {
-      if (is_unreserved($str->[$i])) {
+      if (is_unreserved($str->[$i]) || is_sub_delim($str->[$i])) {
         $res .= [$str->[$i]];
       }
       else {
