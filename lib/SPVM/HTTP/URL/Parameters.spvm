@@ -1,31 +1,66 @@
 package SPVM::HTTP::URL::Parameters {
-  use SPVM::Hash;
   use SPVM::HTTP::URL::Escape;
 
-  has params : SPVM::Hash;
+  has params : string[][];
+  has size : int;
 
   sub new : SPVM::HTTP::URL::Parameters () {
     my $self = new SPVM::HTTP::URL::Parameters;
-    $self->{params} = SPVM::Hash->new;
+    $self->{params} = new string[][16];
     return $self;
   }
 
   sub add : void ($self : self, $key : string, $value : string) {
-    unless ($self->{params}->exists($key)) {
-      $self->{params}->set($key, $value);
+    unless ($self->{size} < @{$self->{params}}) {
+      my $copied = new string[][$self->{size} * 2];
+      for (my $i = 0; $i < $self->{size}; ++$i) {
+        $copied->[$i] = $self->{params}->[$i];
+      }
+      $self->{size} *= 2;
     }
+    for (my $param_index = 0; $param_index < $self->{size}; ++$param_index) {
+      my $base = $self->{params}->[$param_index];
+      if ($key eq $base->[0]) {
+        my $new_array = new string[@$base + 1];
+        for (my $k = 0; $k < @$base; ++$k) {
+          $new_array->[$k] = $base->[$k];
+        }
+        $new_array->[@$base] = $value;
+        $self->{params}->[$param_index] = $new_array;
+        return;
+      }
+    }
+    $self->{params}->[$self->{size}++] = [$key, $value];
   }
 
   sub get : string ($self : self, $key : string) {
-    if ($self->{params}->exists($key)) {
-      return (string)($self->{params}->get($key));
-    } else {
-      return undef;
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      my $k = $self->{params}->[$i]->[0];
+      my $v = $self->{params}->[$i]->[1];
+      if ($k eq $key) {
+        return $v;
+      }
     }
+    return undef;
+  }
+
+  sub get_multi : string[] ($self : self, $key : string) {
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      my $k = $self->{params}->[$i]->[0];
+      if ($k eq $key) {
+        return (string[])sliceo($self->{params}->[$i],
+          1, @{$self->{params}->[$i]} - 1);
+      }
+    }
+    return new string[0];
   }
 
   sub keys : string[] ($self : self) {
-    return $self->{params}->keys;
+    my $keys = new string[$self->{size}];
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      $keys->[$i] = $self->{params}->[$i]->[0];
+    }
+    return $keys;
   }
 
   sub parse : SPVM::HTTP::URL::Parameters ($str : string) {
@@ -57,7 +92,7 @@ package SPVM::HTTP::URL::Parameters {
   }
 
   sub to_str : string ($self : self) {
-    my $keys = $self->{params}->keys();
+    my $keys = $self->keys();
     unless (@$keys) {
       return "";
     }
@@ -68,12 +103,15 @@ package SPVM::HTTP::URL::Parameters {
       return 0;
     });
     my $result = "";
-    for (my $i = 0; $i < @$keys; ++$i) {
-      if ($i > 0) {
-        $result .= "&";
+    for (my $key_index = 0; $key_index < @$keys; ++$key_index) {
+      my $multi_vals = $self->get_multi($keys->[$key_index]);
+      for (my $val_index = 0; $val_index < @$multi_vals; ++$val_index) {
+        if (length($result)) {
+          $result .= "&";
+        }
+        $result .= $keys->[$key_index] . "=" .
+          SPVM::HTTP::URL::Escape->escape($multi_vals->[$val_index]);
       }
-      $result .= $keys->[$i] . "=" .
-        SPVM::HTTP::URL::Escape->escape($self->get($keys->[$i]));
     }
     return $result;
   }

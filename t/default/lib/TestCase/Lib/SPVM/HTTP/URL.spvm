@@ -4,15 +4,17 @@ package TestCase::Lib::SPVM::HTTP::URL {
   sub test_parse_escape_all : int () {
     my $p_raw = "abc";
     my $p_escaped = "abc";
+    my $p_raw_2 = "d";
+    my $p_escaped_2 = "d";
     my $q_raw = "尾骶骨𠮷 🤔";
     my $q_escaped = "%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94";
     my $fragment_raw = "🤔 𠮷尾骶骨";
     my $fragment_escaped = "%F0%9F%A4%94%20%F0%A0%AE%B7%E5%B0%BE%E9%AA%B6%E9%AA%A8";
     my $url = SPVM::HTTP::URL->parse(
-      "http://www.example.com:8888/blog/posts?q=$q_escaped&p=$p_escaped&p=dummy#$fragment_escaped");
+      "http://www.example.com:8888/blog/posts?q=$q_escaped&p=$p_escaped&p=$p_escaped_2#$fragment_escaped");
     {
       my $got = $url->to_str();
-      my $expected = "http://www.example.com:8888/blog/posts?p=$p_escaped&q=$q_escaped#$fragment_escaped";
+      my $expected = "http://www.example.com:8888/blog/posts?p=$p_escaped&p=$p_escaped_2&q=$q_escaped#$fragment_escaped";
       unless ($url->to_str() eq $expected) {
         warn("     got: '$got'\nexpected: '$expected'");
         return 0;
@@ -31,6 +33,11 @@ package TestCase::Lib::SPVM::HTTP::URL {
       return 0;
     }
     unless ((string)($url->{params}->get("p")) eq $p_raw) {
+      return 0;
+    }
+    my $multi_p = $url->{params}->get_multi("p");
+    unless (@$multi_p == 2 &&
+        $multi_p->[0] eq $p_raw && $multi_p->[1] eq $p_raw_2) {
       return 0;
     }
     unless ((string)($url->{params}->get("q")) eq $q_raw) {
