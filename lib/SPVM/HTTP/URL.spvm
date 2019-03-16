@@ -136,7 +136,7 @@ package SPVM::HTTP::URL {
     $self->parse_fragment($url, $next);
   }
 
-  sub new : SPVM::HTTP::URL () {
+  sub parse : SPVM::HTTP::URL ($url : string) {
     my $self = new SPVM::HTTP::URL;
     $self->{scheme} = "";
     $self->{host} = "";
@@ -144,11 +144,6 @@ package SPVM::HTTP::URL {
     $self->{path} = "";
     $self->{params} = SPVM::HTTP::URL::Parameters->new();
     $self->{fragment} = "";
-    return $self;
-  }
-
-  sub parse : SPVM::HTTP::URL ($url : string) {
-    my $self = SPVM::HTTP::URL->new;
     $self->parse_url($url);
     return $self;
   }
