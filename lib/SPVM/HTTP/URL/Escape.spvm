@@ -1,8 +1,7 @@
 package SPVM::HTTP::URL::Escape {
-  our $HEX_CHARS : ro string;
 
-  BEGIN {
-    $HEX_CHARS = "0123456789ABCDEF";
+  private sub HEX_CHARS : string () {
+    return "0123456789ABCDEF";
   }
 
   private sub is_unreserved : int ($c : byte) {
@@ -43,7 +42,7 @@ package SPVM::HTTP::URL::Escape {
       if (is_unreserved((byte)$c) || is_sub_delim((byte)$c)) {
         $res .= [(byte)$c];
       } else {
-        $res .= ['%', $HEX_CHARS->[(int)($c / 16)], $HEX_CHARS->[$c % 16]];
+        $res .= ['%', HEX_CHARS()->[(int)($c / 16)], HEX_CHARS()->[$c % 16]];
       }
     }
     return $res;
