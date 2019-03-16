@@ -72,15 +72,19 @@ package SPVM::HTTP::URL {
     for (my $i = $start; $i < $length; ++$i) {
       if ($url->[$i] == '/') {
         $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
-            sliceb((byte [])$url, $start, $i - $start)) . "/";
+          sliceb((byte [])$url, $start, $i - $start)) . "/";
         $start = $i + 1;
       }
       elsif ($url->[$i] == '?' ||
           $url->[$i] == '#') {
         $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
-            sliceb((byte [])$url, $start, $i - $start));
+          sliceb((byte [])$url, $start, $i - $start));
         return $i;
       }
+    }
+    if ($start < $length) {
+      $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
+        sliceb((byte [])$url, $start, $length - $start));
     }
     return $length;
   }
@@ -147,6 +151,24 @@ package SPVM::HTTP::URL {
     my $self = SPVM::HTTP::URL->new;
     $self->parse_url($url);
     return $self;
+  }
+
+  sub has_trailing_slash : int ($self : self) {
+    my $length = length($self->{path});
+    return $length && $self->{path}->[$length - 1] == '/';
+  }
+
+  sub enable_trailing_slash : void ($self : self) {
+    if (!$self->has_trailing_slash) {
+      $self->{path} .= "/";
+    }
+  }
+
+  sub disable_trailing_slash : void ($self : self) {
+    if ($self->has_trailing_slash) {
+      $self->{path} = (string)sliceb(
+        (byte[])$self->{path}, 0, length($self->{path}) - 1);
+    }
   }
 
   sub to_str : string ($self : self) {
