@@ -96,12 +96,6 @@ package SPVM::HTTP::URL::Parameters {
     unless (@$keys) {
       return "";
     }
-    sorto($keys, sub : int ($self : self, $left : object, $right : object) {
-      if ((string)$left gt (string)$right) {
-        return 1;
-      }
-      return 0;
-    });
     my $result = "";
     for (my $key_index = 0; $key_index < @$keys; ++$key_index) {
       my $multi_vals = $self->get_multi($keys->[$key_index]);
