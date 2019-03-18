@@ -8,8 +8,6 @@
     [Before]"Point"
     [After]"Point[]"
   - SPVM::new_marray is merged to SPVM::new_oarray
-    
->>>>>>> master
 0.0418 2018-03-01
   - fix t/exe/exe.t bug
 0.0417 2018-03-01
