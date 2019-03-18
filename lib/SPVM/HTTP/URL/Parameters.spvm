@@ -1,0 +1,112 @@
+package SPVM::HTTP::URL::Parameters {
+  use SPVM::HTTP::URL::Escape;
+
+  has params : string[][];
+  has size : int;
+
+  sub new : SPVM::HTTP::URL::Parameters () {
+    my $self = new SPVM::HTTP::URL::Parameters;
+    $self->{params} = new string[][16];
+    return $self;
+  }
+
+  sub add : void ($self : self, $key : string, $value : string) {
+    unless ($self->{size} < @{$self->{params}}) {
+      my $copied = new string[][$self->{size} * 2];
+      for (my $i = 0; $i < $self->{size}; ++$i) {
+        $copied->[$i] = $self->{params}->[$i];
+      }
+      $self->{size} *= 2;
+    }
+    for (my $param_index = 0; $param_index < $self->{size}; ++$param_index) {
+      my $base = $self->{params}->[$param_index];
+      if ($key eq $base->[0]) {
+        my $new_array = new string[@$base + 1];
+        for (my $k = 0; $k < @$base; ++$k) {
+          $new_array->[$k] = $base->[$k];
+        }
+        $new_array->[@$base] = $value;
+        $self->{params}->[$param_index] = $new_array;
+        return;
+      }
+    }
+    $self->{params}->[$self->{size}++] = [$key, $value];
+  }
+
+  sub get : string ($self : self, $key : string) {
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      my $k = $self->{params}->[$i]->[0];
+      my $v = $self->{params}->[$i]->[1];
+      if ($k eq $key) {
+        return $v;
+      }
+    }
+    return undef;
+  }
+
+  sub get_multi : string[] ($self : self, $key : string) {
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      my $k = $self->{params}->[$i]->[0];
+      if ($k eq $key) {
+        return (string[])sliceo($self->{params}->[$i],
+          1, @{$self->{params}->[$i]} - 1);
+      }
+    }
+    return new string[0];
+  }
+
+  sub keys : string[] ($self : self) {
+    my $keys = new string[$self->{size}];
+    for (my $i = 0; $i < $self->{size}; ++$i) {
+      $keys->[$i] = $self->{params}->[$i]->[0];
+    }
+    return $keys;
+  }
+
+  sub parse : SPVM::HTTP::URL::Parameters ($str : string) {
+    my $self = SPVM::HTTP::URL::Parameters->new;
+    my $length = length($str);
+    my $start_token = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($str->[$i] == '=') {
+        my $start_val = $i + 1;
+        my $end_val = -1;
+        for (my $j = $start_val; $j < $length; ++$j) {
+          if ($str->[$j] == '&') {
+            $end_val = $j;
+            last;
+          }
+        }
+        if ($end_val < 0) {
+          $end_val = $length;
+        }
+        my $key = sliceb((byte [])$str, $start_token, $i - $start_token);
+        my $val = SPVM::HTTP::URL::Escape->unescape(
+            sliceb((byte [])$str, $start_val, $end_val - $start_val));
+        $self->add($key, $val);
+        $start_token = $end_val + 1; # if $end_val < $length
+        $i = $end_val;
+      }
+    }
+    return $self;
+  }
+
+  sub to_str : string ($self : self) {
+    my $keys = $self->keys();
+    unless (@$keys) {
+      return "";
+    }
+    my $result = "";
+    for (my $key_index = 0; $key_index < @$keys; ++$key_index) {
+      my $multi_vals = $self->get_multi($keys->[$key_index]);
+      for (my $val_index = 0; $val_index < @$multi_vals; ++$val_index) {
+        if (length($result)) {
+          $result .= "&";
+        }
+        $result .= $keys->[$key_index] . "=" .
+          SPVM::HTTP::URL::Escape->escape($multi_vals->[$val_index]);
+      }
+    }
+    return $result;
+  }
+}
