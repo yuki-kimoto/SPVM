@@ -1,0 +1,21 @@
+package TestCase::Lib::SPVM::HTTP::URL::Encode {
+  use SPVM::HTTP::URL::Encode;
+
+  sub test_encode : int () {
+    my $raw_string = "尾骶骨𠮷 🤔";
+    my $expected_encoded = "%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7+%F0%9F%A4%94";
+    my $got_encoded = SPVM::HTTP::URL::Encode->encode($raw_string);
+    unless ($got_encoded eq $expected_encoded) {
+      warn("     got_encoded: $got_encoded");
+      warn("expected_encoded: $expected_encoded");
+      return 0;
+    }
+    my $got_decoded = SPVM::HTTP::URL::Encode->decode($got_encoded);
+    unless ($got_decoded eq $raw_string) {
+      warn("got_decoded: $got_decoded");
+      warn(" raw_string: $raw_string");
+      return 0;
+    }
+    return 1;
+  }
+}
