@@ -19,16 +19,50 @@
 
 #endif
 
-int32_t SPNATIVE__SPVM__Socket__socket(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t domain = stack[0].ival;
-  int32_t type = stack[1].ival;
-  int32_t proto = stack[2].ival;
+  void* obj_deststr = stack[0].oval;
+  const char* deststr = (const char*)env->belems(env, obj_deststr);
+  int32_t port = stack[1].ival;
   
-  int32_t sock = socket(domain, type, proto);
+  int32_t sock = socket(AF_INET, SOCK_STREAM, 0);
   
   if (sock < 0) {
     SPVM_CROAK("Can't create socket", "SPVM/Socket.c", __LINE__);
+  }
+  
+  struct sockaddr_in server;
+  server.sin_addr.s_addr = inet_addr(deststr);
+  server.sin_family = AF_INET;
+  server.sin_port = htons(port);
+
+  if (server.sin_addr.s_addr == 0xffffffff) {
+    struct hostent *host;
+    
+    host = gethostbyname(deststr);
+    if (host == NULL) {
+      if (h_errno == HOST_NOT_FOUND) {
+        fprintf(stderr, "host not found : %s\n", deststr);
+        SPVM_CROAK("Exception", "SPVM/Socket.c", __LINE__);
+      }
+      return 1;
+    }
+    
+    unsigned int **addrptr = (unsigned int **)host->h_addr_list;
+    
+    while (*addrptr != NULL) {
+      server.sin_addr.s_addr = *(*addrptr);
+      if (connect(sock,
+        (struct sockaddr *)&server,
+        sizeof(server)) == 0) {
+          break;
+      }
+
+      addrptr++;
+    }
+    if (*addrptr == NULL) {
+      SPVM_CROAK("Connect", "SPVM/Socket.c", __LINE__);
+    }
   }
   
   void* obj_sh;
@@ -38,51 +72,9 @@ int32_t SPNATIVE__SPVM__Socket__socket(SPVM_ENV* env, SPVM_VALUE* stack) {
     obj_sh = env->new_obj(env, id);
   }
   
-  env->set_pointer(env, obj_sh, (intptr_t)sock);
+  env->set_pointer(env, obj_sh, (void*)(intptr_t)sock);
   
   stack[0].oval = obj_sh;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__Socket__htons(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].sval = htons(stack[0].sval);
-  
-  return SPVM_SUCCESS;
-}
-
-
-int32_t SPNATIVE__SPVM__Socket__inet_addr(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_address = stack[0].oval;
-  const char* address = env->belems(env, obj_address);
-  
-  int32_t iaddress = inet_addr(address);
-  
-  stack[0].ival = iaddress;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__Socket__inet_aton(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_cp = stack[0].oval;
-  void* obj_inp = stack[1].oval;
-
-  if (obj_cp == NULL) {
-    SPVM_CROAK("Error", "SPVM/Socket.c", __LINE__);
-  }
-  const char* cp = (const char*)env->belems(env, obj_cp);
-  
-  if (obj_inp == NULL) {
-    SPVM_CROAK("Error", "SPVM/Socket.c", __LINE__);
-  }
-  struct in_addr* inp = env->pointer(env, obj_inp);
-  
-  int32_t ret = inet_aton(cp, inp);
-  
-  stack[0].ival = ret;
   
   return SPVM_SUCCESS;
 }
