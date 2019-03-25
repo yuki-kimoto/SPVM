@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::Time::Format {
   use SPVM::Time::Format;
+
   sub test_parse : int () {
     my $format = SPVM::Time::Format->new("%Y-%m-%d %H:%M:%S %Z");
     my $m = $format->parse("2019-03-25 12:51:37 GMT");
@@ -31,5 +32,11 @@ package TestCase::Lib::SPVM::Time::Format {
       return 0;
     }
     return 1;
+  }
+
+  sub test_timezone_JST : int () {
+    my $format = SPVM::Time::Format->new("%Y-%m-%d %H:%M:%S %Z");
+    my $m = $format->parse("2019-03-25 12:51:37 JST");
+    return $m->epoch == 1553485897;
   }
 }
