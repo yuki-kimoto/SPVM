@@ -1,0 +1,18 @@
+package SPVM::Time::Format {
+  use SPVM::Time::Moment;
+
+  has template : string;
+
+  private native sub epoch_by_strptime : long ($buf : string, $format : string);
+
+  sub new : SPVM::Time::Format ($format : string) {
+    my $self = new SPVM::Time::Format;
+    $self->{template} = $format;
+    return $self;
+  }
+
+  sub parse : SPVM::Time::Moment ($self : self, $string : string) {
+    my $epoch = SPVM::Time::Format->epoch_by_strptime($string, $self->{template});
+    return SPVM::Time::Moment->from_epoch($epoch);
+  }
+}

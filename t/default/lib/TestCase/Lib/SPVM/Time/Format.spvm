@@ -1,0 +1,35 @@
+package TestCase::Lib::SPVM::Time::Format {
+  use SPVM::Time::Format;
+  sub test_parse : int () {
+    my $format = SPVM::Time::Format->new("%Y-%m-%d %H:%M:%S %Z");
+    my $m = $format->parse("2019-03-25 12:51:37 GMT");
+    unless ($m->epoch == 1553518297) {
+      return 0;
+    }
+    unless ($m->year == 2019) {
+      return 0;
+    }
+    unless ($m->month == 3) {
+      return 0;
+    }
+    unless ($m->day == 25) {
+      return 0;
+    }
+    unless ($m->day_of_week == SPVM::Time::Moment->MONDAY) {
+      return 0;
+    }
+    unless ($m->day_of_year == 84) {
+      return 0;
+    }
+    unless ($m->hour == 12) {
+      return 0;
+    }
+    unless ($m->minute == 51) {
+      return 0;
+    }
+    unless ($m->second == 37) {
+      return 0;
+    }
+    return 1;
+  }
+}
