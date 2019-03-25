@@ -2314,7 +2314,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
 
               if (!call_sub->sub) {
-                SPVM_COMPILER_error(compiler, "unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               

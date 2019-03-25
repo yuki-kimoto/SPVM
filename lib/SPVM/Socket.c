@@ -9,7 +9,8 @@
 #include <ws2tcpip.h>
 
 #else
-         
+
+#include <unistd.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -81,6 +82,30 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   stack[0].oval = obj_socket;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* obj_socket = stack[0].oval;
+  void* obj_buffer = stack[1].oval;
+  const char* buffer = (const char*)env->belems(env, obj_buffer);
+  int32_t length = stack[2].ival;
+  
+  int32_t handle;
+  {
+    int32_t id = env->field_id(env, "SPVM::Socket", "handle", "int");
+    assert(id >= 0);
+    handle = env->ifield(env, obj_socket, id);
+  }
+  
+  /* HTTPリクエスト送信 */
+  int32_t write_length = write(handle, buffer, length);
+  if (write_length < 0) {
+    SPVM_CROAK("Socket write error", "SPVM/Socket.c", __LINE__);
+  }
+  
+  stack[0].ival = write_length;
   
   return SPVM_SUCCESS;
 }

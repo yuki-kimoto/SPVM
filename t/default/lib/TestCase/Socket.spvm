@@ -4,9 +4,12 @@ package TestCase::Socket {
   sub basic : int () {
     
     # Socket
-    my $host = "itsakura.com";
+    my $host = "www.google.com";
     my $port = 80;
-    my $sock = SPVM::Socket->new($host, $port);
+    my $socket = SPVM::Socket->new($host, $port);
+    
+    my $buffer = "GET / HTTP/1.0\r\n\r\n";
+    $socket->write((byte[])$buffer, length $buffer);
     
     return 1;
   }
