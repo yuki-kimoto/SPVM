@@ -1,4 +1,0 @@
-package SPVM::protoent : pointer_t {
-  native sub new : SPVM::protoent ();
-  native sub DESTROY : void ($self : self);
-}

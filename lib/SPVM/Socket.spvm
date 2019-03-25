@@ -1,6 +1,5 @@
 package SPVM::Socket {
   use SPVM::SocketHandle;
-  use SPVM::protoent;
   
   our $AF_UNIX : ro int;
   our $AF_INET : ro int;

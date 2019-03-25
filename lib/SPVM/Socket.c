@@ -108,4 +108,6 @@ int32_t SPNATIVE__SPVM__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE*
     if (pkgvar_id < 0) { abort(); }
     env->set_ipkgvar(env, pkgvar_id, SOCK_STREAM);
   }
+  
+  return SPVM_SUCCESS;
 }

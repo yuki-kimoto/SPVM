@@ -1,4 +1,0 @@
-package SPVM::servent : pointer_t {
-  native sub new : SPVM::servent ();
-  native sub DESTROY : void ($self : self);
-}
