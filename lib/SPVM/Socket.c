@@ -110,6 +110,30 @@ int32_t SPNATIVE__SPVM__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__SPVM__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* obj_socket = stack[0].oval;
+  void* obj_buffer = stack[1].oval;
+  const char* buffer = (const char*)env->belems(env, obj_buffer);
+  int32_t length = env->len(env, obj_buffer);
+  
+  int32_t handle;
+  {
+    int32_t id = env->field_id(env, "SPVM::Socket", "handle", "int");
+    assert(id >= 0);
+    handle = env->ifield(env, obj_socket, id);
+  }
+  
+  /* HTTPリクエスト送信 */
+  int32_t read_length = read(handle, buffer, length);
+  if (read_length < 0) {
+    SPVM_CROAK("Socket read error", "SPVM/Socket.c", __LINE__);
+  }
+  
+  stack[0].ival = read_length;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // AF_UNIX

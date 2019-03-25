@@ -16,6 +16,7 @@ package SPVM::Socket {
   
   native sub new : SPVM::Socket ($host : string, $port : int);
   native sub write : int ($self : self, $buffer : byte[], $legnth : int);
+  native sub read : int ($self : self, $buffer : byte[]);
   
   native sub DESTROY : void ($self : self);
 }
