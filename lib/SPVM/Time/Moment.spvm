@@ -32,14 +32,6 @@ package SPVM::Time::Moment {
   # TODO: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_16
   # sub new_with : SPVM::Time::Moment ($args : SPVM::Hash) {}
 
-  sub new_with_offset_same_instant : SPVM::Time::Moment ($self : SPVM::Time::Moment, $offset_minutes : int) {
-    return SPVM::Time::Moment->from_epoch($self->epoch + $offset_minutes * 60);
-  }
-
-  #sub new_with_offset_same_local : SPVM::Time::Moment ($base : SPVM::Time::Moment) {
-  #  return new SPVM::Time::Moment;
-  #}
-
   sub year : int ($self : self) {
     return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_year} + 1900;
   }
