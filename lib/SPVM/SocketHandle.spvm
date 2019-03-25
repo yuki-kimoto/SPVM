@@ -1,7 +1,0 @@
-package SPVM::SocketHandle : pointer_t {
-  
-  allow SPVM::CORE;
-  allow SPVM::Socket;
-  
-  native sub DESTROY : void ($self : self);
-}

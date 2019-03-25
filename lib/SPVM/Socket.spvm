@@ -7,6 +7,8 @@ package SPVM::Socket {
 
   our $SOCK_STREAM : ro int;
   
+  has handle : int;
+  
   BEGIN {
     init_native_constants();
   }
@@ -14,6 +16,8 @@ package SPVM::Socket {
   native sub init_native_constants : void();
   
   native sub new : SPVM::SocketHandle ($host : string, $port : int);
+  
+  native sub DESTROY : void ($self : self);
 }
 
 __END__

@@ -25,9 +25,9 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* deststr = (const char*)env->belems(env, obj_deststr);
   int32_t port = stack[1].ival;
   
-  int32_t sock = socket(AF_INET, SOCK_STREAM, 0);
+  int32_t handle = socket(AF_INET, SOCK_STREAM, 0);
   
-  if (sock < 0) {
+  if (handle < 0) {
     SPVM_CROAK("Can't create socket", "SPVM/Socket.c", __LINE__);
   }
   
@@ -52,7 +52,7 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     while (*addrptr != NULL) {
       server.sin_addr.s_addr = *(*addrptr);
-      if (connect(sock,
+      if (connect(handle,
         (struct sockaddr *)&server,
         sizeof(server)) == 0) {
           break;
@@ -65,16 +65,22 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
   }
   
-  void* obj_sh;
+  // Create SPVM::Socket object
+  void* obj_socket;
   {
-    int32_t id = env->basic_type_id(env, "SPVM::SocketHandle");
+    int32_t id = env->basic_type_id(env, "SPVM::Socket");
     if (id < 0) { abort(); };
-    obj_sh = env->new_obj(env, id);
+    obj_socket = env->new_obj(env, id);
   }
   
-  env->set_pointer(env, obj_sh, (void*)(intptr_t)sock);
+  // Set handle
+  {
+    int32_t id = env->field_id(env, "SPVM::Socket", "handle", "int");
+    if (id < 0) { abort(); };
+    env->set_ifield(env, obj_socket, id, handle);
+  }
   
-  stack[0].oval = obj_sh;
+  stack[0].oval = obj_socket;
   
   return SPVM_SUCCESS;
 }
@@ -108,6 +114,24 @@ int32_t SPNATIVE__SPVM__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE*
     if (pkgvar_id < 0) { abort(); }
     env->set_ipkgvar(env, pkgvar_id, SOCK_STREAM);
   }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Socket__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // Socket handle
+  void* obj_socket = stack[0].oval;
+
+  // Get handle
+  int32_t handle;
+  {
+    int32_t id = env->field_id(env, "SPVM::Socket", "handle", "int");
+    if (id < 0) { abort(); };
+    handle = env->ifield(env, obj_socket, id);
+  }
+  
+  close(handle);
   
   return SPVM_SUCCESS;
 }
