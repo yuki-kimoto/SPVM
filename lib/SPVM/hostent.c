@@ -1,12 +1,13 @@
 #include "spvm_native.h"
 
+#include <string.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <netdb.h>
 
 int32_t SPNATIVE__SPVM__hostent__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  struct hostent* hent = env->alloc_memory_block_zero(env, (sizeof(struct hostent));
+  struct hostent* hent = env->alloc_memory_block_zero(env, sizeof(struct hostent));
   
   int32_t hostent_basic_type_id = env->basic_type_id(env, "SPVM::hostent");
   assert(hostent_basic_type_id >= 0);
@@ -31,14 +32,14 @@ int32_t SPNATIVE__SPVM__hostent__h_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   else {
     int32_t len = strlen(h_name);
-    void* obj_h_name = evn->new_str(env, h_name, len);
+    void* obj_h_name = env->new_str_len(env, h_name, len);
   }
   
   int32_t hostent_basic_type_id = env->basic_type_id(env, "SPVM::hostent");
   assert(hostent_basic_type_id >= 0);
-  void* obj_hent = env->new_pointer(env, hostent_basic_type_id, hent);
+  void* new_obj_hent = env->new_pointer(env, hostent_basic_type_id, hent);
   
-  stack[0].oval = obj_hent;
+  stack[0].oval = new_obj_hent;
   
   return SPVM_SUCCESS;
 }
