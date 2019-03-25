@@ -1,0 +1,74 @@
+package SPVM::Time::Moment {
+  use SPVM::Time::tm_9i;
+
+  has epoch : ro long;
+
+  enum {
+    MONDAY = 1,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY,
+  }
+
+  private native sub gmtime : SPVM::Time::tm_9i ($epoch : long);
+
+  sub new_with_epoch : SPVM::Time::Moment ($epoch : long) {
+    return SPVM::Time::Moment->from_epoch($epoch);
+  }
+
+  sub from_epoch : SPVM::Time::Moment ($epoch : long) {
+    my $self = new SPVM::Time::Moment;
+    $self->{epoch} = $epoch;
+    return $self;
+  }
+
+  sub now : SPVM::Time::Moment () {
+    return SPVM::Time::Moment->from_epoch(time());
+  }
+
+  # TODO: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_16
+  # sub new_with : SPVM::Time::Moment ($args : SPVM::Hash) {}
+
+  sub new_with_offset_same_instant : SPVM::Time::Moment ($self : SPVM::Time::Moment, $offset_minutes : int) {
+    return SPVM::Time::Moment->from_epoch($self->epoch + $offset_minutes * 60);
+  }
+
+  #sub new_with_offset_same_local : SPVM::Time::Moment ($base : SPVM::Time::Moment) {
+  #  return new SPVM::Time::Moment;
+  #}
+
+  sub year : int ($self : self) {
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_year} + 1900;
+  }
+
+  sub month : int ($self : self) {
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_mon} + 1;
+  }
+
+  sub day : int ($self : self) {
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_mday};
+  }
+
+  sub day_of_week : int ($self : self) { # [1=Monday, 7=Sunday]
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_wday};
+  }
+
+  sub day_of_year : int ($self : self) { # [1, 366]
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_yday} + 1;
+  }
+
+  sub hour : int ($self : self) {
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_hour};
+  }
+
+  sub minute : int ($self : self) {
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_min};
+  }
+
+  sub second : int ($self : self) { # [0, 59]
+    return SPVM::Time::Moment->gmtime($self->{epoch})->{tm_sec};
+  }
+}
