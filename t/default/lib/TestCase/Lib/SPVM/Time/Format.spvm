@@ -35,6 +35,18 @@ package TestCase::Lib::SPVM::Time::Format {
     return 1;
   }
 
+  sub test_RFC1123 : int () {
+    my $format = SPVM::Time::Format->RFC1123;
+    unless ($format->parse("Wed, 02 Jan 2030 03:04:56 GMT")->epoch == 1893553496) { # TODO: Allow UTC
+      return 0;
+    }
+    unless ($format->time_to_str(SPVM::Time::Moment->from_epoch(1893553496)) eq "Wed, 02 Jan 2030 03:04:56 UTC") {
+      warn ($format->time_to_str(SPVM::Time::Moment->from_epoch(1893553496)));
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_time_to_str : int () {
     my $format = SPVM::Time::Format->new("%Y-%m-%d %H:%M:%S %Z");
     my $output = $format->time_to_str(SPVM::Time::Moment->from_epoch(1553518297));

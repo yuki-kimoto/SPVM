@@ -15,6 +15,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::Time::Format->test_parse());
   ok(TestCase::Lib::SPVM::Time::Format->test_time_to_str());
+  ok(TestCase::Lib::SPVM::Time::Format->test_RFC1123());
   ok(TestCase::Lib::SPVM::Time::Format->test_timezone_JST());
 }
 

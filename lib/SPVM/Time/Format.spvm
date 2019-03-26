@@ -1,23 +1,32 @@
 package SPVM::Time::Format {
   use SPVM::Time::Moment;
 
-  has template : string;
+  has format : ro string;
+  has locale : ro string;
 
-  private native sub epoch_by_strptime : long ($buf : string, $format : string);
-  private native sub strftime : string ($format : string, $epoch : long);
+  private native sub epoch_by_strptime : long ($buf : string, $format : string, $locale : string);
+  private native sub strftime : string ($format : string, $epoch : long, $locale : string);
 
   sub new : SPVM::Time::Format ($format : string) {
     my $self = new SPVM::Time::Format;
-    $self->{template} = $format;
+    $self->{format} = $format;
+    $self->{locale} = "C";
+    return $self;
+  }
+
+  sub RFC1123 : SPVM::Time::Format () {
+    my $self = new SPVM::Time::Format;
+    $self->{format} = "%a, %d %b %Y %H:%M:%S %Z"; # using gmtime_r is expected in strftime.
+    $self->{locale} = "C";
     return $self;
   }
 
   sub parse : SPVM::Time::Moment ($self : self, $string : string) {
-    my $epoch = SPVM::Time::Format->epoch_by_strptime($string, $self->{template});
+    my $epoch = SPVM::Time::Format->epoch_by_strptime($string, $self->{format}, $self->{locale});
     return SPVM::Time::Moment->from_epoch($epoch);
   }
 
   sub time_to_str : string ($self : self, $moment : SPVM::Time::Moment) {
-    return SPVM::Time::Format->strftime($self->{template}, $moment->epoch);
+    return SPVM::Time::Format->strftime($self->{format}, $moment->epoch, $self->{locale});
   }
 }
