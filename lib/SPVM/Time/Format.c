@@ -11,7 +11,7 @@ int32_t SPNATIVE__SPVM__Time__Format__epoch_by_strptime(SPVM_ENV* env, SPVM_VALU
 
   struct tm tm;
   if (!strptime(buf, format, &tm)) {
-    SPVM_CROAK("Can't parse format", "SPVM/Time/Format.c", __LINE__);
+    SPVM_CROAK("Can't parse buffer like format", "SPVM/Time/Format.c", __LINE__);
   }
 
   stack[0].lval = mktime(&tm);
@@ -33,7 +33,7 @@ int32_t SPNATIVE__SPVM__Time__Format__strftime(SPVM_ENV* env, SPVM_VALUE* stack)
 
   if (!strftime(buffer, capacity, format, &dt)) {
     env->dec_ref_count(env, obuffer);
-    SPVM_CROAK("Can't write as format", "SPVM/Time/Format.c", __LINE__);
+    SPVM_CROAK("Can't write like format", "SPVM/Time/Format.c", __LINE__);
   }
 
   int32_t length = sprintf(buffer, "%s", buffer);
