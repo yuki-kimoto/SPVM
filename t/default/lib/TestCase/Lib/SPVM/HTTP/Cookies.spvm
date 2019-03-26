@@ -1,0 +1,58 @@
+package TestCase::Lib::SPVM::HTTP::Cookies {
+  use SPVM::HTTP::Cookies;
+
+  sub test_all_through : int () {
+    my $cookies = SPVM::HTTP::Cookies->new;
+    if ($cookies->get("field")) {
+      return 0;
+    }
+    $cookies->set(new_hash([(object)
+      key   => "field1",
+      value => "value1",
+    ]));
+    unless ($cookies->get("field1")->{value} eq "value1") {
+      return 0;
+    }
+    $cookies->set(new_hash([(object)
+      key   => "field2",
+      value => "value2",
+    ]));
+    unless ($cookies->get("field1")->{value} eq "value1") {
+      return 0;
+    }
+    unless ($cookies->get("field2")->{value} eq "value2") {
+      return 0;
+    }
+    $cookies->set(new_hash([(object)
+      key   => "field1",
+      value => "value1-2",
+    ]));
+    unless ($cookies->get("field1")->{value} eq "value1-2") {
+      return 0;
+    }
+    my $got_str = $cookies->to_str;
+    my $expected_str = "Set-Cookie: field1=value1-2\r\n" .
+      "Set-Cookie: field2=value2\r\n";
+    unless ($got_str eq $expected_str) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_extend_capacity : int () {
+    my $cookies = SPVM::HTTP::Cookies->new;
+    for (my $i = 0; $i < 32; ++$i) {
+      $cookies->set(new_hash([(object)
+        key   => (string)[(byte)('A' + $i)],
+        value => (string)['V', (byte)('A' + $i)],
+      ]));
+    }
+    for (my $i = 0; $i < 32; ++$i) {
+      my $data = $cookies->get((string)[(byte)('A' + $i)]);
+      unless ($data->{value} eq (string)['V', (byte)('A' + $i)]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}

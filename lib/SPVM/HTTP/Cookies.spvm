@@ -1,0 +1,85 @@
+package SPVM::HTTP::Cookies {
+  use SPVM::Hash;
+  use SPVM::StringBuffer;
+  use SPVM::HTTP::Cookies::Data;
+
+  has cookies : SPVM::HTTP::Cookies::Data[];
+  has length : int;
+
+  private sub DEFAULT_CAPACITY : int () {
+    return 3;
+  }
+
+  sub new : SPVM::HTTP::Cookies () {
+    my $self = new SPVM::HTTP::Cookies;
+    $self->{length} = 0;
+    $self->{cookies} = new SPVM::HTTP::Cookies::Data[DEFAULT_CAPACITY()];
+    return $self;
+  }
+
+  private sub extend_capacity : void ($self : self) {
+    my $new_data = new SPVM::HTTP::Cookies::Data[$self->{length} * 2];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_data->[$i] = $self->{cookies}->[$i];
+    }
+    $self->{cookies} = $new_data;
+  }
+
+  private sub set_data : void ($self : self, $data : SPVM::HTTP::Cookies::Data) {
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      if ($data->{key} eq $self->{cookies}->[$i]->{key}) {
+        $self->{cookies}->[$i] = $data;
+        return;
+      }
+    }
+    unless ($self->{length} < @{$self->{cookies}}) {
+      $self->extend_capacity;
+    }
+    $self->{cookies}->[$self->{length}++] = $data;
+  }
+
+  sub set : void ($self : self, $args : SPVM::Hash) {
+    my $data = new SPVM::HTTP::Cookies::Data;
+    $data->{key} = (string)($args->get("key"));
+    $data->{value} = (string)($args->get("value"));
+
+    # optional
+    if ($args->exists("expires")) {
+      $data->{expires} = (SPVM::Time::Moment)($args->get("expires"));
+    }
+    if ($args->exists("max_age")) {
+      $data->{max_age} = ((SPVM::Int)($args->get("max_age")))->val;
+    }
+    $data->{domain} = (string)($args->get("domain"));
+    $data->{path} = (string)($args->get("path"));
+    if ($args->exists("secure") && ((SPVM::Int)($args->get("secure")))->val) {
+      $data->{secure} = 1;
+    }
+    if ($args->exists("http_only") && ((SPVM::Int)($args->get("http_only")))->val) {
+      $data->{http_only} = 1;
+    }
+    if ($args->exists("same_site")) {
+      $data->{same_site} = (byte)(((SPVM::Int)($args->get("same_site")))->val);
+    }
+    $self->set_data($data);
+  }
+
+  sub get : SPVM::HTTP::Cookies::Data ($self : self, $key : string) {
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      if ($key eq $self->{cookies}->[$i]->{key}) {
+        return $self->{cookies}->[$i];
+      }
+    }
+    return undef;
+  }
+
+  sub to_str : string ($self : self) {
+    my $res = "";
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $res .= $self->{cookies}->[$i]->to_str . "\r\n";
+    }
+    return $res;
+  }
+}
+__END__
+c.f. https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie

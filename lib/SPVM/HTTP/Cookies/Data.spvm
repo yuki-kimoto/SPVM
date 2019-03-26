@@ -1,0 +1,60 @@
+package SPVM::HTTP::Cookies::Data : public {
+  use SPVM::Hash;
+  use SPVM::Time::Format;
+  use SPVM::Time::Moment;
+
+  our $TIME_FORMAT : ro SPVM::Time::Format;
+
+  enum {
+    SAME_SITE_NONE,
+    SAME_SITE_STRICT,
+    SAME_SITE_LAX,
+  }
+
+  has key : public string;
+  has value : public string;
+  has expires : public SPVM::Time::Moment;
+  has max_age : public int;
+  has domain : public string;
+  has path : public string;
+  has secure : public int; # FIXME: byte -> Assertion failed: (0), function SPVM_OPCODE_BUILDER_build_opcode_array, file lib/SPVM/Builder/src/spvm_opcode_builder.c, line 3746.
+  has http_only : public int;
+  has same_site : public int;
+
+  BEGIN {
+    $TIME_FORMAT = SPVM::Time::Format->RFC1123;
+  }
+
+  sub to_str : string ($self : self) {
+    my $res = "Set-Cookie: " . $self->{key} . "=" . $self->{value};
+    if ($self->{expires}) {
+      $res .= "; Expires=" . $TIME_FORMAT->time_to_str($self->{expires});
+    }
+    if ($self->{max_age}) {
+      $res .= "; Max-Age=" . $self->{max_age};
+    }
+    if ($self->{domain}) {
+      $res .= "; Domain=" . $self->{domain};
+    }
+    if ($self->{path}) {
+      $res .= "; Path=" . $self->{path};
+    }
+    if ($self->{secure}) {
+      $res .= "; Secure";
+    }
+    if ($self->{http_only}) {
+      $res .= "; HttpOnly";
+    }
+    switch ($self->{same_site}) {
+      case SAME_SITE_STRICT():
+        $res .= "; SameSite=Strict";
+        last;
+      case SAME_SITE_LAX():
+        $res .= "; SameSite=Lax";
+        last;
+      default:
+        last;
+    }
+    return $res;
+  }
+}
