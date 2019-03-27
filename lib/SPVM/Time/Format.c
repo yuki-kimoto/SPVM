@@ -7,6 +7,15 @@
 #include <locale.h>
 
 int32_t SPNATIVE__SPVM__Time__Format__epoch_by_strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
+  if (!stack[0].oval) {
+    SPVM_CROAK("buffer must not be undef", "SPVM/Time/Format.c", __LINE__);
+  }
+  if (!stack[1].oval) {
+    SPVM_CROAK("format must not be undef", "SPVM/Time/Format.c", __LINE__);
+  }
+  if (!stack[2].oval) {
+    SPVM_CROAK("locale must not be undef", "SPVM/Time/Format.c", __LINE__);
+  }
   const char* buf = (const char*)env->belems(env, stack[0].oval);
   const char* format = (const char*)env->belems(env, stack[1].oval);
   const char* locale = (const char*)env->belems(env, stack[2].oval);
@@ -26,6 +35,12 @@ int32_t SPNATIVE__SPVM__Time__Format__epoch_by_strptime(SPVM_ENV* env, SPVM_VALU
 }
 
 int32_t SPNATIVE__SPVM__Time__Format__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
+  if (!stack[0].oval) {
+    SPVM_CROAK("format must not be undef", "SPVM/Time/Format.c", __LINE__);
+  }
+  if (!stack[2].oval) {
+    SPVM_CROAK("locale must not be undef", "SPVM/Time/Format.c", __LINE__);
+  }
   const char* format = (const char*)env->belems(env, stack[0].oval);
   time_t epoch = stack[1].lval;
   const char* locale = (const char*)env->belems(env, stack[2].oval);
