@@ -25,7 +25,7 @@ package SPVM::HTTP::Cookies::Data : public {
     $TIME_FORMAT = SPVM::Time::Format->RFC1123;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_set_cookie_header : string ($self : self) {
     my $res = "Set-Cookie: " . $self->{key} . "=" . $self->{value};
     if ($self->{expires}) {
       $res .= "; Expires=" . $TIME_FORMAT->time_to_str($self->{expires});
@@ -56,5 +56,9 @@ package SPVM::HTTP::Cookies::Data : public {
         last;
     }
     return $res;
+  }
+
+  sub to_cookie_pair : string ($self : self) {
+    return $self->{key} . "=" . $self->{value};
   }
 }

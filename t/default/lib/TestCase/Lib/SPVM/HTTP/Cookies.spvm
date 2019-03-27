@@ -30,11 +30,20 @@ package TestCase::Lib::SPVM::HTTP::Cookies {
     unless ($cookies->get("field1")->{value} eq "value1-2") {
       return 0;
     }
-    my $got_str = $cookies->to_str;
-    my $expected_str = "Set-Cookie: field1=value1-2\r\n" .
-      "Set-Cookie: field2=value2\r\n";
-    unless ($got_str eq $expected_str) {
-      return 0;
+    {
+      my $got = $cookies->to_set_cookie_headers;
+      my $expected = "Set-Cookie: field1=value1-2\r\n" .
+          "Set-Cookie: field2=value2";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = $cookies->to_cookie_header;
+      my $expected = "Cookie: field1=value1-2; field2=value2";
+      unless ($got eq $expected) {
+        return 0;
+      }
     }
     return 1;
   }
@@ -52,6 +61,23 @@ package TestCase::Lib::SPVM::HTTP::Cookies {
       unless ($data->{value} eq (string)['V', (byte)('A' + $i)]) {
         return 0;
       }
+    }
+    return 1;
+  }
+
+  sub test_parse_cookie_string : int () {
+    my $cookies = SPVM::HTTP::Cookies->parse_cookie_string("foo=fuga; piyo=poyo; bar=hoge; bar=baz");
+    unless ($cookies->get("foo")->{value} eq "fuga") {
+      return 0;
+    }
+    unless ($cookies->get("piyo")->{value} eq "poyo") {
+      return 0;
+    }
+    unless ($cookies->get("bar")->{value} eq "baz") {
+      return 0;
+    }
+    unless ($cookies->get("none") == undef) {
+      return 0;
     }
     return 1;
   }

@@ -17,6 +17,40 @@ package SPVM::HTTP::Cookies {
     return $self;
   }
 
+  sub parse_cookie_string : SPVM::HTTP::Cookies ($string : string) {
+    my $self = SPVM::HTTP::Cookies->new;
+    my $str_cookie_length = length($string);
+    my $next_strpos = 0;
+    while ($next_strpos < $str_cookie_length) {
+      my $data = new SPVM::HTTP::Cookies::Data;
+      $data->{key} = "";
+      $data->{value} = "";
+      my $eq_sep_found = 0;
+      for (my $i = $next_strpos; $i < $str_cookie_length; ++$i) {
+        if ($string->[$i] == '=') {
+          $next_strpos = $i + 1;
+          $eq_sep_found = 1;
+          last;
+        } elsif ($string->[$i] != ' ' || length($data->{key})) {
+          $data->{key} .= [$string->[$i]];
+        }
+      }
+      unless ($eq_sep_found) {
+        last;
+      }
+      for (my $i = $next_strpos; $i < $str_cookie_length; ++$i) {
+        if ($string->[$i] == ';') {
+          $next_strpos = $i + 1;
+          last;
+        } else {
+          $data->{value} .= [$string->[$i]];
+        }
+      }
+      $self->set_data($data);
+    }
+    return $self;
+  }
+
   private sub extend_capacity : void ($self : self) {
     my $new_data = new SPVM::HTTP::Cookies::Data[$self->{length} * 2];
     for (my $i = 0; $i < $self->{length}; ++$i) {
@@ -73,13 +107,24 @@ package SPVM::HTTP::Cookies {
     return undef;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_set_cookie_headers : string ($self : self) {
     my $res = "";
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      $res .= $self->{cookies}->[$i]->to_str . "\r\n";
+      if ($i > 0) { $res .= "\r\n"; }
+      $res .= $self->{cookies}->[$i]->to_set_cookie_header;
+    }
+    return $res;
+  }
+
+  sub to_cookie_header : string ($self : self) {
+    my $res = "Cookie: ";
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      if ($i > 0) { $res .= "; "; }
+      $res .= $self->{cookies}->[$i]->to_cookie_pair;
     }
     return $res;
   }
 }
 __END__
 c.f. https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie
+https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cookie

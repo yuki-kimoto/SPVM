@@ -15,6 +15,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::HTTP::Cookies->test_all_through);
   ok(TestCase::Lib::SPVM::HTTP::Cookies->test_extend_capacity);
+  ok(TestCase::Lib::SPVM::HTTP::Cookies->test_parse_cookie_string);
 }
 
 # All object is freed
