@@ -1,0 +1,233 @@
+package TestCase::Lib::SPVM::HTTP::Headers {
+  use SPVM::HTTP::Cookies;
+  use SPVM::HTTP::Headers;
+  use SPVM::StringBuffer;
+  use SPVM::List;
+  use SPVM::Math::StringToNumber;
+
+  our $REQUEST_HEADERS : string[];
+  our $ENTITY_HEADERS : string[];
+  our $RESERVED : string[];
+
+  BEGIN {
+    $REQUEST_HEADERS= [
+      "Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language",
+      "Authorization", "Expect", "From", "Host",
+      "If-Match", "If-Modified-Since", "If-None-Match", "If-Range", "If-Unmodified-Since",
+      "Max-Forwards", "Proxy-Authorization", "Range", "Referer", "TE", "User-Agent",
+    ];
+    $ENTITY_HEADERS = [
+      "Allow", "Content-Encoding", "Content-Language", "Content-Length", "Content-Location",
+      "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified",
+    ];
+    $RESERVED = [
+      "Referer", "Expires", "Last-Modified", "If-Modified-Since", "Content-Type",
+      "Content-Length", "Content-Encoding",
+    ];
+  }
+
+  private sub in_reserved : int ($key : string) {
+    for (my $i = 0; $i < @$RESERVED; ++$i) {
+      if ($key eq $RESERVED->[$i]) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub test_add_header : int () {
+    my $headers = SPVM::HTTP::Headers->new;
+    # Referer param also allows Referrer
+    $headers->add_header("Referrer", "referrer");
+    unless ($headers->referer eq "referrer") {
+      return 0;
+    }
+    for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
+      $headers->add_header($REQUEST_HEADERS->[$i], "12345678");
+    }
+    for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
+      $headers->add_header($ENTITY_HEADERS->[$i], "12345678");
+    }
+    unless ($headers->referer eq "12345678") {
+      return 0;
+    }
+    unless ($headers->expires == 12345678) {
+      return 0;
+    }
+    unless ($headers->last_modified == 12345678) {
+      return 0;
+    }
+    unless ($headers->if_modified_since == 12345678) {
+      return 0;
+    }
+    unless ($headers->content_type eq "12345678") {
+      return 0;
+    }
+    unless ($headers->content_length == 12345678) {
+      return 0;
+    }
+    unless ($headers->content_encoding eq "12345678") {
+      return 0;
+    }
+    for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
+      unless (in_reserved($REQUEST_HEADERS->[$i])) {
+        my $got = (string)($headers->extra->get($REQUEST_HEADERS->[$i]));
+        my $expected = "12345678";
+        unless ($got eq $expected) {
+          warn("Some header doesn't match.\n     got: '$got'\nexpected: '$expected'");
+          return 0;
+        }
+      }
+    }
+    for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
+      unless (in_reserved($ENTITY_HEADERS->[$i])) {
+        my $got = (string)($headers->extra->get($ENTITY_HEADERS->[$i]));
+        my $expected = "12345678";
+        unless ($got eq $expected) {
+          warn("Some header doesn't match.\n     got: '" . (string)$got . "'\nexpected: '$expected'");
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+
+  sub _test_bag_strarray : int ($lhs : string[], $rhs : string[]) {
+    unless (@$lhs == @$rhs) {
+      warn("array sizes do not match.\n" .
+        "\tlength lhs: " . @$lhs . " " .
+        "\tlength rhs: " . @$rhs);
+      return 0;
+    }
+    sorto($lhs, sub : int ($self : self, $left : object, $right : object) {
+      if ((string)$left gt (string)$right) {
+        return 1;
+      }
+      return 0;
+    });
+    sorto($rhs, sub : int ($self : self, $left : object, $right : object) {
+      if ((string)$left gt (string)$right) {
+        return 1;
+      }
+      return 0;
+    });
+    for (my $i = 0; $i < @$lhs; ++$i) {
+      unless ($lhs->[$i] eq $rhs->[$i]) {
+        warn("_test_bag_strarray failed at:\n" .
+            "\tlhs: '" . $lhs->[$i] . "'\n" .
+            "\trhs: '" . $rhs->[$i] . "'");
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_new_with : int () {
+    my $val = "12345678";
+    my $val_i = SPVM::Math::StringToNumber->from($val)->to_int;
+    my $cookies = SPVM::HTTP::Cookies->new;
+    $cookies->set(new_hash([(object)
+      key => "foo", value => "bar",
+    ]));
+    my $headers = SPVM::HTTP::Headers->new_with(new_hash([(object)
+      referer           => $val,
+      expires           => $val_i,
+      last_modified     => $val_i,
+      if_modified_since => $val_i,
+      content_type      => $val,
+      content_length    => $val_i,
+      content_encoding  => $val,
+      cookies           => $cookies,
+      extra             => new_hash([(object) "X-Bearer" => "XXXXX"]),
+    ]));
+    unless ($headers->referer eq $val) {
+      return 0;
+    }
+    unless (((SPVM::Int)($headers->expires))->val == $val_i) {
+      return 0;
+    }
+    unless (((SPVM::Int)($headers->last_modified))->val == $val_i) {
+      return 0;
+    }
+    unless (((SPVM::Int)($headers->if_modified_since))->val == $val_i) {
+      return 0;
+    }
+    unless ($headers->content_type eq $val) {
+      return 0;
+    }
+    unless (((SPVM::Int)($headers->content_length))->val == $val_i) {
+      return 0;
+    }
+    unless ($headers->content_encoding eq $val) {
+      return 0;
+    }
+    unless ($headers->cookies->get("foo")->{value} eq "bar") {
+      return 0;
+    }
+    unless ((string)($headers->extra->get("X-Bearer")) eq "XXXXX") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_append_to_buffer : int () {
+    my $val = "12345678";
+    my $got_list = SPVM::List->new;
+    {
+      my $headers = SPVM::HTTP::Headers->new;
+      my $buf = SPVM::StringBuffer->new;
+      for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
+        $headers->add_header($REQUEST_HEADERS->[$i], $val);
+      }
+      for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
+        $headers->add_header($ENTITY_HEADERS->[$i], $val);
+      }
+      $headers->append_to_buffer($buf);
+      my $got_barray = $buf->to_barray();
+
+      my $last = 0;
+      for (my $i = 0; $i < @$got_barray; ++$i) {
+        if ($i > 0 && $got_barray->[$i - 1] == '\r' && $got_barray->[$i] == '\n') {
+          my $line = (string)(sliceb($got_barray, $last, $i + 1 - $last));
+          $got_list->push((string)(sliceb($got_barray, $last, $i + 1 - $last)));
+          $last = $i + 1;
+        }
+      }
+      unless (@$got_barray == $last) {
+        warn("Request Headers must end with CRLF:\n\tgot: '" . $got_barray . "'\n" .
+          "\tlast: $last\n" .
+          "\tgot_barray size: " . @$got_barray);
+        return 0;
+      }
+    }
+
+    my $expected_list = SPVM::List->new;
+    {
+      my $used = SPVM::Hash->new;
+      for (my $i = 0; $i < @$RESERVED; ++$i) {
+        my $key = $RESERVED->[$i];
+        $expected_list->push($key . ": $val\r\n");
+        $used->set($key, 1);
+      }
+      for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
+        my $key = $REQUEST_HEADERS->[$i];
+        unless ($used->exists($key)) {
+          $expected_list->push($key . ": $val\r\n");
+          $used->set($key, 1);
+        }
+      }
+      for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
+        my $key = $ENTITY_HEADERS->[$i];
+        unless ($used->exists($key)) {
+          $expected_list->push($key . ": $val\r\n");
+        }
+      }
+    }
+
+    unless (_test_bag_strarray($got_list->to_strarray, $expected_list->to_strarray)) {
+      warn("Request Headers do not match.");
+      return 0;
+    }
+    return 1;
+  }
+}
