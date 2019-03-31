@@ -1,0 +1,16 @@
+package SPVM::MIME::Base64 {
+  sub new : SPVM::MIME::Base64 () {
+    return new SPVM::MIME::Base64;
+  }
+
+  private native sub encode_b64 : string ($string : string);
+  private native sub decode_b64 : string ($string : string);
+
+  sub encode : string ($self : self, $string : string) {
+    return encode_b64($string);
+  }
+
+  sub decode : string ($self : self, $string : string) {
+    return decode_b64($string);
+  }
+}

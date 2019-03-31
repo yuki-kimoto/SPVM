@@ -1,0 +1,3 @@
+package SPVM::MIME::Encoder : interface_t {
+  sub encode : string ($self : self, $string : string);
+}
