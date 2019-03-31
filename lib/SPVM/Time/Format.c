@@ -48,7 +48,7 @@ int32_t SPNATIVE__SPVM__Time__Format__strftime(SPVM_ENV* env, SPVM_VALUE* stack)
   struct tm dt;
   gmtime_r(&epoch, &dt); // FIXME: only support UTC for now
 
-  int32_t capacity = 100;
+  size_t capacity = 100;
   void* obuffer = env->new_barray_raw(env, capacity);
   env->inc_ref_count(env, obuffer);
   char* buffer = (char *)(env->belems(env, obuffer));
@@ -62,7 +62,7 @@ int32_t SPNATIVE__SPVM__Time__Format__strftime(SPVM_ENV* env, SPVM_VALUE* stack)
   }
   setlocale(LC_TIME, prev_locale);
 
-  int32_t length = sprintf(buffer, "%s", buffer);
+  size_t length = sprintf(buffer, "%s", buffer);
   void* oline = env->new_barray_raw(env, length);
   int8_t* line = env->belems(env, oline);
   memcpy(line, buffer, length);
