@@ -180,8 +180,8 @@ package SPVM::HTTP::Headers {
       my $keys = $self->{extra}->keys();
       if (@$keys) {
         for (my $i = 0; $i < @$keys; ++$i) {
-          $buffer->append_string($keys->[$i] . ": " . (string)
-          ($self->{extra}->get($keys->[$i])) . "\r\n");
+          $buffer->append_string($keys->[$i] . ": " .
+            (string)($self->{extra}->get($keys->[$i])) . "\r\n");
         }
       }
     }
