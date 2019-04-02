@@ -10,6 +10,7 @@
 #include <complex.h>
 #include <memory.h>
 #include <fcntl.h>
+#include <assert.h>
 
 int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
@@ -48,7 +49,8 @@ int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
         int8_t* new_buffer = env->belems(env, new_obuffer);
         memcpy(new_buffer, buffer, capacity);
 
-        env->remove_mortal(env, scope_id, obuffer);
+        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        assert(removed);
         
         capacity = new_capacity;
         obuffer = new_obuffer;
@@ -122,7 +124,8 @@ int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
         int8_t* new_buffer = env->belems(env, new_obuffer);
         memcpy(new_buffer, buffer, capacity);
         
-        env->remove_mortal(env, scope_id, obuffer);
+        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        assert(removed);
         
         capacity = new_capacity;
         obuffer = new_obuffer;
