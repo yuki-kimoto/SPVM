@@ -168,8 +168,8 @@ struct SPVM_env {
   void* (*type_name)(SPVM_ENV* env, void* object);
   int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);
   int32_t (*object_type_dimension)(SPVM_ENV* env, void* object);
-  int32_t (*is_utf8)(SPVM_ENV* env, void* object);
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
   void (*free_memory_block)(SPVM_ENV* env, void* block);
+  int32_t (*remove_mortal)(SPVM_ENV* env, int32_t original_mortal_stack_top, void* remove_object);
 };
 #endif

@@ -168,9 +168,9 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_object_basic_type_id,
     SPVM_RUNTIME_API_object_type_dimension,
-    SPVM_RUNTIME_API_is_utf8,
     SPVM_RUNTIME_API_alloc_memory_block_zero,
     SPVM_RUNTIME_API_free_memory_block,
+    SPVM_RUNTIME_API_remove_mortal,
   };
   
   int32_t env_length = 255;
@@ -194,14 +194,33 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   return env;
 }
 
-int32_t SPVM_RUNTIME_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t SPVM_RUNTIME_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {
+  (void)env;
   
-  if (object->flag & SPVM_OBJECT_C_FLAG_STRING_IS_UTF8) {
-    return 1;
+  int32_t removed = 0;
+  if (remove_object != NULL) {
+    SPVM_RUNTIME* runtime = env->runtime;
+
+    int32_t match_mortal_stack_index = -1;
+    for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < (intptr_t)env->native_mortal_stack_top; mortal_stack_index++) {
+      SPVM_OBJECT* object = ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index];
+      
+      if (remove_object == object) {
+        removed = 1;
+        match_mortal_stack_index = mortal_stack_index;
+        SPVM_RUNTIME_API_dec_ref_count(env, object);
+        break;
+      }
+    }
+    
+    if (removed) {
+      for (int32_t mortal_stack_index = match_mortal_stack_index; mortal_stack_index < (intptr_t)env->native_mortal_stack_top; mortal_stack_index++) {
+        ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index] = ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index + 1];
+      }
+      env->native_mortal_stack_top = (void*)((intptr_t)env->native_mortal_stack_top - 1);
+    }
   }
-  else {
-    return 0;
-  }
+  return removed;
 }
 
 SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str_raw(SPVM_ENV* env, int32_t value) {
