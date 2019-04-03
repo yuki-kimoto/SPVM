@@ -235,11 +235,6 @@ sub new_default_build_config {
   $include_dir =~ s/\/Util\.pm$//;
   $include_dir .= '/include';
   $build_config->add_ccflags("-I$include_dir");
-
-  # lib directory
-  my $lib_dir = $INC{"SPVM/Builder/Util.pm"};
-  $lib_dir =~ s/\/SPVM\/Builder\/Util.pm$//;
-  $build_config->add_ccflags("-I$lib_dir");
   
   # math library
   $build_config->add_extra_linker_flags("-lm");
