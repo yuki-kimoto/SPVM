@@ -224,34 +224,34 @@ sub create_package_make_rule {
 }
 
 sub new_default_build_config {
-  my $build_config = SPVM::Builder::Config->new;
+  my $bconf = SPVM::Builder::Config->new;
   
   # Use default config
   my $default_config = {%Config};
-  $build_config->replace_all_config($default_config);
+  $bconf->replace_all_config($default_config);
   
-  # Include directory
+  # Add include directory to ccflags
   my $include_dir = $INC{"SPVM/Builder/Util.pm"};
   $include_dir =~ s/\/Util\.pm$//;
   $include_dir .= '/include';
-  $build_config->add_ccflags("-I$include_dir");
+  $bconf->add_ccflags("-I$include_dir");
   
-  # math library
-  $build_config->add_extra_linker_flags("-lm");
+  # Add math library to extra_linker_flags
+  $bconf->add_extra_linker_flags("-lm");
   
   # C99
-  $build_config->set_std('c99');
+  $bconf->set_std('c99');
   
   # Optimize
-  $build_config->set_optimize('-O3');
+  $bconf->set_optimize('-O3');
   
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
   # so I dicide not to print warning in release version
   if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $build_config->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
+    $bconf->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
   }
   
-  return $build_config;
+  return $bconf;
 }
 
 1;
@@ -264,9 +264,9 @@ B<Create defaulgt build config>
 
   use SPVM::Builder::Util;
 
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
+  my $bconf = SPVM::Builder::Util::new_default_build_config();
 
-  $build_config->set_optimize('-O3');
+  $bconf->set_optimize('-O3');
   
 
 B<Add Build shared object make rule in Makefile.PL>
@@ -292,7 +292,7 @@ SPVM::Builder::Util is building utilities.
 
 =head2 new_default_build_config
   
-  my $build_config = SPVM::Builder::Util::new_default_build_config;
+  my $bconf = SPVM::Builder::Util::new_default_build_config;
 
 Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
@@ -304,11 +304,11 @@ This function is used in native config file.
 
   use SPVM::Builder::Util;
 
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
+  my $bconf = SPVM::Builder::Util::new_default_build_config();
 
-  $build_config->set_config(optimize => '-O2');
+  $bconf->set_config(optimize => '-O2');
 
-  $build_config;
+  $bconf;
 
 =head2 create_make_rule_native
 
