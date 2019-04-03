@@ -163,9 +163,6 @@ sub compile {
     confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
-  # Quiet output
-  my $quiet = $self->quiet;
-  
   my $category = $self->category;
  
   my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
@@ -182,20 +179,23 @@ sub compile {
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config
-  my $build_config;
+  my $bconf;
   if (-f $config_file) {
     open my $config_fh, '<', $config_file
       or confess "Can't open $config_file: $!";
     my $config_content = do { local $/; <$config_fh> };
-    $build_config = eval "$config_content";
+    $bconf = eval "$config_content";
     if (my $messge = $@) {
       confess "Can't parser $config_file: $@";
     }
   }
   else {
-    $build_config = SPVM::Builder::Util::new_default_build_config;
+    $bconf = SPVM::Builder::Util::new_default_build_config;
   }
 
+  # Quiet output
+  my $quiet = $bconf->exists_quiet ? $bconf->quiet : $self->quiet;
+  
   # Source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
   my $src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
@@ -216,14 +216,14 @@ sub compile {
   my $src_file = $src_files[0];
 
   # CBuilder configs
-  my $ccflags = $build_config->get_ccflags;
+  my $ccflags = $bconf->get_ccflags;
   
   # Default include path
-  $build_config->add_ccflags("-I$build_dir/inlcude");
+  $bconf->add_ccflags("-I$build_dir/inlcude");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
 
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
@@ -257,7 +257,7 @@ sub compile {
       $cbuilder->compile(
         source => $src_file,
         object_file => $object_file,
-        extra_compiler_flags => $build_config->get_extra_compiler_flags,
+        extra_compiler_flags => $bconf->get_extra_compiler_flags,
       );
     };
     if (my $error = $@) {
@@ -296,9 +296,6 @@ sub link {
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
   my $dll_file = "$lib_dir/$dll_rel_file";
 
-  # Quiet output
-  my $quiet = $self->quiet;
-  
   # Create temporary package directory
   my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
   my $tmp_package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
@@ -313,29 +310,32 @@ sub link {
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config
-  my $build_config;
+  my $bconf;
   if (-f $config_file) {
     open my $config_fh, '<', $config_file
       or confess "Can't open $config_file: $!";
     my $config_content = do { local $/; <$config_fh> };
-    $build_config = eval "$config_content";
+    $bconf = eval "$config_content";
     if (my $messge = $@) {
       confess "Can't parser $config_file: $@";
     }
   }
   else {
-    $build_config = SPVM::Builder::Util::new_default_build_config;
+    $bconf = SPVM::Builder::Util::new_default_build_config;
   }
+
+  # Quiet output
+  my $quiet = $bconf->exists_quiet ? $bconf->quiet : $self->quiet;
   
   # CBuilder configs
-  my $lddlflags = $build_config->get_lddlflags;
+  my $lddlflags = $bconf->get_lddlflags;
 
   # Default library path
-  $build_config->add_lddlflags("-L$build_dir/lib");
+  $bconf->add_lddlflags("-L$build_dir/lib");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
   
   my $cfunc_names = [];
   for my $sub_name (@$sub_names) {
@@ -353,12 +353,18 @@ sub link {
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_dll_file = $cbuilder->link(
-    objects => [$object_file],
-    module_name => $package_name,
-    dl_func_list => $cfunc_names,
-    extra_linker_flags => $build_config->get_extra_linker_flags,
-  );
+  my $tmp_dll_file;
+  eval {
+    $tmp_dll_file = $cbuilder->link(
+      objects => [$object_file],
+      module_name => $package_name,
+      dl_func_list => $cfunc_names,
+      extra_linker_flags => $bconf->get_extra_linker_flags,
+    );
+  };
+  if (my $error = $@) {
+    confess $error;
+  }
 
   # Create shared object blib directory
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
