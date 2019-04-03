@@ -94,7 +94,7 @@ sub set_std {
 }
 
 sub delete_std {
-  my ($self, $spec) = @_;
+  my ($self) = @_;
   
   my $ccflags = $self->get_ccflags;
   

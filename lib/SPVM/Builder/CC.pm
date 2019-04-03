@@ -2,7 +2,7 @@ package SPVM::Builder::CC;
 
 use strict;
 use warnings;
-use Carp 'croak', 'confess';
+use Carp 'confess';
 
 use SPVM::Builder::Util;
 
@@ -77,7 +77,7 @@ sub copy_dll_to_build_dir {
   mkpath $dll_build_dir_dir;
   
   copy $dll_file, $dll_build_dir
-    or croak "Can't copy $dll_file to $dll_build_dir";
+    or confess "Can't copy $dll_file to $dll_build_dir";
 }
 
 sub get_dll_file_runtime {
@@ -115,9 +115,8 @@ sub bind_subs {
     my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_file, $cfunc_name);
     
     unless ($cfunc_address) {
-      my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
       $cfunc_name =~ s/:/_/g;
-      confess "Can't find function address of $cfunc_name";
+      confess "Can't find function \"$cfunc_name\" in \"$dll_file\"";
     }
     
     my $category = $self->category;
