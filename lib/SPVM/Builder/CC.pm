@@ -252,12 +252,17 @@ sub compile {
   }
   
   if ($do_compile) {
-    # Compile source file
-    $cbuilder->compile(
-      source => $src_file,
-      object_file => $object_file,
-      extra_compiler_flags => $build_config->get_extra_compiler_flags,
-    );
+    eval {
+      # Compile source file
+      $cbuilder->compile(
+        source => $src_file,
+        object_file => $object_file,
+        extra_compiler_flags => $build_config->get_extra_compiler_flags,
+      );
+    };
+    if (my $error = $@) {
+      confess $error;
+    }
   }
   
   return $object_file;
