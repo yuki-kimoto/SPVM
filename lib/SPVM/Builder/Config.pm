@@ -174,6 +174,34 @@ sub set_extra_compiler_flags {
   return $self;
 }
 
+sub quiet {
+  my ($self, $quiet) = @_;
+  
+  return $self->{quiet};
+}
+
+sub set_quiet {
+  my ($self, $quiet) = @_;
+  
+  $self->{quiet} = $quiet;
+  
+  return $self;
+}
+
+sub clear_quiet {
+  my $self = shift;
+  
+  delete $self->{quiet};
+  
+  return $self;
+}
+
+sub exists_quiet {
+  my $self = shift;
+  
+  return exists $self->{quiet};
+}
+
 sub get_extra_compiler_flags {
   my $self = shift;
   
