@@ -23,17 +23,6 @@ sub new_default {
   return $bconf;
 }
 
-sub new_with_make_maker_option {
-  my ($class, $mconfig) = @_;
-  
-  my $config = $class->new;
-  
-  # Parse MakeMaker options
-  if (defined(my $ccflags = $mconfig->{CCFLGAS})) {
-    $config->set_ccflags($ccflags);
-  }
-}
-
 sub replace_all_config {
   my ($self, $config) = @_;
   
@@ -97,6 +86,20 @@ sub set_std {
   $ccflags =~ s/-std=[^ ]+//g;
   
   $ccflags .= " -std=$spec";
+  
+  # Add -std=foo section
+  $self->set_ccflags($ccflags);
+  
+  return $self;
+}
+
+sub delete_std {
+  my ($self, $spec) = @_;
+  
+  my $ccflags = $self->get_ccflags;
+  
+  # Remove -std=foo section
+  $ccflags =~ s/-std=[^ ]+//g;
   
   # Add -std=foo section
   $self->set_ccflags($ccflags);
@@ -188,7 +191,7 @@ sub set_quiet {
   return $self;
 }
 
-sub clear_quiet {
+sub delete_quiet {
   my $self = shift;
   
   delete $self->{quiet};
