@@ -114,11 +114,6 @@ sub bind_subs {
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
     my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_file, $cfunc_name);
     
-    unless ($cfunc_address) {
-      $cfunc_name =~ s/:/_/g;
-      confess "Can't find function \"$cfunc_name\" in \"$dll_file\"";
-    }
-    
     my $category = $self->category;
     if ($category eq 'native') {
       $self->bind_sub_native($package_name, $sub_name, $cfunc_address);

@@ -2,7 +2,7 @@ package SPVM::Builder::Util;
 
 use strict;
 use warnings;
-use Carp 'croak';
+use Carp 'confess';
 use Config;
 use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
@@ -50,13 +50,16 @@ sub get_dll_func_address {
     my $dll_libref = DynaLoader::dl_load_file($dll_file);
     if ($dll_libref) {
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
+      unless ($native_address) {
+        confess "Can't find function \"$dll_func_name\" in \"$dll_file\"";
+      }
     }
     else {
-      return;
+      confess "Can't load dll file \"$dll_file\"";
     }
   }
   else {
-    return;
+    confess "DLL file is not specified";
   }
   
   return $native_address;
