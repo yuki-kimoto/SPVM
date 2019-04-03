@@ -134,6 +134,10 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/Hash.spvm
 lib/SPVM/HashEntry.spvm
+lib/SPVM/HTTP/URL.spvm
+lib/SPVM/HTTP/URL/Encode.spvm
+lib/SPVM/HTTP/URL/Escape.spvm
+lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/JSON.spvm
@@ -147,6 +151,8 @@ lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/Socket.c
+lib/SPVM/Socket.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/Unicode.spvm
@@ -355,6 +361,10 @@ t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/FileHandle.spvm
 t/default/lib/TestCase/Lib/SPVM/Float.spvm
 t/default/lib/TestCase/Lib/SPVM/Hash.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/URL.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Encode.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Escape.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Parameters.spvm
 t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
@@ -393,6 +403,7 @@ t/default/lib/TestCase/Remainder.spvm
 t/default/lib/TestCase/Return.spvm
 t/default/lib/TestCase/Seqop.spvm
 t/default/lib/TestCase/Simple.spvm
+t/default/lib/TestCase/Socket.spvm
 t/default/lib/TestCase/SpecialAssign.spvm
 t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Sub.spvm
@@ -423,6 +434,7 @@ t/default/refcnt.t
 t/default/remainder.t
 t/default/return.t
 t/default/seqop.t
+t/default/socket.t
 t/default/special-assign.t
 t/default/spvm_build/.gitkeep
 t/default/string.t
