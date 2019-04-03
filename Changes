@@ -1,4 +1,4 @@
-0.0419 2018-03-11
+0.0419 2018-04-03
   - add env->alloc_memory_block_zero
   - add env->free_memory_block
   - add socket modules
@@ -10,6 +10,8 @@
   - SPVM::new_marray is merged to SPVM::new_oarray
   - add split core function
   - add env->remove_mortal function
+  - add new_default method to SPVM::Builder::Config
+
 0.0418 2018-03-01
   - fix t/exe/exe.t bug
 0.0417 2018-03-01
