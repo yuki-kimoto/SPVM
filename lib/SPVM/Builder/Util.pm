@@ -12,7 +12,7 @@ use File::Basename 'dirname';
 
 use SPVM::Builder::Config;
 
-# SPVM::Builder::tUtil is used from Makefile.PL
+# SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Builder::Config.
 
 sub unindent {

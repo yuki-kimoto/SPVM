@@ -23,6 +23,20 @@ sub new_default {
   return $bconf;
 }
 
+sub cache {
+  my ($self, $cache) = @_;
+  
+  return $self->{cache};
+}
+
+sub set_cache {
+  my ($self, $cache) = @_;
+  
+  $self->{cache} = $cache;
+  
+  return $self;
+}
+
 sub replace_all_config {
   my ($self, $config) = @_;
   
@@ -189,20 +203,6 @@ sub set_quiet {
   $self->{quiet} = $quiet;
   
   return $self;
-}
-
-sub delete_quiet {
-  my $self = shift;
-  
-  delete $self->{quiet};
-  
-  return $self;
-}
-
-sub exists_quiet {
-  my $self = shift;
-  
-  return exists $self->{quiet};
 }
 
 sub get_extra_compiler_flags {

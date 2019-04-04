@@ -188,7 +188,7 @@ sub compile {
   }
 
   # Quiet output
-  my $quiet = $bconf->exists_quiet ? $bconf->quiet : $self->quiet;
+  my $quiet = defined $bconf->quiet ? $bconf->quiet : $self->quiet;
   
   # Source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
@@ -225,7 +225,7 @@ sub compile {
   # Object file
   my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'o');
   my $object_file = "$object_dir/$object_rel_file";
-
+  
   # Do compile. This is same as make command
   my $do_compile;
   if ($package_name =~ /^anon/) {
@@ -236,11 +236,16 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      my $mod_time_src = (stat($src_file))[9];
-      my $mod_time_object = (stat($object_file))[9];
-      
-      if ($mod_time_src > $mod_time_object) {
+      if (defined $bconf->cache && !$bconf->cache) {
         $do_compile = 1;
+      }
+      else {
+        my $mod_time_src = (stat($src_file))[9];
+        my $mod_time_object = (stat($object_file))[9];
+        
+        if ($mod_time_src > $mod_time_object) {
+          $do_compile = 1;
+        }
       }
     }
   }
@@ -319,7 +324,7 @@ sub link {
   }
 
   # Quiet output
-  my $quiet = $bconf->exists_quiet ? $bconf->quiet : $self->quiet;
+  my $quiet = defined $bconf->quiet ? $bconf->quiet : $self->quiet;
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
