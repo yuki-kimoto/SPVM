@@ -10,6 +10,7 @@ use Config;
 use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
+use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use Getopt::Long 'GetOptions';
 use File::Basename 'basename';
