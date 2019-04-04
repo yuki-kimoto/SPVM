@@ -213,7 +213,7 @@ sub compile {
   my $ccflags = $bconf->get_ccflags;
   
   # Default include path
-  $bconf->add_ccflags("-I$build_dir/inlcude");
+  $bconf->add_ccflags("-I$build_dir/include");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
