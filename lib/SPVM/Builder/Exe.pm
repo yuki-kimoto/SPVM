@@ -183,17 +183,17 @@ sub compile_spvm_csources {
   my $src_files = [glob "blib/lib/SPVM/Builder/src/*.c"];
   
   # Config
-  my $build_config = SPVM::Builder::Util::new_default_build_config;
+  my $bconf = SPVM::Builder::Config->new_default;;
   
   # CBuilder configs
-  my $ccflags = $build_config->get_ccflags;
+  my $ccflags = $bconf->get_ccflags;
   
   # Default include path
-  $build_config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
+  $bconf->add_ccflags("-Iblib/lib/SPVM/Builder/include");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
   
   # Build directory
   my $build_dir = $self->{build_dir};
@@ -245,9 +245,9 @@ sub compile_main {
   
   my $build_dir = $self->{build_dir};
 
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
-  $build_config->set_optimize('-O0');
-  my $config = $build_config->to_hash;
+  my $bconf = SPVM::Builder::Config->new_default;
+  $bconf->set_optimize('-O0');
+  my $config = $bconf->to_hash;
   
   # Compile source files
   my $quiet = $self->{quiet};
@@ -303,18 +303,18 @@ sub link_executable {
   }
   push @$object_files, @$precompile_object_files;
   
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
+  my $bconf = SPVM::Builder::Config->new_default;
   
   # CBuilder configs
-  my $lddlflags = $build_config->get_lddlflags;
+  my $lddlflags = $bconf->get_lddlflags;
   
   my $exe_name = $self->{exe_name};
   
-  my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
+  my $original_extra_linker_flag = $bconf->get_extra_linker_flags;
   my $extra_linker_flag = "-lm $original_extra_linker_flag" ;
   
   # ExeUtils::CBuilder config
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
   
   my $quiet = $self->{quiet};
   

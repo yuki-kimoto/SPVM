@@ -5,6 +5,7 @@ use warnings;
 use Carp 'confess';
 
 use SPVM::Builder::Util;
+use SPVM::Builder::Config;
 
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
@@ -184,7 +185,7 @@ sub compile {
     }
   }
   else {
-    $bconf = SPVM::Builder::Util::new_default_build_config;
+    $bconf = SPVM::Builder::Config->new_default;;
   }
 
   # Quiet output
@@ -320,7 +321,7 @@ sub link {
     }
   }
   else {
-    $bconf = SPVM::Builder::Util::new_default_build_config;
+    $bconf = SPVM::Builder::Config->new_default;;
   }
 
   # Quiet output
