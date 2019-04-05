@@ -28,13 +28,13 @@ sub new {
   
   bless $self, $class;
   
-  my $builder_c_precompile = SPVM::Builder::CC->new(
+  my $cc_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self
   );
-  weaken $builder_c_precompile->{builder};
-  $self->{cbuilder_precompile} = $builder_c_precompile;
+  weaken $cc_precompile->{builder};
+  $self->{cbuilder_precompile} = $cc_precompile;
   
   $self->{packages} = {};
   
@@ -178,14 +178,14 @@ sub build_dll_native_dist {
 
   my $sub_names = $self->get_native_sub_names($package_name);
 
-  my $builder_c_native = SPVM::Builder::CC->new(
+  my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'native',
     builder => $self,
     quiet => 0,
   );
   
-  $builder_c_native->build_dll_native_dist($package_name, $sub_names);
+  $cc_native->build_dll_native_dist($package_name, $sub_names);
 }
 
 sub build_dll_precompile_dist {
@@ -200,40 +200,40 @@ sub build_dll_precompile_dist {
   
   my $sub_names = $self->get_precompile_sub_names($package_name);
 
-  my $builder_c_precompile = SPVM::Builder::CC->new(
+  my $cc_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self,
     quiet => 0,
   );
   
-  $builder_c_precompile->build_dll_precompile_dist($package_name, $sub_names);
+  $cc_precompile->build_dll_precompile_dist($package_name, $sub_names);
 }
 
 sub build_precompile {
   my $self = shift;
 
-  my $builder_c_precompile = SPVM::Builder::CC->new(
+  my $cc_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
     builder => $self,
     quiet => 1,
   );
   
-  $builder_c_precompile->build;
+  $cc_precompile->build;
 }
 
 sub build_native {
   my $self = shift;
 
-  my $builder_c_native = SPVM::Builder::CC->new(
+  my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'native',
     builder => $self,
     quiet => 1,
   );
   
-  $builder_c_native->build;
+  $cc_native->build;
 }
 
 my $package_name_h = {};
