@@ -36,7 +36,7 @@ typedef void* SPVM_VALUE_object;
 #define SPVM_EXCEPTION 1
 
 #define SPVM_LINE_STRINGIFY(n) #n
-#define SPVM_CROAK(message, file, line) do {\
+#define SPVM_DIE(message, file, line) do {\
   void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line));\
   env->set_exception(env, exception);\
   return SPVM_EXCEPTION;\
