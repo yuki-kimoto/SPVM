@@ -142,8 +142,12 @@ sub bind_subs {
   my $category = $self->category;
   my $bconf = $self->get_config_runtime($package_name, $category);
   my $dll_infos = $bconf->parse_dll_infos;
+  
   my $libpth = $Config{libpth};
   my @dll_load_paths = split(/ +/, $libpth);
+  my $build_lib_dir = $self->{build_dir} . '/lib';
+  push @dll_load_paths, $build_lib_dir;
+  
   for my $dll_info (@$dll_infos) {
     if ($dll_info->{type} eq 'L') {
       push @dll_load_paths, $dll_info->{name};
