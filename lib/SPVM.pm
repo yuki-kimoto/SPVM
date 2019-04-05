@@ -711,14 +711,14 @@ Script Ending:
 
 Throw Exception:
 
-  croak "Error";
+  die "Error";
 
 =head3 Catch Exception
 
 Catch Exception:
 
   eval {
-    croak "Error";
+    die "Error";
   };
 
 =head3 Exception Message

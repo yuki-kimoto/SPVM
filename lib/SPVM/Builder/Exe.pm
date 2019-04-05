@@ -2,7 +2,7 @@ package SPVM::Builder::Exe;
 
 use strict;
 use warnings;
-use Carp 'croak', 'confess';
+use Carp 'confess';
 use Pod::Usage 'pod2usage';
 use Config;
 
@@ -31,7 +31,7 @@ sub new {
   # Package name
   my $package_name = $self->{package_name};
   unless (defined $package_name) {
-    croak "Package name not specified";
+    confess "Package name not specified";
   }
   
   # Excutable file name
@@ -95,7 +95,7 @@ sub build_exe_file {
   # Compile
   my $compile_success = $builder->compile_spvm();
   unless ($compile_success) {
-    croak "Compile error";
+    confess "Compile error";
   }
   
   my $quiet = $self->{quiet};
