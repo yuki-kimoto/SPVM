@@ -1,5 +1,10 @@
 appveyor.yml
 Changes
+examples/native/eigen/eigen.pl
+examples/native/eigen/lib/Eigen.config
+examples/native/eigen/lib/Eigen.cpp
+examples/native/eigen/lib/Eigen.spvm
+examples/native/eigen/spvm_build/include/.gitkeep
 lib/SPVM.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
