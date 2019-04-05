@@ -62,7 +62,7 @@ package TestCase::List {
         $self->add($objects->[$i]);
       }
       else {
-        croak "Error";
+        die "Error";
       }
     }
   }

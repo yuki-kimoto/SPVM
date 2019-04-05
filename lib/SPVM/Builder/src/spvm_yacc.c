@@ -121,7 +121,7 @@
      NEW = 302,
      RETURN = 303,
      WEAKEN = 304,
-     CROAK = 305,
+     DIE = 305,
      CURRENT_PACKAGE = 306,
      UNWEAKEN = 307,
      SPECIAL_ASSIGN = 308,
@@ -211,7 +211,7 @@
 #define NEW 302
 #define RETURN 303
 #define WEAKEN 304
-#define CROAK 305
+#define DIE 305
 #define CURRENT_PACKAGE 306
 #define UNWEAKEN 307
 #define SPECIAL_ASSIGN 308
@@ -722,7 +722,7 @@ static const char *const yytname[] =
   "DEFAULT", "EVAL", "NAME", "VAR_NAME", "CONSTANT", "PACKAGE_VAR_NAME",
   "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG",
   "FLOAT", "DOUBLE", "STRING", "OBJECT", "DOT3", "FATCAMMA", "RW", "RO",
-  "WO", "BEGIN", "NEW", "RETURN", "WEAKEN", "CROAK", "CURRENT_PACKAGE",
+  "WO", "BEGIN", "NEW", "RETURN", "WEAKEN", "DIE", "CURRENT_PACKAGE",
   "'['", "UNWEAKEN", "'{'", "'('", "SPECIAL_ASSIGN", "ASSIGN",
   "LOGICAL_OR", "LOGICAL_AND", "BIT_XOR", "BIT_OR", "'&'", "STRNE",
   "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE", "STRGT",
@@ -2828,14 +2828,14 @@ yyreduce:
   case 73:
 #line 475 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_croak(compiler, (yyvsp[(1) - (2)].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[(1) - (2)].opval), NULL);
     ;}
     break;
 
   case 74:
 #line 479 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_croak(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(2) - (3)].opval));
+      (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(2) - (3)].opval));
     ;}
     break;
 

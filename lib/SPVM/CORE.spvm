@@ -41,10 +41,10 @@ package SPVM::CORE {
     my $sep_length = length $sep;
     
     unless ($max < 0) {
-      croak "Max must be minus value.";
+      die "Max must be minus value.";
     }
     if ($sep_length == 0) {
-      croak "Separator must not be empty string";
+      die "Separator must not be empty string";
     }
     
     my $separated_strings_list = new_list([]);
@@ -94,7 +94,7 @@ package SPVM::CORE {
   sub slurp_file : string ($file : string) {
     my $fh = fopen($file, "rb");
     unless ($fh) {
-      croak "Can't open file $file";
+      die "Can't open file $file";
     }
     
     my $buffer_length = 4096;
@@ -119,19 +119,19 @@ package SPVM::CORE {
   precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     my $length = @$replaces;
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $pos = 0;
@@ -144,21 +144,21 @@ package SPVM::CORE {
   precompile sub substr : string ($string : string, $offset : int, $length : int) {
     
     if ($string == undef) {
-      croak "String must be defined";
+      die "String must be defined";
     }
     
     my $string_length = length $string;
     
     if ($offset < 0 || $offset > $string_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $string_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new byte[$length];
@@ -175,21 +175,21 @@ package SPVM::CORE {
   precompile sub sliceb : byte[] ($nums : byte[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new byte[$length];
@@ -206,21 +206,21 @@ package SPVM::CORE {
   precompile sub slices : short[] ($nums : short[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new short[$length];
@@ -237,21 +237,21 @@ package SPVM::CORE {
   precompile sub slicei : int[] ($nums : int[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new int[$length];
@@ -268,21 +268,21 @@ package SPVM::CORE {
   precompile sub slicel : long[] ($nums : long[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new long[$length];
@@ -299,21 +299,21 @@ package SPVM::CORE {
   precompile sub slicef : float[] ($nums : float[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new float[$length];
@@ -330,21 +330,21 @@ package SPVM::CORE {
   precompile sub sliced : double[] ($nums : double[], $offset : int, $length : int) {
     
     if ($nums == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$nums;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new double[$length];
@@ -361,21 +361,21 @@ package SPVM::CORE {
   precompile sub sliceo : oarray ($elems : oarray, $offset : int, $length : int) {
     
     if ($elems == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     
     my $array_length = @$elems;
     
     if ($offset < 0 || $offset > $array_length - 1) {
-      croak "Invalid offset $offset";
+      die "Invalid offset $offset";
     }
     
     if ($length < 0) {
-      croak "Length must be non-zero value";
+      die "Length must be non-zero value";
     }
     
     if ($offset + $length > $array_length) {
-      croak "Offset + length must not be over array length";
+      die "Offset + length must not be over array length";
     }
     
     my $slice = new_oarray_proto($elems, $length);
@@ -455,7 +455,7 @@ package SPVM::CORE {
   
   precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
     if ($objs == undef) {
-      croak "Array must be defined";
+      die "Array must be defined";
     }
     my $length = @$objs;
     my $b = new_oarray_proto($objs, $length);
@@ -719,7 +719,7 @@ package SPVM::CORE {
 
   sub new_fcomplex_array : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
     if (@$re_values != @$im_values) {
-      croak "Real values length is different from imaginary values";
+      die "Real values length is different from imaginary values";
     }
     
     my $z_array = new SPVM::Complex_2f[@$re_values];
@@ -733,7 +733,7 @@ package SPVM::CORE {
   
   sub new_dcomplex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
     if (@$re_values != @$im_values) {
-      croak "Real values length is different from imaginary values";
+      die "Real values length is different from imaginary values";
     }
     
     my $z_array = new SPVM::Complex_2d[@$re_values];

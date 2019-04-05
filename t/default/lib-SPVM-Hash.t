@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Hash->test_new_with_capacity);
   ok(TestCase::Lib::SPVM::Hash->test_new_with_array);
   ok(TestCase::Lib::SPVM::Hash->test_new_with_array_allocated_capacity_should_power_of_2);
-  ok(TestCase::Lib::SPVM::Hash->test_new_with_array_croak_when_odd_number_array);
+  ok(TestCase::Lib::SPVM::Hash->test_new_with_array_die_when_odd_number_array);
   ok(TestCase::Lib::SPVM::Hash->test_new_with_array_do_not_refer_caller_key);
   ok(TestCase::Lib::SPVM::Hash->test_set);
   ok(TestCase::Lib::SPVM::Hash->test_set_do_not_refer_caller_key);

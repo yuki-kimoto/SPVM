@@ -3320,7 +3320,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_CROAK_FLAG_TRUE: {
+      case SPVM_OPCODE_C_ID_SET_DIE_FLAG_TRUE: {
         exception_flag = 1;
         break;
       }
