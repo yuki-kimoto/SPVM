@@ -368,7 +368,7 @@ sub link {
 
   # Create shared object blib directory
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
-  my $dll_dir = "$lib_dir/$package_rel_file_without_ext";
+  my $dll_dir = dirname "$lib_dir/$package_rel_file_without_ext";
   mkpath $dll_dir;
   
   # Move shared objectrary file to blib directory
