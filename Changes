@@ -1,5 +1,7 @@
 0.0422 2018-04-05
   - rename croak keyword to die
+  - rename cache of SPVM::Builder::Config to get_cache
+  - rename quiet of SPVM::Builder::Config to get_quiet
 0.0421 2018-04-05
   - add quiet to SPVM::Builder::Config
   - add set_quiet to SPVM::Builder::Config

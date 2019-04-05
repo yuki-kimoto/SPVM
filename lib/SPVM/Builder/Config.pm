@@ -104,7 +104,7 @@ sub new_cpp {
   return $bconf;
 }
 
-sub cache {
+sub get_cache {
   my ($self, $cache) = @_;
   
   return $self->{cache};
@@ -272,7 +272,7 @@ sub set_extra_compiler_flags {
   return $self;
 }
 
-sub quiet {
+sub get_quiet {
   my ($self, $quiet) = @_;
   
   return $self->{quiet};

@@ -189,7 +189,7 @@ sub compile {
   }
 
   # Quiet output
-  my $quiet = defined $bconf->quiet ? $bconf->quiet : $self->quiet;
+  my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
   
   # Source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
@@ -237,7 +237,7 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if (defined $bconf->cache && !$bconf->cache) {
+      if (defined $bconf->get_cache && !$bconf->get_cache) {
         $do_compile = 1;
       }
       else {
@@ -325,7 +325,7 @@ sub link {
   }
 
   # Quiet output
-  my $quiet = defined $bconf->quiet ? $bconf->quiet : $self->quiet;
+  my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
