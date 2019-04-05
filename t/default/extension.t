@@ -99,6 +99,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Pointer->struct_test());
 }
 
+# Check not creating no needed object file
+ok(!-f 't/default/spvm_build/work/object/SPVM/CORE.o');
 
 # Clear exception
 SPVM::set_exception_undef();

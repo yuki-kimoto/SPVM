@@ -6,6 +6,7 @@
   - fix spvm_build/include directory not detected bug
   - add set_cache to SPVM::Builder::Config
   - add new_cpp to SPVM::Builder::Config
+  - fix no needed object file is compiled bug
 0.0420 2018-04-03
   - fix before relase bugs
 0.0419 2018-04-03

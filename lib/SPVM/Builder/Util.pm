@@ -68,8 +68,10 @@ sub get_dll_func_address {
 sub convert_module_file_to_dll_category_file {
   my ($module_file, $category) = @_;
   
+  my $dlext = $Config{dlext};
   $module_file =~ s/\.[^.]+$//;
-  my $dll_category_file .= "$module_file.$category.$Config{dlext}";
+  my $dll_category_file = $module_file;
+  $dll_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dll_category_file;
 }
