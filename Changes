@@ -1,4 +1,4 @@
-0.0421 2018-04-03
+0.0421 2018-04-05
   - add quiet to SPVM::Builder::Config
   - add set_quiet to SPVM::Builder::Config
   - add cache to SPVM::Builder::Config
