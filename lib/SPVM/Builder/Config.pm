@@ -14,6 +14,30 @@ sub new {
   return bless $self, $class;
 }
 
+sub parse_dll_load_paths {
+  my $self = shift;
+  
+  my $linker_flags = $self->get_lddlflags . " " . $self->get_extra_linker_flags;
+  my $dll_load_paths = [];
+  while ($linker_flags =~ /-L([\S]+)/g) {
+    push @$dll_load_paths, $1;
+  }
+  
+  return $dll_load_paths;
+}
+
+sub parse_dll_files {
+  my $self = shift;
+  
+  my $linker_flags = $self->get_lddlflags . " " . $self->get_extra_linker_flags;
+  my $dll_load_files = [];
+  while ($linker_flags =~ /-l([\S]+)/g) {
+    push @$dll_load_files, $1;
+  }
+  
+  return $dll_load_files;
+}
+
 sub new_default {
   my $class = shift;
   
