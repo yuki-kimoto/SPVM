@@ -36,18 +36,7 @@ typedef void* SPVM_VALUE_object;
 #define SPVM_SUCCESS 0
 #define SPVM_EXCEPTION 1
 
-#define SPVM_LINE_STRINGIFY(n) #n
-#define SPVM_DIE(message, file, line) do {\
-  void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line));\
-  env->set_exception(env, exception);\
-  return SPVM_EXCEPTION;\
-} while (0)\
-
-#define SPVM_WARN(message, file, line) do {\
-  fprintf(stderr, "%s at " file " line " SPVM_LINE_STRINGIFY(line), message);\
-} while (0)\
-
-#define SPVM_DIE_FMT(message, ...) do {\
+#define SPVM_DIE(message, ...) do {\
   void* buffer = env->alloc_memory_block_zero(env, 255);\
   snprintf(buffer, 255, message, __VA_ARGS__);\
   void* exception = env->new_str_len_raw(env, buffer, strlen(buffer));\

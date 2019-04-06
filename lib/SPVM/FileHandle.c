@@ -12,7 +12,7 @@ int32_t SPNATIVE__SPVM__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
       env->set_pointer(env, ofh, NULL);
       
       if (ret == EOF) {
-        SPVM_WARN("Can't close file handle", "SPVM/FileHandle", __LINE__);
+        fprintf(stderr, "Can't close file handle at %s line %d", "SPVM/FileHandle", __LINE__);
       }
     }
   }
