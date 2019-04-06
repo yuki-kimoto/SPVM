@@ -2,6 +2,7 @@
 #define SPVM_NATIVE_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
@@ -46,9 +47,9 @@ typedef void* SPVM_VALUE_object;
   fprintf(stderr, "%s at " file " line " SPVM_LINE_STRINGIFY(line), message);\
 } while (0)\
 
-#define SPVM_DIE_FMT(message, file, line, ...) do {\
+#define SPVM_DIE_FMT(message, ...) do {\
   void* buffer = env->alloc_memory_block_zero(env, 255);\
-  snprintf(buffer, 255, message " at %s line %d" __VA_ARGS__, file, SPVM_LINE_STRINGIFY(line));\
+  snprintf(buffer, 255, message, __VA_ARGS__);\
   void* exception = env->new_str_len_raw(env, buffer, strlen(buffer));\
   env->free_memory_block(env, buffer);\
   env->set_exception(env, exception);\
