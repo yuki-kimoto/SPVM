@@ -819,49 +819,49 @@ int32_t SPNATIVE__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* 
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception %d", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 float SPNATIVE__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE_FMT("Exception at %s line %d", "TestCase/Extension.native/Extension.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {

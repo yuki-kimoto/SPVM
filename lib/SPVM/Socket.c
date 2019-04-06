@@ -29,7 +29,7 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t handle = socket(AF_INET, SOCK_STREAM, 0);
   
   if (handle < 0) {
-    SPVM_DIE("Can't create socket", "SPVM/Socket.c", __LINE__);
+    SPVM_DIE_FMT("Can't create socket at %s line %d", "SPVM/Socket.c", __LINE__);
   }
   
   struct sockaddr_in server;
@@ -44,7 +44,7 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (host == NULL) {
       if (h_errno == HOST_NOT_FOUND) {
         fprintf(stderr, "host not found : %s\n", deststr);
-        SPVM_DIE("Exception", "SPVM/Socket.c", __LINE__);
+        SPVM_DIE_FMT("Exception at %s line %d", "SPVM/Socket.c", __LINE__);
       }
       return 1;
     }
@@ -62,7 +62,7 @@ int32_t SPNATIVE__SPVM__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
       addrptr++;
     }
     if (*addrptr == NULL) {
-      SPVM_DIE("Connect", "SPVM/Socket.c", __LINE__);
+      SPVM_DIE_FMT("Connect at %s line %d", "SPVM/Socket.c", __LINE__);
     }
   }
   
@@ -102,7 +102,7 @@ int32_t SPNATIVE__SPVM__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   /* HTTPリクエスト送信 */
   int32_t write_length = write(handle, buffer, length);
   if (write_length < 0) {
-    SPVM_DIE("Socket write error", "SPVM/Socket.c", __LINE__);
+    SPVM_DIE_FMT("Socket write error at %s line %d", "SPVM/Socket.c", __LINE__);
   }
   
   stack[0].ival = write_length;
@@ -126,7 +126,7 @@ int32_t SPNATIVE__SPVM__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   /* HTTPリクエスト送信 */
   int32_t read_length = read(handle, (char*)buffer, length);
   if (read_length < 0) {
-    SPVM_DIE("Socket read error", "SPVM/Socket.c", __LINE__);
+    SPVM_DIE_FMT("Socket read error at %s line %d", "SPVM/Socket.c", __LINE__);
   }
   
   stack[0].ival = read_length;
