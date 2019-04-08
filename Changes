@@ -1,3 +1,5 @@
+0.0423 2018-04-08
+  - SPVM_DIE don't need to write "at %s line %d"
 0.0422 2018-04-06
   - rename croak keyword to die
   - rename cache of SPVM::Builder::Config to get_cache

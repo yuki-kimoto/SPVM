@@ -479,7 +479,7 @@ int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack)
   int32_t length = stack[1].ival;
   
   if (oarray == NULL) {
-    SPVM_DIE("Prototype array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Prototype array must be defined", "SPVM/CORE.c", __LINE__);
   }
   
   int32_t basic_type_id = env->object_basic_type_id(env, oarray);
@@ -497,7 +497,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -521,7 +521,7 @@ int32_t SPNATIVE__SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -545,7 +545,7 @@ int32_t SPNATIVE__SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -569,7 +569,7 @@ int32_t SPNATIVE__SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -593,7 +593,7 @@ int32_t SPNATIVE__SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -617,7 +617,7 @@ int32_t SPNATIVE__SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -641,7 +641,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1022,7 +1022,7 @@ int32_t SPNATIVE__SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1042,11 +1042,11 @@ int32_t SPNATIVE__SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1065,7 +1065,7 @@ int32_t SPNATIVE__SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_DIE("Array must be defined at %s line %d", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
