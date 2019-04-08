@@ -3,11 +3,10 @@
   - rename cache of SPVM::Builder::Config to get_cache
   - rename quiet of SPVM::Builder::Config to get_quiet
   - rename SPVM_CROAK macro to SPVM_DIE
-  - renmae SPVM_CARP macro to SPVM_WARN
   - SPVM_DIE can receive sprintf format
       
       SPVM_DIE("Hello %s at %s line %d", "foo", "bar.c", __LINE__);
-
+  - dependency of dll is detected automatically
 0.0421 2018-04-05
   - add quiet to SPVM::Builder::Config
   - add set_quiet to SPVM::Builder::Config
