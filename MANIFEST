@@ -4,7 +4,10 @@ examples/native/eigen/eigen.pl
 examples/native/eigen/lib/Eigen.config
 examples/native/eigen/lib/Eigen.cpp
 examples/native/eigen/lib/Eigen.spvm
-examples/native/eigen/spvm_build/include/.gitkeep
+examples/native/gsl/gsl.pl
+examples/native/gsl/lib/MyGSL.c
+examples/native/gsl/lib/MyGSL.config
+examples/native/gsl/lib/MyGSL.spvm
 lib/SPVM.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
