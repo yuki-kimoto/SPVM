@@ -1,0 +1,32 @@
+#include "spvm_native.h"
+
+#include <string.h>
+
+int32_t SPNATIVE__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* obj_nums1 = stack[0].oval;
+  if (obj_nums1 == NULL) {
+    SPVM_DIE("First argument must be not null at %s line %d", "MyOpenMP.c", __LINE__);
+  }
+  int32_t* nums1 = env->ielems(env, obj_nums1);
+  
+  void* obj_nums2 = stack[1].oval;
+  if(obj_nums2 == NULL) {
+    SPVM_DIE("First argument must be not null at %s line %d", "MyOpenMP.c", __LINE__);
+  }
+  int32_t* nums2 = env->ielems(env, obj_nums2);
+  
+  int32_t length = env->len(env, obj_nums1);
+  
+  void* obj_nums3 = env->new_iarray(env, length);
+  int32_t* nums3 = env->ielems(env, obj_nums3);
+  
+  int32_t i;
+#pragma omp parallel for
+  for (i = 0; i < length; i++) {
+    nums3[i] = nums1[i] + nums2[i];
+  }
+  
+  stack[0].oval = obj_nums3;
+  
+  return SPVM_SUCCESS;
+}
