@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;

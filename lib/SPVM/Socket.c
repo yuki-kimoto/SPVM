@@ -1,5 +1,6 @@
 #include "spvm_native.h"
 
+#include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 
