@@ -129,7 +129,12 @@ sub get_config_runtime {
     }
   }
   else {
-    $bconf = SPVM::Builder::Config->new_default;
+    if ($category eq 'native') {
+      confess "Can't find $config_file: $@";
+    }
+    else {
+      $bconf = SPVM::Builder::Config->new_default;
+    }
   }
   
   return $bconf;
