@@ -1,7 +1,7 @@
 0.0424 2018-04-09
   - add get_ext to SPVM::Builder::Config
   - add set_ext to SPVM::Builder::Config
-  - config file is required always.
+  - config file is required always in native.
 0.0423 2018-04-08
   - SPVM_DIE don't need to write "at %s line %d"
 0.0422 2018-04-06
