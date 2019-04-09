@@ -4,6 +4,20 @@ use strict;
 use warnings;
 use Config;
 
+sub get_ext {
+  my ($self, $ext) = @_;
+  
+  return $self->{ext};
+}
+
+sub set_ext {
+  my ($self, $ext) = @_;
+  
+  $self->{ext} = $ext;
+  
+  return $self;
+}
+
 sub new {
   my $class = shift;
   

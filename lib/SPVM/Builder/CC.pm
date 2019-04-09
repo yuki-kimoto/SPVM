@@ -252,7 +252,7 @@ sub compile {
   # Source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
   my $src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
-  my @available_exts = qw(.c .cpp .i .s .cxx .cc);
+  my @available_exts = defined $bconf->get_ext ? ($bconf->get_ext) : qw(.c .cpp .i .s .cxx .cc);
   my @src_files;
   for my $ext (@available_exts) {
     my $src_file = "$src_file_no_ext$ext";
