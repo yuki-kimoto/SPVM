@@ -36,7 +36,7 @@ int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t pos = 0;
   int32_t end_is_eof = 0;
   while (1) {
-    int32_t ch = getc(fh);
+    int32_t ch = fgetc(fh);
     if (ch == EOF) {
       end_is_eof = 1;
       break;
@@ -111,7 +111,7 @@ int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t pos = 0;
   int32_t end_is_eof = 0;
   while (1) {
-    int32_t ch = getc(fh);
+    int32_t ch = fgetc(fh);
     if (ch == EOF) {
       end_is_eof = 1;
       break;

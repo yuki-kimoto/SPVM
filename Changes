@@ -1,3 +1,5 @@
+0.0425 2018-04-10
+  - fix FreeBSD getc bug. getc is replaced with fgetc
 0.0424 2018-04-09
   - add get_ext to SPVM::Builder::Config
   - add set_ext to SPVM::Builder::Config
