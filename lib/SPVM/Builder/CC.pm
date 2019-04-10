@@ -257,21 +257,14 @@ sub compile {
   # Source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
   my $src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
-  my @available_exts = defined $bconf->get_ext ? ($bconf->get_ext) : qw(.c .cpp .i .s .cxx .cc);
-  my @src_files;
-  for my $ext (@available_exts) {
-    my $src_file = "$src_file_no_ext$ext";
-    if (-f $src_file) {
-      push @src_files, $src_file;
-    }
+  my $src_ext = $bconf->get_ext;
+  unless (defined $src_ext) {
+    confess "Source extension is not specified";
   }
-  if (@src_files > 1) {
-    confess "Find multiple source file @src_files";
+  my $src_file = "$src_file_no_ext.$src_ext";
+  unless (-f $src_file) {
+    confess "Can't find source file $src_file";
   }
-  elsif (@src_files == 0) {
-    confess "Can't find source file $src_file_no_ext with extension(@available_exts)";
-  }
-  my $src_file = $src_files[0];
 
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
