@@ -3,6 +3,7 @@
   - add set_ext to SPVM::Builder::Config
   - config file is required always in native
   - source extension become always one
+  - If config file modified time is newer than object file, compile is done
 0.0423 2018-04-08
   - SPVM_DIE don't need to write "at %s line %d"
 0.0422 2018-04-06
