@@ -8,6 +8,14 @@ examples/native/gsl/gsl.pl
 examples/native/gsl/lib/MyGSL.c
 examples/native/gsl/lib/MyGSL.config
 examples/native/gsl/lib/MyGSL.spvm
+examples/native/openmp/lib/MyOpenMP.c
+examples/native/openmp/lib/MyOpenMP.config
+examples/native/openmp/lib/MyOpenMP.spvm
+examples/native/openmp/openmp.pl
+examples/native/zlib/lib/Zlib.c
+examples/native/zlib/lib/Zlib.config
+examples/native/zlib/lib/Zlib.spvm
+examples/native/zlib/zlib.pl
 lib/SPVM.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
@@ -124,6 +132,7 @@ lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/CORE.c
+lib/SPVM/CORE.config
 lib/SPVM/CORE.pm
 lib/SPVM/CORE.spvm
 lib/SPVM/Data.pm
@@ -137,6 +146,7 @@ lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/FileHandle.c
+lib/SPVM/FileHandle.config
 lib/SPVM/FileHandle.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
@@ -160,6 +170,7 @@ lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/Socket.c
+lib/SPVM/Socket.config
 lib/SPVM/Socket.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
@@ -345,6 +356,7 @@ t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
 t/default/lib/TestCase/Exception.spvm
 t/default/lib/TestCase/Extension.c
+t/default/lib/TestCase/Extension.config
 t/default/lib/TestCase/Extension.spvm
 t/default/lib/TestCase/Extension2.c
 t/default/lib/TestCase/Extension2.config
@@ -364,6 +376,7 @@ t/default/lib/TestCase/JSON.spvm
 t/default/lib/TestCase/JSON/Bool.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/CORE.c
+t/default/lib/TestCase/Lib/SPVM/CORE.config
 t/default/lib/TestCase/Lib/SPVM/CORE.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/FileHandle.spvm
@@ -402,6 +415,7 @@ t/default/lib/TestCase/Point_3i.spvm
 t/default/lib/TestCase/Point_3l.spvm
 t/default/lib/TestCase/Point_3s.spvm
 t/default/lib/TestCase/Pointer.c
+t/default/lib/TestCase/Pointer.config
 t/default/lib/TestCase/Pointer.spvm
 t/default/lib/TestCase/Precedence.spvm
 t/default/lib/TestCase/Private.spvm

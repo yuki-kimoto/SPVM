@@ -1,0 +1,3 @@
+package MyZlib {
+  native sub test : void ();
+}
