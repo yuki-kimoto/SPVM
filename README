@@ -115,8 +115,7 @@ DEVELOPERS NOTE
     - don't use global variables
     - don't use inline keyword
     - use -std=c99
-    - fix all warnings before CPAN release
-    - exception is spvm_yacc.c. This is automatically created by yacc/bison.
+    - use fgetc instead of getc for FreeBSD compile error
   
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
@@ -125,6 +124,7 @@ DEVELOPERS NOTE
     - constant value is defined by enum { } syntax.
     - constant name is ,for example, SPVM_TYPE_C_FLAG_REF.
       all character is upper case or under score. need _C_ between package name and constant base name
+    - fix all warnings before CPAN release
 
 COPYRIGHT & LICENSE
 
