@@ -12,9 +12,9 @@ examples/native/openmp/lib/MyOpenMP.c
 examples/native/openmp/lib/MyOpenMP.config
 examples/native/openmp/lib/MyOpenMP.spvm
 examples/native/openmp/openmp.pl
-examples/native/zlib/lib/Zlib.c
-examples/native/zlib/lib/Zlib.config
-examples/native/zlib/lib/Zlib.spvm
+examples/native/zlib/lib/MyZlib.c
+examples/native/zlib/lib/MyZlib.config
+examples/native/zlib/lib/MyZlib.spvm
 examples/native/zlib/zlib.pl
 lib/SPVM.pm
 lib/SPVM/Builder.pm
