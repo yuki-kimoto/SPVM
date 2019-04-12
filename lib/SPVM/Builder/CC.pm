@@ -165,7 +165,8 @@ sub bind_subs {
         if (-f $dll_file) {
           my $dll_libref = DynaLoader::dl_load_file($dll_file);
           unless ($dll_libref) {
-            confess "Can't load pre required dll file \"$dll_file\"";
+            my $dl_error = DynaLoader::dl_error();
+            confess "Can't load pre required dll file \"$dll_file\": $dl_error";
           }
           last;
         }

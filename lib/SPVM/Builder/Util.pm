@@ -51,11 +51,13 @@ sub get_dll_func_address {
     if ($dll_libref) {
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
       unless ($native_address) {
-        confess "Can't find function \"$dll_func_name\" in \"$dll_file\"";
+        my $dl_error = DynaLoader::dl_error();
+        confess "Can't find function \"$dll_func_name\" in \"$dll_file\": $dl_error";
       }
     }
     else {
-      confess "Can't load dll file \"$dll_file\"";
+      my $dl_error = DynaLoader::dl_error();
+      confess "Can't load dll file \"$dll_file\": $dl_error";
     }
   }
   else {

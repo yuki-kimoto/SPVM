@@ -1,11 +1,12 @@
-0.0425 2018-04-10
-  - fix FreeBSD getc bug. getc is replaced with fgetc
+0.0425 2018-04-12
+  - add dl_error message
 0.0424 2018-04-09
   - add get_ext to SPVM::Builder::Config
   - add set_ext to SPVM::Builder::Config
   - config file is required always in native
   - source extension become always one
   - If config file modified time is newer than object file, compile is done
+  - fix FreeBSD getc bug. getc is replaced with fgetc
 0.0423 2018-04-08
   - SPVM_DIE don't need to write "at %s line %d"
 0.0422 2018-04-06
