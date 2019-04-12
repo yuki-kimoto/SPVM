@@ -58,7 +58,7 @@ sub new_default {
   $bconf->add_extra_compiler_flags("-I$include_dir");
   
   # Add math library to extra_linker_flags
-  $bconf->add_extra_linker_flags("-lm");
+  $bconf->add_extra_linker_flags("--no-as-needed -lm");
   
   # C99
   $bconf->set_std('c99');
@@ -94,7 +94,7 @@ sub new_cpp {
   $bconf->add_extra_compiler_flags("-I$include_dir");
   
   # Add math library to extra_linker_flags
-  $bconf->add_extra_linker_flags("-lm");
+  $bconf->add_extra_linker_flags("--no-as-needed -lm");
   
   # Optimize
   $bconf->set_optimize('-O3');

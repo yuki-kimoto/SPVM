@@ -1,5 +1,6 @@
 0.0425 2018-04-12
   - add dl_error message
+  - add -Wl,--no-as-needed for newer Ubuntu.
 0.0424 2018-04-09
   - add get_ext to SPVM::Builder::Config
   - add set_ext to SPVM::Builder::Config
