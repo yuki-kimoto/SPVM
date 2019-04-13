@@ -51,8 +51,6 @@ package SPVM::StringBuffer {
       return SPVM::StringBuffer->new;
     }
     
-    my $string = $self->{value};
-    
     my $new_capacity = $length;
     
     my $new_text = SPVM::StringBuffer->new_with_capacity($new_capacity);
@@ -108,11 +106,35 @@ package SPVM::StringBuffer {
       $self->{length} += $buffer->{length};
     }
     else {
-      
       for (my $i = 0; $i < $buffer->{length}; ++$i) {
         $self->{value}[$self->{length} + $i] = $buffer->{value}->[$i];
       }
       $self->{length} += $buffer->{length};
+    }
+  }
+
+  sub append_string : void ($self : self, $string : string) {
+    my $length = length($string);
+    my $capacity = @$self->{value};
+    if ($self->{length} + $length > $capacity) {
+      # O($new_capacity)
+      my $new_capacity : int;
+      if ($self->{length} + $length > $capacity * 2) {
+        $new_capacity = $self->{length} + $length;
+      } else {
+        $new_capacity = $capacity * 2;
+      }
+      $self->_reallocate($new_capacity);
+      for (my $i = 0; $i < $length; ++$i) {
+        $self->{value}[$self->{length} + $i] = $string->[$i];
+      }
+      $self->{length} += $length;
+    }
+    else {
+      for (my $i = 0; $i < $length; ++$i) {
+        $self->{value}[$self->{length} + $i] = $string->[$i];
+      }
+      $self->{length} += $length;
     }
   }
 
@@ -175,5 +197,9 @@ package SPVM::StringBuffer {
       }
     }
     return 1;
+  }
+
+  sub to_str : string ($self : self) {
+    return (string)(sliceb($self->{value}, 0, $self->{length}));
   }
 }

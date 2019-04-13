@@ -228,6 +228,26 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
+  sub test_append_string : int () {
+    my $buffer = SPVM::StringBuffer->new_with_capacity(1);
+    $buffer->append_string("abc");
+    unless ($buffer->to_barray eq "abc" && $buffer->capacity == 3) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    $buffer->append_string("de");
+    unless ($buffer->to_barray eq "abcde" && $buffer->capacity == 6) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    $buffer->append_string("f");
+    unless ($buffer->to_barray eq "abcdef" && $buffer->capacity == 6) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_append_copy_on_write : int () {
     warn("TODO: append copy-on-write test is not implemented yet");
     return 0;
@@ -317,6 +337,24 @@ package TestCase::Lib::SPVM::StringBuffer {
     }
     unless (!$lhs->equals(SPVM::StringBuffer->new_with_string("ab"))) {
       return 0;
+    }
+    return 1;
+  }
+
+  sub test_to_str : int () {
+    {
+      my $minimal_buf = SPVM::StringBuffer->new_with_capacity(1);
+      $minimal_buf->append_string("a");
+      unless ($minimal_buf->to_str eq "a") {
+        return 0;
+      }
+    }
+    {
+      my $large_buf = SPVM::StringBuffer->new_with_capacity(1000000);
+      $large_buf->append_string("b");
+      unless ($large_buf->to_str eq "b") {
+        return 0;
+      }
     }
     return 1;
   }
