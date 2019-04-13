@@ -1,4 +1,36 @@
-0.0419 2018-03-11
+0.0425 2018-04-12
+  - add dl_error message
+  - add -Wl,--no-as-needed for newer Ubuntu.
+0.0424 2018-04-09
+  - add get_ext to SPVM::Builder::Config
+  - add set_ext to SPVM::Builder::Config
+  - config file is required always in native
+  - source extension become always one
+  - If config file modified time is newer than object file, compile is done
+  - fix FreeBSD getc bug. getc is replaced with fgetc
+0.0423 2018-04-08
+  - SPVM_DIE don't need to write "at %s line %d"
+0.0422 2018-04-06
+  - rename croak keyword to die
+  - rename cache of SPVM::Builder::Config to get_cache
+  - rename quiet of SPVM::Builder::Config to get_quiet
+  - rename SPVM_CROAK macro to SPVM_DIE
+  - SPVM_DIE can receive sprintf format
+      
+      SPVM_DIE("Hello %s at %s line %d", "foo", "bar.c", __LINE__);
+  - dependency of dll is detected automatically
+0.0421 2018-04-05
+  - add quiet to SPVM::Builder::Config
+  - add set_quiet to SPVM::Builder::Config
+  - add cache to SPVM::Builder::Config
+  - add set_cache to SPVM::Builder::Config
+  - fix spvm_build/include directory not detected bug
+  - add set_cache to SPVM::Builder::Config
+  - add new_cpp to SPVM::Builder::Config
+  - fix no needed object file is compiled bug
+0.0420 2018-04-03
+  - fix before relase bugs
+0.0419 2018-04-03
   - add env->alloc_memory_block_zero
   - add env->free_memory_block
   - add socket modules
@@ -8,6 +40,10 @@
     [Before]"Point"
     [After]"Point[]"
   - SPVM::new_marray is merged to SPVM::new_oarray
+  - add split core function
+  - add env->remove_mortal function
+  - add new_default method to SPVM::Builder::Config
+
 0.0418 2018-03-01
   - fix t/exe/exe.t bug
 0.0417 2018-03-01

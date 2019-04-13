@@ -66,13 +66,13 @@ package TestCase {
     eval {
       my $obj_error1 = "Error1";
       
-      croak $obj_error1;
+      die $obj_error1;
     };
     
     {
       my $obj_error2 = "Error2";
       
-      croak $obj_error2;
+      die $obj_error2;
     }
   }
   

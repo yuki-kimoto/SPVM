@@ -88,7 +88,7 @@ package SPVM::Hash {
 
   sub new_with_array : SPVM::Hash ($objects : object []) {
     unless (@$objects % 2 == 0) {
-      croak "Odd number of elements provided";
+      die "Odd number of elements provided";
     }
     my $self = new SPVM::Hash;
     my $capacity = 2;
@@ -118,7 +118,7 @@ package SPVM::Hash {
 
   sub set : void ($self : self, $key : string, $val : object) {
     unless ($key) {
-      croak "key must not be undef";
+      die "key must not be undef";
     }
     unless ($self->load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
       $self->_rehash;

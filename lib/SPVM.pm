@@ -19,7 +19,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0418';
+our $VERSION = '0.0425';
 
 my $SPVM_ENV;
 my $BUILDER;
@@ -711,14 +711,14 @@ Script Ending:
 
 Throw Exception:
 
-  croak "Error";
+  die "Error";
 
 =head3 Catch Exception
 
 Catch Exception:
 
   eval {
-    croak "Error";
+    die "Error";
   };
 
 =head3 Exception Message

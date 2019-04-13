@@ -6,6 +6,8 @@ use warnings;
 
 use Test::More 'no_plan';
 
+use FindBin;
+
 use SPVM 'TestCase::Extension';
 use SPVM 'TestCase::Extension2';
 use SPVM 'TestCase::Pointer';
@@ -99,6 +101,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Pointer->struct_test());
 }
 
+# Check not creating no needed object file
+ok(!-f "$FindBin::Bin/spvm_build/work/object/SPVM/CORE.o");
 
 # Clear exception
 SPVM::set_exception_undef();

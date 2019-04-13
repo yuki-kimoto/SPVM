@@ -376,7 +376,7 @@ $
         SPVMにおけるキーワードは以下です。
       </p>
 <pre>
-allow byte BEGIN case croak default double elsif else enum eq
+allow byte BEGIN case die default double elsif else enum eq
 eval for float gt ge has if interface_t isa int last length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
@@ -419,7 +419,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
-%token <opval> RETURN WEAKEN CROAK CURRENT_PACKAGE UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block refcnt
@@ -588,8 +588,8 @@ statement
   | NEXT ';'
   | RETURN ';'
   | RETURN expression ';'
-  | CROAK ';'
-  | CROAK expression ';'
+  | DIE ';'
+  | DIE expression ';'
   | weaken_field ';'
   | unweaken_field ';'
   | ';'
@@ -980,7 +980,7 @@ sub_names
           <td>WEAKEN</td><td>weaken</td>
         </tr>
         <tr>
-          <td>CROAK</td><td>croak</td>
+          <td>DIE</td><td>die</td>
         </tr>
         <tr>
           <td>CURRENT_PACKAGE</td><td>__PACKAGE__</td>
@@ -2470,16 +2470,16 @@ switch (式) {
 
       <h3 id="language-exception-occur">例外の発生</h3>
       <p>
-        例外の発生を行うには、croak文を使用します。
+        例外の発生を行うには、die文を使用します。
       </p>
 <pre>
-croak 式;
+die 式;
 </pre>
       <p>
         式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
       </p>
       <p>
-        croak文が実行されると、スタックトレースと式で指定された文字列を表示して、プログラムは終了します。スタックトレースは、パッケージ名、サブルーチン名、ファイル名、行番号を含みます。ファイル名は、モジュールをロードしたパスからの相対ファイル名です。
+        die文が実行されると、スタックトレースと式で指定された文字列を表示して、プログラムは終了します。スタックトレースは、パッケージ名、サブルーチン名、ファイル名、行番号を含みます。ファイル名は、モジュールをロードしたパスからの相対ファイル名です。
       </p>
 <pre>
 Error
@@ -5872,7 +5872,7 @@ a * (b + c)
         <li><a href="#language-statement-next">next文</a></li>
         <li><a href="#language-statement-last">last文</a></li>
         <li><a href="#language-statement-return">return文</a></li>
-        <li><a href="#language-statement-croak">croak文</a></li>
+        <li><a href="#language-statement-die">die文</a></li>
         <li><a href="#language-statement-weaken">weaken文</a></li>
         <li><a href="#language-statement-unweaken">unweaken文</a></li>
         <li><a href="#language-statement-expression">式文</a></li>
@@ -6272,18 +6272,18 @@ return 式;
         <a href="#language-sub-definition">サブルーチンの定義</a>において戻り値の型が「void型」以外の場合は、式の型と一致していなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-statement-croak">croak文</h3>
+      <h3 id="language-statement-die">die文</h3>
       <p>
-        croak文は、例外を発生させるための文です。
+        die文は、例外を発生させるための文です。
       </p>
 <pre>
-croak 式;
+die 式;
 </pre>
       <p>
         式は、文字列互換型でなければなりません。
       </p>
       <p>
-        croak文の詳しい解説については、<a href="#language-exception">例外処理</a>を見てください。
+        die文の詳しい解説については、<a href="#language-exception">例外処理</a>を見てください。
       </p>
       
       <h3 id="language-statement-weaken">weaken文</h3>

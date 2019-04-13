@@ -10,6 +10,7 @@
 #include <complex.h>
 #include <memory.h>
 #include <fcntl.h>
+#include <assert.h>
 
 int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
@@ -26,15 +27,16 @@ int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
+  int32_t scope_id = env->enter_scope(env);
+  
   int32_t capacity = 80;
-  void* obuffer = env->new_barray_raw(env, capacity);
-  env->inc_ref_count(env, obuffer);
+  void* obuffer = env->new_barray(env, capacity);
   int8_t* buffer = env->belems(env, obuffer);
   
   int32_t pos = 0;
   int32_t end_is_eof = 0;
   while (1) {
-    int32_t ch = getc(fh);
+    int32_t ch = fgetc(fh);
     if (ch == EOF) {
       end_is_eof = 1;
       break;
@@ -43,11 +45,12 @@ int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_obuffer = env->new_barray_raw(env, new_capacity);
-        env->inc_ref_count(env, new_obuffer);
+        void* new_obuffer = env->new_barray(env, new_capacity);
         int8_t* new_buffer = env->belems(env, new_obuffer);
         memcpy(new_buffer, buffer, capacity);
-        env->dec_ref_count(env, obuffer);
+
+        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        assert(removed);
         
         capacity = new_capacity;
         obuffer = new_obuffer;
@@ -67,19 +70,17 @@ int32_t SPNATIVE__SPVM__CORE__fgets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (pos > 0 || !end_is_eof) {
     void* oline;
     if (pos == 0) {
-      oline = env->new_barray_raw(env, 0);
+      oline = env->new_barray(env, 0);
     }
     else {
-      oline = env->new_barray_raw(env, pos);
+      oline = env->new_barray(env, pos);
       int8_t* line = env->belems(env, oline);
       memcpy(line, buffer, pos);
     }
     
-    env->dec_ref_count(env, obuffer);
     stack[0].oval = oline;
   }
   else {
-    env->dec_ref_count(env, obuffer);
     stack[0].oval = NULL;
   }
   
@@ -101,15 +102,16 @@ int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
+  int32_t scope_id = env->enter_scope(env);
+  
   int32_t capacity = 80;
-  void* obuffer = env->new_barray_raw(env, capacity);
-  env->inc_ref_count(env, obuffer);
+  void* obuffer = env->new_barray(env, capacity);
   int8_t* buffer = env->belems(env, obuffer);
   
   int32_t pos = 0;
   int32_t end_is_eof = 0;
   while (1) {
-    int32_t ch = getc(fh);
+    int32_t ch = fgetc(fh);
     if (ch == EOF) {
       end_is_eof = 1;
       break;
@@ -118,11 +120,12 @@ int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_obuffer = env->new_barray_raw(env, new_capacity);
-        env->inc_ref_count(env, new_obuffer);
+        void* new_obuffer = env->new_barray(env, new_capacity);
         int8_t* new_buffer = env->belems(env, new_obuffer);
         memcpy(new_buffer, buffer, capacity);
-        env->dec_ref_count(env, obuffer);
+        
+        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        assert(removed);
         
         capacity = new_capacity;
         obuffer = new_obuffer;
@@ -144,19 +147,17 @@ int32_t SPNATIVE__SPVM__CORE__fgets(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (pos > 0 || !end_is_eof) {
     void* oline;
     if (pos == 0) {
-      oline = env->new_barray_raw(env, 0);
+      oline = env->new_barray(env, 0);
     }
     else {
-      oline = env->new_barray_raw(env, pos);
+      oline = env->new_barray(env, pos);
       int8_t* line = env->belems(env, oline);
       memcpy(line, buffer, pos);
     }
     
-    env->dec_ref_count(env, obuffer);
     stack[0].oval = oline;
   }
   else {
-    env->dec_ref_count(env, obuffer);
     stack[0].oval = NULL;
   }
   
@@ -478,7 +479,7 @@ int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack)
   int32_t length = stack[1].ival;
   
   if (oarray == NULL) {
-    SPVM_CROAK("Prototype array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Prototype array must be defined", "SPVM/CORE.c", __LINE__);
   }
   
   int32_t basic_type_id = env->object_basic_type_id(env, oarray);
@@ -496,7 +497,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -520,7 +521,7 @@ int32_t SPNATIVE__SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -544,7 +545,7 @@ int32_t SPNATIVE__SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -568,7 +569,7 @@ int32_t SPNATIVE__SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -592,7 +593,7 @@ int32_t SPNATIVE__SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -616,7 +617,7 @@ int32_t SPNATIVE__SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -640,7 +641,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1021,7 +1022,7 @@ int32_t SPNATIVE__SPVM__CORE__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1041,11 +1042,11 @@ int32_t SPNATIVE__SPVM__CORE__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);
@@ -1064,7 +1065,7 @@ int32_t SPNATIVE__SPVM__CORE__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* onums = stack[0].oval;
   
   if (onums == NULL) {
-    SPVM_CROAK("Array must be defined", "SPVM/CORE.c", __LINE__);
+    SPVM_DIE("Array must be defined", "SPVM/CORE.c", __LINE__);
   }
 
   int32_t array_length = env->len(env, onums);

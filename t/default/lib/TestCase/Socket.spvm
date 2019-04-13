@@ -16,7 +16,7 @@ package TestCase::Socket {
       my $read_length = $socket->read($read_buffer);
       
       if ($read_length < 0) {
-        croak "Read error";
+        die "Read error";
       }
       
       # print((string)sliceb($read_buffer, 0, $read_length));

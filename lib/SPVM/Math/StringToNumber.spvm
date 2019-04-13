@@ -4,26 +4,26 @@ package SPVM::Math::StringToNumber {
   sub _validate : void ($val : string) {
     my $length = length $val;
     unless ($length > 0) {
-      croak "value is empty";
+      die "value is empty";
     }
     if ($val->[0] == '.') {
-      croak "decimal cannot start with '.'";
+      die "decimal cannot start with '.'";
     }
     # TODO: 1e008 などのためにコメントアウトする。あとでちゃんとJSONみたいなインターフェースにして直すのが良いと思う
     #if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
-    #  croak "'.' must exist just after the first digit '0'. val: '$val'"; # TODO: Proper english
+    #  die "'.' must exist just after the first digit '0'. val: '$val'"; # TODO: Proper english
     #}
     if ($val->[$length - 1] == '.') {
-      croak "'.' cannot exist at the end of digits. val: '$val'";
+      die "'.' cannot exist at the end of digits. val: '$val'";
     }
     my $found_dot = 0;
     for (my $i = 0; $i < $length; ++$i) {
       unless (('0' <= $val->[$i] && $val->[$i] <= '9') || $val->[$i] == '.' || $val->[$i] == '-') {
-        croak "decimal cannot contain not digit, '.' or '-' character. val: '$val'";
+        die "decimal cannot contain not digit, '.' or '-' character. val: '$val'";
       }
       if ($val->[$i] == '.') {
         if ($found_dot) {
-          croak "decimal cannot contain multiple '.'";
+          die "decimal cannot contain multiple '.'";
         }
         $found_dot = 1;
       }

@@ -2,7 +2,7 @@ package SPVM::Builder::Util;
 
 use strict;
 use warnings;
-use Carp 'croak';
+use Carp 'confess';
 use Config;
 use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
@@ -12,7 +12,7 @@ use File::Basename 'dirname';
 
 use SPVM::Builder::Config;
 
-# SPVM::Builder::tUtil is used from Makefile.PL
+# SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Builder::Config.
 
 sub unindent {
@@ -50,13 +50,18 @@ sub get_dll_func_address {
     my $dll_libref = DynaLoader::dl_load_file($dll_file);
     if ($dll_libref) {
       $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
+      unless ($native_address) {
+        my $dl_error = DynaLoader::dl_error();
+        confess "Can't find function \"$dll_func_name\" in \"$dll_file\": $dl_error";
+      }
     }
     else {
-      return;
+      my $dl_error = DynaLoader::dl_error();
+      confess "Can't load dll file \"$dll_file\": $dl_error";
     }
   }
   else {
-    return;
+    confess "DLL file is not specified";
   }
   
   return $native_address;
@@ -65,8 +70,10 @@ sub get_dll_func_address {
 sub convert_module_file_to_dll_category_file {
   my ($module_file, $category) = @_;
   
+  my $dlext = $Config{dlext};
   $module_file =~ s/\.[^.]+$//;
-  my $dll_category_file .= "$module_file.$category.$Config{dlext}";
+  my $dll_category_file = $module_file;
+  $dll_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dll_category_file;
 }
@@ -223,97 +230,17 @@ sub create_package_make_rule {
   return $make_rule;
 }
 
-sub new_default_build_config {
-  my $build_config = SPVM::Builder::Config->new;
-  
-  # Use default config
-  my $default_config = {%Config};
-  $build_config->replace_all_config($default_config);
-  
-  # Include directory
-  my $include_dir = $INC{"SPVM/Builder/Util.pm"};
-  $include_dir =~ s/\/Util\.pm$//;
-  $include_dir .= '/include';
-  $build_config->add_ccflags("-I$include_dir");
-
-  # lib directory
-  my $lib_dir = $INC{"SPVM/Builder/Util.pm"};
-  $lib_dir =~ s/\/SPVM\/Builder\/Util.pm$//;
-  $build_config->add_ccflags("-I$lib_dir");
-  
-  # math library
-  $build_config->add_extra_linker_flags("-lm");
-  
-  # C99
-  $build_config->set_std('c99');
-  
-  # Optimize
-  $build_config->set_optimize('-O3');
-  
-  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-  # so I dicide not to print warning in release version
-  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $build_config->add_ccflags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
-  }
-  
-  return $build_config;
-}
-
 1;
 
 =head1 NAME
 
 SPVM::Builder::Util - Build Utilities
 
-B<Create defaulgt build config>
-
-  use SPVM::Builder::Util;
-
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
-
-  $build_config->set_optimize('-O3');
-  
-
-B<Add Build shared object make rule in Makefile.PL>
-
-  sub MY::postamble {
-
-    my $make_rule = '';
-    
-    # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Foo');
-    
-    # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Foo');
-    
-    return $make_rule;
-  }
-
 =head1 DESCRIPTION
 
 SPVM::Builder::Util is building utilities.
 
 =head1 FUNCTIONS
-
-=head2 new_default_build_config
-  
-  my $build_config = SPVM::Builder::Util::new_default_build_config;
-
-Create defaulgt build config. This is L<SPVM::Builder::Config> object.
-
-This function is used in native config file.
-
-  # Foo.spvm.bconf
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Util;
-
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
-
-  $build_config->set_config(optimize => '-O2');
-
-  $build_config;
 
 =head2 create_make_rule_native
 

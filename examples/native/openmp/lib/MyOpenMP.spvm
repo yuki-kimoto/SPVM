@@ -1,0 +1,14 @@
+package MyOpenMP {
+  native sub sum_vec_int : int[] ($nums1 : int[], $nums2 : int[]);
+  
+  sub test : void () {
+    my $nums1 = [1, 2, 3];
+    my $nums2 = [5, 6, 7];
+    
+    my $nums3 = sum_vec_int($nums1, $nums2);
+    
+    for (my $i = 0; $i < @$nums3; $i++) {
+      print($nums3->[$i] . "\n");
+    }
+  }
+}

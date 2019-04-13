@@ -30,7 +30,7 @@ package SPVM::HTTP::URL::Escape {
       return $c - 'A' + 10;
     }
     else {
-      croak "string is broken. invalid hex-digit. c = '" . [$c] . "'";
+      die "string is broken. invalid hex-digit. c = '" . [$c] . "'";
     }
   }
 
@@ -57,10 +57,10 @@ package SPVM::HTTP::URL::Escape {
       }
       else {
         unless ($str->[$i] == '%') {
-          croak "string is broken. '%' is expected. str: $str";
+          die "string is broken. '%' is expected. str: $str";
         }
         unless ($i + 2 < $length) {
-          croak "string is broken. two hex-digits are required after '%'. str: $str";
+          die "string is broken. two hex-digits are required after '%'. str: $str";
         }
         $res .= [(byte)(hex_index($str->[$i + 1]) * 16 + hex_index($str->[$i + 2]))];
         $i += 2;

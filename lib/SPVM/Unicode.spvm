@@ -7,7 +7,7 @@ package SPVM::Unicode {
       my $code_point = $code_point_string->[$i];
 
       if ($code_point < 0 || $code_point > 0x10FFFF) {
-        croak "Invalid code point in code point string";
+        die "Invalid code point in code point string";
       }
 
       if ($code_point < 0x10000) {
@@ -65,17 +65,17 @@ package SPVM::Unicode {
     for (my $i = 0; $i < @$utf16_string; $i++) {
       if (is_utf16_high_surrogate($utf16_string->[$i])) {
         if ($i + 1 == @$utf16_string - 1) {
-          croak "Invalid UTF-16 string";
+          die "Invalid UTF-16 string";
         }
         else {
           $i++;
           unless (is_utf16_low_surrogate($utf16_string->[$i])) {
-            croak "Invalid UTF-16 string";
+            die "Invalid UTF-16 string";
           }
         }
       }
       elsif (is_utf16_low_surrogate($utf16_string->[$i])) {
-        croak "Invalid UTF-16 string";
+        die "Invalid UTF-16 string";
       }
       $length++;
     }
