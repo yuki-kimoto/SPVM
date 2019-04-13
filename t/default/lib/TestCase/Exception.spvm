@@ -116,7 +116,7 @@ package TestCase::Exception {
   }
   sub exception_eval_call_sub : int () {
     eval {
-      exception_croak_return_int();
+      exception_die_return_int();
     };
     
     if ($@) {
@@ -127,44 +127,44 @@ package TestCase::Exception {
   }
   
   sub exception_call_stack : int () {
-    exception_croak_return_int();
+    exception_die_return_int();
   }
   
-  sub exception_croak_return_byte : byte () {
-    croak "Error";
+  sub exception_die_return_byte : byte () {
+    die "Error";
   }
   
-  sub exception_croak_return_short : short () {
-    croak "Error";
+  sub exception_die_return_short : short () {
+    die "Error";
   }
   
-  sub exception_croak_return_int : int () {
-    croak "Error";
+  sub exception_die_return_int : int () {
+    die "Error";
   }
   
-  sub exception_croak_return_long : long () {
-    croak "Error";
+  sub exception_die_return_long : long () {
+    die "Error";
   }
   
-  sub exception_croak_return_float : float () {
-    croak "Error";
+  sub exception_die_return_float : float () {
+    die "Error";
   }
   
-  sub exception_croak_return_double : double () {
-    croak "Error";
+  sub exception_die_return_double : double () {
+    die "Error";
   }
   
-  sub exception_croak_return_object : TestCase::Minimal () {
-    croak "Error";
+  sub exception_die_return_object : TestCase::Minimal () {
+    die "Error";
   }
   
-  sub exception_croak_return_void : void () {
-    croak "Error";
+  sub exception_die_return_void : void () {
+    die "Error";
   }
 
-  sub exception_croak_return_int_eval_catch : int () {
+  sub exception_die_return_int_eval_catch : int () {
     eval {
-      croak "Error";
+      die "Error";
     };
     
     

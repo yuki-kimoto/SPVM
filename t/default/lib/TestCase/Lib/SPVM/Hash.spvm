@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_array_croak_when_odd_number_array : int () {
+  sub test_new_with_array_die_when_odd_number_array : int () {
     eval {
       SPVM::Hash->new_with_array([(object)"a", "1", "b"]);
     };

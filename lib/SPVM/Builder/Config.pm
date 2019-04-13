@@ -4,6 +4,20 @@ use strict;
 use warnings;
 use Config;
 
+sub get_ext {
+  my ($self, $ext) = @_;
+  
+  return $self->{ext};
+}
+
+sub set_ext {
+  my ($self, $ext) = @_;
+  
+  $self->{ext} = $ext;
+  
+  return $self;
+}
+
 sub new {
   my $class = shift;
   
@@ -14,15 +28,104 @@ sub new {
   return bless $self, $class;
 }
 
-sub new_with_make_maker_option {
-  my ($class, $mconfig) = @_;
+sub parse_dll_infos {
+  my $self = shift;
   
-  my $config = $class->new;
-  
-  # Parse MakeMaker options
-  if (defined(my $ccflags = $mconfig->{CCFLGAS})) {
-    $config->set_ccflags($ccflags);
+  my $linker_flags = $self->get_lddlflags . " " . $self->get_extra_linker_flags;
+  my $dll_infos = [];
+  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
+    my $type = $1;
+    my $name = $2;
+    push @$dll_infos, {type => $type, name => $name};
   }
+  
+  return $dll_infos;
+}
+
+sub new_default {
+  my $class = shift;
+  
+  my $bconf = SPVM::Builder::Config->new;
+  
+  # Use default config
+  my $default_config = {%Config};
+  $bconf->replace_all_config($default_config);
+  
+  # Add include directory to ccflags
+  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
+  $include_dir =~ s/\/Config\.pm$//;
+  $include_dir .= '/include';
+  $bconf->add_extra_compiler_flags("-I$include_dir");
+  
+  # Add math library to extra_linker_flags
+  $bconf->add_extra_linker_flags("--no-as-needed -lm");
+  
+  # C99
+  $bconf->set_std('c99');
+  
+  # Optimize
+  $bconf->set_optimize('-O3');
+  
+  # Extension
+  $bconf->set_ext('c');
+  
+  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
+  # so I dicide not to print warning in release version
+  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
+    $bconf->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
+  }
+  
+  return $bconf;
+}
+
+sub new_cpp {
+  my $class = shift;
+  
+  my $bconf = SPVM::Builder::Config->new;
+  
+  # Use default config
+  my $default_config = {%Config};
+  $bconf->replace_all_config($default_config);
+  
+  # Add include directory to ccflags
+  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
+  $include_dir =~ s/\/Config\.pm$//;
+  $include_dir .= '/include';
+  $bconf->add_extra_compiler_flags("-I$include_dir");
+  
+  # Add math library to extra_linker_flags
+  $bconf->add_extra_linker_flags("--no-as-needed -lm");
+  
+  # Optimize
+  $bconf->set_optimize('-O3');
+  
+  # CC
+  $bconf->set_cc('g++');
+  
+  # LD
+  $bconf->set_ld('g++');
+  
+  # Extension
+  $bconf->set_ext('cpp');
+  
+  # Delete std
+  $bconf->delete_std;
+  
+  return $bconf;
+}
+
+sub get_cache {
+  my ($self, $cache) = @_;
+  
+  return $self->{cache};
+}
+
+sub set_cache {
+  my ($self, $cache) = @_;
+  
+  $self->{cache} = $cache;
+  
+  return $self;
 }
 
 sub replace_all_config {
@@ -88,6 +191,20 @@ sub set_std {
   $ccflags =~ s/-std=[^ ]+//g;
   
   $ccflags .= " -std=$spec";
+  
+  # Add -std=foo section
+  $self->set_ccflags($ccflags);
+  
+  return $self;
+}
+
+sub delete_std {
+  my ($self) = @_;
+  
+  my $ccflags = $self->get_ccflags;
+  
+  # Remove -std=foo section
+  $ccflags =~ s/-std=[^ ]+//g;
   
   # Add -std=foo section
   $self->set_ccflags($ccflags);
@@ -165,6 +282,20 @@ sub set_extra_compiler_flags {
   return $self;
 }
 
+sub get_quiet {
+  my ($self, $quiet) = @_;
+  
+  return $self->{quiet};
+}
+
+sub set_quiet {
+  my ($self, $quiet) = @_;
+  
+  $self->{quiet} = $quiet;
+  
+  return $self;
+}
+
 sub get_extra_compiler_flags {
   my $self = shift;
   
@@ -209,6 +340,8 @@ sub add_extra_linker_flags {
   return $self;
 }
 
+1;
+
 =head1 NAME
 
 SPVM::Builder::Config - build config
@@ -221,14 +354,14 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 =head2 new
 
-  my $build_config = SPVM::Builder::Config->new;
+  my $bconf = SPVM::Builder::Config->new;
   
 Create L<SPVM::Builder::Config> object.
 
 =head2 replace_all_config
 
   my $config = {cc => 'g++', ld => 'g++'};
-  $build_config->replace_all_config($config);
+  $bconf->replace_all_config($config);
 
 Replace all config.
 
@@ -236,43 +369,43 @@ All of old configs is removed and added new config.
 
 =head2 to_hash
 
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
 
 Convert configs to hash reference.
 
 =head2 get_config
 
-  my $cc = $build_config->get_config('cc');
+  my $cc = $bconf->get_config('cc');
 
 Get a config value.
 
 =head2 set_config
 
-  $build_config->set_config(cc => $cc);
+  $bconf->set_config(cc => $cc);
 
 Set a config value.
 
 =head2 set_ccflags
 
-  $build_config->set_ccflags($ccflags);
+  $bconf->set_ccflags($ccflags);
 
 Set C<ccflags>.
 
 =head2 get_ccflags
 
-  my $ccflags = $build_config->get_ccflags;
+  my $ccflags = $bconf->get_ccflags;
 
 Get C<ccflags>.
 
 =head2 add_ccflags
 
-  $build_config->add_ccflags($ccflags);
+  $bconf->add_ccflags($ccflags);
 
 Add C<ccflags> after current C<ccflags>.
 
 =head2 set_std
 
-  $build_config->set_std('c99');
+  $bconf->set_std('c99');
 
 Set C<std>.
 
@@ -280,58 +413,60 @@ Internally, remove C<-std=old> and add C<-std=new> after C<ccflags>.
 
 =head2 set_cc
 
-  $build_config->set_cc($cc);
+  $bconf->set_cc($cc);
 
 Set C<cc>.
 
 =head2 get_cc
 
-  my $cc = $build_config->get_cc;
+  my $cc = $bconf->get_cc;
 
 Get C<cc>.
 
 =head2 set_optimize
 
-  $build_config->set_optimize($optimize);
+  $bconf->set_optimize($optimize);
 
 Set C<optimize>.
 
 =head2 get_optimize
 
-  my $optimize = $build_config->get_optimize;
+  my $optimize = $bconf->get_optimize;
 
 Get C<optimize>.
 
 =head2 set_ld
 
-  $build_config->set_ld($ld);
+  $bconf->set_ld($ld);
 
 Set C<ld>.
 
 =head2 get_ld
 
-  my $ld = $build_config->get_ld;
+  my $ld = $bconf->get_ld;
 
 Get C<ld>.
 
 =head2 set_lddlflags
 
-  $build_config->set_lddlflags($lddlflags);
+  $bconf->set_lddlflags($lddlflags);
 
 Set C<lddlflags>.
 
 =head2 get_lddlflags
 
-  my $lddlflags = $build_config->get_lddlflags;
+  my $lddlflags = $bconf->get_lddlflags;
 
 Get C<lddlflags>.
 
 =head2 add_lddlflags
 
-  $build_config->add_lddlflags($lddlflags);
+  $bconf->add_lddlflags($lddlflags);
 
 Add C<lddlflags> after current C<lddlflags>.
 
-=cut
+=head2 new_default
+  
+  my $bconf = SPVM::Builder::Config->new_default;
 
-1;
+Create defaulgt build config. This is L<SPVM::Builder::Config> object.

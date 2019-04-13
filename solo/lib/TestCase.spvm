@@ -635,7 +635,7 @@ SPVM::Test - SPVM test module
     my $num : byte = 127;
     
     eval {
-      exception_croak_return_object();
+      exception_die_return_object();
     };
 
 =pod
@@ -1115,7 +1115,7 @@ SPVM::Test - SPVM test module
       
       sum0(3, 4);
       
-      croak "Catch error";
+      die "Catch error";
       
       1;
     };
@@ -1546,7 +1546,7 @@ SPVM::Test - SPVM test module
     }
 
     # my $error : String = "Error";
-    # croak $error;
+    # die $error;
     
     return 0;
   }
@@ -1629,7 +1629,7 @@ SPVM::Test - SPVM test module
   }
   
   sub sum2 : int ($num1 : int, $num2 : int) {
-    # croak "Error";
+    # die "Error";
     
     my $num3 = sum0($num1, $num2);
     
@@ -1674,7 +1674,7 @@ SPVM::Test - SPVM test module
       
       my $obj_error1 = "Error1";
       
-      croak $obj_error1;
+      die $obj_error1;
     };
     
     {
@@ -1686,7 +1686,7 @@ SPVM::Test - SPVM test module
       
       my $obj_error2 = "Error2";
       
-      croak $obj_error2;
+      die $obj_error2;
     }
   }
   sub array_new : int () {
@@ -1722,7 +1722,7 @@ SPVM::Test - SPVM test module
   }
   
   sub error : int () {
-    croak "ERROR";
+    die "ERROR";
   }
   
   sub error_call_stack : int () {
@@ -1731,7 +1731,7 @@ SPVM::Test - SPVM test module
 
   sub error_eval : int () {
     eval {
-      croak "ERROR";
+      die "ERROR";
     };
     
     if ($@) {
@@ -1754,8 +1754,8 @@ SPVM::Test - SPVM test module
       return 0;
     }
   }
-  sub exception_croak_return_object : TestCase::Minimal () {
-    croak "Error";
+  sub exception_die_return_object : TestCase::Minimal () {
+    die "Error";
   }
   sub new : TestCase () {
     return new TestCase;

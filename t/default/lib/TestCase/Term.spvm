@@ -25,7 +25,7 @@ package TestCase::Term {
   }
   
   sub evaluate_left_to_right_excpetion : int () {
-    croak "Error";
+    die "Error";
     
     return 6;
   }

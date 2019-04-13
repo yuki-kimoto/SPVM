@@ -4,14 +4,14 @@ package SPVM::Math::BigInteger {
   sub _validate : void ($val : string) {
     my $length = length $val;
     unless ($length > 0) {
-      croak "value is empty";
+      die "value is empty";
     }
     if ($length > 1 && $val->[0] == '0') {
-      croak "leading 0 is not allowed";
+      die "leading 0 is not allowed";
     }
     for (my $i = 0; $i < $length; ++$i) {
       unless ('0' <= $val->[$i] && $val->[$i] <= '9') {
-        croak "value has not digit";
+        die "value has not digit";
       }
     }
   }

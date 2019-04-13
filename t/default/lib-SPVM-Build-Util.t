@@ -11,11 +11,6 @@ use SPVM::Builder::Util;
 # Documented function check
 {
   {
-    my $build_config = SPVM::Builder::Util::new_default_build_config();
-    ok($build_config);
-  }
-
-  {
     my $make_rule = SPVM::Builder::Util::create_make_rule_native('Foo');
     ok($make_rule);
   }

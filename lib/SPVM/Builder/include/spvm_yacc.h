@@ -86,7 +86,7 @@
      NEW = 302,
      RETURN = 303,
      WEAKEN = 304,
-     CROAK = 305,
+     DIE = 305,
      CURRENT_PACKAGE = 306,
      UNWEAKEN = 307,
      SPECIAL_ASSIGN = 308,
@@ -176,7 +176,7 @@
 #define NEW 302
 #define RETURN 303
 #define WEAKEN 304
-#define CROAK 305
+#define DIE 305
 #define CURRENT_PACKAGE 306
 #define UNWEAKEN 307
 #define SPECIAL_ASSIGN 308

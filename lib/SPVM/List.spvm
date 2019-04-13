@@ -14,7 +14,7 @@ package SPVM::List : private {
         $nums->[$i] = (int)$value;
       }
       else {
-        croak "Can't convert to int type element";
+        die "Can't convert to int type element";
       }
     }
     return $nums;
@@ -30,7 +30,7 @@ package SPVM::List : private {
         $strings->[$i] = (string)$value;
       }
       else {
-        croak "Can't convert to int type element";
+        die "Can't convert to int type element";
       }
     }
     return $strings;
@@ -86,7 +86,7 @@ package SPVM::List : private {
   sub new_with_capacity : SPVM::List ($capacity : int) {
     my $self = new SPVM::List;
     unless ($capacity > 0) {
-      croak "capacity must be positive";
+      die "capacity must be positive";
     }
     $self->{capacity} = $capacity;
     $self->{values} = new object [$capacity];
