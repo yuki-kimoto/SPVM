@@ -42,7 +42,7 @@ size_t calc_decoded_length(size_t n) {
 
 int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stack) {
   if (!stack[0].oval) {
-    SPVM_CROAK("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
+    SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
   const char* input = (const char*)env->belems(env, stack[0].oval);
@@ -70,19 +70,19 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stac
 
     if (result_index >= encoded_capacity) {    
       env->dec_ref_count(env, obuffer);  
-      SPVM_CROAK("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
+      SPVM_DIE("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
     }
     result[result_index++] = base64chars[n0];
     if (result_index >= encoded_capacity) {
       env->dec_ref_count(env, obuffer);
-      SPVM_CROAK("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
+      SPVM_DIE("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
     }
     result[result_index++] = base64chars[n1];
 
     if (x + 1 < length) {
       if (result_index >= encoded_capacity) {      
         env->dec_ref_count(env, obuffer);
-        SPVM_CROAK("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
+        SPVM_DIE("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
       }
       result[result_index++] = base64chars[n2];
     }
@@ -90,7 +90,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stac
     if (x + 2 < length) {
       if (result_index >= encoded_capacity) {
         env->dec_ref_count(env, obuffer);
-        SPVM_CROAK("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
+        SPVM_DIE("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
       }
       result[result_index++] = base64chars[n3];
     }
@@ -107,7 +107,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stac
   }
   if (result_index >= encoded_capacity) {
     env->dec_ref_count(env, obuffer);
-    SPVM_CROAK("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
+    SPVM_DIE("index is over than estimated encoded length", "SPVM/MIME/Base64.c", __LINE__);
   }
 
   const size_t encoded_length = result_index;
@@ -125,7 +125,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stac
 
 int32_t SPNATIVE__SPVM__MIME__Base64__decode_b64(SPVM_ENV *env, SPVM_VALUE *stack) {
   if (!stack[0].oval) {
-    SPVM_CROAK("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
+    SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
   const char* input = (const char*)env->belems(env, stack[0].oval);
@@ -154,7 +154,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode_b64(SPVM_ENV *env, SPVM_VALUE *stac
       buf_iter++;
       if (buf_iter == 4) {
         if (result_index + 3 > decoded_capacity) {
-          SPVM_CROAK("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
+          SPVM_DIE("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
         }
         result[result_index++] = (buf >> 16) & 255;
         result[result_index++] = (buf >> 8) & 255;
@@ -166,13 +166,13 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode_b64(SPVM_ENV *env, SPVM_VALUE *stac
 
   if (buf_iter == 3) {
     if (result_index + 2 > decoded_capacity) {
-      SPVM_CROAK("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
+      SPVM_DIE("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
     }
     result[result_index++] = (buf >> 10) & 255;
     result[result_index++] = (buf >> 2) & 255;
   } else if (buf_iter == 2) {
     if (result_index + 1 > decoded_capacity) {
-      SPVM_CROAK("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
+      SPVM_DIE("index is over than estimated decoded length", "SPVM/MIME/Base64.c", __LINE__);
     }
     result[result_index++] = (buf >> 4) & 255;
   }
