@@ -4,6 +4,7 @@ use Config;
 
 use lib 'lib';
 use SPVM::Builder::Util;
+use SPVM::Builder::Config;
 use Getopt::Long 'GetOptions';
 
 my @defines;
@@ -22,7 +23,7 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Builder::Util::new_default_build_config;
+my $build_config = SPVM::Builder::Config->new_default;
 $optimize ||= $build_config->get_config('optimize');
 
 my $ccflags = $build_config->get_ccflags;

@@ -32,7 +32,7 @@ package SPVM::StringBuffer {
   sub new_with_capacity : SPVM::StringBuffer ($capacity : int) {
     my $self = new SPVM::StringBuffer;
     unless ($capacity > 0) {
-      croak "capacity must be positive";
+      die "capacity must be positive";
     }
     $self->{value} = new byte [$capacity];
     return $self;
@@ -47,7 +47,7 @@ package SPVM::StringBuffer {
 
   sub substr : SPVM::StringBuffer ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
-      croak("substr offset is greater or equal than string length");
+      die("substr offset is greater or equal than string length");
       return SPVM::StringBuffer->new;
     }
     

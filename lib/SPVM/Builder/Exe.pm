@@ -2,7 +2,7 @@ package SPVM::Builder::Exe;
 
 use strict;
 use warnings;
-use Carp 'croak', 'confess';
+use Carp 'confess';
 use Pod::Usage 'pod2usage';
 use Config;
 
@@ -31,7 +31,7 @@ sub new {
   # Package name
   my $package_name = $self->{package_name};
   unless (defined $package_name) {
-    croak "Package name not specified";
+    confess "Package name not specified";
   }
   
   # Excutable file name
@@ -95,7 +95,7 @@ sub build_exe_file {
   # Compile
   my $compile_success = $builder->compile_spvm();
   unless ($compile_success) {
-    croak "Compile error";
+    confess "Compile error";
   }
   
   my $quiet = $self->{quiet};
@@ -183,17 +183,17 @@ sub compile_spvm_csources {
   my $src_files = [glob "blib/lib/SPVM/Builder/src/*.c"];
   
   # Config
-  my $build_config = SPVM::Builder::Util::new_default_build_config;
-  
-  # CBuilder configs
-  my $ccflags = $build_config->get_ccflags;
+  my $bconf = SPVM::Builder::Config->new_default;;
   
   # Default include path
-  $build_config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
+  $bconf->add_extra_compiler_flags("-Iblib/lib/SPVM/Builder/include");
+  
+  $bconf->set_cache(0);
+  $bconf->set_quiet(0);
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
   
   # Build directory
   my $build_dir = $self->{build_dir};
@@ -216,6 +216,7 @@ sub compile_spvm_csources {
     $cbuilder->compile(
       source => $src_file,
       object_file => $object_file,
+      extra_compiler_flags => $bconf->get_extra_compiler_flags,
     );
     push @$object_files, $object_file;
   }
@@ -245,9 +246,9 @@ sub compile_main {
   
   my $build_dir = $self->{build_dir};
 
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
-  $build_config->set_optimize('-O0');
-  my $config = $build_config->to_hash;
+  my $bconf = SPVM::Builder::Config->new_default;
+  $bconf->set_optimize('-O0');
+  my $config = $bconf->to_hash;
   
   # Compile source files
   my $quiet = $self->{quiet};
@@ -259,6 +260,7 @@ sub compile_main {
   $cbuilder->compile(
     source => $src_file,
     object_file => $object_file,
+    extra_compiler_flags => $bconf->get_extra_compiler_flags,
   );
   
   return $object_file;
@@ -303,18 +305,18 @@ sub link_executable {
   }
   push @$object_files, @$precompile_object_files;
   
-  my $build_config = SPVM::Builder::Util::new_default_build_config();
+  my $bconf = SPVM::Builder::Config->new_default;
   
   # CBuilder configs
-  my $lddlflags = $build_config->get_lddlflags;
+  my $lddlflags = $bconf->get_lddlflags;
   
   my $exe_name = $self->{exe_name};
   
-  my $original_extra_linker_flag = $build_config->get_extra_linker_flags;
+  my $original_extra_linker_flag = $bconf->get_extra_linker_flags;
   my $extra_linker_flag = "-lm $original_extra_linker_flag" ;
   
   # ExeUtils::CBuilder config
-  my $config = $build_config->to_hash;
+  my $config = $bconf->to_hash;
   
   my $quiet = $self->{quiet};
   

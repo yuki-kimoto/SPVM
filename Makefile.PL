@@ -11,6 +11,7 @@ use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util;
+use SPVM::Builder::Config;
 use Getopt::Long 'GetOptions';
 use File::Basename 'basename';
 use File::Copy 'copy';
@@ -54,9 +55,10 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Builder::Util::new_default_build_config();
-$optimize ||= $build_config->get_config('optimize');
-my $ccflags = $build_config->get_ccflags;
+my $bconf = SPVM::Builder::Config->new_default;
+$optimize ||= $bconf->get_config('optimize');
+my $ccflags = $bconf->get_ccflags;
+my $extra_compiler_flags = $bconf->get_extra_compiler_flags;
 
 my @csource_files;
 push @csource_files, 'SPVM.c';
@@ -72,7 +74,7 @@ WriteMakefile(
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
        AUTHOR         => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
-    CCFLAGS => $ccflags,
+    CCFLAGS => "$ccflags $extra_compiler_flags",
     OPTIMIZE => $optimize,
     C => [@csource_files],
     OBJECT            => '$(O_FILES)', # link all the C files too

@@ -114,7 +114,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "ARRAY_LENGTH",
   "CONDITION",
   "CONDITION_NOT",
-  "CROAK",
+  "DIE",
   "SWITCH",
   "CASE",
   "DEFAULT",
@@ -1175,7 +1175,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CASE:
     case SPVM_OP_C_ID_LAST:
     case SPVM_OP_C_ID_NEXT:
-    case SPVM_OP_C_ID_CROAK:
+    case SPVM_OP_C_ID_DIE:
     {
       // Dummy int variable
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
@@ -2900,11 +2900,11 @@ SPVM_OP* SPVM_OP_build_refcnt(SPVM_COMPILER* compiler, SPVM_OP* op_refcnt, SPVM_
   return op_refcnt;
 }
 
-SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {
   
   if (!op_term) {
     // Default error message
-    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_croak->file, op_croak->line);;
+    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_die->file, op_die->line);;
   }
   
   // Exception variable
@@ -2914,11 +2914,11 @@ SPVM_OP* SPVM_OP_build_croak(SPVM_COMPILER* compiler, SPVM_OP* op_croak, SPVM_OP
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_term->file, op_term->line);
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_term);
   
-  SPVM_OP_insert_child(compiler, op_croak, op_croak->last, op_assign);
+  SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
 
-  // Free tmp vars at end of croak statement
-  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_croak->file, op_croak->line);
-  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_croak);
+  // Free tmp vars at end of die statement
+  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_die->file, op_die->line);
+  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_die);
   
   return op_free_tmp;
 }

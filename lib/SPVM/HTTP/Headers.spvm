@@ -61,7 +61,7 @@ package SPVM::HTTP::Headers {
 
   sub add_header : void ($self : self, $header : string[]...) {
     unless (@$header == 2) {
-      croak "Invalid size of args";
+      die "Invalid size of args";
     }
     my $k = $header->[0];
     my $v = $header->[1];

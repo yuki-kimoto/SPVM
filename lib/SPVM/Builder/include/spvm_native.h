@@ -2,6 +2,8 @@
 #define SPVM_NATIVE_H
 
 #include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 struct SPVM_env;
 typedef struct SPVM_env SPVM_ENV;
@@ -35,15 +37,13 @@ typedef void* SPVM_VALUE_object;
 #define SPVM_SUCCESS 0
 #define SPVM_EXCEPTION 1
 
-#define SPVM_LINE_STRINGIFY(n) #n
-#define SPVM_CROAK(message, file, line) do {\
-  void* exception = env->new_str_raw(env, message " at " file " line " SPVM_LINE_STRINGIFY(line));\
+#define SPVM_DIE(message, ...) do {\
+  void* buffer = env->alloc_memory_block_zero(env, 255);\
+  snprintf(buffer, 255, message "at %s line %d", __VA_ARGS__);\
+  void* exception = env->new_str_len_raw(env, buffer, strlen(buffer));\
+  env->free_memory_block(env, buffer);\
   env->set_exception(env, exception);\
   return SPVM_EXCEPTION;\
-} while (0)\
-
-#define SPVM_CARP(message, file, line) do {\
-  fprintf(stderr, "%s at " file " line " SPVM_LINE_STRINGIFY(line), message);\
 } while (0)\
 
 struct SPVM_env {
@@ -168,8 +168,8 @@ struct SPVM_env {
   void* (*type_name)(SPVM_ENV* env, void* object);
   int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);
   int32_t (*object_type_dimension)(SPVM_ENV* env, void* object);
-  int32_t (*is_utf8)(SPVM_ENV* env, void* object);
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
   void (*free_memory_block)(SPVM_ENV* env, void* block);
+  int32_t (*remove_mortal)(SPVM_ENV* env, int32_t original_mortal_stack_top, void* remove_object);
 };
 #endif

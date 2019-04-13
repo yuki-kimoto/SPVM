@@ -10,16 +10,16 @@ package SPVM::Math::BigDecimal {
   sub _validate_and_set : void ($self : self, $val : string) {
     my $length = length $val;
     unless ($length > 0) {
-      croak "val must not be empty";
+      die "val must not be empty";
     }
     if ($val->[0] == '.') {
-      croak "Cannot start with '.'";
+      die "Cannot start with '.'";
     }
     if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
-      croak "If the first character is '0', the next character must be '.'";
+      die "If the first character is '0', the next character must be '.'";
     }
     if ($val->[$length - 1] == '.') {
-      croak "'.' cannot exist at the end of digits";
+      die "'.' cannot exist at the end of digits";
     }
 
     my $digits = SPVM::List->new;
@@ -36,7 +36,7 @@ package SPVM::Math::BigDecimal {
         ++$i;
         $exp_pos = $i;
         unless ($i < $length) {
-          croak "digits must exist after e/E";
+          die "digits must exist after e/E";
         }
         if ($val->[$i] == '+') {
           ++$i;
@@ -46,18 +46,18 @@ package SPVM::Math::BigDecimal {
           ++$i;
         }
         unless ($i < $length) {
-          croak "digits must exist after e/E";
+          die "digits must exist after e/E";
         }
         while ($i < $length) {
           unless ('0' <= $val->[$i] && $val->[$i] <= '9') {
-            croak "Not digit or '+'/'-' characters are allowed after 'e'/'E'";
+            die "Not digit or '+'/'-' characters are allowed after 'e'/'E'";
           }
           ++$i;
         }
         last;
       }
       else {
-        croak "Invalid decimal: '$val'";
+        die "Invalid decimal: '$val'";
       }
     }
     $self->{exp} = 0;

@@ -18,14 +18,14 @@ package SPVM::HTTP::URL {
         return $i + 1;
       }
     }
-    croak "Cannot parse scheme: not found ':'";
+    die "Cannot parse scheme: not found ':'";
   }
 
   private sub parse_host : int ($self : self, $url : string, $start : int) {
     my $length = length $url;
     unless ($start + 2 < $length &&
         $url->[$start] == '/' && $url->[$start + 1] == '/') {
-      croak "Cannot parse host: requires \"//\"";
+      die "Cannot parse host: requires \"//\"";
     }
     $start += 2;
     for (my $i = $start; $i < $length; ++$i) {
@@ -55,7 +55,7 @@ package SPVM::HTTP::URL {
       } elsif ('0' <= $url->[$i] && $url->[$i] <= '9') {
         $port = $port * 10 + ($url->[$i] - '0');
       } else {
-        croak "Cannot parse port: port contains non-digit character";
+        die "Cannot parse port: port contains non-digit character";
       }
     }
     $self->{port} = $port;

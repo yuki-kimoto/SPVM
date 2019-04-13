@@ -30,46 +30,46 @@ my $file = basename $0;
   {
     eval { TestCase::Exception->exception_call_stack() };
     like($@, qr/Error/);
-    like($@, qr/exception_croak_return_int/);
+    like($@, qr/exception_die_return_int/);
     like($@, qr/exception_call_stack/);
   }
 
   {
-    eval { TestCase::Exception->exception_croak_return_byte() };
+    eval { TestCase::Exception->exception_die_return_byte() };
     like($@, qr/Error/);
-    like($@, qr/exception_croak_return_byte/);
+    like($@, qr/exception_die_return_byte/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_short() };
+    eval { TestCase::Exception->exception_die_return_short() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_int() };
+    eval { TestCase::Exception->exception_die_return_int() };
     like($@, qr/Error/);
-    like($@, qr/exception_croak_return_int/);
+    like($@, qr/exception_die_return_int/);
     like($@, qr/Exception\.spvm/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_long() };
+    eval { TestCase::Exception->exception_die_return_long() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_float() };
+    eval { TestCase::Exception->exception_die_return_float() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_double() };
+    eval { TestCase::Exception->exception_die_return_double() };
     like($@, qr/Error/);
   }
   {
-    eval { TestCase::Exception->exception_croak_return_void() };
+    eval { TestCase::Exception->exception_die_return_void() };
     like($@, qr/Error/);
   }
   {
-    ok(TestCase::Exception->exception_croak_return_int_eval_catch());
+    ok(TestCase::Exception->exception_die_return_int_eval_catch());
   }
   {
-    eval { TestCase::Exception->exception_croak_return_object() };
+    eval { TestCase::Exception->exception_die_return_object() };
     like($@, qr/Error/);
   }
 }
