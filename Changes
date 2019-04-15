@@ -1,3 +1,6 @@
+0.0426 2018-04-15
+  - --no-as-needed is not portable. so I remove it again.
+  - Create SPVM::Math module and math functions is moved to SPVM::Math.
 0.0425 2018-04-12
   - add dl_error message
   - add -Wl,--no-as-needed for newer Ubuntu.
