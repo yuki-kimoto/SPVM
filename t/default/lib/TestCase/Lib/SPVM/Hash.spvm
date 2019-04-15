@@ -237,7 +237,12 @@ package TestCase::Lib::SPVM::Hash {
     my $hash = SPVM::Hash->new_with_capacity($capacity);
     $hash->{max_load_factor} = 0.5;
     $hash->set("A", SPVM::Int->new(1));
-    unless (fabs($hash->load_factor - 1.0 / $capacity) < 0.01) {
+    
+    my $factor = $hash->load_factor - 1.0 / $capacity;
+    if ($factor < 0) {
+      $factor = -$factor;
+    }
+    unless ($factor < 0.01) {
       return 0;
     }
     return 1;

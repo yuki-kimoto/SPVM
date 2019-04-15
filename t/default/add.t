@@ -62,40 +62,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   is(TestCase::Add->add_long_min(), -9223372036854775807);
 }
 
-#
-# Integral type overflow is not defined in C99
-# If in some environment, these tests fail, please comment out
-#
-{
-  is(TestCase::Add->add_long_overflow(), -9223372036854775808);
-  ok(TestCase::Add->add_overflow);
-}
-
-#
-# Nan, Inf, sign operation is not defined in C99
-# If in some environment, these tests fail, please comment out
-#
-{
-  ok(TestCase::Add->add_float_nan_left);
-  ok(TestCase::Add->add_float_nan_right);
-  ok(TestCase::Add->add_double_nan_left);
-  ok(TestCase::Add->add_double_nan_right);
-  ok(TestCase::Add->add_float_plus_inf_minus_inf);
-  ok(TestCase::Add->add_double_plus_inf_minus_inf);
-  ok(TestCase::Add->add_float_inf_plus_value);
-  ok(TestCase::Add->add_double_inf_plus_value);
-  ok(TestCase::Add->add_float_minus_inf_minus_value);
-  ok(TestCase::Add->add_double_minus_inf_minus_value);
-  ok(TestCase::Add->add_float_plus_zero_minus_zero);
-  ok(TestCase::Add->add_double_plus_zero_minus_zero);
-  ok(TestCase::Add->add_float_same_sign_zero);
-  ok(TestCase::Add->add_double_same_sign_zero);
-  ok(TestCase::Add->add_float_over_max);
-  ok(TestCase::Add->add_double_over_max);
-  ok(TestCase::Add->add_float_over_min);
-  ok(TestCase::Add->add_double_over_min);
-}
-
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

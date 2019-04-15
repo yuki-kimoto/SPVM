@@ -1,0 +1,66 @@
+package SPVM::Math {
+  native sub INFINITYF : float ();
+  native sub NANF : float ();
+  
+  native sub isinff : int($x : float);
+  native sub isfinitef : int($x : float);
+  native sub isnanf : int ($x : float);
+  
+  native sub INFINITY : double ();
+  native sub NAN : double ();
+  
+  native sub isinf : int ($x : double);
+  native sub isfinite : int ($x : double);
+  native sub isnan : int ($x : double);
+
+  
+  # Trigonometric functions
+  native sub acos : double ($x : double);
+  native sub asin : double($x : double);
+  native sub atan : double ($x : double);
+  native sub atan2 : double ($y : double, $x : double);
+  native sub cos : double ($x : double);
+  native sub sin : double ($x : double);
+  native sub tan : double ($x : double);
+  
+  # Hyperbolic functions
+  native sub acosh : double ($x : double);
+  native sub asinh : double ($x : double);
+  native sub atanh : double ($x : double);
+  native sub cosh : double ($x : double);
+  native sub sinh : double ($x : double);
+  native sub tanh : double ($x : double);
+  
+  # Exponential functions and logarithmic functions
+  native sub exp : double ($x : double);
+  native sub exp2 : double ($x : double);
+  native sub expm1 : double ($x : double);
+  native sub log : double ($x : double);
+  native sub log10 : double ($x : double);
+  native sub log1p : double ($x : double);
+  
+  # Exponentiation functions and Absolute value functions
+  native sub cbrt : double ($x : double);
+  native sub fabs : double ($x : double);
+  native sub hypot : double ($x : double, $y : double);
+  native sub pow : double ($x : double, $y : double);
+  native sub sqrt : double ($x : double);
+  
+  # Error function and Gamma function
+  native sub erf : double ($x : double);
+  native sub erfc : double ($x : double);
+  native sub lgamma : double ($x : double);
+  native sub tgamma : double ($x : double);
+
+  # Nearest integer function
+  native sub ceil : double ($x : double);
+  native sub floor : double ($x : double);
+  native sub nearbyint : double ($x : double);
+  native sub round : double ($x : double);
+  
+  # Surplus functions
+  native sub remainder : double ($x1 : double, $x2 : double);
+
+  native sub signbitf : int ($num : float);
+  native sub signbit : int ($num : double);
+}

@@ -281,41 +281,6 @@ ok(TestCase::Lib::SPVM::CORE->test_join);
   is(SPVM::CORE->DBL_MIN, POSIX::DBL_MIN);
 }
 
-# Call subroutine
-{
-  ok(TestCase::Lib::SPVM::CORE->test_sin);
-  ok(TestCase::Lib::SPVM::CORE->test_cos);
-  ok(TestCase::Lib::SPVM::CORE->test_tan);
-}
-
-# float
-{
-  ok(TestCase::Lib::SPVM::CORE->test_float_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(TestCase::Lib::SPVM::CORE->test_float_pass_nan($NaN));
-  
-  ok(TestCase::Lib::SPVM::CORE->test_isinff);
-  ok(TestCase::Lib::SPVM::CORE->test_isfinitef);
-  ok(TestCase::Lib::SPVM::CORE->test_isnanf);
-  
-  is(SPVM::CORE->INFINITYF(), $POSITIVE_INFINITY);
-  
-  like(SPVM::CORE->NANF(), $nan_re);
-}
-
-# SPVM::Double
-{
-  ok(TestCase::Lib::SPVM::CORE->test_double_pass_positive_infinity($POSITIVE_INFINITY));
-  ok(TestCase::Lib::SPVM::CORE->test_double_pass_nan($NaN));
-  
-  ok(TestCase::Lib::SPVM::CORE->test_isinf);
-  ok(TestCase::Lib::SPVM::CORE->test_isfinite);
-  ok(TestCase::Lib::SPVM::CORE->test_isnan);
-  
-  is(SPVM::CORE->INFINITY(), $POSITIVE_INFINITY);
-  
-  like(SPVM::CORE->NAN(), $nan_re);
-}
-
 {
   ok(TestCase::Lib::SPVM::CORE->test_byte_constant);
   ok(TestCase::Lib::SPVM::CORE->test_short_constant);

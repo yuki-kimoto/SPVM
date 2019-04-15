@@ -8,6 +8,7 @@ package SPVM::JSON {
   use SPVM::Math::BigDecimal;
   use SPVM::Math::BigInteger;
   use SPVM::Math::StringToNumber;
+  use SPVM::Math;
 
   has indent : public int;
   has indent_length : public int;
@@ -271,7 +272,7 @@ package SPVM::JSON {
       _die_with_dump_remain("Invalid digits. Not found digits after '-'", $s, $$i, $end);
     }
     if ($decimal_stat == 1) {
-      my $value = (double) $digits / pow(10, $offset);
+      my $value = (double) $digits / SPVM::Math->pow(10, $offset);
       if ($has_sign) {
         $value *= -1;
       }

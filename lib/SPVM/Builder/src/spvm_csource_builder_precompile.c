@@ -1177,7 +1177,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_ENV* env, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "#include <string.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include <stdio.h>\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#include <inttypes.h>\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#include <math.h>\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object) ((void*)((intptr_t)object & ~(intptr_t)1))\n");
   SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_RUNTIME_API_GET_REF_COUNT(object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))\n");

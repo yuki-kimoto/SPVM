@@ -60,39 +60,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   is(TestCase::Subtract->subtract_long_min(), -9223372036854775808);
 }
 
-#
-# Integral type overflow is not defined in C99
-# If in some environment, these tests fail, please comment out
-#
-{
-
-  ok(TestCase::Subtract->subtract_overflow);
-  is(TestCase::Subtract->subtract_long_underflow(), 9223372036854775807);
-}
-
-#
-# Nan, Inf, sign operation is not defined in C99
-# If in some environment, these tests fail, please comment out
-#
-{
-  ok(TestCase::Subtract->subtract_float_nan_left);
-  ok(TestCase::Subtract->subtract_float_nan_right);
-  ok(TestCase::Subtract->subtract_double_nan_left);
-  ok(TestCase::Subtract->subtract_double_nan_right);
-  ok(TestCase::Subtract->subtract_float_plus_inf_minus_inf);
-  ok(TestCase::Subtract->subtract_double_plus_inf_minus_inf);
-  ok(TestCase::Subtract->subtract_float_inf_plus_value);
-  ok(TestCase::Subtract->subtract_double_inf_plus_value);
-  ok(TestCase::Subtract->subtract_float_minus_inf_minus_value);
-  ok(TestCase::Subtract->subtract_double_minus_inf_minus_value);
-  ok(TestCase::Subtract->subtract_float_plus_zero_minus_zero);
-  ok(TestCase::Subtract->subtract_double_plus_zero_minus_zero);
-  ok(TestCase::Subtract->subtract_float_over_max);
-  ok(TestCase::Subtract->subtract_double_over_max);
-  ok(TestCase::Subtract->subtract_float_over_min);
-  ok(TestCase::Subtract->subtract_double_over_min);
-}
-
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

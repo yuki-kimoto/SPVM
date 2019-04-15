@@ -1,0 +1,744 @@
+package TestCase::Lib::SPVM::Math {
+  use SPVM::Math;
+
+  sub subtract_long_underflow : long () {
+    return (long)-9223372036854775808L - (long)1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub subtract_double_over_min : int () {
+    my $total = -DBL_MAX() - +DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub subtract_overflow : int () {
+    my $total = -2147483648 - 1;
+    
+    unless ($total == 2147483647) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub subtract_float_nan_left : int () {
+    my $total = SPVM::Math->NANF() - 3.0f;
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_nan_right : int () {
+    my $total = 3.0f - SPVM::Math->NANF();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub subtract_double_nan_left : int () {
+    my $total = SPVM::Math->NAN() - 3.0;
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_nan_right : int () {
+    my $total = 3.0 - SPVM::Math->NAN();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITYF() - SPVM::Math->INFINITYF();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITY() - SPVM::Math->INFINITY();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITYF() - 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITY() - 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITYF() - 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITY() - 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_plus_zero_minus_zero : int () {
+    my $total = 0.0f - (0.0f);
+
+    unless($total == 0f) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_plus_zero_minus_zero : int () {
+    my $total = 0.0 - (0.0);
+
+    unless($total == 0) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_over_max : int () {
+    my $total = FLT_MAX() - (-FLT_MAX());
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_double_over_max : int () {
+    my $total = DBL_MAX() - (-DBL_MAX());
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub subtract_float_over_min : int () {
+    my $total = -FLT_MAX() - +FLT_MAX();
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub add_long_overflow : long () {
+    return (long)9223372036854775807L + (long)1;
+  }
+  sub add_overflow : int () {
+    my $total = 2147483647 + 1;
+    
+    unless ($total == -2147483648) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub add_double_same_sign_zero : int () {
+    {
+      my $total = 0.0 + 0.0;
+
+      unless ($total == 0) {
+        return 0;
+      }
+
+      if (SPVM::Math->signbit($total)) {
+        return 0;
+      }
+    }
+    {
+      my $total = -0.0 + -0.0;
+
+      unless($total == 0) {
+        return 0;
+      }
+
+      unless (SPVM::Math->signbit($total)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub add_float_plus_zero_minus_zero : int () {
+    my $total = 0.0f + (-0.0f);
+
+    unless($total == 0f) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_plus_zero_minus_zero : int () {
+    my $total = 0.0 + (-0.0);
+
+    unless($total == 0) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_same_sign_zero : int () {
+    {
+      my $total = 0.0f + 0.0f;
+
+      unless ($total == 0f) {
+        return 0;
+      }
+
+      if (SPVM::Math->signbitf($total)) {
+        return 0;
+      }
+    }
+    {
+      my $total = -0.0f + -0.0f;
+
+      unless($total == 0f) {
+        return 0;
+      }
+
+      unless (SPVM::Math->signbitf($total)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+
+  sub add_float_over_max : int () {
+    my $total = FLT_MAX() + FLT_MAX();
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub add_double_over_max : int () {
+    my $total = DBL_MAX() + DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub add_float_over_min : int () {
+    my $total = -FLT_MAX() + -FLT_MAX();
+    
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub add_double_over_min : int () {
+    my $total = -DBL_MAX() + -DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_nan_left : int () {
+    my $total = SPVM::Math->NANF() + 3.0f;
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_nan_right : int () {
+    my $total = 3.0f + SPVM::Math->NANF();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub add_double_nan_left : int () {
+    my $total = SPVM::Math->NAN() + 3.0;
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_nan_right : int () {
+    my $total = 3.0 + SPVM::Math->NAN();
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITYF() + (-SPVM::Math->INFINITYF());
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITY() + (-SPVM::Math->INFINITY());
+    
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITYF() + 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITY() + 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_float_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITYF() + 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+    
+    unless($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub add_double_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITY() + 1;
+    
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+    
+    unless($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_sin : int () {
+    my $value = SPVM::Math->sin(PI());
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_cos : int () {
+    my $value = SPVM::Math->cos(PI() / 2.0);
+    
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_tan : int () {
+    my $value = SPVM::Math->tan(PI() / 4.0);
+    
+    if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_isinff: int () {
+    if (SPVM::Math->isinff(SPVM::Math->INFINITYF())) {
+      if (!SPVM::Math->isinff(SPVM::Math->NANF())) {
+        if (!SPVM::Math->isinff(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub test_isfinitef: int () {
+    if (!SPVM::Math->isfinitef(SPVM::Math->INFINITYF())) {
+      if (!SPVM::Math->isfinitef(SPVM::Math->NANF())) {
+        if (SPVM::Math->isfinitef(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub test_isnanf: int () {
+    if (!SPVM::Math->isnanf(SPVM::Math->INFINITYF())) {
+      if (SPVM::Math->isnanf(SPVM::Math->NANF())) {
+        if (!SPVM::Math->isnanf(0.1f)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub test_float_pass_positive_infinity : int ($value : float) {
+    if ($value == SPVM::Math->INFINITYF()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub test_float_pass_nan : int ($value : float) {
+    if (SPVM::Math->isnanf($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_isinf : int () {
+    if (SPVM::Math->isinf(SPVM::Math->INFINITY())) {
+      if (!SPVM::Math->isinf(SPVM::Math->NAN())) {
+        if (!SPVM::Math->isinf(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub test_isfinite : int () {
+    if (!SPVM::Math->isfinite(SPVM::Math->INFINITY())) {
+      if (!SPVM::Math->isfinite(SPVM::Math->NAN())) {
+        if (SPVM::Math->isfinite(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub test_isnan : int () {
+    if (!SPVM::Math->isnan(SPVM::Math->INFINITY())) {
+      if (SPVM::Math->isnan(SPVM::Math->NAN())) {
+        if (!SPVM::Math->isnan(0.1)) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub test_double_pass_nan : int ($value : double) {
+    if (SPVM::Math->isnan($value)) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub test_double_pass_positive_infinity : int ($value : double) {
+    if ($value == SPVM::Math->INFINITY()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+}
