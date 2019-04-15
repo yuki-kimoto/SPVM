@@ -1,6 +1,162 @@
 package TestCase::Lib::SPVM::Math {
   use SPVM::Math;
 
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub unary_minus_int_overflow : int () {
+    my $value = -INT32_MIN();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == INT32_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub unary_minus_long_overflow : int () {
+    my $value = -INT64_MIN();
+    
+    unless ($value isa long) {
+      return 0;
+    }
+    
+    unless ($value == INT64_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub unary_minus_float_inf : int () {
+    {
+      my $value = -SPVM::Math->INFINITYF();
+      
+      unless ($value isa float) {
+        return 0;
+      }
+      
+      unless ($value == -SPVM::Math->INFINITYF()) {
+        return 0;
+      }
+
+      unless (-$value == SPVM::Math->INFINITYF()) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub unary_minus_float_zero : int () {
+    my $zero_plus = 0.0f;
+
+    if (SPVM::Math->signbitf($zero_plus)) {
+      return 0;
+    }
+    
+    my $zero_minus = -$zero_plus;
+    
+    unless ($zero_minus isa float) {
+      return 0;
+    }
+    
+    
+    unless ($zero_minus == 0.0f) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0f) {
+      return 0;
+    }
+    
+    unless(SPVM::Math->signbitf($zero_minus)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_float_nan : int () {
+    my $value = -SPVM::Math->NANF();
+     
+    unless ($value isa float) {
+      return 0;
+    }
+    
+    unless (SPVM::Math->isnanf($value)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_double_inf : int () {
+    my $value = -SPVM::Math->INFINITY();
+    
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless ($value == -SPVM::Math->INFINITY()) {
+      return 0;
+    }
+    
+    unless (-$value == SPVM::Math->INFINITY()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_double_zero : int () {
+    my $zero_plus = 0.0;
+
+    if (SPVM::Math->signbit($zero_plus)) {
+      return 0;
+    }
+    
+    my $zero_minus = -$zero_plus;
+    
+    unless ($zero_minus isa double) {
+      return 0;
+    }
+    
+    unless ($zero_minus == 0.0) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0) {
+      return 0;
+    }
+    
+    unless(SPVM::Math->signbit($zero_minus)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unary_minus_double_nan : int () {
+    my $value = -SPVM::Math->NAN();
+     
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless (SPVM::Math->isnan($value)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub subtract_long_underflow : long () {
     return (long)-9223372036854775808L - (long)1;
   }

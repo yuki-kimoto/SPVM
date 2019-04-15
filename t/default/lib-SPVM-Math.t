@@ -143,6 +143,29 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Math->subtract_double_over_min);
 }
 
+
+#
+# Integral type overflow is not defined in C99
+# If in some environment, these tests fail, please comment out
+#
+{
+  ok(TestCase::Lib::SPVM::Math->unary_minus_int_overflow);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_long_overflow);
+}
+
+#
+# Nan, Inf, sign operation is not defined in C99
+# If in some environment, these tests fail, please comment out
+#
+{
+  ok(TestCase::Lib::SPVM::Math->unary_minus_double_inf);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_double_zero);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_double_nan);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_float_inf);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_float_zero);
+  ok(TestCase::Lib::SPVM::Math->unary_minus_float_nan);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
