@@ -1,5 +1,6 @@
 0.0427 2018-04-15
   - add getenv function
+  - add SPVM::Errno module
 0.0426 2018-04-15
   - --no-as-needed is not portable. so I remove it again.
   - Create SPVM::Math module and math functions is moved to SPVM::Math.

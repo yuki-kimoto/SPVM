@@ -10,7 +10,6 @@
 #include <memory.h>
 #include <fcntl.h>
 #include <assert.h>
-#include <errno.h>
 
 int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
@@ -31,14 +30,6 @@ int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   stack[0].oval = obj_value;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__CORE__errno(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  stack[0].ival = errno;
   
   return SPVM_SUCCESS;
 }
