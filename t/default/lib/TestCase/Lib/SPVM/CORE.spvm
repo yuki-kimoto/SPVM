@@ -1,6 +1,17 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
 
+  sub test_getenv : int () {
+    
+    my $value = getenv("SPVM_ENV_NAME");
+    
+    unless ($value eq "SPVM_ENV_VALUE") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub test_split : int () {
     {
       my $str = "foo,bar,baz";

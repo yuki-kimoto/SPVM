@@ -41,6 +41,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_init_native_constants());
 }
 
+# getenv
+{
+  $ENV{SPVM_ENV_NAME} = "SPVM_ENV_VALUE";
+  ok(TestCase::Lib::SPVM::CORE->test_getenv);
+}
+
 # split
 {
   ok(TestCase::Lib::SPVM::CORE->test_split);

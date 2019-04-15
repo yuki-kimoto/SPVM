@@ -10,6 +10,38 @@
 #include <memory.h>
 #include <fcntl.h>
 #include <assert.h>
+#include <errno.h>
+
+int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  void* obj_name = stack[0].oval;
+  if (obj_name == NULL) {
+    SPVM_DIE("Name must be defined", "SPVM/CORE.c", __LINE__);
+  }
+  const char* name = (const char*)env->belems(env, obj_name);
+  
+  const char* value = getenv(name);
+  
+  void* obj_value;
+  if (value == NULL) {
+    obj_value = NULL;
+  }
+  else {
+    obj_value = env->new_str(env, value);
+  }
+  
+  stack[0].oval = obj_value;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__CORE__errno(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  stack[0].ival = errno;
+  
+  return SPVM_SUCCESS;
+}
 
 int32_t SPNATIVE__SPVM__CORE__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

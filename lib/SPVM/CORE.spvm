@@ -23,7 +23,10 @@ package SPVM::CORE {
   BEGIN {
     init_native_constants();
   }
-
+  
+  native sub getenv : string ($name : string);
+  native sub errno : int();
+  
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
 
