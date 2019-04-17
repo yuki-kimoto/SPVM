@@ -144,6 +144,9 @@ lib/SPVM/Document/Language.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
+lib/SPVM/Errno.c
+lib/SPVM/Errno.config
+lib/SPVM/Errno.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/FileHandle.c
 lib/SPVM/FileHandle.config
