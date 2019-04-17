@@ -145,7 +145,7 @@ package TestCase::Lib::SPVM::CORE {
       die "Can't open file $file";
     }
     
-    my $lstrings = new_list([]);
+    my $lstrings = list([]);
     while (my $line = fgets($fh)) {
       $lstrings->push($line);
     }
@@ -279,7 +279,7 @@ package TestCase::Lib::SPVM::CORE {
       die "Can't open file $file";
     }
     
-    my $lstrings = new_list([]);
+    my $lstrings = list([]);
     while (my $line = fgets_chomp($fh)) {
       $lstrings->push($line);
     }

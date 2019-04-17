@@ -6,14 +6,14 @@ package TestCase::Lib::SPVM::HTTP::Cookies {
     if ($cookies->get("field")) {
       return 0;
     }
-    $cookies->set(new_hash([(object)
+    $cookies->set(hash([(object)
       key   => "field1",
       value => "value1",
     ]));
     unless ($cookies->get("field1")->{value} eq "value1") {
       return 0;
     }
-    $cookies->set(new_hash([(object)
+    $cookies->set(hash([(object)
       key   => "field2",
       value => "value2",
     ]));
@@ -23,7 +23,7 @@ package TestCase::Lib::SPVM::HTTP::Cookies {
     unless ($cookies->get("field2")->{value} eq "value2") {
       return 0;
     }
-    $cookies->set(new_hash([(object)
+    $cookies->set(hash([(object)
       key   => "field1",
       value => "value1-2",
     ]));
@@ -51,7 +51,7 @@ package TestCase::Lib::SPVM::HTTP::Cookies {
   sub test_extend_capacity : int () {
     my $cookies = SPVM::HTTP::Cookies->new;
     for (my $i = 0; $i < 32; ++$i) {
-      $cookies->set(new_hash([(object)
+      $cookies->set(hash([(object)
         key   => (string)[(byte)('A' + $i)],
         value => (string)['V', (byte)('A' + $i)],
       ]));

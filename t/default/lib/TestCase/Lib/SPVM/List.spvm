@@ -568,7 +568,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_to_iarray : int () {
-    my $list = new_list([]);
+    my $list = list([]);
     $list->push(1);
     $list->push(2);
     $list->push(3);

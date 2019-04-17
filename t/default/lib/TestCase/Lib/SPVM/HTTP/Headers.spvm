@@ -126,10 +126,10 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     my $val = "12345678";
     my $val_i = SPVM::Math::StringToNumber->from($val)->to_int;
     my $cookies = SPVM::HTTP::Cookies->new;
-    $cookies->set(new_hash([(object)
+    $cookies->set(hash([(object)
       key => "foo", value => "bar",
     ]));
-    my $headers = SPVM::HTTP::Headers->new_with(new_hash([(object)
+    my $headers = SPVM::HTTP::Headers->new_with(hash([(object)
       referer           => $val,
       expires           => $val_i,
       last_modified     => $val_i,
@@ -138,7 +138,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       content_length    => $val_i,
       content_encoding  => $val,
       cookies           => $cookies,
-      extra             => new_hash([(object) "X-Bearer" => "XXXXX"]),
+      extra             => hash([(object) "X-Bearer" => "XXXXX"]),
     ]));
     unless ($headers->referer eq $val) {
       return 0;

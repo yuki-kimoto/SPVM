@@ -1,3 +1,6 @@
+0.0428 2018-04-17
+  - rename new_list to list
+  - rename new_hash to hash
 0.0427 2018-04-17
   - add getenv function
   - add SPVM::Errno module
