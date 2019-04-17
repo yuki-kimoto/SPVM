@@ -47,6 +47,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_getenv);
 }
 
+# strerror
+{
+  ok(TestCase::Lib::SPVM::CORE->test_strerror);
+}
+
 # split
 {
   ok(TestCase::Lib::SPVM::CORE->test_split);

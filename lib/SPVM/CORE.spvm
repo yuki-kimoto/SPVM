@@ -41,6 +41,8 @@ package SPVM::CORE {
   native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
   native sub fclose : int ($fh : SPVM::FileHandle);
   
+  native sub strerror : string ($errno : int);
+  
   precompile sub split : string[] ($sep : string, $string : string, $max : int) {
     my $string_length = length $string;
     my $sep_length = length $sep;

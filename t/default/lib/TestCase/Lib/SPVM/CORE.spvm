@@ -1,5 +1,17 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
+  use SPVM::Errno;
+
+  sub test_strerror : int () {
+    
+    my $error = strerror(SPVM::Errno->ENOENT);
+    
+    unless (length $error > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   sub test_getenv : int () {
     
