@@ -19,551 +19,792 @@ int32_t SPNATIVE__SPVM__Errno__set_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Errno__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  // E2BIG
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$E2BIG", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, E2BIG);
-  }
-
-  // EACCES
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EACCES", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EACCES);
-  }
-
-  // EADDRINUSE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EADDRINUSE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EADDRINUSE);
-  }
-
-  // EADDRNOTAVAIL
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EADDRNOTAVAIL", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EADDRNOTAVAIL);
-  }
-
-  // EAFNOSUPPORT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EAFNOSUPPORT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EAFNOSUPPORT);
-  }
-
-  // EAGAIN
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EAGAIN", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EAGAIN);
-  }
-
-  // EALREADY
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EALREADY", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EALREADY);
-  }
-
-  // EBADF
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EBADF", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EBADF);
-  }
-
-  // EBADMSG
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EBADMSG", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EBADMSG);
-  }
-
-  // EBUSY
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EBUSY", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EBUSY);
-  }
-
-  // ECANCELED
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ECANCELED", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ECANCELED);
-  }
-
-  // ECHILD
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ECHILD", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ECHILD);
-  }
-
-  // ECONNABORTED
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ECONNABORTED", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ECONNABORTED);
-  }
-
-  // ECONNREFUSED
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ECONNREFUSED", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ECONNREFUSED);
-  }
-
-  // ECONNRESET
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ECONNRESET", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ECONNRESET);
-  }
-
-  // EDEADLK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EDEADLK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EDEADLK);
-  }
-
-  // EDESTADDRREQ
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EDESTADDRREQ", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EDESTADDRREQ);
-  }
-
-  // EDOM
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EDOM", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EDOM);
-  }
-
-  // EEXIST
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EEXIST", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EEXIST);
-  }
-
-  // EFAULT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EFAULT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EFAULT);
-  }
-
-  // EFBIG
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EFBIG", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EFBIG);
-  }
-
-  // EHOSTUNREACH
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EHOSTUNREACH", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EHOSTUNREACH);
-  }
-
-  // EIDRM
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EIDRM", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EIDRM);
-  }
-
-  // EILSEQ
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EILSEQ", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EILSEQ);
-  }
-
-  // EINPROGRESS
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EINPROGRESS", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EINPROGRESS);
-  }
-
-  // EINTR
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EINTR", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EINTR);
-  }
-
-  // EINVAL
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EINVAL", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EINVAL);
-  }
-
-  // EIO
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EIO", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EIO);
-  }
-
-  // EISCONN
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EISCONN", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EISCONN);
-  }
-
-  // EISDIR
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EISDIR", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EISDIR);
-  }
-
-  // ELOOP
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ELOOP", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ELOOP);
-  }
-
-  // EMFILE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EMFILE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EMFILE);
-  }
-
-  // EMLINK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EMLINK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EMLINK);
-  }
-
-  // EMSGSIZE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EMSGSIZE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EMSGSIZE);
-  }
-
-  // ENAMETOOLONG
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENAMETOOLONG", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENAMETOOLONG);
-  }
-
-  // ENETDOWN
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENETDOWN", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENETDOWN);
-  }
-
-  // ENETRESET
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENETRESET", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENETRESET);
-  }
-
-  // ENETUNREACH
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENETUNREACH", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENETUNREACH);
-  }
-
-  // ENFILE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENFILE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENFILE);
-  }
-
-  // ENOBUFS
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOBUFS", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOBUFS);
-  }
-
-  // ENODATA
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENODATA", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENODATA);
-  }
-
-  // ENODEV
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENODEV", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENODEV);
-  }
-
-  // ENOENT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOENT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOENT);
-  }
-
-  // ENOEXEC
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOEXEC", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOEXEC);
-  }
-
-  // ENOLCK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOLCK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOLCK);
-  }
-
-  // ENOLINK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOLINK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOLINK);
-  }
-
-  // ENOMEM
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOMEM", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOMEM);
-  }
-
-  // ENOMSG
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOMSG", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOMSG);
-  }
-
-  // ENOPROTOOPT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOPROTOOPT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOPROTOOPT);
-  }
-
-  // ENOSPC
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOSPC", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOSPC);
-  }
-
-  // ENOSR
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOSR", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOSR);
-  }
-
-  // ENOSTR
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOSTR", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOSTR);
-  }
-
-  // ENOSYS
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOSYS", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOSYS);
-  }
-
-  // ENOTCONN
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTCONN", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTCONN);
-  }
-
-  // ENOTDIR
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTDIR", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTDIR);
-  }
-
-  // ENOTEMPTY
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTEMPTY", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTEMPTY);
-  }
-
-  // ENOTRECOVERABLE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTRECOVERABLE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTRECOVERABLE);
-  }
-
-  // ENOTSOCK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTSOCK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTSOCK);
-  }
-
-  // ENOTSUP
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTSUP", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTSUP);
-  }
-
-  // ENOTTY
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENOTTY", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENOTTY);
-  }
-
-  // ENXIO
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ENXIO", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ENXIO);
-  }
-
-  // EOPNOTSUPP
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EOPNOTSUPP", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EOPNOTSUPP);
-  }
-
-  // EOVERFLOW
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EOVERFLOW", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EOVERFLOW);
-  }
-
-  // EOWNERDEAD
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EOWNERDEAD", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EOWNERDEAD);
-  }
-
-  // EPERM
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EPERM", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EPERM);
-  }
-
-  // EPIPE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EPIPE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EPIPE);
-  }
-
-  // EPROTO
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EPROTO", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EPROTO);
-  }
-
-  // EPROTONOSUPPORT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EPROTONOSUPPORT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EPROTONOSUPPORT);
-  }
-
-  // EPROTOTYPE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EPROTOTYPE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EPROTOTYPE);
-  }
-
-  // ERANGE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ERANGE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ERANGE);
-  }
-
-  // EROFS
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EROFS", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EROFS);
-  }
-
-  // ESPIPE
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ESPIPE", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ESPIPE);
-  }
-
-  // ESRCH
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ESRCH", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ESRCH);
-  }
-
-  // ETIME
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ETIME", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ETIME);
-  }
-
-  // ETIMEDOUT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ETIMEDOUT", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ETIMEDOUT);
-  }
-
-  // ETXTBSY
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$ETXTBSY", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, ETXTBSY);
-  }
-
-  // EWOULDBLOCK
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EWOULDBLOCK", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EWOULDBLOCK);
-  }
-
-  // EXDEV
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::Errno", "$EXDEV", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EXDEV);
-  }
+int32_t SPNATIVE__SPVM__Errno__E2BIG(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef E2BIG
+  stack[0].ival = E2BIG;
+#else
+  SPVM_DIE("Errno E2BIG is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EACCES(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EACCES
+  stack[0].ival = EACCES;
+#else
+  SPVM_DIE("Errno EACCES is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EADDRINUSE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EADDRINUSE
+  stack[0].ival = EADDRINUSE;
+#else
+  SPVM_DIE("Errno EADDRINUSE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EADDRNOTAVAIL(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EADDRNOTAVAIL
+  stack[0].ival = EADDRNOTAVAIL;
+#else
+  SPVM_DIE("Errno EADDRNOTAVAIL is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EAFNOSUPPORT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EAFNOSUPPORT
+  stack[0].ival = EAFNOSUPPORT;
+#else
+  SPVM_DIE("Errno EAFNOSUPPORT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EAGAIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EAGAIN
+  stack[0].ival = EAGAIN;
+#else
+  SPVM_DIE("Errno EAGAIN is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EALREADY(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EALREADY
+  stack[0].ival = EALREADY;
+#else
+  SPVM_DIE("Errno EALREADY is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EBADF(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EBADF
+  stack[0].ival = EBADF;
+#else
+  SPVM_DIE("Errno EBADF is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EBADMSG(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EBADMSG
+  stack[0].ival = EBADMSG;
+#else
+  SPVM_DIE("Errno EBADMSG is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EBUSY(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EBUSY
+  stack[0].ival = EBUSY;
+#else
+  SPVM_DIE("Errno EBUSY is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ECANCELED(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ECANCELED
+  stack[0].ival = ECANCELED;
+#else
+  SPVM_DIE("Errno ECANCELED is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ECHILD(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ECHILD
+  stack[0].ival = ECHILD;
+#else
+  SPVM_DIE("Errno ECHILD is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ECONNABORTED(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ECONNABORTED
+  stack[0].ival = ECONNABORTED;
+#else
+  SPVM_DIE("Errno ECONNABORTED is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ECONNREFUSED(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ECONNREFUSED
+  stack[0].ival = ECONNREFUSED;
+#else
+  SPVM_DIE("Errno ECONNREFUSED is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ECONNRESET(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ECONNRESET
+  stack[0].ival = ECONNRESET;
+#else
+  SPVM_DIE("Errno ECONNRESET is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EDEADLK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EDEADLK
+  stack[0].ival = EDEADLK;
+#else
+  SPVM_DIE("Errno EDEADLK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EDESTADDRREQ(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EDESTADDRREQ
+  stack[0].ival = EDESTADDRREQ;
+#else
+  SPVM_DIE("Errno EDESTADDRREQ is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EDOM(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EDOM
+  stack[0].ival = EDOM;
+#else
+  SPVM_DIE("Errno EDOM is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EEXIST(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EEXIST
+  stack[0].ival = EEXIST;
+#else
+  SPVM_DIE("Errno EEXIST is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EFAULT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EFAULT
+  stack[0].ival = EFAULT;
+#else
+  SPVM_DIE("Errno EFAULT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EFBIG(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EFBIG
+  stack[0].ival = EFBIG;
+#else
+  SPVM_DIE("Errno EFBIG is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EHOSTUNREACH(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EHOSTUNREACH
+  stack[0].ival = EHOSTUNREACH;
+#else
+  SPVM_DIE("Errno EHOSTUNREACH is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EIDRM(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EIDRM
+  stack[0].ival = EIDRM;
+#else
+  SPVM_DIE("Errno EIDRM is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EILSEQ(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EILSEQ
+  stack[0].ival = EILSEQ;
+#else
+  SPVM_DIE("Errno EILSEQ is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EINPROGRESS(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EINPROGRESS
+  stack[0].ival = EINPROGRESS;
+#else
+  SPVM_DIE("Errno EINPROGRESS is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EINTR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EINTR
+  stack[0].ival = EINTR;
+#else
+  SPVM_DIE("Errno EINTR is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EINVAL(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EINVAL
+  stack[0].ival = EINVAL;
+#else
+  SPVM_DIE("Errno EINVAL is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EIO(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EIO
+  stack[0].ival = EIO;
+#else
+  SPVM_DIE("Errno EIO is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EISCONN(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EISCONN
+  stack[0].ival = EISCONN;
+#else
+  SPVM_DIE("Errno EISCONN is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EISDIR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EISDIR
+  stack[0].ival = EISDIR;
+#else
+  SPVM_DIE("Errno EISDIR is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ELOOP(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ELOOP
+  stack[0].ival = ELOOP;
+#else
+  SPVM_DIE("Errno ELOOP is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EMFILE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EMFILE
+  stack[0].ival = EMFILE;
+#else
+  SPVM_DIE("Errno EMFILE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EMLINK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EMLINK
+  stack[0].ival = EMLINK;
+#else
+  SPVM_DIE("Errno EMLINK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EMSGSIZE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EMSGSIZE
+  stack[0].ival = EMSGSIZE;
+#else
+  SPVM_DIE("Errno EMSGSIZE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENAMETOOLONG(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENAMETOOLONG
+  stack[0].ival = ENAMETOOLONG;
+#else
+  SPVM_DIE("Errno ENAMETOOLONG is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENETDOWN(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENETDOWN
+  stack[0].ival = ENETDOWN;
+#else
+  SPVM_DIE("Errno ENETDOWN is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENETRESET(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENETRESET
+  stack[0].ival = ENETRESET;
+#else
+  SPVM_DIE("Errno ENETRESET is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENETUNREACH(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENETUNREACH
+  stack[0].ival = ENETUNREACH;
+#else
+  SPVM_DIE("Errno ENETUNREACH is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENFILE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENFILE
+  stack[0].ival = ENFILE;
+#else
+  SPVM_DIE("Errno ENFILE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOBUFS(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOBUFS
+  stack[0].ival = ENOBUFS;
+#else
+  SPVM_DIE("Errno ENOBUFS is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENODATA(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENODATA
+  stack[0].ival = ENODATA;
+#else
+  SPVM_DIE("Errno ENODATA is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENODEV(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENODEV
+  stack[0].ival = ENODEV;
+#else
+  SPVM_DIE("Errno ENODEV is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOENT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOENT
+  stack[0].ival = ENOENT;
+#else
+  SPVM_DIE("Errno ENOENT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOEXEC(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOEXEC
+  stack[0].ival = ENOEXEC;
+#else
+  SPVM_DIE("Errno ENOEXEC is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOLCK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOLCK
+  stack[0].ival = ENOLCK;
+#else
+  SPVM_DIE("Errno ENOLCK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOLINK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOLINK
+  stack[0].ival = ENOLINK;
+#else
+  SPVM_DIE("Errno ENOLINK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOMEM(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOMEM
+  stack[0].ival = ENOMEM;
+#else
+  SPVM_DIE("Errno ENOMEM is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOMSG(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOMSG
+  stack[0].ival = ENOMSG;
+#else
+  SPVM_DIE("Errno ENOMSG is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOPROTOOPT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOPROTOOPT
+  stack[0].ival = ENOPROTOOPT;
+#else
+  SPVM_DIE("Errno ENOPROTOOPT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOSPC(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOSPC
+  stack[0].ival = ENOSPC;
+#else
+  SPVM_DIE("Errno ENOSPC is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOSR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOSR
+  stack[0].ival = ENOSR;
+#else
+  SPVM_DIE("Errno ENOSR is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOSTR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOSTR
+  stack[0].ival = ENOSTR;
+#else
+  SPVM_DIE("Errno ENOSTR is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOSYS(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOSYS
+  stack[0].ival = ENOSYS;
+#else
+  SPVM_DIE("Errno ENOSYS is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTCONN(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTCONN
+  stack[0].ival = ENOTCONN;
+#else
+  SPVM_DIE("Errno ENOTCONN is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTDIR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTDIR
+  stack[0].ival = ENOTDIR;
+#else
+  SPVM_DIE("Errno ENOTDIR is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTEMPTY(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTEMPTY
+  stack[0].ival = ENOTEMPTY;
+#else
+  SPVM_DIE("Errno ENOTEMPTY is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTRECOVERABLE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTRECOVERABLE
+  stack[0].ival = ENOTRECOVERABLE;
+#else
+  SPVM_DIE("Errno ENOTRECOVERABLE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTSOCK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTSOCK
+  stack[0].ival = ENOTSOCK;
+#else
+  SPVM_DIE("Errno ENOTSOCK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTSUP(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTSUP
+  stack[0].ival = ENOTSUP;
+#else
+  SPVM_DIE("Errno ENOTSUP is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENOTTY(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENOTTY
+  stack[0].ival = ENOTTY;
+#else
+  SPVM_DIE("Errno ENOTTY is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ENXIO(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ENXIO
+  stack[0].ival = ENXIO;
+#else
+  SPVM_DIE("Errno ENXIO is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EOPNOTSUPP(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EOPNOTSUPP
+  stack[0].ival = EOPNOTSUPP;
+#else
+  SPVM_DIE("Errno EOPNOTSUPP is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EOTHER(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EOTHER
+  stack[0].ival = EOTHER;
+#else
+  SPVM_DIE("Errno EOTHER is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EOVERFLOW(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EOVERFLOW
+  stack[0].ival = EOVERFLOW;
+#else
+  SPVM_DIE("Errno EOVERFLOW is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EOWNERDEAD(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EOWNERDEAD
+  stack[0].ival = EOWNERDEAD;
+#else
+  SPVM_DIE("Errno EOWNERDEAD is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EPERM(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EPERM
+  stack[0].ival = EPERM;
+#else
+  SPVM_DIE("Errno EPERM is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EPIPE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EPIPE
+  stack[0].ival = EPIPE;
+#else
+  SPVM_DIE("Errno EPIPE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EPROTO(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EPROTO
+  stack[0].ival = EPROTO;
+#else
+  SPVM_DIE("Errno EPROTO is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EPROTONOSUPPORT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EPROTONOSUPPORT
+  stack[0].ival = EPROTONOSUPPORT;
+#else
+  SPVM_DIE("Errno EPROTONOSUPPORT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EPROTOTYPE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EPROTOTYPE
+  stack[0].ival = EPROTOTYPE;
+#else
+  SPVM_DIE("Errno EPROTOTYPE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ERANGE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ERANGE
+  stack[0].ival = ERANGE;
+#else
+  SPVM_DIE("Errno ERANGE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EROFS(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EROFS
+  stack[0].ival = EROFS;
+#else
+  SPVM_DIE("Errno EROFS is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ESPIPE(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ESPIPE
+  stack[0].ival = ESPIPE;
+#else
+  SPVM_DIE("Errno ESPIPE is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ESRCH(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ESRCH
+  stack[0].ival = ESRCH;
+#else
+  SPVM_DIE("Errno ESRCH is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ETIME(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ETIME
+  stack[0].ival = ETIME;
+#else
+  SPVM_DIE("Errno ETIME is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ETIMEDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ETIMEDOUT
+  stack[0].ival = ETIMEDOUT;
+#else
+  SPVM_DIE("Errno ETIMEDOUT is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__ETXTBSY(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef ETXTBSY
+  stack[0].ival = ETXTBSY;
+#else
+  SPVM_DIE("Errno ETXTBSY is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EWOULDBLOCK(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EWOULDBLOCK
+  stack[0].ival = EWOULDBLOCK;
+#else
+  SPVM_DIE("Errno EWOULDBLOCK is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Errno__EXDEV(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef EXDEV
+  stack[0].ival = EXDEV;
+#else
+  SPVM_DIE("Errno EXDEV is not defined", "SPVM/Errno.c", __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
 }
