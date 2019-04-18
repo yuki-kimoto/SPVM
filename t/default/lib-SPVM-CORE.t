@@ -49,6 +49,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # replace
 {
+  ok(TestCase::Lib::SPVM::CORE->test_replace_all);
+}
+
+# replace
+{
   ok(TestCase::Lib::SPVM::CORE->test_replace);
 }
 

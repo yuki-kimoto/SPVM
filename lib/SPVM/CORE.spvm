@@ -29,13 +29,14 @@ package SPVM::CORE {
     my $offset = 0;
     my $found_pos : int;
     my $substr_len = length $substr;
+    my $result_str = $str;
     while (1) {
-      $replace = replace($str, $substr, $replace, $offset, \$found_pos);
+      $result_str = replace($result_str, $substr, $replace, $offset, \$found_pos);
       if ($found_pos >= 0) {
         $offset = $found_pos + $substr_len;
       }
       else {
-        return $replace;
+        return $result_str;
       }
     }
   }
