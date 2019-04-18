@@ -24,6 +24,79 @@ package SPVM::CORE {
     init_native_constants();
   }
   
+  precompile sub index : int($source : string, $target : string, $fromIndex : int) {
+    my $sourceCount = length $source;
+    my $targetCount = length $target;
+    
+    if ($fromIndex >= $sourceCount) {
+      my $ret : int;
+      if ($targetCount == 0) {
+        $ret = $sourceCount;
+      }
+      else {
+        $ret = -1;
+      }
+      return $ret;
+    }
+    if ($fromIndex < 0) {
+      $fromIndex = 0;
+    }
+    if ($targetCount == 0) {
+      return $fromIndex;
+    }
+
+    my $first : byte  = $target->[0];
+    my $max : int = ($sourceCount - $targetCount);
+
+    for (my $i = $fromIndex; $i <= $max; $i++) {
+      if ($source->[$i] != $first) {
+        while (++$i <= $max && $source->[$i] != $first) {}
+      }
+
+      if ($i <= $max) {
+        my $j = $i + 1;
+        my $end = $j + $targetCount - 1;
+        for (my $k = 01; $j < $end && $source->[$j] == $target->[$k]; ($j++, $k++)) {}
+
+        if ($j == $end) {
+          return $i;
+        }
+      }
+    }
+    return -1;
+  }
+  
+  precompile sub contains : int ($text : string, $pattern : string) {
+    if (!$text) {
+      die "Target string must be defined";
+    }
+    if (!$pattern) {
+      die "Search string must be defined";
+    }
+
+    my $pat_len = length $pattern;
+    my $text_len = length $text;
+    my $i = 0;
+    my $j = 0;
+    
+    while ($i < $text_len && $j < $pat_len) {
+      if ($text->[$i] == $pattern->[$j]) {
+        $i++;
+        $j++;
+      } else {
+        $i = $i - $j + 1;
+        $j = 0;
+      }
+    }
+    
+    if ($j == $pat_len) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  
   native sub getenv : string ($name : string);
   
   native sub abs : int ($x : int);

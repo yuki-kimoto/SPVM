@@ -2,6 +2,29 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
 
+  sub test_contains : int () {
+    
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $ret = contains($target, $search);
+      unless ($ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = "abcde";
+      my $search = "ppp";
+      my $ret = contains($target, $search);
+      if ($ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub test_strerror : int () {
     
     my $error = strerror(SPVM::Errno->ENOENT);
