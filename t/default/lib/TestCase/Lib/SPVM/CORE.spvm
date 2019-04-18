@@ -73,6 +73,21 @@ package TestCase::Lib::SPVM::CORE {
         return 0;
       }
     }
+
+    {
+      my $str = "abcd";
+      my $substr = "bc";
+      my $replace = "";
+      my $found_pos : int;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
+      
+      unless ($found_pos == 1) {
+        return 0;
+      }
+      unless ($result_str eq "ad") {
+        return 0;
+      }
+    }
     
     return 1;
   }

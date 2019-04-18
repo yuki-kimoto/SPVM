@@ -24,7 +24,27 @@ package SPVM::CORE {
     init_native_constants();
   }
 
+=pod
+  precompile sub replace_all : string ($str : string, $substr : string, $replace : string) {
+    
+    my $offset = 0;
+    my $found_pos : int;
+    while (1) {
+      my $replace = replace($str, $sub_str, $replace, $offset, \$found_pos);
+      if ($found_pos >= 0) {
+        $offset = $found_pos
+      }
+      else {
+        return $replace;
+      }
+    }
+  }
+=cut
+
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $from : int, $found_pos_ref : int&) {
+    unless ($substr && length $substr > 0) {
+      die "Sub string must have length";
+    }
     my $found_pos = index($str, $substr, $from);
     $$found_pos_ref = $found_pos;
     if ($found_pos >= 0) {
@@ -40,17 +60,11 @@ package SPVM::CORE {
       }
       memmove((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
       
-      # warn("found_pos : $found_pos");
-      
-      # warn($result_str);
-      
       my $str_rest_offset = $found_pos + $substr_len;
       my $str_rest_length = $str_len - $str_rest_offset;
       my $result_rest_offset = $found_pos + $replace_len;
       my $result_rest_length = $result_str_len - $result_rest_offset;
       memmove((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
-      
-      # warn("BBBBBBBB $result_str $result_str_len");
       
       return $result_str;
     }
