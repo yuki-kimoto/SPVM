@@ -12,6 +12,86 @@
 #include <fcntl.h>
 #include <assert.h>
 
+int32_t SPNATIVE__SPVM__CORE__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_dist_str = stack[0].oval;
+  if (!obj_dist_str) { SPVM_DIE("Dist string must be not undef", "SPVM/CORE.c", __LINE__); }
+  
+  int32_t dist_offset = stack[1].ival;
+  
+  void* obj_src_str = stack[2].oval;
+  if (!obj_src_str) { SPVM_DIE("Source string must be not undef", "SPVM/CORE.c", __LINE__); }
+  
+  int32_t src_offset = stack[3].ival;
+  
+  int32_t length = stack[4].ival;
+
+  if (length == 0) {
+    return SPVM_SUCCESS;
+  }
+  else if (length < 0) {
+    SPVM_DIE("Length must be zero or positive value", "SPVM/CORE.c", __LINE__);
+  }
+  
+  char* dist_str = (char*)env->belems(env, obj_dist_str);
+  int32_t dist_str_len = env->len(env, obj_dist_str);
+  
+  char* src_str = (char*)env->belems(env, obj_src_str);
+  int32_t src_str_len = env->len(env, obj_src_str);
+  
+  if (dist_offset + length > dist_str_len) {
+    SPVM_DIE("Copy is over dist string", "SPVM/CORE.c", __LINE__);
+  }
+
+  if (src_offset + length > src_str_len) {
+    SPVM_DIE("Copy is over source string", "SPVM/CORE.c", __LINE__);
+  }
+  
+  memcpy((char*)(dist_str + dist_offset), (char*)(src_str + src_offset), length);
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__CORE__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_dist_str = stack[0].oval;
+  if (!obj_dist_str) { SPVM_DIE("Dist string must be not undef", "SPVM/CORE.c", __LINE__); }
+  
+  int32_t dist_offset = stack[1].ival;
+  
+  void* obj_src_str = stack[2].oval;
+  if (!obj_src_str) { SPVM_DIE("Source string must be not undef", "SPVM/CORE.c", __LINE__); }
+  
+  int32_t src_offset = stack[3].ival;
+  
+  int32_t length = stack[4].ival;
+
+  if (length == 0) {
+    return SPVM_SUCCESS;
+  }
+  else if (length < 0) {
+    SPVM_DIE("Length must be zero or positive value", "SPVM/CORE.c", __LINE__);
+  }
+  
+  char* dist_str = (char*)env->belems(env, obj_dist_str);
+  int32_t dist_str_len = env->len(env, obj_dist_str);
+  
+  char* src_str = (char*)env->belems(env, obj_src_str);
+  int32_t src_str_len = env->len(env, obj_src_str);
+  
+  if (dist_offset + length > dist_str_len) {
+    SPVM_DIE("Copy is over dist string", "SPVM/CORE.c", __LINE__);
+  }
+
+  if (src_offset + length > src_str_len) {
+    SPVM_DIE("Copy is over source string", "SPVM/CORE.c", __LINE__);
+  }
+  
+  memmove((char*)(dist_str + dist_offset), (char*)(src_str + src_offset), length);
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__CORE__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_number = stack[0].ival;

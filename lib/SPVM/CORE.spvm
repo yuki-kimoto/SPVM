@@ -23,6 +23,25 @@ package SPVM::CORE {
   BEGIN {
     init_native_constants();
   }
+
+=pod
+  sub replace : int ($source : string, $target : string, $replace : string, $from : int) {
+    my $found_pos = index($source, $target, $from);
+    if ($found_pos >= 0) {
+      my $source_len = length $source;
+      my $target_len = length $target;
+      my $replace_len = length $replace;
+      
+      my $result_string = "";
+      $result_string .= (string)sliceb((byte[])$source
+      new byte[$result_string_len];
+      copystr($result_string
+    }
+  }
+=cut
+
+  native sub memcpy : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
+  native sub memmove : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
   
   precompile sub index : int($source : string, $target : string, $fromIndex : int) {
     my $sourceCount = length $source;
