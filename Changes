@@ -5,6 +5,8 @@
   - add index function
   - add memcpy function
   - add memmove function
+  - add replace function
+  - add replace_all function
 0.0427 2018-04-17
   - add getenv function
   - add SPVM::Errno module
