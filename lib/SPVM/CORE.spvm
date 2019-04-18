@@ -24,22 +24,21 @@ package SPVM::CORE {
     init_native_constants();
   }
 
-=pod
   precompile sub replace_all : string ($str : string, $substr : string, $replace : string) {
     
     my $offset = 0;
     my $found_pos : int;
+    my $substr_len = length $substr;
     while (1) {
-      my $replace = replace($str, $sub_str, $replace, $offset, \$found_pos);
+      $replace = replace($str, $substr, $replace, $offset, \$found_pos);
       if ($found_pos >= 0) {
-        $offset = $found_pos
+        $offset = $found_pos + $substr_len;
       }
       else {
         return $replace;
       }
     }
   }
-=cut
 
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $from : int, $found_pos_ref : int&) {
     unless ($substr && length $substr > 0) {
