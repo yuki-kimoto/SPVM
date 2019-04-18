@@ -2,6 +2,78 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
 
+  sub test_memcpy : int () {
+    
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memcpy((byte[])$target, 0, (byte[])$search, 0, 3);
+      unless ($target eq "ABCde") {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memcpy((byte[])$target, 2, (byte[])$search, 0, 3);
+      unless ($target eq "abABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memcpy((byte[])$target, 2, (byte[])$search, 0, 3);
+      unless ($target eq "abABC") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_memmove : int () {
+    
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memmove((byte[])$target, 0, (byte[])$search, 0, 3);
+      unless ($target eq "ABCde") {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memmove((byte[])$target, 2, (byte[])$search, 0, 3);
+      unless ($target eq "abABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "ABC";
+      memmove((byte[])$target, 2, (byte[])$search, 0, 3);
+      unless ($target eq "abABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      memmove((byte[])$target, 0, (byte[])$target, 3, 2);
+      unless ($target eq "cdcde") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub test_index : int () {
     
     {
