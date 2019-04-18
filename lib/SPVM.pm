@@ -106,7 +106,7 @@ sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) 
 
 =head1 NAME
 
-SPVM - Static Perl Virtual Machine. Fast calcuration & Easy C/C++ Binding
+SPVM - Static Perl Virtual Machine. Fast calculation & Easy C/C++ Binding
 
 =head1 SYNOPSIS
 
@@ -142,7 +142,7 @@ Use SPVM Module from Perl
 
 =head1 DESCRIPTION
 
-SPVM is Static Perl Virtual Machine. Provide fast calcuration & easy C/C++ Binding.
+SPVM is Static Perl Virtual Machine. Provide fast calculation & easy C/C++ Binding.
 
 B<Features:>
 
