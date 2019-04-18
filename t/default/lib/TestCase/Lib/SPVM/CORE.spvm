@@ -2,6 +2,25 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
 
+  sub test_replace : int () {
+    
+    {
+      my $str = "abcde";
+      my $substr = "bcd";
+      my $replace = "AB";
+      my $found_pos : int;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
+      unless ($found_pos == 1) {
+        return 0;
+      }
+      unless ($result_str eq "aABe") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub test_memcpy : int () {
     
     {
@@ -65,7 +84,7 @@ package TestCase::Lib::SPVM::CORE {
 
     {
       my $target = "abcde";
-      memmove((byte[])$target, 0, (byte[])$target, 3, 2);
+      memmove((byte[])$target, 0, (byte[])$target, 2, 2);
       unless ($target eq "cdcde") {
         return 0;
       }

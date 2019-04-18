@@ -39,7 +39,7 @@ typedef void* SPVM_VALUE_object;
 
 #define SPVM_DIE(message, ...) do {\
   void* buffer = env->alloc_memory_block_zero(env, 255);\
-  snprintf(buffer, 255, message "at %s line %d", __VA_ARGS__);\
+  snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\
   void* exception = env->new_str_len_raw(env, buffer, strlen(buffer));\
   env->free_memory_block(env, buffer);\
   env->set_exception(env, exception);\

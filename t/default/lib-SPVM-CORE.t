@@ -47,6 +47,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_getenv);
 }
 
+# replace
+{
+  ok(TestCase::Lib::SPVM::CORE->test_replace);
+}
+
+# memmove
+{
+  ok(TestCase::Lib::SPVM::CORE->test_memmove);
+}
+
 # memcpy
 {
   ok(TestCase::Lib::SPVM::CORE->test_memcpy);

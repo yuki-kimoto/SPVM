@@ -24,24 +24,39 @@ package SPVM::CORE {
     init_native_constants();
   }
 
-  precompile sub replace : int ($source : string, $target : string, $replace : string, $from : int) {
-    my $found_pos = index($source, $target, $from);
+  precompile sub replace : string ($str : string, $substr : string, $replace : string, $from : int, $found_pos_ref : int&) {
+    my $found_pos = index($str, $substr, $from);
+    $$found_pos_ref = $found_pos;
     if ($found_pos >= 0) {
-      my $source_len = length $source;
-      my $target_len = length $target;
+      my $str_len = length $str;
+      my $substr_len = length $substr;
       my $replace_len = length $replace;
       
-      my $result_string_len = $source_len + $replace_len - $target_len;
-      my $result_string = new byte[$result_string_len];
+      my $result_str_len = $str_len + $replace_len - $substr_len;
+      my $result_str = new byte[$result_str_len];
       
       if ($found_pos > 0) {
-        memcpy((byte[])$result_string, 0, (byte[])$source, 0, $found_pos - 1);
+        memmove((byte[])$result_str, 0, (byte[])$str, 0, $found_pos);
       }
-      memcpy((byte[])$result_string, $found_pos, (byte[])$replace, 0, $replace_len);
+      memmove((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
       
-      my $rest_offset = $found_pos + $target_len;
-      my $rest_length = $source_len - $rest_offset;
-      memmove((byte[])$result_string, $found_pos + $replace_len, (byte[])$target, $rest_offset, $rest_length);
+      # warn("found_pos : $found_pos");
+      
+      # warn($result_str);
+      
+      my $str_rest_offset = $found_pos + $substr_len;
+      my $str_rest_length = $str_len - $str_rest_offset;
+      my $result_rest_offset = $found_pos + $replace_len;
+      my $result_rest_length = $result_str_len - $result_rest_offset;
+      memmove((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
+      
+      # warn("BBBBBBBB $result_str $result_str_len");
+      
+      return $result_str;
+    }
+    else {
+      my $copy_str = copy_str($str);
+      return $copy_str;
     }
   }
 
