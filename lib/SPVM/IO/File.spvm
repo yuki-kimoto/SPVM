@@ -1,0 +1,30 @@
+package SPVM::IO::File {
+  use SPVM::FileHandle;
+  
+  native sub O_RDONLY : int();
+  native sub O_WRONLY : int();
+  native sub O_RDWR : int();
+  native sub O_APPEND : int();
+  native sub O_CREAT : int();
+  native sub O_TRUNC : int();
+  native sub SEEK_SET : int();
+  native sub SEEK_CUR : int();
+  native sub SEEK_END : int();
+  native sub EOF : int();
+  native sub STDIN : int();
+  native sub STDOUT : int();
+  
+  has handle : SPVM::FileHandle;
+
+=pod
+  native sub gets_chomp : string ($self : self);
+  native sub gets : string ($self : self);
+  
+  native sub open : SPVM::IO::File ($file_name : string, $mode : string);
+  native sub putc : int ($self : self, $c : int);
+  native sub read : int ($self : self, $buf : byte[]);
+  native sub write : int ($self: self, $buf : string);
+  native sub seek : int ($self : self, $offset : long, $whence : int);
+  native sub close : int ($self : self);
+=cut
+}
