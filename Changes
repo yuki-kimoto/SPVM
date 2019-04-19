@@ -24,6 +24,20 @@
   - add SPVM_SET_FFIELD macro
   - add SPVM_SET_DFIELD macro
   - add SPVM_SET_OFIELD macro
+  - add SPVM_BPKGVAR macro
+  - add SPVM_SPKGVAR macro
+  - add SPVM_IPKGVAR macro
+  - add SPVM_LPKGVAR macro
+  - add SPVM_FPKGVAR macro
+  - add SPVM_DPKGVAR macro
+  - add SPVM_OPKGVAR macro
+  - add SPVM_SET_BPKGVAR macro
+  - add SPVM_SET_SPKGVAR macro
+  - add SPVM_SET_IPKGVAR macro
+  - add SPVM_SET_LPKGVAR macro
+  - add SPVM_SET_FPKGVAR macro
+  - add SPVM_SET_DPKGVAR macro
+  - add SPVM_SET_OPKGVAR macro
   
 0.0427 2018-04-17
   - add getenv function
