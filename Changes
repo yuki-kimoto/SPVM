@@ -10,6 +10,21 @@
   - fix native distribution make dpendency bugs
   - fix env->pkgvar_id segfault bugs
   - rename SPVM::Socket to SPVM::IO::Socket
+  - add SPVM_BFIELD macro
+  - add SPVM_SFIELD macro
+  - add SPVM_IFIELD macro
+  - add SPVM_LFIELD macro
+  - add SPVM_FFIELD macro
+  - add SPVM_DFIELD macro
+  - add SPVM_OFIELD macro
+  - add SPVM_SET_BFIELD macro
+  - add SPVM_SET_SFIELD macro
+  - add SPVM_SET_IFIELD macro
+  - add SPVM_SET_LFIELD macro
+  - add SPVM_SET_FFIELD macro
+  - add SPVM_SET_DFIELD macro
+  - add SPVM_SET_OFIELD macro
+  
 0.0427 2018-04-17
   - add getenv function
   - add SPVM::Errno module

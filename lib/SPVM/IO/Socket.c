@@ -89,11 +89,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[2].ival;
   
   int32_t handle;
-  {
-    int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    assert(id >= 0);
-    handle = env->ifield(env, obj_socket, id);
-  }
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
   
   /* HTTPリクエスト送信 */
   int32_t write_length = write(handle, buffer, length);
@@ -113,11 +109,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = env->len(env, obj_buffer);
   
   int32_t handle;
-  {
-    int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
-    handle = env->ifield(env, obj_socket, id);
-  }
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
   
   /* HTTPリクエスト送信 */
   int32_t read_length = read(handle, (char*)buffer, length);
@@ -170,11 +162,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Get handle
   int32_t handle;
-  {
-    int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
-    handle = env->ifield(env, obj_socket, id);
-  }
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
   
   close(handle);
   

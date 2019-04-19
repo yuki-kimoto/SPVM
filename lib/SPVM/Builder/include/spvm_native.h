@@ -52,11 +52,90 @@ typedef void* SPVM_VALUE_object;
   obj = env->new_obj(env, id);\
 } while (0)\
 
+#define SPVM_SET_BFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_bfield(env, obj, id, value);\
+} while (0)\
+
+#define SPVM_SET_SFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_sfield(env, obj, id, value);\
+} while (0)\
+
 #define SPVM_SET_IFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
   int32_t id = env->field_id(env, package_name, sub_name, signature);\
   if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
   env->set_ifield(env, obj, id, value);\
 } while (0)\
+
+#define SPVM_SET_LFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_lfield(env, obj, id, value);\
+} while (0)\
+
+#define SPVM_SET_FFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_ffield(env, obj, id, value);\
+} while (0)\
+
+#define SPVM_SET_DFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_dfield(env, obj, id, value);\
+} while (0)\
+
+#define SPVM_SET_OFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_ofield(env, obj, id, value);\
+} while (0)\
+
+#define SPVM_BFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->bfield(env, obj, id);\
+} while (0)\
+
+#define SPVM_SFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->sfield(env, obj, id);\
+} while (0)\
+
+#define SPVM_IFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->ifield(env, obj, id);\
+} while (0)\
+
+#define SPVM_LFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->lfield(env, obj, id);\
+} while (0)\
+
+#define SPVM_FFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->ffield(env, obj, id);\
+} while (0)\
+
+#define SPVM_DFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->dfield(env, obj, id);\
+} while (0)\
+
+#define SPVM_OFIELD(env, left, obj, package_name, sub_name, signature, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  left = env->ofield(env, obj, id);\
+} while (0)\
+
 
 struct SPVM_env {
   void* exception_object;
