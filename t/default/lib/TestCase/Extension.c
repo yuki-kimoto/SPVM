@@ -12,7 +12,7 @@ int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
   
   int8_t value;
-  SPVM_BPKGVAR(env, value, "TestCase::Extension", "$BYTE_VALUE", "byte", MFILE, __LINE__);
+  SPVM_BPKGVAR(env, value, "TestCase::Extension", "$BYTE_VALUE", MFILE, __LINE__);
   
   stack[0].bval = value;
   
@@ -24,7 +24,7 @@ int32_t SPNATIVE__TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
 
   int16_t value;
-  SPVM_SPKGVAR(env, value,  "TestCase::Extension", "$SHORT_VALUE", "short", MFILE, __LINE__);
+  SPVM_SPKGVAR(env, value,  "TestCase::Extension", "$SHORT_VALUE", MFILE, __LINE__);
   
   stack[0].sval = value;
 
@@ -36,7 +36,7 @@ int32_t SPNATIVE__TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
 
   int32_t value;
-  SPVM_IPKGVAR(env, value, "TestCase::Extension", "$INT_VALUE", "int", MFILE, __LINE__);
+  SPVM_IPKGVAR(env, value, "TestCase::Extension", "$INT_VALUE", MFILE, __LINE__);
   
   stack[0].ival = value;
   
@@ -48,7 +48,7 @@ int32_t SPNATIVE__TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
   
   int64_t value;
-  SPVM_LPKGVAR(env, value, "TestCase::Extension", "$LONG_VALUE", "long", MFILE, __LINE__);
+  SPVM_LPKGVAR(env, value, "TestCase::Extension", "$LONG_VALUE", MFILE, __LINE__);
   
   stack[0].lval = value;
   
@@ -60,7 +60,7 @@ int32_t SPNATIVE__TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
 
   float value;
-  SPVM_FPKGVAR(env, value, "TestCase::Extension", "$FLOAT_VALUE", "float", MFILE, __LINE__);
+  SPVM_FPKGVAR(env, value, "TestCase::Extension", "$FLOAT_VALUE", MFILE, __LINE__);
   
   stack[0].fval = value;
   
@@ -72,7 +72,7 @@ int32_t SPNATIVE__TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   (void)stack;
 
   double value;
-  SPVM_DPKGVAR(env, value, "TestCase::Extension", "$DOUBLE_VALUE", "double", MFILE, __LINE__);
+  SPVM_DPKGVAR(env, value, "TestCase::Extension", "$DOUBLE_VALUE", MFILE, __LINE__);
   
   stack[0].dval = value;
   
@@ -95,7 +95,7 @@ int32_t SPNATIVE__TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
 
-  SPVM_SET_BPKGVAR(env, "TestCase::Extension", "$BYTE_VALUE", "byte", INT8_MIN, MFILE, __LINE__);
+  SPVM_SET_BPKGVAR(env, "TestCase::Extension", "$BYTE_VALUE", INT8_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -104,7 +104,7 @@ int32_t SPNATIVE__TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
 
-  SPVM_SET_SPKGVAR(env, "TestCase::Extension", "$SHORT_VALUE", "short", INT16_MIN, MFILE, __LINE__);
+  SPVM_SET_SPKGVAR(env, "TestCase::Extension", "$SHORT_VALUE", INT16_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -113,7 +113,7 @@ int32_t SPNATIVE__TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
 
-  SPVM_SET_IPKGVAR(env, "TestCase::Extension", "$INT_VALUE", "int", INT32_MIN, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "TestCase::Extension", "$INT_VALUE", INT32_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -122,7 +122,7 @@ int32_t SPNATIVE__TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
   
-  SPVM_SET_LPKGVAR(env, "TestCase::Extension", "$LONG_VALUE", "long", INT64_MIN, MFILE, __LINE__);
+  SPVM_SET_LPKGVAR(env, "TestCase::Extension", "$LONG_VALUE", INT64_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -131,7 +131,7 @@ int32_t SPNATIVE__TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
 
-  SPVM_SET_FPKGVAR(env, "TestCase::Extension", "$FLOAT_VALUE", "float", FLT_MIN, MFILE, __LINE__);
+  SPVM_SET_FPKGVAR(env, "TestCase::Extension", "$FLOAT_VALUE", FLT_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -140,11 +140,10 @@ int32_t SPNATIVE__TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)env;
   (void)stack;
 
-  SPVM_SET_DPKGVAR(env, "TestCase::Extension", "$DOUBLE_VALUE", "double", DBL_MIN, MFILE, __LINE__);
+  SPVM_SET_DPKGVAR(env, "TestCase::Extension", "$DOUBLE_VALUE", DBL_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
-
 
 int32_t SPNATIVE__TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;

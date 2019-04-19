@@ -125,16 +125,16 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__IO__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // AF_UNIX
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_UNIX", "int", AF_UNIX, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_UNIX", AF_UNIX, MFILE, __LINE__);
 
   // AF_INET
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET", "int", AF_INET, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET", AF_INET, MFILE, __LINE__);
 
   // AF_INET6
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET6", "int", AF_INET6, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET6", AF_INET6, MFILE, __LINE__);
 
   // SOCK_STREAM
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$SOCK_STREAM", "int", SOCK_STREAM, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$SOCK_STREAM", SOCK_STREAM, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
