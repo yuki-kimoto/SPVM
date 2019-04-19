@@ -420,8 +420,6 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   // Runtime package
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[sub->package_id];
   
-  warn("AAAAAAAA %s %s", &runtime->string_pool[sub->name_id], &runtime->string_pool[package->name_id]);
-  
   // Call native sub
   if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
     // Enter scope

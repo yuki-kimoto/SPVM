@@ -113,7 +113,7 @@ sub MY::postamble {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::FileHandle');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Socket');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Socket');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Errno');
     

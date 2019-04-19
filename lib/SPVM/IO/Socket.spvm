@@ -1,4 +1,4 @@
-package SPVM::Socket {
+package SPVM::IO::Socket {
   
   our $AF_UNIX : ro int;
   our $AF_INET : ro int;
@@ -14,7 +14,7 @@ package SPVM::Socket {
   
   native sub init_native_constants : void();
   
-  native sub new : SPVM::Socket ($host : string, $port : int);
+  native sub new : SPVM::IO::Socket ($host : string, $port : int);
   native sub write : int ($self : self, $buffer : byte[], $legnth : int);
   native sub read : int ($self : self, $buffer : byte[]);
   

@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Socket';
+use SPVM 'TestCase::Lib::SPVM::IO::Socket';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Socket
 {
-  ok(TestCase::Socket->basic);
+  ok(TestCase::Lib::SPVM::IO::Socket->basic);
 }
 
 
