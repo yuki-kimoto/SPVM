@@ -75,7 +75,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_NEW(env, obj_socket, "SPVM::IO::Socket", MFILE, __LINE__);
   
   // Set handle
-  SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", "int", handle, MFILE, __LINE__);
+  SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", handle, MFILE, __LINE__);
   
   stack[0].oval = obj_socket;
   
@@ -89,7 +89,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[2].ival;
   
   int32_t handle;
-  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
   
   /* HTTPリクエスト送信 */
   int32_t write_length = write(handle, buffer, length);
@@ -109,7 +109,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = env->len(env, obj_buffer);
   
   int32_t handle;
-  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
   
   /* HTTPリクエスト送信 */
   int32_t read_length = read(handle, (char*)buffer, length);
@@ -146,7 +146,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Get handle
   int32_t handle;
-  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", "int", MFILE, __LINE__);
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
   
   close(handle);
   
