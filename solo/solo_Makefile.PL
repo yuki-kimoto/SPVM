@@ -26,9 +26,9 @@ if ($optimize) {
 my $build_config = SPVM::Builder::Config->new_default;
 $optimize ||= $build_config->get_config('optimize');
 
-my $ccflags = $build_config->get_ccflags;
+my $ccflags = $build_config->get_ccflags . " " . $build_config->get_extra_compiler_flags;
 
-my $lddlflags = $build_config->get_lddlflags;
+my $lddlflags = $build_config->get_lddlflags . " " . $build_config->get_extra_linker_flags;
 
 my $src_dir = "lib/SPVM/Builder/src";
 my @csource_files = glob "$src_dir/*.c";
