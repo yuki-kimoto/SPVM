@@ -201,11 +201,21 @@ sub create_package_make_rule {
 
   my $package_rel_file = convert_package_name_to_rel_file($package_name);
   
-  my $spvm_file = $package_rel_file;
-  $spvm_file =~ s/\.[^\.]+$//;
+  my $noext_file = $package_rel_file;
+  $noext_file =~ s/\.[^\.]+$//;
+  
+  my $spvm_file = $noext_file;
   $spvm_file .= '.spvm';
   $spvm_file = "$src_dir/$spvm_file";
-  
+
+  my $c_file = $noext_file;
+  $c_file .= '.c';
+  $c_file = "$src_dir/$c_file";
+
+  my $config_file = $noext_file;
+  $config_file .= '.config';
+  $config_file = "$src_dir/$config_file";
+
   # Dependency files
   my @deps;
   
@@ -213,7 +223,7 @@ sub create_package_make_rule {
   push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$src_dir/$package_rel_file/*";
   
   # Dependency module file
-  push @deps, $spvm_file;
+  push @deps, $spvm_file, $c_file, $config_file;
   
   # Shared library file
   my $dll_rel_file = convert_package_name_to_dll_category_rel_file($package_name, $category);
