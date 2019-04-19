@@ -931,13 +931,27 @@ L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
-=head1 CORE DEVELOPER
+=head1 CORE DEVELOPERS
 
 moti<lt>motohiko.ave@gmail.com<gt>
 
 =head1 CONTRIBUTERS
 
-akinomyoga, NAGAYASU Shinya, Reini Urban, chromatic, Kazutake Hiramatsu
+=over 2
+
+=item * Mohammad S Anwar
+
+=item * akinomyoga
+
+=item * NAGAYASU Shinya
+
+=item * Reini Urban
+
+=item * chromatic
+
+=item * Kazutake Hiramatsu
+
+=back
 
 =head1 COPYRIGHT & LICENSE
 
