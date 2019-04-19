@@ -21,6 +21,9 @@
 
 #endif
 
+// Module file name
+static const char* MFILE = "SPVM/IO/Socket.c";
+
 int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_deststr = stack[0].oval;
@@ -30,7 +33,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t handle = socket(AF_INET, SOCK_STREAM, 0);
   
   if (handle < 0) {
-    SPVM_DIE("Can't create socket", "SPVM/IO/Socket.c", __LINE__);
+    SPVM_DIE("Can't create socket", MFILE, __LINE__);
   }
   
   struct sockaddr_in server;
@@ -45,7 +48,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (host == NULL) {
       if (h_errno == HOST_NOT_FOUND) {
         fprintf(stderr, "host not found : %s\n", deststr);
-        SPVM_DIE("Exception", "SPVM/IO/Socket.c", __LINE__);
+        SPVM_DIE("Exception", MFILE, __LINE__);
       }
       return 1;
     }
@@ -63,7 +66,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
       addrptr++;
     }
     if (*addrptr == NULL) {
-      SPVM_DIE("Connect", "SPVM/IO/Socket.c", __LINE__);
+      SPVM_DIE("Connect", MFILE, __LINE__);
     }
   }
   
@@ -71,14 +74,14 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket;
   {
     int32_t id = env->basic_type_id(env, "SPVM::IO::Socket");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); };
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
     obj_socket = env->new_obj(env, id);
   }
   
   // Set handle
   {
     int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); };
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
     env->set_ifield(env, obj_socket, id, handle);
   }
   
@@ -103,7 +106,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   /* HTTPリクエスト送信 */
   int32_t write_length = write(handle, buffer, length);
   if (write_length < 0) {
-    SPVM_DIE("Socket write error", "SPVM/IO/Socket.c", __LINE__);
+    SPVM_DIE("Socket write error", MFILE, __LINE__);
   }
   
   stack[0].ival = write_length;
@@ -120,14 +123,14 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t handle;
   {
     int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); };
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
     handle = env->ifield(env, obj_socket, id);
   }
   
   /* HTTPリクエスト送信 */
   int32_t read_length = read(handle, (char*)buffer, length);
   if (read_length < 0) {
-    SPVM_DIE("Socket read error", "SPVM/IO/Socket.c", __LINE__);
+    SPVM_DIE("Socket read error", MFILE, __LINE__);
   }
   
   stack[0].ival = read_length;
@@ -140,28 +143,28 @@ int32_t SPNATIVE__SPVM__IO__Socket__init_native_constants(SPVM_ENV* env, SPVM_VA
   // AF_UNIX
   {
     int32_t id = env->pkgvar_id(env, "SPVM::IO::Socket", "$AF_UNIX", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); }
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
     env->set_ipkgvar(env, id, AF_UNIX);
   }
 
   // AF_INET
   {
     int32_t id = env->pkgvar_id(env, "SPVM::IO::Socket", "$AF_INET", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); }
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
     env->set_ipkgvar(env, id, AF_INET);
   }
 
   // AF_INET6
   {
     int32_t id = env->pkgvar_id(env, "SPVM::IO::Socket", "$AF_INET6", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); }
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
     env->set_ipkgvar(env, id, AF_INET6);
   }
 
   // SOCK_STREAM
   {
     int32_t id = env->pkgvar_id(env, "SPVM::IO::Socket", "$SOCK_STREAM", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); }
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
     env->set_ipkgvar(env, id, SOCK_STREAM);
   }
   
@@ -177,7 +180,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t handle;
   {
     int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", "SPVM/IO/Socket.c", __LINE__); }
+    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); }
     handle = env->ifield(env, obj_socket, id);
   }
   
