@@ -72,18 +72,10 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Create SPVM::IO::Socket object
   void* obj_socket;
-  {
-    int32_t id = env->basic_type_id(env, "SPVM::IO::Socket");
-    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
-    obj_socket = env->new_obj(env, id);
-  }
+  SPVM_NEW(env, obj_socket, "SPVM::IO::Socket", MFILE, __LINE__);
   
   // Set handle
-  {
-    int32_t id = env->field_id(env, "SPVM::IO::Socket", "handle", "int");
-    if (id < 0) { SPVM_DIE("Invalid id", MFILE, __LINE__); };
-    env->set_ifield(env, obj_socket, id, handle);
-  }
+  SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", "int", handle, MFILE, __LINE__);
   
   stack[0].oval = obj_socket;
   

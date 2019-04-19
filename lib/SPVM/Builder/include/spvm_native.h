@@ -46,6 +46,18 @@ typedef void* SPVM_VALUE_object;
   return SPVM_EXCEPTION;\
 } while (0)\
 
+#define SPVM_NEW(env, obj, package_name, file, line) do {\
+  int32_t id = env->basic_type_id(env, package_name);\
+  if (id < 0) { SPVM_DIE("Package \"%s\" not found", package_name, file, line); };\
+  obj = env->new_obj(env, id);\
+} while (0)\
+
+#define SPVM_SET_IFIELD(env, obj, package_name, sub_name, signature, value, file, line) do {\
+  int32_t id = env->field_id(env, package_name, sub_name, signature);\
+  if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  env->set_ifield(env, obj, id, value);\
+} while (0)\
+
 struct SPVM_env {
   void* exception_object;
   void* native_mortal_stack;
