@@ -416,6 +416,12 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
+
+  // Runtime package
+  SPVM_RUNTIME_PACKAGE* package = &runtime->packages[sub->package_id];
+  
+  warn("AAAAAAAA %s %s", &runtime->string_pool[sub->name_id], &runtime->string_pool[package->name_id]);
+  
   // Call native sub
   if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
     // Enter scope
@@ -5542,7 +5548,10 @@ int32_t SPVM_RUNTIME_API_pkgvar_id(SPVM_ENV* env, const char* package_name, cons
   
   // Package name
   SPVM_RUNTIME_PACKAGE* package;
-  if (basic_type->package_id < 0) {
+  if (!basic_type) {
+    return -1;
+  }
+  else if (basic_type->package_id < 0) {
     return -1;
   }
   else {
@@ -5559,7 +5568,7 @@ int32_t SPVM_RUNTIME_API_pkgvar_id(SPVM_ENV* env, const char* package_name, cons
   if (strcmp(signature, &runtime->string_pool[package_var->signature_id]) != 0) {
     return -1;
   }
-  
+ 
   return package_var->id;
 }
 
