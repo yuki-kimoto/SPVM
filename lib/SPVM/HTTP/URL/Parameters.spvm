@@ -1,12 +1,15 @@
 package SPVM::HTTP::URL::Parameters {
   use SPVM::HTTP::URL::Escape;
+  use SPVM::HTTP::URL::Encode;
 
   has params : string[][];
   has size : int;
+  has use_form_encoder : public int;
 
   sub new : SPVM::HTTP::URL::Parameters () {
     my $self = new SPVM::HTTP::URL::Parameters;
     $self->{params} = new string[][16];
+    $self->{use_form_encoder} = 0;
     return $self;
   }
 
@@ -81,9 +84,12 @@ package SPVM::HTTP::URL::Parameters {
           $end_val = $length;
         }
         my $key = sliceb((byte [])$str, $start_token, $i - $start_token);
-        my $val = SPVM::HTTP::URL::Escape->unescape(
-            sliceb((byte [])$str, $start_val, $end_val - $start_val));
-        $self->add($key, $val);
+        my $val = sliceb((byte [])$str, $start_val, $end_val - $start_val);
+        if ($self->{use_form_encoder}) {
+          $self->add($key, SPVM::HTTP::URL::Encode->decode($val));
+        } else {
+          $self->add($key, SPVM::HTTP::URL::Escape->unescape($val));
+        }
         $start_token = $end_val + 1; # if $end_val < $length
         $i = $end_val;
       }
@@ -103,8 +109,13 @@ package SPVM::HTTP::URL::Parameters {
         if (length($result)) {
           $result .= "&";
         }
-        $result .= $keys->[$key_index] . "=" .
-          SPVM::HTTP::URL::Escape->escape($multi_vals->[$val_index]);
+        if ($self->{use_form_encoder}) {
+          $result .= $keys->[$key_index] . "=" .
+            SPVM::HTTP::URL::Encode->encode($multi_vals->[$val_index]);
+        } else {
+          $result .= $keys->[$key_index] . "=" .
+            SPVM::HTTP::URL::Escape->escape($multi_vals->[$val_index]);
+        }
       }
     }
     return $result;
