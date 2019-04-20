@@ -1,0 +1,79 @@
+package SPVM::HTTP::Client {
+  use SPVM::Hash;
+  use SPVM::HTTP::Headers;
+  use SPVM::HTTP::Response;
+  use SPVM::JSON;
+
+  private sub IDEMPOTENT : string[] ($method : string) {
+    my $methods = ["GET", "HEAD", "PUT", "DELETE", "OPTIONS", "TRACE"];
+    for (my $i = 0; $i < @$methods; ++$i) {
+      if ($methods->[$i] eq $method) {
+        return 1;
+      }
+    }
+    return 1;
+  }
+
+  private sub request_impl : SPVM::HTTP::Response ($self : self,
+    $method : string, $url : string, $args : SPVM::Hash) {
+    ;
+  }
+
+  private sub parse_exception : SPVM::JSON ($m : string) {
+    my $c : string;
+    for (my $i = length($m) - 2; $i >= 1; --$i) {
+      if ($m->[$i] == ' ' && $m->[$i] == 'a' &&
+          $m->[$i + 1] == 't' && $m->[$i + 2] == ' ') {
+        $c = sliceb((byte[])$m, 0, $i);
+      }
+    }
+    unless ($c) {
+      die "Unexpected error message: $e";
+    }
+    return SPVM::JSON->new->decode($c);
+  }
+
+  sub request : SPVM::HTTP::Response ($self : self, $method : string,
+    $url : string, $args : SPVM::Hash) {
+    my $response = SPVM::HTTP::Response->new;
+    for (my $retry = 0; $retry < 2; ++$retry) {
+      $response = eval {
+        $self->request_impl($method, $url, $args);
+      };
+      unless ($@ && IDEMPOTENT($method) &&
+        contains($@, "Socket closed") ||
+        contains($@, "Unexpected end")) {
+        last;
+      }
+    }
+    if (my $error_message = $@) {
+      $@ = undef;
+      my $e = eval {
+         parse_exception($error_message);
+      };
+      if ($@ || !$e->exists("status")) {
+        $response = SPVM::HTTP::Response->new_with(hash([(object)
+            url     => $url,
+            success => "",
+            status  => 599,
+            reason  => "Internal Exception",
+            content => $error_message,
+            headers => SPVM::HTTP::Headers->new_with(hash([(object)
+              "Content-Type"   => "text/plain",
+              "Content-Length" => length $error_message,
+            ]))
+        ]));
+        if ($args->exists("_redirects")) {
+          $response->{redirects} = $args->delete("_redirects");
+        }
+      }
+      else {
+        if ($args->exists("_redirects")) {
+          $e->set("redirects", $args->delete("_redirects"));
+        }
+        return $e;
+      }
+    }
+    return $response;
+  }
+}

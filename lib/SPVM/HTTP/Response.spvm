@@ -1,0 +1,7 @@
+package SPVM::HTTP::Response {
+  has content : public string;
+
+  sub new : SPVM::HTTP::Response () {
+    return new SPVM::HTTP::Response;
+  }
+}

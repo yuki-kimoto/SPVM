@@ -1,0 +1,5 @@
+package TestCase::Lib::SPVM::HTTP::Client {
+  sub test_get : int () {
+    return 1;
+  }
+}
