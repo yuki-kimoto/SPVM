@@ -126,6 +126,9 @@ DEVELOPERS NOTE
       all character is upper case or under score. need _C_ between package name and constant base name
     - fix all warnings before CPAN release
 
-COPYRIGHT & LICENSE
+=head1 COPYRIGHT & LICENSE
 
-  This software is released under the MIT License, see LICENSE.txt.
+	Copyright 2018-2019 Yuki Kimoto, all rights reserved.
+
+	This program is free software; you can redistribute it and/or modify it
+	under the same terms as Perl itself.
