@@ -164,6 +164,9 @@ lib/SPVM/HTTP/URL/Escape.spvm
 lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
+lib/SPVM/IO/File.c
+lib/SPVM/IO/File.config
+lib/SPVM/IO/File.spvm
 lib/SPVM/IO/Socket.c
 lib/SPVM/IO/Socket.config
 lib/SPVM/IO/Socket.spvm
@@ -285,6 +288,7 @@ t/default/assign.t
 t/default/begin.t
 t/default/bit-not.t
 t/default/bit-operator.t
+t/default/callback.t
 t/default/commaop.t
 t/default/comment.t
 t/default/comparison-operator.t
@@ -302,7 +306,6 @@ t/default/for.t
 t/default/if.t
 t/default/increment.t
 t/default/inline.t
-t/default/interface.t
 t/default/isa.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Add.spvm
@@ -313,6 +316,10 @@ t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
 t/default/lib/TestCase/BitNot.spvm
 t/default/lib/TestCase/BitOperator.spvm
+t/default/lib/TestCase/Callback.spvm
+t/default/lib/TestCase/Callback/Callback.spvm
+t/default/lib/TestCase/Callback/ImplementCallback1.spvm
+t/default/lib/TestCase/Callback/ImplementCallback2.spvm
 t/default/lib/TestCase/Comment/CR.spvm
 t/default/lib/TestCase/Comment/CRLF.spvm
 t/default/lib/TestCase/Comment/LF.spvm
@@ -388,10 +395,6 @@ t/default/lib/TestCase/For.spvm
 t/default/lib/TestCase/If.spvm
 t/default/lib/TestCase/Increment.spvm
 t/default/lib/TestCase/Inline.spvm
-t/default/lib/TestCase/Interface.spvm
-t/default/lib/TestCase/Interface/ImplementInterface1.spvm
-t/default/lib/TestCase/Interface/ImplementInterface2.spvm
-t/default/lib/TestCase/Interface/Interface.spvm
 t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/JSON.spvm
 t/default/lib/TestCase/JSON/Bool.spvm
@@ -501,6 +504,7 @@ t/exe/exe.t
 t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/spvm_build/work/exe/myexe
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt

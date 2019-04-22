@@ -31,7 +31,7 @@ package TestCase::Lib::SPVM::MIME::Base64 {
     return 1;
   }
 
-  sub test_interface_compatibility : int () {
+  sub test_callback_compatibility : int () {
     eval {
       my $encoder = (SPVM::MIME::Encoder)$ENCODER;
     };

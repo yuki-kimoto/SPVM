@@ -33,9 +33,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Extension->opkgvar);
 }
 
-# has_interface
+# has_callback
 {
-  ok(TestCase::Extension->has_interface);
+  ok(TestCase::Extension->has_callback);
 }
 
 # is_type

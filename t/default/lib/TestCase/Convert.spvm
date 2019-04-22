@@ -1,6 +1,6 @@
 package TestCase::Convert {
   use TestCase::Minimal;
-  use TestCase::Interface::Interface;
+  use TestCase::Callback::Callback;
   use SPVM::Comparator;
   
   sub convert_to_numeric_array : int () {
@@ -48,7 +48,7 @@ package TestCase::Convert {
     return 0;
   }
 
-  sub convert_to_interface : int () {
+  sub convert_to_callback : int () {
     my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       return 5;
     };
@@ -64,7 +64,7 @@ package TestCase::Convert {
     return 0;
   }
 
-  sub convert_to_undef_to_interface : int () {
+  sub convert_to_undef_to_callback : int () {
     my $comparator : SPVM::Comparator;
     
     my $comparator2 = (SPVM::Comparator)$comparator;
@@ -83,9 +83,9 @@ package TestCase::Convert {
     return 1;
   }
 
-  sub convert_to_interface_array : int () {
-    my $ointerfaces : object = new TestCase::Interface::Interface[3];
-    my $interfaces = (TestCase::Interface::Interface[])$ointerfaces;
+  sub convert_to_callback_array : int () {
+    my $ocallbacks : object = new TestCase::Callback::Callback[3];
+    my $callbacks = (TestCase::Callback::Callback[])$ocallbacks;
     
     return 1;
   }

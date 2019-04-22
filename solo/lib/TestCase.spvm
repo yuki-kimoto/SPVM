@@ -6,10 +6,10 @@ package TestCase {
   use TestCase::Simple;
   use TestCase::Minimal;
   use TestCase::Destructor;
-  use TestCase::Interface1;
-  use TestCase::Interface2;
-  use TestCase::ImplementInterface1;
-  use TestCase::ImplementInterface2;
+  use TestCase::Callback1;
+  use TestCase::Callback2;
+  use TestCase::ImplementCallback1;
+  use TestCase::ImplementCallback2;
   use TestCase::Comparator;
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
@@ -621,11 +621,11 @@ SPVM::Test - SPVM test module
     
     {
       my $object : object = TestCase::Minimal->new;
-      my $implement_interface1 : TestCase::Interface1 = TestCase::ImplementInterface1->new;
-      my $implement_interface2 : TestCase::Interface1 = TestCase::ImplementInterface2->new;
+      my $implement_callback1 : TestCase::Callback1 = TestCase::ImplementCallback1->new;
+      my $implement_callback2 : TestCase::Callback1 = TestCase::ImplementCallback2->new;
       
-      print($implement_interface1->foo(0, 0) . "\n");
-      print($implement_interface2->foo(0, 0) . "\n");
+      print($implement_callback1->foo(0, 0) . "\n");
+      print($implement_callback2->foo(0, 0) . "\n");
       
       my $minimal = (TestCase::Minimal)$object;
       

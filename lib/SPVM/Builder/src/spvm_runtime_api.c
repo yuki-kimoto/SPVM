@@ -75,7 +75,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_field_offset,
     SPVM_RUNTIME_API_call_sub,
     SPVM_RUNTIME_API_is_type,
-    SPVM_RUNTIME_API_has_interface,
+    SPVM_RUNTIME_API_has_callback,
     SPVM_RUNTIME_API_new_obj_raw,
     SPVM_RUNTIME_API_new_obj,
     SPVM_RUNTIME_API_new_barray_raw,
@@ -860,15 +860,15 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_INTERFACE: {
+      case SPVM_OPCODE_C_ID_HAS_CALLBACK: {
         void* object = *(void**)&object_vars[opcode->operand1];
         int32_t constant_pool_id = opcode->operand2;
-        int32_t interface_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t callback_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
         
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          int_vars[0] = env->has_interface(env, object, interface_basic_type_id);
+          int_vars[0] = env->has_callback(env, object, callback_basic_type_id);
         }
         else {
           int_vars[0] = 0;
@@ -2857,22 +2857,22 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
+      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (object != NULL) {
           int32_t constant_pool_id = opcode->operand2;
-          int32_t interface_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-          int32_t interface_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+          int32_t callback_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+          int32_t callback_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
           
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
           
-          if (env->has_interface(env, object, interface_basic_type_id)) {
+          if (env->has_callback(env, object, callback_basic_type_id)) {
             SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_str_raw(env, "Can't convert imcompatible interface type.");
+            void* exception = env->new_str_raw(env, "Can't convert imcompatible callback type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4346,7 +4346,7 @@ int32_t SPVM_RUNTIME_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t bas
   }
 }
 
-int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
+int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id) {
   (void)env;
   
   // Object must be not null
@@ -4355,45 +4355,45 @@ int32_t SPVM_RUNTIME_API_has_interface(SPVM_ENV* env, SPVM_OBJECT* object, int32
   int32_t object_basic_type_id = object->basic_type_id;
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t has_interface;
+  int32_t has_callback;
   if (object_type_dimension != 0) {
-    has_interface = 0;
+    has_callback = 0;
   }
   else {
     SPVM_RUNTIME* runtime = env->runtime;
 
     SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object_basic_type_id >= 0 ? &runtime->basic_types[object_basic_type_id] : NULL;
-    SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = interface_basic_type_id >= 0 ? &runtime->basic_types[interface_basic_type_id] : NULL;
+    SPVM_RUNTIME_BASIC_TYPE* callback_basic_type = callback_basic_type_id >= 0 ? &runtime->basic_types[callback_basic_type_id] : NULL;
 
     SPVM_RUNTIME_PACKAGE* object_package = object_basic_type->package_id ? &runtime->packages[object_basic_type->package_id] : NULL;
-    SPVM_RUNTIME_PACKAGE* interface_package = interface_basic_type->package_id ? &runtime->packages[interface_basic_type->package_id] : NULL;
+    SPVM_RUNTIME_PACKAGE* callback_package = callback_basic_type->package_id ? &runtime->packages[callback_basic_type->package_id] : NULL;
     
-    SPVM_RUNTIME_SUB* sub_interface = &runtime->subs[interface_package->subs_base];
+    SPVM_RUNTIME_SUB* sub_callback = &runtime->subs[callback_package->subs_base];
     
-    const char* sub_interface_signature = &runtime->string_pool[sub_interface->signature_id];
+    const char* sub_callback_signature = &runtime->string_pool[sub_callback->signature_id];
     if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
-      if (strcmp(sub_interface_signature, &runtime->string_pool[sub->signature_id]) == 0) {
-        has_interface = 1;
+      if (strcmp(sub_callback_signature, &runtime->string_pool[sub->signature_id]) == 0) {
+        has_callback = 1;
       }
       else {
-        has_interface = 0;
+        has_callback = 0;
       }
     }
     else {
       const char* object_package_name = &runtime->string_pool[object_package->name_id];
-      const char* sub_interface_name = &runtime->string_pool[sub_interface->name_id];
-      int32_t sub_id = SPVM_RUNTIME_API_sub_id(env, object_package_name, sub_interface_name, sub_interface_signature);
+      const char* sub_callback_name = &runtime->string_pool[sub_callback->name_id];
+      int32_t sub_id = SPVM_RUNTIME_API_sub_id(env, object_package_name, sub_callback_name, sub_callback_signature);
       if (sub_id >= 0) {
-        has_interface = 1;
+        has_callback = 1;
       }
       else {
-        has_interface = 0;
+        has_callback = 0;
       }
     }
   }
   
-  return has_interface;
+  return has_callback;
 }
 
 int32_t SPVM_RUNTIME_API_enter_scope(SPVM_ENV* env) {

@@ -63,7 +63,7 @@
         <li><a href="#language-value-array">値の配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
         <li><a href="#language-exception">例外処理</a></li>
-        <li><a href="#language-interface">インターフェース</a></li>
+        <li><a href="#language-callback">コールバック</a></li>
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="#language-expresssion">式</a></li>
         <li><a href="#language-literal">リテラル</a></li>
@@ -377,7 +377,7 @@ $
       </p>
 <pre>
 allow byte BEGIN case die default double elsif else enum eq
-eval for float gt ge has if interface_t isa int last length
+eval for float gt ge has if callback_t isa int last length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
 sub string short scalar undef unless use void value_t while
@@ -1230,7 +1230,7 @@ package Point : public {
         </tr>
         <tr>
           <td>
-            <b>interface_t</b>
+            <b>callback_t</b>
           </td>
           <td>
             このパッケージは「インターフェイス型」になります。
@@ -1257,7 +1257,7 @@ package Point : public {
         「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        「interface_t」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
+        「callback_t」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
       </p>
       
       <p>
@@ -1420,19 +1420,19 @@ if (require Foo) {
 }
 </pre>
      <p>
-       ひとつのテクニックとして、if require構文と<a href="#language-type-interface">インターフェース型</a>と<a href="#language-sub-anon">無名サブルーチン</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
+       ひとつのテクニックとして、if require構文と<a href="#language-type-callback">コールバック型</a>と<a href="#language-sub-anon">無名サブルーチン</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
      </p>
 <pre>
-package SomeInterface : interface_t {
+package SomeCallback : callback_t {
   sub foo : int ($self : self, $arg : int);
 }
 
 # 別の関数内
-my $interface : SomeInterface;
+my $callback : SomeCallback;
 
 unless ($inteface) {
   if (require Foo) {
-    $interface = sub : int ($self : self, $arg : int) {
+    $callback = sub : int ($self : self, $arg : int) {
       Foo->method1($arg);
     };
   }
@@ -1440,13 +1440,13 @@ unless ($inteface) {
 
 unless ($inteface) {
   if (require Bar) {
-    $interface = sub : int ($self : self, $arg : int) {
+    $callback = sub : int ($self : self, $arg : int) {
       Bar->method2($arg);
     }
   }
 }
 
-my $result = $interface->foo(3);
+my $result = $callback->foo(3);
 </pre>
 
       <h2 id="language-allow-access">アクセス許可</h2>
@@ -2591,12 +2591,12 @@ $@
         ウィークリファレンス関連の文法として、ウィークリファレンスを解除できる<a href="#language-statement-weaken">weaken文</a>と、フィールドがウィークリファレンスかどうかを確認できる<a href="#language-operator-isweak">isweak演算子</a>があります。
       </p>
       
-      <h2 id="language-interface">インターフェース</h2>
+      <h2 id="language-callback">コールバック</h2>
       <p>
-        SPVMにおけるインターフェース型とは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてinterface_tデスクリプタを指定すると、インターフェース型になります。
+        SPVMにおけるコールバック型とは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてcallback_tデスクリプタを指定すると、コールバック型になります。
       </p>
       <p>
-        インターフェース型の目的は、異なるオブジェクトが、同じメソッド定義を持つときに、どちらも代入できる型を提供することにあります。C言語の関数ポインタに該当する機能をSPVMにおいて実現するものと考えてください。
+        コールバック型の目的は、異なるオブジェクトが、同じメソッド定義を持つときに、どちらも代入できる型を提供することにあります。C言語の関数ポインタに該当する機能をSPVMにおいて実現するものと考えてください。
       </p>
 <pre>
 package Foo1 : public {
@@ -2618,7 +2618,7 @@ package Foo2 : public {
   }
 }
 
-package FooInterface : interface_t {
+package FooCallback : callback_t {
   sub bar : int ($self : self, $num : int);
 }
 </pre>
@@ -2627,13 +2627,13 @@ package FooInterface : interface_t {
         Foo1とFoo2は同じメソッド定義「sub bar : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
       </p>
       <p>
-        この場合に、同じメソッド定義を持つインターフェース型FooInterfaceを定義すると、この型にどちらのオブジェクトも代入できます。そして、このオブジェクトから、メソッドを呼び出すことができます。
+        この場合に、同じメソッド定義を持つコールバック型FooCallbackを定義すると、この型にどちらのオブジェクトも代入できます。そして、このオブジェクトから、メソッドを呼び出すことができます。
       </p>
 <pre>
 my $foo1 = new Foo1;
 my $foo2 = new Foo2;
 
-my $foo : FooInterface;
+my $foo : FooCallback;
 
 my $flag = 1;
 if ($flag) {
@@ -2649,7 +2649,7 @@ my $ret = $foo->bar(2);
         $flagが1の場合は、Foo1のbarが、そうでない場合はFoo2のbarが呼び出されます。
       </p>
       <p>
-        インターフェース型の詳細については、<a href="#language-type-interface">インターフェース型</a>を見てください。
+        コールバック型の詳細については、<a href="#language-type-callback">コールバック型</a>を見てください。
       </p>
       
       <h3 id="language-exception-summary">例外処理の概要</h3>
@@ -5309,7 +5309,7 @@ x >> y;
         2. 右型が、<a href="#language-type-class">クラス型</a>であった場合は、実行時に左式の型が、クラス型と一致するかをチェックします。一致した場合はint型で1を、そうでない場合は0を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        3. 右型が、<a href="#language-type-interface">インターフェース型</a>であった場合は、実行時に左式の型がクラス型であり、そのクラスがインターフェース型を満たすかどうかをチェックします。満たした場合はint型の1を、そうでない場合は0を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
+        3. 右型が、<a href="#language-type-callback">コールバック型</a>であった場合は、実行時に左式の型がクラス型であり、そのクラスがコールバック型を満たすかどうかをチェックします。満たした場合はint型の1を、そうでない場合は0を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       
       <h3 id="language-operator-logical">論理演算子</h3>
@@ -6445,7 +6445,7 @@ my $num = 1 + 2;
         <li><a href="#language-type-numeric-object">数値オブジェクト型</a></li>
         <li><a href="#language-type-undef">未定義型</a></li>
         <li><a href="#language-type-class">クラス型</a></li>
-        <li><a href="#language-type-interface">インターフェース型</a></li>
+        <li><a href="#language-type-callback">コールバック型</a></li>
         <li><a href="#language-type-any-object">汎用オブジェクト型</a></li>
         <li><a href="#language-type-self">self型</a></li>
         <li><a href="#language-type-array">配列型</a></li>
@@ -6706,7 +6706,7 @@ package Foo {
 }
 </pre>
       <p>
-        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-value">値型</a>」からなります。
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-value">値型</a>」からなります。
       </p>
 <pre>
 # クラス型
@@ -6714,8 +6714,8 @@ package Foo {
 
 }
 
-# インターフェース型
-package Foo : interface_t {
+# コールバック型
+package Foo : callback_t {
 
 }
 
@@ -6736,7 +6736,7 @@ package Foo : pointer_t {
 
       <h3 id="language-type-object">オブジェクト型</h3>
       <p>
-        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-interface">インターフェース型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
+        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
       </p>
       <p>
         オブジェクト型の値は「汎用オブジェクト型」に代入できます。
@@ -6826,7 +6826,7 @@ my $object : object = "abc";
       
       <h3 id="language-type-class">クラス型</h3>
       <p>
-        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「インターフェース型」ではない型のことをいいます。
+        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「コールバック型」ではない型のことをいいます。
       </p>
 <pre>
 packag Foo {
@@ -6867,42 +6867,42 @@ package Foo : pointer_t {
       <p>
         ポインタ型には、フィールドを定義することはできません。定義されていた場合は、コンパイル時エラーが発生します。
       </p>
-      <h3 id="language-type-interface">インターフェース型</h3>
+      <h3 id="language-type-callback">コールバック型</h3>
       <p>
-        インターフェース型とは「<a href="#language-package-definition">パッケージの定義</a>」において「interface_t デスクリプタ」が指定されたものをいいます。
+        コールバック型とは「<a href="#language-package-definition">パッケージの定義</a>」において「callback_t デスクリプタ」が指定されたものをいいます。
       </p>
 <pre>
-package SPVM::Comparator : interface_t {
+package SPVM::Comparator : callback_t {
   sub compare : int ($self : self, $x1 : object, $x2 : object);
 }
 </pre>
       <p>
-        インターフェスは、C言語における関数ポインタに該当する機能を提供するために設計されました。
+        コールバック型は、C言語における関数ポインタに該当する機能を提供するために設計されました。
       </p>
       <p>
-        インターフェース型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、メソッドでなければなりません。
+        コールバック型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
       </p>
       <p>
-        インターフェース型は「フィールドの定義」「パッケージ変数の定義」を持つことはできません。
+        コールバック型は「<a href="#language-field-definition">フィールドの定義</a>」「<a href="#language-package-var-definition">パッケージ変数の定義</a>」を持つことはできません。
       </p>
       <p>
-        インターフェース型の値を、new演算子によって実体化することはできません。
+        コールバック型の値を、new演算子によって実体化することはできません。
       </p>
       <p>
-        インターフェース型は「パッケージ型」です。
+        コールバック型は「パッケージ型」です。
       </p>
       <p>
-        インターフェース型は「オブジェクト型」です。
+        コールバック型は「オブジェクト型」です。
       </p>
       <p>
-        インターフェース型には、インターフェースを満たしたクラス型のオブジェクトを代入できます。この場合、クラスはインターフェース型に適合するといいます。クラスがインターフェース型を満たすのは次の二つの場合です。
+        コールバック型には、コールバックを満たしたクラス型のオブジェクトを代入できます。この場合、クラス型はコールバック型に適合するといいます。クラス型がコールバック型を満たすのは次の二つの場合です。
       </p>
       <p>
-        1. インターフェース型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、インターフェース型に適合します。
+        1. コールバック型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、コールバック型に適合します。
       </p>
 <pre>
-# インターフェース型の定義
-package SPVM::Comparator : interface_t {
+# コールバック型の定義
+package SPVM::Comparator : callback_t {
   sub compare : int ($self : self, $x1 : object, $x2 : object);
 }
 
@@ -6917,19 +6917,19 @@ package SomeComparator {
   }
 }
 
-# インターフェース型への代入
+# コールバック型への代入
 my $comparator : comparator = new SomeComparator;
 </pre>
       <p>
-        2. インターフェース型として定義されたサブルーチンと同一のシグネチャを持つ無名サブルーチンは、インターフェース型に適合します。
+        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つ無名サブルーチンは、コールバック型に適合します。
       </p>
 <pre>
-# インターフェース型の定義
-package SPVM::Comparator : interface_t {
+# コールバック型の定義
+package SPVM::Comparator : callback_t {
   sub compare : int ($self : self, $x1 : object, $x2 : object);
 }
 
-# インターフェース型への代入
+# コールバック型への代入
 my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
 }
@@ -7744,7 +7744,7 @@ while (条件部) {
         パッケージ変数への書き込みは、スレッドセーフではありません。書き込みが行われるときは、データ競合が発生します。つまり、パッケージ変数に書き込んでいるサブルーチンの呼び出しは、スレッドセーフではありません。
       </p>
       <p>
-        パッケージ変数に対する、データ競合を起こさないようにする簡単な方法は、異なるスレッドで同じデータ領域に書き込まないことです。たとえば、10のスレッドがあれば、配列型のパッケージ変数の定義を行い、スレッドを呼び出す前に、10の長さで配列を生成します。それぞれのスレッドが、それぞれのインデックスの位置に結果を書き込むようにします。
+        パッケージ変数に対する、データ競合を起こさないようにする簡単な方法は、異なるスレッドで同じデータ領域に書き込まないことです。たとえば、10のスレッドがあれば、配列型の<a href="#language-package-var-definition">パッケージ変数の定義</a>を行い、スレッドを呼び出す前に、10の長さで配列を生成します。それぞれのスレッドが、それぞれのインデックスの位置に結果を書き込むようにします。
       </p>
       <p>
         スレッドの外側から、<a href="#language-type-object">オブジェクト型</a>のレキシカル変数をサブルーチンの引数や戻り値にすることは、スレッドセーフではありません。スレッドから呼び出すサブルーチンがオブジェクト型の引数や戻り値を持っていた場合は、スレッドセーフにはなりません。

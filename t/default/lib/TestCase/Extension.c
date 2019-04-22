@@ -157,18 +157,18 @@ int32_t SPNATIVE__TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALU
 }
 
 
-int32_t SPNATIVE__TestCase__Extension__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__has_callback_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   void* object = stack[0].oval;
   
-  int32_t basic_type_id = env->basic_type_id(env, "TestCase::Interface::Interface");
+  int32_t basic_type_id = env->basic_type_id(env, "TestCase::Callback::Callback");
   if (basic_type_id < 0) {
     assert(0);
   }
   
-  int32_t match = env->has_interface(env, object, basic_type_id);
+  int32_t match = env->has_callback(env, object, basic_type_id);
   
   stack[0].ival = match;
   

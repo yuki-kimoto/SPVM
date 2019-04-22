@@ -59,7 +59,7 @@ package TestCase::MyExe {
     {
       ok(TestCase::Sub->anon_sub_capture);
       ok(TestCase::Sub->anon_sub_call_anon_sub);
-      ok(TestCase::Sub->anon_sub_call_anon_sub_from_interface);
+      ok(TestCase::Sub->anon_sub_call_anon_sub_from_callback);
     }
 
     # Return value
@@ -163,9 +163,9 @@ package TestCase::MyExe {
       ok(TestCase::Extension->opkgvar);
     }
 
-    # has_interface
+    # has_callback
     {
-      ok(TestCase::Extension->has_interface);
+      ok(TestCase::Extension->has_callback);
     }
 
     # is_type
@@ -232,8 +232,8 @@ package TestCase::MyExe {
 
     # Various Tests
     {
-      ok(TestCase::Interface->basic());
-      ok(TestCase::Interface->comparator());
+      ok(TestCase::Callback->basic());
+      ok(TestCase::Callback->comparator());
       ok(TestCase::Object->object_field_set_and_get);
     }
     

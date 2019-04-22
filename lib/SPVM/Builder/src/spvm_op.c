@@ -1579,7 +1579,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   package->name = op_name_package->uv.name;
 
-  // Package is interface
+  // Package is callback
   int32_t category_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
   if (op_list_descriptors) {
@@ -1587,8 +1587,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_INTERFACE_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_INTERFACE;
+        case SPVM_DESCRIPTOR_C_ID_CALLBACK_T:
+          package->category = SPVM_PACKAGE_C_CATEGORY_CALLBACK;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_POINTER_T:
@@ -1613,7 +1613,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     if (category_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "interface, value_t, pointer can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "callback, value_t, pointer can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
@@ -1654,8 +1654,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
         SPVM_PACKAGE_VAR* package_var = op_decl->uv.package_var;
 
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Interface package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+          SPVM_COMPILER_error(compiler, "Callback package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
 
@@ -1745,8 +1745,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_FIELD* field = op_decl->uv.field;
         
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Interface package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+          SPVM_COMPILER_error(compiler, "Callback package can't have field at %s line %d\n", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(package->fields, field);
         
@@ -2042,9 +2042,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         
-        // Subroutine in interface package must be method
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-          SPVM_COMPILER_error(compiler, "Subroutine in interface package must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        // Subroutine in callback package must be method
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+          SPVM_COMPILER_error(compiler, "Subroutine in callback package must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
         
         // If Subroutine is anon, sub must be method
@@ -2052,24 +2052,24 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_COMPILER_error(compiler, "Anon subroutine must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
 
-        // If package is interface, sub must not be native
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
-          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have native descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        // If package is callback, sub must not be native
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of callback can't have native descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
 
-        // If package is interface, sub must not be precompile
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        // If package is callback, sub must not be precompile
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of callback can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
 
-        // If package is interface, sub must not be precompile
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Subroutine of interface can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        // If package is callback, sub must not be precompile
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE)) {
+          SPVM_COMPILER_error(compiler, "Subroutine of callback can't have precompile descriptor at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         }
 
-        // If package is interface, sub must not be precompile
+        // If package is callback, sub must not be precompile
         if (!sub->op_block) {
-          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
             // OK
           }
           else if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
@@ -2113,10 +2113,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     
-    // Interface must have only one method
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+    // Callback must have only one method
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
       if (package->subs->length != 1) {
-        SPVM_COMPILER_error(compiler, "Interface must have only one method at %s line %d\n", op_package->file, op_package->line);
+        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d\n", op_package->file, op_package->line);
       }
     }
     

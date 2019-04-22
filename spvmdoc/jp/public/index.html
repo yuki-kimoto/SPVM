@@ -226,9 +226,6 @@ cpanm SPVM
       <p>
         型の種類、型の規変換規則は、明確です。型推論は、常に右から左へ行われます。
       </p>
-      <p>
-        継承はなく「汎用オブジェクト型」と「インターフェース」を使って、ポリモーフィズムを実現します。
-      </p>
 
       <h2 id="tutorial">SPVMのチュートリアル</h2>
 
@@ -427,7 +424,7 @@ my $total = MyMath->sum($sp_nums);
         <li><a href="/language.html#language-value-array">値の配列</a></li>
         <li><a href="/language.html#language-ref">リファレンス</a></li>
         <li><a href="/language.html#language-exception">例外処理</a></li>
-        <li><a href="/language.html#language-interface">インターフェース</a></li>
+        <li><a href="/language.html#language-callback">コールバック</a></li>
         <li><a href="/language.html#language-weak-ref">ウィークリファレンス</a></li>
         <li><a href="/language.html#language-expression">式</a></li>
         <li><a href="/language.html#language-condition">条件</a></li>
@@ -603,7 +600,7 @@ else {
         ボクシング、アンボクシング、可変長引数については、Javaを参考にしました。
       </p>
       <p>
-        文字列がUTF-8であることと、インターフェースについては、go言語を参考にしました。
+        コールバックについては、C言語の関数ポインタを参考にしました。
       </p>
       
       <h3>なぜレジスタ型VMを採用していますか</h3>
@@ -733,15 +730,15 @@ use FindBin;
 use SPVM::BuildDir "$FindBin::Bin/mydir;
 </pre>
 
-      <h3>インターフェースとは何ですか</h3>
+      <h3>コールバック型とは何ですか</h3>
       <p>
-        SPVMでは、インターフェスとは、実装を持たないメソッドが一つだけ定義されているパッケージのことをいいます。
+        SPVMでは、コールバック型とは、実装を持たないメソッドが一つだけ定義されているパッケージのことをいいます。
       </p>
       <p>
-        インターフェースのひとつの例は、標準モジュールである「SPVM::Comparable」です。
+        コールバック型のひとつの例は、標準モジュールである「SPVM::Comparable」です。
       </p>
 <pre>
-package SPVM::Comparable : interface_t {
+package SPVM::Comparable : callback_t {
   sub compare : int ($self : self, $object1 : object, $object2 : object);
 }
 </pre>
@@ -769,7 +766,7 @@ my $str = (string)$list->get(0);
 
       <h3>継承はありますか</h3>
       <p>
-        残念ですが、継承はありません。SPVMでは「汎用オブジェクト型」と「インターフェース」を使って、ポリモーフィズムを実現します。
+        残念ですが、継承はありません。SPVMでは「汎用オブジェクト型」「汎用オブジェクト配列型」「コールバック型」を使って、ポリモーフィズムを実現します。
       </p>
       
       <h3>サブルーチンのオーバーロードはありますか。</h3>

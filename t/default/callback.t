@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Interface';
+use SPVM 'TestCase::Callback';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 {
-  ok(TestCase::Interface->basic());
-  ok(TestCase::Interface->comparator());
+  ok(TestCase::Callback->basic());
+  ok(TestCase::Callback->comparator());
 }
 
 # All object is freed

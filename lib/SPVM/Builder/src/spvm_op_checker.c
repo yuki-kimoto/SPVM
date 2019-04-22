@@ -1031,8 +1031,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
-                  if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of interface package at %s line %d\n", op_cur->file, op_cur->line);
+                  if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+                    SPVM_COMPILER_error(compiler, "Can't create object of callback package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
@@ -3435,8 +3435,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
           
-          if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
-            SPVM_COMPILER_error(compiler, "Interface sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
+          if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (sub->op_block || sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+            SPVM_COMPILER_error(compiler, "Callback sub can't have implementation\n", sub->op_sub->file, sub->op_sub->line);
             return;
           }
           
@@ -3738,7 +3738,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             assert(sub->file);
             
             // Add op my if need
-            if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+            if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
               int32_t arg_index;
               for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
                 SPVM_MY* arg_my = SPVM_LIST_fetch(sub->args, arg_index);
@@ -4527,7 +4527,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
             can_assign = 0;
           }
         }
-        // Dist type is class or interface
+        // Dist type is class or callback
         else if (dist_type->dimension == 0){
           // Dist type is class
           if (SPVM_TYPE_is_class_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
@@ -4543,16 +4543,16 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
               can_assign = 0;
             }
           }
-          // Dist type is interface
-          else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+          // Dist type is callback
+          else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
             
-            // Source type is class or interface
+            // Source type is class or callback
             if (
               SPVM_TYPE_is_class_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
-              || SPVM_TYPE_is_interface_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
+              || SPVM_TYPE_is_callback_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)
             )
             {
-              can_assign = SPVM_TYPE_has_interface(
+              can_assign = SPVM_TYPE_has_callback(
                 compiler,
                 src_type->basic_type->id, src_type->dimension, src_type->flag,
                 dist_type->basic_type->id, dist_type->dimension, dist_type->flag

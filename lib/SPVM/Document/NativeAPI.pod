@@ -22,7 +22,7 @@ If you need more performance or bind C/C++ functions, you can use L<Extension|SP
   int32_t (*field_offset)(SPVM_ENV*, int32_t);
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   int32_t (*is_type)(SPVM_ENV*, void* object, int32_t basic_type_id, int32_t type_dimension);
-  int32_t (*has_interface)(SPVM_ENV*, void* object, int32_t interface_basic_type_id);
+  int32_t (*has_callback)(SPVM_ENV*, void* object, int32_t callback_basic_type_id);
   void* (*new_obj_raw)(SPVM_ENV*, int32_t);
   void* (*new_obj)(SPVM_ENV*, int32_t);
   void* (*new_barray_raw)(SPVM_ENV*, int32_t);

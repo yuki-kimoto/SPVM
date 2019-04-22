@@ -950,7 +950,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
                           SPVM_TYPE* call_sub_return_type = call_sub->sub->return_type;
-                          if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+                          if (sub_call_sub->package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
                             // Numeric type
                             if (SPVM_TYPE_is_numeric_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
                               switch (call_sub_return_type->basic_type->id) {
@@ -2985,9 +2985,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                               }
-                              // CHECK_INTERFACE
-                              else if (SPVM_TYPE_is_interface_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_INTERFACE);
+                              // CHECK_CALLBACK
+                              else if (SPVM_TYPE_is_callback_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_CALLBACK);
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                               }
@@ -3791,8 +3791,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          if (SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_INTERFACE);
+                          if (SPVM_TYPE_is_callback_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_CALLBACK);
                           }
                           else {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);

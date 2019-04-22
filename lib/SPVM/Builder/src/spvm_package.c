@@ -12,7 +12,7 @@
 
 const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
   "class",
-  "interface_t",
+  "callback_t",
   "value",
 };
 

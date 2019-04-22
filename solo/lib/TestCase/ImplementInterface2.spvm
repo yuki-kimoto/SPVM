@@ -1,8 +1,8 @@
-package TestCase::ImplementInterface2 {
+package TestCase::ImplementCallback2 {
   use TestCase::Minimal;
   
-  sub new : TestCase::ImplementInterface2 () {
-    return new TestCase::ImplementInterface2;
+  sub new : TestCase::ImplementCallback2 () {
+    return new TestCase::ImplementCallback2;
   }
   
   sub foo : int ($self : self, $var1 : int, $var2 : long) {

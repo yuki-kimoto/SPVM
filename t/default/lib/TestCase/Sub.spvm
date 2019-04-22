@@ -196,7 +196,7 @@ package TestCase::Sub {
     return 1;
   }
 
-  sub anon_sub_call_anon_sub_from_interface : int () {
+  sub anon_sub_call_anon_sub_from_callback : int () {
     my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
       my $x1_num = (int)$x1;
       my $x2_num = (int)$x2;

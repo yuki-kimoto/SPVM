@@ -56,10 +56,10 @@ struct SPVM_type {
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
-int32_t SPVM_TYPE_has_interface(
+int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
   int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
-  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag
+  int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag
 );
 
 int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
@@ -130,7 +130,7 @@ int32_t SPVM_TYPE_is_string_compatible_type(SPVM_COMPILER* compiler, int32_t bas
 int32_t SPVM_TYPE_is_oarray_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_TYPE_is_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 

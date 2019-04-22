@@ -1,9 +1,9 @@
-package TestCase::CompileError::Convert::ConvertToInterface {
+package TestCase::CompileError::Convert::ConvertToCallback {
   use TestCase::Minimal;
-  use TestCase::Interface::Interface;
-  use TestCase::Interface::ImplementInterface1;
+  use TestCase::Callback::Callback;
+  use TestCase::Callback::ImplementCallback1;
 
   sub main : int () {
-    (TestCase::Interface::Interface)new TestCase::Interface::ImplementInterface1;
+    (TestCase::Callback::Callback)new TestCase::Callback::ImplementCallback1;
   }
 }

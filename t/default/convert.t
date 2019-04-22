@@ -79,11 +79,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Convert->convert_to_numeric_array);
   ok(TestCase::Convert->convert_to_object_array);
-  ok(TestCase::Convert->convert_to_interface_array);
+  ok(TestCase::Convert->convert_to_callback_array);
   ok(TestCase::Convert->convert_to_any_object);
-  ok(TestCase::Convert->convert_to_interface);
+  ok(TestCase::Convert->convert_to_callback);
   ok(TestCase::Convert->convert_to_undef_to_any_object);
-  ok(TestCase::Convert->convert_to_undef_to_interface);
+  ok(TestCase::Convert->convert_to_undef_to_callback);
   ok(TestCase::Convert->convert_to_undef_to_object);
 
   ok(TestCase::Convert->convert_byte_to_byte_object);

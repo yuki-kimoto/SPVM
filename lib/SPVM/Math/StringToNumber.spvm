@@ -9,7 +9,7 @@ package SPVM::Math::StringToNumber {
     if ($val->[0] == '.') {
       die "decimal cannot start with '.'";
     }
-    # TODO: 1e008 などのためにコメントアウトする。あとでちゃんとJSONみたいなインターフェースにして直すのが良いと思う
+    # TODO: 1e008 などのためにコメントアウトする。あとでちゃんとJSONみたいなコールバックにして直すのが良いと思う
     #if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
     #  die "'.' must exist just after the first digit '0'. val: '$val'"; # TODO: Proper english
     #}

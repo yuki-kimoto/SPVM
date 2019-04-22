@@ -188,32 +188,32 @@ int32_t SPVM_TYPE_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_i
   return runtime_type;
 }
 
-int32_t SPVM_TYPE_has_interface(
+int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
   int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
-  int32_t interface_basic_type_id, int32_t interface_type_dimension, int32_t interface_type_flag)
+  int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag)
 {
   (void)compiler;
 
   assert(
     SPVM_TYPE_is_class_type(compiler, package_basic_type_id, package_type_dimension, package_type_flag)
-    || SPVM_TYPE_is_interface_type(compiler, interface_basic_type_id, interface_type_dimension, interface_type_flag)
+    || SPVM_TYPE_is_callback_type(compiler, callback_basic_type_id, callback_type_dimension, callback_type_flag)
   );
 
   SPVM_BASIC_TYPE* package_basic_type = SPVM_LIST_fetch(compiler->basic_types, package_basic_type_id);
-  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_fetch(compiler->basic_types, interface_basic_type_id);
+  SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
   
   SPVM_PACKAGE* package = package_basic_type->package;
-  SPVM_PACKAGE* interface = interface_basic_type->package;
+  SPVM_PACKAGE* callback = callback_basic_type->package;
   
   // Package which have only anon sub
   if (package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
     assert(package->subs->length == 1);
-    assert(interface->subs->length == 1);
-    SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+    assert(callback->subs->length == 1);
+    SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback->subs, 0);
     SPVM_SUB* found_sub = SPVM_LIST_fetch(package->subs, 0);
     
-    if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
+    if (strcmp(sub_callback->signature, found_sub->signature) == 0) {
       return 1;
     }
     else {
@@ -222,15 +222,15 @@ int32_t SPVM_TYPE_has_interface(
   }
   // Normal package
   else {
-    assert(interface->subs->length == 1);
-    SPVM_SUB* sub_interface = SPVM_LIST_fetch(interface->subs, 0);
+    assert(callback->subs->length == 1);
+    SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback->subs, 0);
     
-    SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_interface->name, strlen(sub_interface->name));
+    SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_callback->name, strlen(sub_callback->name));
     if (!found_sub) {
       return 0;
     }
     
-    if (strcmp(sub_interface->signature, found_sub->signature) == 0) {
+    if (strcmp(sub_callback->signature, found_sub->signature) == 0) {
       return 1;
     }
     else {
@@ -795,7 +795,7 @@ int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
-  else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+  else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
@@ -830,7 +830,7 @@ int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
       else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, element_dimension, flag)) {
         return 1;
       }
-      else if (SPVM_TYPE_is_interface_type(compiler, basic_type_id, element_dimension, flag)) {
+      else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, element_dimension, flag)) {
         return 1;
       }
       else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, element_dimension, flag)) {
@@ -895,12 +895,12 @@ int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   }
 }
 
-int32_t SPVM_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
       return 1;
     }
     else {

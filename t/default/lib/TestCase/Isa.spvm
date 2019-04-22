@@ -86,7 +86,7 @@ package TestCase::Isa {
     return 0;
   }
 
-  sub isa_match_interface : int () {
+  sub isa_match_callback : int () {
     
     my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       
@@ -101,7 +101,7 @@ package TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_interface_undef : int () {
+  sub isa_not_match_callback_undef : int () {
     my $comparator : SPVM::Comparator;
     
     if (!($comparator isa SPVM::Comparator)) {
@@ -111,7 +111,7 @@ package TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_interface : int () {
+  sub isa_not_match_callback : int () {
     my $minimal : TestCase::Minimal = TestCase::Minimal->new;
     if (!($minimal isa SPVM::Comparator)) {
       return 1;

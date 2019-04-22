@@ -1720,7 +1720,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_INTERFACE:
+      case SPVM_OPCODE_C_ID_HAS_CALLBACK:
       {
         int32_t constant_pool_id = opcode->operand2;
         int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
@@ -1749,11 +1749,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t interface_basic_type_id = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t interface_type_dimension = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -1762,7 +1762,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, "      = env->has_interface(env, object, interface_basic_type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      = env->has_callback(env, object, callback_basic_type_id);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
@@ -3581,7 +3581,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CHECK_INTERFACE: {
+      case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
         int32_t constant_pool_id = opcode->operand2;
 
         int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
@@ -3610,11 +3610,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t interface_basic_type_id = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t interface_type_dimension = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
@@ -3623,7 +3623,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (object != NULL) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      if (env->has_interface(env, object, interface_basic_type_id)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      if (env->has_callback(env, object, callback_basic_type_id)) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");

@@ -1,8 +1,8 @@
-package TestCase::Interface {
+package TestCase::Callback {
   use TestCase::Minimal;
-  use TestCase::Interface::Interface;
-  use TestCase::Interface::ImplementInterface1;
-  use TestCase::Interface::ImplementInterface2;
+  use TestCase::Callback::Callback;
+  use TestCase::Callback::ImplementCallback1;
+  use TestCase::Callback::ImplementCallback2;
   use SPVM::Comparator;
 
   sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator) {
@@ -60,11 +60,11 @@ package TestCase::Interface {
 
   sub basic : int () {
     my $object : object = TestCase::Minimal->new;
-    my $implement_interface1 : TestCase::Interface::Interface = TestCase::Interface::ImplementInterface1->new;
-    my $implement_interface2 : TestCase::Interface::Interface = TestCase::Interface::ImplementInterface2->new;
+    my $implement_callback1 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback1->new;
+    my $implement_callback2 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback2->new;
     
-    my $num1 = $implement_interface1->foo(0, 0);
-    my $num2 = $implement_interface2->foo(0, 0);
+    my $num1 = $implement_callback1->foo(0, 0);
+    my $num2 = $implement_callback2->foo(0, 0);
 
     my $minimal = (TestCase::Minimal)$object;
     $minimal->{x} = 4;

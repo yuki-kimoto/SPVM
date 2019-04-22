@@ -1402,7 +1402,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 'c' :
-                if (strcmp(keyword, "case") == 0) {
+                if (strcmp(keyword, "callback_t") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_CALLBACK_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  
+                  return DESCRIPTOR;
+                }
+                else if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
                   return CASE;
                 }
@@ -1474,12 +1480,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "if") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
                   return IF;
-                }
-                else if (strcmp(keyword, "interface_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  
-                  return DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ISA);
