@@ -12,8 +12,9 @@ use SPVM 'TestCase::Callback';
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 {
-  ok(TestCase::Callback->basic());
-  ok(TestCase::Callback->comparator());
+  ok(TestCase::Callback->basic);
+  ok(TestCase::Callback->comparator);
+  ok(TestCase::Callback->capture);
 }
 
 # All object is freed

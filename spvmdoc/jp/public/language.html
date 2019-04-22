@@ -1814,6 +1814,7 @@ $z_ref->{im} = 3;
         <li><a href="#language-sub-definition">サブルーチンの定義</a></li>
         <li><a href="#language-sub-constant">定数サブルーチン</a></li>
         <li><a href="#language-sub-anon">無名サブルーチン</a></li>
+        <li><a href="#language-sub-capture">キャプチャ</a></li>
         <li><a href="#language-sub-method">メソッド</a></li>
         <li><a href="#language-sub-signature">シグネチャ</a></li>
         <li><a href="#language-sub-invocant">インボカント</a></li>
@@ -1959,6 +1960,7 @@ sub foo : double () { return 5.0; }
 # 定数サブルーチンではなくインライン展開されない
 sub foo : int () { return 5 + 3; }
 </pre>
+
       <h3 id="language-sub-anon">無名サブルーチン</h3>
       <p>
         無名サブルーチンとは、名前を持たないサブルーチンのことです。
@@ -1990,6 +1992,61 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
       <p>
         無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       <p>
+
+      <h3 id="language-sub-capture">キャプチャ</h3>
+      <p>
+        無名サブルーチンにおいては、キャプチャという構文を使って、無名サブルーチンの外側で定義された変数を、無名サブルーチンの内側で使うことができます。
+      </p>
+<pre>
+# キャプチャ
+[変数1 : 型1, 変数2 : 型2] sub : int ($self : self, $x1 : object, $x2 : object) {
+  
+};
+</pre>
+
+キャプチャのサンプル。
+
+<pre>
+my $foo = 1;
+my $bar = 5L;
+
+my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object, $x2 : object) {
+  
+  print "$foo\n";
+  print "$bar\n";
+}
+
+</pre>
+      <p>
+        キャプチャは、実際には、クラスのフィールドとして定義されます。キャプチャは、フィールドの定義と値の設定のシンタックスシュガーです。
+      </p>
+      <p>
+        無名サブルーチンとキャプチャをシンタックスシュガーを使わないで記述すると次のようになります。
+      </p>
+<pre>
+package ComapartorImpl {
+  has foo : int;
+  has bar : long;
+  
+  sub compare : int ($self : self, $x1 : object, $x2 : object) {
+    
+    print $self->{foo} . "\n";
+    print $self->{bar} . "\n";
+  }
+}
+<pre>
+
+</pre>
+my $foo = 1;
+my $bar = 5L;
+
+my $comparator = new ComparatorImpl;
+
+$comparator->{foo} = $foo;
+$comparator->{bar} = $bar;
+</pre>
+      
+      キャプチャは、このような長い記述を、短く書くための文法です。
       
       <h3 id="language-sub-method">メソッド</h3>
       <p>
@@ -2017,7 +2074,7 @@ sub サブルーチン名 : 型名 ($self : self, 引数1 : 型1, 引数2 : 型2
         上記の例では$selfは、インボカントと呼ばれます。
       </p>
 
-      <h3 id="language-sub-anon">シグネチャ</h3>
+      <h3 id="language-sub-signature">シグネチャ</h3>
       <p>
         シグネチャとは、サブルーチンの戻り値と引数を次の規則で並べたものをいいます。引数は、存在しなくても構いません。間に空白を含むことはできません。
       </p>

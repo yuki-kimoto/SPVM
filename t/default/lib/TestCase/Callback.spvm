@@ -5,6 +5,24 @@ package TestCase::Callback {
   use TestCase::Callback::ImplementCallback2;
   use SPVM::Comparator;
 
+  sub capture : int () {
+    my $capture1 = 7;
+    my $capture2 = 10;
+    my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self) {
+      
+      my $total = $capture1 + $capture2;
+      
+      return $total;
+    };
+    
+    my $total = $anon_sub->();
+    unless ($total == 17) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator) {
 
     my $change_cnt = @$values - 1;

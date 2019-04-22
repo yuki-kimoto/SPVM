@@ -39,6 +39,7 @@
   - add SPVM_SET_DPKGVAR macro
   - add SPVM_SET_OPKGVAR macro
   - add lc, uc, lcfirst, ucfirst functions
+  - rename interface_t to callback_t
 0.0427 2018-04-17
   - add getenv function
   - add SPVM::Errno module
