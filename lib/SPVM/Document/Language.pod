@@ -371,7 +371,7 @@ Array Type is a Object Type. You can create Array by C<new> keyword.
 
 If you know more Array Creating, see L</"New Array"> section.
 
-=head3 Multiple Dimention Array Type
+=head3 Multiple Dimension Array Type
 
 Multiple Dimention Array Type is a Array Type.
   
@@ -404,7 +404,7 @@ You can create Multiple Dimension Array by C<new> keyword.
 This mean that Multiple Dimension Array is created, the multiple dimension array have 3 C<int[]> type array.
 The elements is initialized by C<undef>.
 
-If you know Multiple Dimension Array Creating, see L</"New Multiple Dimention Array">.
+If you know Multiple Dimension Array Creating, see L</"New Multiple Dimension Array Type">.
 
 =head3 Package Type
 
