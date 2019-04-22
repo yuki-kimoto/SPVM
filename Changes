@@ -7,7 +7,7 @@
   - add memmove function
   - add replace function
   - add replace_all function
-  - fix native distribution make dpendency bugs
+  - fix native distribution make dependency bugs
   - fix env->pkgvar_id segfault bugs
   - rename SPVM::Socket to SPVM::IO::Socket
   - add SPVM_BFIELD macro
