@@ -2,6 +2,111 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
 
+  sub test_ucfirst : int () {
+    {
+      my $str = "@abc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "@abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "[abc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "[abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "aabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Aabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "pabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Pabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "zabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Zabc") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_uc : int () {
+    {
+      my $str = "@[apz[";
+      my $result_str = uc($str);
+      unless ($result_str eq "@[APZ[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lc : int () {
+    {
+      my $str = "@[APZ[";
+      my $result_str = lc($str);
+      unless ($result_str eq "@[apz[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lcfirst : int () {
+    {
+      my $str = "@ABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "@ABC") {
+        return 0;
+      }
+    }
+    {
+      my $str = "[ABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "[ABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "AABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "aABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "PABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "pABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "ZABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "zABC") {
+        return 0;
+      }
+    }
+    return 1;
+  }
   sub test_replace_all : int () {
     
     {
