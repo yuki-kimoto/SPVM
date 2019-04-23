@@ -2,6 +2,8 @@
   - LICENSE is changed from MIT to same one as Perl.
     because SPVM is cpan module and SPVM want to use glibc code.
   - add rand function
+  - SPVM::call_sub can receive decoded string
+  - add stringify overload to SPVM::Data::Array
 0.0428 2018-04-22
   - rename new_list to list
   - rename new_hash to hash

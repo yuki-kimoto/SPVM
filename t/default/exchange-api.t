@@ -50,6 +50,27 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
+# String argument
+{
+  # String argument - ascii
+  {
+    my $string = TestCase::ExchangeAPI->string_argments_and_return_value("ABC", "DE");
+    is("$string", "ABCDE");
+  }
+
+  # String argument - UTF-8
+  {
+    my $string = TestCase::ExchangeAPI->string_argments_and_return_value("あいう", "えお");
+    is("$string", "あいうえお");
+  }
+
+  # String argument - ascii and utf8
+  {
+    my $string = TestCase::ExchangeAPI->string_argments_and_return_value("あいう", "DE");
+    is("$string", "あいうDE");
+  }
+}
+
 # Stringfy
 {
   # Stringfy - stringify overload
