@@ -28,6 +28,13 @@ package SPVM::HTTP::Headers {
   }
 
   sub new_with : SPVM::HTTP::Headers ($args : SPVM::Hash) {
+    my $raw_keys = $args->keys;
+    for (my $i = 0; $i < @$raw_keys; ++$i) {
+      my $val = $args->delete($raw_keys->[$i]);
+      $args->set(lc($raw_keys->[$i]), $val);
+      # FIXME: Use of uninitialized value in string comparison operator.
+      # $args->set(lc($raw_keys->[$i]), $args->delete($raw_keys->[$i]));
+    }
     my $self = new SPVM::HTTP::Headers;
     if ($args->exists("referer")) {
       $self->{referer} = (string)($args->get("referer"));
