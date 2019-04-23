@@ -1777,7 +1777,6 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
         {
-          // Convert string to SPVM::Data::Array
           if (SvOK(sv_value)) {
             if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
@@ -1791,7 +1790,7 @@ call_sub(...)
               if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 2) {
                 
               }
-              else if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 1) {
+              else if (arg->type_dimension == 1) {
                 switch (arg->basic_type_id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     // New array
@@ -1932,6 +1931,7 @@ call_sub(...)
                 }
               }
             }
+            // Convert string to SPVM::Data::Array
             else if (!SvROK(sv_value)) {
               // Copy
               sv_value = sv_2mortal(newSVsv(sv_value));
@@ -1959,20 +1959,20 @@ call_sub(...)
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
-                  croak("%dth argument is invalid object type at %s line %d\n", arg_index, MFILE, __LINE__);
+                  croak("%dth argument is invalid object type at %s line %d\n", arg_index + 1, MFILE, __LINE__);
                 }
               }
               else {
                 int32_t arg_type_dimension = arg->type_dimension;
                 if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                  croak("%dth argument is invalid object type at %s line %d\n", arg_index, MFILE, __LINE__);
+                  croak("%dth argument is invalid object type at %s line %d\n", arg_index + 1, MFILE, __LINE__);
                 }
               }
               
               stack[arg_var_id].oval = object;
             }
             else {
-              croak("%dth argument must be inherit SPVM::Data at %s line %d\n", arg_index, MFILE, __LINE__);
+              croak("%dth argument must be inherit SPVM::Data at %s line %d\n", arg_index + 1, MFILE, __LINE__);
             }
           }
           arg_var_id++;

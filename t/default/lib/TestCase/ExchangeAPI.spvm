@@ -143,6 +143,36 @@ package TestCase::ExchangeAPI {
     return 0;
   }
   
+  sub return_byte_array_only : byte[] ($values : byte[]) {
+    
+    return $values;
+  }
+
+  sub return_short_array_only : short[] ($values : short[]) {
+    
+    return $values;
+  }
+
+  sub return_int_array_only : int[] ($values : int[]) {
+    
+    return $values;
+  }
+
+  sub return_long_array_only : long[] ($values : long[]) {
+    
+    return $values;
+  }
+
+  sub return_float_array_only : float[] ($values : float[]) {
+    
+    return $values;
+  }
+
+  sub return_double_array_only : double[] ($values : double[]) {
+    
+    return $values;
+  }
+
   # SPVM Functions
   sub spvm_new_barray_from_bin : int ($values : byte[]) {
     
