@@ -41,6 +41,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_init_native_constants());
 }
 
+# rand
+{
+  ok(TestCase::Lib::SPVM::CORE->test_rand);
+}
+
 # uc
 {
   ok(TestCase::Lib::SPVM::CORE->test_uc);

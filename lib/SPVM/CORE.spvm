@@ -24,6 +24,8 @@ package SPVM::CORE {
     init_native_constants();
   }
   
+  native sub rand : int ($seed_ref : int&);
+  
   precompile sub lc : string($str : string) {
     
     unless ($str) { die "String must be defined"; }

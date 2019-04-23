@@ -12,6 +12,34 @@
 #include <fcntl.h>
 #include <assert.h>
 
+/* This algorithm is mentioned in the ISO C standard, here extended
+   for 32 bits.  */
+int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  uint32_t next = *(uint32_t*)stack[0].iref;
+  int32_t result;
+
+  next *= 1103515245;
+  next += 12345;
+  result = (uint32_t) (next / 65536) % 2048;
+
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+
+  *(stack[0].iref) = next;
+  
+  stack[0].ival = result;
+
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__CORE__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dist_str = stack[0].oval;

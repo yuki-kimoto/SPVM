@@ -2,6 +2,25 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
 
+  sub test_rand : int () {
+    my $seed = (int)time();
+    my $founds = new int[10];
+    for (my $i = 0; $i < 100000; $i++) {
+      my $rand = rand(\$seed);
+      if ($rand < 0) {
+        return 0;
+      }
+      my $dig0 = $rand % 10;
+      $founds->[$dig0] = 1;
+    }
+    
+    unless (equals_iarray($founds, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub test_ucfirst : int () {
     {
       my $str = "@abc";
