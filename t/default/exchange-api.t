@@ -34,6 +34,8 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 my $FLT_MIN = POSIX::FLT_MIN();
 my $DBL_MIN = POSIX::DBL_MIN();
+my $FLT_MAX = POSIX::FLT_MAX();
+my $DBL_MAX = POSIX::DBL_MAX();
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
@@ -379,6 +381,46 @@ is_deeply(
     ok(TestCase::ExchangeAPI->spvm_new_varray_binary_int($sp_values));
     my $out_bin = $sp_values->to_bin;
     is_deeply($out_bin, $binary);
+  }
+}
+
+# new array
+{
+  # new_barray
+  {
+    my $sp_values = SPVM::new_barray([1, $BYTE_MAX, $BYTE_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+  }
+  # new_sarray
+  {
+    my $sp_values = SPVM::new_sarray([1, $SHORT_MAX, $SHORT_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+  }
+  # new_iarray
+  {
+    my $sp_values = SPVM::new_iarray([1, $INT_MAX, $INT_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+  }
+  # new_larray
+  {
+    my $sp_values = SPVM::new_larray([1, $LONG_MAX, $LONG_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+  }
+  # new_farray
+  {
+    my $sp_values = SPVM::new_farray([0.5, $FLT_MAX, $FLT_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+  }
+  # new_darray
+  {
+    my $sp_values = SPVM::new_darray([0.5, $DBL_MAX, $DBL_MIN]);
+    my $values = $sp_values->to_elems;
+    is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
   }
 }
 
