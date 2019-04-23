@@ -142,6 +142,11 @@ package TestCase::ExchangeAPI {
     
     return 0;
   }
+
+  sub return_string_array_only : string[] ($values : string[]) {
+    
+    return $values;
+  }
   
   sub return_byte_array_only : byte[] ($values : byte[]) {
     

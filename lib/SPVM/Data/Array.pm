@@ -14,6 +14,14 @@ sub to_elems {
   SPVM::ExchangeAPI::to_elems($env, $self);
 }
 
+sub to_strs {
+  my $self = shift;
+  
+  my $env = $self->{env};
+  
+  SPVM::ExchangeAPI::to_strs($env, $self);
+}
+
 sub to_bin {
   my $self = shift;
 

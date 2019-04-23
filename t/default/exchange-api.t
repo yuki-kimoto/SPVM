@@ -422,6 +422,13 @@ is_deeply(
     my $values = TestCase::ExchangeAPI->return_double_array_only($sp_values)->to_elems;
     is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
   }
+
+  # call_sub can receive array reference - new string array and to_strs
+  {
+    my $sp_values = ["あいう", "えお", "ab", undef];
+    my $values = TestCase::ExchangeAPI->return_string_array_only($sp_values)->to_strs;
+    is_deeply($values, ["あいう", "えお", "ab", undef]);
+  }
 }
 
 # new array

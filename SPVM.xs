@@ -1788,7 +1788,36 @@ call_sub(...)
               
               // Convert string array to SPVM::Data::Array
               if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 2) {
-                
+                // New array
+                SPVM_OBJECT* array = env->new_marray_raw(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
+
+                // Increment reference count
+                env->inc_ref_count(env, array);
+
+                for (int32_t i = 0; i < length; i++) {
+                  SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
+                  SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
+                  if (SvOK(sv_str_value)) {
+                    // Copy
+                    sv_str_value = sv_2mortal(newSVsv(sv_str_value));
+                    
+                    // Encode to UTF-8
+                    sv_utf8_encode(sv_str_value);
+                    
+                    int32_t length = sv_len(sv_str_value);
+                    const char* chars = SvPV_nolen(sv_str_value);
+                    
+                    void* string = env->new_str_len_raw(env, chars, length);
+                    env->set_oelem(env, array, i, string);
+                  }
+                  else {
+                    env->set_oelem(env, array, i, NULL);
+                  }
+                }
+
+                // New sv array
+                SV* sv_marray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                sv_value = sv_marray;
               }
               else if (arg->type_dimension == 1) {
                 switch (arg->basic_type_id) {
@@ -2748,21 +2777,23 @@ to_elems(...)
 
         // Index
         SPVM_OBJECT* value = env->oelem(env, array, index);
-        if (value != NULL) {
-          env->inc_ref_count(env, value);
-        }
-        
-        int32_t element_type_is_array_type = element_type_dimension > 0;
-        SV* sv_value;
-        if (element_type_is_array_type) {
-          sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
+        if (value == NULL) {
+          av_push(av_values, &PL_sv_undef);
         }
         else {
-          const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-          sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+          env->inc_ref_count(env, value);
+          int32_t element_type_is_array_type = element_type_dimension > 0;
+          SV* sv_value;
+          if (element_type_is_array_type) {
+            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
+          }
+          else {
+            const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+            SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+          }
+          av_push(av_values, SvREFCNT_inc(sv_value));
         }
-        av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
     else {

@@ -14,6 +14,24 @@ sub to_str {
   return $string;
 }
 
+sub to_strs {
+  my $elems = SPVM::ExchangeAPI::to_elems(@_);
+  
+  my $strs = [];
+  
+  for (my $i = 0; $i < @$elems; $i++) {
+    my $elem = $elems->[$i];
+    if (defined $elem) {
+      $strs->[$i] = $elem->to_str;
+    }
+    else {
+      $strs->[$i] = undef;
+    }
+  }
+  
+  return $strs;
+}
+
 sub new_barray_from_str {
   my ($env, $string) = @_;
   

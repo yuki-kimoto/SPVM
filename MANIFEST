@@ -199,7 +199,6 @@ lib/SPVM/Time/Moment.config
 lib/SPVM/Time/Moment.spvm
 lib/SPVM/Time/tm_9i.spvm
 lib/SPVM/Unicode.spvm
-LICENSE.txt
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -300,6 +299,7 @@ t/default/convert.t
 t/default/divide.t
 t/default/enum.t
 t/default/exception.t
+t/default/exchange-api.t
 t/default/extension.t
 t/default/fat-camma.t
 t/default/for.t
@@ -383,6 +383,7 @@ t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
 t/default/lib/TestCase/Exception.spvm
+t/default/lib/TestCase/ExchangeAPI.spvm
 t/default/lib/TestCase/Extension.c
 t/default/lib/TestCase/Extension.config
 t/default/lib/TestCase/Extension.spvm
@@ -438,7 +439,6 @@ t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/PACKAGE.spvm
-t/default/lib/TestCase/PerlAPI.spvm
 t/default/lib/TestCase/Point_3b.spvm
 t/default/lib/TestCase/Point_3d.spvm
 t/default/lib/TestCase/Point_3f.spvm
@@ -479,7 +479,6 @@ t/default/multiply.t
 t/default/numeric-operator.t
 t/default/object.t
 t/default/package_var.t
-t/default/perl-api.t
 t/default/precedence.t
 t/default/ref.t
 t/default/refcnt.t
