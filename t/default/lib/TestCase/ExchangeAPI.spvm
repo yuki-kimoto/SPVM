@@ -1,5 +1,5 @@
 
-package TestCase::PerlAPI {
+package TestCase::ExchangeAPI {
   use TestCase::Point_3b;
   use TestCase::Point_3s;
   use TestCase::Point_3i;

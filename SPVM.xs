@@ -50,6 +50,8 @@
 #include "spvm_portable.h"
 #include "spvm_csource_builder_exe.h"
 
+static const char* MFILE = "SPVM.xs";
+
 SV* SPVM_XS_UTIL_new_sv_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* package) {
   
   // Create object
@@ -473,7 +475,7 @@ new_barray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -516,7 +518,7 @@ new_barray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -552,7 +554,7 @@ new_str_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -585,7 +587,7 @@ new_sarray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -628,7 +630,7 @@ new_sarray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -664,7 +666,7 @@ new_iarray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -707,7 +709,7 @@ new_iarray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -743,7 +745,7 @@ new_larray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -786,7 +788,7 @@ new_larray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -822,7 +824,7 @@ new_farray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -865,7 +867,7 @@ new_farray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -901,7 +903,7 @@ new_darray(...)
   SV* sv_elems = ST(1);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -944,7 +946,7 @@ new_darray_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   int32_t binary_length = sv_len(sv_binary);
@@ -981,7 +983,7 @@ _new_oarray(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Second argument of SPVM::new_oarray must be array reference");
+    croak("Second argument of SPVM::new_oarray must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1023,11 +1025,11 @@ _new_oarray(...)
         env->set_oelem(env, array, index, object);
       }
       else {
-        croak("Element is invalid object type");
+        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
       }
     }
     else {
-      croak("Element must be SPVM::Data object");
+      croak("Element must be SPVM::Data object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
@@ -1050,7 +1052,7 @@ _new_marray(...)
   SV* sv_elems = ST(3);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -1090,11 +1092,11 @@ _new_marray(...)
         env->set_oelem(env, array, index, object);
       }
       else {
-        croak("Element is invalid object type");
+        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
       }
     }
     else {
-      croak("Element must be inherit SPVM::Data object");
+      croak("Element must be inherit SPVM::Data object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
@@ -1119,7 +1121,7 @@ _new_varray(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference");
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1138,7 +1140,7 @@ _new_varray(...)
   
   if (basic_type == NULL) {
     const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-    croak("Can't load %s", basic_type_name);
+    croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
   }
   
   // New array
@@ -1169,7 +1171,7 @@ _new_varray(...)
         hash_keys_length++;
       }
       if (hash_keys_length != fields_length) {
-        croak("Value element hash key is lacked");
+        croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
       }
 
       for (int32_t field_index = 0; field_index < package->fields_length; field_index++) {
@@ -1182,7 +1184,7 @@ _new_varray(...)
           sv_field_value = *sv_field_value_ptr;
         }
         else {
-          croak("Value element must be defined");
+          croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
         }
 
         switch (first_field->basic_type_id) {
@@ -1216,7 +1218,7 @@ _new_varray(...)
       }
     }
     else {
-      croak("Element must be hash reference");
+      croak("Element must be hash reference at %s line %d\n", MFILE, __LINE__);
     }
   }
   
@@ -1238,7 +1240,7 @@ _new_varray_from_bin(...)
   SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined");
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -1257,7 +1259,7 @@ _new_varray_from_bin(...)
   
   if (basic_type == NULL) {
     const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-    croak("Can't load %s", basic_type_name);
+    croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
   }
 
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
@@ -1423,16 +1425,16 @@ call_sub(...)
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
 
   if (package == NULL) {
-    croak("Subroutine not found %s %s", package_name, sub_name);
+    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
   SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
   if (sub == NULL) {
-    croak("Subroutine not found %s %s", package_name, sub_name);
+    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
   const char* sub_signature = &runtime->string_pool[sub->signature_id];
   int32_t sub_id = env->sub_id(env, package_name, sub_name, sub_signature);
   if (sub_id < 0) {
-    croak("Subroutine not found %s %s", package_name, sub_signature);
+    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_signature, MFILE, __LINE__);
   }
 
   SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
@@ -1453,7 +1455,7 @@ call_sub(...)
     int32_t arg_index;
     // Check argument count
     if (items - arg_start != sub->arg_ids_length) {
-      croak("Argument count is defferent");
+      croak("Argument count is defferent at %s line %d\n", MFILE, __LINE__);
     }
     
     int32_t arg_var_id = 0;
@@ -1519,7 +1521,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1532,7 +1534,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int8_t value = (int8_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].bval = value;
@@ -1540,7 +1542,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1564,7 +1566,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1577,7 +1579,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int16_t value = (int16_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].sval = value;
@@ -1585,7 +1587,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1609,7 +1611,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
 
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1622,7 +1624,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int32_t value = (int32_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].ival = value;
@@ -1630,7 +1632,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1654,7 +1656,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1667,7 +1669,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int64_t value = (int64_t)SvIV(sv_field_value);
               stack[arg_var_id + field_index].lval = value;
@@ -1675,7 +1677,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1699,7 +1701,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1712,7 +1714,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               float value = (float)SvNV(sv_field_value);
               stack[arg_var_id + field_index].fval = value;
@@ -1720,7 +1722,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1744,7 +1746,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1757,7 +1759,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               double value = (double)SvNV(sv_field_value);
               stack[arg_var_id + field_index].dval = value;
@@ -1765,7 +1767,7 @@ call_sub(...)
             arg_var_id += arg_package->fields_length;
           }
           else {
-            croak("%dth argument must be hash reference", arg_index + 1);
+            croak("%dth argument must be hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1785,20 +1787,20 @@ call_sub(...)
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
-                  croak("%dth argument is invalid object type", arg_index);
+                  croak("%dth argument is invalid object type at %s line %d\n", arg_index, MFILE, __LINE__);
                 }
               }
               else {
                 int32_t arg_type_dimension = arg->type_dimension;
                 if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                  croak("%dth argument is invalid object type", arg_index);
+                  croak("%dth argument is invalid object type at %s line %d\n", arg_index, MFILE, __LINE__);
                 }
               }
               
               stack[arg_var_id].oval = object;
             }
             else {
-              croak("%dth argument must be inherit SPVM::Data", arg_index);
+              croak("%dth argument must be inherit SPVM::Data at %s line %d\n", arg_index, MFILE, __LINE__);
             }
           }
           arg_var_id++;
@@ -1891,7 +1893,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1904,7 +1906,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int8_t value = (int8_t)SvIV(sv_field_value);
               ((SPVM_VALUE_byte*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -1915,7 +1917,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1);
           }
           break;
         }
@@ -1940,7 +1942,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -1964,7 +1966,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -1989,7 +1991,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -2002,7 +2004,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               int32_t value = (int32_t)SvIV(sv_field_value);
               ((SPVM_VALUE_int*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -2013,7 +2015,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -2038,7 +2040,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -2062,7 +2064,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -2087,7 +2089,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -2100,7 +2102,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               float value = (float)SvNV(sv_field_value);
               ((SPVM_VALUE_float*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -2111,7 +2113,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -2136,7 +2138,7 @@ call_sub(...)
               hash_keys_length++;
             }
             if (hash_keys_length != fields_length) {
-              croak("Value element hash key is lacked");
+              croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
             }
             
             for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
@@ -2149,7 +2151,7 @@ call_sub(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                croak("Value element must be defined");
+                croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
               }
               double value = (double)SvNV(sv_field_value);
               ((SPVM_VALUE_double*)&ref_stack[ref_stack_top])[field_index] = value;
@@ -2160,7 +2162,7 @@ call_sub(...)
             arg_var_id++;
           }
           else {
-            croak("%dth argument must be scalar reference to hash reference", arg_index + 1);
+            croak("%dth argument must be scalar reference to hash reference at %s line %d\n", arg_index + 1, MFILE, __LINE__);
           }
           break;
         }
@@ -2455,7 +2457,7 @@ call_sub(...)
     int32_t length = env->len(env, exception);
     const char* exception_bytes = (char*)env->belems(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
-    croak("%s\n ", SvPV_nolen(sv_exception));
+    croak("%s\n at %s line %d\n", SvPV_nolen(sv_exception), MFILE, __LINE__);
   }
   // Success
   else {
@@ -2489,7 +2491,7 @@ to_elems(...)
 
   // Array must be SPVM::Data::Array or SPVM::Data::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object");
+    croak("Array must be SPVM::Data::Array object at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object
@@ -2665,7 +2667,7 @@ to_elems(...)
     }
   }
   else {
-    croak("Argument must be array type");
+    croak("Argument must be array type at %s line %d\n", MFILE, __LINE__);
   }
 
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -2691,7 +2693,7 @@ to_bin(...)
 
   // Array must be SPVM::Data::Array object or SPVM::Data::Sgtring
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Data must be SPVM::Data::Array");
+    croak("Data must be SPVM::Data::Array at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object
@@ -2755,11 +2757,11 @@ to_bin(...)
           break;
         }
         default:
-          croak("Invalid type");
+          croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
     else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
-      croak("Objec type is not supported");
+      croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {
       switch (basic_type_id) {
@@ -2800,12 +2802,12 @@ to_bin(...)
           break;
         }
         default:
-          croak("Invalid type");
+          croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
   }
   else {
-    croak("Argument must be array type");
+    croak("Argument must be array type at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_bin);

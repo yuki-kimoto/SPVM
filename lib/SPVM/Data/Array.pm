@@ -4,6 +4,8 @@ use base 'SPVM::Data';
 
 use SPVM::ExchangeAPI;
 
+use overload bool => sub {1}, '""' => sub { shift->to_str }, fallback => 1;
+
 sub to_elems {
   my $self = shift;
   
