@@ -127,7 +127,8 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     my $val_i = SPVM::Math::StringToNumber->from($val)->to_int;
     my $cookies = SPVM::HTTP::Cookies->new;
     $cookies->set(hash([(object)
-      key => "foo", value => "bar",
+      key   => "foo",
+      value => "bar",
     ]));
     my $headers = SPVM::HTTP::Headers->new_with(hash([(object)
       referer           => $val,
@@ -165,6 +166,21 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       return 0;
     }
     unless ((string)($headers->extra->get("X-Bearer")) eq "XXXXX") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_new_with_when_not_lowercase_key : int () {
+    my $cookies = SPVM::HTTP::Cookies->new;
+    $cookies->set(hash([(object)
+      key   => "foo",
+      value => "bar",
+    ]));
+    my $headers = SPVM::HTTP::Headers->new_with(hash([(object)
+      REFERER => "http://www.example.com",
+    ]));
+    unless ($headers->referer eq "http://www.example.com") {
       return 0;
     }
     return 1;
