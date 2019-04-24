@@ -177,7 +177,19 @@ package TestCase::ExchangeAPI {
     
     return $values;
   }
-  
+
+  sub return_hash_only : SPVM::Hash ($hash : SPVM::Hash) {
+    
+    warn("BBBBBBBBBB");
+    
+    return $hash;
+  }
+
+  sub return_list_only : SPVM::List ($list : SPVM::List) {
+    
+    return $list;
+  }
+
   sub return_string_array_only : string[] ($values : string[]) {
     
     return $values;

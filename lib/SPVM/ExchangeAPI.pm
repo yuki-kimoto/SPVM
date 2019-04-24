@@ -140,10 +140,12 @@ sub hash {
   my ($env, $hash) = @_;
   
   my $spvm_hash = SPVM::Hash->new;
-  for my $key (%$hash) {
+  for my $key (keys %$hash) {
     my $value = $hash->{$key};
     $spvm_hash->set($key => $value);
   }
+  
+  return $spvm_hash;
 }
 
 sub list {
@@ -153,6 +155,8 @@ sub list {
   for my $value (@$list) {
     $spvm_list->push($value);
   }
+  
+  return $spvm_list;
 }
 
 # other functions is implemented in SPVM.xs
