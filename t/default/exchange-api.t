@@ -40,6 +40,45 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Numeric value to numeric object
+{
+  # Numeric value to numeric object - number to SPVM::Byte
+  {
+    my $val = TestCase::ExchangeAPI->return_byte_object_only(SPVM::Byte->new($BYTE_MAX))->val;
+    is($val, $BYTE_MAX);
+  }
+
+  # Numeric value to numeric object - number to SPVM::Short
+  {
+    my $val = TestCase::ExchangeAPI->return_short_object_only(SPVM::Short->new($SHORT_MAX))->val;
+    is($val, $SHORT_MAX);
+  }
+
+  # Numeric value to numeric object - number to SPVM::Int
+  {
+    my $val = TestCase::ExchangeAPI->return_int_object_only(SPVM::Int->new($INT_MAX))->val;
+    is($val, $INT_MAX);
+  }
+
+  # Numeric value to numeric object - number to SPVM::Long
+  {
+    my $val = TestCase::ExchangeAPI->return_long_object_only(SPVM::Long->new($LONG_MAX))->val;
+    is($val, $LONG_MAX);
+  }
+
+  # Numeric value to numeric object - number to SPVM::Float
+  {
+    my $val = TestCase::ExchangeAPI->return_float_object_only(SPVM::Float->new($FLT_MAX))->val;
+    is($val, $FLT_MAX);
+  }
+
+  # Numeric value to numeric object - number to SPVM::Double
+  {
+    my $val = TestCase::ExchangeAPI->return_double_object_only(SPVM::Double->new($DBL_MAX))->val;
+    is($val, $DBL_MAX);
+  }
+}
+
 # Any object array
 {
   # String - UTF-8 string, new_str, new_str_from_bin, to_str, to_bin

@@ -143,6 +143,41 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
+  sub return_byte_object_only : SPVM::Byte ($values : SPVM::Byte) {
+    
+    return $values;
+  }
+
+  sub return_short_object_only : SPVM::Short ($values : SPVM::Short) {
+    
+    return $values;
+  }
+
+  sub return_int_object_only : SPVM::Int ($values : SPVM::Int) {
+    
+    return $values;
+  }
+
+  sub return_long_object_only : SPVM::Long ($values : SPVM::Long) {
+    
+    return $values;
+  }
+
+  sub return_float_object_only : SPVM::Float ($values : SPVM::Float) {
+    
+    return $values;
+  }
+
+  sub return_double_object_only : SPVM::Double ($values : SPVM::Double) {
+    
+    return $values;
+  }
+  
+  sub return_any_object_only : object ($values : object) {
+    
+    return $values;
+  }
+  
   sub return_string_array_only : string[] ($values : string[]) {
     
     return $values;
