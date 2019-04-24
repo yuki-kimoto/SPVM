@@ -2462,7 +2462,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
           }
           else if (sub->return_type_dimension == 0) {
-            SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[sub->return_basic_type_id];
+            SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[env->object_basic_type_id(env, return_value)];
             const char* basic_type_name = &runtime->string_pool[sub_return_basic_type->name_id];
 
             SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));

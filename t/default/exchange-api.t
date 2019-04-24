@@ -40,21 +40,28 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-=pod
 # Pass hash
 {
   # Pass hash
   {
     my $hash = TestCase::ExchangeAPI->return_hash_only(SPVM::hash({x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)}));
-    warn("CCCCCCC $hash");
-    my $x = $hash->get("x");
-    
     is($hash->get("x")->val, 1);
     is($hash->get("y")->val, 2.5);
   }
 }
 
-=cut
+
+# Pass list
+{
+  # Pass list
+  {
+    my $hash = TestCase::ExchangeAPI->return_list_only(SPVM::list([SPVM::Int->new(1), SPVM::Double->new(2.5)]));
+    my $x = $hash->get(0);
+    
+    is($hash->get(0)->val, 1);
+    is($hash->get(1)->val, 2.5);
+  }
+}
 
 # Numeric value to numeric object
 {
