@@ -50,7 +50,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
-
 # Pass list
 {
   # Pass list
