@@ -180,8 +180,6 @@ package TestCase::ExchangeAPI {
 
   sub return_hash_only : SPVM::Hash ($hash : SPVM::Hash) {
     
-    warn("BBBBBBBBBB");
-    
     return $hash;
   }
 

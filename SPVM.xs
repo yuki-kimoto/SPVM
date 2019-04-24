@@ -474,37 +474,43 @@ new_barray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_barray_raw(env, length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int8_t* elems = env->belems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int8_t)SvIV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_barray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_barray_raw(env, length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int8_t* elems = env->belems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (int8_t)SvIV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
   }
   
-  // New sv array
-  SV* sv_barray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_barray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -538,9 +544,9 @@ new_barray_from_bin(...)
   memcpy(elems, binary, array_length);
   
   // New sv array
-  SV* sv_barray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_barray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -586,37 +592,43 @@ new_sarray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_sarray_raw(env, length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int16_t* elems = env->selems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int16_t)SvIV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_sarray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+  
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_sarray_raw(env, length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int16_t* elems = env->selems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (int16_t)SvIV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
   }
   
-  // New sv array
-  SV* sv_sarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_sarray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -650,9 +662,9 @@ new_sarray_from_bin(...)
   memcpy(elems, binary, array_length * sizeof(int16_t));
   
   // New sv array
-  SV* sv_sarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_sarray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -665,37 +677,42 @@ new_iarray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_iarray_raw(env, length);
-  
-  // Increment reference count
-  env->inc_ref_count(env, array);
-  
-  int32_t* elems = env->ielems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int32_t)SvIV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_iarray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_iarray_raw(env, length);
+    
+    // Increment reference count
+    env->inc_ref_count(env, array);
+    
+    int32_t* elems = env->ielems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (int32_t)SvIV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  // New sv array
-  SV* sv_iarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_iarray);
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -729,9 +746,9 @@ new_iarray_from_bin(...)
   memcpy(elems, binary, array_length * sizeof(int32_t));
   
   // New sv array
-  SV* sv_iarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_iarray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -744,37 +761,43 @@ new_larray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_larray_raw(env, length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int64_t* elems = env->lelems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int64_t)SvIV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_larray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_larray_raw(env, length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int64_t* elems = env->lelems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (int64_t)SvIV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
   }
   
-  // New sv array
-  SV* sv_larray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_larray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -808,9 +831,9 @@ new_larray_from_bin(...)
   memcpy(elems, binary, array_length * sizeof(int64_t));
   
   // New sv array
-  SV* sv_larray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_larray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -823,37 +846,43 @@ new_farray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_farray_raw(env, length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  float* elems = env->felems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (float)SvNV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_farray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_farray_raw(env, length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    float* elems = env->felems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (float)SvNV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
   }
   
-  // New sv array
-  SV* sv_farray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_farray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -887,9 +916,9 @@ new_farray_from_bin(...)
   memcpy(elems, binary, array_length * sizeof(float));
   
   // New sv array
-  SV* sv_farray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_farray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -902,37 +931,42 @@ new_darray(...)
   SV* sv_env = ST(0);
   SV* sv_elems = ST(1);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_darray_raw(env, length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  double* elems = env->delems(env, array);
-  {
-    int32_t i;
-    for (i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (double)SvNV(sv_value);
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_darray() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_darray_raw(env, length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    double* elems = env->delems(env, array);
+    {
+      int32_t i;
+      for (i = 0; i < length; i++) {
+        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+        elems[i] = (double)SvNV(sv_value);
+      }
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  // New sv array
-  SV* sv_darray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-  
-  XPUSHs(sv_darray);
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -966,9 +1000,9 @@ new_darray_from_bin(...)
   memcpy(elems, binary, array_length * sizeof(double));
   
   // New sv array
-  SV* sv_darray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   
-  XPUSHs(sv_darray);
+  XPUSHs(sv_array);
   XSRETURN(1);
 }
 
@@ -1839,8 +1873,8 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_barray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-                    sv_value = sv_barray;
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
@@ -1861,8 +1895,8 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_sarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-                    sv_value = sv_sarray;
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_INT: {
@@ -1884,9 +1918,9 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_iarray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
                     
-                    sv_value = sv_iarray;
+                    sv_value = sv_array;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_LONG: {
@@ -1907,8 +1941,8 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_larray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-                    sv_value = sv_larray;
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
@@ -1929,8 +1963,8 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_farray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-                    sv_value = sv_farray;
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
                     break;
                   }
                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
@@ -1951,8 +1985,8 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_darray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
-                    sv_value = sv_darray;
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
                     break;
                   }
                   default:
