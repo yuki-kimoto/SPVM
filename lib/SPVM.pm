@@ -100,6 +100,8 @@ sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
 sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }
 sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) }
 
+sub hash { SPVM::ExchangeAPI::hash($SPVM_ENV, @_) }
+
 1;
 
 =encoding UTF-8
