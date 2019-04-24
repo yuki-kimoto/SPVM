@@ -296,6 +296,7 @@ t/default/complex.t
 t/default/concat.t
 t/default/constant.t
 t/default/convert.t
+t/default/default-loaded-modules.t
 t/default/divide.t
 t/default/enum.t
 t/default/exception.t
