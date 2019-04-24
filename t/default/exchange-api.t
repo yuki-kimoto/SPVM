@@ -71,6 +71,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     my $string = TestCase::ExchangeAPI->string_argments_and_return_value("あいう", "DE");
     is("$string", "あいうDE");
   }
+
+  # String argument - numerci
+  {
+    my $string = TestCase::ExchangeAPI->string_argments_and_return_value(3, 4.12);
+    is("$string", "34.12");
+  }
 }
 
 # Stringfy
