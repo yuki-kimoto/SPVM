@@ -6,4 +6,16 @@ package TestCase::Lib::SPVM::Time {
     
     return $time;
   }
+
+  sub test_localtime : SPVM::Time::Info ($time : long) {
+    my $time_info = SPVM::Time->localtime($time);
+    
+    return $time_info;
+  }
+
+  sub test_gmtime : SPVM::Time::Info ($time : long) {
+    my $time_info = SPVM::Time->gmtime($time);
+    
+    return $time_info;
+  }
 }
