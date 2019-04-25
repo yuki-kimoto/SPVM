@@ -39,7 +39,7 @@
         <b>SPVMエクスチェンジAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。言語仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年4月24日
+        最終更新日 2019年4月25日
       </p>
       <h2 id="exchange-api-toc">目次</h2>
       <ul class="toc">
@@ -63,13 +63,106 @@
 
       <h2 id="exchange-api-perl-to-spvm">Perlのデータ構造をSPVMのデータ構造に変換する</h2>
       <ul class="toc">
-        <li><a href="#exchange-api-perl-to-spvm-byte-array">Perlの配列リファレンスをSPVMのbyte[]型に変換</a></li>
-        <li><a href="#exchange-api-perl-to-spvm-short-array">Perlの配列リファレンスをSPVMのshort[]型に変換</a></li>
-        <li><a href="#exchange-api-perl-to-spvm-int-array">Perlの配列リファレンスをSPVMのint型[]に変換</a></li>
-        <li><a href="#exchange-api-perl-to-spvm-long-array">Perlの配列リファレンスをSPVMのlong[]型に変換</a></li>
-        <li><a href="#exchange-api-perl-to-spvm-float-array">Perlの配列リファレンスをSPVMのfloat[]型に変換</a></li>
-        <li><a href="#exchange-api-perl-to-spvm-double-array">Perlの配列リファレンスをSPVMのdouble[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Byte">SPVM::Byte-&gt;new - Perlのスカラ値をSPVMのSPVM::Byte型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Short">SPVM::Short-&gt;new - Perlのスカラ値をSPVMのSPVM::Short型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Int">SPVM::Int-&gt;new - Perlのスカラ値をSPVMのSPVM::Int型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Long">SPVM::Long-&gt;new - Perlのスカラ値をSPVMのSPVM::Long型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Float">SPVM::Float-&gt;new - Perlのスカラ値をSPVMのSPVM::Float型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-numeric-to-SPVM-Double">SPVM::Double-&gt;new - Perlのスカラ値をSPVMのSPVM::Double型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-byte-array">SPVM::new_barray - Perlの配列リファレンスをSPVMのbyte[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-short-array">SPVM::new_sarray - Perlの配列リファレンスをSPVMのshort[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-int-array">SPVM::new_iarray - Perlの配列リファレンスをSPVMのint型[]に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-long-array">SPVM::new_larray - Perlの配列リファレンスをSPVMのlong[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-float-array">SPVM::new_farray - Perlの配列リファレンスをSPVMのfloat[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-double-array">SPVM::new_darray - Perlの配列リファレンスをSPVMのdouble[]型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-hash-ref-to-SPVM-Hash">SPVM::hash - PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換</a></li>
+        <li><a href="#exchange-api-perl-to-spvm-array-ref-to-SPVM-List">SPVM::list - Perlの配列リファレンスをSPVMのSPVM::List型に変換</a></li>
       </ul>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Byte">SPVM::Byte-&gt;new - Perlのスカラ値をSPVMのSPVM::Byte型に変換</h3>
+      <p>
+        SPVM::Byte-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Byte型に変換できます。
+      </p>
+<pre>
+my $spvm_byte = SPVM::Byte->new(98);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのbyte型に変換され、その値が、SPVM::Byteのnewメソッドに渡され、SPVM::Byte型のオブジェクトが返されます。
+      </p>
+<pre>
+(int8_t)SvIV(sv_value)
+</pre>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Short">SPVM::Short-&gt;new - Perlのスカラ値をSPVMのSPVM::Short型に変換</h3>
+      <p>
+        SPVM::Short-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Short型に変換できます。
+      </p>
+<pre>
+my $spvm_short = SPVM::Short->new(9800);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのshort型に変換され、その値が、SPVM::Shortのnewメソッドに渡され、SPVM::Short型のオブジェクトが返されます。
+      </p>
+<pre>
+(int16_t)SvIV(sv_value)
+</pre>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Int">SPVM::Int-&gt;new - Perlのスカラ値をSPVMのSPVM::Int型に変換</h3>
+      <p>
+        SPVM::Int-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Int型に変換できます。
+      </p>
+<pre>
+my $spvm_int = SPVM::Int->new(100000);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのint型に変換され、その値が、SPVM::Intのnewメソッドに渡され、SPVM::Int型のオブジェクトが返されます。
+      </p>
+<pre>
+(int32_t)SvIV(sv_value)
+</pre>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Long">SPVM::Long-&gt;new - Perlのスカラ値をSPVMのSPVM::Long型に変換</h3>
+      <p>
+        SPVM::Long-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Long型に変換できます。
+      </p>
+<pre>
+my $spvm_long = SPVM::Long->new(98);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのlong型に変換され、その値が、SPVM::Longのnewメソッドに渡され、SPVM::Long型のオブジェクトが返されます。
+      </p>
+<pre>
+(int64_t)SvIV(sv_value)
+</pre>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Float">SPVM::Float-&gt;new - Perlのスカラ値をSPVMのSPVM::Float型に変換</h3>
+      <p>
+        SPVM::Float-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Float型に変換できます。
+      </p>
+<pre>
+my $spvm_float = SPVM::Float->new(2.5);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのfloat型に変換され、その値が、SPVM::Floatのnewメソッドに渡され、SPVM::Float型のオブジェクトが返されます。
+      </p>
+<pre>
+(float)SvNV(sv_value)
+</pre>
+
+      <h3 id="exchange-api-perl-to-spvm-numeric-to-SPVM-Double">SPVM::Double-&gt;new - Perlのスカラ値をSPVMのSPVM::Double型に変換</h3>
+      <p>
+        SPVM::Double-&gt;newメソッドを使うと、Perlのスカラ値をSPVMのSPVM::Double型に変換できます。
+      </p>
+<pre>
+my $spvm_double = SPVM::Double->new(2.5);
+</pre>
+      <p>
+        Perlのスカラ値は、perlapiとC99の型変換による以下の変換によって、SPVMのdouble型に変換され、その値が、SPVM::Doubleのnewメソッドに渡され、SPVM::Double型のオブジェクトが返されます。
+      </p>
+<pre>
+(double)SvNV(sv_value)
+</pre>
+
       <h3 id="exchange-api-perl-to-spvm-byte-array">Perlの配列リファレンスをSPVMのbyte[]型に変換</h3>
       <p>
         SPVM::new_barray関数を使うと、Perlの配列リファレンスをSPVMのbyte[]型に変換することができます。
@@ -210,6 +303,63 @@ my $spvm_nums = SPVM::new_darray([1, 2, 3]);
       <p>
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
+
+<!--
+<pre>
+=head2 hash
+
+=head2 list
+
+=head2 memory_blocks_count
+
+=head2 new_barray
+
+=head2 new_barray_from_bin
+
+=head2 new_barray_from_str
+
+=head2 new_darray
+
+=head2 new_darray_from_bin
+
+=head2 new_farray
+
+=head2 new_farray_from_bin
+
+=head2 new_iarray
+
+=head2 new_iarray_from_bin
+
+=head2 new_larray
+
+=head2 new_larray_from_bin
+
+=head2 new_oarray
+
+=head2 new_sarray
+
+=head2 new_sarray_from_bin
+
+=head2 new_str
+
+=head2 new_str_from_bin
+
+=head2 new_varray
+
+=head2 new_varray_from_bin
+
+=head2 set_exception_undef
+
+=head2 to_bin
+
+=head2 to_elems
+
+=head2 to_str
+
+=head2 to_strs
+</pre>
+-->
+
     </div>
     
     <div class="footer">

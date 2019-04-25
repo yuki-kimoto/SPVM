@@ -139,7 +139,7 @@ sub new_varray_from_bin {
 sub hash {
   my ($env, $hash) = @_;
   
-  my $spvm_hash = SPVM::Hash->new;
+  my $spvm_hash = SPVM::CORE::hash([]);
   for my $key (keys %$hash) {
     my $value = $hash->{$key};
     $spvm_hash->set($key => $value);
@@ -151,7 +151,7 @@ sub hash {
 sub list {
   my ($env, $list) = @_;
   
-  my $spvm_list = SPVM::List->new;
+  my $spvm_list = SPVM::CORE::list([]);
   for my $value (@$list) {
     $spvm_list->push($value);
   }
@@ -165,5 +165,60 @@ sub list {
 
 =head1 NAME
 
-SPVM::ExchangeAPI - Base class of Exchange API
+SPVM::ExchangeAPI - SPVM Exchange API
 
+=head1 Functions
+
+=head2 call_sub
+
+=head2 hash
+
+=head2 list
+
+=head2 memory_blocks_count
+
+=head2 new_barray
+
+=head2 new_barray_from_bin
+
+=head2 new_barray_from_str
+
+=head2 new_darray
+
+=head2 new_darray_from_bin
+
+=head2 new_farray
+
+=head2 new_farray_from_bin
+
+=head2 new_iarray
+
+=head2 new_iarray_from_bin
+
+=head2 new_larray
+
+=head2 new_larray_from_bin
+
+=head2 new_oarray
+
+=head2 new_sarray
+
+=head2 new_sarray_from_bin
+
+=head2 new_str
+
+=head2 new_str_from_bin
+
+=head2 new_varray
+
+=head2 new_varray_from_bin
+
+=head2 set_exception_undef
+
+=head2 to_bin
+
+=head2 to_elems
+
+=head2 to_str
+
+=head2 to_strs
