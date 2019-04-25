@@ -18,4 +18,34 @@ package TestCase::Lib::SPVM::Time {
     
     return $time_info;
   }
+
+  sub test_strptime : int () {
+    # strptime - GMT
+    {
+      my $time_info = SPVM::Time->strptime("2019-03-25 12:51:37", "%Y-%m-%d %H:%M:%S");
+      
+      unless ($time_info->sec == 37) {
+        return 0;
+      }
+      unless ($time_info->min == 51) {
+        return 0;
+      }
+      unless ($time_info->hour == 12) {
+        return 0;
+      }
+      unless ($time_info->mday == 25) {
+        return 0;
+      }
+      # 3 - 1
+      unless ($time_info->mon == 2) {
+        return 0;
+      }
+      # 2019 - 1900
+      unless ($time_info->year == 119) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
