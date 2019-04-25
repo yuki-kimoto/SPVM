@@ -24,11 +24,7 @@ int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   time_t time = (time_t)stack[0].lval;
   struct tm resultp;
 
-#if defined(__CYGWIN__) || defined(__MINGW32__)
-  localtime_s(&time, &resultp);
-#else
   localtime_r(&time, &resultp);
-#endif
 
   void* obj_time_info;
   SPVM_NEW_OBJ(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
@@ -53,11 +49,7 @@ int32_t SPNATIVE__SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   time_t time = (time_t)stack[0].lval;
   struct tm resultp;
 
-#if defined(__CYGWIN__) || defined(__MINGW32__)
-  gmtime_s(&time, &resultp);
-#else
   gmtime_r(&time, &resultp);
-#endif
 
   void* obj_time_info;
   SPVM_NEW_OBJ(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
