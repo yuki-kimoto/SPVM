@@ -150,7 +150,7 @@ int32_t SPNATIVE__TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALU
   (void)stack;
 
   void* minimal;
-  SPVM_NEW(env, minimal, "TestCase::Minimal", MFILE, __LINE__);
+  SPVM_NEW_OBJ(env, minimal, "TestCase::Minimal", MFILE, __LINE__);
   SPVM_SET_OPKGVAR(env, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, MFILE, __LINE__);
   
   return SPVM_SUCCESS;

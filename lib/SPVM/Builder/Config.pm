@@ -72,8 +72,8 @@ sub new_default {
   $include_dir .= '/include';
   $bconf->add_extra_compiler_flags("-I$include_dir");
   
-  # C99
-  $bconf->set_std('c99');
+  # C99 + GNU extension
+  $bconf->set_std('gnu99');
   
   # Optimize
   $bconf->set_optimize('-O3');
@@ -414,7 +414,7 @@ Add C<ccflags> after current C<ccflags>.
 
 =head2 set_std
 
-  $bconf->set_std('c99');
+  $bconf->set_std('gnu99');
 
 Set C<std>.
 

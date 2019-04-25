@@ -72,7 +72,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Create SPVM::IO::Socket object
   void* obj_socket;
-  SPVM_NEW(env, obj_socket, "SPVM::IO::Socket", MFILE, __LINE__);
+  SPVM_NEW_OBJ(env, obj_socket, "SPVM::IO::Socket", MFILE, __LINE__);
   
   // Set handle
   SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", handle, MFILE, __LINE__);
