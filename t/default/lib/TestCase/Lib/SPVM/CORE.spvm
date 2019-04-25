@@ -1,6 +1,7 @@
 package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
+  use SPVM::Time (time);
 
   sub test_rand : int () {
     my $seed = (int)time();

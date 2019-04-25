@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::Time::Moment {
   use SPVM::Time::Moment;
+  use SPVM::Time (time);
 
   sub test_basic : int () {
     # UTC: 2019/3/25 Monday 12:51:37

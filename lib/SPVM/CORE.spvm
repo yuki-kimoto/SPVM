@@ -1054,7 +1054,6 @@ package SPVM::CORE {
   }
   native sub print : void ($value : string);
   native sub warn : void ($value : string);
-  native sub time : long ();
 
   native sub PI : double ();
   native sub E : double ();

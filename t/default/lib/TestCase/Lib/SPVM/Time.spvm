@@ -1,0 +1,9 @@
+package TestCase::Lib::SPVM::Time {
+  use SPVM::Time;
+  
+  sub test_time : long () {
+    my $time = SPVM::Time->time;
+    
+    return $time;
+  }
+}

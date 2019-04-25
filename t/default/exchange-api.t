@@ -302,11 +302,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
-# time
-{
-  cmp_ok(abs(time - SPVM::CORE->time()), '<', 2);
-}
-
 # my variable
 {
   ok(TestCase->my_var_initialized_zero());

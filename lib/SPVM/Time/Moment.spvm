@@ -1,5 +1,6 @@
 package SPVM::Time::Moment {
   use SPVM::Time::tm_9i;
+  use SPVM::Time (time);
 
   has epoch : ro long;
 

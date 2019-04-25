@@ -30,14 +30,6 @@ B<sub PI : double ()>
 
 The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
 
-=head2 time
-
-Get epoch time.
-
-  sub time : long ();
-
-Wapper of time of C99 time library.
-
 =head2 INFINITYF
 
   sub INFINITYF : float ()

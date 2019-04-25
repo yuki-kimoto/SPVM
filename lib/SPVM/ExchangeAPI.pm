@@ -139,7 +139,7 @@ sub new_varray_from_bin {
 sub hash {
   my ($env, $hash) = @_;
   
-  my $spvm_hash = SPVM::CORE::hash([]);
+  my $spvm_hash = SPVM::Hash->new;
   for my $key (keys %$hash) {
     my $value = $hash->{$key};
     $spvm_hash->set($key => $value);
@@ -151,7 +151,7 @@ sub hash {
 sub list {
   my ($env, $list) = @_;
   
-  my $spvm_list = SPVM::CORE::list([]);
+  my $spvm_list = SPVM::List->new;
   for my $value (@$list) {
     $spvm_list->push($value);
   }

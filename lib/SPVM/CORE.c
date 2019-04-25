@@ -6,7 +6,6 @@
 #include <string.h>
 #include <inttypes.h>
 #include <float.h>
-#include <time.h>
 #include <complex.h>
 #include <memory.h>
 #include <fcntl.h>
@@ -1409,17 +1408,6 @@ int32_t SPNATIVE__SPVM__CORE__new_lcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { r
 int32_t SPNATIVE__SPVM__CORE__new_fcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
 
 int32_t SPNATIVE__SPVM__CORE__new_dcomplex(SPVM_ENV* env, SPVM_VALUE* stack) { return SPVM_SUCCESS; }
-
-int32_t SPNATIVE__SPVM__CORE__time(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-
-  int64_t timer_value = (int64_t)time(NULL);
-  
-  stack[0].lval = timer_value;
-  
-  return SPVM_SUCCESS;
-}
 
 int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
