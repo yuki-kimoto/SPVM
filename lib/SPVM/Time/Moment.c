@@ -1,3 +1,7 @@
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE
+#endif
+
 #include "spvm_native.h"
 
 #include <stdlib.h>

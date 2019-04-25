@@ -73,7 +73,7 @@ sub new_default {
   $bconf->add_extra_compiler_flags("-I$include_dir");
   
   # C99 + GNU extension
-  $bconf->set_std('gnu99');
+  $bconf->set_std('c99');
   
   # Optimize
   $bconf->set_optimize('-O3');

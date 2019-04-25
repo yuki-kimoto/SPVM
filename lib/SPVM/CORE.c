@@ -1,3 +1,7 @@
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE
+#endif
+
 #include "spvm_native.h"
 
 #include <stdio.h>
@@ -11,30 +15,11 @@
 #include <fcntl.h>
 #include <assert.h>
 
-/* This algorithm is mentioned in the ISO C standard, here extended
-   for 32 bits.  */
 int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  uint32_t next = *(uint32_t*)stack[0].iref;
-  int32_t result;
-
-  next *= 1103515245;
-  next += 12345;
-  result = (uint32_t) (next / 65536) % 2048;
-
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (uint32_t) (next / 65536) % 1024;
-
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (uint32_t) (next / 65536) % 1024;
-
-  *(stack[0].iref) = next;
+  uint32_t* next_ptr = (uint32_t*)stack[0].iref;
   
-  stack[0].ival = result;
+  stack[0].ival = (int32_t)rand_r(next_ptr);
 
   return SPVM_SUCCESS;
 }
