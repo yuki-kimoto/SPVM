@@ -191,9 +191,13 @@ lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
+lib/SPVM/Time.c
+lib/SPVM/Time.config
+lib/SPVM/Time.spvm
 lib/SPVM/Time/Format.c
 lib/SPVM/Time/Format.config
 lib/SPVM/Time/Format.spvm
+lib/SPVM/Time/Info.spvm
 lib/SPVM/Time/Moment.c
 lib/SPVM/Time/Moment.config
 lib/SPVM/Time/Moment.spvm
@@ -238,6 +242,7 @@ solo/spvm_build/.gitkeep
 SPVM.xs
 spvm_build/.gitkeep
 spvmdoc/jp/public/css/common.css
+spvmdoc/jp/public/exchange-api.html
 spvmdoc/jp/public/images/list-arrow.png
 spvmdoc/jp/public/images/spvm-logo.png
 spvmdoc/jp/public/index.html
@@ -422,6 +427,7 @@ t/default/lib/TestCase/Lib/SPVM/Math.spvm
 t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
+t/default/lib/TestCase/Lib/SPVM/Time.spvm
 t/default/lib/TestCase/Lib/SPVM/Time/Format.spvm
 t/default/lib/TestCase/Lib/SPVM/Time/Moment.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm

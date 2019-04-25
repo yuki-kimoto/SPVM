@@ -1,0 +1,16 @@
+package SPVM::Time::Info {
+  
+  has sec : rw int;
+  has min : rw int;
+  has hour : rw int;
+  has mday : rw int;
+  has mon : rw int;
+  has year : rw int;
+  has wday : rw int;
+  has yday : rw int;
+  has isdst : rw int;
+
+  sub new : SPVM::Time::Info () {
+    return new SPVM::Time::Info;
+  }
+}
