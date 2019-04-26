@@ -1,5 +1,10 @@
 package SPVM::Time {
   use SPVM::Time::Info;
+  use Math (pow);
+  
+  private sub _MonthDays : int[] () {
+    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  }
   
   native sub time : long ();
   native sub localtime : SPVM::Time::Info ($time : long);
@@ -12,4 +17,100 @@ package SPVM::Time {
   native sub strftime : string ($format : string, $time_info : SPVM::Time::Info);
   
   native sub mktime : long ($time_info : SPVM::Time::Info);
+
+  private sub SECS_PER_MINUTE : int { return 60; }
+  private sub SECS_PER_HOUR : int { return 3600; }
+  private sub SECS_PER_DAY : int { return 86400; }
+
+  sub timegm : long ($time_info : SPVM::Time::Info) = @_;
+      
+    my $sec = $time_info->sec;
+    my $min = $time_info->min;
+    my $hour = $time_info->hour;
+    my $mday = $time_info->mday;
+    my $month = $time_info->mon;
+    my $year = $time_info->$year;
+    
+    $year -= 1900;
+    
+    if ($month > 11 || $month < 0) {
+      die "Month '$month' out of range 0..11";
+    }
+    
+    my $monthDays = _MonthDays();
+
+    my $md = $monthDays->[$month];
+    if ($month == 1 && _is_leap_year( $year + 1900 )) {
+      ++$md
+    }
+
+    if ($mday > $md or $mday < 1) {
+      die "Day '$mday' out of range 1..$md";
+    }
+    if ($hour > 23 or $hour < 0) {
+      die "Hour '$hour' out of range 0..23";
+    }
+    if ($min > 59 or $min < 0) {
+      die "Minute '$min' out of range 0..59";
+    }
+    
+    if ($sec >= 60 or $sec < 0) {
+      die "Second '$sec' out of range 0..59";
+    }
+
+    my $days = _daygm( undef, undef, undef, $mday, $month, $year );
+    
+    my $maxDay = 365 * pow(2, 31);
+    
+    unless (labs($days) < $maxDay) {
+      my $msg = "";
+      if ($days > $maxDay) {
+        $msg .= "Day too big - $days > $maxDay\n";
+      }
+
+      $year += 1900;
+      $msg .= "Cannot handle date ($sec, $min, $hour, $mday, $month, $year)";
+
+      die $msg;
+    }
+
+    return $sec
+        + ( SECS_PER_MINUTE() * $min )
+        + ( SECS_PER_HOUR() * $hour )
+        + ( SECS_PER_DAY() * $days );
+  }
+
+  private sub _is_leap_year : int ($year : int) {
+    if ($year % 4) {
+      return 0;
+    }
+    
+    if ($year % 100) {
+      return 1;
+    }
+    
+    if ($year % 400) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  private sub _daygm : long ($sec, $min, $hour, $mday, $month, $year) {
+   
+    my $shift;
+    {
+      my $month = ( $month + 10 ) % 12;
+      my $year  = $year + 1900 - int( $month / 10 );
+
+      $shift = ( ( 365 * $year )
+          + int( $year / 4 )
+              - int( $year / 100 )
+              + int( $year / 400 )
+              + int( ( ( $month * 306 ) + 5 ) / 10 ) );
+    }
+    
+    return $mday + $shift;
+  }
 }
+
