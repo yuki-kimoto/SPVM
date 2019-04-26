@@ -15,10 +15,6 @@ package SPVM::IO::File {
   native sub STDOUT : int();
   
   has handle : SPVM::FileHandle;
-
-=pod
-  native sub gets_chomp : string ($self : self);
-  native sub gets : string ($self : self);
   
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
   native sub putc : int ($self : self, $c : int);
@@ -26,5 +22,7 @@ package SPVM::IO::File {
   native sub write : int ($self: self, $buf : string);
   native sub seek : int ($self : self, $offset : long, $whence : int);
   native sub close : int ($self : self);
-=cut
+  
+  native sub gets : string ($self : self);
+  native sub gets_chomp : string ($self : self);
 }

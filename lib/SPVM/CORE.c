@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <assert.h>
 
+
 int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   uint32_t* next_ptr = (uint32_t*)stack[0].iref;

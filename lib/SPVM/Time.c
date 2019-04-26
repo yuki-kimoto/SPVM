@@ -5,6 +5,7 @@
 #include "spvm_native.h"
 
 #include <time.h>
+#include <string.h>
 
 static const char* MFILE = "SPVM/Time.c";
 

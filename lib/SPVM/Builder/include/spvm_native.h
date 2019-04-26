@@ -52,6 +52,12 @@ typedef void* SPVM_VALUE_object;
   obj = env->new_obj(env, id);\
 } while (0)\
 
+#define SPVM_NEW_POINTER(env, obj, package_name, ptr, file, line) do {\
+  int32_t id = env->basic_type_id(env, package_name);\
+  if (id < 0) { SPVM_DIE("Package \"%s\" not found", package_name, file, line); };\
+  obj = env->new_pointer(env, id, ptr);\
+} while (0)\
+
 #define SPVM_SET_BFIELD(env, obj, package_name, sub_name, value, file, line) do {\
   int32_t id = env->field_id(env, package_name, sub_name, "byte");\
   if (id < 0) { SPVM_DIE("Field not found, package name:%s, sub name:%s, signature:byte", package_name, sub_name, file, line); };\
