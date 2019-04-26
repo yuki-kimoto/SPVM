@@ -13,9 +13,9 @@ package SPVM::CORE {
     
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    for (my $i = 0; $i < length $str; $i++) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'A' && $char <= 'Z') {
         $new_str->[$i] = (byte)($str->[$i] + 32);
@@ -31,13 +31,19 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    if (length $str > 0) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'A' && $char <= 'Z') {
         $new_str->[0] = (byte)($char + 32);
       }
+      else {
+        $new_str->[0] = $char;
+      }
+    }
+    for (my $i = 1; $i < $length; ++$i) {
+      $new_str->[$i] = $str->[$i];
     }
     return (string)$new_str;
   }
@@ -46,9 +52,9 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    for (my $i = 0; $i < length $str; $i++) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'a' && $char <= 'z') {
         $new_str->[$i] = (byte)($str->[$i] - 32);
@@ -64,13 +70,19 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    if (length $str > 0) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'a' && $char <= 'z') {
         $new_str->[0] = (byte)($char - 32);
       }
+      else {
+        $new_str->[0] = $char;
+      }
+    }
+    for (my $i = 1; $i < $length; ++$i) {
+      $new_str->[$i] = $str->[$i];
     }
     return (string)$new_str;
   }
