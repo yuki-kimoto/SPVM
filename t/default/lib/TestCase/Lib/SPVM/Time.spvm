@@ -20,9 +20,9 @@ package TestCase::Lib::SPVM::Time {
   }
 
   sub test_strptime : int () {
-    # strptime - GMT
+    # strptime
     {
-      my $time_info = SPVM::Time->strptime("2019-03-25 12:51:37", "%Y-%m-%d %H:%M:%S");
+      my $time_info = SPVM::Time->strptime("2019-03-25 12:51:37 GMT", "%Y-%m-%d %H:%M:%S GMT");
       
       unless ($time_info->sec == 37) {
         return 0;
@@ -48,4 +48,20 @@ package TestCase::Lib::SPVM::Time {
     
     return 1;
   }
+
+  sub test_strftime : int () {
+    # strftime
+    {
+      my $time_info = SPVM::Time->strptime("2019-03-25 12:51:37 GMT", "%Y-%m-%d %H:%M:%S GMT");
+      
+      my $str = SPVM::Time->strftime("%Y-%m-%d %H:%M:%S GMT", $time_info);
+      
+      unless ($str eq "2019-03-25 12:51:37 GMT") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
 }
