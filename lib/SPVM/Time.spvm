@@ -1,6 +1,6 @@
 package SPVM::Time {
   use SPVM::Time::Info;
-  use Math (pow);
+  use SPVM::Math (pow);
   
   private sub _MonthDays : int[] () {
     return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -18,20 +18,18 @@ package SPVM::Time {
   
   native sub mktime : long ($time_info : SPVM::Time::Info);
 
-  private sub SECS_PER_MINUTE : int { return 60; }
-  private sub SECS_PER_HOUR : int { return 3600; }
-  private sub SECS_PER_DAY : int { return 86400; }
+  private sub SECS_PER_MINUTE : int () { return 60; }
+  private sub SECS_PER_HOUR : int () { return 3600; }
+  private sub SECS_PER_DAY : int () { return 86400; }
 
-  sub timegm : long ($time_info : SPVM::Time::Info) = @_;
+  sub timegm : long ($time_info : SPVM::Time::Info) {
       
     my $sec = $time_info->sec;
     my $min = $time_info->min;
     my $hour = $time_info->hour;
     my $mday = $time_info->mday;
     my $month = $time_info->mon;
-    my $year = $time_info->$year;
-    
-    $year -= 1900;
+    my $year = $time_info->year;
     
     if ($month > 11 || $month < 0) {
       die "Month '$month' out of range 0..11";
@@ -41,24 +39,26 @@ package SPVM::Time {
 
     my $md = $monthDays->[$month];
     if ($month == 1 && _is_leap_year( $year + 1900 )) {
-      ++$md
+      ++$md;
     }
 
-    if ($mday > $md or $mday < 1) {
+    if ($mday > $md || $mday < 1) {
       die "Day '$mday' out of range 1..$md";
     }
-    if ($hour > 23 or $hour < 0) {
+    if ($hour > 23 || $hour < 0) {
       die "Hour '$hour' out of range 0..23";
     }
-    if ($min > 59 or $min < 0) {
+    if ($min > 59 || $min < 0) {
       die "Minute '$min' out of range 0..59";
     }
     
-    if ($sec >= 60 or $sec < 0) {
+    if ($sec >= 60 || $sec < 0) {
       die "Second '$sec' out of range 0..59";
     }
-
-    my $days = _daygm( undef, undef, undef, $mday, $month, $year );
+    
+    my $epoc_time_info = gmtime(0);
+    my $epoc_days = _daygm($epoc_time_info->mday, $epoc_time_info->mon, $epoc_time_info->year);
+    my $days = _daygm($mday, $month, $year) - $epoc_days + 1;
     
     my $maxDay = 365 * pow(2, 31);
     
@@ -68,7 +68,6 @@ package SPVM::Time {
         $msg .= "Day too big - $days > $maxDay\n";
       }
 
-      $year += 1900;
       $msg .= "Cannot handle date ($sec, $min, $hour, $mday, $month, $year)";
 
       die $msg;
@@ -96,18 +95,14 @@ package SPVM::Time {
     return 1;
   }
 
-  private sub _daygm : long ($sec, $min, $hour, $mday, $month, $year) {
+  private sub _daygm : long ($mday : int, $month : int, $year : int) {
    
-    my $shift;
+    my $shift : long;
     {
       my $month = ( $month + 10 ) % 12;
-      my $year  = $year + 1900 - int( $month / 10 );
+      my $year  = $year - ($month / 10);
 
-      $shift = ( ( 365 * $year )
-          + int( $year / 4 )
-              - int( $year / 100 )
-              + int( $year / 400 )
-              + int( ( ( $month * 306 ) + 5 ) / 10 ) );
+      $shift = ( ( 365 * $year ) + ( $year / 4 ) - ( $year / 100 ) + ( $year / 400 ) + ( ( ( $month * 306 ) + 5 ) / 10 ) ) ;
     }
     
     return $mday + $shift;

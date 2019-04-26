@@ -83,4 +83,23 @@ package TestCase::Lib::SPVM::Time {
     return 1;
   }
 
+  sub test_timegm : int () {
+    {
+      my $time = SPVM::Time->time();
+      
+      my $time_info = SPVM::Time->gmtime($time);
+      
+      my $time_ret = SPVM::Time->timegm($time_info);
+
+      unless ($time_ret isa long) {
+        return 0;
+      }
+      unless ($time == $time_ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
 }
