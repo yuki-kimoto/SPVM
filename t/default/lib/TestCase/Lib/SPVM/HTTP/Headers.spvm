@@ -7,7 +7,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
 
   our $REQUEST_HEADERS : string[];
   our $ENTITY_HEADERS : string[];
-  our $RESERVED : string[];
 
   BEGIN {
     $REQUEST_HEADERS= [
@@ -20,71 +19,85 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       "Allow", "Content-Encoding", "Content-Language", "Content-Length", "Content-Location",
       "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified",
     ];
-    $RESERVED = [
-      "Referer", "Expires", "Last-Modified", "If-Modified-Since", "Content-Type",
-      "Content-Length", "Content-Encoding",
-    ];
   }
 
-  private sub in_reserved : int ($key : string) {
-    for (my $i = 0; $i < @$RESERVED; ++$i) {
-      if ($key eq $RESERVED->[$i]) {
-        return 1;
-      }
-    }
-    return 0;
+  private sub to_s : string ($o : object) {
+    return (string)$o;
   }
 
-  sub test_add_header : int () {
+  private sub to_i : int ($o : object) {
+    return ((SPVM::Int)$o)->val;
+  }
+
+  sub test_set : int () {
     my $headers = SPVM::HTTP::Headers->new;
     # Referer param also allows Referrer
-    $headers->add_header("Referrer", "referrer");
+    $headers->set("Referrer", "referrer");
     unless ($headers->referer eq "referrer") {
       return 0;
     }
     for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
-      $headers->add_header($REQUEST_HEADERS->[$i], "12345678");
+      $headers->set($REQUEST_HEADERS->[$i], "12345678");
     }
     for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
-      $headers->add_header($ENTITY_HEADERS->[$i], "12345678");
+      $headers->set($ENTITY_HEADERS->[$i], "12345678");
     }
-    unless ($headers->referer eq "12345678") {
+    unless ($headers->referer eq "12345678" &&
+        to_s($headers->get("referer")) eq "12345678") {
       return 0;
     }
-    unless ($headers->expires == 12345678) {
+    unless ($headers->expires == 12345678 &&
+        to_i($headers->get("expires")) == 12345678) {
       return 0;
     }
-    unless ($headers->last_modified == 12345678) {
+    unless ($headers->last_modified == 12345678 &&
+        to_i($headers->get("last_modified")) == 12345678) {
       return 0;
     }
-    unless ($headers->if_modified_since == 12345678) {
+    unless ($headers->if_modified_since == 12345678 &&
+        to_i($headers->get("if_modified_since")) == 12345678) {
       return 0;
     }
-    unless ($headers->content_type eq "12345678") {
+    unless ($headers->content_type eq "12345678" &&
+        to_s($headers->get("content_type")) eq "12345678") {
       return 0;
     }
-    unless ($headers->content_length == 12345678) {
+    unless ($headers->content_length == 12345678 &&
+        to_i($headers->get("content_length")) == 12345678) {
       return 0;
     }
-    unless ($headers->content_encoding eq "12345678") {
+    unless ($headers->content_encoding eq "12345678" &&
+        to_s($headers->get("content_encoding")) eq "12345678") {
       return 0;
     }
     for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
-      unless (in_reserved($REQUEST_HEADERS->[$i])) {
-        my $got = (string)($headers->extra->get($REQUEST_HEADERS->[$i]));
+      my $got = $headers->get($REQUEST_HEADERS->[$i]);
+      if ($got isa string) {
         my $expected = "12345678";
-        unless ($got eq $expected) {
-          warn("Some header doesn't match.\n     got: '$got'\nexpected: '$expected'");
+        unless (to_s($got) eq $expected) {
+          warn("Some header doesn't match.\n     got: '" . to_s($got) . "'\nexpected: '$expected'");
+          return 0;
+        }
+      } elsif ($got isa SPVM::Int) {
+        my $expected = 12345678;
+        unless (to_i($got) == $expected) {
+          warn("Some header doesn't match.\n     got: '" . to_i($got) . "'\nexpected: '$expected'");
           return 0;
         }
       }
     }
     for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
-      unless (in_reserved($ENTITY_HEADERS->[$i])) {
-        my $got = (string)($headers->extra->get($ENTITY_HEADERS->[$i]));
+      my $got = $headers->get($ENTITY_HEADERS->[$i]);
+      if ($got isa string) {
         my $expected = "12345678";
-        unless ($got eq $expected) {
-          warn("Some header doesn't match.\n     got: '" . (string)$got . "'\nexpected: '$expected'");
+        unless (to_s($got) eq $expected) {
+          warn("Some header doesn't match.\n     got: '" . to_s($got) . "'\nexpected: '$expected'");
+          return 0;
+        }
+      } elsif ($got isa SPVM::Int) {
+        my $expected = 12345678;
+        unless (to_i($got) == $expected) {
+          warn("Some header doesn't match.\n     got: '" . to_i($got) . "'\nexpected: '$expected'");
           return 0;
         }
       }
@@ -139,7 +152,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       content_length    => $val_i,
       content_encoding  => $val,
       cookies           => $cookies,
-      extra             => hash([(object) "X-Bearer" => "XXXXX"]),
+      "X-Bearer"        => "XXXXX",
     ]));
     unless ($headers->referer eq $val) {
       return 0;
@@ -165,7 +178,8 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     unless ($headers->cookies->get("foo")->{value} eq "bar") {
       return 0;
     }
-    unless ((string)($headers->extra->get("X-Bearer")) eq "XXXXX") {
+    unless ($headers->get("X-Bearer") &&
+      (string)($headers->get("X-Bearer")) eq "XXXXX") {
       return 0;
     }
     return 1;
@@ -193,10 +207,10 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       my $headers = SPVM::HTTP::Headers->new;
       my $buf = SPVM::StringBuffer->new;
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
-        $headers->add_header($REQUEST_HEADERS->[$i], $val);
+        $headers->set($REQUEST_HEADERS->[$i], $val);
       }
       for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
-        $headers->add_header($ENTITY_HEADERS->[$i], $val);
+        $headers->set($ENTITY_HEADERS->[$i], $val);
       }
       $headers->append_to_buffer($buf);
       my $got_barray = $buf->to_barray();
@@ -204,7 +218,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       my $last = 0;
       for (my $i = 0; $i < @$got_barray; ++$i) {
         if ($i > 0 && $got_barray->[$i - 1] == '\r' && $got_barray->[$i] == '\n') {
-          my $line = (string)(sliceb($got_barray, $last, $i + 1 - $last));
           $got_list->push((string)(sliceb($got_barray, $last, $i + 1 - $last)));
           $last = $i + 1;
         }
@@ -220,11 +233,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     my $expected_list = SPVM::List->new;
     {
       my $used = SPVM::Hash->new;
-      for (my $i = 0; $i < @$RESERVED; ++$i) {
-        my $key = $RESERVED->[$i];
-        $expected_list->push($key . ": $val\r\n");
-        $used->set($key, 1);
-      }
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
         my $key = $REQUEST_HEADERS->[$i];
         unless ($used->exists($key)) {
@@ -242,6 +250,22 @@ package TestCase::Lib::SPVM::HTTP::Headers {
 
     unless (_test_bag_strarray($got_list->to_strarray, $expected_list->to_strarray)) {
       warn("Request Headers do not match.");
+      my $g = $got_list->to_strarray;
+      sorto($g, sub : int ($self : self, $l : object, $r : object) {
+        return (string)$l gt (string)$r;
+      });
+      print("got:\n");
+      for (my $i = 0; $i < @$g; ++$i) {
+        print("\t" . $g->[$i]);
+      }
+      print("\nexpected:\n");
+      my $e = $expected_list->to_strarray;
+      sorto($e, sub : int ($self : self, $l : object, $r : object) {
+        return (string)$l gt (string)$r;
+      });
+      for (my $i = 0; $i < @$e; ++$i) {
+        print("\t" . $e->[$i]);
+      }
       return 0;
     }
     return 1;
