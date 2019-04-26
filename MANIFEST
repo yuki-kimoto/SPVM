@@ -420,6 +420,7 @@ t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Encode.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Escape.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Parameters.spvm
 t/default/lib/TestCase/Lib/SPVM/Int.spvm
+t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Socket.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
