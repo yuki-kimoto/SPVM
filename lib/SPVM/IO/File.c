@@ -12,7 +12,7 @@
 
 static const char* MFILE = "SPVM/IO/File.c";
 
-int32_t SPNATIVE__SPVM__IO__File__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
   if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }

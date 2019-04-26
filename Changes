@@ -1,4 +1,4 @@
-0.0431 2018-04-26
+0.0431 2018-04-27
   - move time function to SPVM::Time module
     because time module need to define _XOPEN_SOURCE for thread safe portability on unix/linux and Windows/minGW
   - add Time::localtime, Time::gmtime
@@ -7,6 +7,8 @@
   - remove fread, fwrite, fopen ,fclose, fseek, fgets, fgets_chomp, slurp_file. Thease functions is moved to SPVM::IO::File
   - implement SPVM::IO::File
   - add chomp function
+  - remove gets_chomp
+  - rename gets to readline
 0.0430 2018-04-24
   - add SPVM::hash function
   - add SPVM::list function

@@ -23,7 +23,7 @@ package SPVM::IO::File {
   native sub write : int ($self: self, $buf : string);
   native sub seek : int ($self : self, $offset : long, $whence : int);
   
-  native sub gets : string ($self : self);
+  native sub readline : string ($self : self);
 
   sub slurp : string ($self : self, $file : string) {
     

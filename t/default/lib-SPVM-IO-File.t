@@ -41,43 +41,43 @@ TestFile::copy_test_files_tmp_replace_newline();
     ok(TestCase::Lib::SPVM::IO::File->test_write($sp_file));
   }
   
-  # gets
+  # readline
   {
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_while($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_while($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_eof($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_eof($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_long_line($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_long_line($sp_file));
     }
   }
   
-  # gets_chomp
+  # readline and chomp
   {
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_chomp($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_chomp_while($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_while($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_chomp_eof($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_eof($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_gets_chomp_long_line($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_long_line($sp_file));
     }
   }
 
