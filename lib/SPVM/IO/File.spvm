@@ -24,7 +24,6 @@ package SPVM::IO::File {
   native sub seek : int ($self : self, $offset : long, $whence : int);
   
   native sub gets : string ($self : self);
-  native sub gets_chomp : string ($self : self);
 
   sub slurp : string ($self : self, $file : string) {
     

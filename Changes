@@ -6,6 +6,7 @@
   - add strftime, strptime, mktime, timegm to SPVM::Time
   - remove fread, fwrite, fopen ,fclose, fseek, fgets, fgets_chomp, slurp_file. Thease functions is moved to SPVM::IO::File
   - implement SPVM::IO::File
+  - add chomp function
 0.0430 2018-04-24
   - add SPVM::hash function
   - add SPVM::list function

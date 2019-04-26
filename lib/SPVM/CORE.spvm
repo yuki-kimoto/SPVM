@@ -24,6 +24,7 @@ package SPVM::CORE {
     init_native_constants();
   }
   
+  native sub chomp : void ($string : string);
   native sub rand : int ($seed_ref : int&);
   
   precompile sub lc : string($str : string) {

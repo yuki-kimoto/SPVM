@@ -251,28 +251,32 @@ package TestCase::Lib::SPVM::IO::File {
     }
     
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "abcd") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line == undef) {
         return 0;
       }
@@ -287,7 +291,8 @@ package TestCase::Lib::SPVM::IO::File {
     }
     
     my $lstrings = list([]);
-    while (my $line = $fh->gets_chomp) {
+    while (my $line = $fh->gets) {
+      chomp($line);
       $lstrings->push($line);
     }
     my $strings = $lstrings->to_strarray;
@@ -306,35 +311,40 @@ package TestCase::Lib::SPVM::IO::File {
     }
     
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "abcd") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
     }
     
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line == undef) {
         return 0;
       }
@@ -349,28 +359,32 @@ package TestCase::Lib::SPVM::IO::File {
     }
     
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
     }
 
     {
-      my $line = $fh->gets_chomp;
+      my $line = $fh->gets;
+      chomp($line);
       unless ($line == undef) {
         return 0;
       }
