@@ -5,4 +5,5 @@ package SPVM::Time {
   native sub localtime : SPVM::Time::Info ($time : long);
   native sub gmtime : SPVM::Time::Info ($time : long);
   native sub strptime : SPVM::Time::Info ($str : string, $format : string);
+  native sub strftime : string ($format : string, $time_info : SPVM::Time::Info);
 }
