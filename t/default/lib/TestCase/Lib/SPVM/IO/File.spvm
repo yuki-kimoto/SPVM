@@ -99,9 +99,12 @@ package TestCase::Lib::SPVM::IO::File {
       }
     }
     
-    my $content = slurp_file($file);
-    unless ($content eq "abcd\nfg") {
-      return 0;
+    {
+      my $fh = SPVM::IO::File->open($file, "r");
+      my $content = $fh->slurp($file);
+      unless ($content eq "abcd\nfg") {
+        return 0;
+      }
     }
 
     return 1;
@@ -388,5 +391,4 @@ package TestCase::Lib::SPVM::IO::File {
     
     return 1;
   }
-
 }

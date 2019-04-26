@@ -227,16 +227,6 @@ package SPVM::CORE {
 
   native sub init_native_constants : void ();
 
-  native sub fgets_chomp : string ($fh : SPVM::FileHandle);
-  native sub fgets : string ($fh : SPVM::FileHandle);
-  
-  native sub fopen : SPVM::FileHandle ($file_name : string, $mode : string);
-  native sub fputc : int ($c : int, $fh : SPVM::FileHandle);
-  native sub fread : int ($buf : byte[], $fh : SPVM::FileHandle);
-  native sub fwrite : int ($buf : string, $fh : SPVM::FileHandle);
-  native sub fseek : int ($fh : SPVM::FileHandle, $offset : long, $whence : int);
-  native sub fclose : int ($fh : SPVM::FileHandle);
-  
   native sub strerror : string ($errno : int);
   
   precompile sub split : string[] ($sep : string, $string : string, $max : int) {
@@ -292,29 +282,6 @@ package SPVM::CORE {
     my $separated_strings = $separated_strings_list->to_strarray;
     
     return $separated_strings;
-  }
-  
-  sub slurp_file : string ($file : string) {
-    my $fh = fopen($file, "rb");
-    unless ($fh) {
-      die "Can't open file $file";
-    }
-    
-    my $buffer_length = 4096;
-    my $buffer = new byte[$buffer_length];
-    my $string = "";
-    while (1) {
-      my $read_length = fread($buffer, $fh);
-      
-      if ($read_length < $buffer_length) {
-        $string .= sliceb((byte[])$buffer, 0, $read_length);
-        last;
-      }
-      else {
-        $string .= $buffer;
-      }
-    }
-    return $string;
   }
   
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);

@@ -28,13 +28,11 @@ package SPVM::IO::File {
 
   sub slurp : string ($self : self, $file : string) {
     
-    my $fh = $self->fh;
-    
     my $buffer_length = 4096;
     my $buffer = new byte[$buffer_length];
     my $string = "";
     while (1) {
-      my $read_length = fread($buffer, $fh);
+      my $read_length = $self->read($buffer);
       
       if ($read_length < $buffer_length) {
         $string .= sliceb((byte[])$buffer, 0, $read_length);
