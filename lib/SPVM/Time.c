@@ -142,3 +142,27 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__SPVM__Time__mktime(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_time_info = stack[0].oval;
+  if (!obj_time_info) { SPVM_DIE("SPVM::Time::Info object must be defined", MFILE, __LINE__); }
+
+  struct tm resultp;
+
+  SPVM_IFIELD(env, resultp.tm_sec, obj_time_info, "SPVM::Time::Info", "sec", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_min, obj_time_info, "SPVM::Time::Info", "min", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_hour, obj_time_info, "SPVM::Time::Info", "hour", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_mday, obj_time_info, "SPVM::Time::Info", "mday", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_mon, obj_time_info, "SPVM::Time::Info", "mon", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_year, obj_time_info, "SPVM::Time::Info", "year", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_wday, obj_time_info, "SPVM::Time::Info", "wday", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_yday, obj_time_info, "SPVM::Time::Info", "yday", MFILE, __LINE__);
+  SPVM_IFIELD(env, resultp.tm_isdst, obj_time_info, "SPVM::Time::Info", "isdst", MFILE, __LINE__);
+  
+  int64_t ltime = (int64_t)mktime(&resultp);
+  
+  stack[0].lval = ltime;
+  
+  return SPVM_SUCCESS;
+}

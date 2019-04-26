@@ -7,7 +7,9 @@ package SPVM::Time {
   
   # Note: Time zone is not supported
   native sub strptime : SPVM::Time::Info ($str : string, $format : string);
-
+  
   # Note: Time zone is not supported
   native sub strftime : string ($format : string, $time_info : SPVM::Time::Info);
+  
+  native sub mktime : long ($time_info : SPVM::Time::Info);
 }

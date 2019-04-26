@@ -1,9 +1,9 @@
-0.0431 2018-04-25
+0.0431 2018-04-26
   - move time function to SPVM::Time module
     because time module need to set gnu99 for thread safe portability on unix/linux and Windows/minGW
   - add Time::localtime, Time::gmtime
   - add #define _XOPEN_SOURCE if needed
-  - add strftime, strptime to SPVM::Time
+  - add strftime, strptime, mktime to SPVM::Time
 0.0430 2018-04-24
   - add SPVM::hash function
   - add SPVM::list function

@@ -64,9 +64,14 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Time->test_strptime);
 }
 
-# strptime
+# strftime
 {
   ok(TestCase::Lib::SPVM::Time->test_strftime);
+}
+
+# strptime
+{
+  ok(TestCase::Lib::SPVM::Time->test_mktime);
 }
 
 # All object is freed
