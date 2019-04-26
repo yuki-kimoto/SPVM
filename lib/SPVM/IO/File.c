@@ -8,14 +8,14 @@
 static const char* MFILE = "SPVM/IO/File.c";
 
 int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
-  // File handle
-  void* ofh = stack[0].oval;
-  if (ofh == NULL) {
-    stack[0].oval = NULL;
-    return SPVM_SUCCESS;
-  }
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
   
-  void* fh = (FILE*)env->pointer(env, ofh);
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
 
   if (fh == NULL) {
     stack[0].oval = NULL;
@@ -25,8 +25,8 @@ int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t scope_id = env->enter_scope(env);
   
   int32_t capacity = 80;
-  void* obuffer = env->new_barray(env, capacity);
-  int8_t* buffer = env->belems(env, obuffer);
+  void* obj_buffer = env->new_barray(env, capacity);
+  int8_t* buffer = env->belems(env, obj_buffer);
   
   int32_t pos = 0;
   int32_t end_is_eof = 0;
@@ -40,15 +40,15 @@ int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_obuffer = env->new_barray(env, new_capacity);
-        int8_t* new_buffer = env->belems(env, new_obuffer);
+        void* new_obj_buffer = env->new_barray(env, new_capacity);
+        int8_t* new_buffer = env->belems(env, new_obj_buffer);
         memcpy(new_buffer, buffer, capacity);
 
-        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        int32_t removed = env->remove_mortal(env, scope_id, obj_buffer);
         assert(removed);
         
         capacity = new_capacity;
-        obuffer = new_obuffer;
+        obj_buffer = new_obj_buffer;
         buffer = new_buffer;
       }
       
@@ -83,14 +83,14 @@ int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
-  // File handle
-  void* ofh = stack[0].oval;
-  if (ofh == NULL) {
-    stack[0].oval = NULL;
-    return SPVM_SUCCESS;
-  }
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
   
-  void* fh = (FILE*)env->pointer(env, ofh);
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
 
   if (fh == NULL) {
     stack[0].oval = NULL;
@@ -100,8 +100,8 @@ int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t scope_id = env->enter_scope(env);
   
   int32_t capacity = 80;
-  void* obuffer = env->new_barray(env, capacity);
-  int8_t* buffer = env->belems(env, obuffer);
+  void* obj_buffer = env->new_barray(env, capacity);
+  int8_t* buffer = env->belems(env, obj_buffer);
   
   int32_t pos = 0;
   int32_t end_is_eof = 0;
@@ -115,15 +115,15 @@ int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_obuffer = env->new_barray(env, new_capacity);
-        int8_t* new_buffer = env->belems(env, new_obuffer);
+        void* new_obj_buffer = env->new_barray(env, new_capacity);
+        int8_t* new_buffer = env->belems(env, new_obj_buffer);
         memcpy(new_buffer, buffer, capacity);
         
-        int32_t removed = env->remove_mortal(env, scope_id, obuffer);
+        int32_t removed = env->remove_mortal(env, scope_id, obj_buffer);
         assert(removed);
         
         capacity = new_capacity;
-        obuffer = new_obuffer;
+        obj_buffer = new_obj_buffer;
         buffer = new_buffer;
       }
       
@@ -161,14 +161,15 @@ int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__CORE__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  // File handle
-  void* ofh = stack[0].oval;
-  if (ofh == NULL) {
-    stack[0].ival = EOF;
-    return SPVM_SUCCESS;
-  }
-  FILE* fh = (FILE*)env->pointer(env, ofh);
-
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
+  
   // Offset
   int64_t offset = stack[1].lval;
   
@@ -183,18 +184,20 @@ int32_t SPNATIVE__SPVM__CORE__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__CORE__close(SPVM_ENV* env, SPVM_VALUE* stack) {
-  // File handle
-  void* ofh = stack[0].oval;
-  if (ofh == NULL) {
-    stack[0].ival = EOF;
-    return SPVM_SUCCESS;
-  }
-  FILE* fh = (FILE*)env->pointer(env, ofh);
+
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
   
   if (fh) {
     int32_t ret = fclose(fh);
     
-    env->set_pointer(env, ofh, NULL);
+    env->set_pointer(env, obj_fh, NULL);
     
     stack[0].ival = ret;
   }
@@ -205,29 +208,29 @@ int32_t SPNATIVE__SPVM__CORE__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-
 int32_t SPNATIVE__SPVM__CORE__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
   
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
+
   // Buffer
-  void* obuffer = stack[0].oval;
-  if (obuffer == NULL) {
+  void* obj_buffer = stack[1].oval;
+  if (obj_buffer == NULL) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  char* buffer = (char*)env->belems(env, obuffer);
-  int32_t buffer_length = env->len(env, obuffer);
+  char* buffer = (char*)env->belems(env, obj_buffer);
+  int32_t buffer_length = env->len(env, obj_buffer);
   if (buffer_length == 0) {
     stack[0].ival = 0;
     return SPVM_SUCCESS;
   }
-  
-  // File handle
-  void* ofh = stack[1].oval;
-  if (ofh == NULL) {
-    stack[0].ival = EOF;
-    return SPVM_SUCCESS;
-  }
-  FILE* fh = (FILE*)env->pointer(env, ofh);
   
   int32_t read_length = fread(buffer, 1, buffer_length, fh);
   
@@ -238,22 +241,23 @@ int32_t SPNATIVE__SPVM__CORE__read(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__CORE__write(SPVM_ENV* env, SPVM_VALUE* stack) {
 
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
+
   // Buffer
-  void* obuffer = stack[0].oval;
-  if (obuffer == NULL) {
+  void* obj_buffer = stack[1].oval;
+  if (obj_buffer == NULL) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  char* buffer = (char*)env->belems(env, obuffer);
-  int32_t length = env->len(env, obuffer);
-  
-  // File handle
-  void* ofh = stack[1].oval;
-  if (ofh == NULL) {
-    stack[0].ival = EOF;
-    return SPVM_SUCCESS;
-  }
-  FILE* fh = (FILE*)env->pointer(env, ofh);
+  char* buffer = (char*)env->belems(env, obj_buffer);
+  int32_t length = env->len(env, obj_buffer);
   
   int32_t read_length = fwrite(buffer, 1, length, fh);
   
@@ -263,20 +267,21 @@ int32_t SPNATIVE__SPVM__CORE__write(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__CORE__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
   
   // Char
-  int32_t ch = stack[0].ival;
+  char ch = (char)stack[0].bval;
   
-  // File handle
-  void* ofh = stack[1].oval;
-  if (ofh == NULL) {
-    stack[0].ival = EOF;
-    return SPVM_SUCCESS;
-  }
   
-  void* fh = (FILE*)env->pointer(env, ofh);
-  
-  int32_t ret = fputc(ch, ofh);
+  int32_t ret = fputc(ch, obj_fh);
   
   stack[0].ival = ret;
 
@@ -362,9 +367,9 @@ int32_t SPNATIVE__SPVM__CORE__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_NEW_OBJ(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
   
   if (fh) {
-    void* obj_file_handle;
-    SPVM_NEW_POINTER(env, obj_file_handle, "SPVM::FileHandle", fh, MFILE, __LINE__);
-    SPVM_SET_OFIELD(env, obj_io_file, "SPVM::IO::File", "handle", "SPVM::FileHandle", obj_file_handle, MFILE, __LINE__);
+    void* obj_fh;
+    SPVM_NEW_POINTER(env, obj_fh, "SPVM::FileHandle", fh, MFILE, __LINE__);
+    SPVM_SET_OFIELD(env, obj_io_file, "SPVM::IO::File", "fh", "SPVM::FileHandle", obj_fh, MFILE, __LINE__);
     
     stack[0].oval = obj_io_file;
   }
