@@ -375,4 +375,18 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
+  sub test_slurp : int ($file : string) {
+    {
+      my $fh = SPVM::IO::File->open($file, "r");
+      
+      my $string = $fh->slurp($file);
+      
+      unless ($string eq "abcd\nfghi\nklm\n") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
 }

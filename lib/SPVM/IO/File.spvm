@@ -14,7 +14,7 @@ package SPVM::IO::File {
   native sub STDIN : int();
   native sub STDOUT : int();
   
-  has fh : SPVM::FileHandle;
+  has fh : ro SPVM::FileHandle;
   
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
   native sub close : int ($self : self);
@@ -25,4 +25,25 @@ package SPVM::IO::File {
   
   native sub gets : string ($self : self);
   native sub gets_chomp : string ($self : self);
+
+  sub slurp : string ($self : self, $file : string) {
+    
+    my $fh = $self->fh;
+    
+    my $buffer_length = 4096;
+    my $buffer = new byte[$buffer_length];
+    my $string = "";
+    while (1) {
+      my $read_length = fread($buffer, $fh);
+      
+      if ($read_length < $buffer_length) {
+        $string .= sliceb((byte[])$buffer, 0, $read_length);
+        last;
+      }
+      else {
+        $string .= $buffer;
+      }
+    }
+    return $string;
+  }
 }
