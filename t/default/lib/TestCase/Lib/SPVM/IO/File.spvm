@@ -1,0 +1,378 @@
+package TestCase::Lib::SPVM::IO::File {
+  use SPVM::IO::File;
+
+  sub test_open : int ($file : string) {
+    {
+      my $fh = SPVM::IO::File->open($file, "r");
+      unless ($fh) {
+        return 0;
+      }
+    }
+    
+    {
+      eval {
+        SPVM::IO::File->open($file, "ppp");
+      };
+      
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub test_close : int ($file : string) {
+    {
+      my $fh = SPVM::IO::File->open($file, "r");
+      unless ($fh) {
+        return 0;
+      }
+      my $ret = $fh->close;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_read : int ($file : string) {
+    {
+      my $fh = SPVM::IO::File->open($file, "r");
+      unless ($fh) {
+        die "Can't open file $file";
+      }
+      
+      my $buffer = new byte[5];
+      {
+        my $read_length = $fh->read($buffer);
+        unless ($buffer eq "abcd\n") {
+          return 0;
+        }
+        unless ($read_length == 5) {
+          return 0;
+        }
+      }
+      
+      {
+        my $read_length = $fh->read($buffer);
+        unless ($buffer eq "fghi\n") {
+          return 0;
+        }
+        unless ($read_length == 5) {
+          return 0;
+        }
+      }
+      {
+        my $read_length = $fh->read($buffer);
+        unless (sliceb($buffer, 0, 4) eq "klm\n") {
+          return 0;
+        }
+        unless ($read_length == 4) {
+          return 0;
+        }
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_write : int ($file : string) {
+    {
+      my $fh = SPVM::IO::File->open($file, "w");
+      unless ($fh) {
+        die "Can't open file $file";
+      }
+      {
+        my $write_length = $fh->write("abcd\n");
+        unless ($write_length == 5) {
+          return 0;
+        }
+      }
+      {
+        my $write_length = $fh->write("fg");
+        unless ($write_length == 2) {
+          return 0;
+        }
+      }
+    }
+    
+    my $content = slurp_file($file);
+    unless ($content eq "abcd\nfg") {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_gets : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets;
+      unless ($line eq "abcd\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "klm\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_gets_while : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    my $lstrings = list([]);
+    while (my $line = $fh->gets) {
+      $lstrings->push($line);
+    }
+    my $strings = $lstrings->to_strarray;
+    
+    unless (equals_strarray($strings, ["abcd\n", "fghi\n", "klm\n"])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_gets_eof : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets;
+      unless ($line eq "abcd\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+    
+    {
+      my $line = $fh->gets;
+      unless ($line eq "\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_gets_long_line : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets;
+      unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "fghi\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line eq "klm\n") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_gets_chomp : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "abcd") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_gets_chomp_while : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    my $lstrings = list([]);
+    while (my $line = $fh->gets_chomp) {
+      $lstrings->push($line);
+    }
+    my $strings = $lstrings->to_strarray;
+    
+    unless (equals_strarray($strings, ["abcd", "fghi", "klm"])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_gets_chomp_eof : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "abcd") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+    
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_gets_chomp_long_line : int ($file : string) {
+    my $fh = SPVM::IO::File->open($file, "r");
+    unless ($fh) {
+      die "Can't open file $file";
+    }
+    
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "fghi") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line eq "klm") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = $fh->gets_chomp;
+      unless ($line == undef) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+}

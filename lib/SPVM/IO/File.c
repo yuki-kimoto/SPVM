@@ -1,13 +1,18 @@
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+#endif
+
 #include "spvm_native.h"
 
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+#include <errno.h>
 
 static const char* MFILE = "SPVM/IO/File.c";
 
-int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
   if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
@@ -82,7 +87,7 @@ int32_t SPNATIVE__SPVM__CORE__gets_chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
   if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
@@ -159,7 +164,7 @@ int32_t SPNATIVE__SPVM__CORE__gets(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Self
   void* obj_self = stack[0].oval;
@@ -183,7 +188,7 @@ int32_t SPNATIVE__SPVM__CORE__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__close(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__close(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Self
   void* obj_self = stack[0].oval;
@@ -208,7 +213,7 @@ int32_t SPNATIVE__SPVM__CORE__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Self
   void* obj_self = stack[0].oval;
@@ -239,7 +244,7 @@ int32_t SPNATIVE__SPVM__CORE__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__write(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Self
   void* obj_self = stack[0].oval;
@@ -266,7 +271,7 @@ int32_t SPNATIVE__SPVM__CORE__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // Self
   void* obj_self = stack[0].oval;
@@ -288,15 +293,15 @@ int32_t SPNATIVE__SPVM__CORE__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__open(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // File name
-  void* ofile_name = stack[0].oval;
-  if (ofile_name == NULL) {
+  void* obj_file_name = stack[0].oval;
+  if (obj_file_name == NULL) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  const char* file_name = (const char*)env->belems(env, ofile_name);
+  const char* file_name = (const char*)env->belems(env, obj_file_name);
   
   // Mode
   void* omode = stack[1].oval;
@@ -357,16 +362,15 @@ int32_t SPNATIVE__SPVM__CORE__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     valid_mode = 0;
   }
   if (!valid_mode) {
-    stack[0].oval = NULL;
-    return SPVM_SUCCESS;
+    SPVM_DIE("Invalid open mode", MFILE, __LINE__);
   }
   
   FILE* fh = fopen(file_name, mode);
-  
-  void* obj_io_file;
-  SPVM_NEW_OBJ(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
-  
+
   if (fh) {
+    void* obj_io_file;
+    SPVM_NEW_OBJ(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
+
     void* obj_fh;
     SPVM_NEW_POINTER(env, obj_fh, "SPVM::FileHandle", fh, MFILE, __LINE__);
     SPVM_SET_OFIELD(env, obj_io_file, "SPVM::IO::File", "fh", "SPVM::FileHandle", obj_fh, MFILE, __LINE__);
@@ -374,13 +378,15 @@ int32_t SPNATIVE__SPVM__CORE__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = obj_io_file;
   }
   else {
-    stack[0].oval = NULL;
+    char errstr[32];
+    strerror_r(errno, errstr, 32);
+    SPVM_DIE("Can't open file \"%s\": %s", file_name, errstr, MFILE, __LINE__);
   }
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_RDONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_RDONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_RDONLY
   stack[0].ival = O_RDONLY;
 #else
@@ -390,7 +396,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_RDONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_WRONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_WRONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_WRONLY
   stack[0].ival = O_WRONLY;
 #else
@@ -400,7 +406,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_WRONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_RDWR(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_RDWR(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_RDWR
   stack[0].ival = O_RDWR;
 #else
@@ -410,7 +416,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_RDWR(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_APPEND(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_APPEND(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_APPEND
   stack[0].ival = O_APPEND;
 #else
@@ -420,7 +426,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_APPEND(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_CREAT(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_CREAT(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_CREAT
   stack[0].ival = O_CREAT;
 #else
@@ -430,7 +436,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_CREAT(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__O_TRUNC(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__O_TRUNC(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef O_TRUNC
   stack[0].ival = O_TRUNC;
 #else
@@ -440,7 +446,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__O_TRUNC(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__SEEK_SET(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__SEEK_SET(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef SEEK_SET
   stack[0].ival = SEEK_SET;
 #else
@@ -450,7 +456,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__SEEK_SET(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__SEEK_CUR(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__SEEK_CUR(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef SEEK_CUR
   stack[0].ival = SEEK_CUR;
 #else
@@ -460,7 +466,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__SEEK_CUR(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__SEEK_END(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__SEEK_END(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef SEEK_END
   stack[0].ival = SEEK_END;
 #else
@@ -470,7 +476,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__SEEK_END(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__EOF(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__EOF(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef EOF
   stack[0].ival = EOF;
 #else
@@ -480,7 +486,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__EOF(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef STDIN
   stack[0].ival = STDIN;
 #else
@@ -490,7 +496,7 @@ int32_t SPNATIVE__SPVM__IO__FILE__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__FILE__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__File__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef STDOUT
   stack[0].ival = STDOUT;
 #else
