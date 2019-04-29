@@ -2292,8 +2292,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
-                  return;
+                  // Variable is package var
+                  SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var);
+                  SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_package_var_access, package->op_package);
+                  if (op_package_var_access->uv.package_var_access->package_var) {
+                    
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                    return;
+                  }
                 }
               }
               
