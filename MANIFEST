@@ -313,6 +313,7 @@ t/default/if.t
 t/default/increment.t
 t/default/inline.t
 t/default/isa.t
+t/default/lexical-var.t
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Add.spvm
 t/default/lib/TestCase/Allow.spvm
@@ -405,6 +406,7 @@ t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/JSON.spvm
 t/default/lib/TestCase/JSON/Bool.spvm
+t/default/lib/TestCase/LexicalVar.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/CORE.c
 t/default/lib/TestCase/Lib/SPVM/CORE.config
@@ -474,7 +476,6 @@ t/default/lib/TestCase/UnaryMinus.spvm
 t/default/lib/TestCase/UnaryPlus.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/ValueTArray.spvm
-t/default/lib/TestCase/Var.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/While.spvm
 t/default/literal-character.t
@@ -504,7 +505,6 @@ t/default/unary-minus.t
 t/default/unary-plus.t
 t/default/unless.t
 t/default/value_t_array.t
-t/default/var.t
 t/default/weaken.t
 t/default/while.t
 t/exe/exe.t
