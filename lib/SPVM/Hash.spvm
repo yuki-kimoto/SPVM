@@ -165,7 +165,7 @@ package SPVM::Hash {
   sub delete : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
-    my $prev: SPVM::HashEntry = undef;
+    my $prev : SPVM::HashEntry = undef;
     unless ($ref) {
       return undef;
     }
