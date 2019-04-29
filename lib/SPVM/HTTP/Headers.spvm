@@ -11,10 +11,9 @@ package SPVM::HTTP::Headers {
   has content_type      : ro string;
   has content_length    : ro int;
   has content_encoding  : ro string;
-  has cookies           : ro SPVM::HTTP::Cookies;
   has extra             : SPVM::Hash;
 
-  our $HEADER_CASE : SPVM::Hash;
+  our $HEADER_CASE : ro SPVM::Hash;
 
   BEGIN {
     $HEADER_CASE = SPVM::Hash->new;
@@ -93,8 +92,6 @@ package SPVM::HTTP::Headers {
           }
         } elsif ($k eq "content-encoding" || $k eq "content_encoding") {
           $self->{content_encoding} = to_s($v);
-        } elsif ($k eq "cookies") {
-          $self->{cookies} = (SPVM::HTTP::Cookies)$v;
         } elsif ($k eq "cookie") {
           warn("Cookie header option is not implemented yet. Ignored.");
         } elsif ($k eq "set-cookie" || $k eq "set_cookie") {
@@ -171,12 +168,6 @@ package SPVM::HTTP::Headers {
         }
         elsif ($key eq "content-encoding" || $key eq "content_encoding") {
           return $self->{content_encoding};
-        }
-        elsif ($key eq "cookie") {
-          die "get(\"Cookie\") is not allowed. Use cookies field instead.";
-        }
-        elsif ($key eq "set-cookie" || $key eq "set_cookie") {
-          die "get(\"Set-Cookie\") is not implemented yet.";
         }
         last;
       case 105: #'i':
