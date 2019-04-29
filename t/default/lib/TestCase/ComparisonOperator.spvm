@@ -1,5 +1,5 @@
 package TestCase::ComparisonOperator {
-  use TestCase;
+  use TestCase::Minimal;
   
   sub string_eq : int () {
     my $string = "abc";
@@ -445,7 +445,7 @@ package TestCase::ComparisonOperator {
   }
 
   sub bool_true_object : int () {
-    if (TestCase->new) {
+    if (TestCase::Minimal->new) {
       return 1;
     }
     
@@ -570,7 +570,7 @@ package TestCase::ComparisonOperator {
   
   # eq 
   sub numeric_eq_undef  : int () {
-    my $test_case : TestCase = undef;
+    my $test_case : TestCase::Minimal = undef;
     
     if (undef == undef) {
       if ($test_case == undef) {
@@ -708,7 +708,7 @@ package TestCase::ComparisonOperator {
   
   sub numeric_eq_object_same  : int () {
     
-    my $obj1 = TestCase->new;
+    my $obj1 = TestCase::Minimal->new;
     
     if ($obj1 == $obj1) {
       return 1;
@@ -719,8 +719,8 @@ package TestCase::ComparisonOperator {
   }
 
   sub numeric_eq_object_different  : int () {
-    my $obj1 = TestCase->new;
-    my $obj2 = TestCase->new;
+    my $obj1 = TestCase::Minimal->new;
+    my $obj2 = TestCase::Minimal->new;
     
     if ($obj1 == $obj2) {
       return 0;
@@ -732,7 +732,7 @@ package TestCase::ComparisonOperator {
 
   # If a != b
   sub numeric_ne_undef  : int () {
-    my $test_case : TestCase = TestCase->new;
+    my $test_case : TestCase::Minimal = TestCase::Minimal->new;
     
     if (undef != undef) {
     
@@ -869,7 +869,7 @@ package TestCase::ComparisonOperator {
   
   sub numeric_ne_object_same  : int () {
     
-    my $obj1 = TestCase->new;
+    my $obj1 = TestCase::Minimal->new;
     
     if ($obj1 != $obj1) {
       return 0;
@@ -880,8 +880,8 @@ package TestCase::ComparisonOperator {
   }
 
   sub numeric_ne_object_different  : int () {
-    my $obj1 = TestCase->new;
-    my $obj2 = TestCase->new;
+    my $obj1 = TestCase::Minimal->new;
+    my $obj2 = TestCase::Minimal->new;
     
     if ($obj1 != $obj2) {
       return 1;
