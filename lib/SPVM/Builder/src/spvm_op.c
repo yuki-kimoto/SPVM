@@ -2610,6 +2610,10 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     call_sub->op_invocant = op_invocant;
     call_sub->op_name = op_name_sub;
     
+    if (op_invocant->id == SPVM_OP_C_ID_VAR) {
+      op_invocant->uv.var->call_sub = call_sub;
+    }
+    
     SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
   }
   // Class method call

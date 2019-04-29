@@ -2278,8 +2278,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, op_term_invoker, op_name_field);
                   op_field_access->uv.field_access->field = found_capture_field;
 
-                  
                   op_field_access->is_lvalue = op_cur->is_lvalue;
+                  op_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
+                  op_field_access->is_passed_to_sub = op_cur->is_passed_to_sub;
+                  if (op_cur->uv.var->call_sub) {
+                    op_cur->uv.var->call_sub->op_invocant = op_field_access;
+                  }
                   
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   SPVM_OP_replace_op(compiler, op_stab, op_field_access);
@@ -2295,14 +2299,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Variable is package var
                   SPVM_OP* op_name_package_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->op_name->uv.name, op_cur->file, op_cur->line);
                   SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var);
+                  
+                  op_package_var_access->is_lvalue = op_cur->is_lvalue;
+                  op_package_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
+                  op_package_var_access->is_passed_to_sub = op_cur->is_passed_to_sub;
+                  if (op_cur->uv.var->call_sub) {
+                    op_cur->uv.var->call_sub->op_invocant = op_package_var_access;
+                  }
+
                   SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_package_var_access, package->op_package);
                   if (op_package_var_access->uv.package_var_access->package_var) {
+                    
                     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                     SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
+
+                    op_cur = op_package_var_access;
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
-                    
-                    op_cur = op_package_var_access;
+                    if (compiler->error_count > 0) {
+                      return;
+                    }
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);

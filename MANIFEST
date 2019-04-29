@@ -210,6 +210,8 @@ README
 script/spvmcc
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Allow.spvm
+solo/lib/TestCase/Callback1.spvm
+solo/lib/TestCase/Callback2.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/ComparatorAnon.spvm
 solo/lib/TestCase/ComplexCalc.spvm
@@ -219,11 +221,9 @@ solo/lib/TestCase/EnumA.spvm
 solo/lib/TestCase/EnumB.spvm
 solo/lib/TestCase/EnumC.spvm
 solo/lib/TestCase/EnumD.spvm
-solo/lib/TestCase/ImplementInterface1.spvm
-solo/lib/TestCase/ImplementInterface2.spvm
+solo/lib/TestCase/ImplementCallback1.spvm
+solo/lib/TestCase/ImplementCallback2.spvm
 solo/lib/TestCase/Inline.spvm
-solo/lib/TestCase/Interface1.spvm
-solo/lib/TestCase/Interface2.spvm
 solo/lib/TestCase/List.spvm
 solo/lib/TestCase/Minimal.spvm
 solo/lib/TestCase/Point_3b.spvm

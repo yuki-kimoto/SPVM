@@ -20,7 +20,7 @@
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
-%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
+%token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
 %token <opval> RETURN WEAKEN DIE CURRENT_PACKAGE UNWEAKEN '[' '{' '('
@@ -39,7 +39,7 @@
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
-%type <opval> my_var var package_var_access
+%type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
@@ -257,7 +257,7 @@ enumeration_value
     }
 
 our
-  : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
+  : OUR VAR_NAME ':' opt_descriptors type
     {
       $$ = SPVM_OP_build_our(compiler, $1, $2, $4, $5);
     }
@@ -600,7 +600,6 @@ opt_expression
 expression
   : var
   | EXCEPTION_VAR
-  | package_var_access
   | CONSTANT
   | UNDEF
   | call_sub
@@ -1017,12 +1016,6 @@ var
   : VAR_NAME
     {
       $$ = SPVM_OP_build_var(compiler, $1);
-    }
-
-package_var_access
-  : PACKAGE_VAR_NAME
-    {
-      $$ = SPVM_OP_build_package_var_access(compiler, $1);
     }
 
 type

@@ -1051,13 +1051,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             // Package variable
-            if (isupper(var_name[1]) || strstr(var_name, "::")) {
-              return PACKAGE_VAR_NAME;
-            }
-            // Lexical variable
-            else {
-              return VAR_NAME;
-            }
+            return VAR_NAME;
           }
         }
         // Number Literal
