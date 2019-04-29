@@ -2297,7 +2297,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var);
                   SPVM_OP_CHECKER_resolve_package_var_access(compiler, op_package_var_access, package->op_package);
                   if (op_package_var_access->uv.package_var_access->package_var) {
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    SPVM_OP_replace_op(compiler, op_stab, op_package_var_access);
                     
+                    SPVM_OP_CHECKER_check_tree(compiler, op_package_var_access, check_ast_info);
+                    
+                    op_cur = op_package_var_access;
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
@@ -4796,6 +4801,9 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
 
 void SPVM_OP_CHECKER_resolve_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_access, SPVM_OP* op_current_package) {
   
+  if (op_package_var_access->uv.package_var_access->package_var) {
+    return;
+  }
   assert(op_package_var_access->uv.package_var_access);
   
   SPVM_OP* op_name = op_package_var_access->uv.package_var_access->op_name;
