@@ -4,6 +4,11 @@ package TestCase::Callback {
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
   use SPVM::Comparator;
+  
+  our $var_prec : int;
+  BEGIN {
+    $var_prec = 5;
+  }
 
   sub capture : int () {
     my $capture1 = 7;
@@ -17,6 +22,22 @@ package TestCase::Callback {
     
     my $total = $anon_sub->();
     unless ($total == 17) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub capture_var_high_precidence_than_package_var : int () {
+  
+    my $var_prec = 13;
+  
+    my $cb = [$var_prec : int] sub : int ($self : self) {
+
+      return $var_prec;
+    };
+    
+    unless ($cb->() == 13) {
       return 0;
     }
     

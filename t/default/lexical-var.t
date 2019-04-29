@@ -16,6 +16,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::LexicalVar->var_brace);
   ok(TestCase::LexicalVar->var_expansion);
   ok(TestCase::LexicalVar->lexical_var_upper_case);
+  ok(TestCase::LexicalVar->lexical_var_high_precidence_than_package_var);
+  ok(TestCase::LexicalVar->lexical_var_high_precidence_than_capture_var);
 }
 
 # All object is freed
