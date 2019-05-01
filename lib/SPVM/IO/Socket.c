@@ -4,13 +4,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#ifdef _WIN32
-
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-#else
-
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -19,10 +12,22 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#endif
-
 // Module file name
 static const char* MFILE = "SPVM/IO/Socket.c";
+
+int32_t SPNATIVE__SPVM__IO__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  int32_t handle;
+  SPVM_IFIELD(env, handle, obj_self, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
+  
+  stack[0].ival = handle;
+
+  return SPVM_SUCCESS;
+}
 
 int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   

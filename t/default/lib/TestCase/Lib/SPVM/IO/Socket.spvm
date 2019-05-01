@@ -28,4 +28,22 @@ package TestCase::Lib::SPVM::IO::Socket {
     
     return 1;
   }
+
+  sub fileno : int () {
+
+    # Socket
+    my $host = "google.com";
+    my $port = 80;
+    my $socket = SPVM::IO::Socket->new($host, $port);
+    
+    my $fileno = $socket->fileno;
+    
+    unless ($fileno == 3) {
+      return 0;
+    }
+    
+    
+    return 1;
+  }
+
 }
