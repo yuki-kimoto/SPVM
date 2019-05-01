@@ -523,28 +523,31 @@ new_barray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length;
+    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_barray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int8_t* elems = env->belems(env, array);
+    memcpy(elems, binary, array_length);
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length;
-  int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_barray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int8_t* elems = env->belems(env, array);
-  memcpy(elems, binary, array_length);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    warn("AAAAAAAAAA");
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -641,28 +644,30 @@ new_sarray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int16_t);
+    int16_t* binary = (int16_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_sarray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int16_t* elems = env->selems(env, array);
+    memcpy(elems, binary, array_length * sizeof(int16_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length / sizeof(int16_t);
-  int16_t* binary = (int16_t*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_sarray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int16_t* elems = env->selems(env, array);
-  memcpy(elems, binary, array_length * sizeof(int16_t));
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -725,28 +730,30 @@ new_iarray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int32_t);
+    int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_iarray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int32_t* elems = env->ielems(env, array);
+    memcpy(elems, binary, array_length * sizeof(int32_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length / sizeof(int32_t);
-  int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_iarray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int32_t* elems = env->ielems(env, array);
-  memcpy(elems, binary, array_length * sizeof(int32_t));
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -810,28 +817,30 @@ new_larray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int64_t);
+    int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_larray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    int64_t* elems = env->lelems(env, array);
+    memcpy(elems, binary, array_length * sizeof(int64_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length / sizeof(int64_t);
-  int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_larray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  int64_t* elems = env->lelems(env, array);
-  memcpy(elems, binary, array_length * sizeof(int64_t));
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -895,28 +904,30 @@ new_farray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(float);
+    float* binary = (float*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_farray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    float* elems = env->felems(env, array);
+    memcpy(elems, binary, array_length * sizeof(float));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length / sizeof(float);
-  float* binary = (float*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_farray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  float* elems = env->felems(env, array);
-  memcpy(elems, binary, array_length * sizeof(float));
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -960,7 +971,7 @@ new_darray(...)
       }
     }
     
-    // New sv array
+    // sv array
     sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
   else {
@@ -979,28 +990,30 @@ new_darray_from_bin(...)
   SV* sv_env = ST(0);
   SV* sv_binary = ST(1);
   
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(double);
+    double* binary = (double*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_darray_raw(env, array_length);
+
+    // Increment reference count
+    env->inc_ref_count(env, array);
+
+    double* elems = env->delems(env, array);
+    memcpy(elems, binary, array_length * sizeof(double));
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
-  
-  int32_t binary_length = sv_len(sv_binary);
-  int32_t array_length = binary_length / sizeof(double);
-  double* binary = (double*)SvPV_nolen(sv_binary);
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // New array
-  void* array = env->new_darray_raw(env, array_length);
-
-  // Increment reference count
-  env->inc_ref_count(env, array);
-
-  double* elems = env->delems(env, array);
-  memcpy(elems, binary, array_length * sizeof(double));
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  else {
+    sv_array = &PL_sv_undef;
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);

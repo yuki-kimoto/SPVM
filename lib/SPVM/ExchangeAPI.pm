@@ -48,7 +48,6 @@ sub new_str {
   return SPVM::ExchangeAPI::new_str_from_bin($env, $bin);
 }
 
-
 sub new_oarray {
   my ($env, $type_name, $elems) = @_;
   
@@ -68,6 +67,10 @@ sub new_oarray {
   }
   unless (defined $basic_type_name) {
     confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_oarray)";
+  }
+  
+  unless (defined $elems) {
+    return undef;
   }
   
   # Check second argument
@@ -103,6 +106,10 @@ sub new_varray {
   unless (defined $basic_type_name) {
     confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray)";
   }
+
+  unless (defined $elems) {
+    return undef;
+  }
   
   # Check second argument
   unless (ref $elems eq 'ARRAY') {
@@ -131,6 +138,10 @@ sub new_varray_from_bin {
   }
   unless (defined $basic_type_name) {
     confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray_from_bin)";
+  }
+
+  unless (defined $elems) {
+    return undef;
   }
   
   SPVM::ExchangeAPI::_new_varray_from_bin($env, $basic_type_name, $elems);
