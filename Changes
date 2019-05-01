@@ -1,3 +1,6 @@
+0.0433 2018-05-01
+  - Change IO::File::write, IO::Socket::write to 
+      sub write : int ($self : self, $buffer : string, $legnth : int);
 0.0432 2018-04-29
   - Allow lower case package variable name and allow upper case lexical variable name
     This is same implementation as Perl

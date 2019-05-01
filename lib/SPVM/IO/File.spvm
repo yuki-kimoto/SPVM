@@ -20,7 +20,7 @@ package SPVM::IO::File {
   native sub close : int ($self : self);
   native sub putc : int ($self : self, $c : byte);
   native sub read : int ($self : self, $buf : byte[]);
-  native sub write : int ($self: self, $buf : string);
+  native sub write : int ($self : self, $buffer : string, $legnth : int);
   native sub seek : int ($self : self, $offset : long, $whence : int);
   
   native sub fileno : int ($self : self);

@@ -199,6 +199,8 @@ int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
   void* fh = (FILE*)env->pointer(env, obj_fh);
 
+  int32_t length = stack[2].ival;
+
   // Buffer
   void* obj_buffer = stack[1].oval;
   if (obj_buffer == NULL) {
@@ -206,7 +208,6 @@ int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   char* buffer = (char*)env->belems(env, obj_buffer);
-  int32_t length = env->len(env, obj_buffer);
   
   int32_t read_length = fwrite(buffer, 1, length, fh);
   

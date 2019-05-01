@@ -100,13 +100,15 @@ package TestCase::Lib::SPVM::IO::File {
         die "Can't open file $file";
       }
       {
-        my $write_length = $fh->write("abcd\n");
+        my $str = "abcd\n";
+        my $write_length = $fh->write($str, length $str);
         unless ($write_length == 5) {
           return 0;
         }
       }
       {
-        my $write_length = $fh->write("fg");
+        my $str = "fg";
+        my $write_length = $fh->write($str, length $str);
         unless ($write_length == 2) {
           return 0;
         }
