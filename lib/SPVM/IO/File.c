@@ -20,7 +20,7 @@ int32_t SPNATIVE__SPVM__IO__File__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
 
   if (fh == NULL) { SPVM_DIE("File handle must be defined", MFILE, __LINE__); }
   
@@ -39,7 +39,7 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
 
   if (fh == NULL) {
     stack[0].oval = NULL;
@@ -117,7 +117,7 @@ int32_t SPNATIVE__SPVM__IO__File__seek(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
   
   // Offset
   int64_t offset = stack[1].lval;
@@ -141,7 +141,7 @@ int32_t SPNATIVE__SPVM__IO__File__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
   
   if (fh) {
     int32_t ret = fclose(fh);
@@ -166,7 +166,7 @@ int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
 
   // Buffer
   void* obj_buffer = stack[1].oval;
@@ -197,7 +197,7 @@ int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
 
   int32_t length = stack[2].ival;
 
@@ -225,7 +225,7 @@ int32_t SPNATIVE__SPVM__IO__File__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File fh
   void* obj_fh;
   SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
-  void* fh = (FILE*)env->pointer(env, obj_fh);
+  FILE* fh = (FILE*)env->pointer(env, obj_fh);
   
   // Char
   char ch = (char)stack[0].bval;
