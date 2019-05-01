@@ -83,8 +83,9 @@
         <li><a href="#exchange-api-perl-binary-to-spvm-short-array">Perlのバイナリ列をSPVMのshort[]型に変換 - SPVM::new_sarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-int-array">Perlのバイナリ列をSPVMのint[]型に変換 - SPVM::new_iarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-long-array">Perlのバイナリ列をSPVMのlong[]型に変換 - SPVM::new_larray_from_bin</a></li>
-        <li><a href="#exchange-api-perl-binary-to-spvm-float-array">Perlのバイナリ列をSPVMのfloat[]型に変換 - SPVM::new_farray_from_bin</a></li>
+        <li><a href="#exchange-api-perl-binary-to-spvm-float-array">Perlのバイナリ列をSPVMのfloat[]型に変換 - SPVM::new_barray_from_str</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-double-array">Perlのバイナリ列をSPVMのdouble[]型に変換 - SPVM::new_darray_from_bin</a></li>
+        <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_bin</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-array-ref-to-SPVM-List">Perlの配列リファレンスをSPVMのSPVM::List型に変換 - SPVM::list</a></li>
       </ul>
@@ -447,6 +448,27 @@ my $spvm_double_array = SPVM::new_darray_from_bin($perl_binary);
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
 
+      <h3 id="exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</h3>
+      <p>
+        Perlの文字列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
+      </p>
+<pre>
+use utf8;
+my $spvm_byte_array = SPVM::new_barray_from_str("あいうえお");
+</pre>
+      <p>
+        第一引数にPerlの文字列を受け取ります。
+      </p>
+      <p>
+        長さは、UTF-8として、バイト列を数えた場合の長さになります。
+      </p>
+      <p>
+        戻り値は、SPVMの「byte[]」型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        第一引数が未定義値だった場合は、未定義値が返ります。
+      </p>
+
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <p>
         その他のユーティリティです。
@@ -480,11 +502,15 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 }
 </pre>
 
+      <h2 id="exchange-api-faq">FAQ</h2>
+      
+      <h3 id="exchange-api-faq-convert-string">SPVMのstring型に変換するにはどうすればよいですか</h3>
+      <p>
+        SPVMのstring型は、実行時にはbyte[]型になります。ですので、byte[]型に変換する変換を利用してください。
+      </p>
+
 <!--
 <pre>
-=head2 hash
-
-=head2 list
 
 =head2 memory_blocks_count(済み)
 
@@ -492,7 +518,7 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 new_barray_from_bin(済み)
 
-=head2 new_barray_from_str
+=head2 new_barray_from_str(済み)
 
 =head2 new_darray(済み)
 
@@ -512,9 +538,9 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 new_oarray
 
-=head2 new_sarray
+=head2 new_sarray(済み)
 
-=head2 new_sarray_from_bin
+=head2 new_sarray_from_bin(済み)
 
 =head2 new_str
 
@@ -523,6 +549,10 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 =head2 new_varray
 
 =head2 new_varray_from_bin
+
+=head2 hash
+
+=head2 list
 
 =head2 set_exception_undef
 
