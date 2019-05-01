@@ -92,10 +92,6 @@ package SPVM::HTTP::Headers {
           }
         } elsif ($k eq "content-encoding" || $k eq "content_encoding") {
           $self->{content_encoding} = to_s($v);
-        } elsif ($k eq "cookie") {
-          warn("Cookie header option is not implemented yet. Ignored.");
-        } elsif ($k eq "set-cookie" || $k eq "set_cookie") {
-          warn("Set-Cookie header option is not implemented yet. Ignored.");
         } else {
           $self->set_fallback($k, to_s($v));
         }
