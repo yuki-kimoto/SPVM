@@ -12,6 +12,25 @@
 
 static const char* MFILE = "SPVM/IO/File.c";
 
+int32_t SPNATIVE__SPVM__IO__File__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_OFIELD(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::FileHandle", MFILE, __LINE__);
+  void* fh = (FILE*)env->pointer(env, obj_fh);
+
+  if (fh == NULL) { SPVM_DIE("File handle must be defined", MFILE, __LINE__); }
+  
+  int32_t fno = fileno(fh);
+  
+  stack[0].ival = fno;
+
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;

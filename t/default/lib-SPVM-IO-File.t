@@ -86,6 +86,12 @@ TestFile::copy_test_files_tmp_replace_newline();
     my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_slurp($sp_file));
   }
+
+  # fileno
+  {
+    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    ok(TestCase::Lib::SPVM::IO::File->test_fileno($sp_file));
+  }
 }
 
 
