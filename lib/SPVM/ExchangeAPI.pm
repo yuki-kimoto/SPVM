@@ -40,13 +40,9 @@ sub new_barray_from_str {
   return SPVM::ExchangeAPI::new_barray_from_bin($env, $bin);
 }
 
-sub new_str {
-  my ($env, $string) = @_;
-  
-  my $bin = encode('UTF-8', $string);
+sub new_str { SPVM::ExchangeAPI::new_barray_from_str(@_) }
 
-  return SPVM::ExchangeAPI::new_str_from_bin($env, $bin);
-}
+sub new_str_from_bin { SPVM::ExchangeAPI::new_barray_from_bin(@_) }
 
 sub new_oarray {
   my ($env, $type_name, $elems) = @_;
