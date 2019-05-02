@@ -1,0 +1,31 @@
+package SPVM::IO::Select {
+
+  has handles : SPVM::List;
+  
+  sub new : SPVM::IO::Select () {
+    my $select = new SPVM::IO::Select;
+    
+    $self->handles = list([]);
+    
+    return ;
+  }
+  
+  sub add : void ($self : self, $new_handle : int) {
+    
+    my $found = 0;
+    my $handles = $self->handles;
+    
+    for (my $i = 0; $i < @$handles; $i++) {
+      my $handle = $handles->[$i];
+      
+      if ((int)$handle == $new_handle) {
+        $found = 1;
+        last;
+      }
+    }
+    
+    unless ($found) {
+      $self->handles->push($new_handle);
+    }
+  }
+}
