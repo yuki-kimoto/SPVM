@@ -1,3 +1,7 @@
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE
+#endif
+
 #include "spvm_native.h"
 
 #include <sys/types.h>
@@ -42,17 +46,23 @@ int32_t SPNATIVE__SPVM__IO__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) 
   // select
   int32_t success_count = select(max_handle + 1, &fds, NULL, NULL, &tv);
   
-  // Can read handles
-  void* obj_can_read_handles = env->new_iarray(env, success_count);
-  int32_t* can_read_handles = env->ielems(env, obj_can_read_handles);
-  int32_t can_read_handles_index = 0;
+  // Error check
+  if (success_count == -1) {
+    SPVM_DIE("select fail", MFILE, __LINE__);
+  }
+  
+  // Can handles
+  void* obj_can_handles = env->new_iarray(env, success_count);
+  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];
     
     if (FD_ISSET(handle, &fds)) {
-      can_read_handles[can_read_handles_index++] = handle;
+      can_handles[can_handles_index++] = handle;
     }
   }
+  stack[0].oval = obj_can_handles;
   
   return SPVM_SUCCESS;
 }
@@ -92,17 +102,23 @@ int32_t SPNATIVE__SPVM__IO__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack)
   // select
   int32_t success_count = select(max_handle + 1, NULL, &fds, NULL, &tv);
   
-  // Can read handles
-  void* obj_can_read_handles = env->new_iarray(env, success_count);
-  int32_t* can_read_handles = env->ielems(env, obj_can_read_handles);
-  int32_t can_read_handles_index = 0;
+  // Error check
+  if (success_count == -1) {
+    SPVM_DIE("select fail", MFILE, __LINE__);
+  }
+  
+  // Can handles
+  void* obj_can_handles = env->new_iarray(env, success_count);
+  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];
     
     if (FD_ISSET(handle, &fds)) {
-      can_read_handles[can_read_handles_index++] = handle;
+      can_handles[can_handles_index++] = handle;
     }
   }
+  stack[0].oval = obj_can_handles;
   
   return SPVM_SUCCESS;
 }
@@ -139,20 +155,27 @@ int32_t SPNATIVE__SPVM__IO__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* st
     }
   }
   
+  
   // select
   int32_t success_count = select(max_handle + 1, NULL, NULL, &fds, &tv);
   
-  // Can read handles
-  void* obj_can_read_handles = env->new_iarray(env, success_count);
-  int32_t* can_read_handles = env->ielems(env, obj_can_read_handles);
-  int32_t can_read_handles_index = 0;
+  // Error check
+  if (success_count == -1) {
+    SPVM_DIE("select fail", MFILE, __LINE__);
+  }
+  
+  // Can handles
+  void* obj_can_handles = env->new_iarray(env, success_count);
+  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];
     
     if (FD_ISSET(handle, &fds)) {
-      can_read_handles[can_read_handles_index++] = handle;
+      can_handles[can_handles_index++] = handle;
     }
   }
+  stack[0].oval = obj_can_handles;
   
   return SPVM_SUCCESS;
 }

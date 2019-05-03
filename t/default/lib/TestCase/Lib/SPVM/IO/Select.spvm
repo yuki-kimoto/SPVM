@@ -141,6 +141,55 @@ package TestCase::Lib::SPVM::IO::Select {
     return 1;
   }
 
+  sub can_read : int () {
+    my $select = SPVM::IO::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    my $can_read = $select->can_read(1.1);
+    
+    unless (@$can_read == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub has_exception : int () {
+    my $select = SPVM::IO::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    my $has_exception = $select->has_exception(1.1);
+    
+    unless (@$has_exception == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
 }
 
