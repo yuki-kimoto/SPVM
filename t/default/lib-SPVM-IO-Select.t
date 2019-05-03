@@ -15,6 +15,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::IO::Select->add);
   ok(TestCase::Lib::SPVM::IO::Select->remove);
+  ok(TestCase::Lib::SPVM::IO::Select->exists);
 }
 
 # All object is freed
