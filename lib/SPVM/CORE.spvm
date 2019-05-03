@@ -5,25 +5,7 @@ package SPVM::CORE {
   use SPVM::Hash;
   use SPVM::Comparator;
   use SPVM::Stringer;
-  use SPVM::FileHandle;
 
-  our $O_RDONLY : ro int;
-  our $O_WRONLY : ro int;
-  our $O_RDWR : ro int;
-  our $O_APPEND : ro int;
-  our $O_CREAT : ro int;
-  our $O_TRUNC : ro int;
-  our $SEEK_SET : ro int;
-  our $SEEK_CUR : ro int;
-  our $SEEK_END : ro int;
-  our $EOF : ro int;
-  our $STDIN : ro SPVM::FileHandle;
-  our $STDOUT : ro SPVM::FileHandle;
-  
-  BEGIN {
-    init_native_constants();
-  }
-  
   native sub chomp : void ($string : string);
   native sub rand : int ($seed_ref : int&);
   

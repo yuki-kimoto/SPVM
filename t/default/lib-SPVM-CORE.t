@@ -36,11 +36,6 @@ use SPVM 'TestCase::Lib::SPVM::CORE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# native constant
-{
-  ok(TestCase::Lib::SPVM::CORE->test_init_native_constants());
-}
-
 # rand
 {
   ok(TestCase::Lib::SPVM::CORE->test_rand);
