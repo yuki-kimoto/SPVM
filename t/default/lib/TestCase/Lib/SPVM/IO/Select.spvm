@@ -1,8 +1,7 @@
 package TestCase::Lib::SPVM::IO::Select {
   use SPVM::IO::Select;
-  # use SPVM::IO::File (STDIN, STDOUT);
+  use SPVM::IO::File (STDIN, STDOUT);
 
-=pod
   sub basic : int () {
     my $select = SPVM::IO::Select->new;
     
@@ -45,7 +44,6 @@ package TestCase::Lib::SPVM::IO::Select {
     
     return 1;
   }
-=cut
 }
 
 __END__

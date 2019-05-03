@@ -11,12 +11,10 @@ use SPVM 'TestCase::Lib::SPVM::IO::Select';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-=pod
 # Select
 {
   ok(TestCase::Lib::SPVM::IO::Select->basic);
 }
-=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

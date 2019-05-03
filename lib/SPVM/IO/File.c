@@ -432,8 +432,8 @@ int32_t SPNATIVE__SPVM__IO__File__EOF(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef STDIN
-  stack[0].ival = STDIN;
+#ifdef stdin
+  stack[0].ival = fileno(stdin);
 #else
   SPVM_DIE("Errno STDIN is not defined", MFILE, __LINE__);
 #endif
@@ -442,8 +442,8 @@ int32_t SPNATIVE__SPVM__IO__File__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef STDOUT
-  stack[0].ival = STDOUT;
+#ifdef stdout
+  stack[0].ival = fileno(stdout);
 #else
   SPVM_DIE("Errno STDOUT is not defined", MFILE, __LINE__);
 #endif
