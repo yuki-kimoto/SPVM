@@ -74,29 +74,27 @@ package SPVM::IO::Select {
     return $self->{handles}->to_iarray;
   }
 
-=pod
   sub can_read : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return _can_read($self, $handles->to_iarray, $timeout);
+    return $self->_can_read($handles->to_iarray, $timeout);
   }
   
-  native private sub _can_read : int[] ($self :self, $timeout : double);
+  native private sub _can_read : int[] ($self :self, $handles : int[], $timeout : double);
 
   sub can_write : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return _can_write($self, $handles->to_iarray, $timeout);
+    return $self->_can_write($handles->to_iarray, $timeout);
   }
   
-  native private sub _can_write : int[] ($self :self, $timeout : double);
+  native private sub _can_write : int[] ($self :self, $handles : int[], $timeout : double);
 
   sub has_exception : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return _has_exception($self, $handles->to_iarray, $timeout);
+    return $self->_has_exception($handles->to_iarray, $timeout);
   }
   
-  native private sub _has_exception : int[] ($self :self, $timeout : double);
-=cut
+  native private sub _has_exception : int[] ($self :self, $handles : int[], $timeout : double);
 }
