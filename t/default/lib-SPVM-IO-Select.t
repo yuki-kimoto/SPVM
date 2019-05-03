@@ -13,7 +13,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Select
 {
-  ok(TestCase::Lib::SPVM::IO::Select->basic);
+  ok(TestCase::Lib::SPVM::IO::Select->add);
+  ok(TestCase::Lib::SPVM::IO::Select->remove);
 }
 
 # All object is freed

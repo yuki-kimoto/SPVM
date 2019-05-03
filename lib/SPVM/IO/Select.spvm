@@ -33,20 +33,26 @@ package SPVM::IO::Select {
     }
   }
 
-  sub remove : void ($self : self, $remove_handle : int) {
+  sub remove : int ($self : self, $remove_handle : int) {
     
     my $new_handles = list([]);
     my $handles = $self->{handles};
     
+    my $removed = 0;
     for (my $i = 0; $i < $handles->length; $i++) {
       my $handle = $handles->get($i);
       
-      if ((int)$handle != $remove_handle) {
+      if ((int)$handle == $remove_handle) {
+        $removed = 1;
+      }
+      else {
         $new_handles->push($handle);
       }
     }
     
     $self->{handles} = $new_handles;
+    
+    return $removed;
   }
   
   sub exists : int ($self : self, $check_handle : int) {
