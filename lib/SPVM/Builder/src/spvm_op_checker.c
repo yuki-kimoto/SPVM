@@ -2348,14 +2348,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_list_args = op_cur->last;
               
               SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
+              
+              const char* sub_name = call_sub->sub->op_name->uv.name;
 
               if (!call_sub->sub) {
                 SPVM_COMPILER_error(compiler, "Unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
-              
               if (call_sub->call_type_id != call_sub->sub->call_type_id) {
-                SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s\" at %s line %d\n", op_cur->first->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                 return;
               }
 
@@ -2375,8 +2376,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   return;
                 }
               }
-              
-              const char* sub_name = call_sub->sub->op_name->uv.name;
               
               int32_t sub_args_count = call_sub->sub->args->length;
               int32_t sub_is_vaarg = call_sub->sub->have_vaarg;
@@ -2508,7 +2507,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                   call_sub_args_count++;
                   if (call_sub_args_count > sub_args_count) {
-                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2528,7 +2527,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (call_sub_args_count < sub_args_count) {
-                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s\" at %s line %d\n", sub_name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                 return;
               }
               
