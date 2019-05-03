@@ -1740,7 +1740,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Void type
               if (SPVM_TYPE_is_void_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                 if (op_term) {
-                  SPVM_COMPILER_error(compiler, "void subroutine must have return value at %s line %d\n", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "void subroutine must not have return value at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -1753,7 +1753,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "non-void subroutine must not have return value at %s line %d\n", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "non-void subroutine must have return value at %s line %d\n", op_cur->file, op_cur->line);
                   return;
                 }
               }
