@@ -5,7 +5,7 @@ package SPVM::IO::Select {
   sub new : SPVM::IO::Select () {
     my $select = new SPVM::IO::Select;
     
-    $self->handles = list([]);
+    $self->{handles} = list([]);
     
     return ;
   }
@@ -13,7 +13,7 @@ package SPVM::IO::Select {
   sub add : void ($self : self, $new_handle : int) {
     
     my $found = 0;
-    my $handles = $self->handles;
+    my $handles = $self->{handles};
     
     for (my $i = 0; $i < @$handles; $i++) {
       my $handle = $handles->[$i];
@@ -28,4 +28,51 @@ package SPVM::IO::Select {
       $self->handles->push($new_handle);
     }
   }
+  
+  sub remove : void ($self : self, $remove_handle : int) {
+    
+    my $new_handles = list([]);
+    my $handles = $self->{handles};
+    
+    for (my $i = 0; $i < @$handles; $i++) {
+      my $handle = $handles->[$i];
+      
+      if ((int)$handle != $remove_handle) {
+        $new_handles->push($handle);
+      }
+    }
+    
+    $self->{handles} = $new_handles;
+  }
+  
+  sub exists : int ($self : self, $check_handle : int) {
+    
+    my $handles = $self->{handles};
+    
+    for (my $i = 0; $i < @$handles; $i++) {
+      my $handle = $handles->[$i];
+      
+      if ((int)$handle == $check_handle) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub handles : SPVM::List ($self : self) {
+    
+    my $new_handles = list([]);
+    my $handles = $self->{handles};
+    
+    for (my $i = 0; $i < @$handles; $i++) {
+      $new_handles->push($handles->[$i]);
+    }
+    
+    return $new_handles;
+  }
+  
+  native sub can_read : int[] ($self :self, $timeout : double);
+  native sub can_write : int[] ($self :self, $timeout : double);
+  native sub has_exception : int[] ($self :self, $timeout : double);
 }
