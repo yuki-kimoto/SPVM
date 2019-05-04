@@ -2339,22 +2339,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_call_sub = op_cur;
               
-              // Check sub name
+              // Resulve sub
               SPVM_OP_CHECKER_resolve_call_sub(compiler, op_cur, package->op_package);
               if (compiler->error_count > 0) {
+                return;
+              }
+              SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
+              if (!call_sub->sub) {
+                SPVM_COMPILER_error(compiler, "Unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
               SPVM_OP* op_list_args = op_cur->last;
               
-              SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-              
               const char* sub_name = call_sub->sub->op_name->uv.name;
 
-              if (!call_sub->sub) {
-                SPVM_COMPILER_error(compiler, "Unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
               if (call_sub->call_type_id != call_sub->sub->call_type_id) {
                 SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                 return;

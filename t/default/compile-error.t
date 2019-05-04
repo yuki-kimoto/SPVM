@@ -14,6 +14,16 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Call sub
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::CallSub::NotFound');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Assign
 {
   {
