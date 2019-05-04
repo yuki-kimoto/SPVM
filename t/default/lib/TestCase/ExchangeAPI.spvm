@@ -19,6 +19,16 @@ package TestCase::ExchangeAPI {
     
     return 1;
   }
+
+  sub set_exception_undef : int () {
+    my $exception = $@;
+    
+    unless ($exception == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub any_object_array : oarray ($oarray : oarray) {
     
