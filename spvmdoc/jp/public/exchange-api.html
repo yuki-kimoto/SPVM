@@ -529,10 +529,31 @@ my $spvm_string = SPVM::new_str("あいうえお");
       </p>
 
       <h2 id="exchange-api-utility">ユーティリティ</h2>
+      <ul class="toc">
+        <li><a href="#exchange-api-utility-exception">SPVMの例外の取得 - exception</a></li>
+        <li><a href="#exchange-api-utility-set_exception">SPVMの例外の設定 - set_exception</a></li>
+        <li><a href="#exchange-api-utility-memory_blocks_count">確保されたメモリブロックの数を取得 - memory_blocks_count</a></li>
       <p>
         その他のユーティリティです。
       </p>
-      
+
+      <h3 id="exchange-api-utility-exception">SPVMの例外の取得 - exception</h3>
+      <p>
+        SPVMの例外を取得します。取得される文字列は、undefでなかった場合は、UTF-8とみなしてデコードされた文字列です。
+      </p>
+<pre>
+my $exception = SPVM::exception();
+</pre>
+
+      <h3 id="exchange-api-utility-set_exception">SPVMの例外の設定 - set_exception</h3>
+      <p>
+        SPVMの例外を設定します。引数は、デコードされた文字列かundefを指定します。
+      </p>
+<pre>
+SPVM::set_exception("あいう");
+SPVM::set_exception(undef);
+</pre>
+
       <h3 id="exchange-api-utility-memory_blocks_count">確保されたメモリブロックの数を取得 - memory_blocks_count</h3>
       <p>
         memory_blocks_count関数を使うと、確保されたメモリブロックの数を取得できます。
@@ -606,7 +627,9 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 list
 
-=head2 set_exception_undef
+=head2 set_exception(済み)
+
+=head2 exception(済み)
 
 =head2 to_bin
 
