@@ -450,3 +450,13 @@ int32_t SPNATIVE__SPVM__IO__File__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__SPVM__IO__File__STDERR(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef stdout
+  stack[0].ival = fileno(stderr);
+#else
+  SPVM_DIE("Errno STDERR is not defined", MFILE, __LINE__);
+#endif
+
+  return SPVM_SUCCESS;
+}

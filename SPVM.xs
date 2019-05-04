@@ -545,7 +545,6 @@ new_barray_from_bin(...)
     sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
   }
   else {
-    warn("AAAAAAAAAA");
     sv_array = &PL_sv_undef;
   }
   

@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::IO::Select->remove);
   ok(TestCase::Lib::SPVM::IO::Select->exists);
   ok(TestCase::Lib::SPVM::IO::Select->can_read);
+  ok(TestCase::Lib::SPVM::IO::Select->can_write);
   ok(TestCase::Lib::SPVM::IO::Select->has_exception);
 }
 

@@ -13,6 +13,7 @@ package SPVM::IO::File {
   native sub EOF : int();
   native sub STDIN : int();
   native sub STDOUT : int();
+  native sub STDERR : int();
   
   has fh : ro SPVM::FileHandle;
   
