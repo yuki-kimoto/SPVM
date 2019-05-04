@@ -68,7 +68,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 }
 
 # Clear exception
-SPVM::set_exception_undef();
+SPVM::set_exception(undef);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

@@ -166,6 +166,24 @@ sub list {
   return $spvm_list;
 }
 
+sub set_exception {
+  my ($env, $exception) = @_;
+  
+  $exception = encode('UTF-8', $exception);
+  
+  _set_exception($env, $exception);
+}
+
+sub exception {
+  my ($env) = @_;
+  
+  my $exception = _exception($env);
+  
+  $exception = decode('UTF-8', $exception);
+  
+  return $exception;
+}
+
 # other functions is implemented in SPVM.xs
 
 1;
@@ -220,7 +238,7 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 new_varray_from_bin
 
-=head2 set_exception_undef
+=head2 set_exception
 
 =head2 to_bin
 

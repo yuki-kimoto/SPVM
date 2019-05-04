@@ -1377,7 +1377,7 @@ _new_varray_from_bin(...)
 }
 
 SV*
-set_exception_undef(...)
+_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1386,8 +1386,46 @@ set_exception_undef(...)
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  void* str_exception = env->exception(env);
+  
+  SV* sv_exception;
+  if (str_exception) {
+    const char* exception = (const char*)env->belems(env, str_exception);
+    int32_t length = env->len(env, str_exception);
+    
+    sv_exception = sv_2mortal(newSVpv(exception, length));
+  }
+  else {
+    sv_exception = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_exception);
+  XSRETURN(1);
+}
 
-  env->set_exception(env, NULL);
+SV*
+_set_exception(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_exception = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  if (SvOK(sv_exception)) {
+    const char* exception = SvPV_nolen(sv_exception);
+    int32_t length = (int32_t)sv_len(sv_exception);
+    
+    void* str_exception = env->new_str_len_raw(env, exception, length);
+    env->set_exception(env, str_exception);
+  }
+  else {
+    env->set_exception(env, NULL);
+  }
   
   XSRETURN(0);
 }
