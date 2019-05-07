@@ -1,8 +1,18 @@
 package SPVM::List::Int;
   has pointer : SPVM::List::IntPointer;
   
-  native sub new : SPVM::List::Int ();
-  native sub new_with_array : SPVM::List::Int ($array : int[]);
+  sub new : SPVM::List::Int () {
+    my $self = new SPVM::List::Int;
+    $self->{pointer} = SPVM::List::IntPointer->new;
+    return $self;
+  }
+  precompile sub new_with_array : SPVM::List::Int ($array : int[]) {
+    my $list = SPVM::List::Int->new;
+    for (my $i = 0; $i < @$array; $i++) {
+      my $value = $array->[$i];
+      $list->push($value);
+    }
+  }
   native sub length : int ($self : self);
   native sub push : void ($self : self, $value : int);
   native sub pop : int ($self : self);
