@@ -119,6 +119,8 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Errno');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Time');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::List::Int');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::List::IntPointer');
     
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');

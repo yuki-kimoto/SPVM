@@ -1,0 +1,14 @@
+package SPVM::List::Int;
+  has pointer : SPVM::List::IntPointer;
+  
+  native sub new : SPVM::List::Int ();
+  native sub new_with_array : SPVM::List::Int ($array : int[]);
+  native sub length : int ($self : self);
+  native sub push : void ($self : self, $value : int);
+  native sub pop : int ($self : self);
+  native sub unshift : void ($self : self, $value : int);
+  native sub shift : int ($self : self);
+  native sub set : void ($self : self, $index : int, $value : int);
+  native sub get : int ($self : self, $index : int);
+  native sub to_array : int[] ($self : self);
+}
