@@ -26,7 +26,6 @@ lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_base.h
 lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
-lib/SPVM/Builder/include/spvm_bytelist.h
 lib/SPVM/Builder/include/spvm_call_sub.h
 lib/SPVM/Builder/include/spvm_case_info.h
 lib/SPVM/Builder/include/spvm_check_ast_info.h
@@ -37,20 +36,16 @@ lib/SPVM/Builder/include/spvm_constant_pool.h
 lib/SPVM/Builder/include/spvm_csource_builder_exe.h
 lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
 lib/SPVM/Builder/include/spvm_descriptor.h
-lib/SPVM/Builder/include/spvm_doublelist.h
 lib/SPVM/Builder/include/spvm_dumper.h
 lib/SPVM/Builder/include/spvm_enumeration.h
 lib/SPVM/Builder/include/spvm_enumeration_value.h
 lib/SPVM/Builder/include/spvm_field.h
 lib/SPVM/Builder/include/spvm_field_access.h
-lib/SPVM/Builder/include/spvm_floatlist.h
 lib/SPVM/Builder/include/spvm_hash.h
 lib/SPVM/Builder/include/spvm_hash_entry.h
 lib/SPVM/Builder/include/spvm_hash_func.h
-lib/SPVM/Builder/include/spvm_int_list.h
 lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
-lib/SPVM/Builder/include/spvm_longlist.h
 lib/SPVM/Builder/include/spvm_my.h
 lib/SPVM/Builder/include/spvm_name_info.h
 lib/SPVM/Builder/include/spvm_native.h
@@ -73,7 +68,6 @@ lib/SPVM/Builder/include/spvm_runtime_package.h
 lib/SPVM/Builder/include/spvm_runtime_package_var.h
 lib/SPVM/Builder/include/spvm_runtime_sub.h
 lib/SPVM/Builder/include/spvm_runtime_weaken_backref.h
-lib/SPVM/Builder/include/spvm_shortlist.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
@@ -175,7 +169,6 @@ lib/SPVM/Int.spvm
 lib/SPVM/IntList.c
 lib/SPVM/IntList.config
 lib/SPVM/IntList.spvm
-lib/SPVM/IntListPointer.c
 lib/SPVM/IntListPointer.config
 lib/SPVM/IntListPointer.spvm
 lib/SPVM/IO/File.c
