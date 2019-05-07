@@ -5352,7 +5352,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         if (exception_flag) {
           void* exception = env->exception(env);
           char* exception_str = (char*)env->belems(env, exception);
-          fprintf(stderr, exception_str);
+          fprintf(stderr, "Warning(Exception in DESTROY):%s\n", exception_str);
         }
         
         if (object->ref_count < 1) {

@@ -14,6 +14,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # Socket
 {
   ok(TestCase::Lib::SPVM::IO::Socket->basic);
+  ok(TestCase::Lib::SPVM::IO::Socket->basic_auto_close);
   ok(TestCase::Lib::SPVM::IO::Socket->fileno);
 }
 

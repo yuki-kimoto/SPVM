@@ -6,6 +6,7 @@
   - remove SPVM::set_exception_undef
   - add SPVM::set_exception
   - add SPVM::exception
+  - add shutdown, close to IO::Socket
 0.0432 2018-04-29
   - Allow lower case package variable name and allow upper case lexical variable name
     This is same implementation as Perl

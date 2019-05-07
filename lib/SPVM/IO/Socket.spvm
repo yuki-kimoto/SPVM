@@ -1,23 +1,15 @@
 package SPVM::IO::Socket {
   
-  our $AF_UNIX : ro int;
-  our $AF_INET : ro int;
-  our $AF_INET6 : ro int;
-
-  our $SOCK_STREAM : ro int;
-  
   has handle : int;
-  
-  BEGIN {
-    init_native_constants();
-  }
-  
-  native sub init_native_constants : void();
   
   native sub new : SPVM::IO::Socket ($host : string, $port : int);
   native sub read : int ($self : self, $buffer : byte[]);
   native sub write : int ($self : self, $buffer : string, $legnth : int);
+  native sub shutdown : void ($self : self);
+  native sub close : void ($self : self);
   native sub fileno : int ($self : self);
   
-  native sub DESTROY : void ($self : self);
+  sub DESTROY : void ($self : self) {
+    $self->close;
+  }
 }

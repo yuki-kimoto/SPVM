@@ -15,6 +15,42 @@
 // Module file name
 static const char* MFILE = "SPVM/IO/Socket.c";
 
+int32_t SPNATIVE__SPVM__IO__Socket__shutdown(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_socket = stack[0].oval;
+  
+  int32_t handle;
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
+  
+  int32_t success = shutdown(handle, SHUT_WR);
+  
+  if (success != 0) {
+    SPVM_DIE("Can't shutdown send operation", MFILE, __LINE__);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__IO__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_socket = stack[0].oval;
+  
+  int32_t handle;
+  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
+  
+  if (handle >= 0) {
+    int32_t ret = close(handle);
+    if (ret == 0) {
+      SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", -1, MFILE, __LINE__);
+    }
+    else {
+      SPVM_DIE("Fail close", MFILE, __LINE__);
+    }
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__IO__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
@@ -95,6 +131,10 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t handle;
   SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
+
+  if (handle < 0) {
+    SPVM_DIE("Handle is closed", MFILE, __LINE__);
+  }
   
   /* HTTPリクエスト送信 */
   int32_t write_length = write(handle, buffer, length);
@@ -115,6 +155,10 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t handle;
   SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
+
+  if (handle < 0) {
+    SPVM_DIE("Handle is closed", MFILE, __LINE__);
+  }
   
   /* HTTPリクエスト送信 */
   int32_t read_length = read(handle, (char*)buffer, length);
@@ -123,37 +167,6 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   stack[0].ival = read_length;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Socket__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  // AF_UNIX
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_UNIX", AF_UNIX, MFILE, __LINE__);
-
-  // AF_INET
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET", AF_INET, MFILE, __LINE__);
-
-  // AF_INET6
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$AF_INET6", AF_INET6, MFILE, __LINE__);
-
-  // SOCK_STREAM
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::Socket", "$SOCK_STREAM", SOCK_STREAM, MFILE, __LINE__);
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Socket__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  // Socket handle
-  void* obj_socket = stack[0].oval;
-
-  // Get handle
-  int32_t handle;
-  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
-  
-  close(handle);
   
   return SPVM_SUCCESS;
 }

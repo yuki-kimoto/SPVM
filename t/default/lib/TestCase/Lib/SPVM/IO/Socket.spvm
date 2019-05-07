@@ -11,6 +11,41 @@ package TestCase::Lib::SPVM::IO::Socket {
     my $write_buffer = "GET / HTTP/1.0\r\n\r\n";
     $socket->write((byte[])$write_buffer, length $write_buffer);
     
+    $socket->shutdown;
+    
+    my $read_buffer = new byte[100];
+    while (1) {
+      my $read_length = $socket->read($read_buffer);
+      
+      if ($read_length < 0) {
+        die "Read error";
+      }
+      
+      # print((string)sliceb($read_buffer, 0, $read_length));
+      
+      if ($read_length < @$read_buffer) {
+        last;
+      }
+    }
+    
+    $socket->close;
+    
+    return 1;
+  }
+
+
+  sub basic_auto_close : int () {
+    
+    # Socket
+    my $host = "google.com";
+    my $port = 80;
+    my $socket = SPVM::IO::Socket->new($host, $port);
+    
+    my $write_buffer = "GET / HTTP/1.0\r\n\r\n";
+    $socket->write((byte[])$write_buffer, length $write_buffer);
+    
+    $socket->shutdown;
+    
     my $read_buffer = new byte[100];
     while (1) {
       my $read_length = $socket->read($read_buffer);
