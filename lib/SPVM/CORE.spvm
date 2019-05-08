@@ -233,7 +233,7 @@ package SPVM::CORE {
       die "Separator must not be empty string";
     }
     
-    my $separated_strings_list = list([]);
+    my $separated_strings_list = SPVM::List->new;
     
     my $match_start = 0;
     my $string_base = 0;
@@ -767,10 +767,6 @@ package SPVM::CORE {
   native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   
-  sub list : SPVM::List ($objects : object[]) {
-    return SPVM::List->new_with_array($objects);
-  }
-
   sub hash : SPVM::Hash ($objects : object[]) {
     return SPVM::Hash->new_with_array($objects);
   }

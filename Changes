@@ -8,6 +8,7 @@
   - add SPVM::exception
   - add shutdown, close to IO::Socket
   - add SPVM::IntList
+  - remove SPVM::CORE::list function
 0.0432 2018-04-29
   - Allow lower case package variable name and allow upper case lexical variable name
     This is same implementation as Perl

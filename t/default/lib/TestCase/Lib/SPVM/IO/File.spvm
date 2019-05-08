@@ -168,7 +168,7 @@ package TestCase::Lib::SPVM::IO::File {
       die "Can't open file $file";
     }
     
-    my $lstrings = list([]);
+    my $lstrings = SPVM::List->new;
     while (my $line = $fh->readline) {
       $lstrings->push($line);
     }
@@ -306,7 +306,7 @@ package TestCase::Lib::SPVM::IO::File {
       die "Can't open file $file";
     }
     
-    my $lstrings = list([]);
+    my $lstrings = SPVM::List->new;
     while (my $line = $fh->readline) {
       chomp($line);
       $lstrings->push($line);
