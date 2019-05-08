@@ -1,5 +1,30 @@
 package TestCase::Lib::SPVM::IntList {
   use SPVM::IntList;
+
+  sub new_with_array : int () {
+    {
+      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+
+      unless ($list->get(2) == 7) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   sub push : int () {
     # push

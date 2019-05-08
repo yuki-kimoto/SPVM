@@ -16,17 +16,19 @@ package SPVM::IntList {
   }
   
   sub new_with_array : SPVM::IntList ($array : int[]) {
-    my $list = new SPVM::IntList;
+    my $self = new SPVM::IntList;
     my $length = @$array;
     
     my $values = new int[$length];
     
-    $list->{capacity} = $length;
-    $list->{length} = $length;
+    $self->{capacity} = $length;
+    $self->{length} = $length;
     
     memcpyi($values, 0, $array, 0, $length);
     
-    return $list;
+    $self->{values} = $values;
+    
+    return $self;
   }
   
   private sub _extend : void ($self : self) {
