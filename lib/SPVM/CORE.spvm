@@ -109,15 +109,15 @@ package SPVM::CORE {
       my $result_str = new byte[$result_str_len];
       
       if ($found_pos > 0) {
-        memmove((byte[])$result_str, 0, (byte[])$str, 0, $found_pos);
+        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_pos);
       }
-      memmove((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
+      memmoveb((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
       
       my $str_rest_offset = $found_pos + $substr_len;
       my $str_rest_length = $str_len - $str_rest_offset;
       my $result_rest_offset = $found_pos + $replace_len;
       my $result_rest_length = $result_str_len - $result_rest_offset;
-      memmove((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
+      memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
       
       return $result_str;
     }
@@ -127,8 +127,8 @@ package SPVM::CORE {
     }
   }
 
-  native sub memcpy : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
-  native sub memmove : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
+  native sub memcpyb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
+  native sub memmoveb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
   native sub memcpys : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
   native sub memmoves : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
   native sub memcpyi : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);

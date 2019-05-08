@@ -72,14 +72,14 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_replace);
 }
 
-# memmove
+# memmoveb
 {
-  ok(TestCase::Lib::SPVM::CORE->test_memmove);
+  ok(TestCase::Lib::SPVM::CORE->test_memmoveb);
 }
 
-# memcpy
+# memcpyb
 {
-  ok(TestCase::Lib::SPVM::CORE->test_memcpy);
+  ok(TestCase::Lib::SPVM::CORE->test_memcpyb);
 }
 
 # index

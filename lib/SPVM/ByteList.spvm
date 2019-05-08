@@ -1,3 +1,144 @@
 package SPVM::ByteList {
+  has values   : byte[];
+  has capacity : int;
+  has length   : ro int;
   
+  sub new : SPVM::ByteList () {
+    my $capacity = 16;
+    my $values = new byte[$capacity];
+    
+    my $self = new SPVM::ByteList;
+    $self->{capacity} = $capacity;
+    $self->{length} = 0;
+    $self->{values} = $values;
+    
+    return $self;
+  }
+
+  sub new_with_array : SPVM::ByteList ($array : byte[]) {
+    my $self = new SPVM::ByteList;
+    my $length = @$array;
+    
+    my $values = new byte[$length];
+    
+    $self->{capacity} = $length;
+    $self->{length} = $length;
+    
+    memcpyb($values, 0, $array, 0, $length);
+    
+    $self->{values} = $values;
+    
+    return $self;
+  }
+  
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new byte[$new_capacity];
+    
+    memcpyb($new_values, 0, $values, 0, $length);
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
+  }
+  
+  sub push : void ($self : self, $value : byte) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length > $capacity - 1) {
+      $self->_extend;
+    }
+    
+    $self->{values}[$length] = $value;
+    
+    $self->{length}++;
+  }
+  
+  sub pop : byte ($self : self) {
+    my $length = $self->length;
+    
+    if ($length == 0) {
+      die "Can't pop";
+    }
+    
+    my $value = $self->{values}[$length - 1];
+    
+    $self->{length}--;
+    
+    return $value;
+  }
+  
+  sub unshift : void ($self : self, $value : byte) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length > $capacity - 1) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    
+    memmoveb($values, 1, $values, 0, $length);
+    
+    $values->[0] = $value;
+    $self->{length}++;
+  }
+  
+  sub shift : byte ($self : self) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length == 0) {
+      die "Can't shift";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    memmoveb($values, 0, $values, 1, $length - 1);
+    
+    $self->{length}--;
+    
+    return $value;
+  }
+  
+  sub set : void ($self : self, $index : int, $value : byte) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+  
+  sub get : byte ($self : self, $index : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    my $value = $self->{values}[$index];
+    
+    return $value;
+  }
+  
+  sub to_array : byte[] ($self : self) {
+    my $length = $self->length;
+    
+    my $array = new byte[$length];
+    
+    my $values = $self->{values};
+    
+    memcpyb($array, 0, $values, 0, $length);
+    
+    return $array;
+  }
 }

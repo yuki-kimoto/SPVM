@@ -50,7 +50,7 @@ int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dist_str = stack[0].oval;
   if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
@@ -90,7 +90,7 @@ int32_t SPNATIVE__SPVM__CORE__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dist_str = stack[0].oval;
   if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }

@@ -242,12 +242,12 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_memcpy : int () {
+  sub test_memcpyb : int () {
     
     {
       my $target = "abcde";
       my $search = "ABC";
-      memcpy((byte[])$target, 0, (byte[])$search, 0, 3);
+      memcpyb((byte[])$target, 0, (byte[])$search, 0, 3);
       unless ($target eq "ABCde") {
         return 0;
       }
@@ -256,7 +256,7 @@ package TestCase::Lib::SPVM::CORE {
     {
       my $target = "abcde";
       my $search = "ABC";
-      memcpy((byte[])$target, 2, (byte[])$search, 0, 3);
+      memcpyb((byte[])$target, 2, (byte[])$search, 0, 3);
       unless ($target eq "abABC") {
         return 0;
       }
@@ -265,7 +265,7 @@ package TestCase::Lib::SPVM::CORE {
     {
       my $target = "abcde";
       my $search = "ABC";
-      memcpy((byte[])$target, 2, (byte[])$search, 0, 3);
+      memcpyb((byte[])$target, 2, (byte[])$search, 0, 3);
       unless ($target eq "abABC") {
         return 0;
       }
@@ -274,12 +274,12 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_memmove : int () {
+  sub test_memmoveb : int () {
     
     {
       my $target = "abcde";
       my $search = "ABC";
-      memmove((byte[])$target, 0, (byte[])$search, 0, 3);
+      memmoveb((byte[])$target, 0, (byte[])$search, 0, 3);
       unless ($target eq "ABCde") {
         return 0;
       }
@@ -288,7 +288,7 @@ package TestCase::Lib::SPVM::CORE {
     {
       my $target = "abcde";
       my $search = "ABC";
-      memmove((byte[])$target, 2, (byte[])$search, 0, 3);
+      memmoveb((byte[])$target, 2, (byte[])$search, 0, 3);
       unless ($target eq "abABC") {
         return 0;
       }
@@ -297,7 +297,7 @@ package TestCase::Lib::SPVM::CORE {
     {
       my $target = "abcde";
       my $search = "ABC";
-      memmove((byte[])$target, 2, (byte[])$search, 0, 3);
+      memmoveb((byte[])$target, 2, (byte[])$search, 0, 3);
       unless ($target eq "abABC") {
         return 0;
       }
@@ -305,7 +305,7 @@ package TestCase::Lib::SPVM::CORE {
 
     {
       my $target = "abcde";
-      memmove((byte[])$target, 0, (byte[])$target, 2, 2);
+      memmoveb((byte[])$target, 0, (byte[])$target, 2, 2);
       unless ($target eq "cdcde") {
         return 0;
       }

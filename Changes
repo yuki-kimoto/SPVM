@@ -9,6 +9,10 @@
   - add shutdown, close to IO::Socket
   - add SPVM::IntList
   - remove SPVM::CORE::list function
+  - rename memcpy to memcpyb
+  - rename memmove to memmoveb
+  - add memcpys, memcpyi, memcpyl, memcpyf, memcpyd
+  - add memmoves, memmovei, memmovel, memmovef, memmoved
 0.0432 2018-04-29
   - Allow lower case package variable name and allow upper case lexical variable name
     This is same implementation as Perl
