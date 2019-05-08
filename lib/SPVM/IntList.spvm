@@ -1,24 +1,130 @@
-package SPVM::List::Int;
-  has pointer : SPVM::List::IntPointer;
+package SPVM::IntList {
+  has values   : int[];
+  has capacity : int;
+  has length   : ro int;
   
-  sub new : SPVM::List::Int () {
-    my $self = new SPVM::List::Int;
-    $self->{pointer} = SPVM::List::IntPointer->new;
-    return $self;
+  sub new : SPVM::IntList () {
+    return new SPVM::IntList;
   }
-  precompile sub new_with_array : SPVM::List::Int ($array : int[]) {
-    my $list = SPVM::List::Int->new;
-    for (my $i = 0; $i < @$array; $i++) {
-      my $value = $array->[$i];
-      $list->push($value);
+  
+  sub new_with_array : SPVM::IntList ($array : int[]) {
+    my $list = new SPVM::IntList;
+    my $length = @$array;
+    
+    my $values = new int[$length];
+    
+    $list->{capacity} = $length;
+    $list->{length} = $length;
+    
+    memcpyi($values, 0, $array, 0, $length);
+    
+    return $list;
+  }
+  
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new int[$capacity];
+    
+    memcpyi($new_values, 0, $values, 0, $length);
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
+  }
+  
+  sub push : void ($self : self, $value : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length > $capacity) {
+      $self->_extend;
     }
+    
+    $self->{values}[$length] = $value;
+    
+    $self->{length}++;
   }
-  native sub length : int ($self : self);
-  native sub push : void ($self : self, $value : int);
-  native sub pop : int ($self : self);
-  native sub unshift : void ($self : self, $value : int);
-  native sub shift : int ($self : self);
-  native sub set : void ($self : self, $index : int, $value : int);
-  native sub get : int ($self : self, $index : int);
-  native sub to_array : int[] ($self : self);
+  
+  sub pop : int ($self : self) {
+    my $length = $self->length;
+    
+    if ($length == 0) {
+      die "Can't pop";
+    }
+    
+    my $value = $self->{values}[$length - 1];
+    
+    $self->{length}--;
+  }
+  
+  sub unshift : void ($self : self, $value : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length > $capacity) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    
+    memmovei($values, 1, $values, 0, $length);
+    
+    $values->[0] = $value;
+    $self->{length}++;
+  }
+  
+  sub shift : int ($self : self) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length == 0) {
+      die "Can't shift";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    memmovei($values, 0, $values, 1, $length - 1);
+    
+    $self->{length}--;
+  }
+  
+  sub set : void ($self : self, $index : int, $value : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+  
+  sub get : int ($self : self, $index : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    my $value = $self->{values}[$index];
+    
+    return $value;
+  }
+  
+  sub to_array : int[] ($self : self) {
+    my $length = $self->length;
+    
+    my $array = new int[$length];
+    
+    my $values = $self->{values};
+    
+    memcpyi($array, 0, $values, 0, $length);
+    
+    return $array;
+  }
 }

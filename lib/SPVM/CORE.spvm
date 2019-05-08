@@ -129,6 +129,16 @@ package SPVM::CORE {
 
   native sub memcpy : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
   native sub memmove : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
+  native sub memcpys : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
+  native sub memmoves : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
+  native sub memcpyi : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
+  native sub memmovei : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
+  native sub memcpyl : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
+  native sub memmovel : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
+  native sub memcpyf : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
+  native sub memmovef : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
+  native sub memcpyd : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
+  native sub memmoved : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
   
   precompile sub index : int($source : string, $target : string, $fromIndex : int) {
     my $sourceCount = length $source;

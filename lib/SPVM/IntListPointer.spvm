@@ -1,5 +1,0 @@
-package SPVM::List::IntPointer : pointer_t {
-  
-  native sub new : SPVM::IntPointer ();
-  native sub DESTROY : void ($self : self);
-}

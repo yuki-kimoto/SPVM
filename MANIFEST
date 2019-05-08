@@ -166,11 +166,7 @@ lib/SPVM/HTTP/URL/Escape.spvm
 lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
-lib/SPVM/IntList.c
-lib/SPVM/IntList.config
 lib/SPVM/IntList.spvm
-lib/SPVM/IntListPointer.config
-lib/SPVM/IntListPointer.spvm
 lib/SPVM/IO/File.c
 lib/SPVM/IO/File.config
 lib/SPVM/IO/File.spvm
