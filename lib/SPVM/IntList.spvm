@@ -67,6 +67,8 @@ package SPVM::IntList {
     my $value = $self->{values}[$length - 1];
     
     $self->{length}--;
+    
+    return $value;
   }
   
   sub unshift : void ($self : self, $value : int) {
@@ -100,6 +102,8 @@ package SPVM::IntList {
     memmovei($values, 0, $values, 1, $length - 1);
     
     $self->{length}--;
+    
+    return $value;
   }
   
   sub set : void ($self : self, $index : int, $value : int) {

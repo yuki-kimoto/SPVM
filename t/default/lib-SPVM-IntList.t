@@ -14,11 +14,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # SPVM::IntList
 {
   ok(TestCase::Lib::SPVM::IntList->push);
+  ok(TestCase::Lib::SPVM::IntList->pop);
 
 =pod
   ok(TestCase::Lib::SPVM::IntList->new_with_array);
   ok(TestCase::Lib::SPVM::IntList->length);
-  ok(TestCase::Lib::SPVM::IntList->pop);
   ok(TestCase::Lib::SPVM::IntList->unshift);
   ok(TestCase::Lib::SPVM::IntList->shift);
   ok(TestCase::Lib::SPVM::IntList->set);
