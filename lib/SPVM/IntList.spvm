@@ -77,7 +77,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity) {
+    if ($length > $capacity - 1) {
       $self->_extend;
     }
     

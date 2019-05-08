@@ -107,4 +107,46 @@ package TestCase::Lib::SPVM::IntList {
     return 1;
   }
 
+  sub unshift : int () {
+    # unshift
+    {
+      my $list = SPVM::IntList->new;
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(7);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 7 && $list->get(1) == 5 && $list->get(2) == 3) {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = SPVM::IntList->new;
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->unshift(1);
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
 }
