@@ -2,6 +2,7 @@ package TestCase::Lib::SPVM::IntList {
   use SPVM::IntList;
   
   sub push : int () {
+    # push
     {
       my $list = SPVM::IntList->new;
       
@@ -18,6 +19,27 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
     }
+    
+    # internal _extend tests
+    {
+      my $list = SPVM::IntList->new;
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->push(1);
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) == 1) {
+          return 0;
+        }
+      }
+    }
+    
     
     return 1;
   }

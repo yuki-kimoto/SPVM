@@ -36,7 +36,7 @@ package SPVM::IntList {
     
     my $new_capacity = $capacity * 2;
     
-    my $new_values = new int[$capacity];
+    my $new_values = new int[$new_capacity];
     
     memcpyi($new_values, 0, $values, 0, $length);
     
@@ -48,7 +48,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity) {
+    if ($length > $capacity - 1) {
       $self->_extend;
     }
     
