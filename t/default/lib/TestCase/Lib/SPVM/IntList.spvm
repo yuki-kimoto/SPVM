@@ -1,4 +1,24 @@
 package TestCase::Lib::SPVM::IntList {
   use SPVM::IntList;
   
+  sub push : int () {
+    {
+      my $list = SPVM::IntList->new;
+      
+      $list->push(3);
+      $list->push(5);
+      $list->push(7);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == 7) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

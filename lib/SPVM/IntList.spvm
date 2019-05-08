@@ -4,7 +4,15 @@ package SPVM::IntList {
   has length   : ro int;
   
   sub new : SPVM::IntList () {
-    return new SPVM::IntList;
+    my $capacity = 16;
+    my $values = new int[$capacity];
+    
+    my $self = new SPVM::IntList;
+    $self->{capacity} = $capacity;
+    $self->{length} = 0;
+    $self->{values} = $values;
+    
+    return $self;
   }
   
   sub new_with_array : SPVM::IntList ($array : int[]) {
