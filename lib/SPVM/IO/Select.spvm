@@ -1,11 +1,12 @@
 package SPVM::IO::Select {
-
-  has handles : SPVM::List;
+  use SPVM::IntList;
+  
+  has handles : SPVM::IntList;
   
   sub new : SPVM::IO::Select () {
     my $self = new SPVM::IO::Select;
     
-    $self->{handles} = list([]);
+    $self->{handles} = SPVM::IntList->new;
     
     return $self;
   }
@@ -35,7 +36,7 @@ package SPVM::IO::Select {
 
   sub remove : int ($self : self, $remove_handle : int) {
     
-    my $new_handles = list([]);
+    my $new_handles = SPVM::IntList->new;
     my $handles = $self->{handles};
     
     my $removed = 0;
@@ -71,13 +72,13 @@ package SPVM::IO::Select {
   }
 
   sub handles : int[] ($self : self) {
-    return $self->{handles}->to_iarray;
+    return $self->{handles}->to_array;
   }
 
   sub can_read : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return $self->_can_read($handles->to_iarray, $timeout);
+    return $self->_can_read($handles->to_array, $timeout);
   }
   
   native private sub _can_read : int[] ($self :self, $handles : int[], $timeout : double);
@@ -85,7 +86,7 @@ package SPVM::IO::Select {
   sub can_write : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return $self->_can_write($handles->to_iarray, $timeout);
+    return $self->_can_write($handles->to_array, $timeout);
   }
   
   native private sub _can_write : int[] ($self :self, $handles : int[], $timeout : double);
@@ -93,7 +94,7 @@ package SPVM::IO::Select {
   sub has_exception : int[] ($self :self, $timeout : double) {
     my $handles = $self->{handles};
     
-    return $self->_has_exception($handles->to_iarray, $timeout);
+    return $self->_has_exception($handles->to_array, $timeout);
   }
   
   native private sub _has_exception : int[] ($self :self, $handles : int[], $timeout : double);
