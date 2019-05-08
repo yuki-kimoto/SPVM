@@ -14,7 +14,7 @@ package SPVM::IntList {
     
     return $self;
   }
-  
+
   sub new_with_array : SPVM::IntList ($array : int[]) {
     my $self = new SPVM::IntList;
     my $length = @$array;

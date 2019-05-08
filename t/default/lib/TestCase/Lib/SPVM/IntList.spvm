@@ -25,7 +25,124 @@ package TestCase::Lib::SPVM::IntList {
     
     return 1;
   }
-  
+
+  sub to_array : int () {
+    {
+      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      
+      my $array = $list->to_array;
+      
+      unless ($array isa int[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 3) {
+        return 0;
+      }
+
+      unless ($array->[1] == 5) {
+        return 0;
+      }
+
+      unless ($array->[2] == 7) {
+        return 0;
+      }
+      
+      my $length = @$array;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub get : int () {
+    {
+      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+
+      unless ($list->get(2) == 7) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(-1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(3);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub set : int () {
+    {
+      my $list = SPVM::IntList->new_with_array([0, 0, 0]);
+      
+      $list->set(0 => 3);
+      $list->set(1 => 5);
+      $list->set(2 => 7);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+
+      unless ($list->get(2) == 7) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(-1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(3);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
   sub push : int () {
     # push
     {
@@ -143,6 +260,62 @@ package TestCase::Lib::SPVM::IntList {
         unless ($list->get($i) == 1) {
           return 0;
         }
+      }
+    }
+    
+    return 1;
+  }
+
+  sub shift : int () {
+    # shift
+    {
+      my $list = SPVM::IntList->new;
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(7);
+      
+      unless ($list->shift == 7) {
+        return 0;
+      }
+
+      unless ($list->shift == 5) {
+        return 0;
+      }
+
+      unless ($list->shift == 3) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      eval {
+        $list->shift;
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub length : int () {
+    # length
+    {
+      my $list = SPVM::IntList->new;
+      
+      $list->unshift(3);
+      $list->unshift(5);
+      $list->unshift(7);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
       }
     }
     
