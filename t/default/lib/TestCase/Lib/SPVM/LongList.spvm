@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub new_with_array : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, 7]);
+      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -13,7 +13,7 @@ package TestCase::Lib::SPVM::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT64_MAX()) {
         return 0;
       }
       
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, 7]);
+      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
       
       my $array = $list->to_array;
       
@@ -44,7 +44,7 @@ package TestCase::Lib::SPVM::LongList {
         return 0;
       }
 
-      unless ($array->[2] == 7) {
+      unless ($array->[2] == INT64_MAX()) {
         return 0;
       }
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub get : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, 7]);
+      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT64_MAX()) {
         return 0;
       }
       
@@ -108,7 +108,7 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => 7);
+      $list->set(2 => INT64_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -118,7 +118,7 @@ package TestCase::Lib::SPVM::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT64_MAX()) {
         return 0;
       }
       
@@ -154,14 +154,14 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == 7) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == INT64_MAX()) {
         return 0;
       }
     }
@@ -197,10 +197,10 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(INT64_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == 7) {
+      unless ($pop0 == INT64_MAX()) {
         return 0;
       }
       unless ($pop0 isa long) {
@@ -239,14 +239,14 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 7 && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == INT64_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -281,9 +281,9 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT64_MAX());
       
-      unless ($list->shift == 7) {
+      unless ($list->shift == INT64_MAX()) {
         return 0;
       }
 
@@ -319,7 +319,7 @@ package TestCase::Lib::SPVM::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {

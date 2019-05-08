@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub new_with_array : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, 7]);
+      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -13,7 +13,7 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == DBL_MIN()) {
         return 0;
       }
       
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, 7]);
+      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
       
       my $array = $list->to_array;
       
@@ -44,7 +44,7 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
 
-      unless ($array->[2] == 7) {
+      unless ($array->[2] == DBL_MIN()) {
         return 0;
       }
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub get : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, 7]);
+      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == DBL_MIN()) {
         return 0;
       }
       
@@ -108,7 +108,7 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => 7);
+      $list->set(2 => DBL_MIN());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -118,7 +118,7 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == DBL_MIN()) {
         return 0;
       }
       
@@ -154,14 +154,14 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == 7) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == DBL_MIN()) {
         return 0;
       }
     }
@@ -197,10 +197,10 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(DBL_MIN());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == 7) {
+      unless ($pop0 == DBL_MIN()) {
         return 0;
       }
       unless ($pop0 isa double) {
@@ -239,14 +239,14 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 7 && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == DBL_MIN() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -281,9 +281,9 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(DBL_MIN());
       
-      unless ($list->shift == 7) {
+      unless ($list->shift == DBL_MIN()) {
         return 0;
       }
 
@@ -319,7 +319,7 @@ package TestCase::Lib::SPVM::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {

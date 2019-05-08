@@ -1,4 +1,4 @@
-0.0433 2018-05-01
+0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
   - add fileno to SPVM::IO::Socket
@@ -7,7 +7,7 @@
   - add SPVM::set_exception
   - add SPVM::exception
   - add shutdown, close to IO::Socket
-  - add SPVM::IntList
+  - add SPVM::ByteList, SPVM::ShortList, SPVM::IntList, SPVM::LongList, SPVM::FloatList, SPVM::DoubleList
   - remove SPVM::CORE::list function
   - rename memcpy to memcpyb
   - rename memmove to memmoveb

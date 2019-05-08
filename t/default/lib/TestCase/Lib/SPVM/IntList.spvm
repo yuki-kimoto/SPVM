@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub new_with_array : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -13,7 +13,7 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT32_MAX()) {
         return 0;
       }
       
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
       
       my $array = $list->to_array;
       
@@ -44,7 +44,7 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
 
-      unless ($array->[2] == 7) {
+      unless ($array->[2] == INT32_MAX()) {
         return 0;
       }
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub get : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, 7]);
+      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -69,7 +69,7 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT32_MAX()) {
         return 0;
       }
       
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => 7);
+      $list->set(2 => INT32_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -114,7 +114,7 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == 7) {
+      unless ($list->get(2) == INT32_MAX()) {
         return 0;
       }
       
@@ -150,14 +150,14 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == 7) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == INT32_MAX()) {
         return 0;
       }
     }
@@ -193,9 +193,9 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(7);
+      $list->push(INT32_MAX());
       
-      unless ($list->pop == 7) {
+      unless ($list->pop == INT32_MAX()) {
         return 0;
       }
 
@@ -231,14 +231,14 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 7 && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == INT32_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -273,9 +273,9 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT32_MAX());
       
-      unless ($list->shift == 7) {
+      unless ($list->shift == INT32_MAX()) {
         return 0;
       }
 
@@ -311,7 +311,7 @@ package TestCase::Lib::SPVM::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(7);
+      $list->unshift(INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
