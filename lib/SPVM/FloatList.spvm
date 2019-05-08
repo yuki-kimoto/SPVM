@@ -1,13 +1,13 @@
-package SPVM::DoubleList {
-  has values   : double[];
+package SPVM::FloatList {
+  has values   : float[];
   has capacity : int;
   has length   : ro int;
   
-  sub new : SPVM::DoubleList () {
+  sub new : SPVM::FloatList () {
     my $capacity = 16;
-    my $values = new double[$capacity];
+    my $values = new float[$capacity];
     
-    my $self = new SPVM::DoubleList;
+    my $self = new SPVM::FloatList;
     $self->{capacity} = $capacity;
     $self->{length} = 0;
     $self->{values} = $values;
@@ -15,16 +15,16 @@ package SPVM::DoubleList {
     return $self;
   }
 
-  sub new_with_array : SPVM::DoubleList ($array : double[]) {
-    my $self = new SPVM::DoubleList;
+  sub new_with_array : SPVM::FloatList ($array : float[]) {
+    my $self = new SPVM::FloatList;
     my $length = @$array;
     
-    my $values = new double[$length];
+    my $values = new float[$length];
     
     $self->{capacity} = $length;
     $self->{length} = $length;
     
-    memcpyd($values, 0, $array, 0, $length);
+    memcpyf($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -38,15 +38,15 @@ package SPVM::DoubleList {
     
     my $new_capacity = $capacity * 2;
     
-    my $new_values = new double[$new_capacity];
+    my $new_values = new float[$new_capacity];
     
-    memcpyd($new_values, 0, $values, 0, $length);
+    memcpyf($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
   }
   
-  sub push : void ($self : self, $value : double) {
+  sub push : void ($self : self, $value : float) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -59,7 +59,7 @@ package SPVM::DoubleList {
     $self->{length}++;
   }
   
-  sub pop : double ($self : self) {
+  sub pop : float ($self : self) {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -73,7 +73,7 @@ package SPVM::DoubleList {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : double) {
+  sub unshift : void ($self : self, $value : float) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -83,13 +83,13 @@ package SPVM::DoubleList {
     
     my $values = $self->{values};
     
-    memmoved($values, 1, $values, 0, $length);
+    memmovef($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
   }
   
-  sub shift : double ($self : self) {
+  sub shift : float ($self : self) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -101,14 +101,14 @@ package SPVM::DoubleList {
     
     my $value = $values->[0];
     
-    memmoved($values, 0, $values, 1, $length - 1);
+    memmovef($values, 0, $values, 1, $length - 1);
     
     $self->{length}--;
     
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : double) {
+  sub set : void ($self : self, $index : int, $value : float) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -118,7 +118,7 @@ package SPVM::DoubleList {
     $self->{values}[$index] = $value;
   }
   
-  sub get : double ($self : self, $index : int) {
+  sub get : float ($self : self, $index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -130,14 +130,14 @@ package SPVM::DoubleList {
     return $value;
   }
   
-  sub to_array : double[] ($self : self) {
+  sub to_array : float[] ($self : self) {
     my $length = $self->length;
     
-    my $array = new double[$length];
+    my $array = new float[$length];
     
     my $values = $self->{values};
     
-    memcpyd($array, 0, $values, 0, $length);
+    memcpyf($array, 0, $values, 0, $length);
     
     return $array;
   }
