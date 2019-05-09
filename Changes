@@ -1,3 +1,6 @@
+0.0434 2018-05-09
+  - add packb, packs, packi, packl, packf, packd to SPVM
+  - add unpackb, unpacks, unpacki, unpackl, unpackf, unpackd to SPVM
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
