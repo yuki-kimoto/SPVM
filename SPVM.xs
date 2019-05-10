@@ -1829,6 +1829,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
         {
           if (SvOK(sv_value)) {
+            // Convert Perl array to SPVM object
             if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
               SV* sv_elems = sv_value;
@@ -1998,6 +1999,35 @@ call_sub(...)
                         SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                         elems[i] = (double)SvNV(sv_value);
+                      }
+                    }
+                    
+                    // New sv array
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    sv_value = sv_array;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT: {
+                    // New array
+                    void* array = env->new_oarray_raw(env, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, length);
+
+                    // Increment reference count
+                    env->inc_ref_count(env, array);
+
+                    {
+                      int32_t i;
+                      for (i = 0; i < length; i++) {
+                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                        if (SvOK(sv_value)) {
+                          if (!sv_derived_from(sv_value, "SPVM::Data")) {
+                            croak("Element of %dth argument of %s::%s() must inherit SPVM::Data object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                          }
+                          env->set_oelem(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
+                        }
+                        else {
+                          env->set_oelem(env, array, i, NULL);
+                        }
                       }
                     }
                     

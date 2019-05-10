@@ -84,11 +84,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   # Pass list
   {
-    my $hash = TestCase::ExchangeAPI->return_list_only(SPVM::list([SPVM::Int->new(1), SPVM::Double->new(2.5)]));
+    my $hash = TestCase::ExchangeAPI->return_list_only(SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]));
     my $x = $hash->get(0);
     
     is($hash->get(0)->val, 1);
     is($hash->get(1)->val, 2.5);
+    ok(!defined $hash->get(2));
   }
 }
 

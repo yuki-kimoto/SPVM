@@ -1,5 +1,10 @@
 0.0434 2018-05-10
   - add  SPVM::StringList
+  - remove SPVM::list
+  - In any object array argument of SPVM::call_sub, array reference is converted to any object array
+    
+      SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef])
+
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
