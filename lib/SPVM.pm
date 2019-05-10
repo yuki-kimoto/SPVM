@@ -104,20 +104,6 @@ sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) 
 sub hash { SPVM::ExchangeAPI::hash($SPVM_ENV, @_) }
 sub list { SPVM::ExchangeAPI::list($SPVM_ENV, @_) }
 
-sub packb { pack('c*', @_) }
-sub packs { pack('s*', @_) }
-sub packi { pack('l*', @_) }
-sub packl { pack('q*', @_) }
-sub packf { pack('f*', @_) }
-sub packd { pack('d*', @_) }
-
-sub unpackb { unpack('c*', $_[0]) }
-sub unpacks { unpack('s*', $_[0]) }
-sub unpacki { unpack('l*', $_[0]) }
-sub unpackl { unpack('q*', $_[0]) }
-sub unpackf { unpack('f*', $_[0]) }
-sub unpackd { unpack('d*', $_[0]) }
-
 1;
 
 =encoding UTF-8
