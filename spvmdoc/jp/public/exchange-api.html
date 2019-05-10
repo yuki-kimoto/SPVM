@@ -186,10 +186,10 @@ my $spvm_double = SPVM::Double->new(2.5);
 my $spvm_nums = SPVM::new_barray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのbyte型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのbyte型に変換されます。
       </p>
 <pre>
 (int8_t)SvIV(sv_value)
@@ -210,10 +210,10 @@ my $spvm_nums = SPVM::new_barray([1, 2, 3]);
 my $spvm_nums = SPVM::new_sarray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのshort型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのshort型に変換されます。
       </p>
 <pre>
 (int16_t)SvIV(sv_value)
@@ -233,10 +233,10 @@ my $spvm_nums = SPVM::new_sarray([1, 2, 3]);
 my $spvm_nums = SPVM::new_iarray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのint型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのint型に変換されます。
       </p>
 <pre>
 (int32_t)SvIV(sv_value)
@@ -256,10 +256,10 @@ my $spvm_nums = SPVM::new_iarray([1, 2, 3]);
 my $spvm_nums = SPVM::new_larray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのlong型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのlong型に変換されます。
       </p>
 <pre>
 (int64_t)SvIV(sv_value)
@@ -279,10 +279,10 @@ my $spvm_nums = SPVM::new_larray([1, 2, 3]);
 my $spvm_nums = SPVM::new_farray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのfloat型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのfloat型に変換されます。
       </p>
 <pre>
 (float)SvNV(sv_value)
@@ -303,10 +303,10 @@ my $spvm_nums = SPVM::new_farray([1, 2, 3]);
 my $spvm_nums = SPVM::new_darray([1, 2, 3]);
 </pre>
       <p>
-        第一引数に配列のリファレンスを受け取ります。
+        第一引数に配列リファレンスを受け取ります。
       </p>
       <p>
-        配列のリファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのdouble型に変換されます。
+        配列リファレンスのそれぞれの要素の値は、Perlのスカラ値から、perlapiとC99の型変換による以下の変換によって、SPVMのdouble型に変換されます。
       </p>
 <pre>
 (double)SvNV(sv_value)
@@ -554,7 +554,62 @@ my $object1 = SPVM::new_iarray([1, 2, 3]);
 my $object2 = SPVM::new_iarray([4, 5, 6]);
 my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
 </pre>
+
+      <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値型の配列に変換 - SPVM::new_varray</h3>
+      <p>
+        Perlの配列リファレンスをSPVMの値型の配列に変換するには、SPVM::new_varray関数を使用します。
+      </p>
+<pre>
+    my $perl_values = [
+      {x => $INT_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
+</pre>
+      <p>
+        第一引数は、SPVMの値の配列型を指定します。
+      </p>
+      <p>
+        第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        ハッシュリファレンスに含まれる値は、数値の変換規則によって、変換されます。
+      </p>
+
+      <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値型の配列に変換 - SPVM::new_varray_from_bin</h3>
+      <p>
+        Perlのパックされたバイナリを、SPVMの値型の配列に変換するには、SPVM::new_varray_from_bin関数を使用します。
+      </p>
+<pre>
+    my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
+</pre>
+      <p>
+        第一引数は、Perlのパックされたバイナリを指定します。バイナリの長さは、値型のフィールドの個数とフィールド幅で、割り切れる必要があります。
+      </p>
+      <p>
+        第二引数は、SPVMの値の配列型を指定します。
+      </p>
+      <p>
+        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。返される配列の長さは、バイナリの長さを、フィールド幅で割ったものになります。
+      </p>
+      <p>
+        いくつかのサンプルです。
+      </p>
+<pre>
+
+</pre>
       
+      <p>
+        第一引数は、SPVMの値の配列型を指定します。
+      </p>
+      <p>
+        第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
+      </p>
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <ul class="toc">
         <li><a href="#exchange-api-utility-exception">SPVMの例外の取得 - exception</a></li>
@@ -646,7 +701,7 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 new_str_from_bin(済み)
 
-=head2 new_varray
+=head2 new_varray(済み)
 
 =head2 new_varray_from_bin
 

@@ -1152,8 +1152,7 @@ _new_varray(...)
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
-    const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
-    croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
+    croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
   }
   
   // New array

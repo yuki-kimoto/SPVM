@@ -501,8 +501,36 @@ is_deeply(
   }
 }
 
-# value array
+# new_varray
 {
+  
+  # new_varray - byte
+  {
+    my $values = [
+      {x => $BYTE_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_varray("TestCase::Point_3b[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_varray_byte($sp_values));
+    my $out_values = $sp_values->to_elems;
+    is_deeply($out_values, $values);
+  }
+
+  # new_varray - short
+  {
+    my $values = [
+      {x => $SHORT_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_varray("TestCase::Point_3s[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_varray_short($sp_values));
+    my $out_values = $sp_values->to_elems;
+    is_deeply($out_values, $values);
+  }
+
+  # new_varray - int
   {
     my $values = [
       {x => $INT_MIN, y => 1, z => 2},
@@ -515,6 +543,48 @@ is_deeply(
     is_deeply($out_values, $values);
   }
 
+  # new_varray - long
+  {
+    my $values = [
+      {x => $LONG_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_varray("TestCase::Point_3l[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_varray_long($sp_values));
+    my $out_values = $sp_values->to_elems;
+    is_deeply($out_values, $values);
+  }
+
+  # new_varray - float
+  {
+    my $values = [
+      {x => $FLT_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_varray("TestCase::Point_3f[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_varray_float($sp_values));
+    my $out_values = $sp_values->to_elems;
+    is_deeply($out_values, $values);
+  }
+
+  # new_varray - double
+  {
+    my $values = [
+      {x => $DBL_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $sp_values = SPVM::new_varray("TestCase::Point_3d[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_varray_double($sp_values));
+    my $out_values = $sp_values->to_elems;
+    is_deeply($out_values, $values);
+  }
+}
+
+# new_varray_from_bin
+{
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
     my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
