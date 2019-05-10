@@ -213,52 +213,48 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
-# Argument is value reference and numeric reference mixed
+# Argument is value
 {
+  # Argument is value - byte
   {
-    my $point1 = {x => $BYTE_MIN, y => 1, z => 2};
-    my $value1 = 6;
-    my $point2 = {x => 3, y => 4, z => 5};
-    my $value2 = 7;
-    TestCase::ExchangeAPI->call_sub_value_ref_numeric_ref_mixed_arg(\$point1, \$value1, \$point2, \$value2);
-    is_deeply($point1, {x => $BYTE_MIN + 1, y => 2, z => 3});
-    is($value1, 7);
-    is_deeply($point2, {x => 4, y => 5, z => 6});
-    is($value2, 8);
+    my $input = {x => 1, y => 3, z => $BYTE_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_byte($input);
+    is_deeply($output, $input);
   }
-}
 
-# Argument is value reference
-{
+  # Argument is value - short
   {
-    my $point = {x => $BYTE_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_byte(\$point);
-    is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
+    my $input = {x => 1, y => 3, z => $SHORT_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_short($input);
+    is_deeply($output, $input);
   }
+
+  # Argument is value - int
   {
-    my $point = {x => $SHORT_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_short(\$point);
-    is_deeply($point, {x => $SHORT_MIN + 1, y => 2, z => 3});
+    my $input = {x => 1, y => 3, z => $INT_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_int($input);
+    is_deeply($output, $input);
   }
+
+  # Argument is value - long
   {
-    my $point = {x => $INT_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_int(\$point);
-    is_deeply($point, {x => $INT_MIN + 1, y => 2, z => 3});
+    my $input = {x => 1, y => 3, z => $LONG_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_long($input);
+    is_deeply($output, $input);
   }
+
+  # Argument is value - float
   {
-    my $point = {x => $LONG_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_long(\$point);
-    is_deeply($point, {x => $LONG_MIN + 1, y => 2, z => 3});
+    my $input = {x => 1, y => 3, z => $FLT_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_float($input);
+    is_deeply($output, $input);
   }
+
+  # Argument is value - double
   {
-    my $point = {x => $FLT_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_float(\$point);
-    is_deeply($point, {x => $FLT_MIN + 1, y => 2, z => 3});
-  }
-  {
-    my $point = {x => $DBL_MIN, y => 1, z => 2};
-    TestCase::ExchangeAPI->call_sub_value_ref_arg_double(\$point);
-    is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
+    my $input = {x => 1, y => 3, z => $DBL_MAX};
+    my $output = TestCase::ExchangeAPI->call_sub_value_arg_double($input);
+    is_deeply($output, $input);
   }
 }
 
@@ -295,6 +291,57 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     is($num_double, POSIX::DBL_MIN() + 1);
   }
 }
+
+
+# Argument is value reference
+{
+  {
+    my $point = {x => $BYTE_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_byte(\$point);
+    is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $SHORT_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_short(\$point);
+    is_deeply($point, {x => $SHORT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $INT_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_int(\$point);
+    is_deeply($point, {x => $INT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $LONG_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_long(\$point);
+    is_deeply($point, {x => $LONG_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $FLT_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_float(\$point);
+    is_deeply($point, {x => $FLT_MIN + 1, y => 2, z => 3});
+  }
+  {
+    my $point = {x => $DBL_MIN, y => 1, z => 2};
+    TestCase::ExchangeAPI->call_sub_value_ref_arg_double(\$point);
+    is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
+  }
+}
+
+# Argument is value reference and numeric reference mixed
+{
+  {
+    my $point1 = {x => $BYTE_MIN, y => 1, z => 2};
+    my $value1 = 6;
+    my $point2 = {x => 3, y => 4, z => 5};
+    my $value2 = 7;
+    TestCase::ExchangeAPI->call_sub_value_ref_numeric_ref_mixed_arg(\$point1, \$value1, \$point2, \$value2);
+    is_deeply($point1, {x => $BYTE_MIN + 1, y => 2, z => 3});
+    is($value1, 7);
+    is_deeply($point2, {x => 4, y => 5, z => 6});
+    is($value2, 8);
+  }
+}
+
 
 # Object
 {

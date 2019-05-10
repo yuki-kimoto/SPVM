@@ -42,6 +42,30 @@ package TestCase::ExchangeAPI {
   sub string_argments_and_return_value : string ($string1 : string, $string2 : string) {
     return $string1 . $string2;
   }
+
+  sub call_sub_value_arg_byte : TestCase::Point_3b ($point : TestCase::Point_3b) {
+    return $point;
+  }
+
+  sub call_sub_value_arg_short : TestCase::Point_3s ($point : TestCase::Point_3s) {
+    return $point;
+  }
+
+  sub call_sub_value_arg_int : TestCase::Point_3i ($point : TestCase::Point_3i) {
+    return $point;
+  }
+
+  sub call_sub_value_arg_long : TestCase::Point_3l ($point : TestCase::Point_3l) {
+    return $point;
+  }
+
+  sub call_sub_value_arg_float : TestCase::Point_3f ($point : TestCase::Point_3f) {
+    return $point;
+  }
+
+  sub call_sub_value_arg_double : TestCase::Point_3d ($point : TestCase::Point_3d) {
+    return $point;
+  }
   
   sub call_sub_value_ref_numeric_ref_mixed_arg : void ($point1 : TestCase::Point_3i&, $value1 : int&, $point2 : TestCase::Point_3i&, $value2 : int&) {
     $point1->{x} = (int)($point1->{x} + 1);
