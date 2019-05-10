@@ -42,7 +42,7 @@
         <b>SPVMエクスチェンジAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。SPVMエクスチェンジAPI仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年5月4日
+        最終更新日 2019年5月10日
       </p>
       <h2 id="exchange-api-toc">目次</h2>
       <ul class="toc">
@@ -75,10 +75,12 @@
         <li><a href="#exchange-api-perl-scalar-to-SPVM-Double">Perlのスカラ値をSPVMのSPVM::Double型に変換 - SPVM::Double-&gt;new</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-byte-array">Perlの配列リファレンスをSPVMのbyte[]型に変換 - SPVM::new_barray</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-short-array">Perlの配列リファレンスをSPVMのshort[]型に変換 - SPVM::new_sarray</a></li>
-        <li><a href="#exchange-api-perl-array-ref-to-spvm-int-array">Perlの配列リファレンスをSPVMのint型[]に変換 - SPVM::new_iarray</a></li>
+        <li><a href="#exchange-api-perl-array-ref-to-spvm-int-array">Perlの配列リファレンスをSPVMのint[]型に変換 - SPVM::new_iarray</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-long-array">Perlの配列リファレンスをSPVMのlong[]型に変換 - SPVM::new_larray</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-float-array">Perlの配列リファレンスをSPVMのfloat[]型に変換 - SPVM::new_farray</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-double-array">Perlの配列リファレンスをSPVMのdouble[]型に変換 - SPVM::new_darray</a></li>
+        <li><a href="#exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクトの配列型に変換 - SPVM::new_oarray</a></li>
+        <li><a href="#exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値の配列型に変換 - SPVM::new_varray</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-byte-array">Perlのバイナリ列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-string">Perlのバイナリ列をSPVMのstring型に変換 - SPVM::new_str_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-short-array">Perlのバイナリ列をSPVMのshort[]型に変換 - SPVM::new_sarray_from_bin</a></li>
@@ -86,12 +88,10 @@
         <li><a href="#exchange-api-perl-binary-to-spvm-long-array">Perlのバイナリ列をSPVMのlong[]型に変換 - SPVM::new_larray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-float-array">Perlのバイナリ列をSPVMのfloat[]型に変換 - SPVM::new_barray_from_str</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-double-array">Perlのバイナリ列をSPVMのdouble[]型に変換 - SPVM::new_darray_from_bin</a></li>
+        <li><a href="#exchange-api-perl-binary-to-spvm-value-array">Perlのバイナリ列をSPVMの値の配列型に変換 - SPVM::new_varray_from_bin</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</a></li>
-        <li><a href="#exchange-api-perl-array-ref-to-spvm-array-ref-to-SPVM-List">Perlの配列リファレンスをSPVMのSPVM::List型に変換 - SPVM::list</a></li>
-
-        <li><a href="#exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換 - SPVM::new_oarray</a></li>
       </ul>
 
       <h3 id="exchange-api-perl-scalar-to-SPVM-Byte">Perlのスカラ値をSPVMのSPVM::Byte型に変換 - SPVM::Byte-&gt;new</h3>
@@ -319,6 +319,124 @@ my $spvm_nums = SPVM::new_darray([1, 2, 3]);
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
 
+      <h3 id="exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクトの配列型に変換 - SPVM::new_oarray</h3>
+      <p>
+        Perlの配列リファレンスをSPVMのオブジェクトの配列型に変換するには、SPVM::new_oarray関数を使います。
+      </p>
+<pre>
+my $byte_array = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+</pre>
+      <p>
+        第一引数は、型名を指定します。これは、存在する基本型を要素とする配列型でなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        第二引数は、Perlの配列リファレンスです。要素は、SPVMのオブジェクト型を表現した「SPVM::Data」を継承しているオブジェクトか、未定義値でなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        戻り値は、SPVMの配列型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        多次元配列を生成することもできます。
+      </p>
+<pre>
+my $object1 = SPVM::new_iarray([1, 2, 3]);
+my $object2 = SPVM::new_iarray([4, 5, 6]);
+my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
+</pre>
+
+      <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値の配列型に変換 - SPVM::new_varray</h3>
+      <p>
+        Perlの配列リファレンスをSPVMの値の配列型に変換するには、SPVM::new_varray関数を使用します。
+      </p>
+<pre>
+    my $perl_values = [
+      {x => 0, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
+</pre>
+      <p>
+        第一引数は、SPVMの値の配列型を指定します。
+      </p>
+      <p>
+        第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        ハッシュリファレンスに含まれる値は、数値の変換規則によって、変換されます。
+      </p>
+      <p>
+        いくつかのサンプルです。
+      </p>
+<pre>
+# new_varray - byte
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3b[]", $values);
+}
+
+# new_varray - short
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3s[]", $values);
+}
+
+# new_varray - int
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
+}
+
+# new_varray - long
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3l[]", $values);
+}
+
+# new_varray - float
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3f[]", $values);
+}
+
+# new_varray - double
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3d[]", $values);
+  ok(TestCase::ExchangeAPI->spvm_new_varray_double($spvm_value_array));
+  my $out_values = $spvm_value_array->to_elems;
+  is_deeply($out_values, $values);
+}
+
+</pre>
+
       <h3 id="exchange-api-perl-binary-to-spvm-byte-array">Perlのバイナリ列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_bin</h3>
       <p>
         Perlのバイナリ列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_bin関数を使います。
@@ -485,172 +603,9 @@ my $spvm_double_array = SPVM::new_darray_from_bin($perl_binary);
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
 
-      <h3 id="exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</h3>
+      <h3 id="exchange-api-perl-binary-to-spvm-value-array">Perlのバイナリ列をSPVMの値の配列型に変換 - SPVM::new_varray_from_bin</h3>
       <p>
-        Perlの文字列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
-      </p>
-<pre>
-use utf8;
-my $spvm_byte_array = SPVM::new_barray_from_str("あいうえお");
-</pre>
-      <p>
-        第一引数にPerlの文字列を受け取ります。Perlの文字列は、ここではデコードされた文字列を指します。
-      </p>
-      <p>
-        長さは、UTF-8として、バイト列を数えた場合の長さになります。
-      </p>
-      <p>
-        戻り値は、SPVMの「byte[]」型を表現した「SPVM::Data::Array」オブジェクトです。
-      </p>
-      <p>
-        第一引数が未定義値だった場合は、未定義値が返ります。
-      </p>
-
-      <h3 id="exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</h3>
-      <p>
-        Perlの文字列をSPVMのstring型に変換するには、SPVM::new_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
-      </p>
-<pre>
-use utf8;
-my $spvm_string = SPVM::new_str("あいうえお");
-</pre>
-      <p>
-        第一引数にPerlの文字列を受け取ります。
-      </p>
-      <p>
-        長さは、UTF-8として、バイト列を数えた場合の長さになります。
-      </p>
-      <p>
-        戻り値は、SPVMの「byte[]」型を表現した「SPVM::Data::Array」オブジェクトです。SPVMのstring型は実行時にはbyte[]型として扱われます。
-      </p>
-      <p>
-        第一引数が未定義値だった場合は、未定義値が返ります。
-      </p>
-      <p>
-        この関数は実際には、<a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_barray_from_str</a>のエイリアスです。
-      </p>
-
-      <h3 id="exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換 - SPVM::new_oarray</h3>
-      <p>
-        Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換するには、SPVM::new_oarray関数を使います。
-      </p>
-<pre>
-my $byte_array = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
-</pre>
-      <p>
-        第一引数は、型名を指定します。これは、存在する基本型を要素とする配列型でなければなりません。そうでない場合は、例外が発生します。
-      </p>
-      <p>
-        第二引数は、Perlの配列リファレンスです。要素は、SPVMのオブジェクト型を表現した「SPVM::Data」を継承しているオブジェクトか、未定義値でなければなりません。そうでない場合は、例外が発生します。
-      </p>
-      <p>
-        戻り値は、SPVMの配列型を表現した「SPVM::Data::Array」オブジェクトです。
-      </p>
-      <p>
-        多次元配列を生成することもできます。
-      </p>
-<pre>
-my $object1 = SPVM::new_iarray([1, 2, 3]);
-my $object2 = SPVM::new_iarray([4, 5, 6]);
-my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
-</pre>
-
-      <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値型の配列に変換 - SPVM::new_varray</h3>
-      <p>
-        Perlの配列リファレンスをSPVMの値型の配列に変換するには、SPVM::new_varray関数を使用します。
-      </p>
-<pre>
-    my $perl_values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
-</pre>
-      <p>
-        第一引数は、SPVMの値の配列型を指定します。
-      </p>
-      <p>
-        第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
-      </p>
-      <p>
-        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。
-      </p>
-      <p>
-        ハッシュリファレンスに含まれる値は、数値の変換規則によって、変換されます。
-      </p>
-      <p>
-        いくつかのサンプルです。
-      </p>
-<pre>
-# new_varray - byte
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3b[]", $values);
-}
-
-# new_varray - short
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3s[]", $values);
-}
-
-# new_varray - int
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
-}
-
-# new_varray - long
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3l[]", $values);
-}
-
-# new_varray - float
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3f[]", $values);
-}
-
-# new_varray - double
-{
-  my $values = [
-    {x => 0, y => 1, z => 2},
-    {x => 3, y => 4, z => 5},
-    {x => 6, y => 7, z => 8},
-  ];
-  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3d[]", $values);
-  ok(TestCase::ExchangeAPI->spvm_new_varray_double($spvm_value_array));
-  my $out_values = $spvm_value_array->to_elems;
-  is_deeply($out_values, $values);
-}
-
-</pre>
-
-      <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値型の配列に変換 - SPVM::new_varray_from_bin</h3>
-      <p>
-        Perlのパックされたバイナリを、SPVMの値型の配列に変換するには、SPVM::new_varray_from_bin関数を使用します。
+        Perlのパックされたバイナリを、SPVMの値の配列型に変換するには、SPVM::new_varray_from_bin関数を使用します。
       </p>
 <pre>
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
@@ -663,7 +618,7 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
         第二引数は、SPVMの値の配列型を指定します。
       </p>
       <p>
-        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。返される配列の長さは、バイナリの長さを、フィールド幅で割ったものになります。
+        戻り値は、SPVMの値の配列型を表現した「SPVM::Data::Array」オブジェクトです。返される配列の長さは、バイナリの長さを、値型のフィールドの個数とフィールド幅をかけたもので、割った長さになります。
       </p>
       <p>
         いくつかのサンプルです。
@@ -728,6 +683,51 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
 <pre>
 my $exception = SPVM::exception();
 </pre>
+
+      <h3 id="exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</h3>
+      <p>
+        Perlの文字列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
+      </p>
+<pre>
+use utf8;
+my $spvm_byte_array = SPVM::new_barray_from_str("あいうえお");
+</pre>
+      <p>
+        第一引数にPerlの文字列を受け取ります。Perlの文字列は、ここではデコードされた文字列を指します。
+      </p>
+      <p>
+        長さは、UTF-8として、バイト列を数えた場合の長さになります。
+      </p>
+      <p>
+        戻り値は、SPVMの「byte[]」型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        第一引数が未定義値だった場合は、未定義値が返ります。
+      </p>
+
+      <h3 id="exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</h3>
+      <p>
+        Perlの文字列をSPVMのstring型に変換するには、SPVM::new_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
+      </p>
+<pre>
+use utf8;
+my $spvm_string = SPVM::new_str("あいうえお");
+</pre>
+      <p>
+        第一引数にPerlの文字列を受け取ります。
+      </p>
+      <p>
+        長さは、UTF-8として、バイト列を数えた場合の長さになります。
+      </p>
+      <p>
+        戻り値は、SPVMの「byte[]」型を表現した「SPVM::Data::Array」オブジェクトです。SPVMのstring型は実行時にはbyte[]型として扱われます。
+      </p>
+      <p>
+        第一引数が未定義値だった場合は、未定義値が返ります。
+      </p>
+      <p>
+        この関数は実際には、<a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_barray_from_str</a>のエイリアスです。
+      </p>
 
       <h3 id="exchange-api-utility-set_exception">SPVMの例外の設定 - set_exception</h3>
       <p>
@@ -805,11 +805,9 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 new_varray(済み)
 
-=head2 new_varray_from_bin
+=head2 new_varray_from_bin(済み)
 
 =head2 hash
-
-=head2 list
 
 =head2 set_exception(済み)
 
