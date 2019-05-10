@@ -90,6 +90,8 @@
         <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-array-ref-to-SPVM-List">Perlの配列リファレンスをSPVMのSPVM::List型に変換 - SPVM::list</a></li>
+
+        <li><a href="#exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換 - SPVM::new_oarray</a></li>
       </ul>
 
       <h3 id="exchange-api-perl-scalar-to-SPVM-Byte">Perlのスカラ値をSPVMのSPVM::Byte型に変換 - SPVM::Byte-&gt;new</h3>
@@ -528,6 +530,31 @@ my $spvm_string = SPVM::new_str("あいうえお");
         この関数は実際には、<a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_barray_from_str</a>のエイリアスです。
       </p>
 
+      <h3 id="exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換 - SPVM::new_oarray</h3>
+      <p>
+        Perlの配列リファレンスをSPVMのオブジェクト型の配列に変換するには、SPVM::new_oarray関数を使います。
+      </p>
+<pre>
+my $byte_array = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+</pre>
+      <p>
+        第一引数は、型名を指定します。これは、存在する基本型を要素とする配列型でなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        第二引数は、Perlの配列リファレンスです。要素は、SPVMのオブジェクト型を表現した「SPVM::Data」を継承しているオブジェクトか、未定義値でなければなりません。そうでない場合は、例外が発生します。
+      </p>
+      <p>
+        戻り値は、SPVMの配列型を表現した「SPVM::Data::Array」オブジェクトです。
+      </p>
+      <p>
+        多次元配列を生成することもできます。
+      </p>
+<pre>
+my $object1 = SPVM::new_iarray([1, 2, 3]);
+my $object2 = SPVM::new_iarray([4, 5, 6]);
+my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
+</pre>
+      
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <ul class="toc">
         <li><a href="#exchange-api-utility-exception">SPVMの例外の取得 - exception</a></li>
@@ -609,7 +636,7 @@ unless ($end_memory_blocks_count == $start_memory_blocks_count) {
 
 =head2 new_larray_from_bin(済み)
 
-=head2 new_oarray
+=head2 new_oarray(済み)
 
 =head2 new_sarray(済み)
 
