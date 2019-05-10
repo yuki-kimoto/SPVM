@@ -200,6 +200,7 @@ lib/SPVM/Short.spvm
 lib/SPVM/ShortList.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
+lib/SPVM/StringList.pm
 lib/SPVM/Time.c
 lib/SPVM/Time.config
 lib/SPVM/Time.spvm
@@ -447,6 +448,7 @@ t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm
 t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
+t/default/lib/TestCase/Lib/SPVM/StringList.spvm
 t/default/lib/TestCase/Lib/SPVM/Time.spvm
 t/default/lib/TestCase/Lib/SPVM/Time/Format.spvm
 t/default/lib/TestCase/Lib/SPVM/Time/Moment.spvm

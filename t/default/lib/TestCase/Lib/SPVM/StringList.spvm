@@ -1,0 +1,339 @@
+package TestCase::Lib::SPVM::StringList {
+  use SPVM::StringList;
+
+  sub new_with_array : int () {
+    {
+      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      
+      unless ($list->get(0) eq "abc") {
+        return 0;
+      }
+      
+      unless ($list->get(1) eq "def") {
+        return 0;
+      }
+
+      unless ($list->get(2) eq "ABC") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub to_array : int () {
+    {
+      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      
+      my $array = $list->to_array;
+      
+      unless ($array isa string[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] eq "abc") {
+        return 0;
+      }
+
+      unless ($array->[1] eq "def") {
+        return 0;
+      }
+
+      unless ($array->[2] eq "ABC") {
+        return 0;
+      }
+      
+      my $length = @$array;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub get : int () {
+    {
+      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      
+      unless ($list->get(0) eq "abc") {
+        return 0;
+      }
+
+      unless ($list->get(0) isa string) {
+        return 0;
+      }
+
+      unless ($list->get(1) eq "def") {
+        return 0;
+      }
+
+      unless ($list->get(2) eq "ABC") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(-1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(3);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub set : int () {
+    {
+      my $list = SPVM::StringList->new_with_array([(string)0, 0, 0]);
+      
+      $list->set(0 => "abc");
+      $list->set(1 => "def");
+      $list->set(2 => "ABC");
+      
+      unless ($list->get(0) eq "abc") {
+        return 0;
+      }
+
+      unless ($list->get(1) eq "def") {
+        return 0;
+      }
+
+      unless ($list->get(2) eq "ABC") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(-1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(3);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub push : int () {
+    # push
+    {
+      my $list = SPVM::StringList->new;
+      
+      $list->push("abc");
+      $list->push("def");
+      $list->push("ABC");
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) eq "abc" && $list->get(1) eq "def" && $list->get(2) eq "ABC") {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = SPVM::StringList->new;
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->push("p");
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) eq "p") {
+          return 0;
+        }
+      }
+    }
+    
+    
+    return 1;
+  }
+
+  sub pop : int () {
+    # pop
+    {
+      my $list = SPVM::StringList->new;
+      
+      $list->push("abc");
+      $list->push("def");
+      $list->push("ABC");
+      
+      my $pop0 = $list->pop;
+      unless ($pop0 eq "ABC") {
+        return 0;
+      }
+      unless ($pop0 isa string) {
+        return 0;
+      }
+
+      unless ($list->pop eq "def") {
+        return 0;
+      }
+
+      unless ($list->pop eq "abc") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      eval {
+        $list->pop;
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub unshift : int () {
+    # unshift
+    {
+      my $list = SPVM::StringList->new;
+      
+      $list->unshift("abc");
+      $list->unshift("def");
+      $list->unshift("ABC");
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) eq "ABC") {
+        return 0;
+      }
+      unless ($list->get(1) eq "def") {
+        return 0;
+      }
+      unless ($list->get(2) eq "abc") {
+        return 0;
+      }
+    }
+    
+    # internal _extend tests
+    {
+      my $list = SPVM::StringList->new;
+      
+      for (my $i = 0; $i < 100; $i++) {
+        $list->unshift("p");
+      }
+      
+      my $length = $list->length;
+      unless ($length == 100) {
+        return 0;
+      }
+      
+      for (my $i = 0; $i < 100; $i++) {
+        unless ($list->get($i) eq "p") {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
+  sub shift : int () {
+    # shift
+    {
+      my $list = SPVM::StringList->new;
+      
+      $list->unshift("abc");
+      $list->unshift("def");
+      $list->unshift("ABC");
+      
+      unless ($list->shift eq "ABC") {
+        return 0;
+      }
+
+      unless ($list->shift eq "def") {
+        return 0;
+      }
+
+      unless ($list->shift eq "abc") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 0) {
+        return 0;
+      }
+      
+      eval {
+        $list->shift;
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub length : int () {
+    # length
+    {
+      my $list = SPVM::StringList->new;
+      
+      $list->unshift("abc");
+      $list->unshift("def");
+      $list->unshift("ABC");
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+}
