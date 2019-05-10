@@ -561,7 +561,7 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
       </p>
 <pre>
     my $perl_values = [
-      {x => $INT_MIN, y => 1, z => 2},
+      {x => 0, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
@@ -579,6 +579,74 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
       <p>
         ハッシュリファレンスに含まれる値は、数値の変換規則によって、変換されます。
       </p>
+      <p>
+        いくつかのサンプルです。
+      </p>
+<pre>
+# new_varray - byte
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3b[]", $values);
+}
+
+# new_varray - short
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3s[]", $values);
+}
+
+# new_varray - int
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3i[]", $values);
+}
+
+# new_varray - long
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3l[]", $values);
+}
+
+# new_varray - float
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3f[]", $values);
+}
+
+# new_varray - double
+{
+  my $values = [
+    {x => 0, y => 1, z => 2},
+    {x => 3, y => 4, z => 5},
+    {x => 6, y => 7, z => 8},
+  ];
+  my $spvm_value_array = SPVM::new_varray("TestCase::Point_3d[]", $values);
+  ok(TestCase::ExchangeAPI->spvm_new_varray_double($spvm_value_array));
+  my $out_values = $spvm_value_array->to_elems;
+  is_deeply($out_values, $values);
+}
+
+</pre>
 
       <h3 id="exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値型の配列に変換 - SPVM::new_varray_from_bin</h3>
       <p>
@@ -586,10 +654,10 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
       </p>
 <pre>
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $sp_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
+    my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
 </pre>
       <p>
-        第一引数は、Perlのパックされたバイナリを指定します。バイナリの長さは、値型のフィールドの個数とフィールド幅で、割り切れる必要があります。
+        第一引数は、Perlのパックされたバイナリを指定します。バイナリの長さは、値型のフィールドの個数とフィールド幅をかけたもので、割り切れる必要があります。そうでない場合は、例外が発生します。
       </p>
       <p>
         第二引数は、SPVMの値の配列型を指定します。
@@ -601,7 +669,41 @@ my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
         いくつかのサンプルです。
       </p>
 <pre>
+# new_varray_from_bin - byte
+{
+  my $binary = pack('c9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3b[]", $binary);
+}
 
+# new_varray_from_bin - short
+{
+  my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3s[]", $binary);
+}
+
+# new_varray_from_bin - int
+{
+  my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
+}
+
+# new_varray_from_bin - long
+{
+  my $binary = pack('q9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3l[]", $binary);
+}
+
+# new_varray_from_bin - float
+{
+  my $binary = pack('f9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3f[]", $binary);
+}
+
+# new_varray_from_bin - double
+{
+  my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_value_array = SPVM::new_varray_from_bin("TestCase::Point_3d[]", $binary);
+}
 </pre>
       
       <p>

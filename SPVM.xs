@@ -1283,35 +1283,43 @@ _new_varray_from_bin(...)
   int32_t field_length = package->fields_length;
 
   int32_t array_length;
-
+  
+  
+  int32_t field_width;
   switch (first_field->basic_type_id) {
     case SPVM_BASIC_TYPE_C_ID_BYTE: {
-      array_length = binary_length/ field_length;
+      field_width = 1;
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_SHORT: {
-      array_length = binary_length / field_length / 2;
+      field_width = 2;
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_INT: {
-      array_length = binary_length / field_length / 4;
+      field_width = 4;
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_LONG: {
-      array_length = binary_length / field_length / 8;
+      field_width = 8;
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-      array_length = binary_length / field_length / 4;
+      field_width = 4;
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-      array_length = binary_length / field_length / 8;
+      field_width = 8;
       break;
     }
     default:
       assert(0);
   }
+  
+  if (binary_length % (field_length * field_width) != 0) {
+    croak("Invalid binary data size at %s line %d", MFILE, __LINE__);
+  }
+  
+  array_length = binary_length / field_length / field_width;
 
   SPVM_OBJECT* array = env->new_varray_raw(env, basic_type->id, array_length);
 
@@ -1322,42 +1330,42 @@ _new_varray_from_bin(...)
     case SPVM_BASIC_TYPE_C_ID_BYTE: {
       int8_t* elems = env->belems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_SHORT: {
       int16_t* elems = env->selems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * 2);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_INT: {
       int32_t* elems = env->ielems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * 4);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_LONG: {
       int64_t* elems = env->lelems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * 8);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_FLOAT: {
       float* elems = env->felems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * 4);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
     case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
       double* elems = env->delems(env, array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * 8);
+        memcpy(elems, binary, field_length * array_length * field_width);
       }
       break;
     }
