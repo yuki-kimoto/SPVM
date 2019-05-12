@@ -2,7 +2,7 @@ package SPVM::List : private {
   has values   : private object[];
   has capacity : private int;
   has offset   : private int; # range of offset: [-capacity, -1)
-  has length   : private int;
+  has length   : ro int;
   
   sub to_iarray : int[] ($self : self) {
     my $length = $self->{length};
@@ -104,10 +104,6 @@ package SPVM::List : private {
     $self->{length} = @$objects;
     $self->{offset} = -@$objects;
     return $self;
-  }
-
-  sub length : int ($self : self) {
-    return $self->{length};
   }
 
   sub push : void ($self : self, $value : object) {
