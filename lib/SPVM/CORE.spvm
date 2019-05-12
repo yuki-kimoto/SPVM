@@ -8,6 +8,7 @@ package SPVM::CORE {
 
   native sub chomp : void ($string : string);
   native sub rand : int ($seed_ref : int&);
+  native sub sleep : void ($seconds : long);
   
   precompile sub lc : string($str : string) {
     
