@@ -6,8 +6,19 @@
 
 #include <time.h>
 #include <string.h>
+#include <locale.h>
 
 static const char* MFILE = "SPVM/Time.c";
+
+int32_t SPNATIVE__SPVM__Time__setlocale(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  void* obj_str = stack[0].oval;
+  if (!obj_str) { SPVM_DIE("String must be defined", MFILE, __LINE__); }
+  const char* locale = (const char*)env->belems(env, obj_str);
+  setlocale(LC_TIME, locale);
+
+  return SPVM_SUCCESS;
+}
 
 int32_t SPNATIVE__SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
