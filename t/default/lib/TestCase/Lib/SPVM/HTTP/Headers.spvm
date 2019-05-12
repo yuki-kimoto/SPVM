@@ -1,5 +1,4 @@
 package TestCase::Lib::SPVM::HTTP::Headers {
-  use SPVM::HTTP::Cookies;
   use SPVM::HTTP::Headers;
   use SPVM::StringBuffer;
   use SPVM::List;
@@ -138,11 +137,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
   sub test_new_with : int () {
     my $val = "12345678";
     my $val_i = SPVM::Math::StringToNumber->from($val)->to_int;
-    my $cookies = SPVM::HTTP::Cookies->new;
-    $cookies->set(hash([(object)
-      key   => "foo",
-      value => "bar",
-    ]));
     my $headers = SPVM::HTTP::Headers->new_with(hash([(object)
       referer           => $val,
       expires           => $val_i,
@@ -151,7 +145,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       content_type      => $val,
       content_length    => $val_i,
       content_encoding  => $val,
-      cookies           => $cookies,
       "X-Bearer"        => "XXXXX",
     ]));
     unless ($headers->referer eq $val) {
@@ -175,9 +168,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     unless ($headers->content_encoding eq $val) {
       return 0;
     }
-    unless ($headers->cookies->get("foo")->{value} eq "bar") {
-      return 0;
-    }
     unless ($headers->get("X-Bearer") &&
       (string)($headers->get("X-Bearer")) eq "XXXXX") {
       return 0;
@@ -186,11 +176,6 @@ package TestCase::Lib::SPVM::HTTP::Headers {
   }
 
   sub test_new_with_when_not_lowercase_key : int () {
-    my $cookies = SPVM::HTTP::Cookies->new;
-    $cookies->set(hash([(object)
-      key   => "foo",
-      value => "bar",
-    ]));
     my $headers = SPVM::HTTP::Headers->new_with(hash([(object)
       REFERER => "http://www.example.com",
     ]));

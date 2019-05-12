@@ -1,6 +1,5 @@
 package SPVM::HTTP::Headers {
   use SPVM::Hash;
-  use SPVM::HTTP::Cookies;
   use SPVM::Math::StringToNumber;
   use SPVM::StringBuffer;
 
@@ -151,38 +150,38 @@ package SPVM::HTTP::Headers {
     }
   }
 
-  sub get : object ($self : self, $key_ : string) {
-    my $key = lc($key_);
-    my $ch = (int)($key->[0]);
+  sub get : object ($self : self, $key : string) {
+    my $lc_key = lc($key);
+    my $ch = (int)($lc_key->[0]);
     switch ($ch) {
       case 99: #'c':
-        if ($key eq "content-type" || $key eq "content_type") {
+        if ($lc_key eq "content-type" || $lc_key eq "content_type") {
           return $self->{content_type};
         }
-        elsif ($key eq "content-length" || $key eq "content_length") {
+        elsif ($lc_key eq "content-length" || $lc_key eq "content_length") {
           return $self->{content_length};
         }
-        elsif ($key eq "content-encoding" || $key eq "content_encoding") {
+        elsif ($lc_key eq "content-encoding" || $lc_key eq "content_encoding") {
           return $self->{content_encoding};
         }
         last;
       case 105: #'i':
-        if ($key eq "if-modified-since" || $key eq "if_modified_since") {
+        if ($lc_key eq "if-modified-since" || $lc_key eq "if_modified_since") {
           return $self->{if_modified_since};
         }
         last;
       case 108: #'l':
-        if ($key eq "last-modified" || $key eq "last_modified") {
+        if ($lc_key eq "last-modified" || $lc_key eq "last_modified") {
           return $self->{last_modified};
         }
         last;
       case 114: #'r':
-        if ($key eq "referer" || $key eq "referrer") {
+        if ($lc_key eq "referer" || $lc_key eq "referrer") {
           return $self->{referer};
         }
         last;
       case 101: #'e':
-        if ($key eq "expires") {
+        if ($lc_key eq "expires") {
           return $self->{expires};
         }
         last;
@@ -192,7 +191,7 @@ package SPVM::HTTP::Headers {
     unless ($self->{extra}) {
       return undef;
     }
-    return (string)$self->{extra}->get($key);
+    return (string)$self->{extra}->get($lc_key);
   }
 
   sub append_to_buffer : void ($self : self, $buffer : SPVM::StringBuffer) {

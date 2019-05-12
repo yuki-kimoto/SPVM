@@ -1,0 +1,291 @@
+package TestCase::Lib::SPVM::HTTP::Client::CookieJar {
+  use SPVM::HTTP::Client::CookieJar;
+  use SPVM::Time;
+
+  sub test_add_key_value : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{value} eq "bar") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_expires : int () {
+    SPVM::Time->setlocale("C");
+    my $time = 1557622506;
+    my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($time));
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar; Expires=$expires");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($time == $cookie->{expiry_time}->val) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_max_age : int () {
+    SPVM::Time->setlocale("C");
+    my $now = SPVM::Time->time;
+    my $max_age = 100;
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{expiry_time}->val == $now + $max_age) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_prioritize_max_age_over_expires : int () {
+    SPVM::Time->setlocale("C");
+    my $now = SPVM::Time->time;
+    my $max_age = 100;
+    my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($now + 10000));
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age; Expires=$expires");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($now + $max_age - 1 <= $cookie->{expiry_time}->val &&
+        $cookie->{expiry_time}->val <= $now + $max_age + 1) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_expires_infinity : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{name} eq "foo" && $cookie->{expiry_time} == undef) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_domain : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://sub.example.com", "foo=bar; Domain=example.com");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "example.com", "/");
+    unless ($cookie->{domain} eq "example.com" && $cookie->{host_only} == 0) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_domain_use_host_only_when_no_domain : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{domain} eq "www.example.com" && $cookie->{host_only}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_domain_use_host_only_when_no_domain_request_root_path : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{domain} eq "www.example.com" && $cookie->{host_only}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_domain_not_host_only_even_if_same_as_request_domain : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://sub.example.com/", "foo=bar; Domain=sub.example.com");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "sub.example.com", "/");
+    unless ($cookie->{domain} eq "sub.example.com" && !$cookie->{host_only}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_domain_ignore_cookie_when_different_domain : int () {
+    {
+      my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+      if ($cookiejar->add("http://sub.example.com", "foo=bar; Domain=spvm.com")) {
+        return 0;
+      }
+      if ($cookiejar->_cookie_from_jar("foo", "sub.example.com", "/")) {
+        return 0;
+      }
+      if ($cookiejar->_cookie_from_jar("foo", "spvm.com", "/")) {
+        return 0;
+      }
+    }
+    {
+      my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+      if ($cookiejar->add("http://sub.example.com", "foo=bar; Domain=foo.sub.example.com")) {
+        return 0;
+      }
+      if ($cookiejar->_cookie_from_jar("foo", "sub.example.com", "/")) {
+        return 0;
+      }
+      if ($cookiejar->_cookie_from_jar("foo", "foo.sub.example.com", "/")) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_add_path_last_is_dir_when_no_path_attr : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/path/to/", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
+    unless ($cookie->{value} eq "bar") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_path_last_is_file_when_no_path_attr : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/path/to/file", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
+    unless ($cookie->{value} eq "bar") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_path_use_default_path_when_broken_root : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/path/to/item", "foo=bar; Path=hoge");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
+    unless ($cookie->{value} eq "bar") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_path_prioritize_path_attr_over_request_path: int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/path/to/item", "foo=bar; Path=/foo/bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/foo/bar");
+    unless ($cookie->{value} eq "bar") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_secure: int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar; Secure");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{secure}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_http_only: int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar; HttpOnly");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($cookie->{http_only}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_update_cookie : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "foo=bar");
+    my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    my $old_ct = $cookie->{creation_time};
+    sleep(2);
+    $cookiejar->add("http://www.example.com", "foo=baz");
+    my $new_cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
+    unless ($new_cookie->{value} eq "baz" &&
+        $new_cookie->{creation_time} == $old_ct) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_cookies_for : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    {
+      $cookiejar->add("http://www.example.com", "a=A");
+      $cookiejar->add("http://www.example.com/path/to/", "b=B");
+      $cookiejar->add("http://sub.example.com", "c=C");
+      $cookiejar->add("http://www.example.com", "d=D; Domain=example.com");
+      $cookiejar->add("http://www.example.com", "e=E; Path=/foo/bar");
+      $cookiejar->add("https://secure.example.com", "f=F; Secure; Domain=example.com");
+    }
+
+    {
+      my $cookies = $cookiejar->cookies_for("http://www.example.com");
+      unless (@$cookies == 2) {
+        return 0;
+      }
+    }
+    {
+      my $cookies = $cookiejar->cookies_for("http://www.example.com/path/");
+      unless (@$cookies == 2) {
+        return 0;
+      }
+    }
+    {
+      my $cookies = $cookiejar->cookies_for("http://www.example.com/path/to/");
+      unless (@$cookies == 3) {
+        return 0;
+      }
+    }
+    {
+      my $cookies = $cookiejar->cookies_for("http://www.example.com/path/to/dir/");
+      unless (@$cookies == 3) {
+        return 0;
+      }
+    }
+    {
+      my $cookies = $cookiejar->cookies_for("http://sub.example.com/");
+      unless (@$cookies == 2) {
+        return 0;
+      }
+    }
+    {
+      my $secure_cookies = $cookiejar->cookies_for("https://secure.example.com");
+      unless (@$secure_cookies == 2) {
+        return 0;
+      }
+      my $fake_cookies = $cookiejar->cookies_for("http://fake.example.com");
+      unless (@$fake_cookies == 1) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_cookies_for_returning_value_order : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com/path/", "first=x");
+    $cookiejar->add("http://www.example.com/", "second=y");
+    sleep(2);
+    $cookiejar->add("http://www.example.com/", "third=z");
+    my $cookies = $cookiejar->cookies_for("http://www.example.com/path/to/file");
+    unless ($cookies->[0]->{name} eq "first" &&
+        $cookies->[1]->{name} eq "second" &&
+        $cookies->[2]->{name} eq "third") {
+      warn($cookies->[0]->{name});
+      warn($cookies->[1]->{name});
+      warn($cookies->[2]->{name});
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_cookie_header : int () {
+    my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
+    $cookiejar->add("http://www.example.com", "a=A;");
+    $cookiejar->add("http://www.example.com/path/to/", "b=B;");
+    my $header = $cookiejar->cookie_header("http://www.example.com/path/to/file");
+    unless ($header eq "a=A; b=B" || $header eq "b=B; a=A") {
+      return 0;
+    }
+    return 1;
+  }
+}
