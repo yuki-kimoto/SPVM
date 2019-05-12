@@ -193,7 +193,28 @@ package SPVM::CORE {
     }
     return -1;
   }
-  
+
+  precompile sub rindex : int ($text : string, $search : string, $from : int) {
+    my $text_len = length $text;
+    my $search_len = length $search;
+    if ($from > $text_len - $search_len) {
+      $from = $text_len - $search_len;
+    }
+    for (my $i = $from; $i >= 0; --$i) {
+      my $match = 1;
+      for (my $j = 0; $j < $search_len; ++$j) {
+        if ($text->[$i + $j] != $search->[$j]) {
+          $match = 0;
+          last;
+        }
+      }
+      if ($match) {
+        return $i;
+      }
+    }
+    return -1;
+  }
+
   precompile sub contains : int ($text : string, $pattern : string) {
     if (!$text) {
       die "Target string must be defined";
