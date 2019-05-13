@@ -1,5 +1,6 @@
 appveyor.yml
 Changes
+DEVELOPMENT.txt
 examples/native/eigen/eigen.pl
 examples/native/eigen/lib/Eigen.config
 examples/native/eigen/lib/Eigen.cpp
@@ -218,6 +219,7 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README
+README.md
 script/spvmcc
 solo/lib/TestCase.spvm
 solo/lib/TestCase/Allow.spvm

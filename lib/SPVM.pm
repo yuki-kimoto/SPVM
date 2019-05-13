@@ -135,11 +135,8 @@ Use SPVM Module from Perl
   
   use SPVM 'MyMath';
   
-  # New int array
-  my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
-  
   # Call subroutine
-  my $total = MyMath->sum($sp_nums);
+  my $total = MyMath->sum([3, 6, 8, 9]);
   
   print $total . "\n";
 
@@ -175,7 +172,7 @@ B<Features:>
 
 =head1 DOCUMENT
 
-=head2 Standard Functions
+=head2 Core Functions
 
   print, warn, time
 
@@ -187,7 +184,11 @@ L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SP
 
 =head2 Exchange API
 
-L<SPVM::Document::ExchangeAPI> - Exchange API is perl functions to exchange Perl data to SPVM data, and reverse.
+SPVM Exchange API Specification
+
+L<http://jp.spvm.info/exchange-api.html>
+
+(Currently only Japanese)
 
 =head2 Native API
 
@@ -199,7 +200,11 @@ L<SPVM::Document::Extension> - Extension is the way to C/C++ Binding to SPVM
 
 =head2 Language Specification
 
-L<SPVM::Document::Language> - SPVM Language Specification
+SPVM Language Specification
+
+L<http://jp.spvm.info/language.html>
+
+(Currently only Japanese)
 
 =head1 EXAMPLES
 
@@ -227,11 +232,8 @@ Use SPVM Module from Perl
   
   use SPVM 'MyMath';
   
-  # New int array
-  my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
-  
   # Call subroutine
-  my $total = MyMath->sum($sp_nums);
+  my $total = MyMath->sum([3, 6, 8, 9]);
   
   print $total . "\n";
 
@@ -349,505 +351,6 @@ Above is same as the following.
   my $num : int = 2;
   my $obj : Foo = new Foo;
   my $values : int[3] = new int[3];
-
-=head2 Number Literal
-
-=head3 Int Literal
-
-Int Literal is composed of 
-
-   [+|-][0x][0123456789abcdefABCDEF]...[L|f|d]
-
-For example:
-
-  123
-  -123
-  0xff
-  0xFF
-  123L
-  123d
-
-Default Number Literal Type is C<int>.
-  
-  # Type is int
-  123
-
-You can use hex number literal by start C<0x>.
-
-C<a>, C<b>, C<c>, C<d>, C<e>, C<f>, C<A>, C<B>, C<C>, C<D>, C<E>, C<F> is used as hex number.
-
-  0xAF
-  0xaf
-
-You can use octal number literal by start C<0>.
-
-  0x177
-  0x777
-
-You can use binary number literal by start C<0b>.
-
-  0b101
-  0b001
-
-You can use under line C<_> in number literal. Under line is meanless, only for visuality.
-
-  123_456
-  0xAB_CD
-
-You can use type specifier to specify integer leteral type.
-
-=over 2
-
-=item * L
-  
-  # Long
-  123L
-
-=item * f
-  
-  # Float
-  123f
-
-=item * d
-
-  # Double
-  123d
-
-=back
-
-=head3 Floating Point Literal
-
-If you use C<.> in number literal, the number is floating point literal. Default type of floating point value is C<double>.
-
-  1.23
-  -1.23
-
-You can use C<E> or C<e> to specify exponential notation.
-
-  1.23E+12
-  1.23E-12
-  1.23e+12
-  1.23e-12
-
-You can use type specifier to specify integer leteral type.
-
-=over 2
-
-=item * f
-  
-  # Float
-  1.23f
-
-=item * d
-
-  # Double
-  1.23d
-
-=back
-
-If you know more Type, see L</"Type"> section.
-
-=head2 String length
-
-  my $string_length = length "abc";
-
-=head2 String Literal
-
-String Literal is the following.
-
-  "abc"
-
-Type of String literal is C<const byte[]>.
-
-  my $string : const byte[] = "abc";
-
-C<string> is short name of C<const byte[]>. You can also write the following.
-
-  my $string : string = "abc";
-
-If you use type inference, you can also write the follwoing.
-
-  my $string = "abc";
-
-=head3 Escape Sequences
-
-A character preceded by a backslash (\) is an escape sequence and has special meaning to the compiler. The following table shows the SPVM escape sequences:
-
-  [Escape Sequences]    [Escape Sequence	Description]
-  \t                    Insert a tab in the text at this point.
-  \b                    Insert a backspace in the text at this point.
-  \n                   	Insert a newline in the text at this point.
-  \r                    Insert a carriage return in the text at this point.
-  \f                    Insert a formfeed in the text at this point.
-  \'                    Insert a single quote character in the text at this point.
-  \"                    Insert a double quote character in the text at this point.
-  \\                    Insert a backslash character in the text at this point.
-
-=head2 Undefined Literal
-
-Undefined Literal is:
-
-  undef
-
-=head2 Type
-
-=head3 Numeric Type
-
-Numeric types are C<byte>, C<short>, C<int>, C<long>, C<float>, C<double>.
-  
-  [Type]  [Type Description]   [Type Bit Size]
-  byte    Integral type        8-bit
-  short   Integral type        16-bit
-  int     Integral type        32-bit
-  long    Integral type        64-bit
-  float   floating-point type  32-bit
-  double  floating-point type  64-bit
-
-Numeric values do not share state with other numeric values.
-
-The numeric types are the integral types and the floating-point types.
-
-The integral types are byte, short, int, and long, whose values are 8-bit, 16-bit, 32-bit and 64-bit
-signed two's-complement integers.
-
-The floating-point types are float, whose values include the 32-bit IEEE 754 floating-point numbers, and double,
-whose values include the 64-bit IEEE 754 floating-point numbers.
-
-B<The values of the integral types are integers in the following ranges:>
-
-For byte, from -128 to 127, inclusive
-
-For short, from -32768 to 32767, inclusive
-
-For int, from -2147483648 to 2147483647, inclusive
-
-For long, from -9223372036854775808 to 9223372036854775807, inclusive
-
-B<Varialbe Definition>
-
-Varialbe Definition with Type is the following.
-
-  my $value : byte;
-  my $value : short;
-  my $value : int;
-  my $value : long;
-  my $value : float;
-  my $value : double;
-
-If you know more Variable Declaration, see L</"Variable Declaration"> section.
-
-=head3 Array Type
-
-Array Type describe multiple values.
-
-  [Type]         [Type Description]
-  byte[]         byte array
-  short[]        short array
-  int[]          int array array
-  long[]         long array
-  float[]        float array
-  doube[]        double array
-  PackageName[]  object array
-
-Array Type is a Object Type. You can create Array by C<new> keyword.
-
-  my $values : int[] = new int[3];
-
-If you know more Array Creating, see L</"New Array"> section.
-
-=head3 Multiple Dimention Array Type
-
-Multiple Dimention Array Type is a Array Type.
-  
-B<Two Dimension Array Type>
-
-  byte[][];
-  short[][];
-  int[][];
-  long[][];
-  float[][];
-  double[][];
-  PackageName[][];
-  
-B<Three Dimension Array Type>
-
-  byte[][][];
-  short[][][];
-  int[][][];
-  long[][][];
-  float[][][];
-  double[][][];
-  PackageName[][][];
-  
-Max Dimension is C<255>.
-
-You can create Multiple Dimension Array by C<new> keyword.
-
-  my $values : int[][] = new int[][3];
-
-This mean that Multiple Dimension Array is created, the multiple dimension array have 3 C<int[]> type array.
-The elems is initialized by C<undef>.
-
-If you know Multiple Dimension Array Creating, see L</"New Multiple Dimention Array">.
-
-=head3 Package Type
-
-If Package is defined, Package name is used as Type.
-
-  PackageName
-
-If you know more Package Definition, see L</"Package Definition"> section.
-
-You can create Object by C<new> subroutine. This is Default Constructor.
-
-  my $obj : PackageName = PackageName->new;
-
-=head2 New Array
-
-Array is created by new. Elements values is not initialized.
-
-  my $values = new byte[3];
-  my $values = new short[3];
-  my $values = new int[3];
-  my $values = new long[3];
-  my $values = new float[3];
-  my $values = new double[3];
-
-=head2 Array Initialization
-
-Array Initialization Syntax:
-
-  my $values = new int[] {1, 2, 3};
-  my $points = new Point[] {Point->new(), Point->new(), Point->new()};
-
-=head2 Array Manipulation
-
-=head3 Get Array Length
-
-You can use the three ways to get Array Length.
-
-  @$values;
-  @{$values};
-  len $values;
-
-=head3 Get and Set Array Element
-
-Get Array Element:
-
-  # Get
-  $values->[0];
-
-Set Array Element:
-
-  # Set
-  $values->[0] = 5;
-
-=head2 Object Manipulation
-
-=head3 Field Access
-
-Get field:
-
-  # Get field
-  $object->{foo};
-
-Set field:
-
-  # Set field;
-  $object->{foo} = 5;
-
-Field value is private. You can only use Field Access from self package.
-
-=head2 Condition branch
-
-  if (1) {
-
-  }
-  elsif (2) {
-
-  }
-  else {
-
-  }
-
-=head2 Loop Syntax
-
-=head3 for statement
-
-  my $values = new int[10];
-  for (my $i = 0; $i < @$values; $i++) {
-    $values->[$i] = 0;
-  }
-
-=head3 while statement
-
-  my $values = new int[10];
-  my $i = 0;
-  while ($i < @$values) {
-    $values->[$i] = 0;
-  }
-
-=head2 Comment
-
-Comment:
-
-  # Comment
-
-=head2 POD
-
-Pod syntax:
-
-  =pod
-    AAAA
-    BBBB
-  =cut
-
-=head2 __END__
-
-Script Ending:
-
-  __END__
-
-=head2 Exception
-
-=head3 Throw Exception
-
-Throw Exception:
-
-  die "Error";
-
-=head3 Catch Exception
-
-Catch Exception:
-
-  eval {
-    die "Error";
-  };
-
-=head3 Exception Message
-
-  if (my $error = $@) {
-    
-  }
-
-Exception message is assigned to $@.
-
-=head2 Constructor
-
-=head3 new operator
-
-Constructor is C<new> operator.
-
-  new Point;
-
-C<new> operator is private. C<new> operator is only used in same package.
-
-=head3 Constructor
-
-If C<new> subroutine is not defined, Default Constructor is defined automatically.
-
-  sub new ($class : class) { return new Point }
-
-This is used from other package.
-
-  my $point = Point->new();
-
-=head2 Destructor
-
-Destructor.
-  
-  package Foo {
-  
-    sub DESTROY : void ($self : Foo) {
-      
-    }
-  }
-
-=head2 Enumeration
-
-  package Foo {
-    enum {
-      ONE,
-      TWO,
-      THREE
-    }
-    
-    enum {
-      FORE = 4,
-      FIVE,
-    }
-  }
-
-Enumeration default value is 0. and up to 1, 2, 3 if value is not specified.
-
-=head2 Weak Reference
-
-  weaken $foo->{bar};
-  weaken $foo->[0];
-
-=head2 Extension native function
-
-  package TestCase::Extension {
-    native sub sum : int ($num1 : int, $num2 : int);
-  }
-
-=head2 Operators
-
-=head3 Assign Operator
-
-  my $foo = 1;
-
-B<Special Assign Operator>
-
-  +=
-  -=
-  *=
-  /=
-  &=
-  |=
-  ^=
-  %=
-  <<=
-  >>=
-  >>>=
-
-=head2 Basic Operator
-
-  +
-  -
-  *
-  /
-  %
-
-=head3 Comparison Operator
-
-  ==
-  !=
-  >
-  <
-  <=
-  >=
-
-=head3 Logical Operator
-
-  &&
-  ||
-  !
-
-=head3 Bit Operator
-
-  <<
-  >>
-  >>>
-  &
-  |
-  ^
-  ~
-
-=head3 Increment/Decrement Operator
-
-  ++
-  --
 
 =head2 C Extension using SPVM
 
