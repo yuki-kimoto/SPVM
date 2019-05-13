@@ -387,6 +387,8 @@ t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
 t/default/lib/TestCase/CompileError/UnaryPlus/NotNumeric.spvm
+t/default/lib/TestCase/CompileError/Value/Fields17.spvm
+t/default/lib/TestCase/CompileError/Value/FieldsZero.spvm
 t/default/lib/TestCase/CompileError/Weaken/ArrayNotObject.spvm
 t/default/lib/TestCase/CompileError/Weaken/HashNotObject.spvm
 t/default/lib/TestCase/Complex.spvm
@@ -461,6 +463,12 @@ t/default/lib/TestCase/Literal/Integer.spvm
 t/default/lib/TestCase/Literal/String.spvm
 t/default/lib/TestCase/Literal/Undef.spvm
 t/default/lib/TestCase/LogicalOperator.spvm
+t/default/lib/TestCase/Matrix4_16b.spvm
+t/default/lib/TestCase/Matrix4_16d.spvm
+t/default/lib/TestCase/Matrix4_16f.spvm
+t/default/lib/TestCase/Matrix4_16i.spvm
+t/default/lib/TestCase/Matrix4_16l.spvm
+t/default/lib/TestCase/Matrix4_16s.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/Multiply.spvm
 t/default/lib/TestCase/MyExe.spvm
@@ -494,7 +502,8 @@ t/default/lib/TestCase/Term.spvm
 t/default/lib/TestCase/UnaryMinus.spvm
 t/default/lib/TestCase/UnaryPlus.spvm
 t/default/lib/TestCase/Unless.spvm
-t/default/lib/TestCase/ValueTArray.spvm
+t/default/lib/TestCase/Value.spvm
+t/default/lib/TestCase/ValueArray.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/While.spvm
 t/default/literal-character.t
@@ -523,7 +532,8 @@ t/default/term.t
 t/default/unary-minus.t
 t/default/unary-plus.t
 t/default/unless.t
-t/default/value_t_array.t
+t/default/value.t
+t/default/value_array.t
 t/default/weaken.t
 t/default/while.t
 t/exe/exe.t

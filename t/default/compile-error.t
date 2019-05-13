@@ -14,6 +14,23 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Value
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Value::FieldsZero');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Value::Fields17');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Call sub
 {
   {
