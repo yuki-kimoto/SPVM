@@ -184,8 +184,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
-    int32_t rel_line = op_cur->line - sub->op_sub->line;
-    if (op_cur->line >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+    int32_t lines_count = op_cur->line - sub->op_sub->line + 1;
+
+    if (lines_count > SPVM_LIMIT_C_LINES_MAX_COUNT) {
       SPVM_COMPILER_error(compiler, "Too many lines at %s line %d\n", op_cur->file, op_cur->line);
       return;
     }
