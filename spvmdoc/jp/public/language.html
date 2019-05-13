@@ -42,7 +42,7 @@
         <b>SPVM 1.0の言語仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。言語仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年4月24日
+        最終更新日 2019年5月13日
       </p>
       <h2 id="language-toc">目次</h2>
       <ul class="toc">
@@ -81,6 +81,7 @@
         <li><a href="#language-type-convertion">型変換</a></li>
         <li><a href="#language-thread">スレッドセーフ</a></li>
         <li><a href="#language-auto-loaded-module">自動的に読み込まれるモジュール</a></li>
+        <li><a href="#language-limitation">制限</a></li>
       </ul>
       
       <h2 id="language-c99">C99準拠</h2><!-- 2019/2/27 almost ok -->
@@ -7880,6 +7881,32 @@ sub foo : void ($thread_id : int) {
       </p>
       <p>
         SPVMの標準モジュールについては、「SPVM標準モジュール」を見てください。
+      </p>
+      
+      <h2 id="language-limitation">制限</h2>
+      <p>
+        SPVMにおける制限です。
+      </p>
+      
+      <h3 id="language-limitation-sub-arguments-count">サブルーチンの引数の個数</h3>
+      <p>
+        SPVMのサブルーチンの引数の個数の最大は255個です。
+      </p>
+      <p>
+        値型の引数を渡すときは、フィールドの個数が、引数の個数としてカウントされます。たとえばSPVM::Complex_2d型が引数で指定された場合は、2個と数えます。
+      </p>
+      <p>
+        もし、最大値を超えた場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h3 id="language-limitation-value-type-fileds-count">値型のフィールドの個数</h3>
+      <p>
+        値型のフィールドの個数の最大値は、16個です。最大値を超えた場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h3 id="language-limitation-subs-count">サブルーチンの個数の最大値</h3>
+      <p>
+        ひとつのパッケージに定義できるサブルーチンの個数の最大値は、65535個です。最大値を超えた場合は、コンパイル時エラーが発生します。
       </p>
     </div>
     <div class="footer">

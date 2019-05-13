@@ -2085,7 +2085,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (found_sub) {
           SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
         }
-        else if (package->subs->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+        else if (package->subs->length > SPVM_LIMIT_C_SUBS_MAX) {
           SPVM_COMPILER_error(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
         }
         // Unknown sub

@@ -201,6 +201,7 @@ lib/SPVM/ShortList.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/StringList.pm
+lib/SPVM/StringList.spvm
 lib/SPVM/Time.c
 lib/SPVM/Time.config
 lib/SPVM/Time.spvm
