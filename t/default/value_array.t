@@ -13,7 +13,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 ok(TestCase::ValueArray->value_array_max_fields);
 
-__END__
 ok(TestCase::ValueArray->array_field_byte);
 ok(TestCase::ValueArray->array_field_short);
 ok(TestCase::ValueArray->array_field_int);
