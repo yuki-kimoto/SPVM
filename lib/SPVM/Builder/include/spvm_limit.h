@@ -23,13 +23,10 @@ enum {
   SPVM_LIMIT_C_LINES_MAX_COUNT = UINT16_MAX,
   
   // Sub arguments max count
-  SPVM_LIMIT_C_SUB_ARGS_MAX = UINT8_MAX,
+  SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT = UINT8_MAX,
 
   // valut_t field count max
-  SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX = 16,
-
-  // valut_t field count max
-  SPVM_LIMIT_C_STACK_MAX = UINT8_MAX,
+  SPVM_LIMIT_C_VALUE_T_FIELDS_MAX_COUNT = 16,
 };
 
 #endif

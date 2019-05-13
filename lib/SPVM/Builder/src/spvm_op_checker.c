@@ -5008,7 +5008,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         return;
       }
       // Max fields length is 16
-      else if (package->fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_LENGTH_MAX) {
+      else if (package->fields->length > SPVM_LIMIT_C_VALUE_T_FIELDS_MAX_COUNT) {
         SPVM_COMPILER_error(compiler, "Too many fields at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }

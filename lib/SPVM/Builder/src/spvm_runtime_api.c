@@ -395,7 +395,7 @@ void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env) {
   
   // Call BEGIN blocks
   int32_t packages_length = runtime->packages_length;
-  SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
+  SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   for (int32_t package_id = 0; package_id < packages_length; package_id++) {
     SPVM_RUNTIME_PACKAGE* package = &runtime->packages[package_id];
     

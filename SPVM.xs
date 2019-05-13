@@ -1495,12 +1495,12 @@ call_sub(...)
     croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_signature, MFILE, __LINE__);
   }
 
-  SPVM_VALUE stack[SPVM_LIMIT_C_STACK_MAX];
+  SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   
   int32_t ref_stack_top = 0;
-  SPVM_VALUE ref_stack[SPVM_LIMIT_C_STACK_MAX];
+  SPVM_VALUE ref_stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
 
-  int32_t ref_stack_ids[SPVM_LIMIT_C_STACK_MAX];
+  int32_t ref_stack_ids[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   
   // Arguments
   int32_t args_contain_ref = 0;
