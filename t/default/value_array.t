@@ -11,6 +11,9 @@ use SPVM 'TestCase::ValueArray';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+ok(TestCase::ValueArray->value_array_max_fields);
+
+__END__
 ok(TestCase::ValueArray->array_field_byte);
 ok(TestCase::ValueArray->array_field_short);
 ok(TestCase::ValueArray->array_field_int);
@@ -31,6 +34,7 @@ ok(TestCase::ValueArray->move_int);
 ok(TestCase::ValueArray->move_long);
 ok(TestCase::ValueArray->move_float);
 ok(TestCase::ValueArray->move_double);
+
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

@@ -5,7 +5,125 @@ package TestCase::ValueArray {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use TestCase::Matrix4_16d;
+  
 
+  sub value_array_max_fields : int () {
+    my $mat = new TestCase::Matrix4_16d[3];
+    
+    $mat->[0]{x11} = 11;
+    $mat->[0]{x21} = 21;
+    $mat->[0]{x31} = 31;
+    $mat->[0]{x41} = 41;
+    
+    $mat->[0]{x12} = 12;
+    $mat->[0]{x22} = 22;
+    $mat->[0]{x32} = 32;
+    $mat->[0]{x42} = 42;
+    
+    $mat->[0]{x13} = 13;
+    $mat->[0]{x23} = 23;
+    $mat->[0]{x33} = 33;
+    $mat->[0]{x43} = 43;
+    
+    $mat->[0]{x14} = 14;
+    $mat->[0]{x24} = 24;
+    $mat->[0]{x34} = 34;
+    $mat->[0]{x44} = 44;
+
+    $mat->[1]{x11} = 111;
+    $mat->[1]{x21} = 121;
+    $mat->[1]{x31} = 131;
+    $mat->[1]{x41} = 141;
+    
+    $mat->[1]{x12} = 112;
+    $mat->[1]{x22} = 122;
+    $mat->[1]{x32} = 132;
+    $mat->[1]{x42} = 142;
+    
+    $mat->[1]{x13} = 113;
+    $mat->[1]{x23} = 123;
+    $mat->[1]{x33} = 133;
+    $mat->[1]{x43} = 143;
+    
+    $mat->[1]{x14} = 114;
+    $mat->[1]{x24} = 124;
+    $mat->[1]{x34} = 134;
+    $mat->[1]{x44} = 144;
+    
+    $mat->[2]{x11} = $mat->[0]{x11} + $mat->[1]{x11};
+    $mat->[2]{x21} = $mat->[0]{x21} + $mat->[1]{x21};
+    $mat->[2]{x31} = $mat->[0]{x31} + $mat->[1]{x31};
+    $mat->[2]{x41} = $mat->[0]{x41} + $mat->[1]{x41};
+    
+    $mat->[2]{x12} = $mat->[0]{x12} + $mat->[1]{x12};
+    $mat->[2]{x22} = $mat->[0]{x22} + $mat->[1]{x22};
+    $mat->[2]{x32} = $mat->[0]{x32} + $mat->[1]{x32};
+    $mat->[2]{x42} = $mat->[0]{x42} + $mat->[1]{x42};
+    
+    $mat->[2]{x13} = $mat->[0]{x13} + $mat->[1]{x13};
+    $mat->[2]{x23} = $mat->[0]{x23} + $mat->[1]{x23};
+    $mat->[2]{x33} = $mat->[0]{x33} + $mat->[1]{x33};
+    $mat->[2]{x43} = $mat->[0]{x43} + $mat->[1]{x43};
+    
+    $mat->[2]{x14} = $mat->[0]{x14} + $mat->[1]{x14};
+    $mat->[2]{x24} = $mat->[0]{x24} + $mat->[1]{x24};
+    $mat->[2]{x34} = $mat->[0]{x34} + $mat->[1]{x34};
+    $mat->[2]{x44} = $mat->[0]{x44} + $mat->[1]{x44};
+
+    unless ($mat->[2]{x11} == 122) {
+      return 0;
+    }
+    
+    unless ($mat->[2]{x21} == 142) {
+      return 0;
+    }
+    unless ($mat->[2]{x31} == 162) {
+      return 0;
+    }
+    unless ($mat->[2]{x41} == 182) {
+      return 0;
+    }
+    unless ($mat->[2]{x12} == 124) {
+      return 0;
+    }
+    unless ($mat->[2]{x22} == 144) {
+      return 0;
+    }
+    unless ($mat->[2]{x32} == 164) {
+      return 0;
+    }
+    unless ($mat->[2]{x42} == 184) {
+      return 0;
+    }
+    unless ($mat->[2]{x13} == 126) {
+      return 0;
+    }
+    unless ($mat->[2]{x23} == 146) {
+      return 0;
+    }
+    unless ($mat->[2]{x33} == 166) {
+      return 0;
+    }
+    unless ($mat->[2]{x43} == 186) {
+      return 0;
+    }
+    unless ($mat->[2]{x41} == 182) {
+      return 0;
+    }
+    unless ($mat->[2]{x42} == 184) {
+      return 0;
+    }
+    unless ($mat->[2]{x43} == 186) {
+      return 0;
+    }
+    unless ($mat->[2]{x44} == 188) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub array_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();

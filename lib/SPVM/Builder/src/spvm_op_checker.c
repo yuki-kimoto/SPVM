@@ -5007,6 +5007,11 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "value_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
+      // Minilal value fields length is 1
+      else if (package->fields->length < SPVM_LIMIT_C_VALUE_FIELDS_MIN_COUNT) {
+        SPVM_COMPILER_error(compiler, "Neet at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
+        return;
+      }
       // Max fields length is 16
       else if (package->fields->length > SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT) {
         SPVM_COMPILER_error(compiler, "Too many value fields at %s line %d\n", package->op_package->file, package->op_package->line);
