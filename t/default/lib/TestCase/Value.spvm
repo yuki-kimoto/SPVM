@@ -1,0 +1,120 @@
+package TestCase::Value {
+  use TestCase::Matrix4_16d;
+  
+  sub value_max_fields : int () {
+    my $mat1 : TestCase::Matrix4_16d;
+    my $mat2 : TestCase::Matrix4_16d;
+    my $mat3 : TestCase::Matrix4_16d;
+    
+    $mat1->{x11} = 11;
+    $mat1->{x21} = 21;
+    $mat1->{x31} = 31;
+    $mat1->{x41} = 41;
+    
+    $mat1->{x12} = 12;
+    $mat1->{x22} = 22;
+    $mat1->{x32} = 32;
+    $mat1->{x42} = 42;
+    
+    $mat1->{x13} = 13;
+    $mat1->{x23} = 23;
+    $mat1->{x33} = 33;
+    $mat1->{x43} = 43;
+    
+    $mat1->{x14} = 14;
+    $mat1->{x24} = 24;
+    $mat1->{x34} = 34;
+    $mat1->{x44} = 44;
+
+    $mat2->{x11} = 111;
+    $mat2->{x21} = 121;
+    $mat2->{x31} = 131;
+    $mat2->{x41} = 141;
+    
+    $mat2->{x12} = 112;
+    $mat2->{x22} = 122;
+    $mat2->{x32} = 132;
+    $mat2->{x42} = 142;
+    
+    $mat2->{x13} = 113;
+    $mat2->{x23} = 123;
+    $mat2->{x33} = 133;
+    $mat2->{x43} = 143;
+    
+    $mat2->{x14} = 114;
+    $mat2->{x24} = 124;
+    $mat2->{x34} = 134;
+    $mat2->{x44} = 144;
+    
+    $mat3->{x11} = $mat1->{x11} + $mat2->{x11};
+    $mat3->{x21} = $mat1->{x21} + $mat2->{x21};
+    $mat3->{x31} = $mat1->{x31} + $mat2->{x31};
+    $mat3->{x41} = $mat1->{x41} + $mat2->{x41};
+    
+    $mat3->{x12} = $mat1->{x12} + $mat2->{x12};
+    $mat3->{x22} = $mat1->{x22} + $mat2->{x22};
+    $mat3->{x32} = $mat1->{x32} + $mat2->{x32};
+    $mat3->{x42} = $mat1->{x42} + $mat2->{x42};
+    
+    $mat3->{x13} = $mat1->{x13} + $mat2->{x13};
+    $mat3->{x23} = $mat1->{x23} + $mat2->{x23};
+    $mat3->{x33} = $mat1->{x33} + $mat2->{x33};
+    $mat3->{x43} = $mat1->{x43} + $mat2->{x43};
+    
+    $mat3->{x14} = $mat1->{x14} + $mat2->{x14};
+    $mat3->{x24} = $mat1->{x24} + $mat2->{x24};
+    $mat3->{x34} = $mat1->{x34} + $mat2->{x34};
+    $mat3->{x44} = $mat1->{x44} + $mat2->{x44};
+    
+    unless ($mat3->{x11} == 122) {
+      return 0;
+    }
+    unless ($mat3->{x21} == 142) {
+      return 0;
+    }
+    unless ($mat3->{x31} == 162) {
+      return 0;
+    }
+    unless ($mat3->{x41} == 182) {
+      return 0;
+    }
+    unless ($mat3->{x12} == 124) {
+      return 0;
+    }
+    unless ($mat3->{x22} == 144) {
+      return 0;
+    }
+    unless ($mat3->{x32} == 164) {
+      return 0;
+    }
+    unless ($mat3->{x42} == 184) {
+      return 0;
+    }
+    unless ($mat3->{x13} == 126) {
+      return 0;
+    }
+    unless ($mat3->{x23} == 146) {
+      return 0;
+    }
+    unless ($mat3->{x33} == 166) {
+      return 0;
+    }
+    unless ($mat3->{x43} == 186) {
+      return 0;
+    }
+    unless ($mat3->{x41} == 182) {
+      return 0;
+    }
+    unless ($mat3->{x42} == 184) {
+      return 0;
+    }
+    unless ($mat3->{x43} == 186) {
+      return 0;
+    }
+    unless ($mat3->{x44} == 188) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

@@ -26,7 +26,7 @@ enum {
   SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT = UINT8_MAX,
 
   // valut_t field count max
-  SPVM_LIMIT_C_VALUE_T_FIELDS_MAX_COUNT = 16,
+  SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT = 16,
 };
 
 #endif
