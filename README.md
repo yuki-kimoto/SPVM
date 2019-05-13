@@ -1,10 +1,8 @@
-# SPVM - Static Perl Virtual Machine. Fast calculation & Easy C/C++ Binding
-
-=head1 SYNOPSIS
-
-# Features
+# SPVM - Static Perl Virtual Machine
 
 SPVM is Static Perl Virtual Machine. Provide fast calculation & easy C/C++ Binding.
+
+# Features
 
 * Fast culcuration, Fast array operation, Small memory
 * Perl syntax, Static typing, Switch syntax, Have language specification
