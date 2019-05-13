@@ -521,7 +521,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_LIST_pop(check_ast_info->op_switch_stack);
 
-              if (package->info_switch_infos->length >= SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX) {
+              if (package->info_switch_infos->length > SPVM_LIMIT_C_SWITCHES_MAX_COUNT) {
                 SPVM_COMPILER_error(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }

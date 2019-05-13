@@ -16,6 +16,9 @@ enum {
   // Package variables max count in a package
   SPVM_LIMIT_C_PACKAGE_VARS_MAX_COUNT = UINT16_MAX,
 
+  // Switch statements max count in a package
+  SPVM_LIMIT_C_SWITCHES_MAX_COUNT = UINT16_MAX,
+
   // Line max count in a sub
   SPVM_LIMIT_C_LINES_MAX_COUNT = UINT16_MAX,
   
