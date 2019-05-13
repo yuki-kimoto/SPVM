@@ -11,7 +11,12 @@ use SPVM 'TestCase::ValueArray';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-ok(TestCase::ValueArray->value_array_max_fields);
+ok(TestCase::ValueArray->value_array_max_fields_byte);
+ok(TestCase::ValueArray->value_array_max_fields_short);
+ok(TestCase::ValueArray->value_array_max_fields_int);
+ok(TestCase::ValueArray->value_array_max_fields_long);
+ok(TestCase::ValueArray->value_array_max_fields_float);
+ok(TestCase::ValueArray->value_array_max_fields_double);
 
 ok(TestCase::ValueArray->array_field_byte);
 ok(TestCase::ValueArray->array_field_short);
