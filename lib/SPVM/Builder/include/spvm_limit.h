@@ -8,7 +8,13 @@ enum {
   SPVM_LIMIT_C_OPCODE_OPERAND_VALUE_MAX = UINT16_MAX,
   
   // Sub max count in a package
-  SPVM_LIMIT_C_SUBS_MAX = UINT16_MAX,
+  SPVM_LIMIT_C_SUBS_MAX_COUNT = UINT16_MAX,
+
+  // Fields max count in a package
+  SPVM_LIMIT_C_FIELDS_MAX_COUNT = UINT16_MAX,
+
+  // Package variables max count in a package
+  SPVM_LIMIT_C_PACKAGE_VARS_MAX_COUNT = UINT16_MAX,
   
   // Sub arguments max count
   SPVM_LIMIT_C_SUB_ARGS_MAX = UINT8_MAX,

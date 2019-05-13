@@ -7887,8 +7887,18 @@ sub foo : void ($thread_id : int) {
       <p>
         SPVMにおける制限です。
       </p>
+
+      <h3 id="language-limitation-fields-count">パッケージ変数の個数の宣言</h3>
+      <p>
+        ひとつのパッケージに定義できるパッケージ変数の個数の最大値は、65535個です。最大値を超えた場合は、コンパイル時エラーが発生します。
+      </p>
+
+      <h3 id="language-limitation-fields-count">フィールドの個数の宣言</h3>
+      <p>
+        ひとつのパッケージに定義できるフィールドの個数の最大値は、65535個です。最大値を超えた場合は、コンパイル時エラーが発生します。
+      </p>
       
-      <h3 id="language-limitation-sub-arguments-count">サブルーチンの引数の個数</h3>
+      <h3 id="language-limitation-sub-arguments-count">サブルーチンの引数の個数の制限</h3>
       <p>
         SPVMのサブルーチンの引数の個数の最大は255個です。
       </p>
@@ -7899,15 +7909,11 @@ sub foo : void ($thread_id : int) {
         もし、最大値を超えた場合は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-limitation-value-type-fileds-count">値型のフィールドの個数</h3>
+      <h3 id="language-limitation-value-type-fileds-count">値型のフィールドの個数の制限</h3>
       <p>
         値型のフィールドの個数の最大値は、16個です。最大値を超えた場合は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-limitation-subs-count">サブルーチンの個数の最大値</h3>
-      <p>
-        ひとつのパッケージに定義できるサブルーチンの個数の最大値は、65535個です。最大値を超えた場合は、コンパイル時エラーが発生します。
-      </p>
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>
