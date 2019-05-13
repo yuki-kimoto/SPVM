@@ -10,9 +10,9 @@ struct SPVM_runtime_field {
   int32_t signature_id;
   int32_t basic_type_id;
   int32_t package_id;
+  int32_t offset;
   uint16_t index;
   uint16_t flag;
-  uint16_t offset;
   uint8_t type_dimension;
   uint8_t runtime_type;
 };
