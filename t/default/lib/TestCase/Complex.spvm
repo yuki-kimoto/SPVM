@@ -5,7 +5,7 @@ package TestCase::Complex {
   sub test_cadd : int () {
     my $z_in1 = complex(0.25, 0.5);
     my $z_in2 = complex(0.5, 0.125);
-    my $z_out = cadd($z_in1, $z_in2);
+    my $z_out = $z_in1 + $z_in2;
     
     if ($z_out->{re} == 0.75 && $z_out->{im} == 0.625) {
       return 1;
@@ -16,7 +16,7 @@ package TestCase::Complex {
   sub test_cadd_min : int () {
     my $z_in1 = complex(DBL_MIN(), DBL_MIN());
     my $z_in2 = complex(0, 0);
-    my $z_out = cadd($z_in1, $z_in2);
+    my $z_out = $z_in1 + $z_in2;
     
     if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
       return 1;
@@ -28,7 +28,7 @@ package TestCase::Complex {
   sub test_csub : int () {
     my $z_in1 = complex(0.25, 0.5);
     my $z_in2 = complex(0.5, 0.125);
-    my $z_out = csub($z_in1, $z_in2);
+    my $z_out = $z_in1 - $z_in2;
     
     if ($z_out->{re} == -0.25 && $z_out->{im} == 0.375) {
       return 1;
@@ -39,7 +39,7 @@ package TestCase::Complex {
   sub test_csub_min : int () {
     my $z_in1 = complex(DBL_MIN(), DBL_MIN());
     my $z_in2 = complex(0, 0);
-    my $z_out = csub($z_in1, $z_in2);
+    my $z_out = $z_in1 - $z_in2;
     
     if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
       return 1;
@@ -51,7 +51,7 @@ package TestCase::Complex {
   sub test_cmul : int () {
     my $z_in1 = complex(0.25, 0.5);
     my $z_in2 = complex(0.5, 0.125);
-    my $z_out = cmul($z_in1, $z_in2);
+    my $z_out = $z_in1 * $z_in2;
     
     if ($z_out->{re} == 0.0625 && $z_out->{im} == 0.28125) {
       return 1;
@@ -62,7 +62,7 @@ package TestCase::Complex {
   sub test_cmul_min : int () {
     my $z_in1 = complex(DBL_MIN(), 0);
     my $z_in2 = complex(1, 1);
-    my $z_out = cmul($z_in1, $z_in2);
+    my $z_out = $z_in1 * $z_in2;
     
     if ($z_out->{re} == DBL_MIN() && $z_out->{im} == DBL_MIN()) {
       return 1;
@@ -74,7 +74,7 @@ package TestCase::Complex {
   sub test_cdiv : int () {
     my $z_in1 = complex(0.25, 0.5);
     my $z_in2 = complex(0.5, 0.125);
-    my $z_out = cdiv($z_in1, $z_in2);
+    my $z_out = $z_in1 / $z_in2;
     
     if (($z_out->{re} - 0.70588) < 0.00001 && ($z_out->{im} - 0.82352) < 0.00001) {
       return 1;
@@ -86,7 +86,7 @@ package TestCase::Complex {
   sub test_cdiv_min : int () {
     my $z_in1 = complex(DBL_MIN(), 0);
     my $z_in2 = complex(1, 0);
-    my $z_out = cdiv($z_in1, $z_in2);
+    my $z_out = $z_in1 / $z_in2;
     
     if ($z_out->{re} == DBL_MIN() && $z_out->{im} == 0) {
       return 1;
@@ -98,7 +98,7 @@ package TestCase::Complex {
   sub test_caddf : int () {
     my $z_in1 = complexf(0.25f, 0.5f);
     my $z_in2 = complexf(0.5f, 0.125f);
-    my $z_out = caddf($z_in1, $z_in2);
+    my $z_out = $z_in1 + $z_in2;
     
     if ($z_out->{re} == 0.75 && $z_out->{im} == 0.625) {
       return 1;
@@ -109,7 +109,7 @@ package TestCase::Complex {
   sub test_caddf_min : int () {
     my $z_in1 = complexf(FLT_MIN(), FLT_MIN());
     my $z_in2 = complexf(0, 0);
-    my $z_out = caddf($z_in1, $z_in2);
+    my $z_out = $z_in1 + $z_in2;
     
     if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
       return 1;
@@ -121,7 +121,7 @@ package TestCase::Complex {
   sub test_csubf : int () {
     my $z_in1 = complexf(0.25f, 0.5f);
     my $z_in2 = complexf(0.5f, 0.125f);
-    my $z_out = csubf($z_in1, $z_in2);
+    my $z_out = $z_in1 - $z_in2;
     
     if ($z_out->{re} == -0.25 && $z_out->{im} == 0.375) {
       return 1;
@@ -132,7 +132,7 @@ package TestCase::Complex {
   sub test_csubf_min : int () {
     my $z_in1 = complexf(FLT_MIN(), FLT_MIN());
     my $z_in2 = complexf(0, 0);
-    my $z_out = csubf($z_in1, $z_in2);
+    my $z_out = $z_in1 - $z_in2;
     
     if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
       return 1;
@@ -144,7 +144,7 @@ package TestCase::Complex {
   sub test_cmulf : int () {
     my $z_in1 = complexf(0.25f, 0.5f);
     my $z_in2 = complexf(0.5f, 0.125f);
-    my $z_out = cmulf($z_in1, $z_in2);
+    my $z_out = $z_in1 * $z_in2;
     
     if ($z_out->{re} == 0.0625 && $z_out->{im} == 0.28125) {
       return 1;
@@ -155,7 +155,7 @@ package TestCase::Complex {
   sub test_cmulf_min : int () {
     my $z_in1 = complexf(FLT_MIN(), 0);
     my $z_in2 = complexf(1, 1);
-    my $z_out = cmulf($z_in1, $z_in2);
+    my $z_out = $z_in1 * $z_in2;
     
     if ($z_out->{re} == FLT_MIN() && $z_out->{im} == FLT_MIN()) {
       return 1;
@@ -167,7 +167,7 @@ package TestCase::Complex {
   sub test_cdivf : int () {
     my $z_in1 = complexf(0.25f, 0.5f);
     my $z_in2 = complexf(0.5f, 0.125f);
-    my $z_out = cdivf($z_in1, $z_in2);
+    my $z_out = $z_in1 / $z_in2;
     
     if (($z_out->{re} - 0.70588) < 0.00001 && ($z_out->{im} - 0.82352) < 0.00001) {
       return 1;
@@ -179,7 +179,7 @@ package TestCase::Complex {
   sub test_cdivf_min : int () {
     my $z_in1 = complexf(FLT_MIN(), 0);
     my $z_in2 = complexf(1, 0);
-    my $z_out = cdivf($z_in1, $z_in2);
+    my $z_out = $z_in1 / $z_in2;
     
     if ($z_out->{re} == FLT_MIN() && $z_out->{im} == 0) {
       return 1;

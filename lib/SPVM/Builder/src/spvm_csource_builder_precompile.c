@@ -314,76 +314,180 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_integral(SPVM_ENV* env, SPVM_STR
   SPVM_STRING_BUFFER_add(string_buffer, "  } \n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_add(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in1 = ");
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_add(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in1 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in2 = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in2 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_out = x_in1 + x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_out = x_in1 + x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_subtract(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in1 = ");
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_subtract(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in1 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in2 = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in2 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_out = x_in1 - x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_out = x_in1 - x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_multiply(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in1 = ");
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_multiply(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in1 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in2 = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in2 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_out = x_in1 * x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_out = x_in1 * x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_divide(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in1 = ");
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_divide(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in1 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_in2 = ");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_in2 = ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " + ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  float _Complex x_out = x_in1 / x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    float _Complex x_out = x_in1 / x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
   SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+}
+
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_add(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in1 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in2 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_out = x_in1 + x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+}
+
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_subtract(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in1 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in2 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_out = x_in1 - x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+}
+
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_multiply(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in1 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in2 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_out = x_in1 * x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+}
+
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_divide(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in1 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in1_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_in2 = ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " + ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, in2_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, "  * _Complex_I ;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    double _Complex x_out = x_in1 / x_in2;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index);
+  SPVM_STRING_BUFFER_add(string_buffer, " = creal(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    ");
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, ctype_id, out_index + 1);
+  SPVM_STRING_BUFFER_add(string_buffer, " = cimag(x_out);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_floating_point(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
@@ -1852,7 +1956,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_STRING_LT:
       case SPVM_OPCODE_C_ID_STRING_LE:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object1 = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1959,28 +2063,28 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_divide_floating_point(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_ADD_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_add(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_add(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_ADD_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_add(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_add(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_subtract(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_subtract(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_subtract(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_subtract(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_multiply(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_multiply(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_multiply(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_multiply(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_divide(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_float_divide(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_divide(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_complex_double_divide(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_INT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_remainder_integral(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
@@ -2398,7 +2502,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT:
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2479,7 +2583,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2505,13 +2609,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        );\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2558,13 +2662,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        }");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF:
       {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* array = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2596,7 +2700,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        );\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }

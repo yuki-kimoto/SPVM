@@ -1075,7 +1075,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         float_vars[opcode->operand0] = creal(x_out);
         float_vars[opcode->operand0 + 1] = cimag(x_out);
-        
+
         break;
       }
       case SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_DOUBLE: {

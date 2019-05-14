@@ -2006,25 +2006,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               default:
                                 assert(0);
                             }
+                          }
 
-                            int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                            int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                            int32_t mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                            
-                            opcode.operand0 = mem_id_out;
-                            opcode.operand1 = mem_id_in1;
-                            opcode.operand2 = mem_id_in2;
-                            
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                            
-                            // Check die
-                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                            switch (type_dist->basic_type->id) {
-                              case SPVM_BASIC_TYPE_C_ID_INT:
-                              case SPVM_BASIC_TYPE_C_ID_LONG:
-                                SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
-                              break;
-                            }
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          int32_t mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                          int32_t mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                          
+                          opcode.operand0 = mem_id_out;
+                          opcode.operand1 = mem_id_in1;
+                          opcode.operand2 = mem_id_in2;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          // Check die
+                          switch (type_dist->basic_type->id) {
+                            case SPVM_BASIC_TYPE_C_ID_INT:
+                            case SPVM_BASIC_TYPE_C_ID_LONG:
+                              SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
+                            break;
                           }
                           
                           break;
