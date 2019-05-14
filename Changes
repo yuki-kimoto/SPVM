@@ -1,4 +1,4 @@
-0.0434 2018-05-10
+0.0434 2018-05-15
   - add  SPVM::StringList
   - remove SPVM::list
   - In any object array argument of SPVM::call_sub, array reference is converted to any object array
@@ -6,6 +6,8 @@
       SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef])
   - Fix value fields 16 length bug.
   - add complex double and float operation +, -, *, /
+  - rename new_dcomplex to complex
+  - rename new_fcomplex to complexf
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);

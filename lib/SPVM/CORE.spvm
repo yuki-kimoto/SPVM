@@ -873,7 +873,7 @@ package SPVM::CORE {
     return $new_strings;
   }
 
-  sub new_fcomplex_array : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
+  sub complex_farray : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
     if (@$re_values != @$im_values) {
       die "Real values length is different from imaginary values";
     }
@@ -887,7 +887,7 @@ package SPVM::CORE {
     return $z_array;
   }
   
-  sub new_dcomplex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
+  sub complex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
     if (@$re_values != @$im_values) {
       die "Real values length is different from imaginary values";
     }
@@ -901,8 +901,18 @@ package SPVM::CORE {
     return $z_array;
   }
 
-  native sub new_fcomplex : SPVM::Complex_2f ($re : float, $im : float);
-  native sub new_dcomplex : SPVM::Complex_2d ($re : double, $im : double);
+  sub complexf : SPVM::Complex_2f ($re : float, $im : float) {
+    my $z : SPVM::Complex_2f;
+    $z->{re} = $re;
+    $z->{im} = $im;
+    return $z;
+  }
+  sub complex : SPVM::Complex_2d ($re : double, $im : double) {
+    my $z : SPVM::Complex_2d;
+    $z->{re} = $re;
+    $z->{im} = $im;
+    return $z;
+  }
   sub join : string ($sep : string, $strings : string[]) {
     my $join = "";
     
