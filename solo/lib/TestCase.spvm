@@ -73,6 +73,20 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $z1 : SPVM::Complex_2d;
+      my $z2 : SPVM::Complex_2d;
+      
+      $z1->{re} = 1;
+      $z1->{im} = 2;
+      $z2->{re} = 3;
+      $z2->{im} = 4;
+      
+      my $z3 = $z1 + $z2;
+      
+      print($z3->{re} . " " . $z3->{im} . "\n");
+    }
+    
+    {
       my $cb = sub : int ($self : self) {
         return 386;
       };

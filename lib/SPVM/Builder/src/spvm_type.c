@@ -1149,7 +1149,7 @@ int32_t SPVM_TYPE_is_value_complex_double_type(SPVM_COMPILER* compiler, int32_t 
   // Package
   if (package) {
     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
-      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_COMPLEX_FLOAT) {
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_COMPLEX_DOUBLE) {
         is_basic_type_value_t = 1;
       }
       else {

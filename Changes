@@ -5,6 +5,7 @@
     
       SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef])
   - Fix value fields 16 length bug.
+  - add complex double and float operation +, -, *, /
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
