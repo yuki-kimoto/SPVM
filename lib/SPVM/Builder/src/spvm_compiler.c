@@ -125,6 +125,24 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     SPVM_LIST_push(compiler->op_use_stack, op_use);
   }
 
+  // use SPVM::Complex_2f module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Complex_2f", "SPVM::Complex_2f", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use SPVM::Complex_2d module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "SPVM::Complex_2d", "SPVM::Complex_2d", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
 #endif
 
   return compiler;

@@ -27,6 +27,8 @@ const char* const SPVM_BASIC_TYPE_C_ID_NAMES[] = {
   "SPVM::Double",
   "SPVM::String",
   "CORE",
+  "SPVM::Complex_2f",
+  "SPVM::Complex_2d",
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {

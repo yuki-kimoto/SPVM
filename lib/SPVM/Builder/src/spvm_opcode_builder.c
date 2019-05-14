@@ -1841,45 +1841,73 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-
-                          int32_t mem_id_out;
-                          int32_t mem_id_in1;
-                          int32_t mem_id_in2;
-                          switch (type_dist->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_INT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_LONG);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_FLOAT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_DOUBLE);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            default:
-                              assert(0);
+                          // SPVM::Complex_2f
+                          if (SPVM_TYPE_is_value_complex_float_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_ADD_FLOAT);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
+                          // SPVM::Complex_2d
+                          else if (SPVM_TYPE_is_value_complex_double_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_ADD_DOUBLE);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // Numeric type
+                          else {
                           
-                          opcode.operand0 = mem_id_out;
-                          opcode.operand1 = mem_id_in1;
-                          opcode.operand2 = mem_id_in2;
+                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
 
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            switch (type_dist->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_INT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_LONG);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_FLOAT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ADD_DOUBLE);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              default:
+                                assert(0);
+                            }
+                            
+                            opcode.operand0 = mem_id_out;
+                            opcode.operand1 = mem_id_in1;
+                            opcode.operand2 = mem_id_in2;
+
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
                           break;
                         }
                         case SPVM_OP_C_ID_SUBTRACT : {
@@ -1887,44 +1915,73 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                          assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                          int32_t mem_id_out;
-                          int32_t mem_id_in1;
-                          int32_t mem_id_in2;
-                          switch (type_dist->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_INT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_LONG);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_FLOAT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            default:
-                              assert(0);
+                          // SPVM::Complex_2f
+                          if (SPVM_TYPE_is_value_complex_float_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_FLOAT);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // SPVM::Complex_2d
+                          else if (SPVM_TYPE_is_value_complex_double_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_DOUBLE);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // Numeric type
+                          else {
+                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            switch (type_dist->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_INT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_LONG);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_FLOAT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              default:
+                                assert(0);
+                            }
+                            
+                            opcode.operand0 = mem_id_out;
+                            opcode.operand1 = mem_id_in1;
+                            opcode.operand2 = mem_id_in2;
+
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           
-                          opcode.operand0 = mem_id_out;
-                          opcode.operand1 = mem_id_in1;
-                          opcode.operand2 = mem_id_in2;
-
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;
                         }
                         case SPVM_OP_C_ID_MULTIPLY : {
@@ -1932,44 +1989,72 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
-                          assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                          int32_t mem_id_out;
-                          int32_t mem_id_in1;
-                          int32_t mem_id_in2;
-                          switch (type_dist->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_INT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_LONG);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_FLOAT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_DOUBLE);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            default:
-                              assert(0);
+                          // SPVM::Complex_2f
+                          if (SPVM_TYPE_is_value_complex_float_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_FLOAT);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
-                          
-                          opcode.operand0 = mem_id_out;
-                          opcode.operand1 = mem_id_in1;
-                          opcode.operand2 = mem_id_in2;
+                          // SPVM::Complex_2d
+                          else if (SPVM_TYPE_is_value_complex_double_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_DOUBLE);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // Numeric type
+                          else {
+                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            switch (type_dist->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_INT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_LONG);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_FLOAT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MULTIPLY_DOUBLE);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              default:
+                                assert(0);
+                            }
+                            
+                            opcode.operand0 = mem_id_out;
+                            opcode.operand1 = mem_id_in1;
+                            opcode.operand2 = mem_id_in2;
 
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
                           break;
                         }
                         case SPVM_OP_C_ID_DIVIDE : {
@@ -1977,53 +2062,83 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
-                          assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                          int32_t mem_id_out;
-                          int32_t mem_id_in1;
-                          int32_t mem_id_in2;
-                          switch (type_dist->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_INT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                          // SPVM::Complex_2f
+                          if (SPVM_TYPE_is_value_complex_float_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_FLOAT);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // SPVM::Complex_2d
+                          else if (SPVM_TYPE_is_value_complex_double_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_DOUBLE);
+                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          }
+                          // Numeric type
+                          else {
+                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                            int32_t mem_id_out;
+                            int32_t mem_id_in1;
+                            int32_t mem_id_in2;
+                            switch (type_dist->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_INT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_LONG);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_FLOAT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_DOUBLE);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                                mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                                break;
+                              default:
+                                assert(0);
+                            }
+                            
+                            opcode.operand0 = mem_id_out;
+                            opcode.operand1 = mem_id_in1;
+                            opcode.operand2 = mem_id_in2;
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                            
+                            // Check die
+                            assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
+                            switch (type_dist->basic_type->id) {
+                              case SPVM_BASIC_TYPE_C_ID_INT:
+                              case SPVM_BASIC_TYPE_C_ID_LONG:
+                                SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
                               break;
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_LONG);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_FLOAT);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DIVIDE_DOUBLE);
-                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
-                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
-                              break;
-                            default:
-                              assert(0);
+                            }
                           }
                           
-                          opcode.operand0 = mem_id_out;
-                          opcode.operand1 = mem_id_in1;
-                          opcode.operand2 = mem_id_in2;
-                          
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          
-                          // Check die
-                          assert(SPVM_TYPE_is_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag));
-                          switch (type_dist->basic_type->id) {
-                            case SPVM_BASIC_TYPE_C_ID_INT:
-                            case SPVM_BASIC_TYPE_C_ID_LONG:
-                              SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
-                            break;
-                          }
                           break;
                         }
                         case SPVM_OP_C_ID_REMAINDER : {

@@ -1105,6 +1105,69 @@ int32_t SPVM_TYPE_basic_type_is_value_type(SPVM_COMPILER* compiler, int32_t basi
   return is_basic_type_value_t;
 }
 
+int32_t SPVM_TYPE_is_value_complex_float_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  
+  int32_t is_basic_type_value_t;
+  const char* basic_type_name = basic_type->name;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+  
+  // Package
+  if (package) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_COMPLEX_FLOAT) {
+        is_basic_type_value_t = 1;
+      }
+      else {
+        is_basic_type_value_t = 0;
+      }
+    }
+    else {
+      is_basic_type_value_t = 0;
+    }
+  }
+  // Numeric type
+  else {
+    is_basic_type_value_t = 0;
+  }
+  
+  return is_basic_type_value_t;
+}
+
+
+int32_t SPVM_TYPE_is_value_complex_double_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  (void)compiler;
+
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+  
+  int32_t is_basic_type_value_t;
+  const char* basic_type_name = basic_type->name;
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+  
+  // Package
+  if (package) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_COMPLEX_FLOAT) {
+        is_basic_type_value_t = 1;
+      }
+      else {
+        is_basic_type_value_t = 0;
+      }
+    }
+    else {
+      is_basic_type_value_t = 0;
+    }
+  }
+  // Numeric type
+  else {
+    is_basic_type_value_t = 0;
+  }
+  
+  return is_basic_type_value_t;
+}
+
 int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t is_value_type = SPVM_TYPE_is_value_type(compiler, basic_type_id, dimension, flag);
