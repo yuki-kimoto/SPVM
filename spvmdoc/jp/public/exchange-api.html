@@ -666,11 +666,26 @@ my $spvm_double_array = SPVM::new_darray_from_bin($perl_binary);
       <p>
         第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
       </p>
+
+      <h3 id="exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</h3>
+      <p>
+        PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換するにはSPVM::hash関数を使用します。
+      </p>
+<pre>
+my $perl_hash_ref = {x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)};
+my $spvm_hash = SPVM::hash($perl_hash_ref);
+</pre>
+      <p>
+        ハッシュのキーは、UTF-8にエンコードされます。値は、SPVM::Dataオブジェクトか、そのサブクラスである必要があります。そうでない場合は、例外が発生します。
+      </p>
+
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <ul class="toc">
         <li><a href="#exchange-api-utility-exception">SPVMの例外の取得 - exception</a></li>
         <li><a href="#exchange-api-utility-set_exception">SPVMの例外の設定 - set_exception</a></li>
         <li><a href="#exchange-api-utility-memory_blocks_count">確保されたメモリブロックの数を取得 - memory_blocks_count</a></li>
+      </ul>
+      
       <p>
         その他のユーティリティです。
       </p>
