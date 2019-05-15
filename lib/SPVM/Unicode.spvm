@@ -1,4 +1,6 @@
 package SPVM::Unicode {
+  native sub uchar : int ($str : string, $offset_ref : int&);
+  
   sub encode_utf16 : short[] ($code_point_string : int[]) {
     my $length = 0;
     
