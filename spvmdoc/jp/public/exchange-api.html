@@ -50,6 +50,7 @@
       <ul class="toc">
         <li><a href="#exchange-api-summary">SPVMエクスチェンジAPIとは</a></li>
         <li><a href="#exchange-api-perl-data-to-spvm-data">Perlのデータ構造をSPVMのデータ構造に変換する</a></li>
+        <li><a href="#exchange-api-call-spvm-sub">SPVMのサブルーチンの呼び出し</a></li>
         <li><a href="#exchange-api-spvm-data-to-perl-data">SPVMのデータ構造をPerlのデータ構造に変換する</a></li>
         <li><a href="#exchange-api-utility">ユーティリティ</a></li>
         <li><a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a></li>
@@ -732,6 +733,142 @@ my $perl_array_ref = $spvm_array->to_strs;
         SPVMのデータが、上記以外の型である場合は、例外が発生します。
       </p>
 
+      <h2 id="exchange-api-call-spvm-sub">SPVMのサブルーチンの呼び出し</h2>
+      
+      <ul class="toc">
+        <li><a href="#exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</a></li>
+        <li><a href="#exchange-api-call-spvm-sub-sub-call">サブルーチン呼び出し</a></li>
+        <li><a href="#exchange-api-call-spvm-sub-method-call">メソッド呼び出し</a></li>
+      </ul>
+      
+      <h3 id="exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</h3>
+      <p>
+        SPVMモジュールは、次のようにしてPerlから読み込むことができます。モジュール名と検索のルールは、拡張子が「spvm」であることを除いて、Perlと同じです。
+      </p>
+
+<pre>
+# script.pl
+
+use SPVM 'Foo';
+</pre>
+
+      <p>
+        モジュールの検索パス上に以下のFoo.spvmが配置されているとします。
+      </p>
+
+<pre>
+# Foo.spvm
+package Foo {
+  sub sum : int ($x1 : int, $x2 : int) {
+    
+    return $x1 + $x2;
+  }
+}
+</pre>
+
+      <h3 id="exchange-api-call-spvm-sub-sub-call">サブルーチン呼び出し</h3>
+      <p>
+        サブルーチンを呼び出すためには、<a href="#exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</a>によって、SPVMモジュールが読み込まれている必要があります。
+      </p>
+      
+<pre>
+# script.pl
+
+use SPVM 'Foo';
+</pre>
+
+      <p>
+        モジュールの検索パス上に以下のFoo.spvmが配置されているとします。
+      </p>
+
+<pre>
+# Foo.spvm
+package Foo {
+  sub sum : int ($x1 : int, $x2 : int) {
+    
+    return $x1 + $x2;
+  }
+}
+</pre>
+
+      <p>
+        SPVMのサブルーチンは、Perlのサブルーチンでラッピングされ、Perlのクラスメソッド呼び出しを使って呼び出すことができます。
+      </p>
+
+<pre>
+# script.pl
+
+use SPVM 'Foo';
+
+my $total = Foo->sum(1, 2);
+</pre>
+      <p>
+        引数は、引数における変換によって、変換されます。
+      </p>
+      <p>
+        戻り値は、戻り値における変換によって、変換されます。
+      </p>
+      <p>
+        引数の個数または変換後の型が、SPVMのサブルーチンに適合しない場合は、例外が発生します。
+      </p>
+      <p>
+        SPVMの例外は、Perlの例外に変換されます。
+      </p>
+
+      <h3 id="exchange-api-call-spvm-sub-method-call">メソッド呼び出し</h3>
+      <p>
+        メソッドを呼び出すためには、<a href="#exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</a>によって、SPVMモジュールが読み込まれている必要があります。
+      </p>
+      
+<pre>
+# script.pl
+
+use SPVM 'Foo';
+</pre>
+
+      <p>
+        モジュールの検索パス上に以下のFoo.spvmが配置されているとします。
+      </p>
+
+<pre>
+# Foo.spvm
+package Foo {
+  sub new : Foo {
+    return new Foo;
+  }
+  
+  sub sum : int ($self : self, $x1 : int, $x2 : int) {
+    return $x1 + $x2;
+  }
+}
+</pre>
+
+      <p>
+        SPVMのメソッドは、Perlのサブルーチンでラッピングされ、Perlのメソッド呼び出しを使って呼び出すことができます。
+      </p>
+
+<pre>
+# script.pl
+
+use SPVM 'Foo';
+
+my $foo = Foo->new;
+
+my $total = $foo->sum(1, 2);
+</pre>
+      <p>
+        引数は、引数における変換によって、変換されます。
+      </p>
+      <p>
+        戻り値は、戻り値における変換によって、変換されます。
+      </p>
+      <p>
+        引数の個数または変換後の型が、SPVMのメソッドに適合しない場合は、例外が発生します。
+      </p>
+      <p>
+        SPVMの例外は、Perlの例外に変換されます。
+      </p>
+      
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <ul class="toc">
         <li><a href="#exchange-api-utility-exception">SPVMの例外の取得 - exception</a></li>
