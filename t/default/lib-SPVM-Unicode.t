@@ -11,6 +11,10 @@ use SPVM 'TestCase::Lib::SPVM::Unicode';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+{
+  ok(TestCase::Lib::SPVM::Unicode->uchar);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

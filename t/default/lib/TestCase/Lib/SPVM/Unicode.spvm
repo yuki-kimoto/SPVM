@@ -1,4 +1,63 @@
 package TestCase::Lib::SPVM::Unicode {
   use SPVM::Unicode;
+  
+  sub uchar : int () {
+    
+    {
+      my $str = "あaい";
+      
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 0x3042) {
+          return 0;
+        }
+        
+        unless ($pos == 3) {
+          return 0;
+        }
+      }
+
+      # a
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 'a') {
+          return 0;
+        }
+        
+        unless ($pos == 4) {
+          return 0;
+        }
+      }
+
+      # い
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 0x3044) {
+          return 0;
+        }
+        
+        unless ($pos == 7) {
+          return 0;
+        }
+      }
+      
+      # End
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+      
+        unless ($uchar == -1) {
+          return 0;
+        }
+      }
+      
+      return 1;
+    }
+  }
 }
 

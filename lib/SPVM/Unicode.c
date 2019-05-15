@@ -16352,19 +16352,19 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  spvm_utf8proc_int32_t* dst = NULL;
-  int32_t uchar_len = (int32_t)spvm_utf8proc_iterate((const spvm_utf8proc_uint8_t*)str, str_len, dst);
-  
+  spvm_utf8proc_int32_t dst;
+  int32_t uchar_len = (int32_t)spvm_utf8proc_iterate((const spvm_utf8proc_uint8_t*)(str + *offset_ref), str_len, &dst);
+
   int32_t uchar;
   if (uchar_len > 0) {
-    uchar = *dst;
+    uchar = dst;
     *offset_ref += uchar_len;
   }
   else {
     uchar = -1;
   }
   
-  stack[0].ival = -1;
+  stack[0].ival = uchar;
   
   return SPVM_SUCCESS;
 }
