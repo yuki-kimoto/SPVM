@@ -1,7 +1,7 @@
 package SPVM::Unicode {
   native sub uchar : int ($str : string, $offset_ref : int&);
   
-  native uchar_to_u8 : int ($uchar : int, $utf8_bytes : byte[]);
+  native sub uchar_to_u8 : int ($uchar : int, $utf8_bytes : byte[]);
   
   sub convert_u32_to_u16 : short[] ($code_point_string : int[]) {
     my $length = 0;

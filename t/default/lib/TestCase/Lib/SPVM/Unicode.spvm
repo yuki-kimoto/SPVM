@@ -55,9 +55,76 @@ package TestCase::Lib::SPVM::Unicode {
           return 0;
         }
       }
-      
-      return 1;
     }
+
+    {
+      my $str = "あaい";
+      my $code_points = [0x3042, 'a', 0x3044];
+      
+      my $pos = 0;
+      my $i = 0;
+      while ((my $uchar = SPVM::Unicode->uchar($str, \$pos)) >= 0) {
+        
+        unless ($uchar == $code_points->[$i]) {
+          return 0;
+        }
+        
+        $i++;
+      }
+    }
+      
+    return 1;
+  }
+
+  sub uchar_to_u8 : int () {
+    
+    {
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = 0x3042;
+        my $u8_bytes = new byte[4];
+        my $len = SPVM::Unicode->uchar_to_u8($uchar, $u8_bytes);
+        unless ($len == 3) {
+          return 0;
+        }
+        my $u8_str = (string)sliceb($u8_bytes, 0, $len);
+        unless ($u8_str eq "あ") {
+          return 0;
+        }
+      }
+
+      # a
+      {
+        my $uchar = 'a';
+        my $u8_bytes = new byte[4];
+        my $len = SPVM::Unicode->uchar_to_u8($uchar, $u8_bytes);
+        unless ($len == 1) {
+          return 0;
+        }
+        my $u8_str = (string)sliceb($u8_bytes, 0, $len);
+        unless ($u8_str eq "a") {
+          return 0;
+        }
+      }
+
+      # い
+      {
+        my $uchar = 0x3044;
+        my $u8_bytes = new byte[4];
+        my $len = SPVM::Unicode->uchar_to_u8($uchar, $u8_bytes);
+        unless ($len == 3) {
+          return 0;
+        }
+        my $u8_str = (string)sliceb($u8_bytes, 0, $len);
+        unless ($u8_str eq "い") {
+          return 0;
+        }
+      }
+    }
+      
+    return 1;
   }
 }
 
