@@ -13,7 +13,7 @@ package SPVM::Unicode {
       $uchars_list->push($uchar);
     }
     
-    unless ($pos > length $str) {
+    unless ($pos >= length $str) {
       die "Can't convert part of string to utf16";
     }
     
