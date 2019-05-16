@@ -1,9 +1,53 @@
 package SPVM::Unicode {
+  use SPVM::IntList;
+  use SPVM::StringList;
+  
   native sub uchar : int ($str : string, $offset_ref : int&);
   
   native sub uchar_to_u8 : int ($uchar : int, $utf8_bytes : byte[]);
   
-  sub convert_u32_to_u16 : short[] ($code_point_string : int[]) {
+  precompile sub u16 : short[] ($str : string) {
+    my $pos = 0;
+    my $uchars_list = SPVM::IntList->new;
+    while ((my $uchar = uchar($str, \$pos)) >= 0) {
+      $uchars_list->push($uchar);
+    }
+    
+    unless ($pos > length $str) {
+      die "Can't convert part of string to utf16";
+    }
+    
+    my $uchars = $uchars_list->to_array;
+    
+    my $u16_chars = convert_u32_to_u16($uchars);
+    
+    return $u16_chars;
+  }
+  
+  precompile sub u8 : string ($u16_chars : short[]) {
+    my $uchars = convert_u16_to_u32($u16_chars);
+    
+    my $ustrs_list = SPVM::StringList->new;
+    
+    my $utf8_bytes = new byte[4];
+    for (my $i = 0; $i < @$uchars; $i++) {
+      my $uchar = $uchars->[$i];
+      my $len = uchar_to_u8($uchar, $utf8_bytes);
+      if ($len == 0) {
+        die "Can't convert part of utf16 string to utf8";
+      }
+      my $ustr = (string)sliceb($utf8_bytes, 0, $len);
+      $ustrs_list->push($ustr);
+    }
+    
+    my $ustrs = $ustrs_list->to_array;
+    
+    my $str = join("", $ustrs);
+    
+    return $str;
+  }
+  
+  precompile sub convert_u32_to_u16 : short[] ($code_point_string : int[]) {
     my $length = 0;
     
     # Culcurate length
@@ -61,7 +105,7 @@ package SPVM::Unicode {
     }
   }
 
-  sub convert_u16_to_u32 : int[] ($utf16_string : short[]) {
+  precompile sub convert_u16_to_u32 : int[] ($utf16_string : short[]) {
 
     my $length = 0;
     

@@ -127,4 +127,3 @@ package TestCase::Lib::SPVM::Unicode {
     return 1;
   }
 }
-
