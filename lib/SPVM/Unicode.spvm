@@ -111,18 +111,18 @@ package SPVM::Unicode {
     
     # Culcurate length
     for (my $i = 0; $i < @$utf16_string; $i++) {
-      if (is_utf16_high_surrogate($utf16_string->[$i])) {
+      if (is_utf16_high_surrogate($utf16_string->[$i] & 0xFFFF)) {
         if ($i + 1 == @$utf16_string - 1) {
           die "Invalid UTF-16 string";
         }
         else {
           $i++;
-          unless (is_utf16_low_surrogate($utf16_string->[$i])) {
+          unless (is_utf16_low_surrogate($utf16_string->[$i] & 0xFFFF)) {
             die "Invalid UTF-16 string";
           }
         }
       }
-      elsif (is_utf16_low_surrogate($utf16_string->[$i])) {
+      elsif (is_utf16_low_surrogate($utf16_string->[$i] & 0xFFFF)) {
         die "Invalid UTF-16 string";
       }
       $length++;
@@ -132,12 +132,12 @@ package SPVM::Unicode {
     my $code_point_string = new int[$length];
     my $pos = 0;
     for (my $i = 0; $i < @$utf16_string; $i++) {
-      if (is_utf16_high_surrogate($utf16_string->[$i])) {
-        $code_point_string->[$pos] = 0x10000 + ($utf16_string->[$i] - 0xD800) * 0x400 + ($utf16_string->[$i + 1] - 0xDC00);
+      if (is_utf16_high_surrogate($utf16_string->[$i] & 0xFFFF)) {
+        $code_point_string->[$pos] = 0x10000 + (($utf16_string->[$i] & 0xFFFF) - 0xD800) * 0x400 + (($utf16_string->[$i + 1] & 0xFFFF) - 0xDC00);
         $i++;
       }
       else {
-        $code_point_string->[$pos] = $utf16_string->[$i];
+        $code_point_string->[$pos] = $utf16_string->[$i] & 0xFFFF;
       }
       $pos++;
     }
