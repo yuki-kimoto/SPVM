@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Unicode->convert_u32_to_u16);
   ok(TestCase::Lib::SPVM::Unicode->convert_u16_to_u32);
   ok(TestCase::Lib::SPVM::Unicode->u16);
+  ok(TestCase::Lib::SPVM::Unicode->u8);
 }
 
 # All object is freed
