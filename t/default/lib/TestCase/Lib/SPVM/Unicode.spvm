@@ -127,8 +127,8 @@ package TestCase::Lib::SPVM::Unicode {
   }
 
   sub convert_u32_to_u16 : int () {
+    # あaい
     {
-      # あaい
       my $u32chars = [0x3042, 'a', 0x3044];
       
       my $u16chars = SPVM::Unicode->convert_u32_to_u16($u32chars);
@@ -141,6 +141,27 @@ package TestCase::Lib::SPVM::Unicode {
       }
       
       unless ($u16chars->[2] == $u32chars->[2]) {
+        return 0;
+      }
+    }
+
+    # あ𠮷a(サロゲートペア)
+    {
+      my $u32chars = [0x3042, 0x20bb7, 'a'];
+      
+      my $u16chars = SPVM::Unicode->convert_u32_to_u16($u32chars);
+      
+      unless ($u16chars->[0] == 0x3042) {
+        return 0;
+      }
+      unless ($u16chars->[1] == (short)0xd842) {
+        return 0;
+      }
+      unless ($u16chars->[2] == (short)0xdfb7) {
+        return 0;
+      }
+      
+      unless ($u16chars->[3] == 'a') {
         return 0;
       }
     }
