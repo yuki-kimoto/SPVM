@@ -72,7 +72,7 @@ sub new_c99 {
   $include_dir .= '/include';
   $bconf->add_extra_compiler_flags("-I$include_dir");
   
-  # C99 + GNU extension
+  # C99
   $bconf->set_std('c99');
   
   # Optimize
