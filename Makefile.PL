@@ -55,7 +55,7 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $bconf = SPVM::Builder::Config->new_default;
+my $bconf = SPVM::Builder::Config->new_c99;
 $optimize ||= $bconf->get_config('optimize');
 my $ccflags = $bconf->get_ccflags;
 my $extra_compiler_flags = $bconf->get_extra_compiler_flags;

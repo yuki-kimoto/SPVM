@@ -23,7 +23,7 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Builder::Config->new_default;
+my $build_config = SPVM::Builder::Config->new_c99;
 $optimize ||= $build_config->get_config('optimize');
 
 my $ccflags = $build_config->get_ccflags . " " . $build_config->get_extra_compiler_flags;

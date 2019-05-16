@@ -133,7 +133,7 @@ sub get_config_runtime {
       confess "Can't find $config_file: $@";
     }
     else {
-      $bconf = SPVM::Builder::Config->new_default;
+      $bconf = SPVM::Builder::Config->new_c99;
     }
   }
   
@@ -249,7 +249,7 @@ sub compile {
     }
   }
   else {
-    $bconf = SPVM::Builder::Config->new_default;;
+    $bconf = SPVM::Builder::Config->new_c99;;
   }
 
   # Quiet output
@@ -388,7 +388,7 @@ sub link {
     }
   }
   else {
-    $bconf = SPVM::Builder::Config->new_default;;
+    $bconf = SPVM::Builder::Config->new_c99;;
   }
 
   # Quiet output

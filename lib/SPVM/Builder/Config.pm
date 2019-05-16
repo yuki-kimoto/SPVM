@@ -57,7 +57,7 @@ sub parse_dll_infos {
   return $dll_infos;
 }
 
-sub new_default {
+sub new_c99 {
   my $class = shift;
   
   my $bconf = SPVM::Builder::Config->new;
@@ -474,8 +474,8 @@ Get C<lddlflags>.
 
 Add C<lddlflags> after current C<lddlflags>.
 
-=head2 new_default
+=head2 new_c99
   
-  my $bconf = SPVM::Builder::Config->new_default;
+  my $bconf = SPVM::Builder::Config->new_c99;
 
 Create defaulgt build config. This is L<SPVM::Builder::Config> object.

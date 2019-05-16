@@ -8,7 +8,8 @@
   - add complex double and float operation +, -, *, /
   - rename new_dcomplex to complex
   - rename new_fcomplex to complexf
-  - add SPVM::Unicode::uchar
+  - add SPVM::Unicode::uchar, u8, u16
+  - rename SPVM::Build::Config::new_default to new_c99
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);

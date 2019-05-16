@@ -183,7 +183,7 @@ sub compile_spvm_csources {
   my $src_files = [glob "blib/lib/SPVM/Builder/src/*.c"];
   
   # Config
-  my $bconf = SPVM::Builder::Config->new_default;;
+  my $bconf = SPVM::Builder::Config->new_c99;;
   
   # Default include path
   $bconf->add_extra_compiler_flags("-Iblib/lib/SPVM/Builder/include");
@@ -246,7 +246,7 @@ sub compile_main {
   
   my $build_dir = $self->{build_dir};
 
-  my $bconf = SPVM::Builder::Config->new_default;
+  my $bconf = SPVM::Builder::Config->new_c99;
   $bconf->set_optimize('-O0');
   my $config = $bconf->to_hash;
   
@@ -305,7 +305,7 @@ sub link_executable {
   }
   push @$object_files, @$precompile_object_files;
   
-  my $bconf = SPVM::Builder::Config->new_default;
+  my $bconf = SPVM::Builder::Config->new_c99;
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
