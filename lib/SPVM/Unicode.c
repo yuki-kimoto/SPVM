@@ -1,5 +1,7 @@
 #include "spvm_native.h"
 
+static const char* MFILE = "SPVM/Unicode.c";
+
 /*
  * Copyright (c) 2018 Steven G. Johnson, Jiahao Chen, Peter Colberg, Tony Kelman, Scott P. Jones, and other contributors.
  * Copyright (c) 2009 Public Software Group e. V., Berlin, Germany
@@ -16365,6 +16367,30 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   stack[0].ival = uchar;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Unicode__uchar_to_u8(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  int32_t uchar = stack[0].ival;
+  
+  void* obj_u8_bytes = stack[1].oval;
+  if (obj_u8_bytes == NULL) {
+    SPVM_DIE("UTF-8 bytes must be defined", MFILE, __LINE__);
+  }
+  char* u8_bytes = (char*)env->belems(env, obj_u8_bytes);
+  int32_t u8_bytes_len = env->len(env, obj_u8_bytes);
+  if (u8_bytes_len < 4) {
+    SPVM_DIE("UTF-8 bytes must have 4 bytes", MFILE, __LINE__);
+  }
+  const char* str = (const char*)env->belems(env, obj_u8_bytes);
+  int32_t str_len = env->len(env, obj_u8_bytes);
+  
+  int32_t u8_len = (int32_t)spvm_utf8proc_encode_char((spvm_utf8proc_int32_t)uchar, (spvm_utf8proc_uint8_t*)u8_bytes);
+  
+  stack[0].ival = u8_len;
   
   return SPVM_SUCCESS;
 }

@@ -1,7 +1,9 @@
 package SPVM::Unicode {
   native sub uchar : int ($str : string, $offset_ref : int&);
   
-  sub encode_utf16 : short[] ($code_point_string : int[]) {
+  native uchar_to_u8 : int ($uchar : int, $utf8_bytes : byte[]);
+  
+  sub convert_u32_to_u16 : short[] ($code_point_string : int[]) {
     my $length = 0;
     
     # Culcurate length
@@ -41,7 +43,7 @@ package SPVM::Unicode {
     return $utf16_string;
   }
 
-  sub is_utf16_high_surrogate : int($ch : int) {
+  private sub is_utf16_high_surrogate : int($ch : int) {
     if ($ch >= 0xD800 && $ch < 0xDC00) {
       return 1;
     }
@@ -50,7 +52,7 @@ package SPVM::Unicode {
     }
   }
 
-  sub is_utf16_low_surrogate : int($ch : int) {
+  private sub is_utf16_low_surrogate : int($ch : int) {
     if ($ch >= 0xDC00 && $ch < 0xE000) {
       return 1;
     }
@@ -59,7 +61,7 @@ package SPVM::Unicode {
     }
   }
 
-  sub decode_utf16 : int[] ($utf16_string : short[]) {
+  sub convert_u16_to_u32 : int[] ($utf16_string : short[]) {
 
     my $length = 0;
     
