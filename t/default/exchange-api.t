@@ -72,37 +72,37 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Retrun numeric
 {
-  # Numeric value to numeric object - number to SPVM::Byte
+  # Retrun numeric - byte
   {
     my $val = TestCase::ExchangeAPI->return_byte;
     is($val, $BYTE_MIN);
   }
   
-  # Numeric value to numeric object - number to SPVM::Short
+  # Retrun numeric - short
   {
     my $val = TestCase::ExchangeAPI->return_short;
     is($val, $SHORT_MIN);
   }
   
-  # Numeric value to numeric object - number to SPVM::Int
+  # Retrun numeric - int
   {
     my $val = TestCase::ExchangeAPI->return_int;
     is($val, $INT_MIN);
   }
   
-  # Numeric value to numeric object - number to SPVM::Long
+  # Retrun numeric - long
   {
     my $val = TestCase::ExchangeAPI->return_long;
     is($val, $LONG_MIN);
   }
   
-  # Numeric value to numeric object - number to SPVM::Float
+  # Retrun numeric - float
   {
     my $val = TestCase::ExchangeAPI->return_float;
     is($val, $FLT_MIN);
   }
   
-  # Numeric value to numeric object - number to SPVM::Double
+  # Retrun numeric - double
   {
     my $val = TestCase::ExchangeAPI->return_double;
     is($val, $DBL_MIN);
@@ -111,40 +111,49 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Retrun value
 {
-  # Numeric value to numeric object - number to SPVM::Byte
+  # Retrun value - byte
   {
     my $val = TestCase::ExchangeAPI->return_byte_value;
     is_deeply($val, {x => 1, y => 2, z => $BYTE_MIN});
   }
   
-  # Numeric value to numeric object - number to SPVM::Short
+  # Retrun value - short
   {
     my $val = TestCase::ExchangeAPI->return_short_value;
     is_deeply($val, {x => 1, y => 2, z => $SHORT_MIN});
   }
   
-  # Numeric value to numeric object - number to SPVM::Int
+  # Retrun value - int
   {
     my $val = TestCase::ExchangeAPI->return_int_value;
     is_deeply($val, {x => 1, y => 2, z => $INT_MIN});
   }
   
-  # Numeric value to numeric object - number to SPVM::Long
+  # Retrun value - long
   {
     my $val = TestCase::ExchangeAPI->return_long_value;
     is_deeply($val, {x => 1, y => 2, z => $LONG_MIN});
   }
   
-  # Numeric value to numeric object - number to SPVM::Float
+  # Retrun value - float
   {
     my $val = TestCase::ExchangeAPI->return_float_value;
     is_deeply($val, {x => 1, y => 2, z => $FLT_MIN});
   }
   
-  # Numeric value to numeric object - number to SPVM::Double
+  # Retrun value - double
   {
     my $val = TestCase::ExchangeAPI->return_double_value;
     is_deeply($val, {x => 1, y => 2, z => $DBL_MIN});
+  }
+}
+
+# Retrun undef
+{
+  # Retrun undef
+  {
+    my $val = TestCase::ExchangeAPI->return_undef;
+    ok(!defined $val);
   }
 }
 

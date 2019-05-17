@@ -2616,7 +2616,8 @@ call_sub(...)
     default:
       assert(0);
   }
-  
+
+  // Restore reference value
   if (args_contain_ref) {
     for (int32_t arg_index = 0; arg_index < sub->arg_ids_length; arg_index++) {
       SV* sv_value = ST(arg_index + arg_start);
@@ -2747,7 +2748,7 @@ call_sub(...)
       }
     }
   }
-
+  
   // Exception
   if (excetpion_flag) {
     void* exception = env->exception(env);

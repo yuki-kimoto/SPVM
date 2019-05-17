@@ -889,6 +889,15 @@ my $total = $foo->sum(1, 2);
       <p>
         戻り値が、SPVMの値型であった場合は、ハッシュのリファレンスに変換されます。キーは、SPVMの値型のフィールド名で、値は<a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVMの数値型をPerlのスカラ値に変換する規則</a>によってPerlのスカラ値に変換された値になります。
       </p>
+      <p>
+        戻り値が、SPVMのオブジェクト型で未定義値であった場合は、Perlの未定義値に変換されます。
+      </p>
+      <p>
+        戻り値がSPVMの配列型(汎用オブジェクト配列型を含む)であった場合は、対応するSPVM::Data::Arrayオブジェクトに変換されます。
+      </p>
+      <p>
+        戻り値がSPVMの配列型以外のオブジェクト型であった場合は、対応するSPVM::Dataオブジェクトに変換されます。
+      </p>
       
       <h2 id="exchange-api-utility">ユーティリティ</h2>
       <ul class="toc">
