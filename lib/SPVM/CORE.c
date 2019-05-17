@@ -1,7 +1,3 @@
-#ifndef _XOPEN_SOURCE
-#  define _XOPEN_SOURCE
-#endif
-
 #include "spvm_native.h"
 
 #include <stdio.h>
@@ -41,11 +37,37 @@ int32_t SPNATIVE__SPVM__CORE__chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+// https://github.com/lattera/glibc/blob/master/stdlib/rand_r.c
+static int
+SPVM_rand_r (unsigned int *seed)
+{
+  unsigned int next = *seed;
+  int result;
+
+  next *= 1103515245;
+  next += 12345;
+  result = (unsigned int) (next / 65536) % 2048;
+
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (unsigned int) (next / 65536) % 1024;
+
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (unsigned int) (next / 65536) % 1024;
+
+  *seed = next;
+
+  return result;
+}
+
 int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
+
   uint32_t* next_ptr = (uint32_t*)stack[0].iref;
   
-  stack[0].ival = (int32_t)rand_r(next_ptr);
+  stack[0].ival = (int32_t)SPVM_rand_r(next_ptr);
 
   return SPVM_SUCCESS;
 }
