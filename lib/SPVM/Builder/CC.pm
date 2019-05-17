@@ -408,7 +408,7 @@ sub link {
   for my $sub_name (@$sub_names) {
     my $category = $self->category;
     my $category_uc = uc $category;
-    my $cfunc_name = "SPVM_${category_uc}_${package_name}::$sub_name";
+    my $cfunc_name = "SP${category_uc}_${package_name}::$sub_name";
     $cfunc_name =~ s/:/_/g;
     push @$cfunc_names, $cfunc_name;
   }
