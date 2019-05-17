@@ -310,8 +310,9 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Invalid open mode", MFILE, __LINE__);
   }
   
+  errno = 0;
   FILE* fh = fopen(file_name, mode);
-
+  
   if (fh) {
     void* obj_io_file;
     SPVM_NEW_OBJ(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
@@ -324,7 +325,12 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   else {
     char errstr[32];
+#ifdef _WINDOWS
+    strerror_s(errno, errstr, 32);
+#else
     strerror_r(errno, errstr, 32);
+#endif
+    
     SPVM_DIE("Can't open file \"%s\": %s", file_name, errstr, MFILE, __LINE__);
   }
   
