@@ -326,7 +326,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   else {
     char errstr[32];
 #ifdef _WIN32
-    strerror_s(errno, errstr, 32);
+    strerror_s(errstr, 32, errno);
 #else
     strerror_r(errno, errstr, 32);
 #endif
