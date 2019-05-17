@@ -169,6 +169,18 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
+# Retrun oarray
+{
+  # Retrun oarray
+  {
+    my $vals = TestCase::ExchangeAPI->return_oarray->to_elems;
+    is($vals->[0]->x, 1);
+    is($vals->[0]->y, 2);
+    is($vals->[1]->x, 3);
+    is($vals->[1]->y, 4);
+  }
+}
+
 # Pass hash
 {
   # Pass hash
