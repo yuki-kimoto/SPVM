@@ -4,8 +4,13 @@
 
 #include "spvm_native.h"
 
-#include <sys/types.h>
-#include <sys/time.h>
+#ifdef _WIN32
+  #include <winsock.h>
+#else
+  #include <sys/types.h>
+  #include <sys/time.h>
+#endif
+
 #include <math.h>
 
 // Module file name
