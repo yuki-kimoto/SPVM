@@ -16,6 +16,19 @@ package TestCase::ExchangeAPI {
     return undef;
   }
 
+  sub return_array : TestCase::Minimal[] () {
+    
+    my $minimal = new TestCase::Minimal[2];
+    $minimal->[0] = new TestCase::Minimal;
+    $minimal->[0]->set_x(1);
+    $minimal->[0]->set_y(2);
+    $minimal->[1] = new TestCase::Minimal;
+    $minimal->[1]->set_x(3);
+    $minimal->[1]->set_y(4);
+    
+    return $minimal;
+  }
+
   sub return_byte_value : TestCase::Point_3b () {
     my $point : TestCase::Point_3b;
     $point->{x} = 1;
