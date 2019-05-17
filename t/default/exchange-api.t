@@ -70,6 +70,84 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
+# Retrun numeric
+{
+  # Numeric value to numeric object - number to SPVM::Byte
+  {
+    my $val = TestCase::ExchangeAPI->return_byte;
+    is($val, $BYTE_MIN);
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Short
+  {
+    my $val = TestCase::ExchangeAPI->return_short;
+    is($val, $SHORT_MIN);
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Int
+  {
+    my $val = TestCase::ExchangeAPI->return_int;
+    is($val, $INT_MIN);
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Long
+  {
+    my $val = TestCase::ExchangeAPI->return_long;
+    is($val, $LONG_MIN);
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Float
+  {
+    my $val = TestCase::ExchangeAPI->return_float;
+    is($val, $FLT_MIN);
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Double
+  {
+    my $val = TestCase::ExchangeAPI->return_double;
+    is($val, $DBL_MIN);
+  }
+}
+
+# Retrun value
+{
+  # Numeric value to numeric object - number to SPVM::Byte
+  {
+    my $val = TestCase::ExchangeAPI->return_byte_value;
+    is_deeply($val, {x => 1, y => 2, z => $BYTE_MIN});
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Short
+  {
+    my $val = TestCase::ExchangeAPI->return_short_value;
+    is_deeply($val, {x => 1, y => 2, z => $SHORT_MIN});
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Int
+  {
+    my $val = TestCase::ExchangeAPI->return_int_value;
+    is_deeply($val, {x => 1, y => 2, z => $INT_MIN});
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Long
+  {
+    my $val = TestCase::ExchangeAPI->return_long_value;
+    is_deeply($val, {x => 1, y => 2, z => $LONG_MIN});
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Float
+  {
+    my $val = TestCase::ExchangeAPI->return_float_value;
+    is_deeply($val, {x => 1, y => 2, z => $FLT_MIN});
+  }
+  
+  # Numeric value to numeric object - number to SPVM::Double
+  {
+    my $val = TestCase::ExchangeAPI->return_double_value;
+    is_deeply($val, {x => 1, y => 2, z => $DBL_MIN});
+  }
+}
+
 # Pass hash
 {
   # Pass hash

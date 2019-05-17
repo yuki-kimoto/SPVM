@@ -739,6 +739,8 @@ my $perl_array_ref = $spvm_array->to_strs;
         <li><a href="#exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</a></li>
         <li><a href="#exchange-api-call-spvm-sub-sub-call">サブルーチン呼び出し</a></li>
         <li><a href="#exchange-api-call-spvm-sub-method-call">メソッド呼び出し</a></li>
+        <li><a href="#exchange-api-call-spvm-sub-convert-argument">引数における変換</a></li>
+        <li><a href="#exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</a></li>
       </ul>
       
       <h3 id="exchange-api-call-spvm-sub-use-module">SPVMモジュールの読み込み</h3>
@@ -803,13 +805,16 @@ use SPVM 'Foo';
 my $total = Foo->sum(1, 2);
 </pre>
       <p>
-        引数は、引数における変換によって、変換されます。
+        引数の個数がSPVMのサブルーチンの引数の個数と一致しない場合は、例外が発生します。
+      </p>
+      <p>
+        引数に渡されるPerlの値は、引数における変換によって、SPVMの値に変換されます。
+      </p>
+      <p>
+        変換後の型が、SPVMのサブルーチンの引数の型に適合しない場合は、例外が発生します。
       </p>
       <p>
         戻り値は、戻り値における変換によって、変換されます。
-      </p>
-      <p>
-        引数の個数または変換後の型が、SPVMのサブルーチンに適合しない場合は、例外が発生します。
       </p>
       <p>
         SPVMの例外は、Perlの例外に変換されます。
@@ -857,16 +862,32 @@ my $foo = Foo->new;
 my $total = $foo->sum(1, 2);
 </pre>
       <p>
-        引数は、引数における変換によって、変換されます。
+        引数の個数がSPVMのサブルーチンの引数の個数と一致しない場合は、例外が発生します。
+      </p>
+      <p>
+        引数に渡されるPerlの値は、引数における変換によって、SPVMの値に変換されます。
+      </p>
+      <p>
+        変換後の型が、SPVMのサブルーチンの引数の型に適合しない場合は、例外が発生します。
       </p>
       <p>
         戻り値は、戻り値における変換によって、変換されます。
       </p>
       <p>
-        引数の個数または変換後の型が、SPVMのメソッドに適合しない場合は、例外が発生します。
+        SPVMの例外は、Perlの例外に変換されます。
+      </p>
+
+      <h3 id="exchange-api-call-spvm-sub-convert-argument">引数における変換</h3>
+      <p>
+        
+      </p>
+      
+      <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
+      <p>
+        戻り値が、SPVMの数値型であった場合は、<a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVMの数値型をPerlのスカラ値に変換する規則</a>によって、Perlのスカラ値に変換されます。
       </p>
       <p>
-        SPVMの例外は、Perlの例外に変換されます。
+        戻り値が、SPVMの値型であった場合は、ハッシュのリファレンスに変換されます。キーは、SPVMの値型のフィールド名で、値は<a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVMの数値型をPerlのスカラ値に変換する規則</a>によってPerlのスカラ値に変換された値になります。
       </p>
       
       <h2 id="exchange-api-utility">ユーティリティ</h2>
