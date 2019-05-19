@@ -248,6 +248,26 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
+  sub test_append_bytes : int () {
+    my $buffer = SPVM::StringBuffer->new_with_capacity(1);
+    $buffer->append_bytes(['a', 'b', 'c']);
+    unless ($buffer->to_barray eq "abc" && $buffer->capacity == 3) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    $buffer->append_bytes(['d', 'e']);
+    unless ($buffer->to_barray eq "abcde" && $buffer->capacity == 6) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    $buffer->append_string(['f']);
+    unless ($buffer->to_barray eq "abcdef" && $buffer->capacity == 6) {
+      warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_append_copy_on_write : int () {
     warn("TODO: append copy-on-write test is not implemented yet");
     return 0;
@@ -355,6 +375,24 @@ package TestCase::Lib::SPVM::StringBuffer {
       unless ($large_buf->to_str eq "b") {
         return 0;
       }
+    }
+    return 1;
+  }
+
+  sub test_index_with_string : int () {
+    my $buf = SPVM::StringBuffer->new;
+    $buf->append_string("hogehogefuga");
+    unless ($buf->index_with_string("hoge", 0) == 0) {
+      return 0;
+    }
+    unless ($buf->index_with_string("hoge", 1) == 4) {
+      return 0;
+    }
+    unless ($buf->index_with_string("fuga", 0) == 8) {
+      return 0;
+    }
+    unless ($buf->index_with_string("foo", 0) == -1) {
+      return 0;
     }
     return 1;
   }
