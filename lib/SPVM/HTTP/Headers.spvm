@@ -42,11 +42,24 @@ package SPVM::HTTP::Headers {
     ];
   }
 
-  private sub set_fallback : void ($self : self, $k : string, $v : string) {
+  private sub add_extra : void ($self : self, $k : string, $v : string) {
     unless ($self->{extra}) {
       $self->{extra} = SPVM::Hash->new;
     }
-    $self->{extra}->set($k, $v);
+    if (my $c = $self->{extra}->get($k)) {
+      if ($c isa SPVM::List) {
+        ((SPVM::List)$c)->push($v);
+      }
+      elsif ($c isa string) {
+        $self->{extra}->set($k, SPVM::List->new_with_array([(object)$c, $v]));
+      }
+      else {
+        die "Unexpected type of extra value";
+      }
+    }
+    else {
+      $self->{extra}->set($k, $v);
+    }
   }
 
   sub new : SPVM::HTTP::Headers () {
@@ -58,7 +71,7 @@ package SPVM::HTTP::Headers {
     my $self = new SPVM::HTTP::Headers;
     my $keys = $args->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
-      $self->set($keys->[$i], $args->get($keys->[$i]));
+      $self->add($keys->[$i], $args->get($keys->[$i]));
     }
     return $self;
   }
@@ -71,7 +84,7 @@ package SPVM::HTTP::Headers {
     return ((SPVM::Int)$o)->val;
   }
  
-  sub set : void ($self : self, $header : object[]...) {
+  sub add : void ($self : self, $header : object[]...) {
     unless (@$header == 2) {
       die "Invalid size of args";
     }
@@ -92,7 +105,7 @@ package SPVM::HTTP::Headers {
         } elsif ($k eq "content-encoding" || $k eq "content_encoding") {
           $self->{content_encoding} = to_s($v);
         } else {
-          $self->set_fallback($k, to_s($v));
+          $self->add_extra($k, to_s($v));
         }
         last;
       case 105: #'i':
@@ -104,7 +117,7 @@ package SPVM::HTTP::Headers {
               SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->set_fallback($k, to_s($v));
+          $self->add_extra($k, to_s($v));
         }
         last;
       case 108: #'l':
@@ -116,14 +129,14 @@ package SPVM::HTTP::Headers {
               SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->set_fallback($k, to_s($v));
+          $self->add_extra($k, to_s($v));
         }
         last;
       case 114: #'r':
         if ($k eq "referer" || $k eq "referrer") {
           $self->{referer} = to_s($v);
         } else {
-          $self->set_fallback($k, to_s($v));
+          $self->add_extra($k, to_s($v));
         }
         last;
       case 101: #'e':
@@ -135,7 +148,7 @@ package SPVM::HTTP::Headers {
               SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->set_fallback($k, to_s($v));
+          $self->add_extra($k, to_s($v));
         }
         last;
       default:
@@ -145,7 +158,7 @@ package SPVM::HTTP::Headers {
           # FIXME: $HEADER_CASE への set は Leak するので削除
           # $HEADER_CASE->set($k, $hk);
         }
-        $self->set_fallback($k, to_s($v));
+        $self->add_extra($k, to_s($v));
         last;
     }
   }
@@ -191,7 +204,7 @@ package SPVM::HTTP::Headers {
     unless ($self->{extra}) {
       return undef;
     }
-    return (string)$self->{extra}->get($lc_key);
+    return $self->{extra}->get($lc_key);
   }
 
   sub append_to_buffer : void ($self : self, $buffer : SPVM::StringBuffer) {

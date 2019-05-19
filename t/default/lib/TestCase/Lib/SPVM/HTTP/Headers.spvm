@@ -28,18 +28,18 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     return ((SPVM::Int)$o)->val;
   }
 
-  sub test_set : int () {
+  sub test_add : int () {
     my $headers = SPVM::HTTP::Headers->new;
     # Referer param also allows Referrer
-    $headers->set("Referrer", "referrer");
+    $headers->add("Referrer", "referrer");
     unless ($headers->referer eq "referrer") {
       return 0;
     }
     for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
-      $headers->set($REQUEST_HEADERS->[$i], "12345678");
+      $headers->add($REQUEST_HEADERS->[$i], "12345678");
     }
     for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
-      $headers->set($ENTITY_HEADERS->[$i], "12345678");
+      $headers->add($ENTITY_HEADERS->[$i], "12345678");
     }
     unless ($headers->referer eq "12345678" &&
         to_s($headers->get("referer")) eq "12345678") {
@@ -100,6 +100,15 @@ package TestCase::Lib::SPVM::HTTP::Headers {
           return 0;
         }
       }
+    }
+    $headers->add("X-List", "first");
+    unless (((string)$headers->get("X-List")) eq "first") {
+      return 0;
+    }
+    $headers->add("X-List", "second");
+    my $vals = ((SPVM::List)$headers->get("X-List"))->to_strarray;
+    unless ($vals->[0] eq "first" && $vals->[1] eq "second") {
+      return 0;
     }
     return 1;
   }
@@ -192,10 +201,10 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       my $headers = SPVM::HTTP::Headers->new;
       my $buf = SPVM::StringBuffer->new;
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
-        $headers->set($REQUEST_HEADERS->[$i], $val);
+        $headers->add($REQUEST_HEADERS->[$i], $val);
       }
       for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
-        $headers->set($ENTITY_HEADERS->[$i], $val);
+        $headers->add($ENTITY_HEADERS->[$i], $val);
       }
       $headers->append_to_buffer($buf);
       my $got_barray = $buf->to_barray();
