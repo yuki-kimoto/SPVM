@@ -57,20 +57,6 @@ package SPVM::HTTP::Client::CookieJar {
     }
   }
 
-  private sub starts_with : int ($source : string, $prefix : string) {
-    my $source_len = length $source;
-    my $prefix_len = length $prefix;
-    unless ($source_len >= $prefix_len) {
-      return 0;
-    }
-    for (my $i = 0; $i < $prefix_len; ++$i) {
-      unless ($prefix->[$i] == $source->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
   private sub path_match : int ($self : self, $url_path : string,
       $cookie_path : string) {
     if ($url_path eq $cookie_path) {
