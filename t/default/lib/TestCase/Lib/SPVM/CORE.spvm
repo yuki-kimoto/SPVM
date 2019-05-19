@@ -405,6 +405,43 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
+  sub test_starts_with : int () {
+
+    {
+      my $target = "abc";
+      my $search = "ab";
+      unless (starts_with($target, $search)) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abc";
+      my $search = "abc";
+      unless (starts_with($target, $search)) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abc";
+      my $search = "abcd";
+      unless (! starts_with($target, $search)) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abc";
+      my $search = "bc";
+      unless (! starts_with($target, $search)) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
   sub test_contains : int () {
 
     {

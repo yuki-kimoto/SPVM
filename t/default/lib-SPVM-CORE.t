@@ -92,6 +92,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_rindex);
 }
 
+# starts_with
+{
+  ok(TestCase::Lib::SPVM::CORE->test_starts_with);
+}
+
 # strerror
 {
   ok(TestCase::Lib::SPVM::CORE->test_strerror);
