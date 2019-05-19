@@ -2,6 +2,7 @@ package SPVM::HTTP::Headers {
   use SPVM::Hash;
   use SPVM::Math::StringToNumber;
   use SPVM::StringBuffer;
+  use SPVM::StringList;
 
   has referer           : ro string;
   has expires           : ro int;
@@ -47,11 +48,11 @@ package SPVM::HTTP::Headers {
       $self->{extra} = SPVM::Hash->new;
     }
     if (my $c = $self->{extra}->get($k)) {
-      if ($c isa SPVM::List) {
-        ((SPVM::List)$c)->push($v);
+      if ($c isa SPVM::StringList) {
+        ((SPVM::StringList)$c)->push($v);
       }
       elsif ($c isa string) {
-        $self->{extra}->set($k, SPVM::List->new_with_array([(object)$c, $v]));
+        $self->{extra}->set($k, SPVM::StringList->new_with_array([(string)$c, $v]));
       }
       else {
         die "Unexpected type of extra value";
@@ -208,6 +209,7 @@ package SPVM::HTTP::Headers {
   }
 
   sub append_to_buffer : void ($self : self, $buffer : SPVM::StringBuffer) {
+    # TODO: Control fields should be listed first.
     if ($self->{referer}) {
       $buffer->append_string("Referer: " . $self->{referer} . "\r\n");
     }

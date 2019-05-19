@@ -1,7 +1,7 @@
 package TestCase::Lib::SPVM::HTTP::Headers {
   use SPVM::HTTP::Headers;
   use SPVM::StringBuffer;
-  use SPVM::List;
+  use SPVM::StringList;
   use SPVM::Math::StringToNumber;
 
   our $REQUEST_HEADERS : string[];
@@ -106,7 +106,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       return 0;
     }
     $headers->add("X-List", "second");
-    my $vals = ((SPVM::List)$headers->get("X-List"))->to_strarray;
+    my $vals = ((SPVM::StringList)$headers->get("X-List"))->to_array;
     unless ($vals->[0] eq "first" && $vals->[1] eq "second") {
       return 0;
     }
@@ -196,7 +196,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
 
   sub test_append_to_buffer : int () {
     my $val = "12345678";
-    my $got_list = SPVM::List->new;
+    my $got_list = SPVM::StringList->new;
     {
       my $headers = SPVM::HTTP::Headers->new;
       my $buf = SPVM::StringBuffer->new;
@@ -224,7 +224,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       }
     }
 
-    my $expected_list = SPVM::List->new;
+    my $expected_list = SPVM::StringList->new;
     {
       my $used = SPVM::Hash->new;
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
@@ -242,9 +242,9 @@ package TestCase::Lib::SPVM::HTTP::Headers {
       }
     }
 
-    unless (_test_bag_strarray($got_list->to_strarray, $expected_list->to_strarray)) {
+    unless (_test_bag_strarray($got_list->to_array, $expected_list->to_array)) {
       warn("Request Headers do not match.");
-      my $g = $got_list->to_strarray;
+      my $g = $got_list->to_array;
       sorto($g, sub : int ($self : self, $l : object, $r : object) {
         return (string)$l gt (string)$r;
       });
@@ -253,7 +253,7 @@ package TestCase::Lib::SPVM::HTTP::Headers {
         print("\t" . $g->[$i]);
       }
       print("\nexpected:\n");
-      my $e = $expected_list->to_strarray;
+      my $e = $expected_list->to_array;
       sorto($e, sub : int ($self : self, $l : object, $r : object) {
         return (string)$l gt (string)$r;
       });
