@@ -104,6 +104,8 @@ sub build_exe_file {
   my $object_dir = "$build_dir/work/exe/object";
   mkpath $object_dir;
   
+  my $all_libs = [];
+  
   # Build native packages
   my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $build_dir,
@@ -115,6 +117,16 @@ sub build_exe_file {
   for my $native_package_name (@$native_package_names) {
     my $native_module_file = $builder->get_module_file($native_package_name);
     my $native_dir = $native_module_file;
+    
+    my $native_config_file = $builder->get_config_file($native_package_name);
+    my $bconf = SPVM::Builder::Util::load_config($native_config_file);
+    my $dll_infos = $bconf->parse_dll_infos;
+    for my $dll_info (@$dll_infos) {
+      if ($dll_info->{type} eq 'l') {
+        push @$all_libs, "-l$dll_info->{name}";
+      }
+    }
+    
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
     my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $native_package_name);
@@ -173,7 +185,7 @@ sub build_exe_file {
   $self->compile_main;
 
   # Link executable
-  $self->link_executable($package_name);
+  $self->link_executable($package_name, $all_libs);
 }
 
 sub compile_spvm_csources {
@@ -267,7 +279,7 @@ sub compile_main {
 }
 
 sub link_executable {
-  my ($self, $package_name) = @_;
+  my ($self, $package_name, $all_libs) = @_;
   
   my $dlext = $Config{dlext};
 
@@ -313,7 +325,7 @@ sub link_executable {
   my $exe_name = $self->{exe_name};
   
   my $original_extra_linker_flag = $bconf->get_extra_linker_flags;
-  my $extra_linker_flag = "-lm $original_extra_linker_flag" ;
+  my $extra_linker_flag = "$original_extra_linker_flag @$all_libs";
   
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;

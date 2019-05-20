@@ -120,13 +120,7 @@ sub get_config_runtime {
   # Config
   my $bconf;
   if (-f $config_file) {
-    open my $config_fh, '<', $config_file
-      or confess "Can't open $config_file: $!";
-    my $config_content = do { local $/; <$config_fh> };
-    $bconf = eval "$config_content";
-    if (my $messge = $@) {
-      confess "Can't parse config file \"$config_file\": $@";
-    }
+    $bconf = SPVM::Builder::Util::load_config($config_file);
   }
   else {
     if ($category eq 'native') {
@@ -240,13 +234,7 @@ sub compile {
   # Config
   my $bconf;
   if (-f $config_file) {
-    open my $config_fh, '<', $config_file
-      or confess "Can't open $config_file: $!";
-    my $config_content = do { local $/; <$config_fh> };
-    $bconf = eval "$config_content";
-    if (my $messge = $@) {
-      confess "Can't parse config file \"$config_file\": $@";
-    }
+    $bconf = SPVM::Builder::Util::load_config($config_file);
   }
   else {
     $bconf = SPVM::Builder::Config->new_c99;;
@@ -379,13 +367,7 @@ sub link {
   # Config
   my $bconf;
   if (-f $config_file) {
-    open my $config_fh, '<', $config_file
-      or confess "Can't open $config_file: $!";
-    my $config_content = do { local $/; <$config_fh> };
-    $bconf = eval "$config_content";
-    if (my $messge = $@) {
-      confess "Can't parse config file \"$config_file\": $@";
-    }
+    $bconf = SPVM::Builder::Util::load_config($config_file);
   }
   else {
     $bconf = SPVM::Builder::Config->new_c99;;

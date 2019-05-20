@@ -15,6 +15,20 @@ use SPVM::Builder::Config;
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Builder::Config.
 
+sub load_config {
+  my ($config_file) = @_;
+  
+  open my $config_fh, '<', $config_file
+    or confess "Can't open $config_file: $!";
+  my $config_content = do { local $/; <$config_fh> };
+  my $bconf = eval "$config_content";
+  if (my $messge = $@) {
+    confess "Can't parse config file \"$config_file\": $@";
+  }
+  
+  return $bconf;
+}
+
 sub unindent {
   my $str = shift;
   my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;

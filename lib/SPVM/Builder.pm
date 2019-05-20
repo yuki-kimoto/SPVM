@@ -135,6 +135,20 @@ sub get_module_file {
   return $self->{packages}{$package_name}{module_file};
 }
 
+sub get_config_file {
+  my ($self, $package_name) = @_;
+  
+  my $module_file = $self->get_module_file($package_name);
+  
+  my $config_file;
+  if (defined $module_file) {
+    $config_file = $module_file;
+    $config_file =~ s/\.spvm$/.config/;
+  }
+  
+  return $config_file;
+}
+
 sub build_spvm {
   my $self = shift;
   
