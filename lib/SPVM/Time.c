@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE
+
 #include "spvm_native.h"
 
 #include <time.h>
@@ -637,7 +639,7 @@ loadzone:
 		}
 	}
 
-	return (unsigned char *)bp;
+	return (char *)bp;
 }
 
 static const unsigned char *
@@ -676,7 +678,7 @@ static const unsigned char *find_string(const unsigned char *bp, int *tgt, const
 	for (; n1 != NULL; n1 = n2, n2 = NULL) {
 		for (i = 0; i < c; i++, n1++) {
 			len = strlen(*n1);
-			if (strncasecmp(*n1, (const char *)bp, len) == 0) {
+			if (strncmp(*n1, (const char *)bp, len) == 0) {
 				*tgt = i;
 				return bp + len;
 			}
@@ -696,7 +698,7 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
   const char* format = (const char*)env->belems(env, obj_format);
 
-  struct tm resultp;
+  struct tm resultp = {0};
   
   const char* end_ptr = SPVM_strptime(str, format, &resultp);
   
