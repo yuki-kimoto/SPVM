@@ -199,6 +199,7 @@ compile_spvm(...)
     for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
       const char* package_name = package->name;
+      
       const char* module_file = package->module_file;
       SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
 

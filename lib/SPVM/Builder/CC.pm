@@ -125,7 +125,7 @@ sub get_config_runtime {
     my $config_content = do { local $/; <$config_fh> };
     $bconf = eval "$config_content";
     if (my $messge = $@) {
-      confess "Can't parser $config_file: $@";
+      confess "Can't parse config file \"$config_file\": $@";
     }
   }
   else {
@@ -245,7 +245,7 @@ sub compile {
     my $config_content = do { local $/; <$config_fh> };
     $bconf = eval "$config_content";
     if (my $messge = $@) {
-      confess "Can't parser $config_file: $@";
+      confess "Can't parse config file \"$config_file\": $@";
     }
   }
   else {
@@ -384,7 +384,7 @@ sub link {
     my $config_content = do { local $/; <$config_fh> };
     $bconf = eval "$config_content";
     if (my $messge = $@) {
-      confess "Can't parser $config_file: $@";
+      confess "Can't parse config file \"$config_file\": $@";
     }
   }
   else {

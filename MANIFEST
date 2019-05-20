@@ -203,14 +203,9 @@ lib/SPVM/StringList.spvm
 lib/SPVM/Time.c
 lib/SPVM/Time.config
 lib/SPVM/Time.spvm
-lib/SPVM/Time/Format.c
-lib/SPVM/Time/Format.config
-lib/SPVM/Time/Format.spvm
 lib/SPVM/Time/Info.spvm
-lib/SPVM/Time/Moment.c
-lib/SPVM/Time/Moment.config
-lib/SPVM/Time/Moment.spvm
-lib/SPVM/Time/tm_9i.spvm
+lib/SPVM/Unicode.c
+lib/SPVM/Unicode.config
 lib/SPVM/Unicode.spvm
 Makefile.PL
 MANIFEST			This list of files
@@ -451,8 +446,6 @@ t/default/lib/TestCase/Lib/SPVM/ShortList.spvm
 t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
 t/default/lib/TestCase/Lib/SPVM/StringList.spvm
 t/default/lib/TestCase/Lib/SPVM/Time.spvm
-t/default/lib/TestCase/Lib/SPVM/Time/Format.spvm
-t/default/lib/TestCase/Lib/SPVM/Time/Moment.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm

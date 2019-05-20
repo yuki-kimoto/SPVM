@@ -11,6 +11,7 @@
   - add SPVM::Unicode::uchar, u8, u16
   - rename SPVM::Build::Config::new_default to new_c99
   - fix Windows MinGW compile bugs
+  - remove SPVM::Time::Moment, SPVM::Time::Format
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);

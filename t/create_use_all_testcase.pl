@@ -33,6 +33,8 @@ find(
         
         return if $module_name =~ /CompileError/;
         
+        return if $module_name =~ /HTTP/;
+        
         push @module_names, $module_name;
       }
     },
