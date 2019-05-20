@@ -213,8 +213,6 @@ package SPVM::CORE {
     }
   }
   
-  native sub getenv : string ($name : string);
-  
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
 
@@ -1044,4 +1042,7 @@ package SPVM::CORE {
 
   # hasher function
   native sub murmur_hash : long ($string : string, $seed : int);
+  
+  # TODO: Windows compatibility
+  # native sub getenv : string ($name : string);
 }

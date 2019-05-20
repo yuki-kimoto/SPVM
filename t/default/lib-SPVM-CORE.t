@@ -56,12 +56,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_lc);
 }
 
-# getenv
-{
-  $ENV{SPVM_ENV_NAME} = "SPVM_ENV_VALUE";
-  ok(TestCase::Lib::SPVM::CORE->test_getenv);
-}
-
 # replace
 {
   ok(TestCase::Lib::SPVM::CORE->test_replace_all);
@@ -286,6 +280,15 @@ ok(TestCase::Lib::SPVM::CORE->test_join);
   like(SPVM::CORE->FLT_MAX(), qr/[0-9]/);
   like(SPVM::CORE->FLT_MIN(), qr/[0-9]/);
 }
+
+# getenv
+=pod
+{
+  # TODO: Windows compatibility
+  $ENV{SPVM_ENV_NAME} = "SPVM_ENV_VALUE";
+  ok(TestCase::Lib::SPVM::CORE->test_getenv);
+}
+=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
