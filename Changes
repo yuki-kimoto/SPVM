@@ -1,4 +1,4 @@
-0.0434 2018-05-15
+0.0434 2018-05-20
   - add  SPVM::StringList
   - remove SPVM::list
   - In any object array argument of SPVM::call_sub, array reference is converted to any object array
@@ -12,6 +12,7 @@
   - rename SPVM::Build::Config::new_default to new_c99
   - fix Windows MinGW compile bugs
   - remove SPVM::Time::Moment, SPVM::Time::Format
+  - remove getenv for Windows compatibility
 0.0433 2018-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
