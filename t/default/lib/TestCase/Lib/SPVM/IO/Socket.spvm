@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::IO::Socket {
     
     my $fileno = $socket->fileno;
     
-    unless ($fileno == 3) {
+    unless ($fileno > 2) {
       return 0;
     }
     
