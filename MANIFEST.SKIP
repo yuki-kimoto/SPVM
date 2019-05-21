@@ -42,3 +42,4 @@ SPVM-.*
 UseAllModule\.spvm
 ^solo/spvm_build/[^\.]
 t/default/lib/UseAllTestCase\.spvm
+^SPVM.def

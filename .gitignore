@@ -49,3 +49,4 @@ UseAllModule.spvm
 solo/spvm_build/*
 !solo/spvm_build/.gitkeep
 t/default/lib/UseAllTestCase.spvm
+SPVM.def
