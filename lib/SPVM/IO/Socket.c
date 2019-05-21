@@ -4,13 +4,20 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <unistd.h>
+#ifdef _WIN32
+# include <ws2tcpip.h>
+# include <io.h>
+#else
+# include <sys/fcntl.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <netdb.h>
+# include <arpa/inet.h>
+# include <unistd.h>
+# define closesocket(fd) close(fd)
+#endif
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
 
 #if !defined SHUT_RD
 #  define SHUT_RD 0
@@ -21,6 +28,7 @@
 #if !defined SHUT_RDWR
 #  define SHUT_RDWR 2
 #endif
+
 
 // Module file name
 static const char* MFILE = "SPVM/IO/Socket.c";
@@ -49,7 +57,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
   
   if (handle >= 0) {
-    int32_t ret = close(handle);
+    int32_t ret = closesocket(handle);
     if (ret == 0) {
       SPVM_SET_IFIELD(env, obj_socket, "SPVM::IO::Socket", "handle", -1, MFILE, __LINE__);
     }
@@ -147,7 +155,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   /* HTTPリクエスト送信 */
-  int32_t write_length = write(handle, buffer, length);
+  int32_t write_length = send(handle, buffer, length, 0);
   if (write_length < 0) {
     SPVM_DIE("Socket write error", MFILE, __LINE__);
   }
@@ -171,7 +179,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   /* HTTPリクエスト送信 */
-  int32_t read_length = read(handle, (char*)buffer, length);
+  int32_t read_length = recv(handle, (char*)buffer, length, 0);
   if (read_length < 0) {
     SPVM_DIE("Socket read error", MFILE, __LINE__);
   }
