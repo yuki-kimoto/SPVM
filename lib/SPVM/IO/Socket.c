@@ -84,7 +84,12 @@ int32_t SPNATIVE__SPVM__IO__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
+
+#ifdef _WIN32
+  WSADATA wsa;
+  WSAStartup(MAKEWORD(2, 2), &wsa);
+#endif
+
   void* obj_deststr = stack[0].oval;
   const char* deststr = (const char*)env->belems(env, obj_deststr);
   int32_t port = stack[1].ival;
