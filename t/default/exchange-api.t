@@ -539,36 +539,120 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Argument value reference
 {
+  # Argument value reference - byte
   {
     my $point = {x => $BYTE_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_byte(\$point);
     is_deeply($point, {x => $BYTE_MIN + 1, y => 2, z => 3});
   }
+  # Argument value reference - short
   {
     my $point = {x => $SHORT_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_short(\$point);
     is_deeply($point, {x => $SHORT_MIN + 1, y => 2, z => 3});
   }
+  # Argument value reference - int
   {
     my $point = {x => $INT_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_int(\$point);
     is_deeply($point, {x => $INT_MIN + 1, y => 2, z => 3});
   }
+  # Argument value reference - long
   {
     my $point = {x => $LONG_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_long(\$point);
     is_deeply($point, {x => $LONG_MIN + 1, y => 2, z => 3});
   }
+  # Argument value reference - float
   {
     my $point = {x => $FLT_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_float(\$point);
     is_deeply($point, {x => $FLT_MIN + 1, y => 2, z => 3});
   }
+  # Argument value reference - double
   {
     my $point = {x => $DBL_MIN, y => 1, z => 2};
     TestCase::ExchangeAPI->call_sub_value_ref_arg_double(\$point);
     is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
   }
+}
+
+# Argument value reference exception
+{
+  # Argument value reference exception - byte, key not found
+  {
+    my $point = {x => $BYTE_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_byte(\$point) };
+    ok($@);
+  }
+  # Argument value reference exception - short, key not found
+  {
+    my $point = {x => $SHORT_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_short(\$point) };
+    ok($@);
+  }
+  # Argument value reference exception - int, key not found
+  {
+    my $point = {x => $INT_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_int(\$point) };
+    ok($@);
+  }
+  # Argument value reference exception - long, key not found
+  {
+    my $point = {x => $LONG_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_long(\$point) };
+    ok($@);
+  }
+  # Argument value reference exception - float, key not found
+  {
+    my $point = {x => $FLT_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_float(\$point) };
+    ok($@);
+  }
+  # Argument value reference exception - double, key not found
+  {
+    my $point = {x => $DBL_MIN, y => 1};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_double(\$point) };
+    ok($@);
+  }
+
+  # Argument value reference exception - byte, not reference of hash reference
+  {
+    my $point = {x => $BYTE_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_byte($point) };
+    ok($@);
+  }
+  # Argument value reference exception - short, not reference of hash reference
+  {
+    my $point = {x => $SHORT_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_short($point) };
+    ok($@);
+  }
+  # Argument value reference exception - int, not reference of hash reference
+  {
+    my $point = {x => $INT_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_int($point) };
+    ok($@);
+  }
+  # Argument value reference exception - long, not reference of hash reference
+  {
+    my $point = {x => $LONG_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_long($point) };
+    ok($@);
+  }
+  # Argument value reference exception - float, not reference of hash reference
+  {
+    my $point = {x => $FLT_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_float($point) };
+    ok($@);
+  }
+  # Argument value reference exception - double, not reference of hash reference
+  {
+    my $point = {x => $DBL_MIN, y => 1, z => 2};
+    eval { TestCase::ExchangeAPI->call_sub_value_ref_arg_double($point) };
+    ok($@);
+  }
+
 }
 
 # Argument value reference and numeric reference mixed
