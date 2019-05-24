@@ -325,48 +325,135 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
-# Argument is value
+# Argument value
 {
-  # Argument is value - byte
+  # Argument value - byte
   {
     my $input = {x => 1, y => 3, z => $BYTE_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_byte($input);
     is_deeply($output, $input);
   }
 
-  # Argument is value - short
+  # Argument value - short
   {
     my $input = {x => 1, y => 3, z => $SHORT_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_short($input);
     is_deeply($output, $input);
   }
 
-  # Argument is value - int
+  # Argument value - int
   {
     my $input = {x => 1, y => 3, z => $INT_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_int($input);
     is_deeply($output, $input);
   }
 
-  # Argument is value - long
+  # Argument value - long
   {
     my $input = {x => 1, y => 3, z => $LONG_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_long($input);
     is_deeply($output, $input);
   }
 
-  # Argument is value - float
+  # Argument value - float
   {
     my $input = {x => 1, y => 3, z => $FLT_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_float($input);
     is_deeply($output, $input);
   }
 
-  # Argument is value - double
+  # Argument value - double
   {
     my $input = {x => 1, y => 3, z => $DBL_MAX};
     my $output = TestCase::ExchangeAPI->call_sub_value_arg_double($input);
     is_deeply($output, $input);
+  }
+}
+
+# Argument value exception
+{
+  # Argument value exception - byte, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_byte($input) };
+    ok($@);
+  }
+
+  # Argument value - short, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_short($input) };
+    ok($@);
+  }
+
+  # Argument value - int, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_int($input) };
+    ok($@);
+  }
+
+  # Argument value - long, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_long($input) };
+    ok($@);
+  }
+
+  # Argument value - float, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_float($input) };
+    ok($@);
+  }
+
+  # Argument value - double, field not found
+  {
+    my $input = {x => 1, y => 3};
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_double($input) };
+    ok($@);
+  }
+
+  # Argument value exception - byte, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_byte($input) };
+    ok($@);
+  }
+
+  # Argument value - short, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_short($input) };
+    ok($@);
+  }
+
+  # Argument value - int, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_int($input) };
+    ok($@);
+  }
+
+  # Argument value - long, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_long($input) };
+    ok($@);
+  }
+
+  # Argument value - float, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_float($input) };
+    ok($@);
+  }
+
+  # Argument value - double, not hash reference
+  {
+    my $input = 1;
+    eval { TestCase::ExchangeAPI->call_sub_value_arg_double($input) };
+    ok($@);
   }
 }
 
@@ -405,7 +492,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 }
 
 
-# Argument is value reference
+# Argument value reference
 {
   {
     my $point = {x => $BYTE_MIN, y => 1, z => 2};
@@ -439,7 +526,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   }
 }
 
-# Argument is value reference and numeric reference mixed
+# Argument value reference and numeric reference mixed
 {
   {
     my $point1 = {x => $BYTE_MIN, y => 1, z => 2};
