@@ -1,3 +1,5 @@
+0.0435 2018-05-24
+  - Try to show NA in CPAN testers
 0.0434 2018-05-21
   - add  SPVM::StringList
   - remove SPVM::list
