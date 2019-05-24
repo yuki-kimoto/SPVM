@@ -1,0 +1,285 @@
+package TestCase::Lib::SPVM::HTTP::Client::Handle {
+
+  use SPVM::StringBuffer;
+  use SPVM::IO::Select;
+  use SPVM::HTTP::Client::Handle::SocketWrapper;
+  use SPVM::HTTP::Headers;
+
+  has select : SPVM::IO::Select;
+  has socket : SPVM::HTTP::Client::Handle::SocketWrapper;
+  has rbuf : SPVM::StringBuffer;
+  has timeout : public double;
+  has max_line_size : int;
+  has max_header_lines : int;
+
+  our $_BUFSIZE : rw int;
+
+  BEGIN {
+    $_BUFSIZE = 32768;
+  }
+
+  private sub _Hex : string ($index : int) {
+    return ("0123456789ABCDEF")->[$index];
+  }
+
+  private sub _int_to_hex : string ($value : int) {
+    my $res = "";
+    while ($value > 0) {
+      $res = _Hex($value % 16) . $res;
+      $value /= 16;
+    }
+    return $res;
+  }
+
+  private sub _Printable : string ($string : string) {
+    my $result = "";
+    my $length = length $string;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($string->[$i] == '\r') {
+        $result .= "\\r";
+      }
+      elsif ($string->[$i] == '\n') {
+        $result .= "\\n";
+      }
+      elsif ($string->[$i] == '\t') {
+        $result .= "\\t";
+      }
+      elsif ($string->[$i] < '\x20' || $string->[$i] > '\x7E') {
+        $result .= "\\x" . _int_to_hex($string->[$i]);
+      }
+      else {
+        $result .= [$string->[$i]];
+      }
+    }
+    return $result;
+  }
+
+  private sub _trim_space : string ($string : string) {
+    my $cut_forward = "";
+    my $ret = "";
+    my $length = length $string;
+    my $found_space = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      if (!$found_space && $string->[$i] == ' ' || $string->[$i] == '\t') {
+        next;
+      }
+      $found_space = 1;
+      $cut_forward .= [$string->[$i]];
+    }
+
+    $length = length $cut_forward;
+    $found_space = 0;
+    for (my $i = $length - 1; $i >= 0; --$i) {
+      if (!$found_space && $cut_forward->[$i] == ' ') {
+        next;
+      }
+      $found_space = 1;
+      $ret = [$cut_forward->[$i]] . $ret;
+    }
+    return $ret;
+  }
+
+  sub read : string ($self : self, $len : int, $allow_partial : int) {
+    my $result = "";
+    my $got = $self->{rbuf}->length;
+
+    if ($got) {
+      my $take = $len;
+      if ($got < $len) {
+        $take = $got;
+      }
+      $result = $self->{rbuf}->substr(0, $take)->to_str;
+      $self->{rbuf} = $self->{rbuf}->substr($take, $got - $take);
+      $len -= $take;
+    }
+
+    while ($len > 0) {
+      unless ($self->{select}->can_read($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for reading\n";
+      }
+      my $r = 0;
+      my $buf = new byte [$len];
+      $r = $self->{socket}->read($buf);
+      if ($r > 0) {
+        $len -= $r;
+        $result .= (string)sliceb($buf, 0, $r);
+      }
+      elsif ($r == 0) {
+        last;
+      }
+      else {
+        die "Could not read from socket\n";
+      }
+    }
+    if ($len && !$allow_partial) {
+      die "Unexpected end of stream\n";
+    }
+    return $result;
+  }
+
+  sub write : int ($self : self, $buffer : SPVM::StringBuffer) {
+    my $len = $buffer->length;
+    my $off = 0;
+
+    while (1) {
+      unless ($self->{select}->can_write($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for writing\n";
+      }
+      eval {
+        my $r = $self->{socket}->write($buffer->substr($off, $len)->to_str, $len);
+        $len -= $r;
+        $off += $r;
+        unless ($len > 0) {
+          last;
+        }
+      };
+      if ($@) {
+        if (contains($@, "Handle is closed")) {
+          die "Socket closed by remote server: " . $@ . "\n";
+        }
+        else {
+          die "Socket write error: " . $@ . "\n";
+        }
+      }
+    }
+    return $off;
+  }
+
+  sub readline : string ($self : self) {
+    while (1) {
+      my $lfindex = $self->{rbuf}->index_with_string("\n", 0);
+      if ($lfindex >= 0) {
+        my $ret = $self->{rbuf}->substr(0, $lfindex + 1)->to_str;
+        if ($lfindex + 1 >= $self->{rbuf}->length) {
+          $self->{rbuf} = SPVM::StringBuffer->new;
+        }
+        else {
+          $self->{rbuf} = $self->{rbuf}->substr($lfindex + 1, $self->{rbuf}->length - $lfindex - 1);
+        }
+        return $ret;
+      }
+      if ($self->{rbuf}->length >= $self->{max_line_size}) {
+        die "Line size exceeds the maximum allowed size of " . $self->{max_line_size} . "\n";
+      }
+      unless ($self->{select}->can_read($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for reading\n/";
+      }
+      my $buf = new byte [$_BUFSIZE];
+      my $read_length = 0;
+      eval {
+        $read_length = $self->{socket}->read($buf);
+      };
+      if ($@ && contains($@, "read error")) {
+        die "Could not read from socket: " . $@ . "\n";
+      }
+      elsif ($@) {
+        die $@;
+      }
+      unless ($read_length) {
+        last;
+      }
+      if ($read_length < $_BUFSIZE) {
+        $self->{rbuf}->append_bytes(sliceb($buf, 0, $read_length));
+      } else {
+        $self->{rbuf}->append_bytes($buf);
+      }
+    }
+    die "Unexpected end of stream while looking for line\n";
+  }
+
+  sub read_header_lines : SPVM::HTTP::Headers ($self : self, $headers : SPVM::HTTP::Headers) {
+    unless ($headers) {
+      $headers = SPVM::HTTP::Headers->new;
+    }
+
+    my $lines = 0;
+    while (1) {
+      my $line = $self->readline;
+
+      if (++$lines >= $self->{max_header_lines}) {
+        die "Header lines exceeds maximum number allowed of " . $self->{max_header_lines} . "\n";
+      }
+      if (my $eof_field_name = index($line, ":", 0) >= 0) {
+        if (my $eof_value = index($line, "\x0D\x0A", $eof_field_name + 1) >= 0) {
+          my $field_name = _trim_space(substr($line, 0, $eof_field_name));
+          my $value = _trim_space(substr($line, $eof_field_name + 1, $eof_value));
+          $headers->add($field_name, $value);
+        }
+      }
+      elsif (index($line, "\x0D\x0A", 0) > 0) {
+        die "TODO: Header continuation line";
+      }
+      elsif (starts_with($line, "\x0D\x0A")
+          || starts_with($line, "\x0A")) {
+        last;
+      }
+      else {
+        die "Malformed header line: " . _Printable($line) . "\n";
+      }
+    }
+    return $headers;
+  }
+
+  ###############################
+
+  private sub _setup_remote_buffer : void ($handle : self, $file : string, $string : string) {
+    $handle->{rbuf} = SPVM::StringBuffer->new;
+    $handle->{timeout} = 3.0;
+    $handle->{max_line_size} = 16384;
+    $handle->{max_header_lines} = 64;
+    $handle->{select} = SPVM::IO::Select->new;
+    $handle->{socket} =
+        SPVM::HTTP::Client::Handle::SocketWrapper->new_io_file($file);
+    $handle->{select}->add($handle->{socket}->fileno);
+    $handle->write(SPVM::StringBuffer->new_with_string($string));
+    $handle->{socket}->file_seek_begin;
+  }
+
+  sub test_read : int ($file : string) {
+    my $handle = new TestCase::Lib::SPVM::HTTP::Client::Handle;
+    $handle->_setup_remote_buffer($file, "12345678900987654321END");
+    unless ($handle->read(10, 1) eq "1234567890") {
+      return 0;
+    }
+    unless ($handle->read(10, 1) eq "0987654321") {
+      return 0;
+    }
+    unless ($handle->read(10, 1) eq "END") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_readline : int ($file : string) {
+    my $handle = new TestCase::Lib::SPVM::HTTP::Client::Handle;
+    $handle->_setup_remote_buffer($file, "abcd\n\nef\n\n");
+    unless ($handle->readline eq "abcd\n") {
+      return 0;
+    }
+    unless ($handle->readline eq "\n") {
+      return 0;
+    }
+    unless ($handle->readline eq "ef\n") {
+      return 0;
+    }
+    unless ($handle->readline eq "\n") {
+      return 0;
+    }
+    eval {
+      $handle->readline;
+    };
+    unless ($@ && contains($@, "Unexpected end of stream while looking for line")) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+
+  sub test_read_header_lines : int ($file : string) {
+    my $handle = new TestCase::Lib::SPVM::HTTP::Client::Handle;
+    $handle->_setup_remote_buffer($file, "abcd\n\nef\n\n");
+    my $headers = SPVM::HTTP::Headers->new;
+    $handle->read_header_lines($headers);
+    return 1;
+  }
+}

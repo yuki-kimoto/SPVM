@@ -1,0 +1,3 @@
+package SPVM::HTTP::Client::Callback : callback_t {
+  sub cb : string ($self : self);
+}

@@ -1,0 +1,552 @@
+package SPVM::HTTP::Client::Handle {
+  use SPVM::HTTP::Client::Handle;
+  use SPVM::HTTP::Client::Request;
+  use SPVM::HTTP::Client::DataCallback;
+  use SPVM::HTTP::Headers;
+  use SPVM::IO::Select;
+  use SPVM::StringBuffer;
+
+  has select : SPVM::IO::Select;
+  has socket : SPVM::HTTP::Client::Handle::SocketWrapper;
+  has scheme : string;
+  has host : string;
+  has port : int;
+  has local_address : string;
+  has keep_alive : int;
+  has rbuf : SPVM::StringBuffer;
+  has max_line_size : int;
+  has max_header_lines : int;
+  has timeout : public double;
+
+  our $_BUFSIZE : rw int;
+
+  BEGIN {
+    $_BUFSIZE = 32768;
+  }
+
+  private sub _Printable : string ($string : string) {
+    my $result = "";
+    my $length = length $string;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($string->[$i] == '\r') {
+        $result .= "\\r";
+      }
+      elsif ($string->[$i] == '\n') {
+        $result .= "\\n";
+      }
+      elsif ($string->[$i] == '\t') {
+        $result .= "\\t";
+      }
+      elsif ($string->[$i] < '\x20' || $string->[$i] > '\x7E') {
+        $result .= "\\x" . _int_to_hex($string->[$i]);
+      }
+      else {
+        $result .= [$string->[$i]];
+      }
+    }
+    return $result;
+  }
+
+  sub new_with : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client::Handle;
+    unless ($args->exists("local_address")) {
+      $self->{local_address} = $args->get("local_address");
+    }
+    unless ($args->exists("keep_alive")) {
+      $self->{keep_alive} = $args->get("keep_alive");
+    }
+    if (my $o = $args->get("max_line_size")) {
+      $self->{max_line_size} = ((SPVM::Int)$o)->val;
+    } else {
+      $self->{max_line_size} = 16384;
+    }
+    if (my $o = $args->get("max_header_lines")) {
+      $self->{max_header_lines} = ((SPVM::Int)$o)->val;
+    } else {
+      $self->{max_header_lines} = 64;
+    }
+    $self->{rbuf} = SPVM::StringBuffer->new;
+    return $self;
+  }
+
+  sub connect : SPVM::HTTP::Client::Handle ($self : self,
+      $scheme : string, $host : string, $port : int) {
+    if ($scheme eq 'https') {
+      die "SSL is not supported yet.\n";
+    }
+    elsif ($scheme ne 'http') {
+      die "Unsupported URL scheme '$scheme'\n";
+    }
+
+    $self->{socket} = SPVM::IO::Socket->new($host, $port);
+    $self->{scheme} = $scheme;
+    $self->{host} = $host;
+    $self->{port} = $port;
+
+    return $self;
+  }
+
+  sub close : void ($self : self) {
+    eval {
+      $self->{socket}->close;
+    };
+    if ($@) {
+      die "Could not close socket: $@\n";
+    }
+  }
+
+  sub write : int ($self : self, $buffer : SPVM::StringBuffer) {
+    my $len = $buffer->length;
+    my $off = 0;
+
+    while (1) {
+      unless ($self->{select}->can_write($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for writing\n";
+      }
+      eval {
+        my $r = $self->{socket}->write($buffer->substr($off, $len)->to_str, $len);
+        $len -= $r;
+        $off += $r;
+        unless ($len > 0) {
+          last;
+        }
+      };
+      if ($@) {
+        if (contains($@, "Handle is closed")) {
+          die "Socket closed by remote server: " . $@ . "\n";
+        }
+        else {
+          die "Socket write error: " . $@ . "\n";
+        }
+      }
+    }
+    return $off;
+  }
+
+  sub read : string ($self : self, $len : int, $allow_partial : int) {
+    my $result = "";
+    my $got = $self->{rbuf}->length;
+
+    if ($got) {
+      my $take = $len;
+      if ($got < $len) {
+        $take = $got;
+      }
+      $result = $self->{rbuf}->substr(0, $take)->to_str;
+      $self->{rbuf} = $self->{rbuf}->substr($take, $got - $take);
+      $len -= $take;
+    }
+
+    while ($len > 0) {
+      unless ($self->{select}->can_read($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for reading\n";
+      }
+      my $r = 0;
+      my $buf = new byte [$len];
+      $r = $self->{socket}->read($buf);
+      if ($r > 0) {
+        $len -= $r;
+        $result .= (string)sliceb($buf, 0, $r);
+      }
+      elsif ($r == 0) {
+        last;
+      }
+      else {
+        die "Could not read from socket\n";
+      }
+    }
+    if ($len && !$allow_partial) {
+      die "Unexpected end of stream\n";
+    }
+    return $result;
+  }
+
+  sub write_header_lines : int ($self : self, $headers : SPVM::HTTP::Headers,
+      $buffer : SPVM::StringBuffer) {
+    unless ($buffer) {
+      $buffer = SPVM::StringBuffer->new();
+    }
+    $headers->append_to_buffer($buffer);
+    $self->write($buffer);
+  }
+
+  sub write_request_header : void ($self : self,
+      $method : string, $path_query : string, $headers : SPVM::HTTP::Headers) {
+    $buffer->append_string("$method $path_query HTTP/1.1\x0D\x0A");
+    $self->write_header_lines($headers, $buffer);
+  }
+
+  sub write_content_body : int ($self : self, $request : SPVM::HTTP::Client::Request) {
+    my $len = 0;
+    my $content_length = $self->{headers}{content_length};
+    while (1) {
+      my $data = $request->{cb}->();
+      unless ($data && length $data) {
+        last;
+      }
+      $len += $self->write($data);
+    }
+    unless ($len == $content_length) {
+      die "Content-Length mismatch (got: $len expected: $content_length)\n";
+    }
+    return $len;
+  }
+
+  private sub _Hex : string ($index : int) {
+    return ("0123456789ABCDEF")->[$index];
+  }
+
+  private sub _int_to_hex : string ($value : int) {
+    my $res = "";
+    while ($value > 0) {
+      $res = _Hex($value % 16) . $res;
+      $value /= 16;
+    }
+    return $res;
+  }
+
+  sub write_chunked_body : int ($self : self, $request : SPVM::HTTP::Client::Request) {
+    my $len = 0;
+    while (1) {
+      my $data = $request->{cb}->();
+      if ($data && length $data) {
+        last;
+      }
+      $len += length $data;
+      my $chunk = _int_to_hex($data);
+      $chunk .= "\x0D\x0A";
+      $chunk .= $data;
+      $chunk .= "\x0D\x0A";
+
+      $self->write($chunk);
+    }
+    $self->write("0\x0D\x0A");
+    if ($request->{trailer_cb}) {
+      $self->write_header_lines($request->{trailer_cb}->(), undef)
+    }
+    else {
+      $self->write("\x0D\x0A");
+    }
+    return $len;
+  }
+
+  private sub _read_hex : int ($string : string) {
+    my $length = length $string;
+    my $ret = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ('a' <= $string->[$i] <= 'f') {
+        $ret = $ret * 10 + $string->[$i] - 'a';
+      }
+      elsif ('A' <= $string->[$i] <= 'F') {
+        $ret = $ret * 10 + $string->[$i] - 'A';
+      }
+      elsif ('0' <= $string->[$i] <= '9') {
+        $ret = $ret * 10 + $string->[$i] - '0';
+      }
+      else {
+        return $ret;
+      }
+    }
+    return $ret;
+  }
+
+  sub read_chunked_body : int ($self : self, $cb : SPVM::HTTP::Client::DataCallback,
+      $response : SPVM::HTTP::Client::Response) {
+    while (1) {
+      my $head = $self->readline;
+      my $len = 0;
+      eval {
+        $len = _read_hex($head);
+      };
+      if ($@) {
+        die "Malformed chunk head: " . _Printable($head) . "\n";
+      }
+      unless ($len) {
+        last;
+      }
+
+      $self->read_content_body($cb, $response, $len);
+
+      unless ($self->read(2, 0) eq "\x0D\x0A") {
+        die "Malformed chunk: missing CRLF after chunk data\n";
+      }
+    }
+    $self->read_header_lines($response->{headers});
+    return 1;
+  }
+
+  sub read_content_body : int ($self : self, $cb : SPVM::HTTP::Client::DataCallback,
+      $response : SPVM::HTTP::Client::Response, $content_length : SPVM::Int) {
+    if ($content_length == undef) {
+      $content_length = SPVM::Int->new($response->{headers}{content_length});
+    }
+
+    if (my $len = $content_length->val) {
+      while ($len > 0) {
+        my $read = $len;
+        if ($len > _BUFSIZE()) {
+          $read = _BUFSIZE();
+        }
+        $cb->data_cb($self->read($read, 0), $response);
+        $len -= $read;
+      }
+      return length($self->{rbuf}) == 0;
+    }
+
+    my $chunk = "";
+    while (1) {
+      $cb->data_cb($chunk, $response);
+      $chunk = $self->read(_BUFSIZE(), 1);
+      unless (length $chunk) {
+        last;
+      }
+    }
+  }
+
+  sub read_body : int ($self : self, $cb : SPVM::HTTP::Client::DataCallback,
+      $response : SPVM::HTTP::Client::Response) {
+    my $te = $response->{headers}->get("transfer-encoding");
+    my $te_list = [];
+    if ($te isa string) {
+      $te_list = [(string)$te];
+    }
+    else {
+      $te_list = ((SPVM::StringList)$te)->to_array();
+    }
+    for (my $i = 0; $i < @$te_list; ++$i) {
+      if (contains($te_list->[$i], "chunked")) {
+        return $self->read_chunked_body($cb, $response);
+      }
+    }
+    return $self->read_content_body($cb, $response, undef);
+  }
+
+  sub write_body : int ($self : self, $request : SPVM::HTTP::Client::Request) {
+    if ($request->{headers}{content_length}) {
+      return $self->write_content_body($request);
+    }
+    else {
+      return $self->write_chunked_body($request);
+    }
+  }
+
+  sub write_request : void ($self : self, $request : SPVM::HTTP::Client::Request) {
+    my $path_query = $request->{path};
+    if ($request->{params}) {
+      $path_query .= "?" . $request->{params}->to_str();
+    }
+    $self->write_request_header(
+        $request->{method}, $path_query, $request->{headers});
+    if ($request->{cb}) {
+      $self->write_body($request);
+    }
+  }
+
+  sub readline : string ($self : self) {
+    while (1) {
+      my $lfindex = $self->{rbuf}->index_with_string("\n", 0);
+      if ($lfindex >= 0) {
+        my $ret = $self->{rbuf}->substr(0, $lfindex + 1)->to_str;
+        if ($lfindex + 1 >= $self->{rbuf}->length) {
+          $self->{rbuf} = SPVM::StringBuffer->new;
+        }
+        else {
+          $self->{rbuf} = $self->{rbuf}->substr($lfindex + 1, $self->{rbuf}->length - $lfindex - 1);
+        }
+        return $ret;
+      }
+      if ($self->{rbuf}->length >= $self->{max_line_size}) {
+        die "Line size exceeds the maximum allowed size of " . $self->{max_line_size} . "\n";
+      }
+      unless ($self->{select}->can_read($self->{timeout})) {
+        die "Timed out while waiting for socket to become ready for reading\n/";
+      }
+      my $buf = new byte [$_BUFSIZE];
+      my $read_length = 0;
+      eval {
+        $read_length = $self->{socket}->read($buf);
+      };
+      if ($@ && contains($@, "read error")) {
+        die "Could not read from socket: " . $@ . "\n";
+      }
+      elsif ($@) {
+        die $@;
+      }
+      unless ($read_length) {
+        last;
+      }
+      if ($read_length < $_BUFSIZE) {
+        $self->{rbuf}->append_bytes(sliceb($buf, 0, $read_length));
+      } else {
+        $self->{rbuf}->append_bytes($buf);
+      }
+    }
+    die "Unexpected end of stream while looking for line\n";
+  }
+
+
+  private sub _trim_space : string ($string : string) {
+    my $cut_forward = "";
+    my $ret = "";
+    my $length = length $string;
+    my $found_space = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      if (!$found_space && $string->[$i] == ' ' || $string->[$i] == '\t') {
+        next;
+      }
+      $found_space = 1;
+      $cut_forward .= [$string->[$i]];
+    }
+
+    $length = length $cut_forward;
+    $found_space = 0;
+    for (my $i = $length - 1; $i >= 0; --$i) {
+      if (!$found_space && $cut_forward->[$i] == ' ') {
+        next;
+      }
+      $found_space = 1;
+      $ret = [$cut_forward->[$i]] . $ret;
+    }
+    return $ret;
+  }
+
+  sub read_header_lines : SPVM::HTTP::Headers ($self : self, $headers : SPVM::HTTP::Headers) {
+    unless ($headers) {
+      $headers = SPVM::HTTP::Headers->new;
+    }
+    die "read_header_lines is not implemented yet";
+
+    my $lines = 0;
+    while (1) {
+      my $line = $self->readline;
+
+      if (++$lines >= $self->{max_header_lines}) {
+        die "Header lines exceeds maximum number allowed of " . $self->{max_header_lines} . "\n";
+      }
+      if (my $eof_field_name = index($line, ":", 0) >= 0) {
+        if (my $eof_value = index($line, "\x0D\x0A", $eof_field_name + 1) >= 0) {
+          my $field_name = _trim_space(substr($line, 0, $eof_field_name));
+          my $value = _trim_space(substr($line, $eof_field_name + 1, $eof_value));
+          $headers->add($field_name, $value);
+        }
+      }
+      elsif (index($line, "\x0D\x0A", 0) > 0) {
+        die "TODO: Header continuation line";
+      }
+      elsif (starts_with($line, "\x0D\x0A")
+          || starts_with($line, "\x0A")) {
+        last;
+      }
+      else {
+        die "Malformed header line: " . _Printable($line) . "\n";
+      }
+    }
+    return $headers;
+  }
+
+  private sub _skip_ows ($string : string, $from_index : int) {
+    my $length = length $string;
+    for (my $i = $from_index; $i < $length; ++$i) {
+      unless ($string->[$i] == ' ' || $string->[$i] == '\t') {
+        return $i;
+      }
+    }
+    return $length;
+  }
+
+  private sub _skip_rws ($string : string, $from_index : int) {
+    my $length = length $string;
+    unless ($from_index < $length && (
+        $string->[$from_index] == ' ' ||
+            $string->[$from_index] == '\t'
+    )) {
+      die "Expected 1*(SP/HTAB)";
+    }
+    for (my $i = $from_index + 1; $i < $length; ++$i) {
+      unless ($string->[$i] == ' ' || $string->[$i] == '\t') {
+        return $i;
+      }
+    }
+    return $length;
+  }
+
+  private sub _is_number : int ($string : string) {
+    my $length = length $string;
+    unless ($length) {
+      return 0;
+    }
+    for (my $i = 0; $i < $length; ++$i) {
+      unless ($string->[$i] >= '0' && $string->[$i] <= '9') {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  private sub _read_status_line : string[] ($self : self) {
+    my $error_malformed = sub : string ($line : string) {
+      return "Malformed Status-Line: " . _Printable($line) . "\n";
+    };
+    my $line = "";
+    eval {
+      $line = $self->readline;
+    };
+    if ($@) {
+      die "Failed to read status line: $@\n";
+    }
+    my $length = length $line;
+    my $index = _skip_ows($line, 0);
+    unless ($index + 8 <= $length) {
+      die $error_malformed->($line);
+    }
+    my $protocol = substr($line, $index, 8);
+    unless (starts_with($protocol, "HTTP/")) {
+      die $error_malformed->($line);
+    }
+    my $version = substr($protocol, 5, 3);
+    eval {
+      $index = _skip_rws($line, $index + 8);
+    };
+    if ($@) {
+      die $error_malformed->($line);
+    }
+    unless ($index + 3 <= $length) {
+      die $error_malformed->($line);
+    }
+    my $status = substr($line, $index, 3);
+    unless (_is_number($status)) {
+      die $error_malformed->($line);
+    }
+    eval {
+      $index = _skip_rws($line, $index + 3);
+    };
+    if ($@) {
+      die $error_malformed->($line);
+    }
+    my $lfindex = index($line, $index, "\x0A");
+    if ($lfindex < 0) {
+      die $error_malformed->($line);
+    }
+    my $reason = "";
+    if ($line->[$lfindex - 1] == '\x0D') {
+      $reason = substr($line, $index, $lfindex - 1);
+    }
+    else {
+      $reason = substr($line, $index, $lfindex);
+    }
+    return [$protocol, $version, $status, $reason];
+  }
+
+  sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
+    my $r = $self->_read_status_line;
+    unless (contains($r->[1], "1.0") || contains($r->[1], "1.1")) {
+      die "Unsupported HTTP protocol: " . $r->[0];
+    }
+    return SPVM::HTTP::Client::Response->new_with(hash([(object)
+    status    => $r->[2],
+        reason    => $r->[3],
+        headers   => $self->read_header_lines,
+        protocol  => $r->[0],
+        ]));
+  };
+}

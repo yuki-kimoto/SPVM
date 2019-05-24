@@ -1,0 +1,83 @@
+package SPVM::HTTP::Request {
+  use SPVM::HTTP::Headers;
+  use SPVM::HTTP::URL;
+  use SPVM::HTTP::URL::Escape;
+  use SPVM::JSON;
+  use SPVM::Hash;
+
+  has headers   : ro SPVM::HTTP::Headers;
+  has method    : ro string;
+  has url       : ro SPVM::HTTP::URL;
+  has content   : ro string;
+  has protocol  : ro string;
+
+  sub DEFAULT_PROTOCOL : string () { return "HTTP/1.1"; }
+
+  sub new_with : SPVM::HTTP::Request ($env : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Request;
+
+    if ($env->exists("headers")) {
+      $self->{headers} = (SPVM::HTTP::Headers)($env->get("headers"));
+    } else {
+      $self->{headers} = SPVM::HTTP::Headers->new;
+    }
+
+    if ($env->exists("method")) {
+      $self->{method} = (string)($env->get("method"));
+    } else {
+      croak "HTTP method must be specified.";
+    }
+
+    if ($env->exists("url")) {
+      $self->{url} = (SPVM::HTTP::URL)($env->get("url"));
+      my $host = $self->{url}->{host};
+      if ($self->{url}->{port} > 0) {
+        $host .= SPVM::Math::StringToNumber->from($self->{url}->{host})->to_int;
+      }
+      $self->{headers}->add_header("Host", $host); # override headers argument
+    } else {
+      croak("url should be provided");
+    }
+
+    if ($env->exists("content")) {
+      $self->{content} = (string)($env->get("content"));
+      $self->{headers}->add_header("Content-Length", length((string)$env->get("content"))); # override headers argument
+    } else {
+      $self->{content} = "";
+      $self->{headers}->add_header("Content-Length", 0);
+    }
+
+    if ($env->exists("protocol")) {
+      $self->{protocol} = (string)($env->get("protocol"));
+    } else {
+      $self->{protocol} = DEFAULT_PROTOCOL();
+    }
+
+    return $self;
+  }
+
+  sub to_str : string ($self : self) {
+    my $buffer = SPVM::StringBuffer->new;
+    # request line
+    $buffer->append_string($self->{method} . " " . $self->{url}->{path});
+    my $query_string = $self->{url}->{params}->to_str;
+    if (length($query_string)) {
+      $buffer->append_string("?$query_string");
+    }
+    if (length($self->{url}->{fragment})) {
+      $buffer->append_string("#" . SPVM::HTTP::URL::Escape->unescape($self->{url}->{fragment}));
+    }
+    if (length($self->{protocol})) {
+      $buffer->append_string(" " . $self->{protocol});
+    }
+    $buffer->append_string("\r\n");
+    # headers
+    $self->{headers}->append_to_buffer($buffer);
+    # contents
+    if (length($self->{content})) {
+      $buffer->append_string("\r\n");
+      $buffer->append_string($self->{content} . "\r\n");
+    }
+    return $buffer->to_str;
+  }
+}

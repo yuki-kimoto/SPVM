@@ -1,0 +1,4 @@
+package SPVM::HTTP::Client::DataCallback : callback_t {
+  use SPVM::HTTP::Client::Response;
+  sub data_cb : string ($self : self, $chunk : string, $response : SPVM::HTTP::Client::Response);
+}

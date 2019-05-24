@@ -1,10 +1,38 @@
 package SPVM::HTTP::Client {
-  use SPVM::Hash;
+  use SPVM::HTTP::Client::Callback;
+  use SPVM::HTTP::Client::CookieJar;
+  use SPVM::HTTP::Client::DataCallback;
+  use SPVM::HTTP::Client::TrailerCallback;
+  use SPVM::HTTP::Client::Request;
   use SPVM::HTTP::Headers;
   use SPVM::HTTP::Response;
+  use SPVM::HTTP::URL;
   use SPVM::JSON;
+  use SPVM::URL;
+  use SPVM::MIME::Base64;
 
-  private sub IDEMPOTENT : string[] ($method : string) {
+  has handle : object; # TODO: change to specific type.
+  has agent : public string;
+  has default_headers : public SPVM::Hash;
+  has local_address : public string;
+  has keep_alive : public int;
+  has cookie_jar : public SPVM::HTTP::Client::CookieJar;
+  has max_redirect : public int;
+  has timeout : public int;
+
+  sub VERSION : int () {
+    return "1.0";
+  }
+
+  sub new : SPVM::HTTP::Client ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client;
+    $self->{max_redirect} = 5;
+    $self->{agent} = "SPVM-HTTP-Client/" . VERSION();
+    $self->{cookie_jar} = $args->get("cookie_jar");
+    return $self;
+  }
+
+  private sub _IDEMPOTENT : string[] ($method : string) {
     my $methods = ["GET", "HEAD", "PUT", "DELETE", "OPTIONS", "TRACE"];
     for (my $i = 0; $i < @$methods; ++$i) {
       if ($methods->[$i] eq $method) {
@@ -14,12 +42,233 @@ package SPVM::HTTP::Client {
     return 1;
   }
 
-  private sub request_impl : SPVM::HTTP::Response ($self : self,
-    $method : string, $url : string, $args : SPVM::Hash) {
-    ;
+  private sub _default_port : int ($scheme : string) {
+    if ($scheme eq "http") {
+      return 80;
+    } elsif ($schme eq "https") {
+      return 443;
+    } else {
+      die "Unexpected scheme\n";
+    }
   }
 
-  private sub parse_exception : SPVM::JSON ($m : string) {
+  private sub _prepare_headers_and_cb : void ($self : self,
+      $request : SPVM::HTTP::Client::Request,
+      $args : SPVM::Hash, $url : string, $auth : string) {
+    my $headers = SPVM::HTTP::Headers->new;
+
+    my $headers_list = [$self->{default_headers}];
+    if (my $args_headers = $args->get("headers")) {
+      $headers_list = [$self->{default_headers}, $args_headers];
+    }
+    for (my $k = 0; $k < @$headers_list; ++$k) {
+      my $h = $headers_list->[$k];
+      my $keys = $h->keys;
+      for (my $i = 0; $i < @$keys; ++$i) {
+        my $val = $h->get($keys->[$i]);
+        $headers->set(lc($keys->[$i]), $val);
+      }
+    }
+
+    if ($headers->exists("host")) {
+      die "The 'Host' header must not be provided as header option\n";
+    }
+
+    $headers->set("host", $request->{host_port});
+    $headers->set("user-agent", $self->{agent});
+    unless ($self->{keep_alive}) {
+      $headers->set("connection", "close");
+    }
+
+    if ($args->{content}) {
+      if ($args->{content} isa SPVM::HTTP::Client::Callback) {
+        unless ($headers->{content_type}) {
+          $headers->{content_type} = "application/octet-stream";
+        }
+        unless ($headers->{content_length} ||
+          $headers->get("transfer-encoding")) {
+          $headers->set("transfer-encoding", "chunked");
+        }
+        $request->{cb} = $args->{content};
+      } elsif ($args->{content} isa string) {
+        my $content = $args->{content};
+        unless ($headers->{content_type}) {
+          $headers->{content_type} = "application/octet-stream";
+        }
+        unless ($headers->{content_length} ||
+          $headers->get("transfer-encoding")) {
+          $headers->{content_length} = length($content);
+        }
+        $request->{cb} = sub : string ($self : self) {
+          return $content
+        };
+      }
+      if (my $o = $args->get("trailer_callback")) {
+        if ($o isa SPVM::HTTP::Client::TrailerCallback) {
+          $request->{trailer_cb} = (SPVM::HTTP::Client::TrailerCallback)$o;
+        }
+      }
+    }
+
+    if ($self->{cookie_jar}) {
+      my $cookies = $self->{cookie_jar}->cookie_header($url);
+      if (length $cookies) {
+        $request->{headers}->set("cookie", $cookies);
+      }
+    }
+
+    if (length $auth && !$request->{headers}->exists("authorization")) {
+      $self->add_basic_auth_header($request, authorization => $auth);
+    }
+  }
+
+  private sub _open_handle : SPVM::HTTP::Client::Handle (
+      $self : self, $scheme : string, $host : string, $port : int) {
+    my $handle = SPVM::HTTP::Client::Handle->new_with(hash([(object)
+      timeout       => $self->{timeout},
+      local_address => $self->{local_address},
+      keep_alive    => $self->{keep_alive},
+    ]);
+    return $handle->connect($scheme, $host, $port);
+  }
+
+  private sub _add_basic_auth_header : void ($self : self,
+      $request : SPVM::HTTP::Request,
+      $header : string, $auth : string) {
+    $request->{headers}->set($header,
+        "Basic " . SPVM::MIME::Base64->new->encode($auth);
+  }
+
+  private sub _maybe_redirect : string[] ($self : self,
+      $request : SPVM::HTTP::Client::Request,
+      $response : SPVM::HTTP::Client::TinyResponse,
+      $args : SPVM::Hash) {
+    my $headers = $response->{headers};
+    my $stat = $response->{status};
+    my $meth = $response->{method};
+    unless ($args->exists("_redirects")) {
+      $args->set("_redirects", SPVM::List->new);
+    }
+
+    if ($stat == 303 || (
+        ($stat == 301 || $stat == 302 || $stat == 307 || $stat == 308) &&
+        ($meth eq "GET" || $meth eq "HEAD")
+    )) {
+      unless (defined $headers->get("location")) {
+        return [];
+      }
+      unless (defined $args->get("_redirects")) {
+        return [];
+      }
+      my $loc = $headers->get("location");
+      my $rd = (SPVM::List)($args->get("_redirects"));
+      if ($rd->length < $self->{max_redirect}) {
+        my $ret = new string[2];
+        if ($stat == 303) {
+          $ret->[0] = "GET";
+        }
+        else {
+          $ret->[0] = $meth;
+        }
+        if (length($loc) > 0 && $loc->[0] == '/') {
+          $ret->[1] = $request->{scheme} . "://" . $request->{host_port} . $loc;
+        }
+        else {
+          $ret->[1] = $loc;
+        }
+        return $ret;
+      }
+    }
+    return [];
+  }
+
+  private sub _request : SPVM::HTTP::Response ($self : self,
+      $method : string, $url : string, $args : SPVM::Hash) {
+    my $url_parser = SPVM::HTTP::URL->parse($url);
+    my $host_port = $http_url->{host};
+    if ($url_parser->{port} != _default_port($url_parser->{scheme})) {
+      $host_port .= ":" . $url_parser->{port};
+    }
+
+    my $request = SPVM::HTTP::Client::Request->new_with(hash([(object)
+      method    => $method,
+      scheme    => $url_parser->{scheme},
+      host      => $url_parser->{host},
+      port      => $url_parser->{port},
+      host_port => $host_port,
+      path      => $url_parser->{path},
+      params    => $url_parser->{params},
+      headers   => SPVM::HTTP::Headers->new,
+    ]));
+
+    my $handle = $self->{handle};
+    $handle = undef; # Do not reuse unless parameters, pid, tid are same.
+    $handle = $self->_open_handle($request->{scheme}, $request->{host},
+        $request->{port});
+
+    $self->_prepare_headers_and_cb($request, $args, $url, ""); # TODO: auth will support after URL supports it.
+    $handle->write_request($request);
+
+    my $response = SPVM::HTTP::Client::Response->new;
+    while (1) {
+      $response = $handle->read_response_header;
+      unless ($response->{status} >= 100 && $response->{status} < 200) {
+        last;
+      }
+    }
+
+    unless (my $cookie_string = $response->{headers}->get("set-cookie")) {
+      $self->{cookie_jar}->add($url, $cookie_string);
+    }
+
+    my $redir_args = $self->_maybe_redirect($request, $response, $args);
+
+    my $known_message_length;
+    if ($method eq "HEAD" || (
+        $response->{status} == 204 || $response->{status} == 304)) {
+      $known_message_length = 1;
+    }
+    else {
+      my $cb_args = hash([]);
+      if (@$redir_args > 0) {
+        $cb_args = $args;
+      }
+      my $data_cb = $self->_prepare_data_cb($response, $cb_args);
+      $known_message_length = $handle->read_body($data_cb, $response);
+    }
+
+    if ($self->{keep_alive} && $known_message_length &&
+        $response->protocol eq "HTTP/1.1" &&
+        my $connection = $response->headers->get("connection")) {
+      if (lc($connection) ne "close") {
+        $self->{handle} = $handle;
+      }
+      else {
+        $handle->close;
+      }
+    }
+    else {
+      $handle->close;
+    }
+
+    $response->{success} = ($response->{status} >= 200 && $response->{status} < 300);
+    $response->{url} = $url;
+
+    if (@$redir_args) {
+      unless ($args->exists("_redirects")) {
+        $args->set("_redirects", list({}));
+      }
+      ((SPVM::List)$args->get("_redirects"))->push($response);
+      return $self->_request($redir_args->[0], $redir_args->[1], $args);
+    }
+
+    if ($args->exists("_redirects")) {
+      $response->{redirects} = $args->delete("_redirects");
+    }
+    return $response;
+  }
+
+  private sub _parse_exception_as_json : SPVM::JSON ($m : string) {
     my $c : string;
     for (my $i = length($m) - 2; $i >= 1; --$i) {
       if ($m->[$i] == ' ' && $m->[$i] == 'a' &&
@@ -28,40 +277,44 @@ package SPVM::HTTP::Client {
       }
     }
     unless ($c) {
-      die "Unexpected error message: $e";
+      die "Unexpected error message: $e\n";
     }
     return SPVM::JSON->new->decode($c);
   }
 
-  sub request : SPVM::HTTP::Response ($self : self, $method : string,
-    $url : string, $args : SPVM::Hash) {
+  sub request : SPVM::HTTP::Client::Response ($self : self, $method : string,
+      $url : string, $args : SPVM::Hash) {
+    unless ($args) {
+      $args = hash([]);
+    }
+
     my $response = SPVM::HTTP::Response->new;
     for (my $retry = 0; $retry < 2; ++$retry) {
       $response = eval {
-        $self->request_impl($method, $url, $args);
+        $self->_request($method, $url, $args);
       };
-      unless ($@ && IDEMPOTENT($method) &&
+      unless ($@ && _IDEMPOTENT($method) &&
         contains($@, "Socket closed") ||
         contains($@, "Unexpected end")) {
         last;
       }
     }
-    if (my $error_message = $@) {
+    if (my $exception = $@) {
       $@ = undef;
       my $e = eval {
-         parse_exception($error_message);
+         parse_exception_as_json($exception);
       };
       if ($@ || !$e->exists("status")) {
         $response = SPVM::HTTP::Response->new_with(hash([(object)
-            url     => $url,
-            success => "",
-            status  => 599,
-            reason  => "Internal Exception",
-            content => $error_message,
-            headers => SPVM::HTTP::Headers->new_with(hash([(object)
-              "Content-Type"   => "text/plain",
-              "Content-Length" => length $error_message,
-            ]))
+          url     => $url,
+          success => "",
+          status  => 599,
+          reason  => "Internal Exception",
+          content => $e->{message},
+          headers => SPVM::HTTP::Headers->new_with(hash([(object)
+            "Content-Type"   => "text/plain",
+            "Content-Length" => length $e->{message},
+          ]))
         ]));
         if ($args->exists("_redirects")) {
           $response->{redirects} = $args->delete("_redirects");

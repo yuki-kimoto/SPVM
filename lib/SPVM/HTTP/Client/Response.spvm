@@ -1,0 +1,32 @@
+package SPVM::HTTP::Client::Response {
+  use SPVM::HTTP::Headers;
+
+  has status : ro string;
+  has reason : ro string;
+  has headers : ro SPVM::HTTP::Headers;
+  has protocol : ro string;
+  has redirects : public SPVM::List;
+
+  sub new : SPVM::HTTP::Client::Response () {
+    my $self = new SPVM::HTTP::Client::Response;
+    return $self;
+  }
+
+  sub new_with : SPVM::HTTP::Client::Response (
+      $args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client::Response;
+    unless ($self->{status} = $args->get("status")) {
+      die "'status' field must be given.";
+    }
+    unless ($self->{reason} = $args->get("reason")) {
+      die "'reason' field must be given.";
+    }
+    unless ($self->{headers} = $args->get("headers")) {
+      die "'headers' field must be given.";
+    }
+    unless ($self->{protocol} = $args->get("protocol")) {
+      die "'protocol' field must be given.";
+    }
+    return $self;
+  }
+}

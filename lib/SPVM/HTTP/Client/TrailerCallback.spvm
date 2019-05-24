@@ -1,0 +1,4 @@
+package SPVM::HTTP::Client::TrailerCallback : callback_t {
+  use SPVM::HTTP::Headers;
+  sub trailer_cb : SPVM::HTTP::Headers ($self : self);
+}

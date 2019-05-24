@@ -1,5 +1,9 @@
 package TestCase::Lib::SPVM::HTTP::Client {
+  use SPVM::HTTP::Client;
+
   sub test_get : int () {
+    my $client = SPVM::HTTP::Client->new;
+    $client->request("GET", "http://www.example.com", undef);
     return 1;
   }
 }
