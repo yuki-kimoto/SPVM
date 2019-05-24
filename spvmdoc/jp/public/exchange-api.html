@@ -890,6 +890,12 @@ my $total = $foo->sum(1, 2);
       <p>
         SPVMのサブルーチンの定義の引数の型が値のリファレンス型であった場合は、引数の値は、ハッシュのリファレンスのリファレンスで、キーには、値型のすべてのフィールド名が含まれている必要があります。そうでない場合は、例外が発生します。
       </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、数値の配列型であった場合は、Perlの配列のリファレンスは、対応するSPVM::Data::Array型に変換されます。要素の値は、<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって、SPVMの数値に変換されます。引数が文字列で、
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、byte[]型であった場合は、Perlのデコードされた文字列は、UTF-8にエンコードされ、byte[]を表現するSPVM::Data::Array型に変換されます。
+      </p>
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
       <p>
