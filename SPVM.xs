@@ -2106,6 +2106,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           int8_t value = (int8_t)SvIV(sv_value_deref);
           ref_stack[ref_stack_top].bval = value;
@@ -2117,6 +2120,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           int16_t value = (int16_t)SvIV(sv_value_deref);
           ref_stack[ref_stack_top].sval = value;
@@ -2128,6 +2134,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           int32_t value = (int32_t)SvIV(sv_value_deref);
           ref_stack[ref_stack_top].ival = value;
@@ -2139,6 +2148,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           int64_t value = (int64_t)SvIV(sv_value_deref);
           ref_stack[ref_stack_top].lval = value;
@@ -2150,6 +2162,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           float value = (float)SvNV(sv_value_deref);
           ref_stack[ref_stack_top].fval = value;
@@ -2161,6 +2176,9 @@ call_sub(...)
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
           args_contain_ref = 1;
+          if (!SvROK(sv_value)) {
+            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
           SV* sv_value_deref = SvRV(sv_value);
           double value = (double)SvNV(sv_value_deref);
           ref_stack[ref_stack_top].dval = value;
