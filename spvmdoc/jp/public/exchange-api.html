@@ -879,7 +879,10 @@ my $total = $foo->sum(1, 2);
 
       <h3 id="exchange-api-call-spvm-sub-convert-argument">引数における変換</h3>
       <p>
-        
+        SPVMのサブルーチンの定義の引数の型が数値型であった場合は、引数の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって、SPVMの値に変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が値型であった場合は、引数の値は、ハッシュのリファレンスで、キーには、値型のすべてのフィールド名が含まれている必要があります。そうでない場合は、例外が発生します。ハッシュリファレンスの値は、<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって、SPVMの値に変換されます。
       </p>
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
