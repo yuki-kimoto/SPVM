@@ -1,0 +1,36 @@
+package SPVM::HTTP::Client::Handle {
+  use SPVM::HTTP::Client::Request;
+  use SPVM::HTTP::Headers;
+  use SPVM::StringBuffer;
+
+  has timeout : public double;
+
+  sub new_with : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client::Handle;
+    if (my $o = $args->get("timeout")) {
+      $self->{timeout} = ((SPVM::Double)$o)->val;
+    }
+    return $self;
+  }
+
+  sub write_header_lines : void ($self : self,
+      $headers : SPVM::HTTP::Headers, $prefix_data : string) {
+    my $buf = SPVM::StringBuffer->new;
+    if ($prefix_data) {
+      $buf->append_string($prefix_data);
+    }
+    $headers->append_to_buffer($buf);
+  }
+
+  sub write_request_header : void ($self : self, $method : string,
+      $path_query : string, $headers : SPVM::HTTP::Headers) {
+    $self->write_header_lines($headers, "$method $path_query");
+  }
+
+  sub write_request : void ($self : self,
+      $request : SPVM::HTTP::Client::Request) {
+    $self->write_request_header(
+        $request->{method}, $request->path_query, $request->{headers});
+    #$self->_write_body();
+  }
+}
