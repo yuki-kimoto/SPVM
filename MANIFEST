@@ -157,8 +157,9 @@ lib/SPVM/Float.spvm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Hash.spvm
 lib/SPVM/HashEntry.spvm
-lib/SPVM/HTTP/Cookies.spvm
-lib/SPVM/HTTP/Cookies/Data.spvm
+lib/SPVM/HTTP/Client/CookieJar.spvm
+lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
+lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 lib/SPVM/HTTP/Headers.spvm
 lib/SPVM/HTTP/URL.spvm
 lib/SPVM/HTTP/URL/Encode.spvm
@@ -425,7 +426,8 @@ t/default/lib/TestCase/Lib/SPVM/FileHandle.spvm
 t/default/lib/TestCase/Lib/SPVM/Float.spvm
 t/default/lib/TestCase/Lib/SPVM/FloatList.spvm
 t/default/lib/TestCase/Lib/SPVM/Hash.spvm
-t/default/lib/TestCase/Lib/SPVM/HTTP/Cookies.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar.spvm
+t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Headers.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Encode.spvm
