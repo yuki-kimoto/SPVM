@@ -200,15 +200,25 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     {
       my $headers = SPVM::HTTP::Headers->new;
       my $buf = SPVM::StringBuffer->new;
+
+      # Add request headers
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
         $headers->add($REQUEST_HEADERS->[$i], $val);
       }
+
+      # Add entity headers
       for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
         $headers->add($ENTITY_HEADERS->[$i], $val);
       }
-      $headers->append_to_buffer($buf);
-      my $got_barray = $buf->to_barray();
 
+      # Add custom headers
+      $headers->add("X-Custom-Header", $val);
+
+      # Output to a string buffer
+      $headers->append_to_buffer($buf);
+
+      # Make list of got headers from the buffer
+      my $got_barray = $buf->to_barray();
       my $last = 0;
       for (my $i = 0; $i < @$got_barray; ++$i) {
         if ($i > 0 && $got_barray->[$i - 1] == '\r' && $got_barray->[$i] == '\n') {
@@ -227,6 +237,8 @@ package TestCase::Lib::SPVM::HTTP::Headers {
     my $expected_list = SPVM::StringList->new;
     {
       my $used = SPVM::Hash->new;
+
+      # Add expected request headers
       for (my $i = 0; $i < @$REQUEST_HEADERS; ++$i) {
         my $key = $REQUEST_HEADERS->[$i];
         unless ($used->exists($key)) {
@@ -234,12 +246,17 @@ package TestCase::Lib::SPVM::HTTP::Headers {
           $used->set($key, 1);
         }
       }
+
+      # Add expected entity headers
       for (my $i = 0; $i < @$ENTITY_HEADERS; ++$i) {
         my $key = $ENTITY_HEADERS->[$i];
         unless ($used->exists($key)) {
           $expected_list->push($key . ": $val\r\n");
         }
       }
+
+      # Add expected custom headers
+      $expected_list->push("X-Custom-Header: $val\r\n");
     }
 
     unless (_test_bag_strarray($got_list->to_array, $expected_list->to_array)) {

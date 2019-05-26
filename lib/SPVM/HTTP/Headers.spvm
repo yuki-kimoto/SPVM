@@ -12,18 +12,17 @@ package SPVM::HTTP::Headers {
   has content_length    : ro int;
   has content_encoding  : ro string;
   has extra             : SPVM::Hash;
+  has header_case       : ro SPVM::Hash;
 
-  our $HEADER_CASE : ro SPVM::Hash;
-
-  BEGIN {
-    $HEADER_CASE = SPVM::Hash->new;
+  private sub make_header_case : void ($self : self) {
+    $self->{header_case} = SPVM::Hash->new;
     my $request_headers = REQUEST_HEADERS();
     my $entity_headers = ENTITY_HEADERS();
     for (my $i = 0; $i < @$request_headers; ++$i) {
-      $HEADER_CASE->set(lc($request_headers->[$i]), $request_headers->[$i]);
+      $self->{header_case}->set(lc($request_headers->[$i]), $request_headers->[$i]);
     }
     for (my $i = 0; $i < @$entity_headers; ++$i) {
-      $HEADER_CASE->set(lc($entity_headers->[$i]), $entity_headers->[$i]);
+      $self->{header_case}->set(lc($entity_headers->[$i]), $entity_headers->[$i]);
     }
   }
 
@@ -65,11 +64,13 @@ package SPVM::HTTP::Headers {
 
   sub new : SPVM::HTTP::Headers () {
     my $self = new SPVM::HTTP::Headers;
+    $self->make_header_case;
     return $self;
   }
 
   sub new_with : SPVM::HTTP::Headers ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Headers;
+    $self->make_header_case;
     my $keys = $args->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
       $self->add($keys->[$i], $args->get($keys->[$i]));
@@ -153,11 +154,10 @@ package SPVM::HTTP::Headers {
         }
         last;
       default:
-        # XXX: 未登録のヘッダは入力のキーを $HEADER_CASE と見なして登録
-        unless ($HEADER_CASE->exists($k)) {
+        # Note: Use input string as header case if it is not predefined.
+        unless ($self->{header_case}->exists($k)) {
           my $hk = (string)($header->[0]);
-          # FIXME: $HEADER_CASE への set は Leak するので削除
-          # $HEADER_CASE->set($k, $hk);
+          $self->{header_case}->set($k, $hk);
         }
         $self->add_extra($k, to_s($v));
         last;
@@ -235,7 +235,7 @@ package SPVM::HTTP::Headers {
       my $keys = $self->{extra}->keys();
       if (@$keys) {
         for (my $i = 0; $i < @$keys; ++$i) {
-          my $hc = (string)$HEADER_CASE->get($keys->[$i]);
+          my $hc = (string)$self->{header_case}->get($keys->[$i]);
           unless ($hc) {
             die "Not found header case of '" . $keys->[$i] . "'";
           }
