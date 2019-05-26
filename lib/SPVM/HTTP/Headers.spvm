@@ -11,6 +11,7 @@ package SPVM::HTTP::Headers {
   has content_type      : ro string;
   has content_length    : ro int;
   has content_encoding  : ro string;
+  has host              : ro string;
   has extra             : SPVM::Hash;
   has header_case       : ro SPVM::Hash;
 
@@ -110,6 +111,14 @@ package SPVM::HTTP::Headers {
           $self->add_extra($k, to_s($v));
         }
         last;
+      case 104: #'h':
+        if ($k eq "host") {
+          $self->{host} = to_s($v);
+        }
+        else {
+          $self->add_extra($k, to_s($v));
+        }
+        last;
       case 105: #'i':
         if ($k eq "if-modified-since" || $k eq "if_modified_since") {
           if ($v isa SPVM::Int) {
@@ -179,6 +188,11 @@ package SPVM::HTTP::Headers {
           return $self->{content_encoding};
         }
         last;
+      case 104: #'h':
+        if ($lc_key eq "host") {
+          return $self->{host};
+        }
+        last;
       case 105: #'i':
         if ($lc_key eq "if-modified-since" || $lc_key eq "if_modified_since") {
           return $self->{if_modified_since};
@@ -218,6 +232,9 @@ package SPVM::HTTP::Headers {
     }
     if ($self->{last_modified}) {
       $buffer->append_string("Last-Modified: " . $self->{last_modified} . "\r\n");
+    }
+    if ($self->{host}) {
+      $buffer->append_string("Host: " . $self->{host} . "\r\n");
     }
     if ($self->{if_modified_since}) {
       $buffer->append_string("If-Modified-Since: " . $self->{if_modified_since} . "\r\n");

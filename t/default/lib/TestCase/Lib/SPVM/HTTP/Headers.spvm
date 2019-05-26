@@ -53,6 +53,10 @@ package TestCase::Lib::SPVM::HTTP::Headers {
         to_i($headers->get("last_modified")) == 12345678) {
       return 0;
     }
+    unless ($headers->host eq "12345678" &&
+        to_s($headers->get("host")) eq "12345678") {
+      return 0;
+    }
     unless ($headers->if_modified_since == 12345678 &&
         to_i($headers->get("if_modified_since")) == 12345678) {
       return 0;
