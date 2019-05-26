@@ -7,6 +7,8 @@ package SPVM::HTTP::Client {
   has default_headers : public SPVM::HTTP::Headers;
   has timeout : public double;
 
+  has _socket_tmpfile : string;
+
   sub new : SPVM::HTTP::Client () {
     my $self = new SPVM::HTTP::Client;
     $self->{default_headers} = SPVM::HTTP::Headers->new;
@@ -14,19 +16,32 @@ package SPVM::HTTP::Client {
     return $self;
   }
 
+  sub new_with : SPVM::HTTP::Client ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client;
+    $self->{default_headers} = SPVM::HTTP::Headers->new;
+    $self->{timeout} = 60;
+    if (my $o = $args->get("_socket_tmpfile")) {
+      $self->{_socket_tmpfile} = (string)$o;
+    }
+    return $self;
+  }
+
   private sub _prepare_headers : void ($self : self,
       $request : SPVM::HTTP::Client::Request) {
     $request->{headers} = $self->{default_headers};
     $request->{headers}->add("Host", $request->host_port);
-    warn((string)($request->{headers}->get("Host")));
-    warn((string)($request->{headers}->get("x-foo")));
   }
 
-  private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self) {
+  private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
+      $host : string, $port : int) {
     my $handle = SPVM::HTTP::Client::Handle->new_with(hash([(object)
       timeout => $self->{timeout},
     ]));
-    return $handle;
+    return $handle->connect(hash([(object)
+      host => $host,
+      port => $port,
+      _socket_tmpfile => $self->{_socket_tmpfile},
+    ]));
   }
 
   sub request : void ($self : self, $method : string,
@@ -46,7 +61,7 @@ package SPVM::HTTP::Client {
 
     $self->_prepare_headers($request);
 
-    my $handle = $self->_open_handle();
+    my $handle = $self->_open_handle($request->{host}, $request->{port});
     $handle->write_request($request);
   }
 }
