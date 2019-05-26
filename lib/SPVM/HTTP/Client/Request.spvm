@@ -1,0 +1,45 @@
+package SPVM::HTTP::Client::Request {
+  use SPVM::HTTP::Headers;
+  use SPVM::HTTP::URL::Parameters;
+
+  has method : public string;
+  has scheme : public string;
+  has host : public string;
+  has port : public int;
+  has host_port : ro string;
+  has path : public string;
+  has headers : public SPVM::HTTP::Headers;
+  has params : public SPVM::HTTP::URL::Parameters;
+
+  sub new_with : SPVM::HTTP::Client::Request ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client::Request;
+    if (my $o = $args->get("method")) {
+      $self->{method} = (string)$o;
+    }
+    if (my $o = $args->get("scheme")) {
+      $self->{scheme} = (string)$o;
+    }
+    if (my $o = $args->get("host")) {
+      $self->{host} = (string)$o;
+    }
+    if (my $o = $args->get("port")) {
+      $self->{port} = ((SPVM::Int)$o)->val;
+    }
+    else {
+      $self->{port} = 80;
+    }
+    if ($self->{host}) {
+      $self->{host_port} = $self->{host} . ":" . $self->{port};
+    }
+    if (my $o = $args->get("path")) {
+      $self->{path} = (string)$o;
+    }
+    if (my $o = $args->get("params")) {
+      $self->{params} = (SPVM::HTTP::URL::Parameters)$o;
+    }
+    if (my $o = $args->get("headers")) {
+      $self->{headers} = (SPVM::HTTP::Headers)$o;
+    }
+    return $self;
+  }
+}
