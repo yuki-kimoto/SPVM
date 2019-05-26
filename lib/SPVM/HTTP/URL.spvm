@@ -138,13 +138,17 @@ package SPVM::HTTP::URL {
 
   sub parse : SPVM::HTTP::URL ($url : string) {
     my $self = new SPVM::HTTP::URL;
+
+    # set default values
     $self->{scheme} = "";
     $self->{host} = "";
-    $self->{port} = 0;
+    $self->{port} = 80;
     $self->{path} = "";
     $self->{params} = SPVM::HTTP::URL::Parameters->new();
     $self->{fragment} = "";
+
     $self->parse_url($url);
+
     return $self;
   }
 
@@ -184,7 +188,7 @@ package SPVM::HTTP::URL {
   sub to_str : string ($self : self) {
     my $url = copy_str($self->{scheme}) . ":";
     $url .= "//" . $self->{host}; # TODO: escape by punycode if needed
-    if ($self->{port}) { # "host:0" cannot be used
+    if ($self->{port} != 80) { # "host:80" is default
       $url .= ":" . $self->{port};
     }
     $url .= $self->{path};
