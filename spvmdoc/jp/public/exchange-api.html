@@ -654,7 +654,7 @@ my $perl_hash_ref = {x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)};
 my $spvm_hash = SPVM::hash($perl_hash_ref);
 </pre>
       <p>
-        ハッシュのキーは、UTF-8にエンコードされます。値は、SPVM::Dataオブジェクトか、そのサブクラスである必要があります。そうでない場合は、例外が発生します。
+        ハッシュのキーは、UTF-8にエンコードされます。値は、PerlのSPVM::Dataオブジェクトか、そのサブクラスである必要があります。そうでない場合は、例外が発生します。
       </p>
 
       <h2 id="exchange-api-spvm-data-to-perl-data">SPVMのデータ構造をPerlのデータ構造に変換する</h2>
@@ -891,19 +891,37 @@ my $total = $foo->sum(1, 2);
         SPVMのサブルーチンの定義の引数の型が複数数値のリファレンス型であった場合は、引数の値は、ハッシュのリファレンスのリファレンスで、キーには、複数数値型のすべてのフィールド名が含まれている必要があります。そうでない場合は、例外が発生します。
       </p>
       <p>
-        SPVMのサブルーチンの定義の引数の型が、数値の配列型であった場合は、Perlの配列のリファレンスは、対応するSPVM::Data::Array型に変換されます。要素の値は、<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって、SPVMの数値に変換されます。引数が文字列で、
+        SPVMのサブルーチンの定義の引数の型が、数値の配列型であった場合は、Perlの配列のリファレンスは、対応するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は、<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって、SPVMの数値に変換されます。引数が文字列で、
       </p>
       <p>
-        SPVMのサブルーチンの定義の引数の型が、byte[]型であった場合は、Perlのデコードされた文字列は、UTF-8にエンコードされ、byte[]を表現するSPVM::Data::Array型に変換されます。
+        SPVMのサブルーチンの定義の引数の型が、byte[]型であった場合は、Perlのデコードされた文字列は、UTF-8にエンコードされ、byte[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。
       </p>
       <p>
         SPVMのサブルーチンの定義の引数の型が、オブジェクト型で、引数に渡される値が未定義値であった場合は、SPVMの未定義値に変換されます。
       </p>
       <p>
-        SPVMのサブルーチンの定義の引数の型が、文字列互換型で、引数に渡される値が、リファレンスではないスカラ値であった場合は、UTF-8にエンコードされ、SPVMのbyte[]型に変換されます。
+        SPVMのサブルーチンの定義の引数の型が、文字列互換型で、引数に渡される値が、リファレンスではないスカラ値であった場合は、UTF-8にエンコードされ、SPVMのbyte[]型を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。
       </p>
       <p>
-        SPVMのサブルーチンの定義の引数の型が、文字列互換型の配列型で、引数に渡される値が、配列リファレンスかつ最初の要素がリファレンスではないスカラ値であった場合は、SPVMのbyte[][]に変換されます。要素は未定義値であった場合は、SPVMの未定義値に変換され、そうでない場合は、UTF-8にエンコードされ、SPVMのbyte[]型に変換されます。
+        SPVMのサブルーチンの定義の引数の型が、文字列互換型の配列型で、引数に渡される値が、配列リファレンスかつ最初の要素がリファレンスではないスカラ値であった場合は、SPVMのbyte[][]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素は未定義値であった場合は、SPVMの未定義値に変換され、そうでない場合は、UTF-8にエンコードされ、SPVMのbyte[]型に変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、byte[]型で、引数に渡される値が、配列リファレンスであった場合は、byte[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、short[]型で、引数に渡される値が、配列リファレンスであった場合は、short[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、int[]型で、引数に渡される値が、配列リファレンスであった場合は、int[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、long[]型で、引数に渡される値が、配列リファレンスであった場合は、long[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、float[]型で、引数に渡される値が、配列リファレンスであった場合は、float[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
+      </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、double[]型で、引数に渡される値が、配列リファレンスであった場合は、double[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
       </p>
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
@@ -917,10 +935,10 @@ my $total = $foo->sum(1, 2);
         戻り値が、SPVMのオブジェクト型で未定義値であった場合は、Perlの未定義値に変換されます。
       </p>
       <p>
-        戻り値がSPVMの配列型(汎用オブジェクト配列型を含む)であった場合は、対応するSPVM::Data::Arrayオブジェクトに変換されます。
+        戻り値がSPVMの配列型(汎用オブジェクト配列型を含む)であった場合は、対応するPerlのSPVM::Data::Arrayオブジェクトに変換されます。
       </p>
       <p>
-        戻り値がSPVMの配列型以外のオブジェクト型であった場合は、対応するSPVM::Dataオブジェクトに変換されます。
+        戻り値がSPVMの配列型以外のオブジェクト型であった場合は、対応するPerlのSPVM::Dataオブジェクトに変換されます。
       </p>
       
       <h2 id="exchange-api-utility">ユーティリティ</h2>

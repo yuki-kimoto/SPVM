@@ -1916,6 +1916,7 @@ call_sub(...)
                 SV* sv_marray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
                 sv_value = sv_marray;
               }
+              // 1-dimension array
               else if (arg->type_dimension == 1) {
                 switch (arg->basic_type_id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
