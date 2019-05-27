@@ -1,16 +1,9 @@
 package TestCase::Lib::SPVM::MIME::Base64 {
   use SPVM::MIME::Base64;
-  use SPVM::MIME::Encoder;
-  use SPVM::MIME::Decoder;
-
-  our $ENCODER : SPVM::MIME::Base64;
-
-  BEGIN {
-    $ENCODER = SPVM::MIME::Base64->new;
-  }
 
   private sub round_trip : string ($string : string) {
-    return $ENCODER->decode($ENCODER->encode($string));
+    my $encoder = SPVM::MIME::Base64->new;
+    return $encoder->decode($encoder->encode($string));
   }
 
   sub test_basic : int () {
@@ -21,30 +14,16 @@ package TestCase::Lib::SPVM::MIME::Base64 {
   }
 
   sub test_all : int () {
-    my $testcases = new string[][300];
+    my $encoder = SPVM::MIME::Base64->new;
     for (my $case_index = 0; $case_index < 300; $case_index++) {
-      $testcases->[$case_index] = new string[$case_index + 1];
-      for (my $c = 0; $c < $case_index + 1; $c++) {
-        $testcases->[$case_index][$c] = $c % 255 + 1;
+      my $bytes = new byte[$case_index];
+      for (my $c = 0; $c < $case_index; $c++) {
+        $bytes->[$c] = (byte)($c % 127 + 1);
       }
-    }
-    return 1;
-  }
-
-  sub test_callback_compatibility : int () {
-    eval {
-      my $encoder = (SPVM::MIME::Encoder)$ENCODER;
-    };
-    if ($@) {
-      $@ = undef;
-      return 0;
-    }
-    eval {
-      my $decoder = (SPVM::MIME::Decoder)$ENCODER;
-    };
-    if ($@) {
-      $@ = undef;
-      return 0;
+      my $test = (string)$bytes;
+      unless (round_trip($test) eq $test) {
+        return 0;
+      }
     }
     return 1;
   }
