@@ -896,7 +896,10 @@ my $total = $foo->sum(1, 2);
       <p>
         SPVMのサブルーチンの定義の引数の型が、byte[]型であった場合は、Perlのデコードされた文字列は、UTF-8にエンコードされ、byte[]を表現するSPVM::Data::Array型に変換されます。
       </p>
-
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、オブジェクト型で、引数に渡される値が未定義値であった場合は、SPVMの未定義値に変換されます。
+      </p>
+      
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
       <p>

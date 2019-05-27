@@ -1830,13 +1830,18 @@ call_sub(...)
           }
           break;
         }
+        // Object type
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
         {
-          if (SvOK(sv_value)) {
+          // undef
+          if (!SvOK(sv_value)) {
+            stack[arg_var_id].oval = NULL;
+          }
+          else {
             // Convert Perl array to SPVM object
             if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
@@ -2070,12 +2075,7 @@ call_sub(...)
                 }
               }
             }
-          }
-          
-          if (!SvOK(sv_value)) {
-            stack[arg_var_id].oval = NULL;
-          }
-          else {
+            
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
               int32_t arg_basic_type_id = arg->basic_type_id;
@@ -2101,6 +2101,7 @@ call_sub(...)
               croak("%dth argument of %s::%s() must be inherit SPVM::Data at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
             }
           }
+          
           arg_var_id++;
           break;
         }
