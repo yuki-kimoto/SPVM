@@ -191,14 +191,14 @@
         </tr>
         <tr>
           <td>
-            <b>値型</b>
+            <b>複数数値型</b>
           </td>
           <td>
-            値型のフィールドの個数と長さが一致する数値の配列型
+            複数数値型のフィールドの個数と長さが一致する数値の配列型
           </td>
           <td>
             <p>
-              たとえば<a href="#language-type-value">値型</a>が
+              たとえば<a href="#language-type-multi-numeric">複数数値型</a>が
             </p>
             <p>
               package Point_2i : mulnum_t { has x : int; has y : int; }
@@ -1239,7 +1239,7 @@ package Point : public {
             <b>mulnum_t</b>
           </td>
           <td>
-            このパッケージは「<a href="#language-type-value">値型</a>」になります。
+            このパッケージは「<a href="#language-type-multi-numeric">複数数値型</a>」になります。
           </td>
         </tr>
         <tr>
@@ -1772,10 +1772,10 @@ $point->{x} = 1;
         クラス型のフィールドの設定については、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>を見てください。
       </p>
       <p>
-        <b>2. 値型のフィールドへのアクセス</b>
+        <b>2. 複数数値型のフィールドへのアクセス</b>
       </p>
       <p>
-        2. <a href="#language-type-value">値型</a>におけるフィールドは、値型の変数の宣言をすれば、その変数からフィールドにアクセスできます。これは、レキシカル変数領域におけるアクセスです。
+        2. <a href="#language-type-multi-numeric">複数数値型</a>におけるフィールドは、複数数値型の変数の宣言をすれば、その変数からフィールドにアクセスできます。これは、レキシカル変数領域におけるアクセスです。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
@@ -1783,16 +1783,16 @@ $z->{re} = 1;
 $z->{im} = 3;
 </pre>
       <p>
-        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
+        複数数値型のフィールドの取得については、<a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</a>を見てください。
       </p>
       <p>
-        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
+        複数数値型のフィールドの設定については、<a href="#language-expression-set-field-multi-numeric">複数数値型のフィールドの値の設定</a>を見てください。
       </p>
       <p>
-        <b>3. デリファレンスによる値型のフィールドのアクセス</b>
+        <b>3. デリファレンスによる複数数値型のフィールドのアクセス</b>
       </p>
       <p>
-        値型の変数に対するリファレンス型から、デリファレンスを行って直接に値型のフィールドにアクセスできます。
+        複数数値型の変数に対するリファレンス型から、デリファレンスを行って直接に複数数値型のフィールドにアクセスできます。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
@@ -1801,10 +1801,10 @@ $z_ref->{re} = 1;
 $z_ref->{im} = 3;
 </pre>
       <p>
-        デリファレンスによる値型のフィールドの取得については、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>を見てください。
+        デリファレンスによる複数数値型のフィールドの取得については、<a href="#language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの取得</a>を見てください。
       </p>
       <p>
-        デリファレンスによる値型のフィールドの設定については、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>を見てください。
+        デリファレンスによる複数数値型のフィールドの設定については、<a href="#language-expression-set-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの設定</a>を見てください。
       </p>
 
       <h2 id="language-sub">サブルーチン</h2>
@@ -2742,7 +2742,7 @@ my $ret = $foo->bar(2);
           オブジェクト型の配列
         </li>
         <li>
-          値型の配列
+          複数数値型の配列
         </li>
       </ul>
       <p>
@@ -2752,7 +2752,7 @@ my $ret = $foo->bar(2);
         オブジェクト型の配列とは、<a href="#language-type-object">オブジェクト型</a>の値が連続に並んだ配列のことです。
       </p>
       <p>
-        値型の配列とは、<a href="#language-type-value">値型</a>の値が連続に並んだ配列のことです。
+        複数数値型の配列とは、<a href="#language-type-multi-numeric">複数数値型</a>の値が連続に並んだ配列のことです。
       </p>
       
       <h3 id="language-array-summary">配列の生成</h3>
@@ -2777,12 +2777,12 @@ my $ret = $foo->bar(2);
 
       <h2 id="language-value">値</h2>
       <ul class="list">
-        <li><a href="#language-value-definition">値型の定義</a></li>
-        <li><a href="#language-value-usage">値型の使用</a></li>
-        <li><a href="#language-value-access">値型のフィールドへのアクセス</a></li>
+        <li><a href="#language-value-definition">複数数値型の定義</a></li>
+        <li><a href="#language-value-usage">複数数値型の使用</a></li>
+        <li><a href="#language-value-access">複数数値型のフィールドへのアクセス</a></li>
       </ul>
       
-      <h3 id="language-value-definition">値型の定義</h2>
+      <h3 id="language-value-definition">複数数値型の定義</h2>
       <p>
         SPVMには、他の言語ではあまり見ることのない値というものがあります。
       </p>
@@ -2790,7 +2790,7 @@ my $ret = $foo->bar(2);
         値は、連続した数値を表現します。たとえば、連続した32bit符号付整数が3つであるとか、連続した倍精度浮動小数点が2つなどです。3次元の点、複素数、四元数などを表現することが想定されています。
       </p>
       <p>
-        値を使用するには、最初に、値型を定義します。値型は、<a href="#language-package-definition">パッケージの定義</a>において、mulnum_tデスクリプタを指定することで定義できます。
+        値を使用するには、最初に、複数数値型を定義します。複数数値型は、<a href="#language-package-definition">パッケージの定義</a>において、mulnum_tデスクリプタを指定することで定義できます。
       </p>
 <pre>
 # 連続した32bit符号付整数が3つ
@@ -2810,10 +2810,10 @@ package Complex_2d : mulnum_t {
         すべてのフィールドは同じ<a href="#language-type-numeric">数値型</a>でなければなりません。
       </p>
       <p>
-        値型の末尾は「_」「フィールドの個数」「値型のサフィックス」でなければなりません。
+        複数数値型の末尾は「_」「フィールドの個数」「複数数値型のサフィックス」でなければなりません。
       </p>
       <p>
-        <b>値型のサフィクスの一覧</b>
+        <b>複数数値型のサフィクスの一覧</b>
       </p>
       <table>
         <tr>
@@ -2880,38 +2880,38 @@ package Complex_2d : mulnum_t {
         数値型の定義において、フィールドの個数の最大は16です。
       </p>
       <p>
-        不正な値型の定義の場合は、コンパイル時エラーが発生します。
+        不正な複数数値型の定義の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        値型は、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>の型として利用することができます。
+        複数数値型は、<a href="#language-lex-var-declaration">レキシカル変数の宣言</a>の型として利用することができます。
       </p>
       <p>
-        値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における引数の型として利用することができます。
+        複数数値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における引数の型として利用することができます。
       </p>
       <p>
-        値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における戻り値の型として利用することができます。
+        複数数値型は、<a href="#language-sub-definition">サブルーチンの定義</a>における戻り値の型として利用することができます。
       </p>
       <p>
-        値型は<a href="#language-type-array">配列型</a>の<a href="#language-type-basic">基本型</a>として利用することができます。
+        複数数値型は<a href="#language-type-array">配列型</a>の<a href="#language-type-basic">基本型</a>として利用することができます。
       </p>
 <pre>
 my $points = new Point_3i[5];
 </pre>
       <p>
-        値型は、フィールドの型として利用することはできません。
+        複数数値型は、フィールドの型として利用することはできません。
       </p>
       <p>
-        値型は、パッケージ変数の型として利用することはできません。
+        複数数値型は、パッケージ変数の型として利用することはできません。
       </p>
       <p>
-        値型の値に対しては、リファレンスを生成することができます。
+        複数数値型の値に対しては、リファレンスを生成することができます。
       </p>
 <pre>
 my $point : Point_3i;
 my $point_ref = \$point;
 </pre>
       <p>
-        値型の値に、未定義値を代入することはできません。代入しようとした場合は、コンパイル時エラーが発生します。
+        複数数値型の値に、未定義値を代入することはできません。代入しようとした場合は、コンパイル時エラーが発生します。
       </p>
 
       <h2 id="language-value-array">値の配列</h2>
@@ -2922,7 +2922,7 @@ my $point_ref = \$point;
       
       <h3 id="language-array-summary">値の配列の概要</h3>
       <p>
-        値型の値は、<a href="#language-array">配列</a>にすることができます。
+        複数数値型の値は、<a href="#language-array">配列</a>にすることができます。
       </p>
 <pre>
 my $points = new Point_3i[5];
@@ -2930,7 +2930,7 @@ my $points = new Point_3i[5];
 my $zs = new Complex_2d[5];
 </pre>
       <p>
-        値の配列は、値型の値が、連続したデータ構造をとります。配列の要素は、オブジェクトではなく、数値がメモリ上に一直線に並んで、配置されます。
+        値の配列は、複数数値型の値が、連続したデータ構造をとります。配列の要素は、オブジェクトではなく、数値がメモリ上に一直線に並んで、配置されます。
       </p>
       <p>
         たとえば、Point_3i型の5の長さの配列であれば、Point_3i型は、int型の数値が3つ並んだ型で、長さが5なので、「5 * 3 = 15」個のint型の数値が、メモリ上に一直線に並んだデータになります。
@@ -2939,7 +2939,7 @@ my $zs = new Complex_2d[5];
         値の配列の型は、<a href="#language-type-array">配列型</a>です。
       </p>
       <p>
-        値の配列の要素の型は、<a href="#language-type-value">値型</a>です。
+        値の配列の要素の型は、<a href="#language-type-multi-numeric">複数数値型</a>です。
       </p>
       
       <h3 id="language-array-access">値の配列へのアクセス</h3>
@@ -2959,9 +2959,9 @@ my $zs = new Complex_2d[5];
         配列の設定については、<a href="#language-expression-set-set-array-element">配列の要素の値の設定</a>を見てください。
       </p>
 
-      <h3 id="language-value-usage">値型の使用</h2>
+      <h3 id="language-value-usage">複数数値型の使用</h2>
       <p>
-        値型を使用するにはuse文を使って、モジュールをロードします。
+        複数数値型を使用するにはuse文を使って、モジュールをロードします。
       </p>
 <pre>
 use Point_3i;
@@ -2975,27 +2975,27 @@ my $point : Point_3i;
 my $z : Complex_2d;
 </pre>
       <p>
-        値型の値は、オブジェクトではないので、<a href="#language-expression-new-object">オブジェクトの生成</a>の構文では生成できないことに注意してください。
+        複数数値型の値は、オブジェクトではないので、<a href="#language-expression-new-object">オブジェクトの生成</a>の構文では生成できないことに注意してください。
       </p>
 
-      <h3 id="language-value-access">値型のフィールドへのアクセス</h2>
+      <h3 id="language-value-access">複数数値型のフィールドへのアクセス</h2>
       <p>
-        値型のフィールドへのアクセスとは、値型のフィールドにアクセスして、値を取得したり、設定したりする操作のことです。また、以下の記述そのものを指します。
+        複数数値型のフィールドへのアクセスとは、複数数値型のフィールドにアクセスして、値を取得したり、設定したりする操作のことです。また、以下の記述そのものを指します。
       </p>
 <pre>
 インボカント->{フィールド名}
 </pre>
       <p>
-        値型のフィールドの取得については、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>を見てください。
+        複数数値型のフィールドの取得については、<a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</a>を見てください。
       </p>
       <p>
-        値型のフィールドの設定については、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>を見てください。
+        複数数値型のフィールドの設定については、<a href="#language-expression-set-field-multi-numeric">複数数値型のフィールドの値の設定</a>を見てください。
       </p>
       <p>
-        <b>値型のフィールドの値の取得・設定のサンプル</b>
+        <b>複数数値型のフィールドの値の取得・設定のサンプル</b>
       </p>
       <p>
-        値型のフィールドの値の取得・設定のサンプルです。
+        複数数値型のフィールドの値の取得・設定のサンプルです。
       </p>
 <pre>
 $ival2->{x} = 1;
@@ -3016,14 +3016,14 @@ my $z = $dval4->{z};
         リファレンスとは、レキシカル変数のアドレスのことをいいます。リファレンスは、C言語のポインタに該当する機能を実現するために、設計されました。
       </p>
       <p>
-        レキシカル変数のアドレスは、<a href="#language-operator-ref">リファレンス演算子</a>を使用して取得できます。<a href="#language-type-ref">リファレンス型</a>は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の後ろに「&」を続けたものになります。
+        レキシカル変数のアドレスは、<a href="#language-operator-ref">リファレンス演算子</a>を使用して取得できます。<a href="#language-type-ref">リファレンス型</a>は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-multi-numeric">複数数値型</a>の後ろに「&」を続けたものになります。
       </p>
 <pre>
 # 数値型の変数のリファレンス
 my $num : int;
 my $num_ref : int& = \$num;
 
-# 値型の変数のリファレンス
+# 複数数値型の変数のリファレンス
 my $point : Point_3d;
 my $point_ref : Point_3d& = \$point;
 </pre>
@@ -3031,7 +3031,7 @@ my $point_ref : Point_3d& = \$point;
         $num_refの値は、レキシカル変数「$num」のアドレスになります。$point_refの値は、レキシカル変数「$point」のアドレスになります。
       </p>
       <p>
-        リファレンス演算子の対象は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の値が格納された変数だけです。オブジェクト型の変数や定数に対して、使うことはできません。
+        リファレンス演算子の対象は、<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-multi-numeric">複数数値型</a>の値が格納された変数だけです。オブジェクト型の変数や定数に対して、使うことはできません。
       </p>
       <p>
         <a href="#language-type-ref">リファレンス型</a>の値は、サブルーチンの引数として利用することができます。
@@ -3064,21 +3064,21 @@ my $num2 = $$num_ref;
 # 数値型の値を変更
 $$num_ref = 3;
 
-# 値型の値を取得
+# 複数数値型の値を取得
 my $point2 = $$point_ref;
 
-# 値型の値を設定
+# 複数数値型の値を設定
 $$point_ref = $point2;
 </pre>
 
       <p>
-        リファレンス型の対象が値型であった場合に、値型のフィールドの設定と取得は、アロー演算子で行うことができます。
+        リファレンス型の対象が複数数値型であった場合に、複数数値型のフィールドの設定と取得は、アロー演算子で行うことができます。
       </p>
 <pre>
-# リファレンス型の対象が値型であった場合に、値型のフィールドを取得
+# リファレンス型の対象が複数数値型であった場合に、複数数値型のフィールドを取得
 my $x = $point_ref->{x};
 
-# リファレンス型の対象が値型であった場合に、値型のフィールドを設定
+# リファレンス型の対象が複数数値型であった場合に、複数数値型のフィールドを設定
 $point_ref->{x} = 1;
 </pre>
 
@@ -3086,9 +3086,9 @@ $point_ref->{x} = 1;
       <p>
         数値のリファレンス型とは、<a href="#language-type-numeric">数値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
       </p>
-      <h3 id="language-type-ref-value">値のリファレンス型</h3>
+      <h3 id="language-type-ref-multi-numeric">複数数値のリファレンス型</h3>
       <p>
-        値のリファレンス型とは、<a href="#language-type-value">値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
+        複数数値のリファレンス型とは、<a href="#language-type-multi-numeric">複数数値型</a>の変数に対する<a href="#language-type-ref">リファレンス型</a>のことをいいます。
       </p>
       
       </p>
@@ -3120,10 +3120,10 @@ $point_ref->{x} = 1;
         <li><a href="#language-expression-callsub">サブルーチンの呼び出し</a></li>
         <li><a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a></li>
         <li><a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a></li>
-        <li><a href="#language-expression-get-field-value">値型のフィールドの値の取得</a></li>
-        <li><a href="#language-expression-set-field-value">値型のフィールドの値の設定</a></li>
-        <li><a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a></li>
-        <li><a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a></li>
+        <li><a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</a></li>
+        <li><a href="#language-expression-set-field-multi-numeric">複数数値型のフィールドの値の設定</a></li>
+        <li><a href="#language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの取得</a></li>
+        <li><a href="#language-expression-set-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの設定</a></li>
         <li><a href="#language-expression-get-array-element">配列の要素の値の取得</a></li>
         <li><a href="#language-expression-set-array-element">配列の要素の値の設定</a></li>
         <li><a href="#language-expression-typecast">型キャスト</a></li>
@@ -3317,7 +3317,7 @@ $@ = "Error";
 インボカント式->{フィールド名}
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-multi-numeric">複数数値型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</a>になり、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
@@ -3347,7 +3347,7 @@ my $x = $point->{x};
 インボカント式->{フィールド名} = 右式
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-class">クラス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-multi-numeric">複数数値型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の設定</a>になり、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
@@ -3378,45 +3378,45 @@ my $point = Point->new;
 $point->{x} = 1;
 </pre>
       
-      <h3 id="language-expression-get-field-value">値型のフィールドの値の取得</h3>
+      <h3 id="language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</h3>
       <p>
-        値型のフィールドの値の取得は、次のように記述します。
+        複数数値型のフィールドの値の取得は、次のように記述します。
       </p>
 <pre>
 インボカント式->{フィールド名}
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-class">複数数値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        複数数値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
       </p>
       <p>
-        <b>値型のフィールドの値の取得のサンプル</b>
+        <b>複数数値型のフィールドの値の取得のサンプル</b>
       </p>
       <p>
-        値型のフィールドの値の取得のサンプルです。
+        複数数値型のフィールドの値の取得のサンプルです。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
 my $re = $z->{re};
 </pre>
 
-      <h3 id="language-expression-set-field-value">値型のフィールドの値の設定</h3>
+      <h3 id="language-expression-set-field-multi-numeric">複数数値型のフィールドの値の設定</h3>
       <p>
-        値型のフィールドの値の設定は、次のように記述します。
+        複数数値型のフィールドの値の設定は、次のように記述します。
       </p>
 <pre>
 インボカント式->{フィールド名} = 右式
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-class">値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-value">値のリファレンス型</a>の値であった場合は、<a href="#language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-class">複数数値型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値であった場合は、<a href="#language-expression-set-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
@@ -3425,46 +3425,46 @@ my $re = $z->{re};
         右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        複数数値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
       </p>
       <p>
-        <b>値型のフィールドの値の設定のサンプル</b>
+        <b>複数数値型のフィールドの値の設定のサンプル</b>
       </p>
       <p>
-        値型のフィールドの値の設定のサンプルです。
+        複数数値型のフィールドの値の設定のサンプルです。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
 $z->{re} = 2.5;
 </pre>
 
-      <h3 id="language-expression-get-field-value-deref">デリファレンスによる値型のフィールドの値の取得</h3>
+      <h3 id="language-expression-get-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの値の取得</h3>
       <p>
-        デリファレンスによる値型のフィールドの値の取得は、次のように記述します。
+        デリファレンスによる複数数値型のフィールドの値の取得は、次のように記述します。
       </p>
 <pre>
 インボカント式->{フィールド名}
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-get-field-value">値型のフィールドの値の取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-get-field-class">クラス型のフィールドの値の取得</a>になり、<a href="#language-type-multi-numeric">複数数値型</a>の値であった場合は、<a href="#language-expression-get-field-multi-numeric">複数数値型のフィールドの値の取得</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        デリファレンスによる複数数値型のフィールドの値の取得は、<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
       </p>
       <p>
-        <b>デリファレンスによる値型のフィールドの値の取得のサンプル</b>
+        <b>デリファレンスによる複数数値型のフィールドの値の取得のサンプル</b>
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の取得のサンプルです。
+        デリファレンスによる複数数値型のフィールドの値の取得のサンプルです。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
@@ -3472,15 +3472,15 @@ my $z_ref = \$z;
 my $re = $z_ref->{re};
 </pre>
 
-      <h3 id="language-expression-set-field-value-deref">デリファレンスによる値型のフィールドの値の設定</h3>
+      <h3 id="language-expression-set-field-multi-numeric-deref">デリファレンスによる複数数値型のフィールドの値の設定</h3>
       <p>
-        デリファレンスによる値型のフィールドの値の設定は、次のように記述します。
+        デリファレンスによる複数数値型のフィールドの値の設定は、次のように記述します。
       </p>
 <pre>
 インボカント式->{フィールド名} = 右式
 </pre>
       <p>
-        インボカント式は、<a href="#language-type-ref-value">値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-value">値型</a>の値であった場合は、<a href="#language-expression-set-field-value">値型のフィールドの値の設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
+        インボカント式は、<a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a>の値でなければなりません。インボカント式が、<a href="#language-type-class">クラス型</a>の値であった場合は、<a href="#language-expression-set-field-class">クラス型のフィールドの値の設定</a>になり、<a href="#language-type-multi-numeric">複数数値型</a>の値であった場合は、<a href="#language-expression-set-field-multi-numeric">複数数値型のフィールドの値の設定</a>になり、それ以外の場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         フィールド名が、存在しない場合は、コンパイル時エラーが発生します。
@@ -3489,16 +3489,16 @@ my $re = $z_ref->{re};
         右式の型は、フィールドの型と同じでなければなりません。そうでない場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
+        デリファレンスによる複数数値型のフィールドの値の設定は、設定後の<a href="#language-sub-stack">サブルーチンのコールスタック</a>に保存されている該当するフィールドの値を返します。これは<a href="#language-expression">式</a>です。
       </p>
       <p>
         返される値の型は、フィールドの型です。
       </p>
       <p>
-        <b>デリファレンスによる値型のフィールドの値の設定のサンプル</b>
+        <b>デリファレンスによる複数数値型のフィールドの値の設定のサンプル</b>
       </p>
       <p>
-        デリファレンスによる値型のフィールドの値の設定のサンプルです。
+        デリファレンスによる複数数値型のフィールドの値の設定のサンプルです。
       </p>
 <pre>
 my $z : SPVM::Complex_2d;
@@ -3636,7 +3636,7 @@ my $object = new Foo;
 my $object = new 型[要素数式];
 </pre>
       <p>
-        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-value">値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
+        型には、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-object">オブジェクト型</a>、<a href="#language-type-multi-numeric">複数数値型</a>が指定できます。それ以外の型を指定した場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         要素数式は、int型以下の<a href="#language-type-numeric">数値型</a>でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
@@ -5370,7 +5370,7 @@ x >> y;
         isa演算子は、右型に応じて、3種類の動作をします。
       </p>
       <p>
-        1. 右型が、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-value">値型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-ref">リファレンス型</a>の場合は、コンパイル時に左式の型が右型と同一のものであるかをチェックします。同一であった場合はint型で1を、そうでない場合は0を返します。
+        1. 右型が、<a href="#language-type-numeric">数値型</a>、<a href="#language-type-multi-numeric">複数数値型</a>、<a href="#language-type-any-object">汎用オブジェクト型</a>、<a href="#language-type-ref">リファレンス型</a>の場合は、コンパイル時に左式の型が右型と同一のものであるかをチェックします。同一であった場合はint型で1を、そうでない場合は0を返します。
       </p>
       <p>
         2. 右型が、<a href="#language-type-class">クラス型</a>であった場合は、実行時に左式の型が、クラス型と一致するかをチェックします。一致した場合はint型で1を、そうでない場合は0を返します。左式の型は、オブジェクト型でなければなりません。そうでない場合は、コンパイル時エラーが発生します。
@@ -5615,13 +5615,13 @@ $x >>>= 1;
 </pre>
       <h3 id="language-operator-ref">リファレンス演算子</h3>
       <p>
-        リファレンス演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-value">値型</a>の変数のアドレスを取得する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
+        リファレンス演算子は、<a href="#language-type-numeric">数値型</a>または<a href="#language-type-multi-numeric">複数数値型</a>の変数のアドレスを取得する演算子です。C言語のアドレス演算子「&」を実現するために設計されました。
       </p>
 <pre>
 \変数
 </pre>
       <p>
-        変数が数値型または値型でなかった場合は、コンパイル時エラーが発生します。
+        変数が数値型または複数数値型でなかった場合は、コンパイル時エラーが発生します。
       </p>
       <p>
         リファレンス演算子は式を返します。返される型は、<a href="#language-type-ref">リファレンス型</a>です。
@@ -6523,10 +6523,10 @@ my $num = 1 + 2;
         <li><a href="#language-type-any-object-array">汎用オブジェクト配列型</a></li>
         <li><a href="#language-type-string">文字列型</a></li>
         <li><a href="#language-type-string-compatible">文字列互換型</a></li>
-        <li><a href="#language-type-value">値型</a></li>
+        <li><a href="#language-type-multi-numeric">複数数値型</a></li>
         <li><a href="#language-type-ref">リファレンス型</a></li>
         <li><a href="#language-type-ref-numeric">数値のリファレンス型</a></li>
-        <li><a href="#language-type-ref-value">値のリファレンス型</a></li>
+        <li><a href="#language-type-ref-multi-numeric">複数数値のリファレンス型</a></li>
       </ul>
       <h3 id="language-type-summary">型の概要</h2>
       <p>
@@ -6613,7 +6613,7 @@ my $num = 1 + 2;
         </tr>
         <tr>
           <td>
-            <b>値型</b>
+            <b>複数数値型</b>
           </td>
           <td>
             すべてのフィールドが0
@@ -6773,7 +6773,7 @@ package Foo {
 }
 </pre>
       <p>
-        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-value">値型</a>」からなります。
+        パッケージ型は「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-multi-numeric">複数数値型</a>」からなります。
       </p>
 <pre>
 # クラス型
@@ -6786,7 +6786,7 @@ package Foo : callback_t {
 
 }
 
-# 値型
+# 複数数値型
 package Foo : mulnum_t {
 
 }
@@ -6803,7 +6803,7 @@ package Foo : pointer_t {
 
       <h3 id="language-type-object">オブジェクト型</h3>
       <p>
-        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「値型」「リファレンス型」は含みません。
+        オブジェクト型とは「<a href="#language-type-class">クラス型</a>」「<a href="#language-type-callback">コールバック型</a>」「<a href="#language-type-array">配列型</a>」「<a href="#language-type-string">文字列型</a>」「<a href="#language-type-any-object">汎用オブジェクト型</a>」を合わせたものをいいます。「複数数値型」「リファレンス型」は含みません。
       </p>
       <p>
         オブジェクト型の値は「汎用オブジェクト型」に代入できます。
@@ -6893,7 +6893,7 @@ my $object : object = "abc";
       
       <h3 id="language-type-class">クラス型</h3>
       <p>
-        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「値型」「コールバック型」ではない型のことをいいます。
+        クラス型とは「<a href="#language-package-definition">パッケージの定義</a>」によって定義される型で「複数数値型」「コールバック型」ではない型のことをいいます。
       </p>
 <pre>
 packag Foo {
@@ -7146,7 +7146,7 @@ byte[]
 
       <h3 id="language-type-array-value">値の配列型</h3>
       <p>
-        値の配列型とは、<a href="#language-type-value">値型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
+        値の配列型とは、<a href="#language-type-multi-numeric">複数数値型</a>の値を要素に持つ<a href="#language-type-array">配列型</a>のことです。
       </p>
       <p>
         <b>値の配列型のサンプル</b>
@@ -7160,7 +7160,7 @@ byte[]
         </li>
       </ul>
       <p>
-        値の配列型によって表現されるデータは、要素が<a href="#language-type-numeric">値型</a>のサイズで、配列の長さの個数で連続していなければなりません。
+        値の配列型によって表現されるデータは、要素が<a href="#language-type-numeric">複数数値型</a>のサイズで、配列の長さの個数で連続していなければなりません。
       </p>
       <p>
         値の配列型のすべての要素は、配列の生成が行われたときに<a href="#language-type-initial-value">型の初期値</a>によって初期化されます。
@@ -7259,12 +7259,12 @@ $bytes->[1] = 'd';
         文字列互換型とは、<a href="#language-type-string">文字列型</a>と<a href="#language-type-array-byte">byte[]型</a>のことを言います。
       </p>
       
-      <h3 id="language-type-value">値型</h3>
+      <h3 id="language-type-multi-numeric">複数数値型</h3>
       <p>
-        値型とは、連続した数値を表現できる型です。
+        複数数値型とは、連続した数値を表現できる型です。
       </p>
       <p>
-        パッケージの定義において「mulnum_t」デスクリプタを指定することで、値型を定義できます。
+        パッケージの定義において「mulnum_t」デスクリプタを指定することで、複数数値型を定義できます。
       </p>
 <pre>
 package Point_3i : mulnum_t {
@@ -7274,12 +7274,12 @@ package Point_3i : mulnum_t {
 }
 </pre>
       <p>
-        値型の詳しい解説については、<a href="#language-value">値</a>を見てください。
+        複数数値型の詳しい解説については、<a href="#language-value">値</a>を見てください。
       </p>
 
       <h3 id="language-type-ref">リファレンス型</h3>
       <p>
-        リファレンス型とは、変数のアドレスが格納できる型のことです。<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-value">値型</a>の後ろに「&」を付けることで定義できます。
+        リファレンス型とは、変数のアドレスが格納できる型のことです。<a href="#language-type-numeric">数値型</a>あるいは<a href="#language-type-multi-numeric">複数数値型</a>の後ろに「&」を付けることで定義できます。
       </p>
 <pre>
 my $num : int;
@@ -7923,18 +7923,18 @@ sub foo : void ($thread_id : int) {
         SPVMのサブルーチンの引数の個数の最大は255個です。
       </p>
       <p>
-        値型の引数を渡すときは、フィールドの個数が、引数の個数としてカウントされます。たとえばSPVM::Complex_2d型が引数で指定された場合は、2個と数えます。
+        複数数値型の引数を渡すときは、フィールドの個数が、引数の個数としてカウントされます。たとえばSPVM::Complex_2d型が引数で指定された場合は、2個と数えます。
       </p>
       <p>
-        値のリファレンス型の引数を渡すときは、値型のフィールドの個数が、引数の個数としてカウントされます。たとえばSPVM::Complex_2d&型が引数で指定された場合は、2個と数えます。
+        複数数値のリファレンス型の引数を渡すときは、複数数値型のフィールドの個数が、引数の個数としてカウントされます。たとえばSPVM::Complex_2d&型が引数で指定された場合は、2個と数えます。
       </p>
       <p>
         もし、最大値を超えた場合は、コンパイル時エラーが発生します。
       </p>
 
-      <h3 id="language-limitation-value-type-fileds-count">値型のフィールドの個数の制限</h3>
+      <h3 id="language-limitation-value-type-fileds-count">複数数値型のフィールドの個数の制限</h3>
       <p>
-        値型のフィールドの個数の最大値は、16個で、少なくともひとつのフィールドが必要です。そうでない場合は、コンパイル時エラーが発生します。
+        複数数値型のフィールドの個数の最大値は、16個で、少なくともひとつのフィールドが必要です。そうでない場合は、コンパイル時エラーが発生します。
       </p>
 
     </div>
