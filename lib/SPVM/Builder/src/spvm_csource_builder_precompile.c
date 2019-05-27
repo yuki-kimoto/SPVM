@@ -4325,7 +4325,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, field_index);
@@ -4344,7 +4344,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, field_index);
@@ -4363,7 +4363,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, field_index);
@@ -4382,7 +4382,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, field_index);
@@ -4401,7 +4401,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, field_index);
@@ -4420,7 +4420,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t var_id = opcode->operand0;
         int32_t sub_return_type_width = opcode->operand2;
         
-        // Value type
+        // Multi numeric type
         for (int32_t field_index = 0; field_index < sub_return_type_width; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_stack(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_index);

@@ -38,7 +38,7 @@ package SPVM::Math::StringToNumber {
   }
 
   sub to_int : int ($self : self) {
-    # TODO: check value type (int, double, ...)
+    # TODO: check multi numeric type (int, double, ...)
     my $ret : int = 0;
     my $begin = 0;
     my $sign = 1;
@@ -54,7 +54,7 @@ package SPVM::Math::StringToNumber {
   }
 
   sub to_long : long ($self : self) {
-    # TODO: check value type (int, double, ...)
+    # TODO: check multi numeric type (int, double, ...)
     my $ret : long = 0;
     my $begin = 0;
     my $sign = 1;

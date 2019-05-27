@@ -2239,7 +2239,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_var = op_cur->first;
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
               if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_multi_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
-                SPVM_COMPILER_error(compiler, "Refernece target must be numeric type or value type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Refernece target must be numeric type or multi numeric type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2953,7 +2953,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 is_valid_invoker_type = 0;
               }
               if (!is_valid_invoker_type) {
-                SPVM_COMPILER_error(compiler, "Invocker of field access must be class type, or value type, or numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Invocker of field access must be class type, or multi numeric type, or numeric reference type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2982,7 +2982,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (field->package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
                   is_private = 0;
                 }
-                // If value type, field is public
+                // If multi numeric type, field is public
                 else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
                   is_private = 0;
                 }
@@ -3223,7 +3223,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_ref_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                 is_valid = 0;
               }
-              // Dist type is value type
+              // Dist type is multi numeric type
               else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                 is_valid = 0;
               }
@@ -4503,7 +4503,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
       can_assign = 0;
     }
   }
-  // Dist type is value type
+  // Dist type is multi numeric type
   else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
     if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {

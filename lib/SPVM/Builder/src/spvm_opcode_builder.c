@@ -395,7 +395,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       // Initialized not initialized variable
                       if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->is_arg) {
-                        // Value type
+                        // Multi numeric type
                         if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_PACKAGE* value_package = type->basic_type->package;
                           assert(package);
@@ -1002,7 +1002,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT);
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
-                            // Value type
+                            // Multi numeric type
                             else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
 
                               SPVM_PACKAGE* value_package = call_sub_return_type->basic_type->package;
@@ -1105,7 +1105,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_SUB_OBJECT);
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
-                            // Value type
+                            // Multi numeric type
                             else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
 
                               SPVM_PACKAGE* value_package = call_sub_return_type->basic_type->package;
@@ -3235,7 +3235,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_VAR : {
-                          // Value type
+                          // Multi numeric type
                           if (SPVM_TYPE_is_multi_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                             SPVM_PACKAGE* value_package = type_dist->basic_type->package;
                             assert(package);
