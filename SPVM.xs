@@ -1858,8 +1858,7 @@ call_sub(...)
               
               sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
             }
-            
-            // Convert Perl array to SPVM object
+            // Value is array refence
             else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
               SV* sv_elems = sv_value;
@@ -1867,6 +1866,22 @@ call_sub(...)
               AV* av_elems = (AV*)SvRV(sv_elems);
               
               int32_t length = av_len(av_elems) + 1;
+              
+              // Check first argument of array reference is no-ref-scalar
+              int32_t first_arg_is_no_ref_scalar;
+              if (length > 0) {
+                SV** sv_str_value_ptr = av_fetch(av_elems, 0, 0);
+                SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
+                if (SvROK(sv_str_value)) {
+                  first_arg_is_no_ref_scalar = 0;
+                }
+                else {
+                  first_arg_is_no_ref_scalar = 1;
+                }
+              }
+              else {
+                first_arg_is_no_ref_scalar = 0;
+              }
               
               // Convert string array to SPVM::Data::Array
               if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 2) {
