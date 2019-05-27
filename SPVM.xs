@@ -1867,7 +1867,7 @@ call_sub(...)
               
               int32_t length = av_len(av_elems) + 1;
               
-              // Check first argument of array reference is no-ref-scalar
+              // Check first value of array reference is no-ref-scalar
               int32_t first_arg_is_no_ref_scalar;
               if (length > 0) {
                 SV** sv_str_value_ptr = av_fetch(av_elems, 0, 0);
@@ -1883,8 +1883,8 @@ call_sub(...)
                 first_arg_is_no_ref_scalar = 0;
               }
               
-              // Convert string array to SPVM::Data::Array
-              if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 2) {
+              // If arument type is byte[][] and first value of array reference is no-ref-scalar, the value is convert to byte[][]
+              if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 2 && first_arg_is_no_ref_scalar) {
                 // New array
                 SPVM_OBJECT* array = env->new_marray_raw(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
 
