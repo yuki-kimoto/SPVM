@@ -1842,8 +1842,25 @@ call_sub(...)
             stack[arg_var_id].oval = NULL;
           }
           else {
+            // If arument type is byte[] and value is perl non-ref-scalar, the value is converted to byte[]
+            if (arg->basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type_dimension == 1 && !SvROK(sv_value)) {
+              // Copy
+              sv_value = sv_2mortal(newSVsv(sv_value));
+              
+              // Encode to UTF-8
+              sv_utf8_encode(sv_value);
+              
+              int32_t length = sv_len(sv_value);
+              const char* chars = SvPV_nolen(sv_value);
+              
+              void* string = env->new_str_len_raw(env, chars, length);
+              env->inc_ref_count(env, string);
+              
+              sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
+            }
+            
             // Convert Perl array to SPVM object
-            if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
+            else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
               SV* sv_elems = sv_value;
               
@@ -2051,27 +2068,6 @@ call_sub(...)
                   }
                   default:
                     assert(0);
-                }
-              }
-            }
-            // Convert string to SPVM::Data::Array
-            else if (!SvROK(sv_value) && arg->type_dimension == 1) {
-              switch (arg->basic_type_id) {
-                case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                  // Copy
-                  sv_value = sv_2mortal(newSVsv(sv_value));
-                  
-                  // Encode to UTF-8
-                  sv_utf8_encode(sv_value);
-                  
-                  int32_t length = sv_len(sv_value);
-                  const char* chars = SvPV_nolen(sv_value);
-                  
-                  void* string = env->new_str_len_raw(env, chars, length);
-                  env->inc_ref_count(env, string);
-                  
-                  sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
-                  break;
                 }
               }
             }
