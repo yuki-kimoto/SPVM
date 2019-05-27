@@ -923,6 +923,9 @@ my $total = $foo->sum(1, 2);
       <p>
         SPVMのサブルーチンの定義の引数の型が、double[]型で、引数に渡される値が、配列リファレンスであった場合は、double[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
       </p>
+      <p>
+        SPVMのサブルーチンの定義の引数の型が、object[]型で、引数に渡される値が、配列リファレンスであった場合は、object[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値が未定義値であった場合は、SPVMの未定義に変換され、PerlのSPVM::Dataオブジェクトであれば、変換はされません。それ以外の場合は、例外が発生します。
+      </p>
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>
       <p>
