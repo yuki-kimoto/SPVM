@@ -1,3 +1,0 @@
-package SPVM::MIME::Decoder : callback_t {
-  sub decode : string ($self : self, $string : string);
-}
